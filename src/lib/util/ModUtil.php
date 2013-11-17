@@ -1092,10 +1092,48 @@ class ModUtil
                     if ($args) {
                         $newType = false;
                     }
-                    if (!$api && $newType && !$modfunc[0] instanceof \Zikula_AbstractBase) {
-                        // resolve request args
+                    if (!$api && $newType) {
+                        // resolve request args.
                         $resolver = new ControllerResolver($sm, new ControllerNameParser(ServiceUtil::get('kernel')));
-                        $methodArgs = $resolver->getArguments($request = $sm->get('request'), $modfunc);
+                        try {
+                            $r = new \ReflectionClass($modfunc[0]);
+                            if (!$r->hasMethod($modfunc[1])) {
+                                // Method doesn't exist. Do some BC handling.
+                                // First try to remove the 'Action' suffix.
+                                $modfunc[1] = preg_replace('/(\w+)Action$/', '$1', $modfunc[1]);
+                                if (!$r->hasMethod($modfunc[1])) {
+                                    // Method still not found. Try to use the old 'main' method name.
+                                    if ($modfunc[1] == 'index') {
+                                        $modfunc[1] = $r->hasMethod('mainAction') ? 'mainAction' : 'main';
+                                    }
+                                }
+                            }
+
+                            if ($r->hasMethod($modfunc[1])) {
+                                // Did we get a valid method? If so, resolve arguments!
+                                $methodArgs = $resolver->getArguments($sm->get('request'), $modfunc);
+                            } else {
+                                // We still didn't get a valid method. Do not use argument resolving.
+                                $newType = false;
+                            }
+                        } catch(\RuntimeException $e) {
+                            // Something went wrong. Check if the method still uses the old non-Symfony $args array.
+                            if ($modfunc[0] instanceof \Zikula_AbstractBase) {
+                                $r = new \ReflectionMethod($modfunc[0], $modfunc[1]);
+                                $parameters = $r->getParameters();
+                                if (count($parameters) == 1) {
+                                    $firstParameter = $parameters[0];
+                                    if ($firstParameter->getName() == 'args') {
+                                        // The method really uses the old $args parameter. In this case we can continue
+                                        // using the old Controller call and don't have to throw an exception.
+                                        $newType = false;
+                                    }
+                                }
+                            }
+                            if ($newType !== false) {
+                                throw $e;
+                            }
+                        }
                     }
 
                     if ($modfunc[0] instanceof Zikula_AbstractController) {
@@ -1108,7 +1146,7 @@ class ModUtil
                         $modfunc[0]->preDispatch();
                     }
 
-                    if (!$api && $newType && !$modfunc[0] instanceof \Zikula_AbstractBase && isset($methodArgs)) {
+                    if (!$api && $newType && isset($methodArgs)) {
                         $postExecuteEvent->setData(call_user_func_array($modfunc, $methodArgs));
                     } else {
                         $postExecuteEvent->setData(call_user_func($modfunc, $args));
