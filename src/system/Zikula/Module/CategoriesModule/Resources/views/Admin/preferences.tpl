@@ -12,7 +12,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="userrootcat">{gt text="Root category for user categories"}</label>
                 <div class="col-lg-9">
-                {selector_category category=1 name="userrootcat" field="path" selectedValue=$userrootcat defaultValue="0" defaultText="ChooseOne" includeLeaf=0 doReplaceRootCat=false editLink=0 cssClass="form-control"}
+                {selector_category category=1 name="userrootcat" field="path" selectedValue=$userrootcat defaultValue="0" __defaultText="Choose one" includeLeaf=0 doReplaceRootCat=false editLink=0 cssClass="form-control"}
             </div>
             </div>
             <div class="form-group">
