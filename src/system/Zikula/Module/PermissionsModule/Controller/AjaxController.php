@@ -16,6 +16,7 @@ namespace Zikula\Module\PermissionsModule\Controller;
 
 use SecurityUtil;
 use ModUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula_Response_Ajax;
 use DataUtil;
 use AjaxUtil;
@@ -38,7 +39,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function updatepermissionAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $pid       = (int)$this->request->request->get('pid');
         $gid       = (int)$this->request->request->get('gid');
@@ -97,7 +100,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function changeorderAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $permorder = $this->request->request->get('permorder');
 
@@ -119,7 +124,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function createpermissionAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // add a blank permission
         $dummyperm = array(
@@ -154,7 +161,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function deletepermissionAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $pid = (int)$this->request->request->get('pid');
 
@@ -184,7 +193,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function testpermissionAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $uname = $this->request->request->get('test_user', '');
         $comp  = $this->request->request->get('test_component', '.*');

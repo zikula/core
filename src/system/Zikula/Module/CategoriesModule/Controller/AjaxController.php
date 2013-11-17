@@ -16,6 +16,8 @@ namespace Zikula\Module\CategoriesModule\Controller;
 
 use SecurityUtil;
 use CategoryUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use FormUtil;
 use ZLanguage;
@@ -35,7 +37,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function resequenceAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT));
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $data  = json_decode($this->request->request->get('data'), true);
         $cats = CategoryUtil::getSubCategories(1, true, true, true, true, true, '', 'id');
@@ -63,7 +67,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $mode = isset($args['mode']) ? $args['mode'] : $this->request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel));
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $cid = isset($args['cid']) ? $args['cid'] : $this->request->request->get('cid', 0);
         $parent = isset($args['parent']) ? $args['parent'] : $this->request->request->get('parent', 1);
@@ -78,7 +84,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 return new BadDataResponse($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
             }
             $editCat = CategoryUtil::getCategoryByID($cid);
-            $this->throwNotFoundUnless($editCat, $this->__('Sorry! No such item found.'));
+            if (!$editCat) {
+                throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            }
         } else {
             // someone just pressed 'new' -> populate defaults
             $editCat['sort_value'] = '0';
@@ -110,7 +118,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function copyAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD));
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $cid = $this->request->request->get('cid');
         $parent = $this->request->request->get('parent');
@@ -154,7 +164,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function deleteAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE));
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $cid = $this->request->request->get('cid');
         $cat = CategoryUtil::getCategoryByID($cid);
@@ -172,7 +184,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function deleteandmovesubsAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE));
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $cid = $this->request->request->get('cid');
         $parent = $this->request->request->get('parent');
@@ -218,7 +232,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function deletedialogAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE));
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $cid = $this->request->request->get('cid');
 
@@ -239,7 +255,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function activateAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT));
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $cid = $this->request->request->get('cid');
         $cat = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity', $cid);
@@ -257,7 +275,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function deactivateAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT));
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $cid = $this->request->request->get('cid');
         $cat = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity', $cid);
@@ -278,7 +298,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $mode = $this->request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel));
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // get data from post
         $data = $this->request->request->get('category', null);
