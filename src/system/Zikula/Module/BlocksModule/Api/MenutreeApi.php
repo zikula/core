@@ -401,7 +401,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         }
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
         $links = array();
@@ -679,7 +679,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         }
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
         // module config
