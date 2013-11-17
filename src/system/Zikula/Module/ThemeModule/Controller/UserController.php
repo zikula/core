@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -24,23 +23,31 @@ use ThemeUtil;
 use DataUtil;
 use Zikula_View;
 use CookieUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * User controllers for the theme module
+ */
 class UserController extends \Zikula_AbstractController
 {
     /**
      * display theme changing user interface
+     *
+     * @return Response symfony response object
+     *
+     * @throws \RuntimeException Thrown if theme switching is currently disabled
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have comment permissions over the theme module
      */
     public function indexAction()
     {
         // check if theme switching is allowed
         if (!System::getVar('theme_change')) {
-            LogUtil::registerError($this->__('Notice: Theme switching is currently disabled.'));
-
-            return $this->redirect(ModUtil::url('ZikulaUsersModule', 'user', 'index'));
+            throw new \RuntimeException($this->__('Notice: Theme switching is currently disabled.'));
         }
 
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get our input
@@ -93,6 +100,8 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * reset the current users theme to the site default
+     *
+     * @return void
      */
     public function resettodefaultAction()
     {
@@ -105,7 +114,7 @@ class UserController extends \Zikula_AbstractController
     /**
      * Enable mobile Theme 
      *
-     * @return string html output
+     * @return void
      */
     public function enableMobileTheme()
     {
@@ -114,11 +123,10 @@ class UserController extends \Zikula_AbstractController
         return $this->redirect(System::getHomepageUrl());
     }
     
-    
     /**
      * Disable mobile Theme 
      *
-     * @return string html output
+     * @return void
      */
     public function disableMobileTheme()
     {
@@ -126,5 +134,4 @@ class UserController extends \Zikula_AbstractController
 
         return $this->redirect(System::getHomepageUrl());
     }
-
 }

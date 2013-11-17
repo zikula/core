@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,8 +16,16 @@ namespace Zikula\Module\ThemeModule;
 use ModUtil;
 use DoctrineHelper;
 
+/**
+ * Installation and upgrade routines for the theme module
+ */
 class ThemeModuleInstaller extends \Zikula_AbstractInstaller
 {
+    /**
+     * Initialise the Admin module.
+     *
+     * @return boolean true if initialisation successful, false otherwise.
+     */
     public function install()
     {
         // create the table
@@ -60,6 +67,13 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
         return true;
     }
 
+    /**
+     * upgrade the module from an old version
+     *
+     * @param  string $oldversion version number string to upgrade from
+     *
+     * @return bool|string true on success, last valid version string or false if fails
+     */
     public function upgrade($oldversion)
     {
         switch ($oldversion) {
@@ -72,6 +86,11 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
         return true;
     }
 
+    /**
+     * delete the Admin module
+     *
+     * @return bool true if deletion successful, false otherwise
+     */
     public function uninstall()
     {
         // Deletion not allowed

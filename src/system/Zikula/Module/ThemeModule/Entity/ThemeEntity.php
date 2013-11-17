@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -28,6 +27,8 @@ use Doctrine\ORM\Mapping as ORM;
 class ThemeEntity extends EntityAccess
 {
     /**
+     * theme id
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -35,61 +36,85 @@ class ThemeEntity extends EntityAccess
     private $id;
 
     /**
+     * theme name
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $name;
 
     /**
+     * theme type
+     *
      * @ORM\Column(type="smallint")
      */
     private $type;
 
     /**
+     * display name for theme
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $displayname;
 
     /**
+     * theme description
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $description;
 
     /**
+     * theme file system directory
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $directory;
 
     /**
+     * theme version
+     *
      * @ORM\Column(type="string", length=10)
      */
     private $version;
 
     /**
+     * contact for theme
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $contact;
 
     /**
+     * is theme an admin capable theme
+     *
      * @ORM\Column(type="smallint")
      */
     private $admin;
 
     /**
+     * is theme an user capable theme
+     *
      * @ORM\Column(type="smallint")
      */
     private $user;
 
     /**
+     * is theme an system theme
+     *
      * @ORM\Column(type="smallint")
      */
     private $system;
 
     /**
+     * state of the theme
+     *
      * @ORM\Column(type="smallint")
      */
     private $state;
 
     /**
+     * is theme xhtml compliant
+     *
      * @ORM\Column(type="smallint")
      */
     private $xhtml;
