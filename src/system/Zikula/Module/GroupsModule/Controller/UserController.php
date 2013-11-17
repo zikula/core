@@ -17,6 +17,7 @@ namespace Zikula\Module\GroupsModule\Controller;
 use ModUtil;
 use SecurityUtil;
 use FormUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use UserUtil;
 use Zikula_View;
 use Zikula\Module\GroupsModule\Helper\CommonHelper;
@@ -50,7 +51,9 @@ class UserController extends \Zikula_AbstractController
      */
     public function viewAction()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // Get parameters from whatever input we need.
         $startnum = (int)$this->request->query->get('startnum', null);
@@ -122,7 +125,9 @@ class UserController extends \Zikula_AbstractController
      */
     public function membershipAction()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $gid = (int)$this->request->query->get('gid', null);
         $action = $this->request->query->get('action', null);
@@ -237,7 +242,9 @@ class UserController extends \Zikula_AbstractController
 
         $itemsperpage = $this->getVar('itemsperpage');
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid,
                 'numitems' => $itemsperpage,

@@ -14,6 +14,7 @@
 
 namespace Zikula\Module\GroupsModule\Controller;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula_View;
 use ModUtil;
 use SecurityUtil;
@@ -192,7 +193,9 @@ class AdminController extends \Zikula_AbstractController
     public function newgroupAction()
     {
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // Setting various defines
         $groupsCommon = new CommonHelper();
@@ -274,7 +277,9 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_EDIT));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_EDIT)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // assign the item
         $this->view->assign('item', $item);
@@ -363,7 +368,9 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_DELETE));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_DELETE)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // get the user default group - we do not allow its deletion
         $defaultgroup = $this->getVar('defaultgroup');
@@ -421,7 +428,9 @@ class AdminController extends \Zikula_AbstractController
                       'numitems' => $this->getVar('itemsperpage')));
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_EDIT));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_EDIT)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // assign the group to the template
         $this->view->assign('group', $group);
@@ -587,7 +596,9 @@ class AdminController extends \Zikula_AbstractController
         $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
         $uid = (int)$this->request->query->get('uid', isset($args['uid']) ? $args['uid'] : null);
         $confirmation = (bool)$this->request->request->get('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null);
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid.'::', ACCESS_EDIT));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid.'::', ACCESS_EDIT)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // Check for confirmation.
         if (empty($confirmation)) {
@@ -734,7 +745,9 @@ class AdminController extends \Zikula_AbstractController
     public function modifyconfigAction()
     {
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // get all groups from the API
         $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
@@ -763,7 +776,9 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // Update module variables.
         $itemsperpage = (int)$this->request->request->get('itemsperpage', 25);

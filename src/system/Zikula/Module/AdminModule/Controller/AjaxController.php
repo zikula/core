@@ -16,6 +16,7 @@ namespace Zikula\Module\AdminModule\Controller;
 
 use SecurityUtil;
 use ModUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula_Exception_Fatal;
 use DataUtil;
 use Zikula_Response_Ajax;
@@ -34,7 +35,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function changeModuleCategoryAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $moduleID = $this->request->request->get('modid');
         $newParentCat = (int)$this->request->request->get('cat');
@@ -78,7 +81,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function addCategoryAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         //get form information
         $name = trim($this->request->request->get('name'));
@@ -101,7 +106,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$name::", ACCESS_ADD));
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$name::", ACCESS_ADD)) {
+            throw new AccessDeniedHttpException();
+        }
 
         //create the category
         $result = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'create', array('name' => $name, 'description' => ''));
@@ -132,7 +139,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $cid = trim($this->request->request->get('cid'));
 
         //check user has permission to delete this
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::Category', "::$cid", ACCESS_DELETE));
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "::$cid", ACCESS_DELETE)) {
+            throw new AccessDeniedHttpException();
+        }
 
         //find the category corresponding to the cid.
         $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $cid));
@@ -140,7 +149,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             throw new Zikula_Exception_Fatal($this->__('Error! No such category found.'));
         }
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$item[name]::$item[cid]", ACCESS_DELETE));
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$item[name]::$item[cid]", ACCESS_DELETE)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $output = array();
 
@@ -171,7 +182,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $name = trim($this->request->request->get('name'));
 
         //security checks
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$name::$cid", ACCESS_EDIT));
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$name::$cid", ACCESS_EDIT)) {
+            throw new AccessDeniedHttpException();
+        }
 
         //make sure cid and category name (cat) are both set
         if (!isset($cid) || $cid == '' || !isset($name) || $name == '') {
@@ -209,7 +222,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             throw new Zikula_Exception_Fatal($this->__('Error! No such category found.'));
         }
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$item[name]::$item[cid]", ACCESS_EDIT));
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // update the category using the info from the database and from the form.
         $update = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'update', array('cid' => $cid, 'name' => $name, 'description' => $item['description']));
@@ -234,7 +249,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
 
         //check user has permission to change the initially selected category
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         //get passed cid
         $cid = trim($this->request->request->get('cid'));
@@ -264,7 +281,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $data = $this->request->request->get('admintabs');
 
@@ -285,7 +304,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $data = $this->request->request->get('modules');
 
