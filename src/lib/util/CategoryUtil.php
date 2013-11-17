@@ -1192,7 +1192,7 @@ class CategoryUtil
      *
      * @return The HTML selector code for the given category hierarchy
      */
-    public static function getSelector_Categories($cats, $field = 'id', $selectedValue = '0', $name = 'category[parent_id]', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1, $fieldIsAttribute = false, $cssClass = '')
+    public static function getSelector_Categories($cats, $field = 'id', $selectedValue = '0', $name = 'category[parent_id]', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1, $fieldIsAttribute = false, $cssClass = '', $lang = null)
     {
         $line = '---------------------------------------------------------------------';
 
@@ -1209,7 +1209,7 @@ class CategoryUtil
         $multipleSize = $multipleSize > 1 ? " size=\"$multipleSize\"" : '';
         $submit = $submit ? ' onchange="this.form.submit();"' : '';
         $cssClass = $cssClass ? " class=\"$cssClass\"" : '';
-        $lang = ZLanguage::getLanguageCode();
+        $lang = (isset($lang)) ? $lang : ZLanguage::getLanguageCode();
 
         $html = "<select name=\"$name\" id=\"$id\"{$multipleSize}{$multiple}{$submit}{$cssClass}>";
 

@@ -56,8 +56,8 @@ class GenericUtil
            ->setParameter('parentid', $data['parent_id']);
 
         if (isset($data['id']) && is_numeric($data['id'])) {
-            $qb->andWhere('c.cid <> :id')
-               ->setParaemter('id', $data['id']);
+            $qb->andWhere('c.id <> :id')
+               ->setParameter('id', $data['id']);
         }
 
         $query = $qb->getQuery();
