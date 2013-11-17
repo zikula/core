@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -34,16 +33,24 @@ class ResultHelper
     private $search_modules = array();
 
     /**
-     * @param $search_modules
+     * Setup this helper object
+     *
+     * @param array $search_modules array of search capable modules
      */
     public function __construct($search_modules)
     {
         $this->search_modules = $search_modules;
     }
 
-    // This method is called by DBUtil::selectObjectArrayFilter() for each and every search result.
-    // A return value of true means "keep result" - false means "discard".
-    // The decision is delegated to the search plugin (module) that generated the result
+    /**
+     * Validate search results
+     * 
+     * The decision is delegated to the search plugin (module) that generated the result
+     *
+     * @param array $datarow the input search result 
+     *
+     * @return bool true to keep the result, false to discard
+     */
     public function checkResult(&$datarow)
     {
         // Get module name

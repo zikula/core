@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,9 +19,10 @@ use LogUtil;
 use SecurityUtil;
 use FormUtil;
 use EventUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Search_Controller_Admin class.
+ * Administrative controllers for the search module
  */
 class AdminController extends \Zikula_AbstractController
 {
@@ -40,14 +40,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * The main administration function.
      *
-     * This function is the default function, and is called whenever the
-     * module is called without defining arguments.
-     * As such it can be used for a number of things, but most commonly
-     * it either just shows the module menu and returns or calls whatever
-     * the module designer feels should be the default function (often this
-     * is the view() function)
-     *
-     * @return string The main module admin page.
+     * @return void
      */
     public function mainAction()
     {
@@ -56,17 +49,17 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * Modify configuration.
+     * Display a form to modify the module configuration
      *
-     * This is a standard function to modify the configuration parameters of the module.
+     * @return Response symfony response object
      *
-     * @return string The configuration page.
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get the list of available plugins
@@ -91,13 +84,11 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * Update the configuration.
-     *
-     * This is a standard function to update the configuration parameters of the
-     * module given the information passed back by the modification form
-     * Modify configuration.
+     * Update the module configuration
      *
      * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function updateconfigAction()
     {
@@ -105,7 +96,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Update module variables.

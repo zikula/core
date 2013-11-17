@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -28,24 +27,28 @@ use Zikula\Module\SearchModule\ResultHelper;
 use Zikula\Module\SearchModule\Entity\SearchStatEntity;
 
 /**
- * Search_Api_User class.
+ * API's used by user controllers
  */
 class UserApi extends \Zikula_AbstractApi
 {
-
     /**
      * Perform the search.
      *
-     * @param string $args['g']           query string to search
-     * @param bool   $args['firstPage']   is this first search attempt? is so - basic search is performed
-     * @param string $args['searchtype']  (optional) search type (default='AND')
-     * @param string $args['searchorder'] (optional) search order (default='newest')
-     * @param int    $args['numlimit']    (optional) number of items to return (default value based on Search settings, -1 for no limit)
-     * @param int    $args['page']        (optional) page number (default=1)
-     * @param array  $args['active']      (optional) array of search plugins to search (if empty all plugins are used)
-     * @param array  $args['modvar']      (optional) array with extrainfo for search plugins
+     * @param mixed[] $args {
+     *         @type string $q           query string to search
+     *         @type bool   $firstPage   is this first search attempt? is so - basic search is performed
+     *         @type string $searchtype  (optional) search type (default='AND')
+     *         @type string $searchorder (optional) search order (default='newest')
+     *         @type int    $numlimit    (optional) number of items to return (default value based on Search settings, -1 for no limit)
+     *         @type int    $page        (optional) page number (default=1)
+     *         @type array  $active      (optional) array of search plugins to search (if empty all plugins are used)
+     *         @type array  $modvar      (optional) array with extrainfo for search plugins
+     *                      }
      *
-     * @return array array of items array and result count, or false on failure
+     * @return array array of items array and result count
+     *
+     * @throws \InvalidArgumentException Thrown if either q or firstpage isn't provided or q is empty
+     * @throws \RuntimeException Thrown if a search plugin returns false
      */
     public function search($args)
     {
@@ -98,9 +101,7 @@ class UserApi extends \Zikula_AbstractApi
                         $searchModulesByName[$mod['name']] = $mod;
                         $ok = ModUtil::apiFunc($mod['title'], 'search', $function, $param);
                         if (!$ok) {
-                            LogUtil::registerError($this->__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', array($mod['title'], $function)));
-
-                            return System::redirect(ModUtil::url('ZikulaSearchModule', 'user', 'index'));
+                            throw new \RuntimeException($this->__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', array($mod['title'], $function)));
                         }
                     }
                 }
@@ -180,10 +181,13 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all previous search queries.
      *
-     * @param int $args['starnum']  (optional) first item to return.
-     * @param int $args['numitems'] (optional) number if items to return.
+     * @param int[] $args {
+     *         @type int    $starnum   (optional) first item to return.
+     *         @type int    $numitems  (optional) number if items to return.
+     *         @type string $sortorder (optional} sort order either 'count' or 'date'
+     *                    }
      *
-     * @return array array of items, or false on failure.
+     * @return array array of items
      */
     public function getall($args)
     {
@@ -238,7 +242,10 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all search plugins.
      *
-     * @return array array of items, or false on failure.
+     * @param bool[] $args {
+     *      @type bool $loadall load all plugins (default: false_
+     *                     }
+     * @return array array of items
      */
     public function getallplugins($args)
     {
@@ -269,6 +276,11 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Log search query for search statistics.
+     *
+     * @param mixed[] $args {
+     *                      }
+     *
+     * @return bool true
      */
     public function log($args)
     {
@@ -291,7 +303,17 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Form custom url string.
      *
-     * @return string custom url string.
+     * @param mixed[] $args {
+     *      @type string $modname name of the module
+     *      @type string $type    type of the function
+     *      @type string $func    name of the function
+     *      @type array  $args    additional arguments for the function
+     *                      }
+     *
+     * @return string custom url string
+     *
+     * @throws \InvalidArgumentException Thrown if either modname, func or args isn't provided or if
+     *                                          type isn't provided or isn't 'user'
      */
     public function encodeurl($args)
     {
@@ -338,7 +360,13 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Decode the custom url string.
      *
-     * @return bool true if successful, false otherwise.
+     * @param mixed[] $args {
+     *      @type array $vars url variables
+     *                      }
+     *
+     * @return bool true if successful
+     *
+     * @throws \InvalidArgumentException Thrown if the vars parameter isn't provided
      */
     public function decodeurl($args)
     {
@@ -416,6 +444,15 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Construct part of a where clause out of the supplied search parameters.
+     *
+     * @param mixed[] $args {
+     *          @type string $q          the search query string
+     *          @type string $searchtype type of search ('AND'/'OR')
+     *                      }
+     * @param mixed[] $fields
+     * @param string $mlfield
+     *
+     * @return string sql where clause
      */
     public static function construct_where($args, $fields, $mlfield = null)
     {
@@ -460,6 +497,9 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Get available menu links.
+     *
+     * @param mixed[] $args {
+     *                      }
      *
      * @return array array of menu links.
      */

@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -23,15 +22,17 @@ use UserUtil;
 use System;
 use DataUtil;
 use ZLanguage;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
+/**
+ * User controllers for the search module
+ */
 class UserController extends \Zikula_AbstractController
 {
     /**
      * Main user function
      *
-     * This function is the default function. Call the function to show the search form.
-     *
-     * @return string HTML string templated
+     * @return void
      */
     public function mainAction()
     {
@@ -39,6 +40,11 @@ class UserController extends \Zikula_AbstractController
         return $this->redirect(ModUtil::url('ZikulaSearchModule', 'user', 'form'));
     }
 
+    /**
+     * Main user function
+     *
+     * @return void
+     */
     public function indexAction()
     {
         // Security check will be done in form()
@@ -51,13 +57,24 @@ class UserController extends \Zikula_AbstractController
      * Generate the whole search form, including the various plugins options.
      * It uses the Search API's getallplugins() function to find plugins.
      *
-     * @return string HTML string templated
+     * @param mixed[] $vars {
+     *      @type string $q           search query
+     *      @type string $searchtype  type of search being requested
+     *      @type string $searchorder order to sort the results in
+     *      @type int    $numlimit    number of search results to return
+     *      @type array  $active      array of search plugins to search (if empty all plugins are used)
+     *      @type array  $modvar      array with extrainfo for search plugins
+     *                      }
+     *
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have read access to the module
      */
     public function formAction($vars = array())
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get parameter from input
@@ -67,7 +84,6 @@ class UserController extends \Zikula_AbstractController
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
         $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'REQUEST');
         $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
-
 
         // this var allows the headers to not be displayed
         if (!isset($vars['titles']))
@@ -136,13 +152,16 @@ class UserController extends \Zikula_AbstractController
      * This function includes all the search plugins, then call every one passing
      * an array that contains the string to search for, the boolean operators.
      *
-     * @return string HTML string templated
+     * @return Response symfony response object templated
+     *
+     * @thrown \InvalidArgumentException Thrown if no search query parameters were provided
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have read access to the module
      */
     public function searchAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get parameter from HTTP input
@@ -164,8 +183,7 @@ class UserController extends \Zikula_AbstractController
         $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
 
         if (empty($vars['q'])) {
-            LogUtil::registerError ($this->__('Error! You did not enter any keywords to search for.'));
-            $this->redirect(ModUtil::url('ZikulaSearchModule', 'user', 'form'));
+            throw new \InvalidArgumentException($this->__('Error! You did not enter any keywords to search for.'));
         }
 
         // set some defaults
@@ -237,12 +255,16 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * display a list of recent searches
+     *
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have read access to the module or no user is logged in
      */
     public function recentAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ) || !UserUtil::isLoggedIn()) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get parameters from whatever input we need.
@@ -266,10 +288,17 @@ class UserController extends \Zikula_AbstractController
         return $this->view->fetch('User/recent.tpl');
     }
 
+    /**
+     * Generate xml for opensearch syndication
+     *
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have read access to the module
+     */
     public function opensearchAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $sitename = DataUtil::formatForDisplay(System::getVar('sitename'));
