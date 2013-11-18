@@ -1664,7 +1664,7 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string|bool The rendered template; true on success; otherwise false.
+     * @return Response|void Symfony response object if a form is to be displayed, void otherwise
      *
      * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
@@ -1899,7 +1899,7 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string The rendered configuration settings template.
+     * @return Response symfony response object
      *
      * @throws FatalErrorException Thrown if the function is accessed improperly.
      * @throws AccessDeniedHttpException Thrown if the current user does not have admin access.
@@ -2495,7 +2495,7 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string The rendered output from either the template for confirmation.
+     * @return Response|void symfony response object if a form is to be displayed, void otherwise
      *
      * @throws \InvalidArgumentException Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
      *                                      or the account record is not in a consistent state.

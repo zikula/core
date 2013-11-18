@@ -659,7 +659,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Export ids log.
      *
-     * @return string
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
