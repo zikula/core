@@ -2372,7 +2372,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @deprecated
+     * @deprecated since 1.3.7 use loginAction instead
      */
     public function loginScreenAction($args)
     {
