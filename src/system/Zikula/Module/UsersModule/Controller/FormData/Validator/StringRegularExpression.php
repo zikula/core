@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -30,8 +29,8 @@ class StringRegularExpression extends AbstractValidator
      * Constructs the validator, initializing the regular expression.
      *
      * @param \Zikula_ServiceManager $serviceManager    The current service manager instance.
-     * @param string                $regularExpression The PCRE regular expression against which to validate the data.
-     * @param string                $errorMessage      The error message to return if the data does not match the expression.
+     * @param string                 $regularExpression The PCRE regular expression against which to validate the data.
+     * @param string                 $errorMessage      The error message to return if the data does not match the expression.
      *
      * @throws \InvalidArgumentException Thrown if the regular expression is not valid.
      */

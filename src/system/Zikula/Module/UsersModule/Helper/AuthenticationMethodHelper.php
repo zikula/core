@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
+  * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -16,8 +15,9 @@
 namespace Zikula\Module\UsersModule\Helper;
 
 use ModUtil;
-use Zikula_Exception_Fatal;
+
 use System;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
  * Defines one valid authentication method.
@@ -124,7 +124,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return void
      *
-     * @throws Zikula_Exception_Fatal Thrown if the module name is not valid.
+     * @throws FatalErrorException Thrown if the module name is not valid.
      */
     private function setModule($modname)
     {
@@ -134,7 +134,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         } elseif (!empty($modname) && is_string($modname) && ModUtil::available($modname, true) && ModUtil::isCapable($modname, 'authentication')) {
             $this->modname = $modname;
         } else {
-            throw new Zikula_Exception_Fatal($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
+            throw new FatalErrorException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
                 'modname',
                 empty($modname) ? 'NULL' : $modname)
             ));
@@ -158,7 +158,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return void
      *
-     * @throws Zikula_Exception_Fatal Thrown if the name is not valid.
+     * @throws FatalErrorException Thrown if the name is not valid.
      */
     private function setMethod($method)
     {
@@ -166,7 +166,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         if (!empty($method) && is_string($method) && preg_match('/\\w+/', $method)) {
             $this->method = $method;
         } else {
-            throw new Zikula_Exception_Fatal($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
+            throw new FatalErrorException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
                 'method',
                 empty($method) ? 'NULL' : $method)
             ));
@@ -190,7 +190,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return void
      *
-     * @throws Zikula_Exception_Fatal Thrown if the description is invalid.
+     * @throws FatalErrorException Thrown if the description is invalid.
      */
     private function setShortDescription($shortDescription)
     {
@@ -198,7 +198,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         if (!empty($shortDescription) && is_string($shortDescription)) {
             $this->shortDescription = $shortDescription;
         } else {
-            throw new Zikula_Exception_Fatal($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
+            throw new FatalErrorException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
                 'shortDescription',
                 empty($shortDescription) ? 'NULL' : $shortDescription)
             ));
@@ -222,7 +222,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return void
      *
-     * @throws Zikula_Exception_Fatal Thrown if the description is invalid.
+     * @throws FatalErrorException Thrown if the description is invalid.
      */
     private function setLongDescription($longDescription)
     {
@@ -230,7 +230,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         if (!empty($longDescription) && is_string($longDescription)) {
             $this->longDescription = $longDescription;
         } else {
-            throw new Zikula_Exception_Fatal($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
+            throw new FatalErrorException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
                 'longDescription',
                 empty($longDescription) ? 'NULL' : $longDescription)
             ));
@@ -297,7 +297,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         if ($this->capableOfRegistration) {
             $this->enabledForRegistration = true;
         } else {
-            throw new Zikula_Exception_Fatal($this->__('The authentication method is not capable of being used for registration.'));
+            throw new FatalErrorException($this->__('The authentication method is not capable of being used for registration.'));
         }
     }
 
@@ -320,7 +320,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return mixed The value of the specified property.
      *
-     * @throws Zikula_Exception_Fatal Thrown if the name is not valid.
+     * @throws FatalErrorException Thrown if the name is not valid.
      */
     public function __get($name)
     {
@@ -361,7 +361,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
                     $trace[0]['file'],
                     (int)$trace[0]['line'],
                 ));
-                throw new Zikula_Exception_Fatal($message);
+                throw new FatalErrorException($message);
                 break;
         }
     }
@@ -375,7 +375,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return boolean True if the field is not null; otherwise false.
      *
-     * @throws Zikula_Exception_Fatal Thrown if the name is not valid.
+     * @throws FatalErrorException Thrown if the name is not valid.
      */
     public function __isset($name)
     {
@@ -404,7 +404,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
                     $trace[0]['file'],
                     (int)$trace[0]['line'],
                 ));
-                throw new Zikula_Exception_Fatal($message);
+                throw new FatalErrorException($message);
                 break;
         }
     }
@@ -419,7 +419,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return void
      *
-     * @throws Zikula_Exception_Fatal Thrown if the name is not valid, the property does not have a defined setter, or the property is not granted property setter access.
+     * @throws FatalErrorException Thrown if the name is not valid, the property does not have a defined setter, or the property is not granted property setter access.
      */
     public function __set($name, $value)
     {
@@ -455,7 +455,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
                     $trace[0]['file'],
                     (int)$trace[0]['line'],
                 ));
-                throw new Zikula_Exception_Fatal($message);
+                throw new FatalErrorException($message);
                 break;
             default:
                 $trace = debug_backtrace();
@@ -466,7 +466,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
                     $trace[0]['file'],
                     (int)$trace[0]['line'],
                 ));
-                throw new Zikula_Exception_Fatal($message);
+                throw new FatalErrorException($message);
                 break;
         }
     }
@@ -480,7 +480,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return void
      *
-     * @throws Zikula_Exception_Fatal Thrown if the name is not valid, the property does not have a defined setter, or the property is not granted property setter access.
+     * @throws FatalErrorException Thrown if the name is not valid, the property does not have a defined setter, or the property is not granted property setter access.
      */
     public function __unset($name)
     {
@@ -523,6 +523,6 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
                 ));
                 break;
         }
-        throw new Zikula_Exception_Fatal($message);
+        throw new FatalErrorException($message);
     }
 }

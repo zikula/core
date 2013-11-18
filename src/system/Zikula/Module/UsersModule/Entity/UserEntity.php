@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -31,51 +30,49 @@ use Doctrine\ORM\Mapping as ORM;
 class UserEntity extends EntityAccess
 {
     /**
+     * User ID: Primary user identifier
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * User ID: Primary user identifier
      */
     private $uid;
 
     /**
-     * @ORM\Column(type="string", length=25)
-     *
      * User Name: Primary user display name, primary log in identifier.
+     *
+     * @ORM\Column(type="string", length=25)
      */
     private $uname;
 
     /**
-     * @ORM\Column(type="string", length=60)
-     *
      * E-mail Address: Secondary log in identifier, user notifications.
      * For pending registrations awaiting e-mail address verification, this will be an empty string, and the email address for the account will be found in the users_verifychg table.
      * ("Regular" user accounts may also have e-mail addresses pending verification in the users_verifychg table, however those are the result of a request to change the account's address.)
+     *
+     * @ORM\Column(type="string", length=60)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=138)
-     *
      * Password: User's password for logging in.
      * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).
      * The hash algorithm is stored as a numeric code in the hash_method field. This field may be blank in instances
      * where the user registered with an alternative authentication module (e.g., OpenID) and did not also establish a password for his web site account.
+     *
+     * @ORM\Column(type="string", length=138)
      */
     private $pass;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     *
      * Password reminder: Set during registration or password changes, to remind the user what his password is.
+     *
      * This field may be blank if pass is blank.
+     * @ORM\Column(type="string", length=255)
      */
     private $passreminder;
 
     /**
-     * @ORM\Column(type="smallint")
-     *
      * Account State: The user's current state, see UsersConstant::ACTIVE_* for defined constants.
      * A state represented by a negative integer means that the user's account is in a pending state, and should not yet be considered a "real" user account.
      * For example, user accounts pending the completion of the registration process (because either moderation, e-mail verification, or both are in use)
@@ -84,12 +81,12 @@ class UserEntity extends EntityAccess
      * When this deletion happens, it will be assumed by the system that no external module has yet interacted with the user account record,
      * because its state never progressed beyond its pending state, and therefore normal hooks/events may not be triggered
      * (although it is possible that events regarding the pending account may be triggered).
+     *
+     * @ORM\Column(type="smallint")
      */
     private $activated;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * Account Approved Date/Time: The date and time the user's registration request was approved through the moderation process.
      * If the moderation process was not in effect at the time the user made a registration request, then this will be the date and time of the registration request.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time (unless one or the other happens to be UTC).
@@ -98,21 +95,21 @@ class UserEntity extends EntityAccess
      * Use of date/time functions in SQL queries should be avoided if at all possible. PHP functions using UTC as the base time zone should be used instead.
      * If SQL date/time functions must be used, then care should be taken to ensure that either the function is time zone neutral,
      * or that the function and its relationship to time zone settings is completely understood.
+     *
+     * @ORM\Column(type="datetime")
      */
     private $approved_date;
 
     /**
-     * @ORM\Column(type="integer")
-     *
      * The uid of the user account that approved the request to register a new account.
      * If this is the same as the user account's uid, then moderation was not in use at the time the request for a new account was made.
      * If this is -1, the the user account that approved the request has since been deleted. If this is 0, the user account has not yet been approved.
+     *
+     * @ORM\Column(type="integer")
      */
     private $approved_by;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * Registration Date/Time: Date/time the user account was registered.
      * For users not pending the completion of the registration process, this is the date and time the user account completed the process.
      * For example, if registrations are moderated, then this is the date and time the registration request was approved.
@@ -122,55 +119,59 @@ class UserEntity extends EntityAccess
      * If the user account's activated state is "pending registration" (implying that either moderation, verification, or both are in use)
      * then this will be the date and time the user made the registration request UNTIL the registration process is complete, and then it is updated as above.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
+     *
+     * @ORM\Column(type="datetime")
      */
     private $user_regdate;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * Last Login Date/Time: Date/time user last successfully logged into the site.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
+     *
+     * @ORM\Column(type="datetime")
      */
     private $lastlogin;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     *
      * User's Theme: The name (identifier) of the per-user theme the user would like to use while viewing the site, when user theme switching is enabled.
+     *
+     * @ORM\Column(type="string", length=255)
      */
     private $theme;
 
     /**
-     * @ORM\Column(type="smallint")
-     *
      * User-defined Block On?: Whether the custom user-defined block is displayed or not (1 == true == displayed)
+     *
+     * @ORM\Column(type="smallint")
      */
     private $ublockon;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * User-defined Block: Custom user-defined block content.
+     *
+     * @ORM\Column(type="text")
      */
     private $ublock;
 
     /**
-     * @ORM\Column(type="string", length=30)
-     *
      * User's timezone, as supported by PHP (listed at http://us2.php.net/manual/en/timezones.php), and as expressed by the Olson tz database.
      * Optional, if blank then the system default timezone should be used. [FUTURE USE]
+     *
+     * @ORM\Column(type="string", length=30)
      */
     private $tz;
 
     /**
-     * @ORM\Column(type="string", length=5)
-     *
      * The user's chosen locale for i18n purposes, as defined by gettext, POSIX, and the Common Locale Data Repository;
      * Optional, if blank then the system default locale should be used. [FUTURE USE]
+     *
+     * @ORM\Column(type="string", length=5)
      */
     private $locale;
 
     /**
+     * Additional attributes of this user
+     *
      * @ORM\OneToMany(targetEntity="UserAttributeEntity",
      *                mappedBy="user",
      *                cascade={"all"},
@@ -336,7 +337,7 @@ class UserEntity extends EntityAccess
     /**
      * set the approved date for the user
      *
-     * @param \Datetime $approved date the user's approved_date
+     * @param \Datetime $approved_date the user's approved date
      */
     public function setApproved_Date($approved_date)
     {

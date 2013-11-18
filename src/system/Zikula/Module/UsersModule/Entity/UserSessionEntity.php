@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -32,48 +31,48 @@ use Doctrine\ORM\Mapping as ORM;
 class UserSessionEntity extends EntityAccess
 {
     /**
+     * Session ID: Primary identifier
+     *
      * @ORM\Id
      * @ORM\Column(type="string", length=40)
      * @ORM\GeneratedValue(strategy="NONE")
-     *
-     * Session ID: Primary identifier
      */
     private $sessid;
 
     /**
-     * @ORM\Column(type="string", length=32)
-     *
      * IP Address: The user's IP address for the session.
+     *
+     * @ORM\Column(type="string", length=32)
      */
     private $ipaddr;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * Last Used Date/Time: Date/time this session record was last used for the user.
      * NOTE: This is stored as an SQL datetime, which is highly dependent on both PHP's timezone setting, and on the database server's timezone setting. If they do not match, then inconsistencies will propogate.
      * If Zikula is moved to a new database server with a different time zone configuration, then these dates/times will be interpreted based on the new time zone, not the original one!
+     *
+     * @ORM\Column(type="datetime")
      */
     private $lastused;
 
     /**
-     * @ORM\Column(type="integer")
-     *
      * User ID: Primary ID of the user record to which this session record is related. Foreign key to users table.
+     *
+     * @ORM\Column(type="integer")
      */
     private $uid;
 
     /**
-     * @ORM\Column(type="smallint")
-     *
      * Remember Me?: Whether the last successful login by the user (which creted this session record) used the "remember me" option to remain logged in between visits.
+     *
+     * @ORM\Column(type="smallint")
      */
     private $remember;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * Session Variables: Per-user/per-session variables. (Serialized)
+     *
+     * @ORM\Column(type="text")
      */
     private $vars;
 
