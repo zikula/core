@@ -18,11 +18,12 @@ use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula_View;use ModUtil;
+use Zikula\Core\Response\PlainResponse;
+use Zikula_View;
+use ModUtil;
 use DataUtil;
 use SecurityUtil;
 use Zikula;
-use Zikula_Response_Ajax;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 
@@ -38,7 +39,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * ---------------------------
      * string fragment A partial user name entered by the user.
      *
-     * @return string Zikula_Response_Ajax_Plain with list of users matching the criteria.
+     * @return string PlainResponse response object with list of users matching the criteria.
      */
     public function getUsersAction()
     {
@@ -179,7 +180,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * string form_type             An indicator of the type of form the fields will appear on.
      * array  authentication_method An array containing the authentication module name ('modname') and authentication method name ('method').
      *
-     * @return Zikula_Response_Ajax An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
+     * @return AjaxResponse An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
      *
      * @throws FatalErrorException Thrown if the authentication module name or method name are not valid.
      */
