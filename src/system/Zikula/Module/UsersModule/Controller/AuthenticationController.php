@@ -14,7 +14,7 @@
 namespace Zikula\Module\UsersModule\Controller;
 
 use Zikula_View;
-
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
@@ -45,7 +45,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      *
      * @param array $args The parameters for this function.
      *
-     * @return string The rendered template.
+     * @return Response symfony response object
      *
      * @throws FatalErrorException Thrown if the $args array is invalid, or contains an invalid value.
      */
@@ -101,7 +101,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      *
      * @param array $args The parameters for this function.
      *
-     * @return string The rendered template.
+     * @return response symfony response object
      *
      * @throws FatalErrorException Thrown if the $args array is invalid, or contains an invalid value.
      */

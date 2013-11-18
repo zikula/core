@@ -89,7 +89,7 @@ class UserController extends \Zikula_AbstractController
      *
      * If the user is logged in, then he is redirected to the home page.
      *
-     * @return string The rendered template.
+     * @return Response symfony response object
      */
     public function viewAction()
     {

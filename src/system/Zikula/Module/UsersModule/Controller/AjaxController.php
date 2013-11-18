@@ -13,7 +13,6 @@
 
 namespace Zikula\Module\UsersModule\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Hook\ValidationHook;

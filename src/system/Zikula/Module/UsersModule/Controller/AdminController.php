@@ -40,6 +40,7 @@ use Zikula\Core\Hook\ValidationHook;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Administrator-initiated actions for the Users module.
