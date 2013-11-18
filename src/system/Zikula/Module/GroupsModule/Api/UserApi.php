@@ -23,6 +23,7 @@ use ModUtil;
 use System;
 use Zikula;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * User API functions for the groups module

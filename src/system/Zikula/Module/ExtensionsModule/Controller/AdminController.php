@@ -28,6 +28,7 @@ use Zikula_View_Theme;
 use Zikula_Plugin_AlwaysOnInterface;
 use Zikula_Plugin_ConfigurableInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
