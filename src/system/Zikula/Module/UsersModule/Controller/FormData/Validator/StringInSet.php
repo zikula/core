@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -30,8 +29,8 @@ class StringInSet extends AbstractValidator
      * Creates a new validator, initializing the set of valid string values.
      *
      * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
-     * @param array                 $validStrings   An array containing valid string values.
-     * @param string                $errorMessage   The error message to return if the data is not valid.
+     * @param array                  $validStrings   An array containing valid string values.
+     * @param string                 $errorMessage   The error message to return if the data is not valid.
      *
      * @throws \InvalidArgumentException Thrown if the list of valid string values is not valid, or if it contains an invalid value.
      */

@@ -6,8 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,8 +18,6 @@ use UserUtil;
 use SecurityUtil;
 use Users_Constant as UsersConstant;
 use System;
-use Zikula_Exception_Forbidden;
-use Zikula_Exception_Fatal;
 use ModUtil;
 use ThemeUtil;
 use LogUtil;
@@ -32,6 +28,8 @@ use Zikula_Session;
 use ObjectUtil;
 use DateUtil;
 use DataUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * The system-level and database-level functions for user-initiated actions related to new account registrations.
@@ -63,18 +61,16 @@ class RegistrationApi extends \Zikula_AbstractApi
     /**
      * Related to getRegistrationErrors, returns error information related to a new or modified password.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * array  $args['reginfo']      An array containing either registration information gathered from the user, or user account
-     *                                      information gathered from the user. The contents of the array that are checked by this method
-     *                                      include 'uname', 'pass', 'passagain', and 'passreminder'. Optional. If not provided, then
-     *                                      the individual elements should be provided on the $args array.
-     * string $args['uname']        If not specified in $args['reginfo']['uname'], then the user name to be checked.
-     * string $args['pass']         If not specified in $args['reginfo']['pass'], then the password to be checked.
-     * string $args['passreminder'] If not specified in $args['reginfo']['passreminder'], then the password reminder to be checked.
-     * string $args['passagain']    The repeated verification password entered by the user (NOTE: this is never sent in $args['reginfo']).
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type array  $reginfo      An array containing either registration information gathered from the user, or user account
+     *                                 information gathered from the user. The contents of the array that are checked by this method
+     *                                 include 'uname', 'pass', 'passagain', and 'passreminder'. Optional. If not provided, then
+     *                                 the individual elements should be provided on the $args array.
+     *      @type string $uname        If not specified in $args['reginfo']['uname'], then the user name to be checked.
+     *      @type string $pass         If not specified in $args['reginfo']['pass'], then the password to be checked.
+     *      @type string $passreminder If not specified in $args['reginfo']['passreminder'], then the password reminder to be checked.
+     *      @type string $passagain    The repeated verification password entered by the user (NOTE: this is never sent in $args['reginfo']).
+     *                      }
      *
      * @return array An array of error information organized by registration form field.
      */
@@ -144,13 +140,11 @@ class RegistrationApi extends \Zikula_AbstractApi
     /**
      * Related to getRegistrationErrors, returns error information related to a new or modified e-mail address.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * numeric $args['uid']        The uid of the user to be checked; optional.
-     * string  $args['email']      The e-mail address to be checked.
-     * string  $args['emailagain'] The repeated e-mail address entered by the user for verification.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type int    $uid        The uid of the user to be checked; optional.
+     *      @type string $email      The e-mail address to be checked.
+     *      @type string $emailagain The repeated e-mail address entered by the user for verification.
+     *                      }
      *
      * @return array An array of error information organized by registration form field.
      */
@@ -231,39 +225,36 @@ class RegistrationApi extends \Zikula_AbstractApi
     /**
      * Validate new user information entered by the user.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * array  $args['reginfo']        The core registration or user information collected from the user.
-     * string $args['emailagain']     The e-mail address repeated for verification.
-     * string $args['passagain']      The passsword repeated for verification.
-     * string $args['antispamanswer'] The answer to the antispam question provided by the user.
-     * string $args['checkmode']      The "mode" that should be used when checking errors. Either 'new' or 'modify'
-     *                                      The checks that are performed depend on whether the record being checked is
-     *                                      for a new record or a record being modified.
-     * bool   $args['setpass']        A flag indicating whether the password is to be set on the new
-     *                                      or modified record, affecting error checking.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type array  $reginfo        The core registration or user information collected from the user.
+     *      @type string $emailagain     The e-mail address repeated for verification.
+     *      @type string $passagain      The passsword repeated for verification.
+     *      @type string $antispamanswer The answer to the antispam question provided by the user.
+     *      @type string $checkmode      The "mode" that should be used when checking errors. Either 'new' or 'modify'
+     *                                   The checks that are performed depend on whether the record being checked is
+     *                                   for a new record or a record being modified.
+     *      @type bool   $setpass        A flag indicating whether the password is to be set on the new
+     *                                   or modified record, affecting error checking.
+     *                      }
      *
      * @return array An array containing errors organized by field.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user does not have read access.
-     *
-     * @throws Zikula_Exception_Fatal If a required parameter is missing from $args.
+     * @throws AccessDeniedHttpException Thrown if the user does not have read access.
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
      */
     public function getRegistrationErrors($args)
     {
         $registrationErrors = array();
 
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
 
         if (!isset($args['reginfo']) || !is_array($args['reginfo'])) {
-            throw new Zikula_Exception_Fatal($this->__('Internal Error! Missing required parameter.'));
+            throw new \InvalidArgumentException($this->__('Internal Error! Missing required parameter.'));
         }
         $reginfo = $args['reginfo'];
 
@@ -330,7 +321,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         $verificationAndPassword = $this->getVar(UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE, UsersConstant::VERIFY_NO);
         if ($verificationAndPassword == UsersConstant::VERIFY_SYSTEMPWD) {
-            throw new Zikula_Exception_Fatal($this->__('Internal Error! System-generated passwords are no longer supported!'));
+            throw new \InvalidArgumentException($this->__('Internal Error! System-generated passwords are no longer supported!'));
         }
         if (!$isAdminOrSubAdmin || $setPassword) {
             $passwordErrors = ModUtil::apiFunc($this->name, 'registration', 'getPasswordErrors', array(
@@ -377,28 +368,29 @@ class RegistrationApi extends \Zikula_AbstractApi
      * All information provided to this function is in the form of registration data, even if it is expected that
      * the end result will be a fully active user account.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * array   $args['reginfo']                 The core registration or user information collected from the user.
-     * numeric $args['reginfo']['uid']          If the information is for a new user registration, then this should not be set. Otherwise,
-     *                                                  the uid of the registration record.
-     * string  $args['reginfo']['uname']        The user name for the registering user.
-     * string  $args['reginfo']['pass']         The password for the registering user.
-     * string  $args['reginfo']['passreminder'] The password reminder for the registering user.
-     * string  $args['reginfo']['email']        The e-mail address for the registering user.
-     *
-     * @param array $args All arguments passed to this function.
+     * @param array[] $args {
+     *      @type array   $reginfo {
+     *          @type numeric $uid          If the information is for a new user registration, then this should not be set. Otherwise,
+     *                                      the uid of the registration record.
+     *          @type string  $uname        The user name for the registering user.
+     *          @type string  $pass         The password for the registering user.
+     *          @type string  $passreminder The password reminder for the registering user.
+     *          @type string  $email        The e-mail address for the registering user.
+     *                             }
+     *                      }
      *
      * @return array|bool If the user registration information is successfully saved (either full user record was
      *                      created or a pending registration record was created in the users table), then the array containing
      *                      the information saved is returned; false on error.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user does not have read access.
+     * @throws AccessDeniedHttpException Thrown if the user does not have read access.
+     * @throws NotFoundHttpException Thrown if registration is disabled.
+     * @throws \InvalidArgumentException Thrown if reginfo is invalid
      */
     public function registerNewUser($args)
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         $isAdmin = $this->currentUserIsAdmin();
@@ -406,9 +398,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         if (!$isAdmin && !$this->getVar('reg_allowreg', false)) {
             $registrationUnavailableReason = $this->getVar('reg_noregreasons', $this->__('New user registration is currently disabled.'));
-            $this->registerError($registrationUnavailableReason, 403, System::getHomepageUrl());
-
-            return false;
+            throw new NotFoundHttpException($registrationUnavailableReason);
         }
 
         if (!isset($args['reginfo']) || empty($args['reginfo']) || !is_array($args['reginfo'])) {
@@ -457,7 +447,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      *
      * Moves any fields in the array that are not core database fields into the __ATTRIBUTES__ array.
      *
-     * @param array &$obj The array appropriate for the $table; passed by reference (this function will cause
+     * @param array $obj The array appropriate for the $table; passed by reference (this function will cause
      *                      the $obj to be modified in the calling function).
      *
      * @return array The $obj, modified for storage as described.
@@ -511,16 +501,17 @@ class RegistrationApi extends \Zikula_AbstractApi
      *
      * @param array  $reginfo                Contains the data gathered about the user for the registration record.
      * @param bool   $userNotification       Whether the user should be notified of the new registration or not; however
-     *                                          if the user's password was created for him, then he will receive at
-     *                                          least that notification without regard to this setting.
-     * @param bool $adminNotification Whether the configured administrator notification e-mail address should be
-     *                                          sent notification of the new registration.
+     *                                       if the user's password was created for him, then he will receive at
+     *                                       least that notification without regard to this setting.
+     * @param bool   $adminNotification      Whether the configured administrator notification e-mail address should be
+     *                                       sent notification of the new registration.
      * @param string $passwordCreatedForUser The password that was created for the user either automatically or by an
-     *                                          administrator (but not by the user himself).
+     *                                       administrator (but not by the user himself).
      *
      * @return array|bool The registration info, as saved in the users table; false on error.
      *
-     * @see    Users_Api_Registration#registerNewUser()
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received.
+     * @throws \RuntimeException Thrown if the registration couldn't be saved
      */
     protected function createRegistration(array $reginfo, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
     {
@@ -700,9 +691,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
             return $userObj;
         } else {
-            $this->registerError($this->__('Unable to store the new user registration record.'));
-
-            return false;
+            throw new \RuntimeException($this->__('Unable to store the new user registration record.'));
         }
     }
 
@@ -719,18 +708,21 @@ class RegistrationApi extends \Zikula_AbstractApi
      * record, even though the physical database record may have been saved previously as a pending
      * registration. See the note in createRegistration().
      *
-     * @param array $reginfo          Contains the data gathered about the user for the registration record.
-     * @param bool  $userNotification Whether the user should be notified of the new registration or not;
-     *                                          however if the user's password was created for him, then he will
-     *                                          receive at least that notification without regard to this setting.
-     * @param bool $adminNotification Whether the configured administrator notification e-mail address should
-     *                                          be sent notification of the new registration.
+     * @param array $reginfo                 Contains the data gathered about the user for the registration record.
+     * @param bool  $userNotification        Whether the user should be notified of the new registration or not;
+     *                                       however if the user's password was created for him, then he will
+     *                                       receive at least that notification without regard to this setting.
+     * @param bool $adminNotification        Whether the configured administrator notification e-mail address should
+     *                                       be sent notification of the new registration.
      * @param string $passwordCreatedForUser The password that was created for the user either automatically or by
-     *                                          an administrator (but not by the user himself).
+     *                                       an administrator (but not by the user himself).
      *
      * @return array|bool The user info, as saved in the users table; false on error.
      *
-     * @see    Users_Api_Registration#registerNewUser()
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received.
+     * @throws AccessDeniedHttpException Thrown if the current user does not have overview access.
+     * @throws \RuntimeException Thrown if the user couldn't be added to the relevant user groups or
+     *                                  if the registration couldn't be saved
      */
     protected function createUser(array $reginfo, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
     {
@@ -876,11 +868,11 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Add user to default group
             $defaultGroup = ModUtil::getVar('ZikulaGroupsModule', 'defaultgroup', false);
             if (!$defaultGroup) {
-                $this->registerError($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
+                throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
             $groupAdded = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser', array('gid' => $defaultGroup, 'uid' => $userObj['uid']));
             if (!$groupAdded) {
-                $this->registerError($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
+                throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
 
             // Force the reload of the user in the cache.
@@ -957,9 +949,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
             return $userObj;
         } else {
-            $this->registerError($this->__('Unable to store the new user registration record.'));
-
-            return false;
+            throw new \RuntimeException($this->__('Unable to store the new user registration record.'));
         }
     }
 
@@ -968,30 +958,31 @@ class RegistrationApi extends \Zikula_AbstractApi
      *
      * NOTE: Expired registrations are purged prior to performing the get.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * numeric $args['uid']   The uid of the registration record (registration request) to return;
-     *                              required if uname and email are not specified, otherwise not allowed.
-     * string  $args['uname'] The uname of the registration record (registration request) to return;
-     *                              required if id and email are not specified, otherwise not allowed.
-     * string  $args['email'] The e-mail address of the registration record (registration request) to return;
-     *                              not allowed if the system allows an e-mail address to be registered
-     *                              more than once; required if id and uname are not specified, otherwise not allowed.
+     * @param mixed[] $args {
+     *      @type int    $uid   The uid of the registration record (registration request) to return;
+     *                          required if uname and email are not specified, otherwise not allowed.
+     *      @type string $uname The uname of the registration record (registration request) to return;
+     *                          required if id and email are not specified, otherwise not allowed.
+     *      @type string $email The e-mail address of the registration record (registration request) to return;
+     *                          not allowed if the system allows an e-mail address to be registered
+     *                          more than once; required if id and uname are not specified, otherwise not allowed.
+     *                       }
      *
-     * @param array $args All parameters passed to this function; either id, uname, or email must be specified, but
-     *                      no more than one of those three, and email is not allowed if the system allows an email
-     *                      address to be registered more than once.
+     * Either id, uname, or email must be specified, but no more than one of those three, and email is not allowed 
+     * if the system allows an email address to be registered more than once.
      *
      * @return array|boolean An array containing the record, or false on error.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received.
+     * @throws AccessDeniedHttpException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
+     * @throws \RuntimeException Thrown if the data couldn't be obtained from the database
      */
     public function get($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         $uniqueEmails = $this->getVar('reg_uniemail', false);
@@ -1040,7 +1031,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $userObj = UserUtil::getVars($idValue, false, $idField, true);
 
         if ($userObj === false) {
-            $this->registerError($this->__('Error! Could not load data.'));
+            throw new \RuntimeException($this->__('Error! Could not load data.'));
         }
 
         return $userObj;
@@ -1094,30 +1085,28 @@ class RegistrationApi extends \Zikula_AbstractApi
      *
      * NOTE: The registration table is purged of expired records prior to retrieving results for this function.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * array   $args['filter']   An array of field/value combinations used to filter the results. Optional, default
-     *                                  is to return all records.
-     * array   $args['orderby']  An array of field name(s) by which to order the results, and the order direction. Example:
-     *                                  array('uname' => 'ASC') orders by uname in ascending order.
-     *                                  The order direction is optional, and if not specified, the
-     *                                  database default is used (typically ASC). Optional,
-     *                                  default is by id.
-     * integer $args['starnum']  The ordinal number of the first item to return.
-     * integer $args['numitems'] The number (count) of items to return.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type array $filter   An array of field/value combinations used to filter the results. Optional, default
+     *                            is to return all records.
+     *      @type array $orderby  An array of field name(s) by which to order the results, and the order direction. Example:
+     *                            array('uname' => 'ASC') orders by uname in ascending order.
+     *                            The order direction is optional, and if not specified, the
+     *                            database default is used (typically ASC). Optional, default is by id.
+     *      @type int   $starnum  The ordinal number of the first item to return.
+     *      @type int   $numitems The number (count) of items to return.
+     *                      }
      *
      * @return array|bool Array of registration requests, or false on failure.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received.
+     * @throws AccessDeniedHttpException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
     public function getAll($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         if (isset($args['limitoffset']) && is_numeric($args['limitoffset'])
@@ -1200,14 +1189,13 @@ class RegistrationApi extends \Zikula_AbstractApi
      *
      * NOTE: Expired registrations are purged before the count is performed.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * array $args['filter'] An array of field/value combinations used to filter the results. Optional, default
-     *                              is to count all records.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type array $filter An array of field/value combinations used to filter the results. Optional, default is to count all records.
+     *                      }
      *
      * @return integer|boolean Numer of pending applications, false on error.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received.
      */
     public function countAll($args)
     {
@@ -1273,25 +1261,24 @@ class RegistrationApi extends \Zikula_AbstractApi
     /**
      * Processes a delete() operation for registration records.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * numeric $args['uid']     The uid of the registration record to remove; optional; if not set then $args['reginfo']
-     *                                  must be set with a valid uid.
-     * array   $args['reginfo'] An array containing a registration record with a valid uid in $args['reginfo']['uid'];
-     *                                  optional; if not set, then $args['uid'] must be set.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type int   $uid     The uid of the registration record to remove; optional; if not set then $args['reginfo']
+     *                           must be set with a valid uid.
+     *      @type array $reginfo An array containing a registration record with a valid uid in $args['reginfo']['uid'];
+     *                           optional; if not set, then $args['uid'] must be set.
+     *                      }
      *
      * @return bool True on success; otherwise false.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
+     * @throws AccessDeniedHttpException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
     public function remove($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_DELETE))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         if (isset($args['uid'])) {
@@ -1381,22 +1368,22 @@ class RegistrationApi extends \Zikula_AbstractApi
     /**
      * Creates, saves and sends a registration e-mail address verification code.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * array   $args['reginfo']      An array containing a valid registration record; optional; if not set, then $args['uid'] must
-     *                                      be set and point to a valid registration record.
-     * numeric $args['uid']          The uid of a valid registration record; optional; if not set, then $args['reginfo'] must be set and valid.
-     * boolean $args['force']        Indicates that a verification code should be sent, even if the Users module configuration is
-     *                                      set not to verify e-mail addresses; optional; only has an effect if the current user is
-     *                                      an administrator.
-     * array   $args['rendererArgs'] Optional arguments to send to the Zikula_View instance while rendering the e-mail message.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type array $reginfo      An array containing a valid registration record; optional; if not set, then $args['uid'] must
+     *                                be set and point to a valid registration record.
+     *      @type int   $uid          The uid of a valid registration record; optional; if not set, then $args['reginfo'] must be set and valid.
+     *      @type bool  $force        Indicates that a verification code should be sent, even if the Users module configuration is
+     *                                set not to verify e-mail addresses; optional; only has an effect if the current user is
+     *                                an administrator.
+     *      @type array $rendererArgs Optional arguments to send to the Zikula_View instance while rendering the e-mail message.
+     *                      }
      *
      * @return bool True on success; otherwise false.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
+     * @throws AccessDeniedHttpException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
+     * @throws NotFoundHttpException     Thrown if the registration couldn't be found
      */
     public function sendVerificationCode($args)
     {
@@ -1405,7 +1392,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         // registration record, so allow not-logged-in plus READ, as well as moderator.
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         if (isset($args['reginfo'])) {
@@ -1423,14 +1410,10 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
             if (!$reginfo || empty($reginfo)) {
-                $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
-
-                return false;
+                throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
             }
             if (!isset($reginfo['email'])) {
-                $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
-
-                return false;
+                throw new \InvalidArugmentException($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
             }
         }
 
@@ -1450,13 +1433,9 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         // Set the verification code
         if (isset($reginfo['isverified']) && $reginfo['isverified']) {
-            $this->registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
-
-            return false;
+            throw new \InvalidArgumentException($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
         } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_BEFORE) && isset($reginfo['approvedby']) && !empty($reginfo['approved_by'])) {
-            $this->registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
-
-            return false;
+            throw new \InvalidArgumentException($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
         }
 
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
@@ -1507,23 +1486,22 @@ class RegistrationApi extends \Zikula_AbstractApi
     /**
      * Retrieves a verification code for a registration pending e-mail address verification.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * numeric $args['uid'] The uid of the registration for which the code should be retrieved.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param int[] $args {
+     *      @type int $uid The uid of the registration for which the code should be retrieved.
+     *                    }
      *
      * @return array|bool An array containing the object from the users_verifychg table; an empty array if not found;
      *                      false on error.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws AccessDeniedHttpException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
      */
     public function getVerificationCode($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         if (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid']) || ($args['uid'] <= 1)) {
@@ -1542,6 +1520,9 @@ class RegistrationApi extends \Zikula_AbstractApi
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success; otherwise false.
+     *
+     * @throws \InvalidArgumentException Thrown if the registration information isn't invalid
+     * @throws NotFoundHttpException Thrown if th registration information cannot be found
      */
     public function verify($args)
     {
@@ -1552,9 +1533,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             }
             $reginfo = $args['reginfo'];
             if (!$reginfo || !is_array($reginfo) || !isset($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
-                $this->registerError($this->__('Error! Invalid registration record.'));
-
-                return false;
+                throw new \InvalidArgumentException($this->__('Error! Invalid registration record.'));
             }
         } elseif (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -1562,14 +1541,10 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
             if (!$reginfo || empty($reginfo)) {
-                $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $args['uid']));
-
-                return false;
+                throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $args['uid']));
             }
             if (!isset($reginfo['email'])) {
-                $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $args['uid']));
-
-                return false;
+               throw new \InvalidArgumentException($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $args['uid']));
             }
         }
 
@@ -1596,25 +1571,26 @@ class RegistrationApi extends \Zikula_AbstractApi
      * If the registration is also verified (or does not need it) then a new users table record
      * is created.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * array   $args['reginfo'] An array of registration information containing a valid uid pointing to the registration
-     *                                  record to be approved; optional; if not set, then $args['uid'] should be set.
-     * numeric $args['uid']     The uid of the registration record to be set; optional, used only if $args['reginfo'] not set; if not
-     *                                  set then $args['reginfo'] must be set and have a valid uid.
-     * boolean $args['force']   Force the approval of the registration record; optional; only effective if the current user
-     *                                  is an administrator.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type array $reginfo An array of registration information containing a valid uid pointing to the registration
+     *                           record to be approved; optional; if not set, then $args['uid'] should be set.
+     *      @type int   $uid     The uid of the registration record to be set; optional, used only if $args['reginfo'] not set; if not
+     *                           set then $args['reginfo'] must be set and have a valid uid.
+     *      @type bool  $force   Force the approval of the registration record; optional; only effective if the current user
+     *                           is an administrator.
+     *                      }
      *
      * @return bool True on success; otherwise false.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user does not have add access.
+     * @throws AccessDeniedHttpException Thrown if the user does not have add access.
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
+     * @throws \RuntimeException Thrown if the registration information cannot be found or
+     *                                  if registration is forced but no e-mail address is provided
      */
     public function approve($args)
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADD)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         if (isset($args['reginfo'])) {
@@ -1624,9 +1600,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             }
             $reginfo = $args['reginfo'];
             if (!$reginfo || !is_array($reginfo) || !isset($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
-                $this->registerError($this->__('Error! Invalid registration record.'));
-
-                return false;
+                throw new \InvalidArgumentException($this->__('Error! Invalid registration record.'));
             }
         } elseif (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -1634,9 +1608,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Got just an id.
             $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $args['uid']));
             if (!$reginfo) {
-                $this->registerError($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $args['uid']));
-
-                return false;
+                throw new \RuntimeException($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $args['uid']));
             }
         }
 
@@ -1652,9 +1624,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         if (isset($args['force']) && $args['force']) {
             if (!isset($reginfo['email']) || empty($reginfo['email'])) {
-                $this->registerError($this->__f('Error: Unable to force registration for \'%1$s\' to be verified during approval. No e-mail address.', array($reginfo['uname'])));
-
-                return false;
+                throw new \RuntimeException($this->__f('Error: Unable to force registration for \'%1$s\' to be verified during approval. No e-mail address.', array($reginfo['uname'])));
             }
 
             $reginfo['isverified'] = true;
@@ -1673,18 +1643,16 @@ class RegistrationApi extends \Zikula_AbstractApi
     }
 
     /**
-     * LEGACY user account activaton.
+     * LEGACY user account activation.
      *
      * We must keep this function because there is no way to know whether an
      * inactive account is inactive because it requires activation, or because of some
      * other reason.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string  $args['regdate'] An SQL date-time containing the user's original registration date-time.
-     * numeric $args['uid']     The id of the user account to activate.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type string  $regdate An SQL date-time containing the user's original registration date-time.
+     *      @type int     $uid     The id of the user account to activate.
+     *                      }
      *
      * @return bool True on success, otherwise false.
      */
@@ -1702,5 +1670,4 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         return true;
     }
-
 }

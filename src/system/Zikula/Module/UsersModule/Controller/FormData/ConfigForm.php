@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -32,7 +31,7 @@ class ConfigForm extends AbstractFormData
     /**
      * Create a new instance of the form data container, intializing the fields and validators.
      *
-     * @param string                $formId         The id value to use for the form.
+     * @param string                 $formId         The id value to use for the form.
      * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
      */
     public function __construct($formId, \Zikula_ServiceManager $serviceManager = null)

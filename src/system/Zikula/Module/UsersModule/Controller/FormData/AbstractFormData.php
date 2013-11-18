@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -15,7 +14,6 @@
 namespace Zikula\Module\UsersModule\Controller\FormData;
 
 use ServiceUtil;
-use InvalidArgumentException;
 use ModUtil;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -48,10 +46,10 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
     /**
      * Construct a new form data container instance, initializing the id value.
      *
-     * @param string                $formId         A value for the form's id attribute.
+     * @param string                 $formId         A value for the form's id attribute.
      * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
      *
-     * @throws InvalidArgumentException Thrown if the specified form id is not valid.
+     * @throws \InvalidArgumentException Thrown if the specified form id is not valid.
      */
     public function __construct($formId, \Zikula_ServiceManager $serviceManager = null)
     {
@@ -63,9 +61,9 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
 
         $formId = trim($formId);
         if (!isset($formId) || !is_string($formId) || empty($formId)) {
-            throw new InvalidArgumentException($this->__('Invalid form id.'));
+            throw new \InvalidArgumentException($this->__('Invalid form id.'));
         } elseif (!preg_match('/^[a-z][a-z0-9_]*$/', $formId)) {
-            throw new InvalidArgumentException($this->__f('The form id \'%1$s\' contains invalid characters.', array($formId)));
+            throw new \InvalidArgumentException($this->__f('The form id \'%1$s\' contains invalid characters.', array($formId)));
         }
         $this->formId = $formId;
 
@@ -80,18 +78,18 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
      *
      * @return Field A reference to the field just added, to allow for function chaining to configure the field.
      *
-     * @throws InvalidArgumentException Thrown if the field definition is not valid, a field with the specified name is already defined, or adding the field would result in a duplicate field id.
+     * @throws \InvalidArgumentException Thrown if the field definition is not valid, a field with the specified name is already defined, or adding the field would result in a duplicate field id.
      */
     public function addField(Field $field)
     {
         if (!isset($field)) {
-            throw new InvalidArgumentException($this->__('Invalid field definition'));
+            throw new \InvalidArgumentException($this->__('Invalid field definition'));
         } elseif ($field->getFormContainer() !== $this) {
-            throw new InvalidArgumentException($this->__('Form container mismatch.'));
+            throw new \InvalidArgumentException($this->__('Form container mismatch.'));
         } elseif (array_key_exists($field->fieldName, $this->formFields)) {
-            throw new InvalidArgumentException($this->__f('Field defintion for the \'%1$s\' field is already defined.', array($field->fieldName)));
+            throw new \InvalidArgumentException($this->__f('Field defintion for the \'%1$s\' field is already defined.', array($field->fieldName)));
         } elseif (array_key_exists($field->fieldId, $this->fieldIds)) {
-            throw new InvalidArgumentException($this->__f('Field defintion duplicates the field id \'%1$s\' already claimed by the field \'%2$s\'.', array($field->fieldId, $this->fieldIds[$field->fieldId])));
+            throw new \InvalidArgumentException($this->__f('Field defintion duplicates the field id \'%1$s\' already claimed by the field \'%2$s\'.', array($field->fieldId, $this->fieldIds[$field->fieldId])));
         }
 
         $this->formFields[$field->fieldName] = $field;
@@ -117,12 +115,12 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
      *
      * @return Field The field definition for the specified name.
      *
-     * @throws InvalidArgumentException Thrown if this form data container does not contain a field with the specified name.
+     * @throws \InvalidArgumentException Thrown if this form data container does not contain a field with the specified name.
      */
     public function getField($fieldName)
     {
         if (!isset($this->formFields[$fieldName])) {
-            throw new InvalidArgumentException($this->__f('Invalid field name: %1$s', array($fieldName)));
+            throw new \InvalidArgumentException($this->__f('Invalid field name: %1$s', array($fieldName)));
         }
 
         return $this->formFields[$fieldName];

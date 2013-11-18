@@ -6,8 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,7 +20,7 @@ use System;
 use DateTime;
 use DateTimeZone;
 use ServiceUtil;
-use Zikula_Exception_Fatal;
+
 use DBUtil;
 use EventUtil;
 use HookUtil;
@@ -86,7 +84,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
      *
      * @param string $oldVersion Version number string to upgrade from.
      *
-     * @return mixed True on success, last valid version string or false if fails.
+     * @return bool|string True on success, last valid version string or false if fails.
      */
     public function upgrade($oldVersion)
     {
@@ -238,6 +236,11 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         $this->entityManager->flush();
     }
 
+    /**
+     * Migrate attributes to user entity
+     *
+     * @return void
+     */
     private function migrateAttributes()
     {
         $dataset = DBUtil::selectObjectArray('users');

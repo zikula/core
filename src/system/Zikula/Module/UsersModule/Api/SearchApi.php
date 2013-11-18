@@ -6,8 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -80,6 +78,8 @@ class SearchApi extends \Zikula_AbstractApi
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success or null result, false on error.
+     *
+     * @throws \RuntimeException Thrown if the data couldn't be loaded from the database
      */
     public function search($args)
     {
@@ -146,9 +146,7 @@ class SearchApi extends \Zikula_AbstractApi
                                'session' => $sessionId);
                 $insertResult = DBUtil::insertObject($items, 'search_result');
                 if (!$insertResult) {
-                    $this->registerError($this->__("Error! Could not load the results of the user's search."));
-
-                    return false;
+                    throw new \RuntimeException($this->__("Error! Could not load the results of the user's search."));
                 }
             }
         }

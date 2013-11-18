@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -30,8 +29,8 @@ class StringMinimumLength extends AbstractValidator
      * Constructs a new validator, initializing the minimum valid string length value.
      *
      * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
-     * @param integer               $length         The minimum valid length for the string value.
-     * @param string                $errorMessage   The error message to return if the string data's length is less than the minimum length.
+     * @param integer                $length         The minimum valid length for the string value.
+     * @param string                 $errorMessage   The error message to return if the string data's length is less than the minimum length.
      *
      * @throws \InvalidArgumentException Thrown if the minimum string length value is not an integer or is less than zero.
      */

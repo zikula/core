@@ -31,7 +31,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return \Zikula_Response_Ajax Ajax response containg the moduleid on success.
      *
-     * @throws \FatalErrorException Thrown if the supplied module ID doesn't exist or
+     * @throws FatalErrorException Thrown if the supplied module ID doesn't exist or
      *                                     if the module couldn't be added to the category
      */
     public function changeModuleCategoryAction()
@@ -78,7 +78,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return \Zikula_Response_Ajax Ajax response containing the new cid on sucess
      *
-     * @throws \FatalErrorException Thrown if the supplied category name already exists or
+     * @throws FatalErrorException Thrown if the supplied category name already exists or
      *                                     if the the category couldn't be created
      */
     public function addCategoryAction()
@@ -133,7 +133,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return \Zikula_Response_Ajax Ajax response containing the category id on success
      *
-     * @throws \FatalErrorException Thrown if the supplied category doesn't exist or
+     * @throws FatalErrorException Thrown if the supplied category doesn't exist or
      *                                     if the category couldn't be deleted
      */
     public function deleteCategoryAction()
@@ -179,7 +179,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @return \Zikula_Response_Ajax Ajax response containing the name of the edited category
      *
      * @throws \InvalidArgumentException Thrown if either the category id or name are not supplied or null
-     * @throws \FatalErrorException Thrown if the new category name already exists or
+     * @throws FatalErrorException Thrown if the new category name already exists or
      *                                     if the category id couldn't be found or
      *                                     if the changes to the category couldn't be saved
      */
@@ -251,7 +251,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return \Zikula_Response_Ajax Ajax response containg a sucess message
      *
-     * @throws \FatalErrorException Thrown if the category couldn't be found or 
+     * @throws FatalErrorException Thrown if the category couldn't be found or 
      *                                     if the category couldn't be set as the default
      */
     public function defaultCategoryAction()

@@ -27,6 +27,7 @@ use BlockUtil;
 use Zikula_View_Theme;
 use Zikula\Module\ThemeModule\Util;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
