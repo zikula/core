@@ -15,7 +15,6 @@ namespace Zikula\Module\ExtensionsModule;
 
 use Zikula_AbstractErrorHandler;
 use LogUtil;
-use InvalidArgumentException;
 use Zikula_AbstractVersion;
 use ServiceUtil;
 use ModUtil;
