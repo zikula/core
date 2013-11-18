@@ -363,18 +363,18 @@ class Zikula_Workflow_Util
             $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
 
             //build the query and execute
-            $query = $this->entityManager->createQueryBuilder()
-                                         ->select('w')
-                                         ->from('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
-                                         ->where('w.module = :module')
-                                         ->andWhere('w.objIdcolumn = :idcolumn')
-                                         ->andWhere('w.objTable = :dbtable')
-                                         ->andWhere('w.objId = :id')
-                                         ->setParameter('module', $module)
-                                         ->setParameter('idcolumn', $idcolumn)
-                                         ->setParameter('dbtable', $dbTable)
-                                         ->setParameter('id', $obj[$idcolumn])
-                                         ->getQuery();
+            $query = $em->createQueryBuilder()
+                         ->select('w')
+                         ->from('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+                         ->where('w.module = :module')
+                         ->andWhere('w.objIdcolumn = :idcolumn')
+                         ->andWhere('w.objTable = :dbtable')
+                         ->andWhere('w.objId = :id')
+                         ->setParameter('module', $module)
+                         ->setParameter('idcolumn', $idcolumn)
+                         ->setParameter('dbtable', $dbTable)
+                         ->setParameter('id', $obj[$idcolumn])
+                         ->getQuery();
 
             $workflow = $query->getArrayResult();
             $workflow = $workflow[0];
