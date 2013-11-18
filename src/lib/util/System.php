@@ -212,7 +212,7 @@ class System
             return false;
         }
 
-        if ($type == 'url' && filter_var($var, FILTER_VALIDATE_URL)) {
+        if ($type == 'url' && !filter_var($var, FILTER_VALIDATE_URL)) {
             return false;
         }
 
