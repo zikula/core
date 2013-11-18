@@ -23,13 +23,13 @@ namespace Zikula\Module\UsersModule {
 }
 
 /**
- * BC layer till for <=1.3.5
+ * BC layer till for <=1.3.6
  */
 namespace {
     /**
      * constants for the users module
      *
-     * @deprecated use Zikula\Module\UsersModule\Constant instead
+     * @deprecated since 1.3.7 use Zikula\Module\UsersModule\Constant instead
      */
     class Users_Constant extends Zikula\Module\UsersModule\Constant
     {
@@ -38,7 +38,7 @@ namespace {
     /**
      * authentication method helper
      *
-     * @deprecated use \Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper instead
+     * @deprecated since 1.3.7 use \Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper instead
      */
     class Users_Helper_AuthenticationMethod extends \Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper
     {
@@ -47,7 +47,7 @@ namespace {
     /**
      * list authentication helpers
      *
-     * @deprecated use \Zikula\Module\UsersModule\Helper\AuthenticationMethodListHelper instead
+     * @deprecated since 1.3.7 use \Zikula\Module\UsersModule\Helper\AuthenticationMethodListHelper instead
      */
     class Users_Helper_AuthenticationMethodList extends \Zikula\Module\UsersModule\Helper\AuthenticationMethodListHelper
     {
@@ -56,7 +56,7 @@ namespace {
     /**
      * hash method helpers
      *
-     * @deprecated use \Zikula\Module\UsersModule\Helper\HashMethodListHelper instead
+     * @deprecated since 1.3.7 use \Zikula\Module\UsersModule\Helper\HashMethodListHelper instead
      */
     class Users_Helper_HasMethodList extends \Zikula\Module\UsersModule\Helper\HashMethodListHelper
     {

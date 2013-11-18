@@ -1302,7 +1302,7 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get all module dependencies.
      *
-     * @deprecated since 1.3.6 
+     * @deprecated since 1.3.7 use getalldependencies instead
      * @todo remove in 1.4.0
      *
      * @use $this->getalldependencies instead.

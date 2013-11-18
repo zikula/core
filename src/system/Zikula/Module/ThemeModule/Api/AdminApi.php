@@ -33,7 +33,7 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Regenerate themes list.
      *
-     * @deprecated
+     * @deprecated since 1.3.7 use Util::regenerate instead
      *
      * @return boolean
      */
