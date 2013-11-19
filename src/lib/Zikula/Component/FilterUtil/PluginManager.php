@@ -115,7 +115,7 @@ class PluginManager
         $plugin->setConfig($this->config);
         $this->registerPlugin($key);
 
-        return $plugin->getDefault();
+        return $plugin->isDefault();
     }
 
     /**
