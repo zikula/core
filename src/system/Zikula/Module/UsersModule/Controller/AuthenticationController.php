@@ -13,7 +13,6 @@
 
 namespace Zikula\Module\UsersModule\Controller;
 
-use Symfony\Component\Debug\Exception\FatalErrorException;
 use Zikula_View;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Debug\Exception\FatalErrorException;
@@ -88,6 +87,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
             $this->view->assign('authentication_method', $args['method']);
             return $this->response($this->view->fetch($templateName));
         }
+    }
 
     /**
      * Renders the template that displays the authentication module's icon in the Users module's login block.
