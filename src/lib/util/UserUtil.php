@@ -984,7 +984,7 @@ class UserUtil
         $qb = $em->createQueryBuilder()
                  ->select('count(u.uid)')
                  ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
-                 ->where('u.uid = :uname')
+                 ->where('u.uname = :uname')
                  ->setParameter('uname', $uname);
 
         if ($excludeUid > 1) {
