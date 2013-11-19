@@ -47,7 +47,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
      * @param array        $ops      Operators to enable, see activateOperators() (optional) (default=null).
      * @param bool         $default  set the plugin to default (optional) (default=false).
      */
-    public function __construct($modname = null, $property = null, $fields = 'category', $ops = null, $default = false)
+    public function __construct($modname = null, $property = null, $fields = 'category', $ops = array(), $default = false)
     {
         $this->setProperty($property);
         $this->modname = $modname;
