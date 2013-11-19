@@ -17,7 +17,6 @@ use Zikula_View;
 use SecurityUtil;
 use BlockUtil;
 use ModUtil;
-use FormUtil;
 
 /**
  * Block to display a custom template

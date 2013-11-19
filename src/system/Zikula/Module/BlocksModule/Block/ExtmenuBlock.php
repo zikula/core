@@ -21,7 +21,6 @@ use UserUtil;
 use ZLanguage;
 use ModUtil;
 use System;
-use FormUtil;
 use Zikula_View;
 use Zikula_View_Theme;
 use DataUtil;
@@ -290,9 +289,9 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // check if the users wants to add a new link via the "Add current url" link in the block
-        $addurl = FormUtil::getPassedValue('addurl', 0, 'GET');
+        $addurl = $this->request->request->get('addurl', 0);
         // or if we come from the normal "edit this block" link
-        $fromblock = FormUtil::getPassedValue('fromblock', null, 'GET');
+        $fromblock = $this->request->request->get('fromblock', null);
 
         $redirect = '';
         if ($addurl == 1) {
@@ -383,10 +382,10 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
      */
     public function update($blockinfo)
     {
-        $vars['displaymodules'] = FormUtil::getPassedValue('displaymodules');
-        $vars['stylesheet']     = FormUtil::getPassedValue('stylesheet');
-        $vars['template']       = FormUtil::getPassedValue('template');
-        $vars['blocktitles']    = FormUtil::getPassedValue('blocktitles');
+        $vars['displaymodules'] = $this->request->request->get('displaymodules');
+        $vars['stylesheet']     = $this->request->request->get('stylesheet');
+        $vars['template']       = $this->request->request->get('template');
+        $vars['blocktitles']    = $this->request->request->get('blocktitles');
 
         // Defaults
         if (empty($vars['displaymodules'])) {
@@ -404,11 +403,11 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         // User links
         $content = array();
 
-        $vars['links'] = FormUtil::getPassedValue('links');
+        $vars['links'] = $this->request->request->get('links');
         $vars['blockversion'] = 1;
 
         // Save links hierarchy
-        $linksorder = FormUtil::getPassedValue('linksorder');
+        $linksorder = $this->request->request->get('linksorder');
         $linksorder = json_decode($linksorder, true);
         if (is_array($linksorder) && !empty($linksorder)) {
             foreach ((array)$vars['links'] as $lang => $langlinks) {

@@ -22,7 +22,6 @@ use ModUtil;
 use LogUtil;
 use SecurityUtil;
 use System;
-use FormUtil;
 use DateUtil;
 use SessionUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -101,7 +100,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get settings from form
-        $settings = FormUtil::getPassedValue('settings', null, 'POST');
+        $settings = $this->request->request->get('settings', null);
 
         // if this form wasn't posted to redirect back
         if ($settings === null) {
@@ -239,7 +238,7 @@ class AdminController extends \Zikula_AbstractController
         // Write the vars
         $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
         foreach ($settings as $formname => $varname) {
-            $newvalue = FormUtil::getPassedValue($formname, null, 'POST');
+            $newvalue = $this->request->request->get($formname, null);
             $oldvalue = System::getVar($varname);
             if ($newvalue != $oldvalue) {
                 System::setVar($varname, $newvalue);

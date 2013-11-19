@@ -18,7 +18,6 @@ use ModUtil;
 use LogUtil;
 use SecurityUtil;
 use System;
-use FormUtil;
 use Zikula_Core;
 use CacheUtil;
 use DataUtil;

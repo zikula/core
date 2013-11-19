@@ -18,7 +18,6 @@ use ModUtil;
 use LogUtil;
 use SecurityUtil;
 use SessionUtil;
-use FormUtil;
 use ZLanguage;
 use BlockUtil;
 use Zikula_Controller_AbstractBlock;
@@ -67,10 +66,10 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedHttpException();
         }
 
+        // get any filter form submissions
         $sfilter = SessionUtil::getVar('filter', array(), '/Blocks');
-        $filter = FormUtil::getPassedValue('filter', $sfilter);
-
-        $clear = FormUtil::getPassedValue('clear', 0);
+        $filter = $this->request->request->get('filter', $sfilter);
+        $clear = $this->request->request->get('clear', 0);
         if ($clear) {
             $filter = array();
             SessionUtil::setVar('filter', $filter, '/Blocks');
@@ -80,8 +79,8 @@ class AdminController extends \Zikula_AbstractController
         $sort = (isset($filter['sort']) && !empty($filter['sort'])) ? strtolower($filter['sort']) : 'bid';
         $sortdir = (isset($filter['sortdir']) && !empty($filter['sortdir'])) ? strtoupper($filter['sortdir']) : 'ASC';
 
-        $filter['sort'] = FormUtil::getPassedValue('sort', $sort, 'GET');
-        $filter['sortdir'] = FormUtil::getPassedValue('sortdir', $sortdir, 'GET');
+        $filter['sort'] = $this->request->query->get('sort', $sort);
+        $filter['sortdir'] = $this->request->query->get('sortdir', $sortdir);
         if ($filter['sortdir'] != 'ASC' && $filter['sortdir'] != 'DESC') {
             $filter['sortdir'] = 'ASC';
         }
@@ -156,8 +155,8 @@ class AdminController extends \Zikula_AbstractController
     public function deactivateAction()
     {
         // Get parameters
-        $bid = FormUtil::getPassedValue('bid');
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $bid = $this->request->query->get('bid');
+        $csrftoken = $this->request->query->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Pass to API
@@ -180,8 +179,8 @@ class AdminController extends \Zikula_AbstractController
     public function activateAction()
     {
         // Get parameters
-        $bid = FormUtil::getPassedValue('bid');
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $bid = $this->request->query->get('bid');
+        $csrftoken = $this->request->query->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Pass to API
@@ -207,7 +206,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifyAction()
     {
         // Get parameters
-        $bid = FormUtil::getPassedValue('bid');
+        $bid = $this->request->query->get('bid');
 
         // Get details on current block
         $blockinfo = BlockUtil::getBlockInfo($bid);
@@ -342,21 +341,21 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Get parameters
-        $bid = FormUtil::getPassedValue('bid');
-        $title = FormUtil::getPassedValue('title');
-        $description = FormUtil::getPassedValue('description');
-        $language = FormUtil::getPassedValue('language');
-        $collapsable = FormUtil::getPassedValue('collapsable', 0);
-        $defaultstate = FormUtil::getPassedValue('defaultstate', 1);
-        $content = FormUtil::getPassedValue('content', '');
-        $refresh = FormUtil::getPassedValue('refresh');
-        $positions = FormUtil::getPassedValue('positions');
-        $filter = FormUtil::getPassedValue('filters', array());
-        $returntoblock = FormUtil::getPassedValue('returntoblock');
+        $bid = $this->request->request->get('bid');
+        $title = $this->request->request->get('title');
+        $description = $this->request->request->get('description');
+        $language = $this->request->request->get('language');
+        $collapsable = $this->request->request->get('collapsable', 0);
+        $defaultstate = $this->request->request->get('defaultstate', 1);
+        $content = $this->request->request->get('content', '');
+        $refresh = $this->request->request->get('refresh');
+        $positions = $this->request->request->get('positions');
+        $filter = $this->request->request->get('filters', array());
+        $returntoblock = $this->request->request->get('returntoblock');
 
         // not stored in a block
-        $redirect = FormUtil::getPassedValue('redirect', null);
-        $cancel = FormUtil::getPassedValue('cancel', null);
+        $redirect = $this->request->request->get('redirect', null);
+        $cancel = $this->request->request->get('cancel', null);
 
         if (isset($cancel)) {
             if (isset($redirect) && !empty($redirect)) {
@@ -452,7 +451,7 @@ class AdminController extends \Zikula_AbstractController
             'collapsable' => 0,
             'defaultstate' => 1
         );
-        $inputblock = FormUtil::getPassedValue('block', $default);
+        $inputblock = $this->request->query->get('block', $default);
 
         // Block
         // Load all blocks
@@ -501,7 +500,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Get parameters
-        $block = FormUtil::getPassedValue('block');
+        $block = $this->request->request->get('block');
 
         if ($block['blockid'] == '') {
             $block['blockid'] = 'error';
@@ -547,8 +546,11 @@ class AdminController extends \Zikula_AbstractController
     public function deleteAction()
     {
         // Get parameters
-        $bid = FormUtil::getPassedValue('bid');
-        $confirmation = FormUtil::getPassedValue('confirmation');
+        $bid = (int)$this->request->query->get('bid', null);
+        if (!$bid) {
+            $bid = (int)$this->request->request->get('bid', null);
+        }
+        $confirmation = $this->request->request->get('confirmation');
 
         // Get details on current block
         $blockinfo = BlockUtil::getBlockInfo($bid);
@@ -606,7 +608,7 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedHttpException();
         }
 
-        $name = FormUtil::getPassedValue('name', '');
+        $name = $this->request->request->get('name', '');
 
         // Return the output that has been generated by this function
         return $this->view->assign('name', $name)
@@ -632,10 +634,10 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Get parameters
-        $position = FormUtil::getPassedValue('position');
+        $position = $this->request->request->get('position');
 
         // check our vars
-        if (!isset($position['name']) || !preg_match('/^[a-z0-9_-]*$/i', $position['name']) || !isset($position['description'])) {
+        if (!isset($position['name']) || empty($position['name']) || !preg_match('/^[a-z0-9_-]*$/i', $position['name']) || !isset($position['description'])) {
             throw new \InvalidArgumentException(__('Invalid arguments received'));
         }
 
@@ -660,7 +662,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifypositionAction()
     {
         // get our input
-        $pid = FormUtil::getPassedValue('pid');
+        $pid = $this->request->query->get('pid');
 
         // get the block position
         $position = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $pid));
@@ -721,7 +723,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Get parameters
-        $position = FormUtil::getPassedValue('position');
+        $position = $this->request->request->get('position');
 
         // check our vars
         if (!isset($position['pid']) || !isset($position['name']) || !isset($position['description'])) {
@@ -756,12 +758,24 @@ class AdminController extends \Zikula_AbstractController
      */
     public function deletepositionAction($args)
     {
-        $pid = FormUtil::getPassedValue('pid', isset($args['pid']) ? $args['pid'] : null, 'REQUEST');
-        $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
-        $confirmation = FormUtil::getPassedValue('confirmation', null, 'POST');
+        // check where to get the parameters from for this dual purpose controller
+        if ($this->request->isMethod('GET')) {
+            $pid = (int)$this->request->query->get('pid', null);
+        } elseif ($this->request->isMethod('POST')) {
+            $pid = (int)$this->request->request->get('pid', isset($args['pid']) ? $args['pid'] : null);
+        }
+        if ($this->request->isMethod('GET')) {
+            $objectid = (int)$this->request->query->get('objectid', null);
+        } elseif ($this->request->isMethod('POST')) {
+            $objectid = (int)$this->request->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
+        }
+        // map the generic object id onto the category id onto the object id
         if (!empty($objectid)) {
             $pid = $objectid;
         }
+
+        // confirmation can only come from a form so use post only here
+        $confirmation = $this->request->request->get('confirmation', null);
 
         $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $pid));
 
@@ -828,7 +842,7 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedHttpException();
         }
 
-        $collapseable = FormUtil::getPassedValue('collapseable');
+        $collapseable = $this->request->request->get('collapseable');
 
         if (!isset($collapseable) || !is_numeric($collapseable)) {
             $collapseable = 0;

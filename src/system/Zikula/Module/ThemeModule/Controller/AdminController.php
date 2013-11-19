@@ -17,7 +17,6 @@ use Zikula_View;
 use LogUtil;
 use Modutil;
 use SecurityUtil;
-use FormUtil;
 use ThemeUtil;
 use System;
 use CacheUtil;
@@ -1416,26 +1415,24 @@ class AdminController extends \Zikula_AbstractController
         $theme_change = (bool)$this->request->request->get('theme_change', isset($args['theme_change']) ? $args['theme_change'] : false);
         System::setVar('theme_change', $theme_change);
 
-        $admintheme = (string)FormUtil::getPassedValue('admintheme', isset($args['admintheme']) ? $args['admintheme'] : '', 'POST');
+        $admintheme = (string)$this->request->request->get('admintheme', isset($args['admintheme']) ? $args['admintheme'] : '');
         ModUtil::setVar('Admin', 'admintheme', $admintheme);
 
-        $enable_mobile_theme = (int)FormUtil::getPassedValue('enable_mobile_theme', isset($args['enable_mobile_theme']) ? $args['enable_mobile_theme'] : false, 'POST');
+        $enable_mobile_theme = (int)$this->request->request->get('enable_mobile_theme', isset($args['enable_mobile_theme']) ? $args['enable_mobile_theme'] : false);
         $this->setVar('enable_mobile_theme', $enable_mobile_theme);
 
-        $mobile_theme_name = (string)FormUtil::getPassedValue('mobile_theme_name', isset($args['mobile_theme_name']) ? $args['mobile_theme_name'] : '', 'POST');
+        $mobile_theme_name = (string)$this->request->request->get('mobile_theme_name', isset($args['mobile_theme_name']) ? $args['mobile_theme_name'] : '');
         $this->setVar('mobile_theme_name', $mobile_theme_name);
 
-        $mobile_theme_domain = (string)FormUtil::getPassedValue('mobile_theme_domain', isset($args['mobile_theme_domain']) ? $args['mobile_theme_domain'] : '', 'POST');
+        $mobile_theme_domain = (string)$this->request->request->get('mobile_theme_domain', isset($args['mobile_theme_domain']) ? $args['mobile_theme_domain'] : '');
         $this->setVar('mobile_theme_domain', $mobile_theme_domain);
 
-        $alt_theme_name = (string)FormUtil::getPassedValue('alt_theme_name', isset($args['alt_theme_name']) ? $args['alt_theme_name'] : '', 'POST');
+        $alt_theme_name = (string)$this->request->request->get('alt_theme_name', isset($args['alt_theme_name']) ? $args['alt_theme_name'] : '');
         $this->setVar('alt_theme_name', $alt_theme_name);
 
-        $alt_theme_domain = (string)FormUtil::getPassedValue('alt_theme_domain', isset($args['alt_theme_domain']) ? $args['alt_theme_domain'] : '', 'POST');
+        $alt_theme_domain = (string)$this->request->request->get('alt_theme_domain', isset($args['alt_theme_domain']) ? $args['alt_theme_domain'] : '');
         $this->setVar('alt_theme_domain', $alt_theme_domain);
 
-        $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', isset($args['itemsperpage']) ? $args['itemsperpage'] : 25, 'POST');
-        if ($itemsperpage < 1) $itemsperpage = 25;
         $itemsperpage = (int)$this->request->request->get('itemsperpage', isset($args['itemsperpage']) ? $args['itemsperpage'] : 25);
         if ($itemsperpage < 1) {
             $itemsperpage = 25;

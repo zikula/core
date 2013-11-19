@@ -15,7 +15,6 @@ namespace Zikula\Module\SecurityCenterModule\Controller;
 
 use LogUtil;
 use SecurityUtil;
-use FormUtil;
 use ModUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

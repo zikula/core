@@ -17,7 +17,6 @@ use LogUtil;
 use SecurityUtil;
 use ModUtil;
 use System;
-use FormUtil;
 use CategoryUtil;
 use Zikula\Module\CategoriesModule\GenericUtil;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;

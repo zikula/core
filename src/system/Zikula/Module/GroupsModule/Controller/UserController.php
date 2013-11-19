@@ -15,7 +15,6 @@ namespace Zikula\Module\GroupsModule\Controller;
 
 use ModUtil;
 use SecurityUtil;
-use FormUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use UserUtil;
 use Zikula_View;

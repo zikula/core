@@ -18,7 +18,6 @@ use Zikula_View;
 use ModUtil;
 use SecurityUtil;
 use LogUtil;
-use FormUtil;
 use Zikula\Module\GroupsModule\Helper\CommonHelper;
 use UserUtil;
 use Users_Constant;

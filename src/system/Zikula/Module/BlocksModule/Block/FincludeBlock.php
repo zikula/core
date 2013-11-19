@@ -17,7 +17,6 @@ use SecurityUtil;
 use BlockUtil;
 use DataUtil;
 use Zikula_View;
-use FormUtil;
 
 /**
  * Block to display the contents of a file
@@ -159,8 +158,8 @@ class FincludeBlock extends \Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // alter the corresponding variable
-        $vars['filo'] = FormUtil::getPassedValue('filo');
-        $vars['typo'] = FormUtil::getPassedValue('typo');
+        $vars['filo'] = $this->request->request->get('filo');
+        $vars['typo'] = $this->request->request->get('typo');
 
         // write back the new contents
         $blockinfo['content'] = BlockUtil::varsToContent($vars);

@@ -17,7 +17,6 @@ use Zikula_View;
 use ModUtil;
 use LogUtil;
 use SecurityUtil;
-use FormUtil;
 use UserUtil;
 use DataUtil;
 use System;

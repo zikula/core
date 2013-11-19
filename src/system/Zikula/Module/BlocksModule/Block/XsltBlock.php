@@ -18,7 +18,6 @@ use BlockUtil;
 use DOMDocument;
 use XSLTProcessor;
 use Zikula_View;
-use FormUtil;
 
 /**
  * Block to display a parsed xml document
@@ -137,10 +136,10 @@ class XsltBlock extends \Zikula_Controller_AbstractBlock
      */
     public function update($blockinfo)
     {
-        $vars['docurl']        = FormUtil::getPassedValue('docurl', '', 'POST');
-        $vars['styleurl']      = FormUtil::getPassedValue('styleurl', '', 'POST');
-        $vars['doccontents']   = FormUtil::getPassedValue('doccontents', '', 'POST');
-        $vars['stylecontents'] = FormUtil::getPassedValue('stylecontents', '', 'POST');
+        $vars['docurl']        = $this->request->request->get('docurl', '');
+        $vars['styleurl']      = $this->request->request->get('styleurl', '');
+        $vars['doccontents']   = $this->request->request->get('doccontents', '');
+        $vars['stylecontents'] = $this->request->request->get('stylecontents', '');
 
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 

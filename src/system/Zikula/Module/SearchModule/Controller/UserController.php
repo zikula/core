@@ -16,7 +16,6 @@ namespace Zikula\Module\SearchModule\Controller;
 use ModUtil;
 use LogUtil;
 use SecurityUtil;
-use FormUtil;
 use SessionUtil;
 use UserUtil;
 use System;
@@ -79,12 +78,12 @@ class UserController extends \Zikula_AbstractController
         }
 
         // get parameter from input
-        $vars['q'] = strip_tags(FormUtil::getPassedValue('q', '', 'REQUEST'));
-        $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
-        $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
+        $vars['q'] = strip_tags($this->request->request->get('q', ''));
+        $vars['searchtype'] = $this->request->request->get('searchtype', SessionUtil::getVar('searchtype'));
+        $vars['searchorder'] = $this->request->request->get('searchorder', SessionUtil::getVar('searchorder'));
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
-        $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'REQUEST');
-        $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
+        $vars['active'] = $this->request->request->get('active', SessionUtil::getVar('searchactive'));
+        $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar'));
 
         // this var allows the headers to not be displayed
         if (!isset($vars['titles']))
@@ -167,21 +166,21 @@ class UserController extends \Zikula_AbstractController
 
         // get parameter from HTTP input
         $vars = array();
-        $vars['q'] = strip_tags(FormUtil::getPassedValue('q', '', 'REQUEST'));
-        $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
-        $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
+        $vars['q'] = strip_tags($this->request->request->get('q', ''));
+        $vars['searchtype'] = $this->request->request->get('searchtype', SessionUtil::getVar('searchtype'));
+        $vars['searchorder'] = $this->request->request->get('searchorder', SessionUtil::getVar('searchorder'));
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
-        $vars['page'] = (int)FormUtil::getPassedValue('page', 1, 'REQUEST');
+        $vars['page'] = (int)$this->request->request->get('page', 1);
 
         // $firstpage is used to identify the very first result page
         // - and to disable calls to plugins on the following pages
         $vars['firstPage'] = empty($_REQUEST['page']);
 
         // The modulename exists in this array as key, if the checkbox was filled
-        $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'REQUEST');
+        $vars['active'] = $this->request->request->get('active', SessionUtil::getVar('searchactive'));
 
         // All formular data from the modules search plugins is contained in:
-        $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
+        $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar'));
 
         if (empty($vars['q'])) {
             throw new \InvalidArgumentException($this->__('Error! You did not enter any keywords to search for.'));

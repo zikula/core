@@ -260,10 +260,10 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // Read inputs
-        $vars['format'] = FormUtil::getPassedValue('format');
+        $vars['format'] = $this->request->request->get('format');
 
         // Read inputs
-        $vars['fulltranslation'] = FormUtil::getPassedValue('fulltranslation');
+        $vars['fulltranslation'] = $this->request->request->get('fulltranslation');
 
         // Scan for languages and save cached version
         $vars['languages'] = $this->getAvailableLanguages();

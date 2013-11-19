@@ -13,7 +13,6 @@
 
 namespace Zikula\Module\BlocksModule\Controller;
 
-use FormUtil;
 use UserUtil;
 use BlockUtil;
 use SecurityUtil;
@@ -54,8 +53,15 @@ class UserController extends \Zikula_AbstractController
     public function displayAction($args)
     {
         // Block Id - if passed - display the block
-        $bid   = (int)FormUtil::getPassedValue('bid', isset($args['bid']) ? $args['bid'] : null, 'REQUEST');
-        $showinactive = (bool)FormUtil::getPassedValue('showinactive', isset($args['showinactive']) ? $args['showinactive'] : false, 'REQUEST');
+        // check both post and get
+        $bid = (int)$this->request->query->get('bid', null);
+        if (!$bid) {
+            $bid = (int)$this->request->request->get('bid', isset($args['bid']) ? $args['bid'] : null);
+        }
+        $showinactive = (int)$this->request->query->get('showinactive', null);
+        if (!$showinactive) {
+            $showinactive = (int)$this->request->request->get('showinactive', isset($args['showinactive']) ? $args['showinactive'] : null);
+        }
 
         // Security check for $showinactive only
         if ($showinactive && !SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
@@ -85,7 +91,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function changestatusAction()
     {
-        $bid = FormUtil::getPassedValue('bid');
+        $bid = $this->request->query->get('bid');
         $uid = UserUtil::getVar('uid');
 
         $entity = 'Zikula\Module\BlocksModule\Entity\UserBlockEntity';
