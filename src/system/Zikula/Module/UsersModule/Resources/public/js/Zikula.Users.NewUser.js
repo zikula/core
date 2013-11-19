@@ -203,7 +203,7 @@ Zikula.Users.NewUser = {
             return;
         }
         
-        $$('div#z-maincontent>div.alert alert-danger').each(function(item) {
+        $$('div#z-maincontent>div.alert.alert-danger').each(function(item) {
             if (!item.hasClassName('hide')) {
                 item.addClassName('hide')
             }
@@ -213,7 +213,7 @@ Zikula.Users.NewUser = {
             element.removeClassName('form-error');
         });
         
-        $$('#' + Zikula.Users.NewUser.formId + ' .alert alert-danger').each(function(element, index){
+        $$('#' + Zikula.Users.NewUser.formId + ' .alert.alert-danger').each(function(element, index){
             element.update();
             if (!element.hasClassName('hide')) {
                 element.addClassName('hide');
@@ -246,6 +246,11 @@ Zikula.Users.NewUser = {
                 element = $(Zikula.Users.NewUser.formId + '_' + pair.key + '_error');
                 element.update(pair.value);
                 element.removeClassName('hide');
+
+                var fieldset = element.up('fieldset');
+                if (fieldset.hasClassName('hide')) {
+                    fieldset.removeClassName('hide');
+                }
             });
         }
         

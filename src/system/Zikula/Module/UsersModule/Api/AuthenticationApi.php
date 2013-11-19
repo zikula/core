@@ -687,4 +687,24 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
 
         return $lostUserNames;
     }
+
+    /**
+     * Check whether the user shall be redirected to the registration screen if the login process fails.
+     *
+     * Possible reasons for the login process to fail:
+     * - User does not exist yet.
+     * - User provides wrong credentials.
+     *
+     * @param array $args {
+     *     @type array $authentication_method An array identifying the selected authentication method by 'modname' and 'method'.
+     *     @type array $authentication_info   An array containing the authentication information supplied by the user; for this module, a 'supplied_id'.
+     * }
+     *
+     * @return bool True if the user shall be redirected to the registration screen, false otherwise.
+     */
+    public function redirectToRegistrationOnLoginError(array $args)
+    {
+        unset($args);
+        return false;
+    }
 }

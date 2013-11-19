@@ -13,6 +13,7 @@
 
 namespace Zikula\Module\UsersModule\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula_View;
@@ -1340,6 +1341,22 @@ class UserController extends \Zikula_AbstractController
                                 }
                             }
                         } else {
+                            // The user with the given credentials does not exist.
+                            // Check if we shall redirect to the account registration screen if a user with the given
+                            // credentials does not exist..
+                            if (ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'Authentication', 'redirectToRegistrationOnLoginError', array('authentication_method' => $selectedAuthenticationMethod, 'authentication_info' => $authenticationInfo))) {
+                                // We shall redirect to the account registration screen, but first we need to check
+                                // if the user can be created with the given credentials or if another error has
+                                // occured.
+                                if (ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'Authentication', 'checkPassword', array('authentication_method' => $selectedAuthenticationMethod, 'authentication_info' => $authenticationInfo, 'reentrant_url' => $reentrantUrl))) {
+                                    // Redirect to account registration screen. Clear error messages and re-save session
+                                    // vars for registration.
+                                    $this->request->getSession()->clearMessages(Zikula_Session::MESSAGE_ERROR);
+                                    $this->request->getSession()->set('User_register', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
+                                    return new RedirectResponse(ModUtil::url($this->name, 'user', 'register', array('reentranttoken' => $reentrantTokenReceived)));
+                                }
+                            }
+
                             if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
                                 throw new NotFoundHttpException($this->__('There is no user account matching that information, or the password you gave does not match the password on file for that account.'));
                             }

@@ -94,6 +94,8 @@ Features:
 - Made it possible to hide the email adress field during registration for external auth modules.
 - [BC BREAK] Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.
 - Login provider now can specify the path to an icon or the name of a FontAwesome icon to display in the login buttons.
+- Added functionality for authentication modules to redirect the user to the registration screen if the given login
+  information does not match an existing user account.
 
 
 CHANGELOG - ZIKULA 1.3.6
