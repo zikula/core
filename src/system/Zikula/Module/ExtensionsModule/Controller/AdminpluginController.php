@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,6 +19,7 @@ use PluginUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula_Plugin_ConfigurableInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Extensions_Plugin controller.
@@ -54,11 +54,13 @@ class AdminpluginController extends \Zikula_AbstractController
      * Dispatch a module view request.
      *
      * @return mixed
+     * 
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function dispatchAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get input.

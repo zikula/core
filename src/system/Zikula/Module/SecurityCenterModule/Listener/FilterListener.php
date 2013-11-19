@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,16 +21,23 @@ use UserUtil;
 use DateUtil;
 use ModUtil;
 use ServiceUtil;
-use LogUtil;
 use Zikula_Exception_Forbidden;
 use Zikula\Module\SecurityCenterModule\Util as SecurityCenterUtil;
 use Zikula_Event;
 use Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
+/**
+ * Event handler for the security center module
+ *
+ * Adds the intrustion detection filter to the core.init phase and an output filter to the system.outputfiler phase.
+ */
 class FilterListener extends \Zikula_AbstractEventHandler
 {
     /**
      * Setup this handler.
+     *
+     * @return void
      */
     protected function setupHandlerDefinitions()
     {
@@ -45,6 +51,8 @@ class FilterListener extends \Zikula_AbstractEventHandler
      * @see    http://technicalinfo.net/papers/CSS.html
      *
      * @return void
+     *
+     * @throws \Exception Thrown if there was a problem running ids detection
      */
     public function idsInputFilter(Zikula_Event $event)
     {
@@ -346,15 +354,22 @@ class FilterListener extends \Zikula_AbstractEventHandler
 
             if (System::getVar('idssoftblock')) {
                 // warn only for debugging the ruleset
-                LogUtil::registerError(__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
+                throw new \RuntimeException(__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
             } else {
-                throw new Zikula_Exception_Forbidden(__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
+                throw new AccessDeniedHttpException(__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
             }
         }
 
         return;
     }
 
+    /**
+     * output filter to implement html purifier
+     *
+     * @param \Zikula_Event $event event object
+     *
+     * @return mixed modified event data
+     */
     public function outputFilter(Zikula_Event $event)
     {
         if (System::getVar('outputfilter') > 1) {

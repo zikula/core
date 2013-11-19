@@ -6,8 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,6 +15,8 @@ namespace Zikula\Module\UsersModule\Controller;
 
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Zikula_View;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
  * Access to user-initiated authentication actions for the Users module.
@@ -39,17 +39,16 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
     /**
      * Renders the template that displays the input fields for the authentication module in the Users module's login block.
      *
-     * Parameters passed in the $args array:
+     * @param mixed[] $args {
      * -------------------------------------
      * - string $args['form_type'] An indicator of the type of form the form fields will appear on.
      * - string $args['method']    The authentication method for which a selector should be returned.
      *
      * @param array $args The parameters for this function.
      *
-     * @return string The rendered template.
+     * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if the $args array is invalid, or contains an invalid value.
-     * @throws FatalErrorException Thrown if the template could not be found.
      */
     public function getLoginFormFieldsAction(array $args)
     {
@@ -90,13 +89,84 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
             return $this->response($this->view->fetch($templateName));
         }
 
-        return $this->response('');
+    /**
+     * Renders the template that displays the authentication module's icon in the Users module's login block.
+     *
+     * @param mixed[] $args {
+     * -------------------------------------
+     * - string $args['form_type']   An indicator of the type of form on which the selector will appear.
+     * - string $args['form_action'] The URL to which the selector form should submit.
+     * - string $args['method']      The authentication method for which a selector should be returned.
+     *
+     * @param array $args The parameters for this function.
+     *
+     * @return response symfony response object
+     *
+     * @throws FatalErrorException Thrown if the $args array is invalid, or contains an invalid value.
+     */
+    public function getAuthenticationMethodSelectorAction(array $args)
+    {
+        // Parameter extraction and error checking
+        if (!isset($args) || !is_array($args)) {
+            throw new FatalErrorException($this->__('An invalid \'$args\' parameter was received.'));
+        }
+
+        if (!isset($args['form_type']) || !is_string($args['form_type'])) {
+            throw new FatalErrorException($this->__f('An invalid form type (\'%1$s\') was received.', array(
+                isset($args['form_type']) ? $args['form_type'] : 'NULL'))
+            );
+        }
+
+        if (!isset($args['form_action']) || !is_string($args['form_action'])) {
+            throw new FatalErrorException($this->__f('An invalid form action (\'%1$s\') was received.', array(
+                isset($args['form_action']) ? $args['form_action'] : 'NULL'))
+            );
+        }
+
+        if (!isset($args['method']) || !is_string($args['method']) || !$this->supportsAuthenticationMethod($args['method'])) {
+            throw new FatalErrorException($this->__f('Error: An invalid method (\'%1$s\') was received.', array(
+                isset($args['method']) ? $args['method'] : 'NULL'))
+            );
+        }
+        // End parameter extraction and error checking
+
+        if ($this->authenticationMethodIsEnabled($args['method']) || ($args['form_type'] == 'registration' && $args['method'] == 'uname')) {
+            // A hacky way to force displaying the uname/pass button for registration even if it is not activated.
+
+            $templateVars = array(
+                'authentication_method' => array(
+                    'modname'   => $this->name,
+                    'method'    => $args['method'],
+                ),
+                'is_selected'           => isset($args['is_selected']) && $args['is_selected'],
+                'form_type'             => $args['form_type'],
+                'form_action'           => $args['form_action'],
+            );
+
+            $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_{$args['form_type']}_{$args['method']}.tpl");
+            if (!$this->view->template_exists($templateName)) {
+                $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_default_{$args['method']}.tpl");
+                if (!$this->view->template_exists($templateName)) {
+                    $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_{$args['form_type']}_default.tpl");
+                    if (!$this->view->template_exists($templateName)) {
+                        $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_default_default.tpl");
+                        if (!$this->view->template_exists($templateName)) {
+                            throw new FatalErrorException($this->__f('An authentication method selector template was not found for method \'%1$s\' using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
+                        }
+                    }
+                }
+            }
+
+            return $this->response(
+                $this->view->assign($templateVars)
+                     ->fetch($templateName));
+        }
     }
 
     /**
      * Performs initial user-interface level validation on the user name and password received by the user from the login process.
      *
-     * Parameters passed in the $args array:
+     * @param mixed[] $args {
      * -------------------------------------
      * - array $args['authenticationMethod'] The authentication method (selected either by the user or by the system) for which
      *                                          the credentials in $authenticationInfo were entered by the user. For the Users
@@ -113,6 +183,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      *
      * @throws FatalErrorException Thrown if no authentication module name or method is specified, or if the module name or method
      *                                  is invalid for this module.
+     * @throws \InvalidArgumentException Thrown if invalid authentication parameterd are recieved
      */
     public function validateAuthenticationInformationAction(array $args)
     {
@@ -158,23 +229,23 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
             if (!empty($authenticationInfo['pass'])) {
                 $validates = true;
             } else {
-                $this->registerError($this->__('Please provide a password.'));
+                throw new \InvalidArgumentException($this->__('Please provide a password.'));
             }
         } elseif (empty($authenticationInfo['pass'])) {
             if ($authenticationMethod['method'] == 'uname') {
-                $this->registerError($this->__('Please provide an user name and password.'));
+                throw new \InvalidArgumentException($this->__('Please provide an user name and password.'));
             } elseif ($authenticationMethod['method'] == 'email') {
-                $this->registerError($this->__('Please provide an e-mail address and password.'));
+                throw new \InvalidArgumentException($this->__('Please provide an e-mail address and password.'));
             } elseif ($authenticationMethod['method'] == 'unameoremail') {
-                $this->registerError($this->__('Please provide an user name / e-mail address and password.'));
+                throw new \InvalidArgumentException($this->__('Please provide an user name / e-mail address and password.'));
             }
         } else {
             if ($authenticationMethod['method'] == 'uname') {
-                $this->registerError($this->__('Please provide an user name.'));
+                throw new \InvalidArgumentException($this->__('Please provide an user name.'));
             } elseif ($authenticationMethod['method'] == 'email') {
-                $this->registerError($this->__('Please provide an e-mail address.'));
+                throw new \InvalidArgumentException($this->__('Please provide an e-mail address.'));
             } elseif ($authenticationMethod['method'] == 'unameoremail') {
-                $this->registerError($this->__('Please provide an user name / e-mail address.'));
+                throw new \InvalidArgumentException($this->__('Please provide an user name / e-mail address.'));
             }
         }
 

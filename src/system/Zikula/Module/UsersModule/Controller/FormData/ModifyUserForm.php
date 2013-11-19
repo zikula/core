@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -163,7 +162,6 @@ class ModifyUserForm extends AbstractFormData
         $passwordMinimumLength = (int)$this->getVar(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
         $this->passwordLengthValidator = new Validator\StringMinimumLength($this->serviceManager, $passwordMinimumLength,
                 $this->__f('Passwords must be at least %1$d characters in length.', array($passwordMinimumLength)));
-
     }
 
     /**

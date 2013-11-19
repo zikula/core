@@ -6,8 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -55,9 +53,13 @@ class UserBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display block.
      *
-     * @param array $blockInfo A blockinfo structure.
+     * @param mixed[] $blockInfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
      *
-     * @return string|void The rendered block.
+     * @return string|void The rendered block if the user is logged in and the user block is enabled, void otherwise
      */
     public function display($blockInfo)
     {

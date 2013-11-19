@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,10 +21,15 @@ use DataUtil;
 use ZLanguage;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 
+/**
+ * Installation and upgrade routines for the categories module
+ */
 class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise module
+     *
+     * @return bool true if succesful, false otherwise
      */
     public function install()
     {
@@ -73,8 +77,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param  string $oldVersion version number string to upgrade from
-     * @return mixed  true on success, last valid version string or false if fails
+     * @param string $oldversion version number string to upgrade from
+     *
+     * @return bool|int true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
@@ -105,6 +110,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
 
     /**
      * delete module
+     *
+     * @return bool false as this module cannot be deleted
      */
     public function uninstall()
     {
@@ -113,7 +120,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     }
 
     /**
-     * insert data
+     * insert default data
+     *
+     * @return void
      */
     public function insertData_10()
     {
@@ -701,11 +710,25 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
         $this->entityManager->flush();
     }
 
+    /**
+     * convert a display name into a localised array
+     *
+     * @param string $name the input display name
+     *
+     * @return array the localised array
+     */
     public function makeDisplayName($name)
     {
         return array(ZLanguage::getLanguageCode() => $name);
     }
 
+    /**
+     * convert a description into a localised array
+     *
+     * @param string name the input description
+     *
+     * @return array the localised array
+     */
     public function makeDisplayDesc()
     {
         return array(ZLanguage::getLanguageCode() => '');
@@ -714,7 +737,10 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * migrates all attributes belonging to categories to the new `categories_attributes` table
      * regardless of the module they are attached to.
+     *
      * It does _not_ remove the data from the `objectdata_attributes` table.
+     *
+     * @return void
      */
     private function migrateAttributesFromObjectData()
     {

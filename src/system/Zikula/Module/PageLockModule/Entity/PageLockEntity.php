@@ -1,4 +1,15 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Module\PageLockModule\Entity;
 
@@ -13,6 +24,8 @@ use Doctrine\ORM\Mapping as ORM;
 class PageLockEntity
 {
     /**
+     * Pagelock ID
+     *
      * @var integer $id
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
@@ -22,6 +35,8 @@ class PageLockEntity
     private $id;
 
     /**
+     * Pagelock name
+     *
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
@@ -29,6 +44,8 @@ class PageLockEntity
     private $name;
 
     /**
+     * Creation date of the pagelock
+     *
      * @var \Datetime $cdate
      *
      * @ORM\Column(name="cdate", type="datetime", nullable=false)
@@ -36,6 +53,8 @@ class PageLockEntity
     private $cdate;
 
     /**
+     * Expiry date of the pagelock
+     *
      * @var \Datetime $edate
      *
      * @ORM\Column(name="edate", type="datetime", nullable=false)
@@ -43,6 +62,8 @@ class PageLockEntity
     private $edate;
 
     /**
+     * Session ID for this pagelock
+     *
      * @var string $session
      *
      * @ORM\Column(name="session", type="string", length=50, nullable=false)
@@ -50,6 +71,8 @@ class PageLockEntity
     private $session;
 
     /**
+     * Title of the pagelock
+     *
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=100, nullable=false)
@@ -57,6 +80,8 @@ class PageLockEntity
     private $title;
 
     /**
+     * IP address of the machine acquiring the pagelock
+     *
      * @var string $ipno
      *
      * @ORM\Column(name="ipno", type="string", length=30, nullable=false)

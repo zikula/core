@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,6 +17,9 @@ use SecurityUtil;
 use ModUtil;
 use System;
 
+/**
+ * API functions used by administrative controllers
+ */
 class AdminApi extends \Zikula_AbstractApi
 {
     /**
@@ -25,9 +27,14 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * This function gets all intrusions from the database.
      *
-     * @param args array  arguments passed to function
+     * @param mixed[] $args {
+     *      @type array $where   parameters for the where clause
+     *      @type array $sorting parameters for the order by clause
+     *      @type array $limit   parameters for the limit clause
+     *      @type array $offset  parameters for the offset 
+     *                      }
      *
-     * @return array array of items, or false on failure.
+     * @return array array of items
      */
     public function getAllIntrusions($args)
     {
@@ -100,7 +107,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * This function counts all intrusions that exist in the database.
      *
-     * @param args array  arguments passed to function
+     * @param $args array  arguments passed to function
      *
      * @return integer count of intrusion items in the database.
      */
@@ -149,8 +156,6 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Purge IDS Log.
      *
-     * @param none
-     *
      * @return bool true if successful, false otherwise.
      */
     public function purgeidslog()
@@ -169,6 +174,7 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * get available admin panel links
+     *
      * @return array array of admin links
      */
     public function getlinks()

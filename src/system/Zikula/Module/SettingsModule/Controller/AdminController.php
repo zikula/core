@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -26,7 +25,12 @@ use System;
 use FormUtil;
 use DateUtil;
 use SessionUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * administrative controllers for the settings module
+ */
 class AdminController extends \Zikula_AbstractController
 {
     /**
@@ -43,7 +47,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * entry point for the module
      *
-     * @return string html output
+     * @return void
      */
     public function mainAction()
     {
@@ -54,13 +58,15 @@ class AdminController extends \Zikula_AbstractController
     /**
      * display the main site settings form
      *
-     * @return string html output
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
 
@@ -77,7 +83,13 @@ class AdminController extends \Zikula_AbstractController
     /**
      * update main site settings
      *
-     * @return mixed true if successful, false if unsuccessful, error string otherwise
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws \RuntimeException Thrown if an invalid entry point is provided or 
+     *                                  if the permalink setting ends in a comma or
+     *                                  if the permalink replace and search count differ or
+     *                                  if the startfunc and starttype parameters aren't set when a startpage is provided
      */
     public function updateconfigAction()
     {
@@ -85,13 +97,13 @@ class AdminController extends \Zikula_AbstractController
 
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get settings from form
         $settings = FormUtil::getPassedValue('settings', null, 'POST');
 
-        // if this form wasnt posted to redirect back
+        // if this form wasn't posted to redirect back
         if ($settings === null) {
             return $this->redirect(ModUtil::url('ZikulaSettingsModule', 'admin', 'modifyconfig'));
         }
@@ -101,16 +113,14 @@ class AdminController extends \Zikula_AbstractController
         $entryPointExt = pathinfo($settings['entrypoint'], PATHINFO_EXTENSION);
 
         if (in_array($settings['entrypoint'], $falseEntryPoints) || !file_exists($settings['entrypoint']) || strtolower($entryPointExt) != 'php') {
-            LogUtil::registerError($this->__("Error! Either you entered an invalid entry point, or else the file specified as being the entry point was not found in the Zikula root directory."));
-            $settings['entrypoint'] = System::getVar('entrypoint');
+            throw new \RuntimeException($this->__('Error! Either you entered an invalid entry point, or else the file specified as being the entry point was not found in the Zikula root directory.'));
         }
 
         $permachecks = true;
         $settings['permasearch'] = mb_ereg_replace(' ', '', $settings['permasearch']);
         $settings['permareplace'] = mb_ereg_replace(' ', '', $settings['permareplace']);
         if (mb_ereg(',$', $settings['permasearch'])) {
-            LogUtil::registerError($this->__("Error! In your permalink settings, strings cannot be terminated with a comma."));
-            $permachecks = false;
+            throw new \RuntimeException($this->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
         }
 
         if (mb_strlen($settings['permasearch']) == 0) {
@@ -126,16 +136,12 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if ($permareplaceCount !== $permasearchCount) {
-            LogUtil::registerError($this->__("Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list."));
-            $permachecks = false;
+            throw new \RuntimeException($this->__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
         }
 
         if ($settings['startpage']) {
             if (empty($settings['starttype']) || empty($settings['startfunc'])) {
-                LogUtil::registerError($this->__("Error! When setting a startpage, starttype and startfunc are required fields."));
-                unset($settings['startpage']);
-                unset($settings['starttype']);
-                unset($settings['startfunc']);
+                throw new \RuntimeException($this->__('Error! When setting a startpage, starttype and startfunc are required fields.'));
             }
         }
 
@@ -169,13 +175,15 @@ class AdminController extends \Zikula_AbstractController
     /**
      * display the ML settings form
      *
-     * @return string html output
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function multilingualAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get the server timezone and pass it to template - we should not allow to change this
@@ -188,7 +196,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * update ML settings
      *
-     * @return mixed true if successful, false if unsuccessful, error string otherwise
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function updatemultilingualAction()
     {
@@ -196,7 +206,7 @@ class AdminController extends \Zikula_AbstractController
 
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $url = ModUtil::url('ZikulaSettingsModule', 'admin', 'multilingual');
@@ -248,9 +258,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Displays the content of {@link phpinfo()}.
      *
-     * @throws \Zikula_Exception_Forbidden If the user doesn't has access to that page.
-     *
      * @return \Symfony\Component\HttpFoundation\Response The html output.
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function phpinfoAction()
     {
@@ -268,4 +278,6 @@ class AdminController extends \Zikula_AbstractController
 
         return $this->response($this->view->fetch('Admin/phpinfo.tpl'));
     }
+
+
 }

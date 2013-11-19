@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,15 +13,17 @@
 
 namespace Zikula\Module\BlocksModule\Controller;
 
-use LogUtil;
 use FormUtil;
 use UserUtil;
 use BlockUtil;
 use SecurityUtil;
 use System;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Blocks_Controller_User class.
+ * User controllers for the blocks module
  */
 class UserController extends \Zikula_AbstractController
 {
@@ -30,17 +31,25 @@ class UserController extends \Zikula_AbstractController
     /**
      * The main blocks user function.
      *
-     * @return HTML String.
+     * @throws NotFoundHttpException Thrown when accessed to indicate this function isn't valid
+     * @return void
      */
     public function mainAction()
     {
-        return LogUtil::registerError(__('Sorry! This module is not designed or is not currently configured to be accessed in the way you attempted.'), 403);
+        throw new NotFoundHttpException(__('Sorry! This module is not designed or is not currently configured to be accessed in the way you attempted.'));
     }
 
     /**
      * Display a block if is active
      *
-     * @param array $args Arguments.
+     * @param mixed[] $args {
+     *      @type int  $bid          The id of the block
+     *      @type bool $showinactive Override active status of block
+     *                       }
+     *
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Throw if the user doesn't have edit permissions to the module
      */
     public function displayAction($args)
     {
@@ -50,7 +59,7 @@ class UserController extends \Zikula_AbstractController
 
         // Security check for $showinactive only
         if ($showinactive && !SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         if ($bid > 0) {
@@ -93,5 +102,4 @@ class UserController extends \Zikula_AbstractController
         // now lets get back to where we came from
         $this->redirect(System::serverGetVar('HTTP_REFERER'));
     }
-
 }

@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,6 +19,9 @@ use ZLanguage;
 use Doctrine;
 use HookUtil;
 
+/**
+ * Installation and upgrade routines for the blocks module
+ */
 class BlocksModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
@@ -52,6 +54,13 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
         return true;
     }
 
+    /**
+     * upgrade the blocks module
+     *
+     * @param string $oldversion version being upgraded
+     *
+     * @return bool true if successful, false otherwise
+     */
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number

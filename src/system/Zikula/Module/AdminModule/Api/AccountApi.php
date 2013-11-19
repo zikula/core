@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,16 +16,17 @@ namespace Zikula\Module\AdminModule\Api;
 use ModUtil;
 use SecurityUtil;
 
+/**
+ * Account profile additions from the admin module
+ */
 class AccountApi extends \Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the your account panel.
      *
-     * @param array $array The arguments to pass to the function.
-     *
      * @return array indexed array of items.
      */
-    public function getall($args)
+    public function getall()
     {
         $items = array();
 

@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -23,13 +22,18 @@ use ThemeUtil;
 use DataUtil;
 use FileUtil;
 use CacheUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * API functions used by administrative controllers
+ */
 class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Regenerate themes list.
      *
-     * @deprecated
+     * @deprecated since 1.3.7 use Util::regenerate instead
      *
      * @return boolean
      */
@@ -60,15 +64,20 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * update theme settings
      *
-     * @param $themeinfo new theme information to update
+     * @param array[] $args {
+     *      @type array $themeinfo new theme information to update
+     *                      }
      *
-     * @return bool true on success, false otherwise
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws \InvalidArgumentException Thrown if the themeinfo parameter isn't provided
      */
     public function updatesettings($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Check our input arguments
@@ -88,16 +97,21 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * set default site theme
      *
-     * @param $themename string the name of the theme to set as the default for the site
-     * @param $resetuserselected boolean if true any existing user chosen themes will be reset to the site default
+     * @param mixed[] $args {
+     *      @type string $themename         the name of the theme to set as the default for the site
+     *      @type bool   $resetuserselected if true any existing user chosen themes will be reset to the site default
+     *                      }
      *
-     * @return bool true on success, false otherwise
+     * @return bool true if successful, false otherwise
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
      */
     public function setasdefault($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Check our input arguments
@@ -129,15 +143,21 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * create running configuration
      *
-     * @param $themename string the name of the theme to create a running configuration for
+     * @param string[] $args {
+     *      @type $themename string the name of the theme to create a running configuration for
+     *                       }
      *
-     * @return bool true on success, false otherwise
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided or 
+     *                                          if the requested theme version file cannot be found
      */
     public function createrunningconfig($args)
     {
         // check our input
         if (!isset($args['themename']) || empty($args['themename'])) {
-            LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $themename = $args['themename'];
         }
@@ -149,7 +169,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get the theme settings and write them back to the running config directory
@@ -179,9 +199,16 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * delete a theme
      *
-     * @param $themename string the name of the theme to delete
+     * @param string[] $args {
+     *      @type $themename string the name of the theme to delete
+     *                       }
      *
-     * @return bool true on success, false otherwise
+     * @return bool true if successful, false otherwise
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the theme
+     * @throws NotFoundHttpException Thrown if the themename parameter isn't a valid theme
+     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
+     * @throws \RuntimeException Thrown if the theme cannot be deleted
      */
     public function delete($args)
     {
@@ -196,12 +223,12 @@ class AdminApi extends \Zikula_AbstractApi
         $themeinfo = ThemeUtil::getInfo($themeid);
 
         if ($themeinfo == false) {
-            return LogUtil::registerError(__('Sorry! No such item found.'));
+            throw new NotFoundHttpException(__('Sorry! No such item found.'));
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themeinfo[name]::", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // reset the theme for any users utilising this theme.
@@ -228,7 +255,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $result = $query->getResult();
         if (!$result) {
-            return LogUtil::registerError(__('Error! Could not perform the deletion.'));
+            throw new \RuntimeException(__('Error! Could not perform the deletion.'));
         }
 
         // delete the running config
@@ -255,9 +282,15 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * delete theme files from the file system if possible
      *
-     * @param $themename string the name of the theme to remove from the file system
+     * @param string[] $args {
+     *      @type $themename string the name of the theme to remove from the file system
+     *                       }
      *
-     * @return bool true on success, false otherwise
+     * @return bool true if successful, false otherwise
+     *
+     * @throws \InvalidArgumentException Thrown if either the themename or themedirectory parameters aren't provided
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws RuntimeException Thrown if the theme files cannot be deleted from the file system
      */
     public function deletefiles($args)
     {
@@ -276,7 +309,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', $themename .'::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         if (is_writable('themes') && is_writable('themes/' . $osthemedirectory)) {
@@ -285,7 +318,7 @@ class AdminApi extends \Zikula_AbstractApi
                 return LogUtil::registerStatus(__('Done! Removed theme files from the file system.'));
             }
 
-            return LogUtil::registerError(__('Error! Could not delete theme files from the file system. Please remove them by another means (FTP, SSH, ...).'));
+            throw new \RuntimeException(__('Error! Could not delete theme files from the file system. Please remove them by another means (FTP, SSH, ...).'));
         }
 
         LogUtil::registerStatus(__f('Notice: Theme files cannot be deleted because Zikula does not have write permissions for the themes folder and/or themes/%s folder.', DataUtil::formatForDisplay($args['themedirectory'])));
@@ -296,9 +329,14 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * delete a running configuration
      *
-     * @param $themename the name of the theme of which to the delete the running configuration
+     * @param string[] $args {
+     *      @type $themename the name of the theme of which to the delete the running configuration
+     *                       }
      *
-     * @return bool true on success, false otherwise
+     * @return bool true if successful
+     *
+     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the theme
      */
     public function deleterunningconfig($args)
     {
@@ -311,7 +349,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // define the base files
@@ -339,8 +377,15 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * delete ini file
      *
-     * @param $file string the name of the ini file to delete
-     * @param $themename string the name of the theme to which the ini file belongs
+     * @param string[] $args {
+     *      @type string $file the name of the ini file to delete
+     *      @type $themename the name of the theme to which the ini file belongs
+     *                       }
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if either the themename or file parameter isn't provided
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the theme
      */
     public function deleteinifile($args)
     {
@@ -352,7 +397,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         if (!isset($args['file']) || empty($args['file'])) {
@@ -371,10 +416,16 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * delete a page configuration assignment
      *
-     * @param $pcname string the name of the page configuration
-     * @param $themename string the name of the theme the page configuration belongs to
+     * @param string[] $args {
+     *      @type string $pcname the name of the page configuration
+     *      @type string $themename the name of the theme the page configuration belongs to
+     *                       }
      *
-     * @return bool true on success, false otherwise
+     * @return bool true if successful
+     *
+     * @throws \InvalidArgumentException Thrown if either the themename or pcname parameters aren't provided
+     * @throws NotFoundHttpException Thrown if the requested theme isn't found
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the theme
      */
     public function deletepageconfigurationassignment($args)
     {
@@ -389,12 +440,12 @@ class AdminApi extends \Zikula_AbstractApi
         $themeinfo = ThemeUtil::getInfo($themeid);
 
         if ($themeinfo == false) {
-            return LogUtil::registerError(__('Sorry! No such item found.'));
+            throw new NotFoundHttpException(__('Sorry! No such item found.'));
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themeinfo[name]::pageconfigurations", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // read the list of existing page config assignments

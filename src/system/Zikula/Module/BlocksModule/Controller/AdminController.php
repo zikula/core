@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -23,9 +22,12 @@ use FormUtil;
 use ZLanguage;
 use BlockUtil;
 use Zikula_Controller_AbstractBlock;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Blocks_Controller_Admin class.
+ * Administrative controllers for the blocks module
  */
 class AdminController extends \Zikula_AbstractController
 {
@@ -43,7 +45,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * The main administration function.
      *
-     * @return string HTML output string.
+     * @return void
      */
     public function mainAction()
     {
@@ -54,13 +56,15 @@ class AdminController extends \Zikula_AbstractController
     /**
      * View all blocks.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
      */
     public function viewAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $sfilter = SessionUtil::getVar('filter', array(), '/Blocks');
@@ -147,7 +151,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param int $bid block id
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
      */
     public function deactivateAction()
     {
@@ -171,7 +175,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param int $bid block id.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
      */
     public function activateAction()
     {
@@ -195,7 +199,10 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param int $bid block id.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the block
+     * @throws NotFoundHttpException Thrown if the requested block doesn't exist
      */
     public function modifyAction()
     {
@@ -207,12 +214,12 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // check the blockinfo array
         if (empty($blockinfo)) {
-            return LogUtil::registerError($this->__('Sorry! No such block found.'), 404);
+            throw new NotFoundHttpException($this->__('Sorry! No such block found.'));
         }
 
         // get the block's placements
@@ -227,7 +234,7 @@ class AdminController extends \Zikula_AbstractController
         $modinfo = ModUtil::getInfo($blockinfo['mid']);
         $blockObj = BlockUtil::load($modinfo['name'], $blockinfo['bkey']);
         if (!$blockObj) {
-            return LogUtil::registerError($this->__('Sorry! No such block found.'), 404);
+            throw new NotFoundHttpException($this->__('Sorry! No such block found.'));
         }
 
         // Title - putting a title ad the head of each page reminds the user what
@@ -326,9 +333,9 @@ class AdminController extends \Zikula_AbstractController
      * @param string $language    the new language of the block.
      * @param string $content     the new content of the block.
      *
-     * @see blocks_admin_modify()
+     * @throws NotFoundHttpException Thrown if the block to be updated doesn't exist
      *
-     * @return bool true if succesful, false otherwise
+     * @return void
      */
     public function updateAction()
     {
@@ -383,7 +390,7 @@ class AdminController extends \Zikula_AbstractController
         $modinfo = ModUtil::getInfo($blockinfo['mid']);
         $blockObj = BlockUtil::load($modinfo['name'], $blockinfo['bkey']);
         if (!$blockObj) {
-            return LogUtil::registerError($this->__('Sorry! No such block found.'), 404);
+            throw new NotFoundHttpException($this->__('Sorry! No such block found.'));
         }
 
         // Do block-specific update
@@ -423,13 +430,16 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display form for a new block.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Throw if the user doesn't have permission to add a block
+     * @throws \RuntimeException          Throw if the list of blocks cannot be loaded
      */
     public function newblockAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get parameters if exists
@@ -448,7 +458,7 @@ class AdminController extends \Zikula_AbstractController
         // Load all blocks
         $blocks = BlockUtil::loadAll();
         if (!$blocks) {
-            return LogUtil::registerError($this->__('Error! Could not load blocks.'));
+            throw new \RuntimeException($this->__('Error! Could not load blocks.'));
         }
 
         $blockinfo = array();
@@ -482,9 +492,9 @@ class AdminController extends \Zikula_AbstractController
      * @param string $language    the language to assign to the block.
      * @param string $position    the position of the block.
      *
-     * @see blocks_admin_new()
+     * @return void
      *
-     * @return bool true if successful, false otherwise.
+     * @throws \InvalidArgumentException Thrown if no block id is supplied
      */
     public function createAction()
     {
@@ -496,8 +506,7 @@ class AdminController extends \Zikula_AbstractController
         if ($block['blockid'] == '') {
             $block['blockid'] = 'error';
             $url = ModUtil::url('ZikulaBlocksModule', 'admin', 'newblock', array('block' => $block));
-
-            return LogUtil::registerError($this->__('You must choose a block.'), null, $url);
+            throw new \InvalidArgumentException($this->__('You must choose a block.'));
         }
 
         list($mid, $bkey) = explode(':', $block['blockid']);
@@ -530,7 +539,10 @@ class AdminController extends \Zikula_AbstractController
      * @param int bid the block id.
      * @param bool confirm to delete block.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete permissions over the block
+     * @throws NotFoundHttpException Thrown the requested block doesn't exist
      */
     public function deleteAction()
     {
@@ -543,11 +555,11 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         if ($blockinfo == false) {
-            return LogUtil::registerError($this->__('Sorry! No such block found.'), 404);
+            throw new NotFoundHttpException($this->__('Sorry! No such block found.'));
         }
 
         // Check for confirmation
@@ -583,13 +595,15 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display a form to create a new block position.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function newpositionAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $name = FormUtil::getPassedValue('name', '');
@@ -602,7 +616,11 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display a form to create a new block position.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws \InvalidArgumentException Thrown if the position name is empty or not valid or
+     *                                          if the position description is empty
      */
     public function createpositionAction()
     {
@@ -610,7 +628,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get parameters
@@ -618,7 +636,7 @@ class AdminController extends \Zikula_AbstractController
 
         // check our vars
         if (!isset($position['name']) || !preg_match('/^[a-z0-9_-]*$/i', $position['name']) || !isset($position['description'])) {
-            return LogUtil::registerArgsError(ModUtil::url('ZikulaBlocksModule', 'admin', 'view'));
+            throw new \InvalidArgumentException(__('Invalid arguments received'));
         }
 
         // add the new block position
@@ -635,7 +653,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display a form to create a new block position.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function modifypositionAction()
     {
@@ -647,7 +667,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission("ZikulaBlocksModule::$position[name]", '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // assign the position item
@@ -692,7 +712,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display a form to create a new block position.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
+     *
+     * @throws \InvalidArgumentException Thrown if the position id, name or description is not supplied
      */
     public function updatepositionAction()
     {
@@ -703,7 +725,7 @@ class AdminController extends \Zikula_AbstractController
 
         // check our vars
         if (!isset($position['pid']) || !isset($position['name']) || !isset($position['description'])) {
-            return LogUtil::registerArgsError(ModUtil::url('ZikulaBlocksModule', 'admin', 'view'));
+            throw new \InvalidArgumentException(__('Invalid arguments received'));
         }
 
         // update the position
@@ -721,11 +743,16 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Delete a block position.
      *
-     * @param int  $args['pid']          the id of the position to be deleted.
-     * @param int  $args['objectid']     generic object id maps to pid if present.
-     * @param bool $args['confirmation'] confirmation that this item can be deleted.
+     * @param mixed[] $args {
+     *      @type int  $pid          the id of the position to be deleted
+     *      @type int  $objectid     generic object id maps to pid if present
+     *      @type bool $confirmation confirmation that this item can be deleted
+     *                       }
      *
-     * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise.
+     * @return Response|bool symfony response if confirmation is null, true if delete successful, false otherwise.
+     *
+     * @throws NotFoundHttpException Thrown if the position doesn't exist
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the position
      */
     public function deletepositionAction($args)
     {
@@ -739,11 +766,11 @@ class AdminController extends \Zikula_AbstractController
         $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $pid));
 
         if ($item == false) {
-            return LogUtil::registerError($this->__('Error! No such block position found.'), 404);
+            throw new NotFoundHttpException($this->__('Error! No such block position found.'));
         }
 
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$item[name]::$pid", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Check for confirmation.
@@ -767,13 +794,15 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Any config options would likely go here in the future.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // assign all the module vars
@@ -786,7 +815,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Set config variable(s).
      *
-     * @return string bool true if successful, false otherwise.
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function updateconfigAction()
     {
@@ -794,7 +825,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $collapseable = FormUtil::getPassedValue('collapseable');

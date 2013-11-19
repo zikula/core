@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,12 +19,14 @@ use CacheUtil;
 use Zikula\Module\SecurityCenterModule\Util as SecurityCenterUtil;
 use DoctrineHelper;
 
+/**
+ * Installation routines for the security center module
+ */
 class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the SecurityCenter module
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
+     *
      * @return bool true on success, false otherwise
      */
     public function install()
@@ -227,8 +228,9 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * upgrade the SecurityCenter module from an old version
      *
-     * @param  string $oldVersion version number string to upgrade from
-     * @return mixed  true on success, last valid version string or false if fails
+     * @param string $oldversion version number string to upgrade from
+     *
+     * @return bool|string true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
@@ -243,8 +245,7 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
 
     /**
      * delete the SecurityCenter module
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
+     *
      * @return bool true on success, false otherwise
      */
     public function uninstall()
@@ -252,5 +253,4 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
         // this module can't be uninstalled
         return false;
     }
-
 }

@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -35,6 +34,8 @@ use PluginUtil;
 use Zikula\Core\Doctrine\Entity\ExtensionEntity;
 use Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Administrative API functions for the Extensions module.
@@ -42,12 +43,13 @@ use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 class AdminApi extends \Zikula_AbstractApi
 {
     /**
-     * Update module information.
+     * Update module information
      *
-     * @param array $args All parameters passed to this function.
-     *                      numeric $args['id'] The id number of the module.
+     * @param int[] $args {
+     *      @type int $id The id number of the module
+     *                     }
      *
-     * @return array An associative array containing the module information for the specified module id.
+     * @return array An associative array containing the module information for the specified module id
      */
     public function modify($args)
     {
@@ -55,14 +57,21 @@ class AdminApi extends \Zikula_AbstractApi
     }
 
     /**
-     * Update module information.
+     * Update module information
      *
-     * @param array $args All parameters passed to this function.
-     *                      numeric $args['id']          The id number of the module to update.
-     *                      string  $args['displayname'] The new display name of the module.
-     *                      string  $args['description'] The new description of the module.
+     * @param mixed[] $args {
+     *      @type int    $id          The id number of the module to update
+     *      @type string $displayname The new display name of the module
+     *      @type string $description The new description of the module
+     *      @type string $url         The url of the module
+     *                       }
      *
-     * @return boolean True on success, false on failure.
+     * @return boolean True on success, false on failure
+     *
+     * @throws \InvalidArgumentException Thrown if the id, displayname, description or url parameters are not set or empty or
+     *                                          if the id is not numeric
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws \RuntimeException Thrown if the input module already exists
      */
     public function update($args)
     {
@@ -76,7 +85,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', "::$args[id]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // check for duplicate display names
@@ -86,15 +95,15 @@ class AdminApi extends \Zikula_AbstractApi
         $moduleinfourl = ModUtil::getInfoFromName($args['url']);
         // If the two real module name don't match then the new display name can't be used
         if ($moduleinfourl && $moduleinfourl['name'] != $moduleinforeal['name']) {
-            return LogUtil::registerError($this->__('Error! Could not save the module URL information. A duplicate module URL was detected.'));
+            throw new \RuntimeException($this->__('Error! Could not save the module URL information. A duplicate module URL was detected.'));
         }
 
         if (empty($args['url'])) {
-            return LogUtil::registerError($this->__('Error! Module URL is a required field, please enter a unique name.'));
+            throw new \InvalidArgumentException($this->__('Error! Module URL is a required field, please enter a unique name.'));
         }
 
         if (empty($args['displayname'])) {
-            return LogUtil::registerError($this->__('Error! Module URL is a required field, please enter a unique name.'));
+            throw new \InvalidArgumentException($this->__('Error! Display name is a required field, please enter a unique name.'));
         }
 
         // Rename operation
@@ -115,23 +124,25 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Obtain a list of modules.
      *
-     * @param array $args All parameters passed to this function.
-     *                      integer $args['startnum'] The number of the module at which to start the list (for paging); optional,
-     *                                                  defaults to 1.
-     *                      integer $args['numitems'] The number of the modules to return in the list (for paging); optional, defaults to
-     *                                                  -1, which returns modules starting at the specified number without limit.
-     *                      integer $args['state']    Filter the list by this state; optional.
-     *                      integer $args['type']     Filter the list by this type; optional.
-     *                      string  $args['letter']   Filter the list by module names beginning with this letter; optional.
+     * @param mixed[] $args {
+     *      @type int    $startnum The number of the module at which to start the list (for paging); optional, defaults to 1
+     *      @type int    $numitems The number of the modules to return in the list (for paging); optional, defaults to
+     *                                 -1, which returns modules starting at the specified number without limit
+     *      @type int    $state    Filter the list by this state; optional
+     *      @type int    $type     Filter the list by this type; optional
+     *      @type string $letter   Filter the list by module names beginning with this letter; optional
+     *                       }
      *
-     * @return array An associative array of known modules.
+     * @return array An associative array of known modules
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function listmodules($args)
     {
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError();
+                throw new AccessDeniedHttpException();
             }
         }
 
@@ -202,11 +213,17 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Set the state of a module.
      *
-     * @param array $args All parameters passed to this function.
-     *                      numeric $args['id']    The module id.
-     *                      integer $args['state'] The new state.
+     * @param int[] $args {
+     *      @type int $id    The module id
+     *      @type int $state The new state
+     *                     }
      *
-     * @return boolean True if successful, false otherwise.
+     * @return boolean True if successful, false otherwise
+     *
+     * @throws \InvalidArgumentException Thrown if either the id or state parameters are not set or numeric
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module or
+     *                                                                                 if the module cannot be obtained from the database
+     * @throws \RuntimeException Thrown if the requested state transition is invalid
      */
     public function setState($args)
     {
@@ -219,7 +236,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_EDIT)) {
-                return LogUtil::registerPermissionError();
+                throw new AccessDeniedHttpException();
             }
         }
 
@@ -230,7 +247,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         if ($module === false) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Check valid state transition
@@ -238,7 +255,7 @@ class AdminApi extends \Zikula_AbstractApi
             case ModUtil::STATE_UNINITIALISED:
                 if ($this->serviceManager['multisites.enabled'] == 1) {
                     if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-                        return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
+                        throw new \RuntimeException($this->__('Error! Invalid module state transition.'));
                     }
                 }
                 break;
@@ -251,7 +268,7 @@ class AdminApi extends \Zikula_AbstractApi
             case ModUtil::STATE_UPGRADED:
                 $oldstate = $module['state'];
                 if ($oldstate == ModUtil::STATE_UNINITIALISED) {
-                    return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
+                    throw new \RuntimeException($this->__('Error! Invalid module state transition.'));
                 }
                 break;
         }
@@ -270,12 +287,19 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Remove a module.
      *
-     * @param array $args All parameters sent to this function.
-     *                      numeric $args['id']                 The id of the module.
-     *                      boolean $args['removedependents']   Remove any modules dependent on this module (default: false).
-     *                      boolean $args['interactive_remove'] Whether to operat in interactive mode or not.
+     * @param mixed[] $args {
+     *      @type int     $id                 The id of the module
+     *      @type boolean $removedependents   Remove any modules dependent on this module (default: false)
+     *      @type boolean $interactive_remove Whether to operat in interactive mode or not
+     *                       }
      *
-     * @return boolean True on success, false on failure.
+     * @return boolean True on success, false on failure
+     *
+     * @throws \InvalidArgumentException Thrown if the id parameter is either not set or not numeric
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws NotFoundHttpException Thrown if requested module id isn't a valid module
+     * @throws \RuntimeException Thrown if the module state cannot be changed or
+     *                                  if the installer class isn't of the correct type
      */
     public function remove($args)
     {
@@ -292,18 +316,18 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get module information
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
-            return LogUtil::registerError($this->__('Error! No such module ID exists.'));
+            throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
         }
 
         switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
-                return LogUtil::registerError($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
+                throw new \RuntimeException($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
                 break;
         }
 
@@ -344,7 +368,7 @@ class AdminApi extends \Zikula_AbstractApi
             }
             $reflectionInstaller = new ReflectionClass($className);
             if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+                throw new \RuntimeException($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
             $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
 
@@ -411,6 +435,9 @@ class AdminApi extends \Zikula_AbstractApi
      * This function scans the file system for modules and returns an array with all (potential) modules found.
      * This information is used to regenerate the module list.
      *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws \RuntimeException Thrown if the version information of a module cannot be found
+     *
      * @return array An array of modules found in the file system.
      */
     public function getfilemodules()
@@ -418,7 +445,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError();
+                throw new AccessDeniedHttpException();
             }
         }
 
@@ -496,7 +523,7 @@ class AdminApi extends \Zikula_AbstractApi
                     try {
                         $modversion = ExtensionsUtil::getVersionMeta($dir, $rootdir);
                     } catch (\Exception $e) {
-                        LogUtil::registerError($e->getMessage());
+                        throw new \RuntimeException($e->getMessage());
                         continue;
                     }
 
@@ -608,19 +635,23 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Regenerate modules list.
      *
-     * @param array $args All parameters passed to this function.
-     *                      array $args['filemodules'] An array of modules in the filesystem, as would be returned by
-     *                                                  {@link getfilemodules()}; optional, defaults to the results of
-     *                                                  $this->getfilemodules().
+     * @param array[] $args {
+     *      @type array $filemodules An array of modules in the filesystem, as would be returned by
+     *                                  {@link getfilemodules()}; optional, defaults to the results of $this->getfilemodules()
+     *                       }
      *
-     * @return boolean True on success, false on failure.
+     * @return boolean True on success, false on failure
+     *
+     * @throws \InvalidArgumentException Thrown if the filemodules parameter is either not set or not an array
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws NotFoundHttpException Thrown if module information cannot be obtained from the database
      */
     public function regenerate($args)
     {
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError();
+                throw new AccessDeniedHttpException();
             }
         }
 
@@ -643,7 +674,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Get all modules in DB
         $allmodules = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findAll();
         if (!$allmodules) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
         }
 
         // index modules by name
@@ -749,7 +780,7 @@ class AdminApi extends \Zikula_AbstractApi
             if (!in_array($name, $module_names)) {
                 $lostmodule = $this->entityManager->getRepository($entity)->findOneBy(array('name' => $name));
                 if (!$lostmodule) {
-                    return LogUtil::registerError($this->__f('Error! Could not load data for module %s.', array($name)));
+                    throw new NotFoundHttpException($this->__f('Error! Could not load data for module %s.', array($name)));
                 }
 
                 if ($dbmodules[$name]['state'] == ModUtil::STATE_INVALID) {
@@ -864,11 +895,19 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Initialise a module.
      *
-     * @param array $args All parameters passed to this function.
-     *                      numeric $args['id']               The module ID.
-     *                      boolean $args['interactive_mode'] Perform the initialization in interactive mode or not.
+     * @param mixed[] $args {
+     *      @type int     $id               The module ID
+     *      @type boolean $interactive_mode Perform the initialization in interactive mode or not
+     *                       }
      *
-     * @return boolean|void True on success, false on failure, or null when we bypassed the installation;
+     * @return boolean|void True on success, false on failure, or null when we bypassed the installation
+     *
+     * @throws \InvalidArgumentException Thrown if the module id parameter is either not set or not numeric
+     * @throws NotFoundHttpException Thrown if the module id isn't a valid module
+     * @throws \RuntimeException Thrown if the module state prevents installation or if
+     *                                  if the module isn't compatible with this version of Zikula or
+     *                                  if the installer class isn't of the correct type or
+     *                                  if the module state cannot be changed
      */
     public function initialise($args)
     {
@@ -880,16 +919,16 @@ class AdminApi extends \Zikula_AbstractApi
         // Get module information
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
-            return LogUtil::registerError($this->__('Error! No such module ID exists.'));
+            throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
         }
 
         switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
-                return LogUtil::registerError($this->__f('Error! No permission to install %s.', $modinfo['name']));
+                throw new \RuntimeException($this->__f('Error! No permission to install %s.', $modinfo['name']));
                 break;
             default:
                 if ($modinfo['state'] > 10) {
-                    return LogUtil::registerError($this->__f('Error! %s is not compatible with this version of Zikula.', $modinfo['name']));
+                    throw new \RuntimeException($this->__f('Error! %s is not compatible with this version of Zikula.', $modinfo['name']));
                 }
         }
 
@@ -924,7 +963,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
         $reflectionInstaller = new ReflectionClass($className);
         if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-            LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+            throw new \RuntimeException($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
         $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
 
@@ -939,7 +978,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Update state of module
         if (!$this->setState(array('id' => $args['id'], 'state' => ModUtil::STATE_ACTIVE))) {
-            return LogUtil::registerError($this->__('Error! Could not change module state.'));
+            throw new \RuntimeException($this->__('Error! Could not change module state.'));
         }
 
         if (!System::isInstalling()) {
@@ -959,11 +998,18 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Upgrade a module.
      *
-     * @param array $args All parameters passed to this function.
-     *                      numeric $args['id']                  The module ID.
-     *                      boolean $args['interactive_upgrade'] Whether or not to upgrade in interactive mode.
+     * @param mixed[] $args {
+     *      @type int     $id                  The module ID
+     *      @type boolean $interactive_upgrade Whether or not to upgrade in interactive mode
+     *                       }
      *
-     * @return boolean True on success, false on failure.
+     * @return boolean True on success, false on failure
+     *
+     * @throws \InvalidArgumentException Thrown if the module id parameter is either not set or not numeric
+     * @throws NotFoundHttpException Thrown if the module id isn't a valid module
+     * @throws \RuntimeException Thrown if the module state prevents upgrade or if
+     *                                  if the module isn't compatible with this version of Zikula or
+     *                                  if the installer class isn't of the correct type
      */
     public function upgrade($args)
     {
@@ -977,16 +1023,16 @@ class AdminApi extends \Zikula_AbstractApi
         // Get module information
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
-            return LogUtil::registerError($this->__('Error! No such module ID exists.'));
+            throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
         }
 
         switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
-                return LogUtil::registerError($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
+                throw new \RuntimeException($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
                 break;
             default:
                 if ($modinfo['state'] > 10) {
-                    return LogUtil::registerError($this->__f('Error! %s is not compatible with this version of Zikula.', $modinfo['name']));
+                    throw new \RuntimeException($this->__f('Error! %s is not compatible with this version of Zikula.', $modinfo['name']));
                 }
         }
 
@@ -1020,7 +1066,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
         $reflectionInstaller = new ReflectionClass($className);
         if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-            LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+            throw new \RuntimeException($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
         $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module ));
 
@@ -1112,9 +1158,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Utility function to count the number of items held by this module.
      *
-     * @param array $args All parameters passed to this function.
-     *                      string  $args['letter'] Filter the count by the first letter of the module name; optional.
-     *                      integer $args['state']  Filter the count by the module state; optional.
+     * @param mixed[] $args {
+     *      @type string $letter Filter the count by the first letter of the module name; optional
+     *      @type int    $state  Filter the count by the module state; optional
+     *                       }
      *
      * @return integer The number of items held by this module.
      */
@@ -1255,9 +1302,7 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get all module dependencies.
      *
-     * @param array $args All parameters sent to this function (not currently used).
-     *
-     * @deprecated since 1.3.6 
+     * @deprecated since 1.3.7 use getalldependencies instead
      * @todo remove in 1.4.0
      *
      * @use $this->getalldependencies instead.
@@ -1272,8 +1317,6 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get all module dependencies.
      *
-     * @param array $args All parameters sent to this function (not currently used).
-     *
      * @return array Array of dependencies.
      */
     public function getalldependencies()
@@ -1286,10 +1329,13 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get dependencies for a module.
      *
-     * @param array $args All parameters sent to this function.
-     *                      numeric $args['modid'] Id of module to get dependencies for.
+     * @param int[] $args {
+     *      @type int $modid Id of module to get dependencies for
+     *                     }
      *
-     * @return array|boolean Array of dependencies; false otherwise.
+     * @return array|boolean Array of dependencies; false otherwise
+     *
+     * @throws \InvalidArgumentException Thrown if the modid paramter is not set, empty or not numeric
      */
     public function getdependencies($args)
     {
@@ -1306,10 +1352,13 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get dependents of a module.
      *
-     * @param array $args All parameters passed to this function.
-     *                      numeric $args['modid'] Id of module to get dependents for.
+     * @param int[] $args {
+     *      @type int $modid Id of module to get dependants for
+     *                     }
      *
      * @return array|boolean Array of dependents; false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if the modid paramter is not set, empty or not numeric
      */
     public function getdependents($args)
     {
@@ -1328,19 +1377,23 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Check modules for consistency.
      *
-     * @param array $args All parameters passed to this function.
-     *                  array $args['filemodules'] Array of modules in the filesystem, as returned by {@link getfilemodules()}.
+     * @param array[] $args {
+     *      @type array $filemodules Array of modules in the filesystem, as returned by {@link getfilemodules()}
+     *                       }
      *
      * @see    getfilemodules()
      *
-     * @return array An array of arrays with links to inconsistencies.
+     * @return array An array of arrays with links to inconsistencies
+     *
+     * @throws \InvalidArgumentException Thrown if the filemodules parameter is either not set or not an array
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public function checkconsistency($args)
     {
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError();
+                throw new AccessDeniedHttpException();
             }
         }
 
@@ -1389,8 +1442,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Check if a module comes from the core.
      *
-     * @param array $args All parameters sent to this function.
-     *                      string $args['modulename'] The name of the module to check.
+     * @param string[] $args {
+     *      @type string $modulename The name of the module to check.
+     *                        }
      *
      * @return boolean True if it's a core module; otherwise false.
      */

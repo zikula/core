@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,9 +19,11 @@ use DataUtil;
 use BlockUtil;
 use ModUtil;
 use Zikula\Module\PermissionsModule\Entity\PermissionEntity;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Permissions_Api_Admin class.
+ * API functions used by administrative controllers
  */
 class AdminApi extends \Zikula_AbstractApi
 {
@@ -34,15 +35,23 @@ class AdminApi extends \Zikula_AbstractApi
      * permissions sequence, thus making it more likely to be acted
      * against.
      *
-     * @param int $args ['pid'] the ID of the permission to increment.
+     * @param int[] $args {
+     *      @type int $pid the ID of the permission to increment.
+     *                    }
      *
-     * @return bool true on success, false on failure.
+     * @return bool true on success
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't admin acces over the permission rule
+     * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
+     * @throws NotFoundHttpException Thrown if the permission rule doesn't exist
+     * @throws \RuntimeException Thrown if there is no permission rule above the requested one or
+     *                                  if there is both affected permissions, in partial view, are seperated by a hidden rule 
      */
     public function inc($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Argument check
@@ -53,7 +62,7 @@ class AdminApi extends \Zikula_AbstractApi
         // get info on current perm
         $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
         if (!$permission) {
-            return LogUtil::registerError($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
+            throw new NotFoundHttpException($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
         }
 
         $sequence = $permission['sequence'];
@@ -84,9 +93,9 @@ class AdminApi extends \Zikula_AbstractApi
                 if ($showpartly) {
                     // Changing the sequence by moving while in partial view may only be done if there
                     // are no invisible permissions inbetween that might be affected by the move.
-                    LogUtil::registerError($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
+                    throw new \RuntimeException($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
                 } else {
-                    LogUtil::registerError($this->__('Error! No permission rule directly above that one.'));
+                    throw new \RuntimeException($this->__('Error! No permission rule directly above that one.'));
                 }
 
                 return false;
@@ -110,16 +119,23 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Decrement sequence number of a permission.
      *
-     * @param string $args ['type'] the type of the permission to decrement (user or group).
-     * @param int    $args ['pid'] the ID of the permission to decrement.
+     * @param int[] $args {
+     *       @type int    $pid  the ID of the permission to decrement.
+     *                    }
      *
-     * @return boolean true on success, false on failure.
+     * @return bool true on success
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't admin acces over the permission rule
+     * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
+     * @throws NotFoundHttpException Thrown if the permission rule doesn't exist
+     * @throws \RuntimeException Thrown if there is no permission rule below the requested one or
+     *                                  if there is both affected permissions, in partial view, are seperateed by a hidden rule 
      */
     public function dec($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Argument check
@@ -130,7 +146,7 @@ class AdminApi extends \Zikula_AbstractApi
         // get info on current perm
         $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
         if (!$permission) {
-            return LogUtil::registerError($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
+            throw new NotFoundHttpException($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
         }
 
         $sequence = $permission['sequence'];
@@ -162,9 +178,9 @@ class AdminApi extends \Zikula_AbstractApi
                 if ($showpartly) {
                     // Changing the sequence by moving while in partial view may only be done if there
                     // are no invisible permissions inbetween that might be affected by the move.
-                    LogUtil::registerError($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
+                    throw new \RuntimeException($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
                 } else {
-                    LogUtil::registerError($this->__('Error! No permission rule directly below that one.'));
+                    throw new \RuntimeException($this->__('Error! No permission rule directly below that one.'));
                 }
 
                 return false;
@@ -188,22 +204,28 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Update attributes of a permission.
      *
-     * @param int    $args ['pid'] the ID of the permission to update.
-     * @param int    $args ['seq'] the order number of the permission.
-     * @param int    $args ['oldseq'] the old order number of the permission.
-     * @param string $args ['realm'] the new realm of the permission.
-     * @param int    $args ['id'] the new group/user id of the permission.
-     * @param string $args ['component'] the new component of the permission.
-     * @param string $args ['instance'] the new instance of the permission.
-     * @param int    $args ['level'] the new level of the permission.
+     * @param mixed[] $args {
+     *       @type int    $pid       the ID of the permission to update
+     *       @type int    $seq       the order number of the permission
+     *       @type int    $oldseq    the old order number of the permission
+     *       @type string $realm     the new realm of the permission
+     *       @type int    $id        the new group/user id of the permission
+     *       @type string $component the new component of the permission
+     *       @type string $instance  the new instance of the permission
+     *       @type int    $level     the new level of the permission
+     *                      }
      *
-     * @return bool true on success, false on failure.
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't admin acces over the permission rule
+     * @throws \InvalidArgumentException Thrown if any of pid, seq, oldseq, id or level are not set or not numeric or 
+     *                                          if any of realm, component or instance are not set
      */
     public function update($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Argument check
@@ -238,19 +260,27 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Create a new perm.
      *
-     * @param string $args ['realm'] the new realm of the permission.
-     * @param int    $args ['id'] the new group/user id of the permission.
-     * @param string $args ['component'] the new component of the permission.
-     * @param string $args ['instance'] the new instance of the permission.
-     * @param int    $args ['level'] the new level of the permission.
+     * @param mixed[] $args {
+     *       @type string $realm     the new realm of the permission
+     *       @type int    $id        the new group/user id of the permission
+     *       @type string $component the new component of the permission
+     *       @type string $instance  the new instance of the permission
+     *       @type int    $level     the new level of the permission
+     *       @type int    $insseq    the place to insert the new permission rule
+     *                      }
      *
-     * @return boolean true on success, false on failure.
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't admin acces over the permission rule
+     * @throws \InvalidArgumentException Thrown if any of id, insseq or level are not set or not numeric or 
+     *                                          if any of realm, component or instance are not set
+     * @throws \RuntimeException Thrown if the permission rule couldn't be saved
      */
     public function create($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[id]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Argument check
@@ -278,7 +308,7 @@ class AdminApi extends \Zikula_AbstractApi
             $result = $query->getResult();
 
             if (!$result) {
-                return LogUtil::registerError($this->__('Error! Could not save permission rule sequences.'));
+                throw new \RuntimeException($this->__('Error! Could not save permission rule sequences.'));
             }
 
             $newseq = $args['insseq'];
@@ -304,15 +334,20 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Delete a perm.
      *
-     * @param int    $args ['pid'] the ID of the permission to delete.
+     * @param int[] $args {
+     *       @type int $pid the ID of the permission to delete.
+     *                    }
      *
-     * @return boolean true on success, false on failure.
+     * @return boolean true on success
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the group
+     * @throws \InvalidArgumentException Thrown if the pid parameter isn't set or isn't numeric
      */
     public function delete($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Argument check
@@ -334,12 +369,14 @@ class AdminApi extends \Zikula_AbstractApi
      * Get the maximum sequence number in permissions table.
      *
      * @return int the maximum sequence number.
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public function maxsequence()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $qb = $this->entityManager->createQueryBuilder();
@@ -353,19 +390,22 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Resequence a permissions table.
      *
-     * @return boolean
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws NotFoundHttpException Thrown if no permissions rules are found
      */
     public function resequence()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', 'group::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get all permissions
         $permissions = $this->entityManager->getRepository('Zikula\Module\PermissionsModule\Entity\PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
         if (!$permissions) {
-            return false;
+            throw new NotFoundHttpException();
         }
 
         // fix sequence numbers
@@ -389,16 +429,21 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * Called when a permission is assigned the same sequence number as an existing permission.
      *
-     * @param string $args ['newseq'] the desired sequence.
-     * @param string $args ['oldseq'] the original sequence number.
+     * @param string[] $args {
+     *       @type string $newseq the desired sequence
+     *       @type string $oldseq the original sequence number
+     *                       }
      *
-     * @return boolean
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws \InvalidArgumentException Thrown if either the newseq or oldseq parameters aren't set
      */
     public function full_resequence($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Argument check
@@ -488,12 +533,14 @@ class AdminApi extends \Zikula_AbstractApi
      * Get all security permissions schemas.
      *
      * @return array array if permission schema values.
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public function getallschemas()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $schemas = SecurityUtil::getSchemas();

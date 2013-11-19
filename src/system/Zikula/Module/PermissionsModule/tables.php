@@ -1,21 +1,15 @@
 <?php
 /**
- * Zikula Application Framework
- * @copyright (c) 2002, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * Copyright Zikula Foundation 2002 - Zikula Application Framework
  *
- * Permissions Module
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
  *
- * Purpose of file:  Table information for Permissions module --
- *                   This file contains all information on database
- *                   tables for the module
+ * @license GNU/LGPLv3 (or at your option, any later version).
  *
- * @package Zikula_System_Modules
- * @subpackage   Permissions
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
-
 
 /**
  * Populate pntables array for Permissions module.

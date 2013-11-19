@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,10 +19,15 @@ use DataUtil;
 use Zikula_View;
 use FormUtil;
 
+/**
+ * Block to display the contents of a file
+ */
 class FincludeBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
+     *
+     * @return void
      */
     public function init()
     {
@@ -50,8 +54,13 @@ class FincludeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * display block
      *
-     * @param  array  $blockinfo a blockinfo structure
-     * @return output the rendered bock
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string the rendered bock
      */
     public function display($blockinfo)
     {
@@ -103,8 +112,13 @@ class FincludeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * modify block settings
      *
-     * @param  array  $blockinfo a blockinfo structure
-     * @return output the bock form
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string the bock form
      */
     public function modify($blockinfo)
     {
@@ -131,8 +145,13 @@ class FincludeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * update block settings
      *
-     * @param  array $blockinfo a blockinfo structure
-     * @return       $blockinfo  the modified blockinfo structure
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return array $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)
     {

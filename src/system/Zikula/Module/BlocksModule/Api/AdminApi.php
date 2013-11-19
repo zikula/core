@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,31 +13,37 @@
 
 namespace Zikula\Module\BlocksModule\Api;
 
-use LogUtil;
 use System;
 use SecurityUtil;
 use Zikula\Module\BlocksModule\Entity\BlockPlacementEntity;
 use ModUtil;
 use Zikula\Module\BlocksModule\Entity\BlockEntity;
 use Zikula\Module\BlocksModule\Entity\BlockPositionEntity;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Blocks_Api_Admin class.
+ * API functions used by administrative controllers
  */
 class AdminApi extends \Zikula_AbstractApi
 {
     /**
-     * Update attributes of a block.
+     * Update attributes of a block
      *
-     * @param int    $args ['bid'] the ID of the block to update.
-     * @param string $args ['title'] the new title of the block.
-     * @param string $args ['description'] the new description of the block.
-     * @param string $args ['positions'] the new positions of the block.
-     * @param string $args ['url'] the new URL of the block.
-     * @param string $args ['language'] the new language of the block.
-     * @param string $args ['content'] the new content of the block.
+     * @param mixed[] $args {
+     *      @type int    $bid         the ID of the block to update
+     *      @type string $title       the new title of the block
+     *      @type string $description the new description of the block
+     *      @type string $positions   the new positions of the block
+     *      @type string $url         the new URL of the block
+     *      @type string $language    the new language of the block
+     *      @type string $content     the new content of the block
+     *                       }
      *
      * @return bool true on success, false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to update the block
      */
     public function update($args)
     {
@@ -57,7 +62,7 @@ class AdminApi extends \Zikula_AbstractApi
         // this function is called during the init process so we have to check in _ZINSTALLVER
         // is set as alternative to the correct permission check
         if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaBlocksModule::', "$args[bkey]:$args[title]:$args[bid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // remove old placements and insert the new ones
@@ -107,13 +112,17 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Create a new block.
      *
-     * @param string $block ['title'] the title of the block.
-     * @param string $block ['description'] the description of the block.
-     * @param int    $block ['mid'] the module ID of the block.
-     * @param string $block ['language'] the language of the block.
-     * @param string $block ['bkey'] the key of the block.
+     * @param mixed[] $args {
+     *      @type string $title       the title of the block
+     *      @type string $description the description of the block
+     *      @type int    $mid         the module ID of the block
+     *      @type string $language    the language of the block
+     *      @type int    $bkey        the key of the block
      *
-     * @return mixed block Id on success, false on failure.
+     * @return int|bool block id on success, false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to create the block
      */
     public function create($args)
     {
@@ -130,7 +139,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaBlocksModule::', "$args[bkey]:$args[title]:", ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // optional arguments
@@ -173,9 +182,14 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Set a block's active state.
      *
-     * @param int $args ['bid'] the ID of the block to deactivate.
+     * @param int[] $block {
+     *      @type int $bid the ID of the block to deactivate
+     *                      } 
      *
      * @return bool true on success, false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to update the block
      */
     public function setActiveState($block)
     {
@@ -189,7 +203,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'get', array('bid' => $block['bid']));
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', "$item[bkey]:$item[title]:$item[bid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // set block's new state
@@ -202,9 +216,13 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Deactivate a block.
      *
-     * @param int $args ['bid'] the ID of the block to deactivate.
+     * @param int[] $args {
+     *      @type int $bid the ID of the block to deactivate
+     *                     } 
      *
      * @return bool true on success, false on failure.
+     *
+     * @throws \RuntimeException Thrown if block cannot be deactivated
      */
     public function deactivate($args)
     {
@@ -212,7 +230,7 @@ class AdminApi extends \Zikula_AbstractApi
         $res = (boolean)$this->setActiveState($args);
 
         if (!$res) {
-            return LogUtil::registerError($this->__('Error! Could not deactivate the block.'));
+            throw new \RuntimeException($this->__('Error! Could not deactivate the block.'));
         }
 
         return $res;
@@ -221,9 +239,13 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Activate a block.
      *
-     * @param int $args ['bid'] the ID of the block to activate.
+     * @param int[] $args {
+     *      @type int $bid the ID of the block to activate.
+     *                     }
      *
      * @return bool true on success, false on failure.
+     *
+     * @throws \RuntimeException Thrown if the block cannot be activated
      */
     public function activate($args)
     {
@@ -231,7 +253,7 @@ class AdminApi extends \Zikula_AbstractApi
         $res = (boolean)$this->setActiveState($args);
 
         if (!$res) {
-            return LogUtil::registerError($this->__('Error! Could not activate the block.'));
+            throw new \RuntimeException($this->__('Error! Could not activate the block.'));
         }
 
         return $res;
@@ -240,9 +262,14 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Delete a block.
      *
-     * @param int $args ['bid'] the ID of the block to delete.
+     * @param int[] $args {
+     *      @type int $args ['bid'] the ID of the block to delete
+     *                     </ul>
      *
      * @return bool true on success, false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the block
      */
     public function delete($args)
     {
@@ -255,7 +282,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // delete block's placements
@@ -278,10 +305,16 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Create a block position.
      *
-     * @param string $args['name']        name of the position.
-     * @param string $args['description'] description of the position.
+     * @param string[] $args {
+     *      @type string $name        name of the position
+     *      @type string $description description of the position
+     *                        </ul>
      *
-     * @return mixed position ID on success, false on failure.
+     * @return int|bool position ID on success, false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to create the block position
+     * @throws \RuntimeException Thrown if a block position with the same name already exists
      */
     public function createposition($args)
     {
@@ -293,14 +326,14 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$args[name]::", ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $positions = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getallpositions');
         if (isset($positions) && is_array($positions)) {
             foreach ($positions as $position) {
                 if ($position['name'] == $args['name']) {
-                    return LogUtil::registerError($this->__('Error! There is already a block position with the name you entered.'));
+                    throw new \RuntimeException($this->__('Error! There is already a block position with the name you entered.'));
                 }
             }
         }
@@ -317,11 +350,18 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Update a block position item.
      *
-     * @param int    $args['pid']         the ID of the item.
-     * @param string $args['name']        name of the block position.
-     * @param string $args['description'] description of the block position.
+     * @param mixed[] $args {
+     *      @type int    $pid         the ID of the item
+     *      @type string $name        name of the block position
+     *      @type string $description description of the block position
+     *                       }
      *
      * @return bool true if successful, false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to update the block position
+     * @throws NotFoundHttpException Thrown if the block position to be updated doesn't exist
+     * @throws \RuntimeException Thrown if a block position with the same name, but different id, already exists
      */
     public function updateposition($args)
     {
@@ -336,19 +376,19 @@ class AdminApi extends \Zikula_AbstractApi
         $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
 
         if ($item == false) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$item[name]::$item[pid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $positions = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getallpositions');
         if (isset($positions) && is_array($positions)) {
             foreach ($positions as $position) {
                 if ($position['name'] == $args['name'] && $position['pid'] != $args['pid']) {
-                    return LogUtil::registerError($this->__('Error! There is already a block position with the name you entered.'));
+                    throw new \RuntimeException($this->__('Error! There is already a block position with the name you entered.'));
                 }
             }
         }
@@ -364,9 +404,14 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Delete a block position.
      *
-     * @param int $args['pid'] ID of the position.
+     * @param int[] $args {
+     *      @type int $pid ID of the position
+     *                     }
      *
      * @return bool true on success, false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the block position
      */
     public function deleteposition($args)
     {
@@ -377,7 +422,7 @@ class AdminApi extends \Zikula_AbstractApi
         $position = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
 
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$position[name]::$position[pid]", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // delete placements of the position to be deleted

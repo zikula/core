@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,7 +13,6 @@
 
 namespace Zikula\Module\CategoriesModule\Controller;
 
-use LogUtil;
 use SecurityUtil;
 use System;
 use SessionUtil;
@@ -26,16 +24,25 @@ use ZLanguage;
 use UserUtil;
 use ServiceUtil;
 use Zikula\Module\CategoriesModuleCategoriesInstaller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * User contollers for the categories module
+ */
 class UserController extends \Zikula_AbstractController
 {
     /**
      * main user function
+     *
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module
      */
     public function mainAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $referer = System::serverGetVar('HTTP_REFERER');
@@ -53,6 +60,17 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * edit category for a simple, non-recursive set of categories
+     *
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the document root
+     * @throws \InvalidArgumentException Thrown if the category or document root aren't supplied or are invalid or
+     *                                          if the requested document root is the root category or 
+     *                                          if the requested document root belongs to another user
+     * @throws \RuntimeException Thrown if the category is locked or
+     *                                          if the root directory cannot be accessed or
+     *                                          if the category is not a leaf category or
+     *                                          if the category is not a child of the document root
      */
     public function editAction()
     {
@@ -61,7 +79,7 @@ class UserController extends \Zikula_AbstractController
         $url = ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $docroot));
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$docroot", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError($url);
+            throw new AccessDeniedHttpException();
         }
 
         $referer = System::serverGetVar('HTTP_REFERER');
@@ -75,10 +93,10 @@ class UserController extends \Zikula_AbstractController
         $editCat = array();
 
         if (!$docroot) {
-            return LogUtil::registerError($this->__("Error! The URL contains an invalid 'document root' parameter."), null, $url);
+            throw new \InvalidArgumentException($this->__("Error! The URL contains an invalid 'document root' parameter."));
         }
         if ($docroot == 1) {
-            return LogUtil::registerError($this->__("Error! The root directory cannot be modified in 'user' mode"), null, $url);
+            throw new \InvalidArgumentException($this->__("Error! The root directory cannot be modified in 'user' mode"));
         }
 
         if (is_int((int)$docroot) && $docroot > 0) {
@@ -103,7 +121,7 @@ class UserController extends \Zikula_AbstractController
                         $rootCatPath = $rootCat['path'];
                         if (strpos($rootCatPath, $userRootCatPath) === false) {
                             //! %s represents the root path (id), passed in the url
-                            return LogUtil::registerError($this->__f("Error! It looks like you are trying to edit another user's categories. Only site administrators can do that (%s).", $docroot), null, $url);
+                            throw new \InvalidArgumentException($this->__f("Error! It looks like you are trying to edit another user's categories. Only site administrators can do that (%s).", $docroot));
                         }
                     }
                 }
@@ -114,18 +132,18 @@ class UserController extends \Zikula_AbstractController
             $editCat = CategoryUtil::getCategoryByID($cid);
             if ($editCat['is_locked']) {
                 //! %1$s is the id, %2$s is the name
-                return LogUtil::registerError($this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $editCat['name'])), null, $url);
+                throw new \RuntimeException($this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $editCat['name'])), null, $url);
             }
         }
 
         if (!$rootCat) {
-            return LogUtil::registerError($this->__f("Error! Cannot access root directory (%s).", $docroot), null, $url);
+            throw new \RuntimeException($this->__f("Error! Cannot access root directory (%s).", $docroot), null, $url);
         }
         if ($editCat && !$editCat['is_leaf']) {
-            return LogUtil::registerError($this->__f('Error! The specified category is not a leaf-level category (%s).', $cid), null, $url);
+            throw new \RuntimeException($this->__f('Error! The specified category is not a leaf-level category (%s).', $cid), null, $url);
         }
         if ($editCat && !CategoryUtil::isDirectSubCategory($rootCat, $editCat)) {
-            return LogUtil::registerError($this->__f('Error! The specified category is not a child of the document root (%1$s; %2$s).', array($docroot, $cid)), null, $url);
+            throw new \RuntimeException($this->__f('Error! The specified category is not a child of the document root (%1$s; %2$s).', array($docroot, $cid)), null, $url);
         }
 
         $allCats = CategoryUtil::getSubCategoriesForCategory($rootCat, false, false, false, true, true);
@@ -149,39 +167,49 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * edit categories for the currently logged in user
+     *
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over categories in the module or
+     *                                                                                 if the user is not logged in
+     * @throws \RuntimeException Thrown if user editing of categories isn't enabled or
+     *                                  if the user root cannot be determined or 
+     *                                  if the user root points to an invalid category or
+     *                                  if the user root category name couldn't be determined or
+     *                                  if the user root category doesn't exist and auto-creation isn't enabled
      */
     public function edituserAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         if (!UserUtil::isLoggedIn()) {
-            return LogUtil::registerError($this->__('Error! Editing mode for user-owned categories is only available to users who have logged-in.'));
+            throw new AccessDeniedHttpException($this->__('Error! Editing mode for user-owned categories is only available to users who have logged-in.'));
         }
 
         $allowUserEdit = $this->getVar('allowusercatedit', 0);
         if (!$allowUserEdit) {
-            return LogUtil::registerError($this->__('Error! User-owned category editing has not been enabled. This feature can be enabled by the site administrator.'));
+            throw new \RuntimeException($this->__('Error! User-owned category editing has not been enabled. This feature can be enabled by the site administrator.'));
         }
 
         $userRoot = $this->getVar('userrootcat', 0);
         if (!$userRoot) {
-            return LogUtil::registerError($this->__('Error! Could not determine the user root node.'));
+            throw new \RuntimeException($this->__('Error! Could not determine the user root node.'));
         }
 
         $userRootCat = CategoryUtil::getCategoryByPath($userRoot);
         if (!$userRoot) {
-            return LogUtil::registerError($this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
+            throw new \RuntimeException($this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
         }
 
         if ($userRootCat == 1) {
-            return LogUtil::registerError($this->__("Error! The root directory cannot be modified in 'user' mode"));
+            throw new \RuntimeException($this->__("Error! The root directory cannot be modified in 'user' mode"));
         }
 
         $userCatName = $this->getusercategorynameAction();
         if (!$userCatName) {
-            return LogUtil::registerError($this->__('Error! Cannot determine user category root node name.'));
+            throw new \RuntimeException($this->__('Error! Cannot determine user category root node name.'));
         }
 
         $thisUserRootCatPath = $userRoot . '/' . $userCatName;
@@ -191,11 +219,10 @@ class UserController extends \Zikula_AbstractController
         if (!$thisUserRootCat) {
             $autoCreate = $this->getVar('autocreateusercat', 0);
             if (!$autoCreate) {
-                return LogUtil::registerError($this->__("Error! The user root category node for this user does not exist, and the automatic creation flag (autocreate) has not been set."));
+                throw new \RuntimeException($this->__("Error! The user root category node for this user does not exist, and the automatic creation flag (autocreate) has not been set."));
             }
 
             $installer = new CategoriesInstaller($this->getContainer());
-
 
             $cat = array(
                 'id' => '',
@@ -255,6 +282,8 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * refer the user back to the calling page
+     *
+     * @return void
      */
     public function referBackAction()
     {
@@ -268,6 +297,8 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * return the categories for the currently logged in user, really only used for testing purposes
+     *
+     * @return array array of categories
      */
     public function getusercategoriesAction()
     {
@@ -276,6 +307,8 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * return the category name for a user, really only used for testing purposes
+     *
+     * @return string the username associated with the category
      */
     public function getusercategorynameAction()
     {

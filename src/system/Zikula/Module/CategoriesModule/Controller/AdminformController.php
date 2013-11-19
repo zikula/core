@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -23,21 +22,26 @@ use CategoryUtil;
 use Zikula\Module\CategoriesModule\GenericUtil;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Controller.
+ * Form controller for the categories module
  */
 class AdminformController extends \Zikula_AbstractController
 {
     /**
      * update category
+     *
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public function editAction()
     {
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get data from post
@@ -126,13 +130,17 @@ class AdminformController extends \Zikula_AbstractController
 
     /**
      * create category
+     *
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to add a category
      */
     public function newcatAction()
     {
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get data from post
@@ -177,13 +185,17 @@ class AdminformController extends \Zikula_AbstractController
 
     /**
      * delete category
+     *
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete a category
      */
     public function deleteAction()
     {
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         if ($this->request->request->get('category_cancel', null)) {
@@ -214,13 +226,17 @@ class AdminformController extends \Zikula_AbstractController
 
     /**
      * copy category
+     *
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to add a category
      */
     public function copyAction()
     {
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         if ($this->request->request->get('category_cancel', null)) {
@@ -242,13 +258,17 @@ class AdminformController extends \Zikula_AbstractController
 
     /**
      * move category
+     *
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to edit a category
      */
     public function moveAction()
     {
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         if ($this->request->request->get('category_cancel', null)) {
@@ -270,11 +290,15 @@ class AdminformController extends \Zikula_AbstractController
 
     /**
      * rebuild path structure
+     *
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public function rebuild_pathsAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         CategoryUtil::rebuildPaths('path', 'name');
@@ -285,12 +309,23 @@ class AdminformController extends \Zikula_AbstractController
         return $this->redirect(ModUtil::url('ZikulaCategoriesModule', 'admin', 'view'));
     }
 
+    /**
+     * edit category registry
+     *
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws \InvalidArgumentException Thrown if the module name isn't supplied or if
+     *                                          if the entityname isn't supplied or if
+     *                                          if the property isn't supplied or if
+     *                                          if the category_id isn't supplied
+     */
     public function editregistryAction()
     {
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // delete registry
@@ -319,24 +354,16 @@ class AdminformController extends \Zikula_AbstractController
 
         // do some validation
         if (empty($data['modname'])) {
-            $args['category_registry'] = $data;
-            LogUtil::registerError(__('Error! You did not select a module.'));
-            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
+            throw new \InvalidArgumentException(__('Error! You did not select a module.'));
         }
         if (empty($data['entityname'])) {
-            $args['category_registry'] = $data;
-            LogUtil::registerError(__('Error! You did not select an entity.'));
-            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
+            throw new \InvalidArgumentException(__('Error! You did not select an entity.'));
         }
         if (empty($data['property'])) {
-            $args['category_registry'] = $data;
-            LogUtil::registerError(__('Error! You did not enter a property name.'));
-            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
+            throw new \InvalidArgumentException(__('Error! You did not enter a property name.'));
         }
         if ((int)$data['category_id'] == 0) {
-            $args['category_registry'] = $data;
-            LogUtil::registerError(__('Error! You did not select a category.'));
-            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
+            throw new \InvalidArgumentException(__('Error! You did not select a category.'));
         }
 
         if (isset($data['id']) && (int)$data['id'] > 0) {
@@ -354,12 +381,19 @@ class AdminformController extends \Zikula_AbstractController
         return $this->redirect(ModUtil::url('ZikulaCategoriesModule', 'admin', 'editregistry'));
     }
 
+    /**
+     * edit module perferences
+     *
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     */
     public function preferencesAction()
     {
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $userrootcat = $this->request->get('userrootcat', null);
@@ -386,5 +420,4 @@ class AdminformController extends \Zikula_AbstractController
 
         return $this->redirect(ModUtil::url('ZikulaCategoriesModule', 'admin', 'preferences'));
     }
-
 }

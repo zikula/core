@@ -1,12 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -31,6 +30,8 @@ use Doctrine\ORM\Mapping as ORM;
 class CategoryAttributeEntity extends EntityAccess
 {
     /**
+     * The id of the category the attribute belongs to
+     *
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="attributes")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
@@ -38,18 +39,26 @@ class CategoryAttributeEntity extends EntityAccess
     private $category;
 
     /**
+     * The name of the attribute
+     *
      * @ORM\Id
      * @ORM\Column(type="string", length=80)
      */
     private $name;
 
     /**
+     * The value of the attribute
+     *
      * @ORM\Column(type="text")
      */
     private $value;
 
     /**
      * constructor
+     *
+     * @param int    $category the category id
+     * @param string $name     the name of the attribute
+     * @param string $value    the value of the attribute
      */
     public function __construct($category, $name, $value)
     {

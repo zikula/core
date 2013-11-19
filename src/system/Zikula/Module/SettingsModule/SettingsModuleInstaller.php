@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -23,7 +22,7 @@ use DoctrineHelper;
 use EventUtil;
 
 /**
- * Settings_Installer class.
+ * Installation and upgrade routines for the settings module
  *
  * PLEASE NOTE CAREFULLY.  The use of System::get/set/delVar() is deliberate
  * we cannot use $this->get/set/delVar() because the keys will be incorrectly
@@ -120,6 +119,13 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         return true;
     }
 
+    /**
+     * upgrade the module from an old version
+     *
+     * @param  string $oldversion version number string to upgrade from
+     *
+     * @return bool|string true on success, last valid version string or false if fails
+     */
     public function upgrade($oldversion)
     {
         // always ensure that the version info is upgraded

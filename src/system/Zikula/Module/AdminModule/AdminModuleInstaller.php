@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,14 +16,18 @@ namespace Zikula\Module\AdminModule;
 use DoctrineHelper;
 use Zikula\Module\AdminModule\Entity\AdminCategoryEntity;
 
+/**
+ * Installation and upgrade routines for the admin module
+ */
 class AdminModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * Initialise the Admin module.
+     *
      * This function is only ever called once during the lifetime of a particular
      * module instance
      *
-     * @return boolean True if initialisation succcesful, false otherwise.
+     * @return boolean True if initialisation successful, false otherwise.
      */
     public function install()
     {
@@ -61,8 +64,9 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param  string $oldVersion version number string to upgrade from
-     * @return mixed  true on success, last valid version string or false if fails
+     * @param  string $oldversion version number string to upgrade from
+     *
+     * @return bool|string true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
@@ -78,9 +82,11 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
 
     /**
      * delete the Admin module
+     *
      * This function is only ever called once during the lifetime of a particular
      * module instance
-     * @return bool true if deletetion succcesful, false otherwise
+     *
+     * @return bool true if deletion successful, false otherwise
      */
     public function uninstall()
     {

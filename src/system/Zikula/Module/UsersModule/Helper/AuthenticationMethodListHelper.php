@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
+  * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,10 +16,11 @@ namespace Zikula\Module\UsersModule\Helper;
 
 use Zikula_Api_AbstractAuthentication;
 use ModUtil;
-use Zikula_Exception_Fatal;
+
 use Zikula_AbstractErrorHandler;
 use LogUtil;
 use Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
  * A list of authentication methods advertised by modules that have the authentication capability.
@@ -66,9 +66,10 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      * Creates an instance of this collection, initializeing the list.
      *
      * @param \Zikula_AbstractBase $base                                 The parent base for this collection.
-     * @param array               $orderedListableAuthenticationMethods Used to order and filter the list.
+     * @param array                $orderedListableAuthenticationMethods Used to order and filter the list.
+     * @param int                  $filter                               Filter to apply when getting methods
      *
-     * @throws Zikula_Exception_Fatal Thrown if a list of authentication modules cannot be obtained from ModUtil.
+     * @throws FatalErrorException Thrown if a list of authentication modules cannot be obtained from ModUtil.
      */
     public function __construct(\Zikula_AbstractBase $base, array $orderedListableAuthenticationMethods = array(), $filter = Zikula_Api_AbstractAuthentication::FILTER_NONE)
     {
@@ -78,7 +79,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
 
         $authenticationModules = ModUtil::getModulesCapableOf('authentication');
         if (!is_array($authenticationModules)) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid list of authentication modules was returned by ModUtil::getModulesCapableOf().'));
+            throw new FatalErrorException($this->__('An invalid list of authentication modules was returned by ModUtil::getModulesCapableOf().'));
         }
 
         foreach ($authenticationModules as $modinfo) {
@@ -177,7 +178,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      *
      * @return AuthenticationMethodHelper|void If a default authentication method is appropriate, then that definition; otherwise null.
      *
-     * @throws Zikula_Exception_Fatal Thrown if the collection is in an inconsistent state.
+     * @throws FatalErrorException Thrown if the collection is in an inconsistent state.
      */
     public function getAuthenticationMethodForDefault()
     {
@@ -193,7 +194,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
         if (!$authenticationMethodForDefault) {
             // Nothing in the list at all! Because the constructor forces Users-uname if the list would otherwise be
             // empty this should not happen.
-            throw new Zikula_Exception_Fatal($this->__('The authentication method list is in an inconsistent state. No authentication modules.'));
+            throw new FatalErrorException($this->__('The authentication method list is in an inconsistent state. No authentication modules.'));
         }
 
         return $authenticationMethodForDefault;
@@ -206,7 +207,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      *
      * @return boolean True if the offset is valid; otherwise false.
      *
-     * @throws Zikula_Exception_Fatal Thrown if the offset is not valid.
+     * @throws FatalErrorException Thrown if the offset is not valid.
      */
     public function offsetExists($offset)
     {
@@ -214,12 +215,12 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
             if ((int)$offset == $offset) {
                 return isset($this->authenticationMethods[$offset]);
             } else {
-                throw new Zikula_Exception_Fatal($this->__f('An invalid numeric offset was received (\'%1$s\').', array($offset)));
+                throw new FatalErrorException($this->__f('An invalid numeric offset was received (\'%1$s\').', array($offset)));
             }
         } elseif (is_string($offset)) {
             return isset($this->nameIndex[$offset]);
         } else {
-            throw new Zikula_Exception_Fatal($this->__f('An invalid offset was received (\'%1$s\').', array($offset)));
+            throw new FatalErrorException($this->__f('An invalid offset was received (\'%1$s\').', array($offset)));
         }
     }
 
@@ -249,11 +250,11 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      *
      * @return void
      *
-     * @throws Zikula_Exception_Fatal Always thrown; this function is not valid for this collection.
+     * @throws FatalErrorException Always Thrown; this function is not valid for this collection.
      */
     public function offsetSet($offset, $value)
     {
-        throw new Zikula_Exception_Fatal($this->__f('Instances of $1$s are immutable.', array(__CLASS__)));
+        throw new FatalErrorException($this->__f('Instances of $1$s are immutable.', array(__CLASS__)));
     }
 
     /**
@@ -263,11 +264,11 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      *
      * @return void
      *
-     * @throws Zikula_Exception_Fatal Always thrown; this function is not valid for this collection.
+     * @throws FatalErrorException Always Thrown; this function is not valid for this collection.
      */
     public function offsetUnset($offset)
     {
-        throw new Zikula_Exception_Fatal($this->__f('Instances of $1$s are immutable.', array(__CLASS__)));
+        throw new FatalErrorException($this->__f('Instances of $1$s are immutable.', array(__CLASS__)));
     }
 
     /**

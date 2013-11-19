@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -21,6 +20,9 @@ use System;
 use Zikula_View_Theme;
 use Zikula_View;
 
+/**
+ * API functions used by administrative controllers
+ */
 class AdminApi extends \Zikula_AbstractApi
 {
     /**

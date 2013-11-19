@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,8 +17,16 @@ use HookUtil;
 use ModUtil;
 use Zikula\Component\HookDispatcher\SubscriberBundle;
 
+/**
+ * Version information for the blocks module
+ */
 class BlocksModuleVersion extends \Zikula_AbstractVersion
 {
+    /**
+     * Generate an array of meta data about this module
+     *
+     * @return array meta data array
+     */
     public function getMetaData()
     {
         $meta = array();
@@ -65,5 +72,4 @@ class BlocksModuleVersion extends \Zikula_AbstractVersion
         $bundle->addEvent('form_edit', 'blocks.ui_hooks.htmlblock.content.form_edit');
         $this->registerHookSubscriberBundle($bundle);
     }
-
 }

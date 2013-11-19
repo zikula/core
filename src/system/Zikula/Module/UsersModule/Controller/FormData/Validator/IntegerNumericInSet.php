@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -30,8 +29,8 @@ class IntegerNumericInSet extends AbstractValidator
      * Creates a new instance of this validator, intializing the list of valid integers.
      *
      * @param \Zikula_ServiceManager $serviceManager The current service manager.
-     * @param array                 $validIntegers  An array containing a list of integers considered to be valid for the field's data contents.
-     * @param type                  $errorMessage   The message to return if the data is not valid.
+     * @param array                  $validIntegers  An array containing a list of integers considered to be valid for the field's data contents.
+     * @param string                 $errorMessage   The message to return if the data is not valid.
      *
      * @throws \InvalidArgumentException Thrown if the list of valid integer numerics is invalid, or if it contains an invalid value.
      */
