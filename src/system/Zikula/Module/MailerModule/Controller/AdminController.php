@@ -54,6 +54,8 @@ class AdminController extends \Zikula_AbstractController
      * module
      *
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {
@@ -71,6 +73,8 @@ class AdminController extends \Zikula_AbstractController
      * This function displays a form to sent a test mail
      *
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function testconfigAction()
     {

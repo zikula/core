@@ -188,6 +188,8 @@ class AdminController extends \Zikula_AbstractController
      * Display a form to add a new group.
      *
      * @return Response symfony response object.
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have add access to the module
      */
     public function newgroupAction()
     {
@@ -271,6 +273,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response symfony response object.
      *
      * @throws \NotFoundHttpException Thrown if the requested group isn't found
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the group
      */
     public function modifyAction(array $args = array())
     {
@@ -354,6 +357,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response|void response object if no confirmation, void otherwise
      *
      * @throws \InvalidArgumentException Thrown if the requested group is the current default group
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete access to the group
      */
     public function deleteAction(array $args = array())
     {
@@ -417,6 +421,8 @@ class AdminController extends \Zikula_AbstractController
      *                      }
      *
      * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the group
      */
     public function groupmembershipAction(array $args = array())
     {
@@ -601,6 +607,7 @@ class AdminController extends \Zikula_AbstractController
      * @return mixed Response|void symfony repsonse object if confirmation isn't provided, void otherwise
      *
      * @throws \RuntimeException Throw if the user couldn't be removed from the requested group
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the group
      */
     public function removeuserAction(array $args = array())
     {
@@ -762,6 +769,8 @@ class AdminController extends \Zikula_AbstractController
      * Display a form to modify configuration parameters of the module.
      *
      * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {

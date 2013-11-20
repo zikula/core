@@ -34,6 +34,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * Resequence categories
      *
      * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the module
      */
     public function resequenceAction()
     {
@@ -72,6 +74,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *                       }
      *
      * @return AjaxResponse ajax response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit or add (depending mode) access to the module
+     * @throws NotFoundHttpException Thrown if category cannot be found
      */
     public function editAction($args = array())
     {
@@ -131,6 +136,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * Copy a category
      *
      * @return AjaxResponse ajax response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have add access to the module
      */
     public function copyAction()
     {
@@ -182,6 +189,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * Delete a category
      *
      * @return AjaxResponse ajax response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete access to the module
      */
     public function deleteAction()
     {
@@ -207,6 +216,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * Delete a category and move any existing subcategories
      *
      * @return AjaxResponse ajax response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete access to the module
      */
     public function deleteandmovesubsAction()
     {
@@ -260,6 +271,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * Display a dialog to get the category to move subcategories to once the parent has been deleted
      *
      * @return AjaxResponse ajax response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete access to the module
      */
     public function deletedialogAction()
     {
@@ -288,6 +301,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * Activate a category
      *
      * @return AjaxResponse ajax response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the module
      */
     public function activateAction()
     {
@@ -313,6 +328,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * Deactivate a category
      *
      * @return AjaxResponse ajax response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the module
      */
     public function deactivateAction()
     {
@@ -338,6 +355,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * Save a category
      *
      * @return AjaxResponse ajax response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit or add (depending on mode) access to the module
      */
     public function saveAction()
     {

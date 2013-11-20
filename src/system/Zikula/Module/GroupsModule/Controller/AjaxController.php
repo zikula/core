@@ -37,6 +37,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @param string $description the group description.
      *
      * @return AjaxResponse ajax response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the group
      */
     public function updategroupAction()
     {
@@ -105,6 +107,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @return AjaxResponse ajax response object
      *
      * @throws FatalErrorException Thrown if the group id isn't a valid group
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have add access to the module
      */
     public function creategroupAction()
     {
@@ -157,6 +160,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @throws FatalErrorException Thrown if the requested group is the default group or
      *                                    if the requested group cannot be deleted
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete access to the group
      */
     public function deletegroupAction()
     {
@@ -192,6 +196,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @return AjaxResponse ajax response object
      *
      * @throws FatalErrorException Thrown if the user cannot be deleted from the group
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the group
      */
     public function removeuserAction()
     {

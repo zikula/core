@@ -25,6 +25,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * dispatch a theme.ajax_request event
      *
      * @return mixed results of the event request
+     *
+     * @throws NotFoundHttpException Thrown if the no event handlers responsed to the event
      */
     public function dispatchAction()
     {
