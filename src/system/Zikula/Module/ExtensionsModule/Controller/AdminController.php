@@ -280,7 +280,7 @@ class AdminController extends \Zikula_AbstractController
                                     'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'plus-sign-alt text-success',
+                                    'image' => 'plus-square text-success',
                                     'color' => '#0c0',
                                     'title' => $this->__f('Activate \'%s\'', $mod['name']));
                             $actions[] = array(
