@@ -1298,7 +1298,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
-     * @throws \InvalidArugmentException Thrown if the user id isn't set or numeric
+     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      * @throws \RuntimeException Thrown if the registration record couldn't be retrieved
      */
     public function displayRegistrationAction()
@@ -1317,7 +1317,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (empty($uid) || !is_numeric($uid)) {
-            throw new \InvalidArugmentException(LogUtil::getErrorMsgArgs());
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         }
 
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
@@ -1374,7 +1374,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedHttpException Thrown if the current user does not have edit access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
-     * @throws \InvalidArugmentException Thrown if the user id isn't set or numeric
+     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      * @throws \RuntimeException Thrown if the registration record couldn't be retrieved
      */
     public function modifyRegistrationAction()
@@ -1556,7 +1556,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
-     * @throws \InvalidArugmentException Thrown if the user id isn't set or numeric
+     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
      * @throws \RuntimeException Thrown if there was a problem sending the verification code
      */
@@ -1582,7 +1582,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
-            throw new \InvalidArugmentException(LogUtil::getErrorMsgArgs());
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         }
 
         // Got just a uid.
@@ -1668,7 +1668,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
-     * @throws \InvalidArugmentException Thrown if the user id isn't set or numeric
+     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
      * @throws \RuntimeException Thrown if the registration record has already been approved or
      *                                  if the user hasn't set a password yet or
@@ -1793,7 +1793,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedHttpException Thrown if the current user does not have delete access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
-     * @throws \InvalidArugmentException Thrown if the user id isn't set or numeric
+     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
      * @throws \RuntimeException Thrown if there was a problem deleting the registration
      */

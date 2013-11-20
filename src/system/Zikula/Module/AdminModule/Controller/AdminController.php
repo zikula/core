@@ -249,7 +249,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the category
      * @throws NotFoundHttpException Thrown if the category cannot be found
-     * @throws \InvalidArugmentException thrown if the category id cannot be found
+     * @throws \InvalidArgumentException thrown if the category id cannot be found
      */
     public function deleteAction($args)
     {

@@ -161,7 +161,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Delete a permission
      *
-     * @return \Zikula_Response_Ajax Ajax response containg the id of the permission that has been deleted
+     * @return \Zikula_Response_Ajax Ajax response containing the id of the permission that has been deleted
      *
      * @thrown FatalErrorException Thrown if the requested permission rule is the default admin rule or if
      *                                    if the permission rule couldn't be deleted

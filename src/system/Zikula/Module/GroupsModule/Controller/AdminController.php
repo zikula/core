@@ -13,7 +13,6 @@
 
 namespace Zikula\Module\GroupsModule\Controller;
 
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula_View;
 use ModUtil;
 use SecurityUtil;
