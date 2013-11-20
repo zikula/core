@@ -393,12 +393,12 @@ class UserApi extends \Zikula_AbstractApi
             $nextvar = 3;
         }
 
-        if ($this->request->get->get == 'recent' && isset($args['vars'][$nextvar])) {
+        if ($this->request->get->get('func') == 'recent' && isset($args['vars'][$nextvar])) {
             System::queryStringSetVar('startnum', $args['vars'][$nextvar]);
         }
 
         // identify the correct parameter to identify the page
-        if ($this->request->get->get('func') == 'search' && isset($args['vars'][$nextvar]) && !empty($args['vars'][$nextvar])) {
+        if ($this->request->query->get('func') == 'search' && isset($args['vars'][$nextvar]) && !empty($args['vars'][$nextvar])) {
             System::queryStringSetVar('q', $args['vars'][$nextvar]);
             $nextvar++;
             if (isset($args['vars'][$nextvar]) && $args['vars'][$nextvar] == 'page') {

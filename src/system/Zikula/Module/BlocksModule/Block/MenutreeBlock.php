@@ -303,10 +303,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars['menutree_anysettingsaccess'] = $vars['menutree_adminaccess'] || $vars['menutree_titlesaccess'] || $vars['menutree_displayaccess'] || $vars['menutree_settingsaccess'];
 
         // check if the users wants to add a new link via the "Add current url" link in the block
-        $addurl = $this->request->get->get('addurl', 0);
+        $addurl = $this->request->query->get('addurl', 0);
 
         // or if we come from the normal "edit this block" link
-        $fromblock = $this->request->get->get('fromblock', null);
+        $fromblock = $this->request->query->get('fromblock', null);
 
         $vars['redirect'] = '';
         $vars['menutree_newurl'] = '';
