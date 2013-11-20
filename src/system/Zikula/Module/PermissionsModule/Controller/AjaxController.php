@@ -37,6 +37,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @param level the permission level
      *
      * @return \Zikula_Response_Ajax Ajax repsonse with updated permissions
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function updatepermissionAction()
     {
@@ -101,6 +103,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @param permorder array of sorted permissions (value = permission id)
      *
      * @return \Zikula_Response_Ajax ajax response containing true
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function changeorderAction()
     {
@@ -125,6 +129,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * Create a blank permission and return it
      *
      * @return \Zikula_Response_Ajax array with new permission
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function createpermissionAction()
     {
@@ -165,6 +171,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @thrown FatalErrorException Thrown if the requested permission rule is the default admin rule or if
      *                                    if the permission rule couldn't be deleted
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function deletepermissionAction()
     {
@@ -197,6 +204,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * Test a permission rule for a given username
      *
      * @return \Zikula_Response_Ajax Ajax response containing string with test result for display
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function testpermissionAction()
     {

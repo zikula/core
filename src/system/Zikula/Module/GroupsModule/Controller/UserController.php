@@ -45,6 +45,8 @@ class UserController extends \Zikula_AbstractController
      * Display items
      *
      * @return Response symfony response object
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have overview access to the module
      */
     public function viewAction()
     {
@@ -123,7 +125,8 @@ class UserController extends \Zikula_AbstractController
      *
      * @throws \InvalidArgumentException Thrown if the group isn't set or isn't numeric or
      *                                          if the action isn't one of subscribe|unsubscribe|cancel
-     * @throws AccessDeniedHttpException Thrown if the user isn't logged in
+     * @throws AccessDeniedHttpException Thrown if the user isn't logged in or 
+     *                                          if the user doesn't have overview access to the module
      * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws \RuntimeException Thrown if the user is already a member of the group or
      *                                  if the group cannot be applied for or
@@ -245,6 +248,7 @@ class UserController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if the startnum parameter isn't numeric
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have overview access to the memberslist component of the module
      */
     public function memberslistAction()
     {

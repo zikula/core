@@ -54,7 +54,9 @@ class AdminpluginController extends \Zikula_AbstractController
      *
      * @return mixed
      * 
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module or
+     *                                          if the plugin isn't configurable
+     * @throws NotFoundHttpException Thrown if the plugin doesn't have the requested service or action methods
      */
     public function dispatchAction()
     {

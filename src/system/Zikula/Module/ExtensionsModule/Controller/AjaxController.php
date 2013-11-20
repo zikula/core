@@ -35,6 +35,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @throws \InvalidArgumentException Thrown if either the subsriber, provider or subsriberArea parameters are empty
      * @throws \RuntimeException Thrown if either the subscriber or provider module isn't available
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to either the subscriber or provider modules
      */
     public function togglesubscriberareastatusAction()
     {
@@ -114,6 +115,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @throws \InvalidArgumentException Thrown if the subscriber or subscriberarea parameters aren't valid
      * @throws \RuntimeException Thrown if the subscriber module isn't available
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the subscriber module
      */
     public function changeproviderareaorderAction()
     {

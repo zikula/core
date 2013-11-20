@@ -34,6 +34,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @param position int zone id
      *
      * @return Zikula_Response_Ajax true or Ajax error
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function changeblockorderAction()
     {
@@ -76,6 +78,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return Zikula_Response_Ajax true or Ajax error
      *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      * @throws FatalErrorException Thrown if no block id is supplied or
      *                                     if the requested block isn't valid
      */
