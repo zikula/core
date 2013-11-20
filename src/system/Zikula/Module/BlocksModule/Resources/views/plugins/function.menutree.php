@@ -35,6 +35,7 @@
  *                  this params have to be given in this order:
  *                  'first,last,single,parent,childless,level'
  *                  (string - coma separated list of values, optional)
+ *   - bootstrap:   if true, bootstrap style markup will be added (only used for extended menu) (boolean, default: false)
  *   - assign:      if set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
@@ -90,7 +91,7 @@ function smarty_function_menutree($params, $smarty)
  *
  * @return string the rendered list
  */
-function _htmlList($tree, $treeNodePrefix, $treeClassPrefix, $treeId = '', $treeClass = '')
+function _htmlList($tree, $treeNodePrefix, $treeClassPrefix, $treeId = '', $treeClass = '', $boostrap = false)
 {
     $html = '<ul';
     $html .= !empty($treeId) ? ' id="'.$treeId.'"' : '';
@@ -128,10 +129,11 @@ function _htmlList($tree, $treeNodePrefix, $treeClassPrefix, $treeId = '', $tree
  * @param int    $depth           TODO what does this parameter do?
  * @param string $treeId          the id of the list control
  * @param string $treeClass       the class of the tree control
+ * @param boolean $bootstrap      is the menu to be styled with bootstrap?
  *
  * @return string the rendered list
  */
-function _htmlListExt($tree, $treeNodePrefix, $treeClassPrefix, $ext, $depth, $treeId = '', $treeClass = '')
+function _htmlListExt($tree, $treeNodePrefix, $treeClassPrefix, $ext, $depth, $treeId = '', $treeClass = '', $bootstrap = false)
 {
     $html = '<ul';
     $html .= !empty($treeId) ? ' id="'.$treeId.'"' : '';
