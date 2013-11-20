@@ -13,6 +13,7 @@
 
 namespace Zikula\Module\UsersModule\Api;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper;
@@ -301,6 +302,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      * @return boolean True if the authentication_info authenticates with the source; otherwise false on authentication failure.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
+     * @throws AccessDeniedHttpException Thrown if the login fails due to invalid credentials
      */
     public function checkPassword(array $args)
     {
@@ -419,9 +421,9 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
 
         if (!$passwordAuthenticates && !LogUtil::hasErrors()) {
             if ($authenticationMethod['method'] == 'email') {
-                throw new \InvalidArgumentException($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
+                throw new AccessDeniedHttpException($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
             } else {
-                throw new \InvalidArgumentException($this->__('Sorry! The user name or password you entered was incorrect.'));
+                throw new AccessDeniedHttpException($this->__('Sorry! The user name or password you entered was incorrect.'));
             }
         }
 
