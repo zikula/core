@@ -21,7 +21,6 @@ use ZLanguage;
 use ModUtil;
 use Zikula\Module\BlocksModule\MenutreeUtil;
 use Zikula\Module\BlocksModule\MenutreeTree;
-use FormUtil;
 use System;
 use Zikula_View;
 use DataUtil;
@@ -304,10 +303,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars['menutree_anysettingsaccess'] = $vars['menutree_adminaccess'] || $vars['menutree_titlesaccess'] || $vars['menutree_displayaccess'] || $vars['menutree_settingsaccess'];
 
         // check if the users wants to add a new link via the "Add current url" link in the block
-        $addurl = FormUtil::getPassedValue('addurl', 0, 'GET');
+        $addurl = $this->request->get->get('addurl', 0);
 
         // or if we come from the normal "edit this block" link
-        $fromblock = FormUtil::getPassedValue('fromblock', null, 'GET');
+        $fromblock = $this->request->get->get('fromblock', null);
 
         $vars['redirect'] = '';
         $vars['menutree_newurl'] = '';
@@ -354,12 +353,12 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // check if import old menu
-        $menutree_menus = FormUtil::getPassedValue('menutree_menus', 'null');
+        $menutree_menus = $this->request->request->get('menutree_menus', 'null');
 
         if ($menutree_menus != 'null') {
             $vars['menutree_content'] = $this->_import_menu($menutree_menus);
         } else {
-            $vars['menutree_content'] = FormUtil::getPassedValue('menutree_content', '', 'POST');
+            $vars['menutree_content'] = $this->request->request->get('menutree_content', '');
             $vars['menutree_content'] = DataUtil::urlsafeJsonDecode($vars['menutree_content']);
         }
 
@@ -371,7 +370,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         uasort($vars['menutree_content'], array('Zikula\Module\BlocksModule\Block\MenutreeBlock','sort_menu'));
 
         // get other form data
-        $menutree_data = FormUtil::getPassedValue('menutree');
+        $menutree_data = $this->request->request->get('menutree');
 
         $vars['menutree_tpl'] = isset($menutree_data['tpl']) ? $menutree_data['tpl'] : '';
         if (empty($vars['menutree_tpl']) || !$this->view->template_exists($vars['menutree_tpl'])) {

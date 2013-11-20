@@ -17,7 +17,6 @@ use Zikula_View;
 use ModUtil;
 use SecurityUtil;
 use LogUtil;
-use FormUtil;
 use System;
 use DataUtil;
 use StringUtil;
@@ -77,7 +76,7 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedHttpException();
         }
 
-        $startnum = (int)FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 0, 'GET');
+        $startnum = (int)$this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : 0);
         $itemsperpage = $this->getVar('itemsperpage');
 
         $categories = array();
@@ -136,7 +135,7 @@ class AdminController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        $category = FormUtil::getPassedValue('category', isset($args['category']) ? $args['category'] : null, 'POST');
+        $category = $this->request->request->get('category', isset($args['category']) ? $args['category'] : null);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$category[name]::", ACCESS_ADD)) {
@@ -171,8 +170,8 @@ class AdminController extends \Zikula_AbstractController
      */
     public function modifyAction($args)
     {
-        $cid = FormUtil::getPassedValue('cid', isset($args['cid']) ? $args['cid'] : null, 'GET');
-        $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
+        $cid = (int)$this->request->query->get('cid', isset($args['cid']) ? $args['cid'] : null);
+        $objectid = (int)$this->request->query->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
 
         if (!empty($objectid)) {
             $cid = $objectid;
@@ -212,7 +211,7 @@ class AdminController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        $category = FormUtil::getPassedValue('category', isset($args['category']) ? $args['category'] : null, 'POST');
+        $category = $this->request->request->get('category', isset($args['category']) ? $args['category'] : null);
         if (!empty($category['objectid'])) {
             $category['cid'] = $category['objectid'];
         }
@@ -250,15 +249,28 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the category
      * @throws NotFoundHttpException Thrown if the category cannot be found
+     * @throws \InvalidArugmentException thrown if the category id cannot be found
      */
     public function deleteAction($args)
     {
-        $cid = FormUtil::getPassedValue('cid', isset($args['cid']) ? $args['cid'] : null, 'REQUEST');
-        $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
-        $confirmation = FormUtil::getPassedValue('confirmation', null, 'POST');
+        // check where to get the parameters from for this dual purpose controller
+        if ($this->request->isMethod('GET')) {
+            $cid = (int)$this->request->query->get('cid', null);
+        } elseif ($this->request->isMethod('POST')) {
+            $cid = (int)$this->request->request->get('cid', isset($args['cid']) ? $args['cid'] : null);
+        }
+        if ($this->request->isMethod('GET')) {
+            $objectid = (int)$this->request->query->get('objectid', null);
+        } elseif ($this->request->isMethod('POST')) {
+            $objectid = (int)$this->request->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
+        }
+        // map the generic object id onto the category id onto the object id
         if (!empty($objectid)) {
             $cid = $objectid;
         }
+
+        // confirmation can only come from a form so use post only here
+        $confirmation = $this->request->request->get('confirmation', null);
 
         $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $cid));
         if (empty($category)) {
@@ -324,7 +336,7 @@ class AdminController extends \Zikula_AbstractController
         // Now prepare the display of the admin panel by getting the relevant info.
 
         // Get parameters from whatever input we need.
-        $acid = FormUtil::getPassedValue('acid', (isset($args['acid']) ? $args['acid'] : null), 'GET');
+        $acid = $this->request->query->get('acid', (isset($args['acid']) ? $args['acid'] : null));
 
         // cid isn't set, so go to the default category
         if (empty($acid)) {
@@ -476,7 +488,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get module vars
-        $modvars = FormUtil::getPassedValue('modvars', null, 'POST');
+        $modvars = $this->request->request->get('modvars', null, 'POST');
 
         // check module vars
         $modvars['modulesperrow'] = isset($modvars['modulesperrow']) ? $modvars['modulesperrow'] : 5;
@@ -501,7 +513,7 @@ class AdminController extends \Zikula_AbstractController
 
         // get admin modules
         $adminmodules = ModUtil::getAdminMods();
-        $adminmods = FormUtil::getPassedValue('adminmods', null, 'POST');
+        $adminmods = $this->request->request->get('adminmods', null);
 
         foreach ($adminmodules as $adminmodule) {
             $category = $adminmods[$adminmodule['name']];
@@ -538,7 +550,7 @@ class AdminController extends \Zikula_AbstractController
     public function categorymenuAction($args)
     {
         // get the current category
-        $acid = FormUtil::getPassedValue('acid', isset($args['acid']) ? $args['acid'] : $this->getVar('startcategory'), 'GET');
+        $acid = (int)$this->request->query->get('acid', isset($args['acid']) ? $args['acid'] : $this->getVar('startcategory'));
 
         // Get all categories
         $categories = array();

@@ -21,7 +21,6 @@ use BlockUtil;
 use UserUtil;
 use ThemeUtil;
 use Zikula_View;
-use FormUtil;
 use Zikula_View_Theme;
 
 /**

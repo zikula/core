@@ -21,7 +21,6 @@ use UserUtil;
 use ModUtil;
 use System;
 use DataUtil;
-use FormUtil;
 use Zikula_View_Theme;
 
 /**
@@ -283,9 +282,9 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
      */
     public function update($blockinfo)
     {
-        $vars['displaymodules'] = FormUtil::getPassedValue('displaymodules');
-        $vars['style']          = FormUtil::getPassedValue('style');
-        $vars['stylesheet']     = FormUtil::getPassedValue('stylesheet');
+        $vars['displaymodules'] = $this->request->request->get('displaymodules');
+        $vars['style']          = $this->request->request->get('style');
+        $vars['stylesheet']     = $this->request->request->get('stylesheet');
 
         // Defaults
         if (empty($vars['displaymodules'])) {
@@ -302,11 +301,11 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
         $content = array();
         $c = 1;
 
-        $linkname   = FormUtil::getPassedValue('linkname');
-        $linkurl    = FormUtil::getPassedValue('linkurl');
-        $linkdesc   = FormUtil::getPassedValue('linkdesc');
-        $linkdelete = FormUtil::getPassedValue('linkdelete');
-        $linkinsert = FormUtil::getPassedValue('linkinsert');
+        $linkname   = $this->request->request->get('linkname');
+        $linkurl    = $this->request->request->get('linkurl');
+        $linkdesc   = $this->request->request->get('linkdesc');
+        $linkdelete = $this->request->request->get('linkdelete');
+        $linkinsert = $this->request->request->get('linkinsert');
 
         if (isset($linkname)) {
             foreach ($linkname as $v) {
@@ -320,10 +319,10 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
             }
         }
 
-        $new_linkname = FormUtil::getPassedValue('new_linkname');
-        $new_linkurl  = FormUtil::getPassedValue('new_linkurl');
-        $new_linkdesc = FormUtil::getPassedValue('new_linkdesc');
-        $new_linkinsert = (bool)FormUtil::getPassedValue('new_linkinsert');
+        $new_linkname = $this->request->request->get('new_linkname');
+        $new_linkurl  = $this->request->request->get('new_linkurl');
+        $new_linkdesc = $this->request->request->get('new_linkdesc');
+        $new_linkinsert = (bool)$this->request->request->get('new_linkinsert');
 
         if ($new_linkname) {
             $content[] = $new_linkurl . '|' . $new_linkname . '|' . $new_linkdesc;

@@ -15,7 +15,6 @@ namespace Zikula\Module\CategoriesModule\Controller;
 
 use LogUtil;
 use SecurityUtil;
-use FormUtil;
 use System;
 use CategoryUtil;
 use ModUtil;

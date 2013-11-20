@@ -17,7 +17,6 @@ use LogUtil;
 use ModUtil;
 use System;
 use SecurityUtil;
-use FormUtil;
 use UserUtil;
 use ThemeUtil;
 use DataUtil;
@@ -51,7 +50,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         // get our input
-        $startnum = FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 1, 'GET');
+        $startnum = $this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : 1);
 
         // we need this value multiple times, so we keep it
         $itemsperpage = $this->getVar('itemsperpage');

@@ -18,7 +18,6 @@ use UserUtil;
 use Doctrine_Manager;
 use SessionUtil;
 use System;
-use FormUtil;
 use DataUtil;
 use ZLanguage;
 use LogUtil;
@@ -394,12 +393,12 @@ class UserApi extends \Zikula_AbstractApi
             $nextvar = 3;
         }
 
-        if (FormUtil::getPassedValue('func') == 'recent' && isset($args['vars'][$nextvar])) {
+        if ($this->request->get->get == 'recent' && isset($args['vars'][$nextvar])) {
             System::queryStringSetVar('startnum', $args['vars'][$nextvar]);
         }
 
         // identify the correct parameter to identify the page
-        if (FormUtil::getPassedValue('func') == 'search' && isset($args['vars'][$nextvar]) && !empty($args['vars'][$nextvar])) {
+        if ($this->request->get->get('func') == 'search' && isset($args['vars'][$nextvar]) && !empty($args['vars'][$nextvar])) {
             System::queryStringSetVar('q', $args['vars'][$nextvar]);
             $nextvar++;
             if (isset($args['vars'][$nextvar]) && $args['vars'][$nextvar] == 'page') {
