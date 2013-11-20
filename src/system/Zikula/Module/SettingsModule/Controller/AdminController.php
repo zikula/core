@@ -256,7 +256,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Displays the content of {@link phpinfo()}.
      *
-     * @return \Symfony\Component\HttpFoundation\Response The html output.
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
@@ -276,6 +276,4 @@ class AdminController extends \Zikula_AbstractController
 
         return $this->response($this->view->fetch('Admin/phpinfo.tpl'));
     }
-
-
 }

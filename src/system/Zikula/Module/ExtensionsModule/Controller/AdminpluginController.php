@@ -19,7 +19,6 @@ use PluginUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula_Plugin_ConfigurableInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Extensions_Plugin controller.
@@ -47,7 +46,7 @@ class AdminpluginController extends \Zikula_AbstractController
      */
     protected function initialize()
     {
-        // Do not setupt a view for this controller.
+        // Do not setup a view for this controller.
     }
 
     /**

@@ -76,7 +76,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
+     * @throws \InvalidArgumentException Thrown if the id parameter is not provided or not numeric
      * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the requested module
      */
@@ -642,7 +642,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
+     * @throws \InvalidArgumentException Thrown if the id parameter is not provided or not numeric
      * @throws \RuntimeException Thrown if the module state doesn't allow this action
      */
     public function activateAction()
@@ -688,7 +688,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
+     * @throws \InvalidArgumentException Thrown if the id parameter is not provided or not numeric
      */
     public function upgradeAction()
     {
@@ -773,7 +773,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
+     * @throws \InvalidArgumentException Thrown if the id parameter is not provided or not numeric
      * @throws \RuntimeException Thrown if the requested module is a core module and cannot be deactivated
      * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
      */
@@ -826,7 +826,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
+     * @throws \InvalidArgumentException Thrown if the id parameter is not provided or not numeric
      * @throws \RuntimeException Thrown if any blocks associated with the module cannot be deleted
      */
     public function removeAction()
@@ -1257,7 +1257,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
+     * @throws \InvalidArgumentException Thrown if the plugin parameter is not provided
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function initialisePluginAction()
@@ -1302,7 +1302,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
+     * @throws \InvalidArgumentException Thrown if the plugin parameter is not provided
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function deactivatePluginAction()
@@ -1347,7 +1347,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
+     * @throws \InvalidArgumentException Thrown if the plugin parameter is not provided
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function activatePluginAction()
@@ -1392,7 +1392,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
+     * @throws \InvalidArgumentException Thrown if the plugin parameter is not provided
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function removePluginAction()
@@ -1437,7 +1437,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
+     * @throws \InvalidArgumentException Thrown if the plugin parameter is not provided
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function upgradePluginAction()

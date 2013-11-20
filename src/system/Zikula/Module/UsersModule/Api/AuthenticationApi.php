@@ -419,9 +419,9 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
 
         if (!$passwordAuthenticates && !LogUtil::hasErrors()) {
             if ($authenticationMethod['method'] == 'email') {
-                throw new \InvalidArugmentException($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
+                throw new \InvalidArgumentException($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
             } else {
-                throw new \InvalidArugmentException($this->__('Sorry! The user name or password you entered was incorrect.'));
+                throw new \InvalidArgumentException($this->__('Sorry! The user name or password you entered was incorrect.'));
             }
         }
 
@@ -599,9 +599,9 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
 
             if (!$authenticatedUid) {
                 if ($args['authentication_method']['method'] == 'email') {
-                    throw new \InvalidArugmentException($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
+                    throw new \InvalidArgumentException($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
                 } else {
-                    throw new \InvalidArugmentException($this->__('Sorry! The user name or password you entered was incorrect.'));
+                    throw new \InvalidArgumentException($this->__('Sorry! The user name or password you entered was incorrect.'));
                 }
             }
         }

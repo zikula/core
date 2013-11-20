@@ -1413,7 +1413,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
             }
             if (!isset($reginfo['email'])) {
-                throw new \InvalidArugmentException($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
+                throw new \InvalidArgumentException($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
             }
         }
 

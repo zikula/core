@@ -29,7 +29,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Change the category a module belongs to by ajax.
      *
-     * @return \Zikula_Response_Ajax Ajax response containg the moduleid on success.
+     * @return \Zikula_Response_Ajax Ajax response containing the moduleid on success.
      *
      * @throws FatalErrorException Thrown if the supplied module ID doesn't exist or
      *                                     if the module couldn't be added to the category
@@ -76,7 +76,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Add a new admin category by ajax.
      *
-     * @return \Zikula_Response_Ajax Ajax response containing the new cid on sucess
+     * @return \Zikula_Response_Ajax Ajax response containing the new cid on success
      *
      * @throws FatalErrorException Thrown if the supplied category name already exists or
      *                                     if the the category couldn't be created
@@ -249,7 +249,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Make a category the initially selected one (by ajax).
      *
-     * @return \Zikula_Response_Ajax Ajax response containg a sucess message
+     * @return \Zikula_Response_Ajax Ajax response containing a success message
      *
      * @throws FatalErrorException Thrown if the category couldn't be found or 
      *                                     if the category couldn't be set as the default
