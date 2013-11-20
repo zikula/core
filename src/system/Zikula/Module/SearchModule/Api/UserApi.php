@@ -393,7 +393,7 @@ class UserApi extends \Zikula_AbstractApi
             $nextvar = 3;
         }
 
-        if ($this->request->get->get('func') == 'recent' && isset($args['vars'][$nextvar])) {
+        if ($this->request->query->get('func') == 'recent' && isset($args['vars'][$nextvar])) {
             System::queryStringSetVar('startnum', $args['vars'][$nextvar]);
         }
 
