@@ -80,6 +80,7 @@ function smarty_function_thumb($params, Zikula_View $view)
         $preset['height'] = isset($params['height']) ? $params['height'] : null;
         $preset['mode'] = isset($params['mode']) ? $params['mode'] : null;
         $preset['extension'] = isset($params['extension']) ? $params['extension'] : null;
+        $preset['options'] = isset($params['options']) ? $params['options'] : array();
         $preset = array_filter($preset);
     }
 

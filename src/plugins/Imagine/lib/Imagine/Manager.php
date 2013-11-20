@@ -405,6 +405,10 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
      */
     private function createThumbnail(SystemPlugin_Imagine_Image $image, SystemPlugin_Imagine_Preset $preset)
     {
+        $options = array();
+        if (isset($preset['options']) || !is_array($preset['options'])) {
+            $options = $preset['options'];
+        }
 
         if (isset($preset['mode']) && $preset['mode'] === 'inset') {
             $mode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
@@ -417,7 +421,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
             $this->getTransformation()
                 ->apply($this->getImagine()->open($image->getRealPath()))
                 ->thumbnail($size, $mode)
-                ->save($image->getThumbRealPath());
+                ->save($image->getThumbRealPath(), $preset['options']);
         } catch (Exception $exception) {
             throw $exception;
         }
