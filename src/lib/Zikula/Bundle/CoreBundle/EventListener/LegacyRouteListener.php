@@ -142,7 +142,8 @@ class LegacyRouteListener implements EventSubscriberInterface
                     array('returnpage' => urlencode($request->getSchemeAndHttpHost().$request->getRequestUri()))
                 );
                 $response = new RedirectResponse($url, 302);
-                LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url);
+                $errorMessage = $e->getMessage();
+                LogUtil::registerError(!empty($errorMessage) ? $errorMessage : LogUtil::getErrorMsgPermission(), 403, $url);
                 $this->setResponse($event, $response);
             }
         } else {
