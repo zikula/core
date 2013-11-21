@@ -289,7 +289,7 @@ class AdminController extends \Zikula_AbstractController
                                     'startnum' => $startnum,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'trash',
+                                    'image' => 'trash-o',
                                     'color' => '#c00',
                                     'title' => $this->__f('Uninstall \'%s\' module', $mod['name']));
                             break;
@@ -301,7 +301,7 @@ class AdminController extends \Zikula_AbstractController
                                     'startnum' => $startnum,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'trash',
+                                    'image' => 'trash-o',
                                     'color' => '#c00',
                                     'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
@@ -341,7 +341,7 @@ class AdminController extends \Zikula_AbstractController
                                     'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'trash',
+                                    'image' => 'trash-o',
                                     'color' => '#c00',
                                     'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
@@ -367,7 +367,7 @@ class AdminController extends \Zikula_AbstractController
 //                                            'authid' => $authid,
 //                                            'letter' => $letter,
 //                                            'state' => $state)),
-//                                            'image' => 'trash',
+//                                            'image' => 'trash-o',
 //                                            'title' => $this->__('Remove module'));
 //                                }
                             } else {
@@ -1149,7 +1149,7 @@ class AdminController extends \Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'trash',
+                                       'image' => 'trash-o',
                                        'title' => $this->__('Remove plugin'));
                     }
                     break;
@@ -1176,7 +1176,7 @@ class AdminController extends \Zikula_AbstractController
                                                            'systemplugins' => $systemplugins,
                                                            'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'trash',
+                                       'image' => 'trash-o',
                                        'title' => $this->__('Remove plugin'));
 
                     break;
@@ -1209,7 +1209,7 @@ class AdminController extends \Zikula_AbstractController
                                                        'systemplugins' => $systemplugins,
                                                        'csrftoken' => $csrfToken)
                                             ),
-                                       'image' => 'trash',
+                                       'image' => 'trash-o',
                                        'title' => $this->__('Remove plugin'));
             }
 
