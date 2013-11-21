@@ -24,6 +24,7 @@ use SecurityUtil;
 use Zikula;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Access to actions initiated through AJAX for the Users module.
