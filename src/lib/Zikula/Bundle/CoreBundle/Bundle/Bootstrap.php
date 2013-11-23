@@ -61,9 +61,10 @@ class Bootstrap
                 } catch (\InvalidArgumentException $e) {
                     // continue
                 }
-            } else {
-                throw new \RuntimeException(sprintf('Looks like the bundle %s files are missing', $name));
             }
+
+            // todo - should we catch class not loadable here or not? If so how to handle it?
+            // see https://github.com/zikula/core/issues/1424
         }
         $conn->close();
     }
