@@ -290,8 +290,8 @@ class AdminApi extends \Zikula_AbstractApi
         ModUtil::available($modinfo['name'], true);
 
         if (isset($eventName)) {
-            // only notify for enable or enable transitions
-            $event = new ModuleStateEvent($module);
+            // only notify for enable or disable transitions
+            $event = new ModuleStateEvent(\ModUtil::getModule($modinfo['name']));
             $this->getDispatcher()->dispatch($eventName, $event);
         }
 
@@ -566,15 +566,6 @@ class AdminApi extends \Zikula_AbstractApi
                         }
                         if (isset($modversion['message']) && $modversion['message']) {
                             $modversion['capabilities']['message'] = '1.0';
-                        }
-                        // Work out if admin-capable
-                        if (file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin")) {
-                            $modversion['capabilities']['admin'] = '1.0';
-                        }
-
-                        // Work out if user-capable
-                        if (file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser")) {
-                            $modversion['capabilities']['user'] = '1.0';
                         }
                     } elseif ($oomod) {
                         // Work out if admin-capable
