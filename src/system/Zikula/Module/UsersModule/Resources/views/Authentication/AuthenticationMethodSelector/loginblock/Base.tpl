@@ -9,7 +9,7 @@
                 {if !$isFontAwesomeIcon}
                     <img src="{$icon}" height="12" />
                 {else}
-                    <i class="fa {$icon}"></i>
+                    <i class="fa {$icon} fa-fw"></i>
                 {/if}
             {/if}
             {$submit_text}
