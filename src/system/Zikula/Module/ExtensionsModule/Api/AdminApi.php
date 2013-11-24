@@ -405,9 +405,11 @@ class AdminApi extends \Zikula_AbstractApi
                                      ->getQuery();
         $query->getResult();
 
-        HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
-        HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
-        EventUtil::unregisterPersistentModuleHandlers($modinfo['name']);
+        if (is_object($version)) {
+            HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
+            HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
+            EventUtil::unregisterPersistentModuleHandlers($modinfo['name']);
+        }
 
         // remove the entry from the modules table
         if ($this->serviceManager['multisites.enabled'] == 1) {
