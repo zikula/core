@@ -18,6 +18,8 @@ use SecurityUtil;
 use ModUtil;
 use System;
 use DataUtil;
+use Zikula\Core\CoreEvents;
+use Zikula\Core\Event\ModuleStateEvent;
 use ZLoader;
 use Zikula\Module\ExtensionsModule\Util as ExtensionsUtil;
 use ZLanguage;
@@ -260,8 +262,14 @@ class AdminApi extends \Zikula_AbstractApi
                 }
                 break;
             case ModUtil::STATE_INACTIVE:
+                $eventName = CoreEvents::MODULE_DISABLE;
                 break;
             case ModUtil::STATE_ACTIVE:
+                if ($module['state'] === ModUtil::STATE_INACTIVE) {
+                    // ACTIVE is used for freshly installed modules, so only register the transition
+                    // if previously inactive.
+                    $eventName = CoreEvents::MODULE_ENABLE;
+                }
                 break;
             case ModUtil::STATE_MISSING:
                 break;
@@ -280,6 +288,12 @@ class AdminApi extends \Zikula_AbstractApi
         // state changed, so update the ModUtil::available-info for this module.
         $modinfo = ModUtil::getInfo($args['id']);
         ModUtil::available($modinfo['name'], true);
+
+        if (isset($eventName)) {
+            // only notify for enable or enable transitions
+            $event = new ModuleStateEvent($module);
+            $this->getDispatcher()->dispatch($eventName, $event);
+        }
 
         return true;
     }
@@ -356,9 +370,10 @@ class AdminApi extends \Zikula_AbstractApi
         // Get module database info
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
 
+        $module = ModUtil::getModule($modinfo['name']);
+
         // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
-            $module = ModUtil::getModule($modinfo['name']);
             if (null === $module) {
                 $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
                 $classNameOld = ucwords($modinfo['name']) . '_Installer';
@@ -423,8 +438,15 @@ class AdminApi extends \Zikula_AbstractApi
             $query->getResult();
         }
 
+        // remove in 1.4.0
         $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.uninstalled', $event);
+
+        if (null !== $module) {
+            // remove if in 1.4.0
+            $event = new ModuleStateEvent($module);
+            $this->getDispatcher()->dispatch(CoreEvents::MODULE_REMOVE, $event);
+        }
 
         return true;
     }
@@ -988,8 +1010,12 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // All went ok so issue installed event
+        // remove this legacy in 1.4.0
         $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.installed', $event);
+
+        $event = new ModuleStateEvent($module);
+        $this->getDispatcher()->dispatch(CoreEvents::MODULE_INSTALL, $event);
 
         // Success
         return true;
@@ -1107,8 +1133,15 @@ class AdminApi extends \Zikula_AbstractApi
         $this->entityManager->flush();
 
         // Upgrade succeeded, issue event.
+        // remove this legacy in 1.4.0
         $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.upgraded', $event);
+
+        if (null !== $module) {
+            // remove if in 1.4.0
+            $event = new ModuleStateEvent($module);
+            $this->getDispatcher()->dispatch(CoreEvents::MODULE_UPGRADE, $event);
+        }
 
         // Success
         return true;
