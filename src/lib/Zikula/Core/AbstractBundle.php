@@ -71,7 +71,7 @@ abstract class AbstractBundle extends Bundle
     }
 
     /**
-     * Gets the translation domain path
+     * Gets the views path
      *
      * @return string
      */

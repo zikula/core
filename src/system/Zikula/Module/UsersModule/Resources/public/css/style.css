@@ -123,10 +123,31 @@ table.z-datatable td.users_action {
 
 }
 
+.zikulausersmodule-authentication-select-method-image {
+    max-height: 36px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #zikulausersmodule-login-hooks {
     margin-bottom: 10px;
 }
 
 #zikulausersmodule-login-event-display {
     margin-bottom: 10px;
+}
+
+.zikulausersmodule-uname-email-stack {
+    position: relative;
+}
+
+.zikulausersmodule-uname-email-stack > i {
+    margin-left: -7px;
+    margin-right: 7px;
+}
+
+.zikulausersmodule-uname-email-stack > i + i {
+    position: absolute;
+    left: 14px;
 }
