@@ -532,6 +532,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
                     $data = array();
                     foreach ($langs as $lang) {
                         foreach ($menuVars['links'][$lang] as $id => $link) {
+                            // convert old menutree module type dynamic links to current format
+                            if (strpos($link['url'], 'menutree')) {
+                                $link['url'] = str_replace('menutree:ext', 'ext:ZikulaBlocksModule', $link['url']);
+                            }
                             $data[$id][$lang] = array(
                                     'id'        => $id + 1,
                                     'name'      => isset($link['name']) && !empty($link['name']) ? $link['name'] : $this->__('no name'),
