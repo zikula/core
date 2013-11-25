@@ -44,3 +44,7 @@ Contributing
 Pull requests are welcome, please see https://github.com/zikula/core/wiki/Contributing
 
 All pull requests must follow [this template](https://github.com/zikula/core/wiki/Contributing#pull-request-template)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zikula/core/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
