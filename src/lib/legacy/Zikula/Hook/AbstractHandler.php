@@ -1,7 +1,5 @@
 <?php
-    use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
-    /**
+/**
  * Copyright 2009 Zikula Foundation.
  *
  * This work is contributed to the Zikula Foundation under one or more
@@ -14,6 +12,8 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Custom Hook Handler interface.
