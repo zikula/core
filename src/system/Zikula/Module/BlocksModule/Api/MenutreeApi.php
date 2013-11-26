@@ -146,7 +146,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                 $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($adminmodule['name']));
 
                 if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
-                    $menutexturl = ModUtil::url($modinfo['name'], 'admin');
+                    $menutexturl = ModUtil::url($modinfo['name'], 'admin', 'index');
                 } else {
                     $menutexturl = 'admin.php?module=' . $modinfo['name'];
                 }
