@@ -1,0 +1,24 @@
+{
+    "name": "acme/addressbook-module",
+    "description": "AcmeAddressBookModule description",
+    "type": "zikula-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Name",
+            "homepage": "http://example.com/",
+            "email": "example@example.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Acme\\AddressBookModule\\": "" }
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Acme\\AddressBookModule\\AcmeAddressBookModule"
+        }
+    }
+}

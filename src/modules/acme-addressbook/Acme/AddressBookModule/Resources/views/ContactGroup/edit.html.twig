@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    {% form_theme delete_form 'AcmeAddressBookModule:Form:zikula-theme.html.twig' %}
+
+    <h1>Edit Group</h1>
+
+    {% include 'AcmeAddressBookModule:Default:flash.html.twig' with {'scope': 'groups'} %}
+
+    {% form_theme edit_form 'AcmeAddressBookModule:Form:zikula-theme.html.twig' %}
+    {{ form(edit_form, { 'form_type': 'horizontal' }) }}
+
+    <ul class="inline">
+        <li><a href="{{ path('contacts') }}" class="btn"><i class="icon-list"></i> Back to the list</a></li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+{% endblock %}

@@ -111,6 +111,8 @@ class ModUtil
             return;
         }
 
+        ServiceUtil::getManager()->setParameter('modvars', self::$modvars);
+
         // This loads all module variables into the modvars static class variable.
         $em = ServiceUtil::get('doctrine.entitymanager');
         $modvars = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findAll();

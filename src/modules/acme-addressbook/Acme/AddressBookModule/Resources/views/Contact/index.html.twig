@@ -1,0 +1,75 @@
+{% extends 'ZikulaAndreas08Theme::master.html.twig' %}
+
+{% set maincontent %}
+    <h1>Address Book</h1>
+
+    {% include 'AcmeAddressBookModule:Default:flash.html.twig' with {'scope': 'contacts'} %}
+    {% include 'AcmeAddressBookModule:Default:flash.html.twig' with {'scope': 'groups'} %}
+
+    <table class="records_list table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Groups</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td><a href="{{ path('contacts_edit', { 'id': contact.id }) }}">{{ contact.lastName }}, {{ contact.firstName }}</a></td>
+                <td>
+                    {% for email in contact.emails %}
+                        {{ email }}<br/>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for phoneNumber in contact.phoneNumbers %}
+                        {{ phoneNumber.value }} ({{ phoneNumber.type }})<br/>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for group in contact.groups %}
+                        {{ group.name }}<br/>
+                    {% endfor %}
+                </td>
+                <td>{{ contact.address }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="list-inline">
+        <li><a href="{{ path('contacts_new') }}" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Add contact</a></li>
+    </ul>
+
+    <h2>Groups</h2>
+
+    <table class="records_list table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Members</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for group in groups %}
+            <tr>
+                <td><a href="{{ path('groups_edit', { 'id': group.id }) }}">{{ group.name }}</a></td>
+                <td>
+                    {% for member in group.members %}
+                        <a href="{{ path('contacts_edit', { 'id': member.id }) }}">{{ member.fullName }}</a>
+                        {% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="list-inline">
+        <li><a href="{{ path('groups_new') }}" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Add group</a></li>
+    </ul>
+{% endset %}

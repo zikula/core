@@ -1,0 +1,13 @@
+{% extends 'ZikulaAndreas08Theme::master.html.twig' %}
+{% block navbar %}
+    <ul class="clearfix">
+        <li><a href="{{ homepage() }}">{{ __('Home') }}</a></li>
+        <li><a href="{{ modurl('ZikulaSettingsModule', 'admin','index') }}">{{ __("Settings") }}</a></li>
+        <li><a href="{{ modurl('ZikulaExtensionsModule', 'admin','index') }}">{{ __("Extensions") }}</a></li>
+        <li><a href="{{ modurl('ZikulaBlocksModule', 'admin','index') }}">{{ __("Blocks") }}</a></li>
+        <li><a href="{{ modurl('ZikulaUsersModule', 'admin','index') }}">{{ __("Users") }}</a></li>
+        <li><a href="{{ modurl('ZikulaGroupsModule', 'admin','index') }}">{{ __("Groups") }}</a></li>
+        <li><a href="{{ modurl('ZikulaPermissionsModule', 'admin','index') }}">{{ __("Permission rules") }}</a></li>
+        <li><a href="{{ modurl('ZikulaThemeModule', 'admin','index') }}">{{ __("Themes") }}</a></li>
+    </ul>
+{% endblock %}

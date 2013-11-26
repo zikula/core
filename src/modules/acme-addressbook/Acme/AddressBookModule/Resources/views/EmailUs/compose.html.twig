@@ -1,0 +1,12 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <h1>Email Us</h1>
+
+    {% form_theme form 'AcmeAddressBookModule:Form:zikula-theme.html.twig' %}
+    {{ form(form, {'form_type': 'horizontal'}) }}
+
+    <ul class="inline">
+        <li><a href="{{ path('contacts') }}" class="btn"><i class="icon-list"></i> Back to the list</a></li>
+    </ul>
+{% endblock %}

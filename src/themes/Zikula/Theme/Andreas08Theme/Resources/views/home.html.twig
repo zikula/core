@@ -1,0 +1,14 @@
+{% extends 'ZikulaAndreas08Theme::master.html.twig' %}
+{% block navblock %}
+    {{ set topnavblock = blockposition('topnav') }}
+    {% if empty(topnavblock) %}
+    <ul class="pull-left">
+        <li><a href="{{ homepage() }}" title="{{ __("Go to the site's home page") }}">{{ __('Home') }}</a></li>
+        <li><a href="{{ modurl('ZikulaUsersModule','user','index'}" title="{{ __('Go to your account panel') }}">{{ __("My Account") }}</a></li>
+        <li><a href="{{ modurl('ZikulaSearchModule','user','index'}" title="{{ __('Search this site') }}">{{ __("Site search") }}</a></li>
+    </ul>
+    {% else %}
+    {{ topnavblock }}
+    {% endif %}
+{{ blockposition('search') }}
+{% endblock %}

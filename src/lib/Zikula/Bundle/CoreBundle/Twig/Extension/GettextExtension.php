@@ -26,14 +26,14 @@ class GettextExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            '__' => new \Twig_Function_Method($this, '__', array('needs_environment' => true)),
-            '_n' => new \Twig_Function_Method($this, '_n', array('needs_environment' => true)),
-            '__f' => new \Twig_Function_Method($this, '__f', array('needs_environment' => true)),
-            '_fn' => new \Twig_Function_Method($this, '_fn', array('needs_environment' => true)),
-            '__p' => new \Twig_Function_Method($this, '__p', array('needs_environment' => true)),
-            '__fp' => new \Twig_Function_Method($this, '__fp', array('needs_environment' => true)),
-            '_fnp' => new \Twig_Function_Method($this, '_fnp', array('needs_environment' => true)),
-            'no__' => new \Twig_Function_Method($this, 'no__'),
+            '__' => new \Twig_SimpleFunction('__', array($this, '__'), array('needs_environment' => true)),
+            '_n' => new \Twig_SimpleFunction('_n', array($this, '_n'), array('needs_environment' => true)),
+            '__f' => new \Twig_SimpleFunction('__f', array($this, '__f'), array('needs_environment' => true)),
+            '_fn' => new \Twig_SimpleFunction('_fn', array($this, '_fn'), array('needs_environment' => true)),
+            '__p' => new \Twig_SimpleFunction('__p', array($this, '__p'), array('needs_environment' => true)),
+            '__fp' => new \Twig_SimpleFunction('__fp', array($this, '__fp'), array('needs_environment' => true)),
+            '_fnp' => new \Twig_SimpleFunction('_fnp', array($this, '_fnp'), array('needs_environment' => true)),
+            'no__' => new \Twig_SimpleFunction('no__', array($this, 'no__')),
         );
     }
 

@@ -1,0 +1,8 @@
+{% if app.session.flashbag.has(scope ~ '/success') %}
+{% set message = app.session.flashbag.get(scope ~ '/success') %}
+<div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>{{ message.heading }}</strong>
+    {{ message.body }}
+</div>
+{% endif %}
