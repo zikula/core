@@ -158,7 +158,7 @@ $('#modulelist').sortable('disable');
  * Module functions dropdown
 *******************************************************************************/
 
-$('.dropdown-toggle').click( function() {
+$('#modulelist .dropdown-toggle').click( function() {
     var container = $(this).parent().parent().parent().parent();
     var containerTop = container.position().top;
     var itemTop      = $(this).parent().position().top;
