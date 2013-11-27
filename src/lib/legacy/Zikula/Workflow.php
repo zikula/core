@@ -165,8 +165,8 @@ class Zikula_Workflow
         $action = $this->actionMap[$stateID][$actionID];
 
         // permission check
-        if (!Zikula_Workflow_Util::permissionCheck($this->module, $this->id, $obj, $action['permission'])) {
-            throw new \Exception(__f('No permission to execute action: %s [permission]', $action));
+        if (!Zikula_Workflow_Util::permissionCheck($this->module, $this->id, $obj, $action['permission'], $action['id'])) {
+            throw new \Exception(__f('No permission to execute action: %s [permission]', $action['id']));
         }
 
         // commit workflow to object
