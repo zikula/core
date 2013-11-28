@@ -2773,7 +2773,7 @@ class DBUtil
         //$dst = ($distinct ? 'DISTINCT' : '');
         $sqlStart = "SELECT COUNT(*) ";
         $sqlFrom = "FROM $tableName AS tbl ";
-        $sqlGroupBy = 'GROUP BY ' . implode (', ', $sqlJoinArray[3]);
+        $sqlGroupBy = (empty($sqlJoinArray[3])) ? '' : 'GROUP BY '.implode(', ', $sqlJoinArray[3]);
 
         $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $sqlGroupBy";
         $res = self::executeSQL($sql);
