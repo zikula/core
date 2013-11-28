@@ -22,7 +22,7 @@ use ZLanguage;
 use StringUtil;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -58,18 +58,18 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to edit the category
+     * @throws AccessDeniedException Thrown if the user doesn't have permission to edit the category
      */
     public function viewAction()
     {
         $root_id = $this->request->get('dr', 1);
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$root_id", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cats = CategoryUtil::getSubCategories($root_id, true, true, true, true, true);
@@ -85,12 +85,12 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module configuration
+     * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module configuration
      */
     public function configAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         return $this->response($this->view->fetch('Admin/config.tpl'));
@@ -101,7 +101,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to edit or add the category
+     * @throws AccessDeniedException Thrown if the user doesn't have permission to edit or add the category
      * @throws \RuntimeException Thrown if a valid category ID isn't supplied
      * @throws NotFoundHttpException Thrown if the category isn't found 
      */
@@ -118,7 +118,7 @@ class AdminController extends \Zikula_AbstractController
         // indicates that we're editing
         if ($mode == 'edit') {
             if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
 
             if (!$cid) {
@@ -132,7 +132,7 @@ class AdminController extends \Zikula_AbstractController
         } else {
             // new category creation
             if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', '::', ACCESS_ADD)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
 
             // since we inherit the domain settings from the parent, we get
@@ -208,14 +208,14 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
+     * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
      * @throws \RuntimeException Thrown if a valid category ID isn't supplied
      * @throws NotFoundHttpException Thrown if the category isn't found 
      */
     public function editregistryAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $root_id = $this->request->get('dr', 1);
@@ -244,12 +244,12 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
+     * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
      */
     public function deleteregistryAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $id = $this->request->get('id', 0);
@@ -280,7 +280,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have access to delete the category
+     * @throws AccessDeniedException Thrown if the user doesn't have access to delete the category
      */
     public function opAction()
     {
@@ -289,7 +289,7 @@ class AdminController extends \Zikula_AbstractController
         $op = $this->request->get('op', 'NOOP');
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$cid", ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $category = CategoryUtil::getCategoryByID($cid);
@@ -309,12 +309,12 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
+     * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
      */
     public function preferencesAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::preferences', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $this->view->assign('userrootcat', $this->getVar('userrootcat', '/__SYSTEM__'))

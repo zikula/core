@@ -20,7 +20,7 @@ use CategoryUtil;
 use ModUtil;
 use ObjectUtil;
 use Zikula\Module\CategoriesModuleGenericUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * User form contollers for the categories module
@@ -32,14 +32,14 @@ class UserformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the module
      * @throws \InvalidArgumentException Thrown if the category or document root aren't supplied or are invalid
      * @throws \RuntimeException Thrown if the category is locked
      */
     public function deleteAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cid = (int)$this->request->get('cid', 0);
@@ -74,7 +74,7 @@ class UserformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      * @throws \InvalidArgumentException Thrown if the document root is invalid or
      *                                          if the category id doesn't match a valid category
      * @throws \RuntimeException Thrown if the category is locked
@@ -84,7 +84,7 @@ class UserformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $dr = (int)$this->request->request->get('dr', 0);
@@ -160,7 +160,7 @@ class UserformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      * @throws \InvalidArgumentException Thrown if the document root is invalid or
      *                                          if the category id doesn't match a valid category or
      *                                          if the direction is invalid
@@ -168,7 +168,7 @@ class UserformController extends \Zikula_AbstractController
     public function moveFieldAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cid = (int)$this->request->query->get('cid', 0);
@@ -230,7 +230,7 @@ class UserformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have add permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have add permissions to the module
      * @throws \InvalidArgumentException Thrown if the document root is invalid
      */
     public function newcatAction()
@@ -238,7 +238,7 @@ class UserformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $dr = (int)$this->request->request->get('dr', 0);
@@ -296,13 +296,13 @@ class UserformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      * @throws \InvalidArgumentException Thrown if the document root isn't valid
      */
     public function resequenceAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $dr = (int)$this->request->query->get('dr', 0);

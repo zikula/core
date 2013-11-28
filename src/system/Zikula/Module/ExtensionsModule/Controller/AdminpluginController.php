@@ -16,7 +16,7 @@ namespace Zikula\Module\ExtensionsModule\Controller;
 use LogUtil;
 use SecurityUtil;
 use PluginUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula_Plugin_ConfigurableInterface;
 
@@ -54,14 +54,14 @@ class AdminpluginController extends \Zikula_AbstractController
      *
      * @return mixed
      * 
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module or
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module or
      *                                          if the plugin isn't configurable
      * @throws NotFoundHttpException Thrown if the plugin doesn't have the requested service or action methods
      */
     public function dispatchAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get input.
@@ -92,7 +92,7 @@ class AdminpluginController extends \Zikula_AbstractController
 
         // Sanity checks.
         if (!$this->plugin instanceof Zikula_Plugin_ConfigurableInterface) {
-            throw new AccessDeniedHttpException(__f('Plugin "%s" is not configurable', $this->plugin->getMetaDisplayName()));
+            throw new AccessDeniedException(__f('Plugin "%s" is not configurable', $this->plugin->getMetaDisplayName()));
         }
 
         $this->pluginController = $this->plugin->getConfigurationController();

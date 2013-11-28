@@ -21,7 +21,7 @@ use Zikula\Module\GroupsModule\Helper\CommonHelper;
 use LogUtil;
 use DataUtil;
 use System;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -46,12 +46,12 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have overview access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have overview access to the module
      */
     public function viewAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need.
@@ -125,7 +125,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @throws \InvalidArgumentException Thrown if the group isn't set or isn't numeric or
      *                                          if the action isn't one of subscribe|unsubscribe|cancel
-     * @throws AccessDeniedHttpException Thrown if the user isn't logged in or 
+     * @throws AccessDeniedException Thrown if the user isn't logged in or 
      *                                          if the user doesn't have overview access to the module
      * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws \RuntimeException Thrown if the user is already a member of the group or
@@ -136,7 +136,7 @@ class UserController extends \Zikula_AbstractController
     public function membershipAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $gid = (int)$this->request->query->get('gid', null);
@@ -151,7 +151,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
+            throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
 
         $uid = UserUtil::getVar('uid');
@@ -248,7 +248,7 @@ class UserController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if the startnum parameter isn't numeric
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have overview access to the memberslist component of the module
+     * @throws AccessDeniedException Thrown if the user doesn't have overview access to the memberslist component of the module
      */
     public function memberslistAction()
     {
@@ -262,7 +262,7 @@ class UserController extends \Zikula_AbstractController
         $itemsperpage = $this->getVar('itemsperpage');
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid,

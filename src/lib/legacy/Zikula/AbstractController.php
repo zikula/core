@@ -12,7 +12,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Component\HookDispatcher\Hook;
 use Symfony\Component\HttpFoundation\Response;
@@ -202,12 +202,12 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      * @param string    $message  A message
      * @param \Exception $previous The previous exception
      *
-     * @return NotFoundHttpException
+     * @return NotFoundException
      */
     public function createAccessDeniedHttpException($message = null, \Exception $previous = null)
     {
         $message = null === $message ? __('Access Denied') : $message;
 
-        return new AccessDeniedHttpException($message, $previous);
+        return new AccessDeniedException($message, $previous);
     }
 }

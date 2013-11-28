@@ -22,7 +22,7 @@ use UserUtil;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula;
 use Zikula_View;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * The administrative system-level and database-level functions for the Users module.
@@ -249,13 +249,13 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool True on success; otherwise false
      *
      * @throws \InvalidArgumentException Thrown if either the uid or sendmail parameters weren't provided or were invalid
-     * @throws AccessDeniedHttpException Thrown if the current user does not have sufficient access to send mail.
+     * @throws AccessDeniedException Thrown if the current user does not have sufficient access to send mail.
      * @throws \RuntimeException Thrown if the e-mail message couldn't be sent
      */
     public function sendmail($args)
     {
         if (!SecurityUtil::checkPermission("{$this->name}::MailUsers", '::', ACCESS_COMMENT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (isset($args['uid']) && !empty($args['uid'])) {

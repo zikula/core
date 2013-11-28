@@ -13,7 +13,7 @@
 
 namespace Zikula\Module\GroupsModule\Controller;
 
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Module\GroupsModule\Helper\CommonHelper;
 use SecurityUtil;
@@ -38,7 +38,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return AjaxResponse ajax response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the group
+     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
      */
     public function updategroupAction()
     {
@@ -52,7 +52,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $description = $this->request->request->get('description');
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (empty($name)) {
@@ -107,14 +107,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @return AjaxResponse ajax response object
      *
      * @throws FatalErrorException Thrown if the group id isn't a valid group
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have add access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have add access to the module
      */
     public function creategroupAction()
     {
         $this->checkAjaxToken();
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $groupsCommon = new CommonHelper();
@@ -160,7 +160,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @throws FatalErrorException Thrown if the requested group is the default group or
      *                                    if the requested group cannot be deleted
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete access to the group
+     * @throws AccessDeniedException Thrown if the user doesn't have delete access to the group
      */
     public function deletegroupAction()
     {
@@ -170,7 +170,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Check if it is the default group...
@@ -196,7 +196,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @return AjaxResponse ajax response object
      *
      * @throws FatalErrorException Thrown if the user cannot be deleted from the group
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the group
+     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
      */
     public function removeuserAction()
     {
@@ -206,7 +206,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $uid = (int)$this->request->request->get('uid');
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (!ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {

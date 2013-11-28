@@ -22,7 +22,7 @@ use Zikula;
 use ModUtil;
 use UserUtil;
 use System;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -40,7 +40,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return int the id of the new group
      *
      * @throws \InvalidArgumentException Thrown if the name parameter is provided
-     * @throws AccessDeniedHttpException Thrown if the current user does not have add access.
+     * @throws AccessDeniedException Thrown if the current user does not have add access.
      */
     public function create($args)
     {
@@ -59,7 +59,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Add item
@@ -96,7 +96,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean true if successful
      *
      * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided
-     * @throws AccessDeniedHttpException Thrown if the current user does not have delete access for the group.
+     * @throws AccessDeniedException Thrown if the current user does not have delete access for the group.
      * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws \RuntimeException Thrown if the requested group is either the default users group or primary admins group
      */
@@ -119,7 +119,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Special groups check
@@ -178,7 +178,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if either the gid or name parameters are not provided
      * @throws NotFoundHttpException Thrown if the group cannot be found
-     * @throws AccessDeniedHttpException Thrown if the current user does not have edit access to the group.
+     * @throws AccessDeniedException Thrown if the current user does not have edit access to the group.
      */
     public function update($args)
     {
@@ -196,7 +196,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Other check
@@ -240,7 +240,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      * @throws NotFoundHttpException Thrown if the group cannot be found
-     * @throws AccessDeniedHttpException Thrown if the current user does not have edit access to the group.
+     * @throws AccessDeniedException Thrown if the current user does not have edit access to the group.
      */
     public function adduser($args)
     {
@@ -258,7 +258,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Add user to group
@@ -288,7 +288,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      * @throws NotFoundHttpException Thrown if the group cannot be found
-     * @throws AccessDeniedHttpException Thrown if the current user does not have edit access to the group.
+     * @throws AccessDeniedException Thrown if the current user does not have edit access to the group.
      */
     public function removeuser($args)
     {
@@ -306,7 +306,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // delete user from group

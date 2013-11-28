@@ -48,7 +48,7 @@ use SecurityUtil;
 use PageUtil;
 use Zikula\Core\Response\PlainResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpKernel\Exception\FlattenException;
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController;
@@ -126,7 +126,7 @@ class LegacyRouteListener implements EventSubscriberInterface
             } catch (\Exception $e) {
                 if ($e instanceof NotFoundHttpException) {
                     $response = new Response($e->getMessage(), 404);
-                } elseif ($e instanceof AccessDeniedHttpException) {
+                } elseif ($e instanceof AccessDeniedException) {
                     $response = new Response($e->getMessage(), 403);
                 } elseif ($e instanceof \Zikula_Exception_Redirect) {
                     $response = new RedirectResponse(System::normalizeUrl($e->getUrl()), $e->getType());
@@ -185,7 +185,7 @@ class LegacyRouteListener implements EventSubscriberInterface
             }
         } catch (NotFoundHttpException $e) {
             $response = new NotFoundResponse($e->getMessage());
-        } catch (AccessDeniedHttpException $e) {
+        } catch (AccessDeniedException $e) {
             $response = new ForbiddenResponse($e->getMessage());
         } catch (\Exception $e) {
             $response = new FatalResponse($e->getMessage());
@@ -205,7 +205,7 @@ class LegacyRouteListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $request = $event->getRequest();
         $exception = $event->getException();
-        if ($exception instanceof AccessDeniedHttpException && !UserUtil::isLoggedIn()) {
+        if ($exception instanceof AccessDeniedException && !UserUtil::isLoggedIn()) {
             $url = ModUtil::url(
                 'ZikulaUsersModule',
                 'user',

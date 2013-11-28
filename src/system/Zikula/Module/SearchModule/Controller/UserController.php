@@ -21,7 +21,7 @@ use UserUtil;
 use System;
 use DataUtil;
 use ZLanguage;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -68,13 +68,13 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have read access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
      */
     public function formAction($vars = array())
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get parameter from input
@@ -155,13 +155,13 @@ class UserController extends \Zikula_AbstractController
      * @return Response symfony response object templated
      *
      * @thrown \InvalidArgumentException Thrown if no search query parameters were provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have read access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
      */
     public function searchAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get parameter from HTTP input
@@ -258,13 +258,13 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have read access to the module or no user is logged in
+     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module or no user is logged in
      */
     public function recentAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ) || !UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need.
@@ -293,12 +293,12 @@ class UserController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have read access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
      */
     public function opensearchAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $sitename = DataUtil::formatForDisplay(System::getVar('sitename'));

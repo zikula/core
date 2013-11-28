@@ -13,7 +13,7 @@
 
 namespace Zikula\Module\ExtensionsModule\Controller;
 
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula_Exception_Fatal;
 use HookUtil;
 use ModUtil;
@@ -35,7 +35,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @throws \InvalidArgumentException Thrown if either the subsriber, provider or subsriberArea parameters are empty
      * @throws \RuntimeException Thrown if either the subscriber or provider module isn't available
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to either the subscriber or provider modules
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to either the subscriber or provider modules
      */
     public function togglesubscriberareastatusAction()
     {
@@ -60,7 +60,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             throw new \RuntimeException($this->__f('Subscriber module "%s" is not available.', $subscriber));
         }
         if (!SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get providerarea from POST
@@ -78,7 +78,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             throw new \RuntimeException($this->__f('Provider module "%s" is not available.', $provider));
         }
         if (!SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
 
@@ -115,7 +115,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @throws \InvalidArgumentException Thrown if the subscriber or subscriberarea parameters aren't valid
      * @throws \RuntimeException Thrown if the subscriber module isn't available
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the subscriber module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the subscriber module
      */
     public function changeproviderareaorderAction()
     {
@@ -136,7 +136,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             throw new \RuntimeException($this->__f('Subscriber module "%s" is not available.', $subscriber));
         }
         if (!SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get providers' areas from POST

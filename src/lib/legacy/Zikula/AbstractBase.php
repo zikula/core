@@ -448,7 +448,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Exception\AccessDeniedHttpException exception.
+     * Throw Exception\Forbidden exception.
      *
      * Used to immediately halt execution.
      *
@@ -456,18 +456,18 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
-     * @throws Exception\AccessDeniedHttpException Exception.
+     * @throws Exception\Forbidden Exception.
      * @deprecated since 1.3.6
      *
      * @return void
      */
     protected function throwForbidden($message='', $code=0, $debug=null)
     {
-        throw new Exception\AccessDeniedHttpException($message, null, $code);
+        throw new Exception\Forbidden($message, null, $code);
     }
 
     /**
-     * Throw Exception\AccessDeniedHttpException exception if $condition.
+     * Throw Exception\Forbidden exception if $condition.
      *
      * Used to immediately halt execution if condition.
      *
@@ -476,7 +476,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Exception\AccessDeniedHttpException Exception.
+     * @throws Exception\Forbidden Exception.
      *
      * @return void
      */
@@ -488,7 +488,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Exception\AccessDeniedHttpException exception unless $condition.
+     * Throw Exception\Forbidden exception unless $condition.
      *
      * Used to immediately halt execution unless condition.
      *
@@ -497,7 +497,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Exception\AccessDeniedHttpException Exception.
+     * @throws Exception\Forbidden Exception.
      * @deprecated since 1.3.6
      *
      * @return void
@@ -790,7 +790,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @param string $token The token, if not set, will pull from $_POST['csrftoken'].
      *
-     * @throws Exception\AccessDeniedHttpException If check fails.
+     * @throws Exception\Forbidden If check fails.
      *
      * @return void
      */

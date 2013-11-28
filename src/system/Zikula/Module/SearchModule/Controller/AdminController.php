@@ -18,7 +18,7 @@ use ModUtil;
 use LogUtil;
 use SecurityUtil;
 use EventUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -53,13 +53,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get the list of available plugins
@@ -88,7 +88,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function updateconfigAction()
     {
@@ -96,7 +96,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Update module variables.

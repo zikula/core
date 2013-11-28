@@ -22,7 +22,7 @@ use UserUtil;
 use ModUtil;
 use System;
 use Zikula;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -413,7 +413,7 @@ class UserApi extends \Zikula_AbstractApi
      * @return bool true if successful
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
-     * @throws AccessDeniedHttpException Thrown if the current user does not have read access to the group.
+     * @throws AccessDeniedException Thrown if the current user does not have read access to the group.
      * @throws NotFoundHttpException Thrown if the group isn't found
      * @throws \RuntimeException Thrown if the user has already applied for this group
      */
@@ -431,7 +431,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Check in case the user already applied
@@ -529,7 +529,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if either gtype or uid are not set or not numeric or 
      *                                          if action isn't set or one of 'subscribe', 'unsubscribe' or 'cancel'
-     * @throws AccessDeniedHttpException Thrown if the user is not logged in.
+     * @throws AccessDeniedException Thrown if the user is not logged in.
      * @throws \RuntimeException Thrown if the user couldn't be added to the group, 
      *                                  if the application to the group couldn't be cancelled, or
      *                                  if the user couldn't be removed from the group
@@ -547,7 +547,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
+            throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
 
         $userid = UserUtil::getVar('uid');
@@ -622,7 +622,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      * @throws NotFoundHttpException Thrown if the group cannot be found
-     * @throws AccessDeniedHttpException Thrown if the current user does not have read access to the group.
+     * @throws AccessDeniedException Thrown if the current user does not have read access to the group.
      */
     public function adduser($args)
     {
@@ -641,7 +641,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // verify if the user is alredy a member of this group
@@ -682,7 +682,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      * @throws NotFoundHttpException Thrown if the group cannot be found
-     * @throws AccessDeniedHttpException Thrown if the current user does not have read access tp the group.
+     * @throws AccessDeniedException Thrown if the current user does not have read access tp the group.
      */
     public function removeuser($args)
     {
@@ -700,7 +700,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // delete user from group

@@ -20,7 +20,7 @@ use SecurityUtil;
 use UserUtil;
 use DataUtil;
 use System;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -55,13 +55,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
     public function viewAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need.
@@ -232,7 +232,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return boolean true
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
     public function incAction()
     {
@@ -241,7 +241,7 @@ class AdminController extends \Zikula_AbstractController
 
         // MMaes,2003-06-23: Added sec.check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters
@@ -272,7 +272,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return boolean true
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
     public function decAction()
     {
@@ -280,7 +280,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters
@@ -309,14 +309,14 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return boolean
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      * @throws \RuntimeException Thrown if no matching permission rules were found
      */
     public function listeditAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need.
@@ -407,7 +407,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return boolean true.
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      * @throws \InvalidArgumentException Thrown if invalid content were found in either the component or instance parameters
      */
     public function updateAction()
@@ -415,7 +415,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters
@@ -473,7 +473,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return bool true
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      * @throws \InvalidArgumentException Thrown if invalid content were found in either the component or instance parameters
      */
     public function createAction()
@@ -481,7 +481,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters
@@ -531,12 +531,12 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return bool true
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
     public function deleteAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters
@@ -600,12 +600,12 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return boolean
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
     public function viewinstanceinfoAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get all permissions schemas, sort and assign to the template
@@ -623,13 +623,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
     public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // assign the module vars
@@ -644,7 +644,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      * @throws \InvalidArgumentException Thrown if the id for the admin permission rule couldn't be found
      */
     public function updateconfigAction()
@@ -653,7 +653,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $error = false;

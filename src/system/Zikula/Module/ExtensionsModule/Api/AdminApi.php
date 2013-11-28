@@ -36,7 +36,7 @@ use PluginUtil;
 use Zikula\Core\Doctrine\Entity\ExtensionEntity;
 use Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -72,7 +72,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if the id, displayname, description or url parameters are not set or empty or
      *                                          if the id is not numeric
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @throws \RuntimeException Thrown if the input module already exists
      */
     public function update($args)
@@ -87,7 +87,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', "::$args[id]", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // check for duplicate display names
@@ -137,14 +137,14 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array An associative array of known modules
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function listmodules($args)
     {
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
         }
 
@@ -223,7 +223,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean True if successful, false otherwise
      *
      * @throws \InvalidArgumentException Thrown if either the id or state parameters are not set or numeric
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module or
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the module or
      *                                                                                 if the module cannot be obtained from the database
      * @throws \RuntimeException Thrown if the requested state transition is invalid
      */
@@ -238,7 +238,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_EDIT)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
         }
 
@@ -249,7 +249,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         if ($module === false) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Check valid state transition
@@ -310,7 +310,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean True on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if the id parameter is either not set or not numeric
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      * @throws NotFoundHttpException Thrown if requested module id isn't a valid module
      * @throws \RuntimeException Thrown if the module state cannot be changed or
      *                                  if the installer class isn't of the correct type
@@ -330,7 +330,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get module information
@@ -459,7 +459,7 @@ class AdminApi extends \Zikula_AbstractApi
      * This function scans the file system for modules and returns an array with all (potential) modules found.
      * This information is used to regenerate the module list.
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      * @throws \RuntimeException Thrown if the version information of a module cannot be found
      *
      * @return array An array of modules found in the file system.
@@ -469,7 +469,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
         }
 
@@ -658,7 +658,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean True on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if the filemodules parameter is either not set or not an array
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      * @throws NotFoundHttpException Thrown if module information cannot be obtained from the database
      */
     public function regenerate($args)
@@ -666,7 +666,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
         }
 
@@ -1412,14 +1412,14 @@ class AdminApi extends \Zikula_AbstractApi
      * @return array An array of arrays with links to inconsistencies
      *
      * @throws \InvalidArgumentException Thrown if the filemodules parameter is either not set or not an array
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function checkconsistency($args)
     {
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
         }
 

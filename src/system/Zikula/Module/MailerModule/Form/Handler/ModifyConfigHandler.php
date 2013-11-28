@@ -19,7 +19,7 @@ use LogUtil;
 use DataUtil;
 use ZLanguage;
 use ModUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Form handler for the mailer modules modifyconfig form
@@ -43,7 +43,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
     public function initialize(Zikula_Form_View $view)
     {
         if (!SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // assign the module mail agent types

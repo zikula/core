@@ -20,7 +20,7 @@ use HookUtil;
 use EventUtil;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Module\ExtensionsModule\Util;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * HooksUI class.
@@ -34,7 +34,7 @@ class HookUiListener
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public static function hooks(GenericEvent $event)
     {
@@ -54,7 +54,7 @@ class HookUiListener
 
         // check if user has admin permission on this module
         if (!SecurityUtil::checkPermission($moduleName.'::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // create an instance of the module's version
@@ -258,7 +258,7 @@ class HookUiListener
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public static function moduleservices(GenericEvent $event)
     {
@@ -271,7 +271,7 @@ class HookUiListener
 
         $moduleName = $subject->getName();
         if (!SecurityUtil::checkPermission($moduleName.'::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $view = Zikula_View::getInstance('ZikulaExtensionsModule', false);

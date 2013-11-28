@@ -25,7 +25,7 @@ use ZLanguage;
 use BlockUtil;
 use Zikula_View_Theme;
 use Zikula\Module\ThemeModule\Util;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -83,13 +83,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      */
     public function viewAction($args = array())
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (isset($this->container['multisites.enabled']) && $this->container['multisites.enabled'] == 1) {
@@ -202,7 +202,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function modifyAction(array $args = array())
     {
@@ -216,7 +216,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get the theme info
@@ -243,7 +243,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function updatesettingsAction(array $args = array())
     {
@@ -260,7 +260,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::settings", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get the existing theme info
@@ -295,7 +295,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exit
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function variablesAction(array $args = array())
     {
@@ -316,7 +316,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::variables", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($filename) {
@@ -355,7 +355,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function updatevariablesAction(array $args = array())
     {
@@ -382,7 +382,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::variables", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get the original file source
@@ -442,7 +442,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function palettesAction(array $args = array())
     {
@@ -461,7 +461,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::colors", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // check that we have writable files
@@ -498,7 +498,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      * @throws \RuntimeException Thrown if the palette colours are incomplete
      */
     public function updatepalettesAction(array $args = array())
@@ -531,7 +531,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::palettes", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // check if we've got a new palette being created
@@ -578,7 +578,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function pageconfigurationsAction(array $args = array())
     {
@@ -597,7 +597,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // assign an array to populate the modules dropdown
@@ -664,7 +664,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function modifypageconfigtemplatesAction(array $args = array())
     {
@@ -684,7 +684,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // read our configuration file
@@ -782,7 +782,7 @@ class AdminController extends \Zikula_AbstractController
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist or
      *                                          if pagetemplate isn't provided or
      *                                          if the requested page configuration doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function updatepageconfigtemplatesAction(array $args = array())
     {
@@ -815,7 +815,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // read our configuration file
@@ -898,7 +898,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist or
      *                                          if the page configuration doesn't exit
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function modifypageconfigurationassignmentAction(array $args = array())
     {
@@ -918,7 +918,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // assign all modules
@@ -1002,7 +1002,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function updatepageconfigurationassignmentAction(array $args = array())
     {
@@ -1030,7 +1030,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // read the list of existing page config assignments
@@ -1093,7 +1093,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response|void symfony response object if confirmation isn't provided, void otherwise
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the theme
      */
     public function deletepageconfigurationassignmentAction(array $args = array())
     {
@@ -1110,7 +1110,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Check for confirmation.
@@ -1150,7 +1150,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function creditsAction(array $args = array())
     {
@@ -1164,7 +1164,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::credits", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // assign the theme info and return output
@@ -1184,7 +1184,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response|void symfony response object if confirmation isn't provided, void otherwise
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function setasdefaultAction(array $args = array())
     {
@@ -1200,7 +1200,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Check for confirmation.
@@ -1239,7 +1239,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Response|void symfony response object if confirmation isn't provided, void otherwise
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the module
      */
     public function deleteAction(array $args = array())
     {
@@ -1255,7 +1255,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Check for confirmation.
@@ -1290,13 +1290,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object if confirmation isn't provided
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // assign a list of modules suitable for html_options
@@ -1364,7 +1364,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function updateconfigAction(array $args = array())
     {
@@ -1372,7 +1372,7 @@ class AdminController extends \Zikula_AbstractController
 
         // security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // check if the theme cache was disabled and clean it if so
@@ -1492,7 +1492,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
      * @throws \RuntimeException Thrown if the compiled templates couldn't be cleared
      */
     public function clear_compiledAction()
@@ -1502,7 +1502,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $theme = Zikula_View_Theme::getInstance();
@@ -1525,7 +1525,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
      * @throws \RuntimeException Thrown if the cache templates couldn't be cleared
      */
     public function clear_cacheAction()
@@ -1535,7 +1535,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cacheid = $this->request->get('cacheid');
@@ -1576,7 +1576,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
      * @throws \RuntimeException Thrown if the cache cssjs combination files couldn't be cleared
      */
     public function clear_cssjscombinecacheAction()
@@ -1586,7 +1586,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $theme = Zikula_View_Theme::getInstance();
@@ -1604,7 +1604,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
      * @throws \RuntimeException Thrown if the compiled templates couldn't be cleared
      */
     public function clear_configAction()
@@ -1614,7 +1614,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $theme = Zikula_View_Theme::getInstance();
@@ -1637,7 +1637,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
      * @throws \RuntimeException Thrown if the compiled templates couldn't be cleared
      */
     public function render_clear_compiledAction()
@@ -1647,7 +1647,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $res = $this->view->clear_compiled();
@@ -1669,7 +1669,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
      * @throws \RuntimeException Thrown if the cached templates couldn't be cleared
      */
     public function render_clear_cacheAction()
@@ -1679,7 +1679,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $res = $this->view->clear_all_cache();
@@ -1701,13 +1701,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
      */
     public function clearallcompiledcachesAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');

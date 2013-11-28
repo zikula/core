@@ -29,7 +29,7 @@ use Zikula_Plugin_AlwaysOnInterface;
 use Zikula_Plugin_ConfigurableInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Administrative contollers for the extensions module
@@ -78,7 +78,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws \InvalidArgumentException Thrown if the id parameter is not provided or not numeric
      * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the requested module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the requested module
      */
     public function modifyAction()
     {
@@ -93,7 +93,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', "$obj[name]::$id", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $restore = (bool)$this->request->query->get('restore', false);
@@ -173,13 +173,13 @@ class AdminController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \RuntimeException Thrown if the module list cannot be regenerated
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
      */
     public function viewAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need.
@@ -952,13 +952,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
      */
     public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // assign all the module vars and return output
@@ -972,7 +972,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
      * @throws \InvalidArgumentException Thrown if the itemsperpage parameter is not numeric
      */
     public function updateconfigAction()
@@ -981,7 +981,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Update module variables.
@@ -1009,7 +1009,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws \InvalidArgumentException Thrown if the id parameter is not numeric
      * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the requested module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the requested module
      */
     public function compinfoAction()
     {
@@ -1031,7 +1031,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', "$modinfo[name]::$id", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get the module information from the files system
@@ -1053,13 +1053,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
      */
     public function viewPluginsAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $state = $this->request->get('state', -1);
@@ -1258,7 +1258,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if the plugin parameter is not provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
      */
     public function initialisePluginAction()
     {
@@ -1267,7 +1267,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need
@@ -1303,7 +1303,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if the plugin parameter is not provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
      */
     public function deactivatePluginAction()
     {
@@ -1312,7 +1312,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need
@@ -1348,7 +1348,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if the plugin parameter is not provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
      */
     public function activatePluginAction()
     {
@@ -1357,7 +1357,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need
@@ -1393,7 +1393,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if the plugin parameter is not provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
      */
     public function removePluginAction()
     {
@@ -1402,7 +1402,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need
@@ -1438,7 +1438,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if the plugin parameter is not provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
      */
     public function upgradePluginAction()
     {
@@ -1447,7 +1447,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need

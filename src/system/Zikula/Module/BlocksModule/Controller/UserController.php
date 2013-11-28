@@ -17,7 +17,7 @@ use UserUtil;
 use BlockUtil;
 use SecurityUtil;
 use System;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -48,7 +48,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Throw if the user doesn't have edit permissions to the module
+     * @throws AccessDeniedException Throw if the user doesn't have edit permissions to the module
      */
     public function displayAction($args)
     {
@@ -65,7 +65,7 @@ class UserController extends \Zikula_AbstractController
 
         // Security check for $showinactive only
         if ($showinactive && !SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($bid > 0) {

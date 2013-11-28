@@ -25,7 +25,7 @@ use Zikula_Exception_Forbidden;
 use Zikula\Module\SecurityCenterModule\Util as SecurityCenterUtil;
 use Zikula_Event;
 use Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Event handler for the security center module
@@ -356,7 +356,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 // warn only for debugging the ruleset
                 throw new \RuntimeException(__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
             } else {
-                throw new AccessDeniedHttpException(__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
+                throw new AccessDeniedException(__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
             }
         }
 

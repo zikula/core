@@ -15,7 +15,7 @@ namespace Zikula\Module\PermissionsModule\Controller;
 
 use SecurityUtil;
 use ModUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula_Response_Ajax;
 use DataUtil;
 use UserUtil;
@@ -38,13 +38,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return \Zikula_Response_Ajax Ajax repsonse with updated permissions
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function updatepermissionAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $pid       = (int)$this->request->request->get('pid');
@@ -104,13 +104,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return \Zikula_Response_Ajax ajax response containing true
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function changeorderAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $permorder = $this->request->request->get('permorder');
@@ -130,13 +130,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return \Zikula_Response_Ajax array with new permission
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function createpermissionAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // add a blank permission
@@ -171,13 +171,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @thrown FatalErrorException Thrown if the requested permission rule is the default admin rule or if
      *                                    if the permission rule couldn't be deleted
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function deletepermissionAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $pid = (int)$this->request->request->get('pid');
@@ -205,13 +205,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return \Zikula_Response_Ajax Ajax response containing string with test result for display
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function testpermissionAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $uname = $this->request->request->get('test_user', '');

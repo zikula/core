@@ -18,7 +18,7 @@ use Zikula\Module\AdminModule\Entity\AdminCategoryEntity;
 use SecurityUtil;
 use System;
 use DataUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -70,7 +70,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      * @throws NotFoundHttpException Thrown if item to be updated isn't found
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to update the item
+     * @throws AccessDeniedException Thrown if the user doesn't have permission to update the item
      */
     public function update($args)
     {
@@ -90,7 +90,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check (old item)
         if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$item[name]::$args[cid]", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $item->merge($args);
@@ -245,7 +245,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return int|bool admin category ID on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to add the category
+     * @throws AccessDeniedException Thrown if the user doesn't have permission to add the category
      */
     public function addmodtocategory($args)
     {
@@ -257,7 +257,7 @@ class AdminApi extends \Zikula_AbstractApi
         // this function is called durung the init process so we have to check in installing
         // is set as alternative to the correct permission check
         if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaAdminModule::Category', "::", ACCESS_ADD)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';

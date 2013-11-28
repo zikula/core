@@ -14,7 +14,7 @@
 namespace Zikula\Module\BlocksModule\Controller;
 
 use SecurityUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Module\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula_Response_Ajax;
 use BlockUtil;
@@ -35,13 +35,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return Zikula_Response_Ajax true or Ajax error
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function changeblockorderAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $blockorder = $this->request->request->get('blockorder');
@@ -78,7 +78,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return Zikula_Response_Ajax true or Ajax error
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @throws FatalErrorException Thrown if no block id is supplied or
      *                                     if the requested block isn't valid
      */
@@ -86,7 +86,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $bid = $this->request->request->get('bid', -1);
