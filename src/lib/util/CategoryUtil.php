@@ -492,15 +492,14 @@ class CategoryUtil
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-
-        $cid = (int)DataUtil::formatForStore($cid);
-
-        $dql = "DELETE FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c WHERE c.id = " . $cid;
+        $dql = "DELETE FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c WHERE c.id = :cid";
         $query = $em->createQuery($dql);
+        $query->setParameter('cid', $cid);
         $query->getResult();
 
-        $dql = "DELETE FROM Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity a WHERE a.category = " . $cid;
+        $dql = "DELETE FROM Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity a WHERE a.category = :cid";
         $query = $em->createQuery($dql);
+        $query->setParameter('cid', $cid);
         $query->getResult();
     }
 
@@ -520,9 +519,9 @@ class CategoryUtil
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-
-        $dql = "SELECT c.id FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c WHERE c.$field LIKE '" . DataUtil::formatForStore($apath) . "%'";
+        $dql = "SELECT c.id FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c WHERE c.$field LIKE :apath";
         $query = $em->createQuery($dql);
+        $query->setParameter('apath', "{$apath}%");
         $categories = $query->getResult();
 
         foreach ($categories as $category) {
@@ -608,8 +607,10 @@ class CategoryUtil
         $dql = "
         SELECT c
         FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c
-        WHERE c.$pathField = '" . DataUtil::formatForStore($apath) . "' OR c.$pathField LIKE '" . DataUtil::formatForStore($apath) . "/%'";
+        WHERE c.$pathField = :apath OR c.$pathField LIKE :apathwc";
         $query = $em->createQuery($dql);
+        $query->setParameter('apath', $apath);
+        $query->setParameter('apathwc', "{$apath}/%");
         $categories = $query->getResult();
 
         foreach ($categories as $category) {
@@ -621,17 +622,13 @@ class CategoryUtil
 
         $pid = $cats[0]['id'];
         if ($includeRoot) {
-            $dql = "
-            UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c
-            SET c.parent = " . DataUtil::formatForStore($newparent_id) . "
-            WHERE c.id = " . DataUtil::formatForStore($pid);
+            $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.id = :pid";
         } else {
-            $dql = "
-            UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c
-            SET c.parent = " . DataUtil::formatForStore($newparent_id) . "
-            WHERE c.parent = " . DataUtil::formatForStore($pid);
+            $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.parent :pid";
         }
         $query = $em->createQuery($dql);
+        $query->setParameter('newparent', $newparent_id);
+        $query->setParameter('pid', $pid);
         $query->getResult();
 
         return true;
@@ -1503,7 +1500,9 @@ class CategoryUtil
 
             foreach ($cats as $k => $v) {
                 if (isset($v[$field]) && isset($paths[$k][$field]) && ($v[$field] != $paths[$k][$field])) {
-                    $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.$field = '" . $paths[$k] . "' WHERE c.id = $k";
+                    $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.$field = :path WHERE c.id = :id";
+                    $query->setParameter('path', $paths[$k]);
+                    $query->setParameter('id', $k);
                     $query = $em->createQuery($dql);
                     $query->getResult();
                 }
