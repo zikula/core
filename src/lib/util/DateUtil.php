@@ -831,13 +831,13 @@ class DateUtil
             }
         }
 
-        $trformat = preg_replace('/%a/', $day_of_week_short[(int)strftime('%w', $timestamp)], $format);
-        $trformat = preg_replace('/%A/', $day_of_week_long[(int)strftime('%w', $timestamp)], $trformat);
-        $trformat = preg_replace('/%b/', $month_short[(int)strftime('%m', $timestamp) - 1], $trformat);
-        $trformat = preg_replace('/%B/', $month_long[(int)strftime('%m', $timestamp) - 1], $trformat);
+        $trformat = preg_replace('/%a/', $day_of_week_short[strftime('%w', (int)$timestamp)], $format);
+        $trformat = preg_replace('/%A/', $day_of_week_long[strftime('%w', (int)$timestamp)], $trformat);
+        $trformat = preg_replace('/%b/', $month_short[strftime('%m', (int)$timestamp) - 1], $trformat);
+        $trformat = preg_replace('/%B/', $month_long[strftime('%m', (int)$timestamp) - 1], $trformat);
         $trformat = preg_replace('/%Z/', $timezone, $trformat);
 
-        return strftime($trformat, $timestamp);
+        return strftime($trformat, (int)$timestamp);
     }
 
     /**
