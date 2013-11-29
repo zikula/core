@@ -32,7 +32,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Administrative contollers for the extensions module
+ * Administrative controllers for the extensions module
  */
 class AdminController extends \Zikula_AbstractController
 {

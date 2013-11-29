@@ -27,7 +27,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Administrative contollers for the categories module
+ * Administrative controllers for the categories module
  */
 class AdminController extends \Zikula_AbstractController
 {
