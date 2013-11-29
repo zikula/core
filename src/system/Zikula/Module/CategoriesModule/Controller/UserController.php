@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * User contollers for the categories module
+ * User controllers for the categories module
  */
 class UserController extends \Zikula_AbstractController
 {

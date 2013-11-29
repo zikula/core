@@ -23,7 +23,7 @@ use Zikula\Module\CategoriesModuleGenericUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * User form contollers for the categories module
+ * User form controllers for the categories module
  */
 class UserformController extends \Zikula_AbstractController
 {
