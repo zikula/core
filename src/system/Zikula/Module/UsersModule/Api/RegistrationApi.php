@@ -28,7 +28,7 @@ use Zikula_Session;
 use ObjectUtil;
 use DateUtil;
 use DataUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -239,7 +239,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      *
      * @return array An array containing errors organized by field.
      *
-     * @throws AccessDeniedHttpException Thrown if the user does not have read access.
+     * @throws AccessDeniedException Thrown if the user does not have read access.
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
      */
     public function getRegistrationErrors($args)
@@ -247,7 +247,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $registrationErrors = array();
 
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $isAdmin = $this->currentUserIsAdmin();
@@ -383,14 +383,14 @@ class RegistrationApi extends \Zikula_AbstractApi
      *                      created or a pending registration record was created in the users table), then the array containing
      *                      the information saved is returned; false on error.
      *
-     * @throws AccessDeniedHttpException Thrown if the user does not have read access.
+     * @throws AccessDeniedException Thrown if the user does not have read access.
      * @throws NotFoundHttpException Thrown if registration is disabled.
      * @throws \InvalidArgumentException Thrown if reginfo is invalid
      */
     public function registerNewUser($args)
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $isAdmin = $this->currentUserIsAdmin();
@@ -720,7 +720,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      * @return array|bool The user info, as saved in the users table; false on error.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received.
-     * @throws AccessDeniedHttpException Thrown if the current user does not have overview access.
+     * @throws AccessDeniedException Thrown if the current user does not have overview access.
      * @throws \RuntimeException Thrown if the user couldn't be added to the relevant user groups or
      *                                  if the registration couldn't be saved
      */
@@ -974,7 +974,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      * @return array|boolean An array containing the record, or false on error.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received.
-     * @throws AccessDeniedHttpException Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws AccessDeniedException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      * @throws \RuntimeException Thrown if the data couldn't be obtained from the database
      */
@@ -982,7 +982,7 @@ class RegistrationApi extends \Zikula_AbstractApi
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $uniqueEmails = $this->getVar('reg_uniemail', false);
@@ -1099,14 +1099,14 @@ class RegistrationApi extends \Zikula_AbstractApi
      * @return array|bool Array of registration requests, or false on failure.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received.
-     * @throws AccessDeniedHttpException Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws AccessDeniedException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
     public function getAll($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (isset($args['limitoffset']) && is_numeric($args['limitoffset'])
@@ -1271,14 +1271,14 @@ class RegistrationApi extends \Zikula_AbstractApi
      * @return bool True on success; otherwise false.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
-     * @throws AccessDeniedHttpException Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws AccessDeniedException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
     public function remove($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_DELETE))) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (isset($args['uid'])) {
@@ -1381,7 +1381,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      * @return bool True on success; otherwise false.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
-     * @throws AccessDeniedHttpException Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws AccessDeniedException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      * @throws NotFoundHttpException     Thrown if the registration couldn't be found
      */
@@ -1392,7 +1392,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         // registration record, so allow not-logged-in plus READ, as well as moderator.
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (isset($args['reginfo'])) {
@@ -1493,7 +1493,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      * @return array|bool An array containing the object from the users_verifychg table; an empty array if not found;
      *                      false on error.
      *
-     * @throws AccessDeniedHttpException Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws AccessDeniedException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
      */
@@ -1501,7 +1501,7 @@ class RegistrationApi extends \Zikula_AbstractApi
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid']) || ($args['uid'] <= 1)) {
@@ -1582,7 +1582,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      *
      * @return bool True on success; otherwise false.
      *
-     * @throws AccessDeniedHttpException Thrown if the user does not have add access.
+     * @throws AccessDeniedException Thrown if the user does not have add access.
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
      * @throws \RuntimeException Thrown if the registration information cannot be found or
      *                                  if registration is forced but no e-mail address is provided
@@ -1590,7 +1590,7 @@ class RegistrationApi extends \Zikula_AbstractApi
     public function approve($args)
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (isset($args['reginfo'])) {

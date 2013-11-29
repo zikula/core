@@ -23,7 +23,7 @@ use ZLanguage;
 use UserUtil;
 use ServiceUtil;
 use Zikula\Module\CategoriesModuleCategoriesInstaller;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -36,12 +36,12 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the module
      */
     public function mainAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $referer = System::serverGetVar('HTTP_REFERER');
@@ -62,7 +62,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the document root
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the document root
      * @throws \InvalidArgumentException Thrown if the category or document root aren't supplied or are invalid or
      *                                          if the requested document root is the root category or 
      *                                          if the requested document root belongs to another user
@@ -78,7 +78,7 @@ class UserController extends \Zikula_AbstractController
         $url = ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $docroot));
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$docroot", ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $referer = System::serverGetVar('HTTP_REFERER');
@@ -169,7 +169,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over categories in the module or
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over categories in the module or
      *                                                                                 if the user is not logged in
      * @throws \RuntimeException Thrown if user editing of categories isn't enabled or
      *                                  if the user root cannot be determined or 
@@ -180,11 +180,11 @@ class UserController extends \Zikula_AbstractController
     public function edituserAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException($this->__('Error! Editing mode for user-owned categories is only available to users who have logged-in.'));
+            throw new AccessDeniedException($this->__('Error! Editing mode for user-owned categories is only available to users who have logged-in.'));
         }
 
         $allowUserEdit = $this->getVar('allowusercatedit', 0);

@@ -23,7 +23,7 @@ use System;
 use SecurityUtil;
 use UserUtil;
 use ZLanguage;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * API functions used by user controllers
@@ -517,7 +517,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // update the users record to an empty string - if this user var is empty then the site default is used.

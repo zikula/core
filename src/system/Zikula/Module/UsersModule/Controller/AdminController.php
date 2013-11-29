@@ -37,7 +37,7 @@ use Zikula_Session;
 use Zikula\Core\Hook\ProcessHook;
 use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Core\Hook\ValidationHook;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,12 +102,12 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object containing the rendered template.
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function viewAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // we need this value multiple times, so we keep it
@@ -252,7 +252,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object containing the rendered template.
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have add access
+     * @throws AccessDeniedException Thrown if the current user does not have add access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      * @throws \RuntimeException Thrown if user registration is disabled or
      *                                  if the account or application couldn't be created or
@@ -262,7 +262,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // The user must have ADD access to submit a new user record.
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // When new user registration is disabled, the user must have ADMIN access instead of ADD access.
@@ -447,14 +447,14 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object containing the rendered template.
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access
      * @throws FatalErrorException if the method of accessing this function is improper.
      * @throws \NotFoundHttpException Thrown if no users are found
      */
     public function searchAction()
     {
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->isMethod('POST')) {
@@ -519,13 +519,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws FatalErrorException Thrown if the function enters an unknown state or
      *                                     if the method of accessing this function is improper.
-     * @throws AccessDeniedHttpException Thrown if the current user does not have comment access
+     * @throws AccessDeniedException Thrown if the current user does not have comment access
      * @throws NotFoundHttpException Thrown if no users are found
      */
     public function mailUsersAction()
     {
         if (!SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->isMethod('POST')) {
@@ -551,7 +551,7 @@ class AdminController extends \Zikula_AbstractController
                 throw new FatalErrorException($this->__f('An unknown form type was received by %1$s.', array('mailUsers')));
             }
         } elseif (!$this->request->isMethod('GET')) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->isMethod('GET') || (($formId == 'users_search') && (!isset($userList) || !$userList)) || (($formId == 'users_mailusers') && !$mailSent)) {
@@ -587,7 +587,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object containing the rendered template.
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have edit access or 
+     * @throws AccessDeniedException Thrown if the current user does not have edit access or 
      *                                          if the user id matches the guest account (uid = 1)
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      * @throws \InvalidArgumentException Thrown if either uid or uname is null
@@ -597,7 +597,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // security check for generic edit access
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', 'ANY', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $proceedToForm = true;
@@ -615,7 +615,7 @@ class AdminController extends \Zikula_AbstractController
 
             // security check for this record
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
 
             if ($formData->isValid()) {
@@ -739,7 +739,7 @@ class AdminController extends \Zikula_AbstractController
 
             // warning for guest account
             if ($uid == 1) {
-                throw new AccessDeniedHttpException($this->__("Error! You can't edit the guest account."));
+                throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
             }
 
             // get the user vars
@@ -762,7 +762,7 @@ class AdminController extends \Zikula_AbstractController
         if ($proceedToForm) {
             // security check for this record
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
 
             // groups
@@ -825,7 +825,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access.
      * @throws \InvalidArgumentException Thrown if the provided user id isn't an integer
      * @throws NotFoundHttpException Thrown if user id doesn't match a valid user
      * @throws \RuntimeException Thrown if there was a problem sending the recovery e-mail
@@ -853,7 +853,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $userNameSent = ModUtil::apiFunc($this->name, 'user', 'mailUname', array(
@@ -887,7 +887,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access.
      * @throws \InvalidArgumentException Thrown if the provided user id isn't an integer or
      *                                          if the user has no password set
      * @throws NotFoundHttpException Thrown if user id doesn't match a valid user
@@ -917,7 +917,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $confirmationCodeSent = ModUtil::apiFunc($this->name, 'user', 'mailConfirmationCode', array(
@@ -952,7 +952,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response|vid symfony response object containing the rendered template if a form is to be displayed, void otherwise
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have delete access
+     * @throws AccessDeniedException Thrown if the current user does not have delete access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      * @throws NotFoundHttpException Thrown if the user doesn't exist
      * @throws \RuntimeException Thrown if the requested user is either the guest account, primary administrator or currently logged in account
@@ -961,7 +961,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // check permissions
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', 'ANY', ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $proceedToForm = false;
@@ -1176,14 +1176,14 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response|void symfony response object containing the rendered template if a form is to be display, void otherwise
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access.
      * @throws \RuntimeException Thrown if the registration records couldn't be found
      */
     public function viewRegistrationsAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $regCount = ModUtil::apiFunc($this->name, 'registration', 'countAll');
@@ -1296,7 +1296,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object containing the rendered template.
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      * @throws \RuntimeException Thrown if the registration record couldn't be retrieved
@@ -1304,7 +1304,7 @@ class AdminController extends \Zikula_AbstractController
     public function displayRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need.
@@ -1372,7 +1372,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response|void symfony response object containing the rendered template if a form is to be display, void otherwise
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have edit access
+     * @throws AccessDeniedException Thrown if the current user does not have edit access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      * @throws \RuntimeException Thrown if the registration record couldn't be retrieved
@@ -1380,7 +1380,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', 'ANY', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $proceedToForm = true;
@@ -1402,7 +1402,7 @@ class AdminController extends \Zikula_AbstractController
 
             // security check for this record
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$originalRegistration['uname']}::{$originalRegistration['uid']}", ACCESS_EDIT)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
 
             if ($formData->isValid()) {
@@ -1504,7 +1504,7 @@ class AdminController extends \Zikula_AbstractController
         if ($proceedToForm) {
             // security check for this record
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$registration['uname']}::{$registration['uid']}", ACCESS_EDIT)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
 
             $rendererArgs = array(
@@ -1554,7 +1554,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response|void symfony response object containing the rendered template if a form is to be display, void otherwise
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
@@ -1563,7 +1563,7 @@ class AdminController extends \Zikula_AbstractController
     public function verifyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->getMethod() == 'GET') {
@@ -1666,7 +1666,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response|void Symfony response object if a form is to be displayed, void otherwise
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have moderate access
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
@@ -1678,7 +1678,7 @@ class AdminController extends \Zikula_AbstractController
     public function approveRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->getMethod() == 'GET') {
@@ -1690,7 +1690,7 @@ class AdminController extends \Zikula_AbstractController
             $forceVerification = $this->currentUserIsAdmin() && $this->request->request->get('force', false);
             $restoreView = $this->request->request->get('restoreview', 'view');
         } else {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
@@ -1791,7 +1791,7 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have delete access
+     * @throws AccessDeniedException Thrown if the current user does not have delete access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
@@ -1800,7 +1800,7 @@ class AdminController extends \Zikula_AbstractController
     public function denyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->getMethod() == 'GET') {
@@ -1902,14 +1902,14 @@ class AdminController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws FatalErrorException Thrown if the function is accessed improperly.
-     * @throws AccessDeniedHttpException Thrown if the current user does not have admin access.
+     * @throws AccessDeniedException Thrown if the current user does not have admin access.
      * @throws \RuntimeException Thrown if there was a problem with the module configuration
      */
     public function configAction()
     {
         // Security check
         if (!(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN))) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $configData = new FormData\ConfigForm('users_config', $this->getContainer());
@@ -1975,13 +1975,13 @@ class AdminController extends \Zikula_AbstractController
      * @return Response|void symfony response object if a form is to be displayed, void otherwise
      *
      * @throws \InvalidArgumentException Thrown if the $args parameter is not valid.
-     * @throws AccessDeniedHttpException Thrown if the current user does not have add access.
+     * @throws AccessDeniedException Thrown if the current user does not have add access.
      */
     public function importAction(array $args = array())
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get input values. Check for direct function call first because calling function might be either get or post
@@ -2063,14 +2063,14 @@ class AdminController extends \Zikula_AbstractController
      * @return redirect user to the form if confirmed not 1, else export the csv file.
      *
      * @throws \InvalidArgumentException Thrown if parameters are passed via the $args array, but $args is invalid.
-     * @throws AccessDeniedHttpException Thrown if the current user does not have admin access
+     * @throws AccessDeniedException Thrown if the current user does not have admin access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      */
     public function exporterAction(array $args = array())
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get input values. Check for direct function call first because calling function might be either get or post
@@ -2499,7 +2499,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws \InvalidArgumentException Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
      *                                      or the account record is not in a consistent state.
-     * @throws AccessDeniedHttpException Thrown if the current user does not have edit access for the account record.
+     * @throws AccessDeniedException Thrown if the current user does not have edit access for the account record.
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      */
     public function toggleForcedPasswordChangeAction()
@@ -2518,7 +2518,7 @@ class AdminController extends \Zikula_AbstractController
             }
 
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
 
             $userMustChangePassword = UserUtil::getVar('_Users_mustChangePassword', $uid, false);
@@ -2540,7 +2540,7 @@ class AdminController extends \Zikula_AbstractController
             $userObj = UserUtil::getVars($uid);
 
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
 
             if ($userMustChangePassword) {

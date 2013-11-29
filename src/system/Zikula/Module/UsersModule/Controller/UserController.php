@@ -35,7 +35,7 @@ use LogUtil;
 use ThemeUtil;
 use ZLanguage;
 use Zikula_Api_AbstractAuthentication;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -62,7 +62,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpExceptionif the current user does not have adequate permissions to perform this function.
+     * @throws AccessDeniedExceptionif the current user does not have adequate permissions to perform this function.
      * @throws NotFoundHttpException Thrown if no user account links are found
      */
     public function mainAction()
@@ -71,7 +71,7 @@ class UserController extends \Zikula_AbstractController
         $this->redirectUnless(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'login', array('returnpage' => urlencode(ModUtil::url($this->name, 'user', 'index')))));
 
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // The API function is called.
@@ -122,7 +122,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have read access to the module or
+     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module or
      *                                          if the registration information hasn't been passed correctly through the authentication module or
      *                                          if an illegal user agent was detected
      * @throws FatalErrorException Thrown if there was a problem reading the registration information or
@@ -141,7 +141,7 @@ class UserController extends \Zikula_AbstractController
 
         // check permisisons
         if (!SecurityUtil::checkPermission($this->name .'::', '::', ACCESS_READ)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Check if registration is enabled
@@ -165,7 +165,7 @@ class UserController extends \Zikula_AbstractController
                     $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
 
                     if ($reentrantToken != $reentrantTokenReceived) {
-                        throw new AccessDeniedHttpException();
+                        throw new AccessDeniedException();
                     }
                 } else {
                     throw new FatalErrorException($this->__('An internal error occurred. Failed to retrieve stored registration state.'));
@@ -217,7 +217,7 @@ class UserController extends \Zikula_AbstractController
             }
         } else {
             // Neither a POST nor a GET, so a fatal error.
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // The state machine that handles the processing of the data from the initialization above.
@@ -234,7 +234,7 @@ class UserController extends \Zikula_AbstractController
                     $illegalUserAgents = preg_replace($pattern, $replace, preg_quote($illegalUserAgents, '/'));
                     // Check for emptiness here, in case there were just spaces and commas in the original string.
                     if (!empty($illegalUserAgents) && preg_match("/^({$illegalUserAgents})/iD", $userAgent)) {
-                        throw new AccessDeniedHttpException($this->__('Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'));
+                        throw new AccessDeniedException($this->__('Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'));
                     }
 
                     // Notify that we are beginning a registration session.
@@ -734,7 +734,7 @@ class UserController extends \Zikula_AbstractController
         } elseif ($this->request->isMethod('GET')) {
             $email = '';
         } else {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($proceedToForm) {
@@ -768,7 +768,7 @@ class UserController extends \Zikula_AbstractController
      *                                  if a password isn't used for authentication to this account or
      *                                  if the account is inactive, marked for deletion, still in the registration process, or awaiting verifcation
      * @throws NotFoundHttpException Thrown if the account couldn't be found
-     * @throws AccessDeniedHttpException Thrown if the parameters cannot be found in either GET or POST
+     * @throws AccessDeniedException Thrown if the parameters cannot be found in either GET or POST
      */
     public function lostPasswordAction()
     {
@@ -873,7 +873,7 @@ class UserController extends \Zikula_AbstractController
             $uname = '';
             $email = '';
         } else {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($formStage == 'request') {
@@ -927,7 +927,7 @@ class UserController extends \Zikula_AbstractController
      * @throws \RuntimeException Thrown if the confirmation code isn't valid or 
      *                                  if the new password couldn't be saved 
      * @throws NotFoundHttpException Thrown if the account couldn't be found
-     * @throws AccessDeniedHttpException Thrown if the parameters cannot be found in either GET or POST
+     * @throws AccessDeniedException Thrown if the parameters cannot be found in either GET or POST
      */
     public function lostPasswordCodeAction()
     {
@@ -972,7 +972,7 @@ class UserController extends \Zikula_AbstractController
             $newpassreminder = '';
             $passreminder = '';
         } else {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (($formStage == 'code') && ($this->request->isMethod('POST') || !empty($uname) || !empty($email) || !empty($code))) {
@@ -1121,7 +1121,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @throws FatalErrorException Thrown if no arguments are provided or
      *                                    if an invalid authentication method is provided
-     * @throws AccessDeniedHttpException Thrown if no arguments are found in either GET or POST
+     * @throws AccessDeniedException Thrown if no arguments are found in either GET or POST
      * @throws \RuntimeException Thrown if an invalid login request was recieved or
      *                                  if the authentication method isn't available
      * @throws NotFoundHttpException Thrown if the user account couldn't be found or
@@ -1203,7 +1203,7 @@ class UserController extends \Zikula_AbstractController
                     $this->getDispatcher()->dispatch('module.users.ui.login.started', new GenericEvent());
                 }
             } else {
-                throw new AccessDeniedHttpException();
+                throw new AccessDeniedException();
             }
         }
 
@@ -1540,7 +1540,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response|bool Symfony repsonse object; true on redirect; false on error.
      *
-     * @throws AccessDeniedHttpException Thrown if there are no arguments in either GET or POST
+     * @throws AccessDeniedException Thrown if there are no arguments in either GET or POST
      * @throws \RuntimeException Thrown if the user is logged in or 
      *                                  if the new password and reminder couldn't be saved or
      *                                  if there was a problem marking the account as verified or
@@ -1563,7 +1563,7 @@ class UserController extends \Zikula_AbstractController
             $newpassagain   = $this->request->request->get('newpassagain', '');
             $newpassreminder= $this->request->request->get('newpassreminder', '');
         } else {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($uname) {
@@ -1832,7 +1832,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if there are no POST parameters
+     * @throws AccessDeniedException Thrown if there are no POST parameters
      */
     public function siteOffLoginAction()
     {
@@ -1844,7 +1844,7 @@ class UserController extends \Zikula_AbstractController
             $pass = $this->request->request->get('pass', null);
             $rememberme = $this->request->request->get('rememberme', false);
         } else {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $redirectUrl = System::getHomepageUrl();
@@ -1945,7 +1945,7 @@ class UserController extends \Zikula_AbstractController
     public function updateUsersBlockAction()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $blocks = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getall');
@@ -1966,7 +1966,7 @@ class UserController extends \Zikula_AbstractController
             $ublockon = (bool)$this->request->request->get('ublockon', false);
             $ublock = (string)$this->request->request->get('ublock', '');
         } else {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $uid = UserUtil::getVar('uid');
@@ -2009,7 +2009,7 @@ class UserController extends \Zikula_AbstractController
      * @throws FatalErrorException Thrown if there are no arguments provided or
      *                                    if the user is logged in but the user is coming from the login process or
      *                                    if the authentication information is invalid
-     * @throws AccessDeniedHttpException Thrown if the user isn't logged in and isn't coming from the login process
+     * @throws AccessDeniedException Thrown if the user isn't logged in and isn't coming from the login process
      */
     public function changePasswordAction(array $args = array())
     {
@@ -2040,7 +2040,7 @@ class UserController extends \Zikula_AbstractController
         // must be coming from the login process. This is an exclusive-or. It is an error if neither is set,
         // and likewise if both are set. One or the other, please!
         if (!$args['login'] && !UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         } elseif ($args['login'] && UserUtil::isLoggedIn()) {
             throw new FatalErrorException();
         }
@@ -2108,7 +2108,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if there is no POST information
+     * @throws AccessDeniedException Thrown if there is no POST information
      * @throws FatalErrorException Thrown if there are no arguments provided or
      *                                    if the user is logged in but the user is coming from the login process or
      *                                    if there's a problem saving the new password
@@ -2120,7 +2120,7 @@ class UserController extends \Zikula_AbstractController
         $this->request->getSession()->del('User_updatePassword', UsersConstant::SESSION_VAR_NAMESPACE);
 
         if (!$this->request->isMethod('POST')) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $this->checkCsrfToken();
@@ -2135,7 +2135,7 @@ class UserController extends \Zikula_AbstractController
         $uid = $userObj['uid'];
 
         if (!$login && !UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         } elseif ($login && UserUtil::isLoggedIn()) {
             throw new FatalErrorException();
         }
@@ -2216,12 +2216,12 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response|void symfony response object if a form is to be displayed, void otherwise
      *
-     * @throws AccessDeniedHttpException Thrown if the user isn't logged in
+     * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     public function changeEmailAction()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if ($this->getVar('changeemail', 1) != 1) {
@@ -2249,13 +2249,13 @@ class UserController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user isn't logged in
+     * @throws AccessDeniedException Thrown if the user isn't logged in
      * @throws \RuntimeException Thrown if there was a problem updating the users e-mail
      */
     public function updateEmailAction()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $this->checkCsrfToken();
@@ -2307,12 +2307,12 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object if a form is to be displayed
      *
-     * @throws AccessDeniedHttpException Thrown if the user isn't logged in
+     * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     public function changeLangAction()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Assign the languages

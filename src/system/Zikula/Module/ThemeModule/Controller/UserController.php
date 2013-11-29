@@ -22,7 +22,7 @@ use ThemeUtil;
 use DataUtil;
 use Zikula_View;
 use CookieUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -36,7 +36,7 @@ class UserController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \RuntimeException Thrown if theme switching is currently disabled
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have comment permissions over the theme module
+     * @throws AccessDeniedException Thrown if the user doesn't have comment permissions over the theme module
      */
     public function indexAction()
     {
@@ -46,7 +46,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get our input

@@ -15,7 +15,7 @@ namespace Zikula\Module\CategoriesModule\Controller;
 
 use SecurityUtil;
 use CategoryUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use FormUtil;
@@ -35,13 +35,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the module
      */
     public function resequenceAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $data  = json_decode($this->request->request->get('data'), true);
@@ -75,7 +75,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return AjaxResponse ajax response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit or add (depending mode) access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have edit or add (depending mode) access to the module
      * @throws NotFoundHttpException Thrown if category cannot be found
      */
     public function editAction($args = array())
@@ -85,7 +85,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $mode = isset($args['mode']) ? $args['mode'] : $this->request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cid = isset($args['cid']) ? $args['cid'] : $this->request->request->get('cid', 0);
@@ -137,13 +137,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return AjaxResponse ajax response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have add access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have add access to the module
      */
     public function copyAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cid = $this->request->request->get('cid');
@@ -190,13 +190,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return AjaxResponse ajax response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have delete access to the module
      */
     public function deleteAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cid = $this->request->request->get('cid');
@@ -217,13 +217,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return AjaxResponse ajax response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have delete access to the module
      */
     public function deleteandmovesubsAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cid = $this->request->request->get('cid');
@@ -272,13 +272,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return AjaxResponse ajax response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have delete access to the module
      */
     public function deletedialogAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cid = $this->request->request->get('cid');
@@ -302,13 +302,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return AjaxResponse ajax response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the module
      */
     public function activateAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cid = $this->request->request->get('cid');
@@ -329,13 +329,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return AjaxResponse ajax response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the module
      */
     public function deactivateAction()
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $cid = $this->request->request->get('cid');
@@ -356,7 +356,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return AjaxResponse ajax response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit or add (depending on mode) access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have edit or add (depending on mode) access to the module
      */
     public function saveAction()
     {
@@ -365,7 +365,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $mode = $this->request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get data from post

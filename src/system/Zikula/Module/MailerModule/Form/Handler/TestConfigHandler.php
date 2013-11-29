@@ -19,7 +19,7 @@ use LogUtil;
 use DataUtil;
 use ZLanguage;
 use ModUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Form handler for the mailer modules testconfig form
@@ -38,12 +38,12 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
      *
      * @return bool true if successful
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function initialize(Zikula_Form_View $view)
     {
         if (!SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $msgtype = $this->getVar('html') ? 'html' : 'text';

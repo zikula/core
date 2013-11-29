@@ -19,7 +19,7 @@ use DataUtil;
 use BlockUtil;
 use ModUtil;
 use Zikula\Module\PermissionsModule\Entity\PermissionEntity;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -41,7 +41,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true on success
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't admin acces over the permission rule
+     * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
      * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
      * @throws NotFoundHttpException Thrown if the permission rule doesn't exist
      * @throws \RuntimeException Thrown if there is no permission rule above the requested one or
@@ -51,7 +51,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Argument check
@@ -125,7 +125,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true on success
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't admin acces over the permission rule
+     * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
      * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
      * @throws NotFoundHttpException Thrown if the permission rule doesn't exist
      * @throws \RuntimeException Thrown if there is no permission rule below the requested one or
@@ -135,7 +135,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Argument check
@@ -217,7 +217,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true if successful
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't admin acces over the permission rule
+     * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
      * @throws \InvalidArgumentException Thrown if any of pid, seq, oldseq, id or level are not set or not numeric or 
      *                                          if any of realm, component or instance are not set
      */
@@ -225,7 +225,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Argument check
@@ -271,7 +271,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true if successful
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't admin acces over the permission rule
+     * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
      * @throws \InvalidArgumentException Thrown if any of id, insseq or level are not set or not numeric or 
      *                                          if any of realm, component or instance are not set
      * @throws \RuntimeException Thrown if the permission rule couldn't be saved
@@ -280,7 +280,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[id]", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Argument check
@@ -340,14 +340,14 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return boolean true on success
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the group
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the group
      * @throws \InvalidArgumentException Thrown if the pid parameter isn't set or isn't numeric
      */
     public function delete($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Argument check
@@ -370,13 +370,13 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return int the maximum sequence number.
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function maxsequence()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $qb = $this->entityManager->createQueryBuilder();
@@ -392,14 +392,14 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true if successful
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      * @throws NotFoundHttpException Thrown if no permissions rules are found
      */
     public function resequence()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', 'group::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get all permissions
@@ -436,14 +436,14 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true if successful
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      * @throws \InvalidArgumentException Thrown if either the newseq or oldseq parameters aren't set
      */
     public function full_resequence($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "::", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Argument check
@@ -534,13 +534,13 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array array if permission schema values.
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function getallschemas()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $schemas = SecurityUtil::getSchemas();

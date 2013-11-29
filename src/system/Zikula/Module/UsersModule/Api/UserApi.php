@@ -24,7 +24,7 @@ use ModUtil;
 use DateTimeZone;
 use DateTime;
 use Doctrine\ORM\AbstractQuery;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * The system-level and database-level functions for user-initiated actions for the Users module.
@@ -43,13 +43,13 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return array An array of users, or false on failure.
      *
-     * @throws AccessDeniedHttpException Thrown if the current user does not have overview access.
+     * @throws AccessDeniedException Thrown if the current user does not have overview access.
      */
     public function getAll($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // create a QueryBuilder instance
@@ -572,12 +572,12 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return bool True if success and false otherwise.
      *
-     * @throws AccessDeniedHttpException Thrown if the current user is logged in.
+     * @throws AccessDeniedException Thrown if the current user is logged in.
      */
     public function savePreEmail($args)
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
@@ -641,12 +641,12 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return string The e-mail address waiting for confirmation for the current user.
      *
-     * @throws AccessDeniedHttpException Thrown if the current user is logged in.
+     * @throws AccessDeniedException Thrown if the current user is logged in.
      */
     public function getUserPreEmail()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // delete all the records from e-mail confirmation that have expired

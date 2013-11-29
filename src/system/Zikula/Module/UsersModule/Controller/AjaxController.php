@@ -22,7 +22,7 @@ use Zikula_View;
 use ModUtil;
 use SecurityUtil;
 use Zikula;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -81,7 +81,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return array A AjaxResponse containing error messages and message counts.
      *
-     * @throws AccessDeniedHttpExceptionThrown if registration is disbled.
+     * @throws AccessDeniedExceptionThrown if registration is disbled.
      */
     public function getRegistrationErrorsAction()
     {
@@ -103,7 +103,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         // Check if registration is disabled and the user is not an admin.
         if (($eventType == 'new_registration') && !$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException($this->__('Sorry! New user registration is currently disabled.'));
+            throw new AccessDeniedException($this->__('Sorry! New user registration is currently disabled.'));
         }
 
         $returnValue = array(

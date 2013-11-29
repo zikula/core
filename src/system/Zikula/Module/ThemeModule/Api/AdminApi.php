@@ -22,7 +22,7 @@ use ThemeUtil;
 use DataUtil;
 use FileUtil;
 use CacheUtil;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -70,14 +70,14 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true if successful
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @throws \InvalidArgumentException Thrown if the themeinfo parameter isn't provided
      */
     public function updatesettings($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Check our input arguments
@@ -104,14 +104,14 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true if successful, false otherwise
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
      */
     public function setasdefault($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // Check our input arguments
@@ -149,7 +149,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true if successful
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided or 
      *                                          if the requested theme version file cannot be found
      */
@@ -169,7 +169,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // get the theme settings and write them back to the running config directory
@@ -205,7 +205,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true if successful, false otherwise
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the theme
      * @throws NotFoundHttpException Thrown if the themename parameter isn't a valid theme
      * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
      * @throws \RuntimeException Thrown if the theme cannot be deleted
@@ -228,7 +228,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themeinfo[name]::", ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // reset the theme for any users utilising this theme.
@@ -289,7 +289,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true if successful, false otherwise
      *
      * @throws \InvalidArgumentException Thrown if either the themename or themedirectory parameters aren't provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @throws RuntimeException Thrown if the theme files cannot be deleted from the file system
      */
     public function deletefiles($args)
@@ -309,7 +309,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', $themename .'::', ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (is_writable('themes') && is_writable('themes/' . $osthemedirectory)) {
@@ -336,7 +336,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true if successful
      *
      * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the theme
      */
     public function deleterunningconfig($args)
     {
@@ -349,7 +349,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // define the base files
@@ -385,7 +385,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if either the themename or file parameter isn't provided
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the theme
      */
     public function deleteinifile($args)
     {
@@ -397,7 +397,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename", ACCESS_ADMIN)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         if (!isset($args['file']) || empty($args['file'])) {
@@ -425,7 +425,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if either the themename or pcname parameters aren't provided
      * @throws NotFoundHttpException Thrown if the requested theme isn't found
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the theme
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the theme
      */
     public function deletepageconfigurationassignment($args)
     {
@@ -445,7 +445,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themeinfo[name]::pageconfigurations", ACCESS_DELETE)) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         // read the list of existing page config assignments
