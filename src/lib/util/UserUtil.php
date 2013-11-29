@@ -1042,7 +1042,7 @@ class UserUtil
                  ->setParameter('chgtype', UsersConstant::VERIFYCHGTYPE_EMAIL);
 
         if ($excludeUid > 1) {
-            $qb->andWhere('u.uid <> :excludeUid')
+            $qb->andWhere('v.uid <> :excludeUid')
                ->setParameter('excludeUid', $excludeUid);
         }
 
