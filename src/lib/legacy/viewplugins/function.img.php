@@ -163,6 +163,8 @@ function smarty_function_img($params, Zikula_View $view)
                 $modpathOld     = "$moduleDir/$osmoddir/images";
                 $modlangpathOld2 = "$moduleDir/$osmoddir/pnimages/$lang";
                 $modpathOld2     = "$moduleDir/$osmoddir/pnimages";
+                $modlangpathOld3 = "$moduleDir/$osmoddir/Resources/public/images/$lang";
+                $modpathOld3     = "$moduleDir/$osmoddir/Resources/public/images";
             }
 
             // form the array of paths
@@ -170,9 +172,9 @@ function smarty_function_img($params, Zikula_View $view)
                 $paths = array($themepath, $corethemepath, $modpath);
             } elseif (preg_match('/^admin.(png|gif|jpg)$/', $params['src'])) {
                 // special processing for modules' admin icon
-                $paths = array($modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
+                $paths = array($modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2, $modlangpathOld3, $modpathOld3);
             } else {
-                $paths = array($themelangpath, $themepath, $themelangpathOld, $themepathOld,$corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
+                $paths = array($themelangpath, $themepath, $themelangpathOld, $themepathOld,$corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2, $modlangpathOld3, $modpathOld3);
             }
         }
     }
