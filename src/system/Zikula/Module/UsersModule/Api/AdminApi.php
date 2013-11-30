@@ -65,14 +65,10 @@ class AdminApi extends \Zikula_AbstractApi
         $profileModule = System::getVar('profilemodule', '');
         $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
-        // Set query conditions (unless some one else sends a hardcoded one)
-        $where = array();
-
-        $dql = "SELECT u FROM Zikula\Module\UsersModule\Entity\UserEntity u $where ORDER BY u.uname ASC";
         $qb = $this->entityManager->createQueryBuilder()
                                   ->select('u')
                                   ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
-                                  ->orderBy('u.name', 'ASC');
+                                  ->orderBy('u.uname', 'ASC');
 
         if (!isset($args['condition']) || !$args['condition']) {
             // Do not include anonymous user
