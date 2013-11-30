@@ -311,6 +311,7 @@ table.z-admintable ul li {
 }
 
 .z-form .z-formrow input[type=radio] {
+	margin-right: 0.5em;
     width: auto;
     border: 1px solid #fafafa;
 }
