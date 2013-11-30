@@ -137,3 +137,7 @@ parameters:
     templating.asset.path_package.class: Zikula\Bundle\CoreBundle\Templating\Asset\PathPackage
     # override stof BlameListener to set Zikula User
     stof_doctrine_extensions.event_listener.blame.class: Zikula\Bundle\CoreBundle\EventListener\BlameListener
+    # zikula core stylesheet and javascript component locations
+    zikula.stylesheet.bootstrap.min.path: web/bootstrap/css/bootstrap.min.css
+    zikula.javascript.bootstrap.min.path: web/bootstrap/js/bootstrap.min.js
+    zikula.stylesheet.fontawesome.min.path: web/font-awesome/css/font-awesome.min.css
