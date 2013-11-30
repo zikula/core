@@ -305,9 +305,9 @@ table.z-admintable ul li {
 }
 
 .z-form .z-formrow input[type=checkbox] {
-    display:inline;
-    margin:0.5em 0;
-    width:auto;
+    display: inline;
+    margin: 0.5em;
+    width: auto;
 }
 
 .z-form .z-formrow input[type=radio] {
