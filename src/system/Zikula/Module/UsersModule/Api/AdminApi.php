@@ -78,6 +78,10 @@ class AdminApi extends \Zikula_AbstractApi
                 if ($value) {
                     switch ($arg) {
                         case 'uname':
+                            $qb->andWhere($qb->expr()->like('u.uname', ':value'))
+                                ->setParameter('value', $value);
+                            break;
+
                         case 'email':
                             $qb->andWhere($qb->expr()->like('u.email', ':value'))
                                ->setParameter('value', $value);                            
