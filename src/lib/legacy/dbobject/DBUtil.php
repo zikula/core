@@ -343,7 +343,7 @@ class DBUtil
         }
 
         if (isset($numericFields[$fieldType])) {
-            if ($fieldType[0] == 'I') {
+            if ($fieldType[0] == 'I' || $fieldType == 'L') {
                 $value = (int)$value;
             } else {
                 $value = (float)$value;

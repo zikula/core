@@ -830,6 +830,74 @@ class DBObjectArray
     }
 
     /**
+     * Set a database field on all objects
+     *
+     * @param string $column The column to update
+     * @param mixed $value The value to update the column to
+     *
+     * @return resultSet The resultSet from the update SQL statement
+     */
+    public function setDBFieldAll ($column, $value)
+    {
+        EventUtil::dispatch('dbobjectarray.setdbfieldall', new \Zikula\Core\Event\GenericEvent($this));
+         return $this->setDBField ($column, $value, null, true);
+    }
+
+    /**
+     * Set a database field on a filtered set of objects
+     *
+     * @param string $column The column to update
+     * @param mixed $value The value to update the column to
+     * @param array $filter The filter to apply to the selection
+     * @param boolean $fromAll Indicator whether the method was called from the 'fromAll' variant -> for filter error checking
+     *
+     * @return resultSet The resultSet from the update SQL statement
+     */
+    public function setDBField ($column, $value, $filter=null, $fromAll=false)
+    {
+        EventUtil::dispatch('dbobjectarray.setdbfield', new \Zikula\Core\Event\GenericEvent($this));
+
+        if ($column === null) {
+            throw new \Exception(__f("Invalid [column] received"));
+        }
+
+        if ($value === null) {
+            throw new \Exception(__f("Invalid [value] received"));
+        }
+
+        if (!$filter && !$fromAll) {
+            throw new \Exception(__f("Invalid [filterCol] received"));
+        }
+
+        if (!is_array($filter) && !$fromAll) {
+            throw new \Exception(__f("Non-array [filterCol] received"));
+        }
+
+        $dbtables = DBUtil::getTables();
+        $tkey = $this->_objType;
+        $ckey = $tkey . "_column";
+        $tab = isset($dbtables[$this->_objType]) ? $dbtables[$this->_objType] : null;
+        $col = isset($dbtables[$ckey][$column]) ? $dbtables[$ckey][$column] : null;
+        if (!$col) {
+            throw new \Exception(__f("Non-existing field [%s] received", $column));
+        }
+
+        $where  = '';
+        if ($filter) {
+            $filter = $this->cleanFilter ($filter);
+            $where  = DBUtil::_checkWhereClause ($this->genFilter ($filter));
+            if (!$where) {
+                throw new \Exception(__f("Supplied filter did not result in a where-clause"));
+            }
+        }
+        $val = DBUtil::_typesafeQuotedID ($this->_objType, $column, $value);
+        $sql = "UPDATE $tab SET $col = $val $where";
+        $res = DBUtil::executeSQL ($sql);
+
+        return $res;
+    }
+
+    /**
      * Clean the acquired input.
      *
      * @param array $objArray The object-array to clean (optional) (default=null, reverts to $this->_objData).
