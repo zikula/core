@@ -1468,7 +1468,7 @@ class AdminController extends \Zikula_AbstractController
                 }
 
                 $event = new GenericEvent($registration);
-                $this->getDispatcher()->dispatch($event->getName(), $event);
+                $this->getDispatcher()->dispatch('module.users.ui.process_edit.modify_registration', $event);
 
                 $hook = new ProcessHook($registration['uid']);
                 $this->dispatchHooks('users.ui_hooks.registration.process_edit', $hook);
