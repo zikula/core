@@ -95,19 +95,20 @@ class HtmlUtil
      *
      * @return The generated HTML for the selector.
      */
-    public static function getSelector_Generic($name = 'genericSelector', $data = array(), $selectedValue = null, $defaultValue = null, $defaultText = null, $allValue = null, $allText = null, $submit = false, $disabled = false, $multipleSize = 1)
+    public static function getSelector_Generic($name = 'genericSelector', $data = array(), $selectedValue = null, $defaultValue = null, $defaultText = null, $allValue = null, $allText = null, $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class)
     {
         if (!$name) {
             return LogUtil::registerError(__f('Invalid %1$s [%2$s] passed to %3$s.', array('name', $name, 'HtmlUtil::getSelector_Generic')));
         }
 
-        $id = strtr($name, '[]', '__');
+        $id = (is_null($id)) ? strtr($name, '[]', '__') : $id;
+        $class = (is_null($class)) ? $id : $class;
         $disabled = $disabled ? 'disabled="disabled"' : '';
         $multiple = $multipleSize > 1 ? 'multiple="multiple"' : '';
         $multipleSize = $multipleSize > 1 ? "size=\"$multipleSize\"" : '';
         $submit = $submit ? 'onchange="this.form.submit();"' : '';
 
-        $html = "<select name=\"$name\" id=\"$id\" $multipleSize $multiple $submit $disabled>";
+        $html = "<select name=\"$name\" id=\"$id\" class=\"$class\" $multipleSize $multiple $submit $disabled>";
 
         if ($defaultText && !$selectedValue) {
             $sel = ((string)$defaultValue == (string)$selectedValue ? 'selected="selected"' : '');
@@ -957,12 +958,12 @@ class HtmlUtil
      *
      * @return The generated HTML for the selector.
      */
-    public static function getSelector_Countries($name = 'countries', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $disabled = false, $multipleSize = 1)
+    public static function getSelector_Countries($name = 'countries', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class = null)
     {
         $countries = ZLanguage::countryMap();
         asort($countries);
 
-        return self::getSelector_Generic($name, $countries, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
+        return self::getSelector_Generic($name, $countries, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize, $id, $class);
     }
 
     /**
