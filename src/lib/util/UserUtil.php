@@ -1439,7 +1439,7 @@ class UserUtil
                     'new_value' => $value,
                 );
 
-                $updateEvent = new GenericEvent($eventName, $updatedUserObj, $eventArgs, $eventData);
+                $updateEvent = new GenericEvent($updatedUserObj, $eventArgs, $eventData);
                 EventUtil::dispatch($eventName, $updateEvent);
             }
         }
