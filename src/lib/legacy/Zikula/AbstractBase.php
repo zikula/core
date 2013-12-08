@@ -463,7 +463,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      */
     protected function throwForbidden($message='', $code=0, $debug=null)
     {
-        throw new Exception\Forbidden($message, null, $code);
+        throw new Zikula_Exception_Forbidden($message, null, $code);
     }
 
     /**
