@@ -15,6 +15,7 @@
                     <input id="users_uname" type="text" class="form-control" name="uname" size="25" maxlength="25" value="{$uname}" />
                 </div>
             </div>
+            {if ($modvars.ZikulaUsersModule.reg_uniemail|default:1 == 1)}
             <div class="form-group">
                 <label class="col-lg-3 control-label">{gt text='or'}</label>
             </div>
@@ -24,6 +25,7 @@
                     <input id="users_email" type="text" class="form-control" name="email" size="40" maxlength="60" value="{$email}" />
                 </div>
             </div>
+            {/if}
         </fieldset>
         <fieldset>
             <div class="form-group">
