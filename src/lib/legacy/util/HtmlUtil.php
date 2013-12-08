@@ -95,7 +95,7 @@ class HtmlUtil
      *
      * @return The generated HTML for the selector.
      */
-    public static function getSelector_Generic($name = 'genericSelector', $data = array(), $selectedValue = null, $defaultValue = null, $defaultText = null, $allValue = null, $allText = null, $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class)
+    public static function getSelector_Generic($name = 'genericSelector', $data = array(), $selectedValue = null, $defaultValue = null, $defaultText = null, $allValue = null, $allText = null, $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class = null)
     {
         if (!$name) {
             return LogUtil::registerError(__f('Invalid %1$s [%2$s] passed to %3$s.', array('name', $name, 'HtmlUtil::getSelector_Generic')));
