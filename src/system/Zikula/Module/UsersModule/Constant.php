@@ -378,7 +378,7 @@ namespace Zikula\Module\UsersModule
         /**
          * Default value for the flag indicating whether newly registered e-mail addresses must be unique within the system or not.
          */
-        const DEFAULT_REQUIRE_UNIQUE_EMAIL = true;
+        const DEFAULT_REQUIRE_UNIQUE_EMAIL = 1;
         /**
          * The PCRE regular expression fragment used to validate user names.
          */
