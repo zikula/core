@@ -210,19 +210,19 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars['menutree_stripbaseurl'] =    isset($vars['menutree_stripbaseurl']) ? $vars['menutree_stripbaseurl'] : true;
         $vars['menutree_maxdepth'] =        isset($vars['menutree_maxdepth']) ? $vars['menutree_maxdepth'] : 0;
         $vars['oldlanguages'] =             isset($vars['oldlanguages']) ? $vars['oldlanguages'] : array();
-        $vars['olddefaultanguage'] =        isset($vars['olddefaultanguage']) ? $vars['olddefaultanguage'] :'';
+        $vars['olddefaultlanguage'] =        isset($vars['olddefaultlanguage']) ? $vars['olddefaultlanguage'] :'';
 
         // get list of languages
         $vars['languages'] = ZLanguage::getInstalledLanguageNames();
         $userlanguage = ZLanguage::getLanguageCode();
 
         // get default langs
-        $vars['defaultanguage'] = !empty($blockinfo['language']) ? $blockinfo['language'] : $userlanguage;
+        $vars['defaultlanguage'] = !empty($blockinfo['language']) ? $blockinfo['language'] : $userlanguage;
 
         // rebuild langs array - default lang has to be first
         if (isset($vars['languages']) && count($vars['languages']) > 1) {
-            $deflang[$vars['defaultanguage']] = $vars['languages'][$vars['defaultanguage']];
-            unset($vars['languages'][$vars['defaultanguage']]);
+            $deflang[$vars['defaultlanguage']] = $vars['languages'][$vars['defaultlanguage']];
+            unset($vars['languages'][$vars['defaultlanguage']]);
             $vars['languages'] = array_merge($deflang,$vars['languages']);
             $vars['multilingual'] = true;
         } else {
@@ -242,14 +242,14 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             // if so - need to set reference lang to copy initial menu items data
             if (count(array_diff($vars['languages'],$vars['oldlanguages'])) > 1) {
                 // fisrt try current default lang
-                if (in_array($vars['defaultanguage'],$vars['oldlanguages'])) {
-                    $langs['ref'] = $vars['defaultanguage'];
+                if (in_array($vars['defaultlanguage'],$vars['oldlanguages'])) {
+                    $langs['ref'] = $vars['defaultlanguage'];
                     // or user lang
                 } elseif (in_array($userlanguage,$vars['oldlanguages'])) {
                     $langs['ref'] = $userlanguage;
                     // or old default lang
-                } elseif (in_array($vars['olddefaultanguage'],$vars['languages'])) {
-                    $langs['ref'] = $vars['olddefaultanguage'];
+                } elseif (in_array($vars['olddefaultlanguage'],$vars['languages'])) {
+                    $langs['ref'] = $vars['olddefaultlanguage'];
                     // it must be any language present in old and new lang list
                 } else {
                     $langs['ref'] = current(array_intersect($vars['languages'], $vars['oldlanguages']));
@@ -414,7 +414,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             // check langs and save current langs list and current default lang
             $tmp = current($vars['menutree_content']);
             $vars['oldlanguages'] = array_keys($tmp);
-            $vars['olddefaultanguage'] = $vars['oldlanguages'][0];
+            $vars['olddefaultlanguage'] = $vars['oldlanguages'][0];
 
             // strip base url - if needed
             if ($vars['menutree_stripbaseurl'] === true) {
