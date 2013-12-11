@@ -197,7 +197,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      * This will result in a 404 response code. Usage example:
      *
-     *     throw $this->createNotFoundException('Page not found!');
+     *      throw $this->createAccessDeniedHttpException('Access Denied');
      *
      * @param string    $message  A message
      * @param \Exception $previous The previous exception
