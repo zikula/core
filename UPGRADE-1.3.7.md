@@ -71,49 +71,57 @@ Controllers:
   - Stored in `Foo/MyModule/Controller/UserController.php`
   - Example:
 
-        <?php
-        namespace Foo\MyModule\Controller;
+    ```php
+    <?php
+    namespace Foo\MyModule\Controller;
 
-        class UserController extends \Zikula_AbstractController
-        {
-        }
+    class UserController extends \Zikula_AbstractController
+    {
+    }
+    ```
 
 Apis:
   - Named like `Foo\MyModule\Api\UserApi`
   - Stored in `Foo/MyModule/Api/UserApi.php`
   - Example:
 
-        <?php
-        namespace Foo\MyModule\Api;
+    ```php
+    <?php
+    namespace Foo\MyModule\Api;
 
-        class UserApi extends \Zikula_AbstractApi
-        {
-        }
+    class UserApi extends \Zikula_AbstractApi
+    {
+    }
+    ```
 
 Entities:
   - Named like `Foo\MyModule\Entity\BarEntity`
   - Stored in `Foo/MyModule/Entity/BarEntity.php`
   - Example:
 
-        <?php
-        namespace Foo\MyModule\Entity;
+    ```php
+    <?php
+    namespace Foo\MyModule\Entity;
 
-        class BarEntity
-        {
-        }
+    class BarEntity
+    {
+    }
+    ```
 
 .. note::
 
-  The namespace can be as deep as required, e.g
-  `Zikula\Module\AdminModule` so you might have a class like
-  called `Zikula\Module\AdminModule\Controller\AdminController`
+The namespace can be as deep as required, e.g
+`Zikula\Module\AdminModule` so you might have a class like
+called `Zikula\Module\AdminModule\Controller\AdminController`
 
-            <?php
-            namespace Zikula\Module\AdminModule\Controller;
+```php
+<?php
+namespace Zikula\Module\AdminModule\Controller;
 
-            class AdminController
-            {
-            }
+class AdminController
+{
+}
+```
 
 There is a script to do some of the refactoring for you:
 
@@ -187,15 +195,16 @@ The final structure looks as follows:
 The last file `FooMyModule.php` is new and should look like this
 combining the vendor name (`Foo` with the class name).
 
-    <?php
-    namespace Foo\MyModule;
+```php
+<?php
+namespace Foo\MyModule;
 
-    use Zikula\Core\AbstractModule;
+use Zikula\Core\AbstractModule;
 
-    class FooMyModule extends AbstractModule
-    {
-    }
-
+class FooMyModule extends AbstractModule
+{
+}
+```
 .. note::
 
   The namespace can be as deep as required, e.g
@@ -227,38 +236,40 @@ hierarchy as follows:
 
 This necessitates a change in template calls such as:
 
+```php
     $this->view->fetch('Admin/view.tpl');
-
+```
 
 Module composer.json
 --------------------
 
 Modules must have a `composer.json` manifest which looks like the following:
 
-    {
-        "name": "foo/my-module",
-        "description": "My Module",
-        "type": "zikula-module",
-        "license": "LGPL-3.0+",
-        "authors": [
-            {
-                "name": "Example",
-                "homepage": "http://example.com/"
-            }
-        ],
-        "autoload": {
-            "psr-0": { "Foo\\MyModule\\": "" }
-        },
-        "require": {
-            "php": ">5.3.3"
-        },
-        "extra": {
-            "zikula": {
-                "class": "Foo\\MyModule\\FooMyModule"
-            }
+```json
+{
+    "name": "foo/my-module",
+    "description": "My Module",
+    "type": "zikula-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Example",
+            "homepage": "http://example.com/"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Foo\\MyModule\\": "" }
+    },
+    "require": {
+        "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Foo\\MyModule\\FooMyModule"
         }
     }
-
+}
+```
 PhpStorm 6 and MOST 0.6.1 have create tools for this.
 
 
@@ -284,22 +295,25 @@ Controller Method Parameters
 Arguments of controller methods now automatically receive the request.
 For example if ?name=Fred&age=21 then
 
-    public function fooAction($name, $age)
-    {
-        return new Response("Hello $name, you are $age");
-    }
+```php
+public function fooAction($name, $age)
+{
+    return new Response("Hello $name, you are $age");
+}
+```
 
 Argument order does not matter.
 
-You can also get the request object using this:
+You canalso get the request object using this:
 
-    public function fooAction(Request $request)
-    {
-        $name = $request->query->get('name');
+```php
+public function fooAction(Request $request)
+{
+    $name = $request->query->get('name');
 
-        return new Response("Hello $name");
-    }
-
+    return new Response("Hello $name");
+}
+```
 
 Controller Response
 -------------------
@@ -344,13 +358,17 @@ The main changes are:
 
 Example in Core 1.3.0-1.3.6
 
-    $event = new Zikula_Event('event.name', $subject, $args, $data);
-    $eventManager->notify($event);
+```php
+$event = new Zikula_Event('event.name', $subject, $args, $data);
+$eventManager->notify($event);
+```
 
 Example in Core 1.3.7+
 
-    $event = new Zikula\Core\Event\GenericEvent($subject, $args, $data);
-    $dispatcher->dispatch('event.name', $event);
+```php
+$event = new Zikula\Core\Event\GenericEvent($subject, $args, $data);
+$dispatcher->dispatch('event.name', $event);
+```
 
 Please note, while they will still work, you should also update event method calls if
 you use them:
@@ -402,8 +420,10 @@ The main changes are:
 
 Example in Core 1.3.0-1.3.6
 
-    $hook = new Zikula_DisplayHook('hook.name', $id, $url);
-    $eventManager->notify($hook);
+```php
+$hook = new Zikula_DisplayHook('hook.name', $id, $url);
+$eventManager->notify($hook);
+```
 
 Example in Core 1.3.7+
 
@@ -426,17 +446,21 @@ Request
 The `Request` object is now switched to `Symfony\Component\HttpFoundation\Request`
 Please refactor the following calls:
 
-    $request->getGet()->*() becomes $request->query->*()
-    $request->getPost()->*() becomes $request->post->*()
-    $request->isGet() becomes $request->isMethod('GET')
-    $request->isPost() becomes $request->isMethod('POST')
+```php
+$request->getGet()->*() becomes $request->query->*()
+$request->getPost()->*() becomes $request->post->*()
+$request->isGet() becomes $request->isMethod('GET')
+$request->isPost() becomes $request->isMethod('POST')
+```
 
 There is a legacy layer in place so the old methods continue to work.
 
 Please note the follow APIs have changed (BC break)
 
-    $request->.....->filter() // the argument order has changed
-    $request->files-> // this API now returns an object, not an array
+```php
+$request->.....->filter() // the argument order has changed
+$request->files-> // this API now returns an object, not an array
+```
 
 Documentation: http://symfony.com/doc/master/components/http_foundation/introduction.html#request
 
@@ -447,6 +471,7 @@ If you use `Sluggable`, you must change the annotation in your Doctrine entities
 
 from:
 
+```php
     /**
      * @ORM\Column(name="tag", type="string", length=36)
      * @Gedmo\Sluggable(slugField="slug")
@@ -458,9 +483,10 @@ from:
      * @Gedmo\Slug
      */
     private $slug;
+```
 
 to:
-
+```php
     /**
      * @ORM\Column(name="tag", type="string", length=36)
      */
@@ -471,28 +497,76 @@ to:
      * @Gedmo\Slug(fields={"tag"})
      */
     private $slug;
+```
 
 Paginate (Doctrine Extensions)
 -----------------------------
 The Doctrine Extension Paginate is deprecated. If you are using it, you should refactor it to `Doctrine\ORM\Tools\Pagination\Paginator`.
 
 
-Version.php
------------
+Version File
+------------
 
 Modules should have `core_min = 1.3.7`.
 
 You now can add a reason for each dependency. Add a `reason` key to any dependency array you want. Example:
-
-    $meta['dependencies'] = array(
-            array('modname'    => 'Scribite',
-                  'minversion' => '5.0.0',
-                  'maxversion' => '',
-                  'status'     => ModUtil::DEPENDENCY_RECOMMENDED,
-                  'reason'     => 'Scribite adds a html editor.'),
-    );
+    
+```php
+$meta['dependencies'] = array(
+        array('modname'    => 'Scribite',
+              'minversion' => '5.0.0',
+              'maxversion' => '',
+              'status'     => ModUtil::DEPENDENCY_RECOMMENDED,
+              'reason'     => 'Scribite adds a html editor.'),
+);
+```
 
 *Note: This only works for modules using the new >= 1.3.7 structure. Modules with the < 1.3.7 structure are ignoring this setting.*
+
+
+Persistent Event Listeners
+--------------------------
+
+Persistent event listeners are no longer stored in the database. They should be loaded by 
+the DependecyInjection extension.
+
+```php
+<?php
+
+namespace My\FooModule\DependencyInjection;
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Config\FileLocator;
+
+class MyFooExtension extends Extension
+{
+    /**
+     * Responds to the app.config configuration parameter.
+     *
+     * @param array            $configs
+     * @param ContainerBuilder $container
+     */
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+        $loader->load('services.xml');
+
+    }
+}
+```
+
+Simply create a service definition and in `Resources/config/services.xml` or `.yml`
+and `tag` the service with `kernel.event_subscriber`.
+
+```xml
+<service id="mymodule.foo_listener" class="%mymodule.foo_listener.class%">
+    <tag name="kernel.event_subscriber" />
+</service>
+```
+
 
 Theme Standard
 --------------
@@ -543,29 +617,31 @@ Theme composer.json
 
 Themes must have a `composer.json` manifest which looks like the following:
 
-    {
-        "name": "foo/my-theme",
-        "description": "My Theme",
-        "type": "zikula-theme",
-        "license": "LGPL-3.0+",
-        "authors": [
-            {
-                "name": "Zikula",
-                "homepage": "http://zikula.org/"
-            }
-        ],
-        "autoload": {
-            "psr-0": { "Foo\\Theme\\MyTheme\\": "" }
-        },
-        "require": {
-            "php": ">5.3.3"
-        },
-        "extra": {
-            "zikula": {
-                "class": "Foo\\Theme\\MyTheme\\FooMyTheme"
-            }
+```json
+{
+    "name": "foo/my-theme",
+    "description": "My Theme",
+    "type": "zikula-theme",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "http://zikula.org/"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Foo\\Theme\\MyTheme\\": "" }
+    },
+    "require": {
+        "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Foo\\Theme\\MyTheme\\FooMyTheme"
         }
     }
+}
+```
 
 .. note::
 
