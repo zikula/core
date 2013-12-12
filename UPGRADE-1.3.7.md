@@ -304,7 +304,7 @@ public function fooAction($name, $age)
 
 Argument order does not matter.
 
-You canalso get the request object using this:
+You can also get the request object using this:
 
 ```php
 public function fooAction(Request $request)
