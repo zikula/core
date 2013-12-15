@@ -117,7 +117,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * (optional) minimum date allowed to be selected in datepicker (default: null - choose any date)
      */
     $minDate = (isset($params['mindate']) && ($params['mindate'] instanceof DateTime)) ? $params['mindate'] : null;   
-    $minDateString = (isset($params['mindate']) && ($params['mindate'] instanceof DateTime)) ? null : $params['mindate'];
+    $minDateString = (isset($params['mindate']) && !($params['mindate'] instanceof DateTime)) ? $params['mindate'] : null;
     unset($params['mindate']);      
     /**$minDate = (isset($params['mindate'])) ? $params['mindate'] : null;
     unset($params['mindate']);*/
@@ -127,7 +127,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * (optional) maximum date allowed to be selected in datepicker (default: null - choose any date)
      */
     $maxDate = (isset($params['maxdate']) && ($params['maxdate'] instanceof DateTime)) ? $params['maxdate'] : null;   
-    $maxDateString = (isset($params['maxdate']) && ($params['maxdate'] instanceof DateTime)) ? null : $params['maxdate'];
+    $maxDateString = (isset($params['maxdate']) && !($params['maxdate'] instanceof DateTime)) ? $params['maxdate'] : null;
     unset($params['maxdate']);  
     /**
      * theme
