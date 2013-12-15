@@ -504,7 +504,7 @@ class AdminController extends \Zikula_AbstractController
                     $dependencies[$key]['insystem'] = true;
                     $modinfo = ModUtil::getInfoFromName($dependency['modname']);
                     $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
-                    if (is_dir("$base/$dependency[modname]")) {
+                    if ((is_dir($base.'/'.$dependency['modname'])) || (is_dir(ModUtil::getModuleRelativePath($dependency['modname'])))) {
                         $minok = 0;
                         $maxok = 0;
                         $modversion = ExtensionsUtil::getVersionMeta($dependency['modname'], $base);
