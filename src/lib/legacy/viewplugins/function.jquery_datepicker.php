@@ -69,6 +69,13 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     $displayFormat_javascript = (isset($params['displayformat_javascript'])) ? $params['displayformat_javascript'] : 'd MM yy';
     unset($params['displayformat_javascript']);
     /**
+     * displayelement_class
+     * string
+     * (optional) The css class applied to the display element (default: null)
+     */
+    $displayElement_class = (isset($params['displayelement_class'])) ? $params['displayelement_class'] : null;
+    unset($params['displayelement_class']);
+    /**
      * valuestorageelement
      * string (do not include the '#' character)
      * (optional) the id text of the html element where the selected date will be stored (default null)
@@ -100,7 +107,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     /**
      * readonly
      * boolean
-     * (optional) whether the display field is readonly of active (default: (boolean)true - IS readonly)
+     * (optional) whether the display field is readonly or active (default: (boolean)true - IS readonly)
      */
     $readOnly = (isset($params['readonly'])) ? $params['readonly'] : true;
     unset($params['readonly']);
@@ -217,8 +224,10 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     $english = explode(" ", 'January February March April May June July August September October November December');
     $translated = explode(" ", __('January February March April May June July August September October November December'));
     $displayDateString = str_replace($english, $translated, $defaultDate->format($displayFormat_dateTime));
+
+    $class = isset($displayElement_class) ? " class='$displayElement_class'" : '';
     
-    $html = "<input type='text'{$readOnlyHtml} id='$displayElement' name='$name' value='{$displayDateString}' />\n";
+    $html = "<input type='text'{$readOnlyHtml} id='$displayElement'{$class} name='$name' value='{$displayDateString}' />\n";
     if (isset($valueStorageElement)) {
         $name = isset($object) ? "{$object}[{$valueStorageElement}]" : $valueStorageElement;
         $html .= "<input type='hidden' id='$valueStorageElement' name='$name' value='{$defaultDate->format($valueStorageFormat_dateTime)}' />";
