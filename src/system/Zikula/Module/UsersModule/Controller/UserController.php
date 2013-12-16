@@ -1163,15 +1163,17 @@ class UserController extends \Zikula_AbstractController
                     $this->checkCsrfToken();
                 }
 
-                $authenticationInfo = $this->request->request->get('authentication_info', array());
-                $selectedAuthenticationMethod = $this->request->request->get('authentication_method', array());
-                $rememberMe         = $this->request->request->get('rememberme', false);
-                $returnPage         = $this->request->request->get('returnpage', urldecode($this->request->query->get('returnpage', '')));
+                $authenticationInfo = (isset($args['authentication_info'])) ? (array)$args['authentication_info'] : (array)$this->request->request->get('authentication_info', array());
+                $selectedAuthenticationMethod = (isset($args['authentication_method'])) ? (array)$args['authentication_method'] : (array)$this->request->request->get('authentication_method', array());
+                $rememberMe = (isset($args['rememberme'])) ? (bool)$args['rememberme'] : (bool)$this->request->request->get('rememberme', false);
+                $returnPage = (isset($args['returnpage'])) ? (string)urldecode($args['returnpage']) : (string)urldecode($this->request->request->get('returnpage', ''));
+                
                 if (empty($returnPage)) {
                     // Check if returnurl was set instead of returnpage
-                    $returnPage     = $this->request->request->get('returnurl', urldecode($this->request->query->get('returnurl', '')));
+                    $returnPage = (isset($args['returnurl'])) ? (string)urldecode($args['returnurl']) : (string)urldecode($this->request->request->get('returnurl', ''));
                 }
-                $eventType          = $this->request->request->get('event_type', false);
+
+                $eventType = (isset($args['event_type'])) ? $args['event_type'] : $this->request->request->get('event_type', false);
             } elseif ($this->request->isMethod('GET')) {
                 $reentry = false;
                 $reentrantTokenReceived = $this->request->query->get('reentranttoken', '');
