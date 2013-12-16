@@ -301,7 +301,9 @@ class HookDispatcher
         foreach ($handlers as $handler) {
             if ($handler['serviceid']) {
                 $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
-                $this->dispatcher->addListenerService($handler['eventname'], $callable);
+//                $this->dispatcher->addListenerService($handler['eventname'], $callable);
+                $o = $this->dispatcher->getContainer()->get($callable[0]);
+                $this->dispatcher->addListener($handler['eventname'], array($o, $handler['method']));
             } else {
                 try {
                     $callable = array($handler['classname'], $handler['method']);
