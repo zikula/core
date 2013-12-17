@@ -15,7 +15,7 @@
                     <input id="users_uname" type="text" class="form-control" name="uname" size="25" maxlength="25" value="{$uname}" />
                 </div>
             </div>
-            {if ($modvars.ZikulaUsersModule.reg_uniemail|default:1 == 1)}
+            {if ($modvars.ZikulaUsersModule.reg_uniemail|default:true)}
             <div class="form-group">
                 <label class="col-lg-3 control-label">{gt text='or'}</label>
             </div>
