@@ -985,7 +985,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             throw new AccessDeniedException();
         }
 
-        $uniqueEmails = $this->getVar('reg_uniemail', false);
+        $uniqueEmails = $this->getVar('reg_uniemail', true);
         // Checks the following:
         // - none of the three possible IDs is set
         // - uid is set along with either uname or email
