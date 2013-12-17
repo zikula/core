@@ -195,7 +195,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Returns a NotFoundHttpException.
      *
-     * This will result in a 404 response code. Usage example:
+     * This will result in a 403 response code. Usage example:
      *
      *      throw $this->createAccessDeniedHttpException('Access Denied');
      *
