@@ -57,7 +57,6 @@ doctrine:
                 path:     %database_path%
 
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
         proxy_namespace: DoctrineProxy
         proxy_dir: %kernel.cache_dir%/doctrine/orm/DoctrineProxy
         default_entity_manager: default
