@@ -1501,9 +1501,9 @@ class CategoryUtil
             foreach ($cats as $k => $v) {
                 if (isset($v[$field]) && isset($paths[$k][$field]) && ($v[$field] != $paths[$k][$field])) {
                     $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.$field = :path WHERE c.id = :id";
+                    $query = $em->createQuery($dql);
                     $query->setParameter('path', $paths[$k]);
                     $query->setParameter('id', $k);
-                    $query = $em->createQuery($dql);
                     $query->getResult();
                 }
             }
