@@ -38,6 +38,7 @@ use Zikula_Api_AbstractAuthentication;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * User controllers for the Users module.
@@ -488,7 +489,9 @@ class UserController extends \Zikula_AbstractController
                             );
                             $authenticationRegistered = ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'register', $arguments, 'Zikula_Api_AbstractAuthentication');
                             if (!$authenticationRegistered) {
-                                throw new \RuntimeException($this->__('There was a problem associating your log-in information with your account. Please contact the site administrator.'));
+                                LogUtil::registerWarning($this->__('There was a problem associating your log-in information with your account. Please contact the site administrator.'));
+                                $response = new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
+                                $response->send();
                             }
                         } elseif ($this->getVar(UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::LOGIN_METHOD_UNAME) == UsersConstant::LOGIN_METHOD_EMAIL) {
                             // The authentication method IS the Users module, prepare for auto-login.
