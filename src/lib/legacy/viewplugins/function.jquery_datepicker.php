@@ -168,7 +168,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
 
     // build the datepicker
     $javascript = ($defaultDate) ? "
-        var {$displayElement}DefaultDate = new Date(\"{$defaultDate->format($displayFormat_dateTime)}\");" : '';
+        var {$displayElement}DefaultDate = new Date(\"{$defaultDate->format($displayFormat_dateTime)}\");" : "var {$displayElement}DefaultDate = null";
     if (isset($minDate)) {
         $javascript .= "
         var {$displayElement}minDate = new Date(\"{$minDate->format($displayFormat_dateTime)}\");";
@@ -185,7 +185,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
         $javascript .= "
                 $param: $value,";
     }
-    // add configured/computed paramters from plugin
+    // add configured/computed parameters from plugin
     if (isset($valueStorageElement)) {
         $javascript .="
                 altField: '#$valueStorageElement',
@@ -209,9 +209,13 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
         $javascript .= "
                 onSelect: function(dateText, inst) {" . $onSelectCallback . "},";
     }
-    $javascript .= "
+    $javascript .= ($defaultDate) ? "
                 dateFormat: '$displayFormat_javascript',
                 defaultDate: {$displayElement}DefaultDate
+            });
+        });" : "
+                dateFormat: '$displayFormat_javascript',
+                defaultDate: null
             });
         });";
     PageUtil::addVar("footer", "<script type='text/javascript'>$javascript</script>");
