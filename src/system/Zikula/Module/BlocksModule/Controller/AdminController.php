@@ -20,10 +20,12 @@ use SecurityUtil;
 use SessionUtil;
 use ZLanguage;
 use BlockUtil;
+use System;
 use Zikula_Controller_AbstractBlock;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Administrative controllers for the blocks module
@@ -505,7 +507,9 @@ class AdminController extends \Zikula_AbstractController
         if ($block['blockid'] == '') {
             $block['blockid'] = 'error';
             $url = ModUtil::url('ZikulaBlocksModule', 'admin', 'newblock', array('block' => $block));
-            throw new \InvalidArgumentException($this->__('You must choose a block.'));
+            LogUtil::registerError($this->__('You must choose a block.'));
+            $response = new RedirectResponse(System::normalizeUrl($url));
+            return $response;
         }
 
         list($mid, $bkey) = explode(':', $block['blockid']);
