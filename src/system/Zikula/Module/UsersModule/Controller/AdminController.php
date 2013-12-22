@@ -2532,12 +2532,12 @@ class AdminController extends \Zikula_AbstractController
             $uid = $this->request->request->get('userid', false);
             $userMustChangePassword = $this->request->request->get('user_must_change_password', false);
 
+            // Force reload of User object into cache.
+            $userObj = UserUtil::getVars($uid);
+
             if (!$uid || !is_numeric($uid) || ((int)$uid != $uid) || $userObj['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
                 throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
             }
-
-            // Force reload of User object into cache.
-            $userObj = UserUtil::getVars($uid);
 
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
                 throw new AccessDeniedException();

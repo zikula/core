@@ -30,7 +30,7 @@
                         {gt text='Yes, cancel the change of password'}
                     </button>
                 {else}
-                    <button class="btn btn-danger" title={gt text='Yes, force the change of password'}>
+                    <button class="btn btn-danger" title="{gt text='Yes, force the change of password'}">
                         {gt text='Yes, force the change of password'}
                     </button>
                 {/if}
