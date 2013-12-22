@@ -87,7 +87,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * string
      * (optional) the php Date format used for the date passed to the Form (default: 'Y-m-d')
      */
-    $valueStorageFormat_dateTime = (isset($params['valuestorageformat'])) ? $params['valuestorageformat'] : 'Y-m-d';
+    $valueStorageFormat_dateTime = (isset($params['valuestorageformat'])) ? $params['valuestorageformat'] : 'Ym';
     unset($params['valuestorageformat']);
     /**
      * valuestorageformat_javascript
