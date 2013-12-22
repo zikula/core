@@ -981,11 +981,14 @@ class UserController extends \Zikula_AbstractController
         if (($formStage == 'code') && ($this->request->isMethod('POST') || !empty($uname) || !empty($email) || !empty($code))) {
             // Got something to process from either GET or POST
             if (empty($uname) && empty($email)) {
-                throw new \InvalidArgumentException($this->__('Error! User name and e-mail address fields are empty.'));
+                LogUtil::registerError($this->__('Error! User name and e-mail address fields are empty.'));
+                $formStage = 'code';
             } elseif (!empty($email) && !empty($uname)) {
-                throw new \InvalidArgumentException($this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
+                LogUtil::registerError($this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
+                $formStage = 'code';
             } elseif (empty($code)) {
-                throw new \InvalidArgumentException($this->__('Error! Please enter the confirmation code you received in the e-mail message.'));
+                LogUtil::registerError($this->__('Error! Please enter the confirmation code you received in the e-mail message.'));
+                $formStage = 'code';
             } else {
                 if (!empty($uname)) {
                     $idfield = 'uname';
@@ -1007,7 +1010,7 @@ class UserController extends \Zikula_AbstractController
                         $passreminder = isset($userObj['passreminder']) ? $userObj['passreminder'] : '';
                         $formStage = 'setpass';
                     } else {
-                        throw new NotFoundHttpException($this->__('Sorry! Could not load that user account.'));
+                        LogUtil::registerError($this->__('Sorry! Could not load that user account.'));
                         $formStage = 'error';
                     }
                 } else {
@@ -1040,14 +1043,14 @@ class UserController extends \Zikula_AbstractController
                         }
                         $formStage = 'login';
                     } else {
-                        throw new \RuntimeException($this->__('Error! Your new password could not be saved.'));
+                        LogUtil::registerError($this->__('Error! Your new password could not be saved.'));
                         $formStage = 'error';
                     }
                 } else {
                     $errorInfo = ModUtil::apiFunc($this->name, 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $passwordErrors));
                 }
             } else {
-                throw new \NotFoundHttpException($this->__('Sorry! Could not load that user account.'));
+                LogUtil::registerError($this->__('Sorry! Could not load that user account.'));
                 $formStage = 'error';
             }
         }
