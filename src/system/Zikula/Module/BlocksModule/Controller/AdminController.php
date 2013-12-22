@@ -509,7 +509,7 @@ class AdminController extends \Zikula_AbstractController
             $url = ModUtil::url('ZikulaBlocksModule', 'admin', 'newblock', array('block' => $block));
             LogUtil::registerError($this->__('You must choose a block.'));
             $response = new RedirectResponse(System::normalizeUrl($url));
-            $response->send();
+            return $response;
         }
 
         list($mid, $bkey) = explode(':', $block['blockid']);
