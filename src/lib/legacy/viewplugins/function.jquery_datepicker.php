@@ -42,9 +42,9 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     /**
      * defaultdate
      * php DateTime object
-     * The initial date selected and displayed (default: now)
+     * The initial date selected and displayed (default: NULL)
      */
-    $defaultDate = (isset($params['defaultdate']) && ($params['defaultdate'] instanceof DateTime)) ? $params['defaultdate'] : new DateTime();
+    $defaultDate = (isset($params['defaultdate']) && ($params['defaultdate'] instanceof DateTime)) ? $params['defaultdate'] : null;
     unset($params['defaultdate']);
     /**
      * displayelement
@@ -87,7 +87,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * string
      * (optional) the php Date format used for the date passed to the Form (default: 'Y-m-d')
      */
-    $valueStorageFormat_dateTime = (isset($params['valuestorageformat'])) ? $params['valuestorageformat'] : 'Ym';
+    $valueStorageFormat_dateTime = (isset($params['valuestorageformat'])) ? $params['valuestorageformat'] : 'Y-m-d';
     unset($params['valuestorageformat']);
     /**
      * valuestorageformat_javascript
@@ -167,8 +167,8 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     PageUtil::addVar("stylesheet", "javascript/jquery-ui/themes/$jQueryTheme/jquery-ui.css");
 
     // build the datepicker
-    $javascript = "
-        var {$displayElement}DefaultDate = new Date(\"{$defaultDate->format($displayFormat_dateTime)}\");";
+    $javascript = ($defaultDate) ? "
+        var {$displayElement}DefaultDate = new Date(\"{$defaultDate->format($displayFormat_dateTime)}\");" : '';
     if (isset($minDate)) {
         $javascript .= "
         var {$displayElement}minDate = new Date(\"{$minDate->format($displayFormat_dateTime)}\");";
@@ -223,14 +223,14 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     // translate month name since DateTime::format() only returns English
     $english = explode(" ", 'January February March April May June July August September October November December');
     $translated = explode(" ", __('January February March April May June July August September October November December'));
-    $displayDateString = str_replace($english, $translated, $defaultDate->format($displayFormat_dateTime));
+    $displayDateString = ($defaultDate) ? str_replace($english, $translated, $defaultDate->format($displayFormat_dateTime)) : '';
 
     $class = isset($displayElement_class) ? " class='$displayElement_class'" : '';
     
-    $html = "<input type='text'{$readOnlyHtml} id='$displayElement'{$class} name='$name' value='{$displayDateString}' />\n";
+    $html = "<input type=\"text\"{$readOnlyHtml} id=\"{$displayElement}\"{$class} name=\"{$name}\" value=\"{$displayDateString}\" />\n";
     if (isset($valueStorageElement)) {
         $name = isset($object) ? "{$object}[{$valueStorageElement}]" : $valueStorageElement;
-        $html .= "<input type='hidden' id='$valueStorageElement' name='$name' value='{$defaultDate->format($valueStorageFormat_dateTime)}' />";
+        $html .= '<input type="hidden" id="'.$valueStorageElement.'" name="'.$name.'" value="'.(($defaultDate) ? $defaultDate->format($valueStorageFormat_dateTime) : '').'" />';
     }
 
     return $html;
