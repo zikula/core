@@ -45,7 +45,7 @@ class UserController extends \Zikula_AbstractController
         if (!System::getVar('theme_change')) {
             LogUtil::registerWarning($this->__('Notice: Theme switching is currently disabled.'));
             $response = new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
-            $response->send();
+            return $response;
         }
 
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
