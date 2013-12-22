@@ -69,6 +69,13 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     $displayFormat_javascript = (isset($params['displayformat_javascript'])) ? $params['displayformat_javascript'] : 'd MM yy';
     unset($params['displayformat_javascript']);
     /**
+     * displayelement_class
+     * string
+     * (optional) The css class applied to the display element (default: null)
+     */
+    $displayElement_class = (isset($params['displayelement_class'])) ? $params['displayelement_class'] : null;
+    unset($params['displayelement_class']);
+    /**
      * valuestorageelement
      * string (do not include the '#' character)
      * (optional) the id text of the html element where the selected date will be stored (default null)
@@ -80,7 +87,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * string
      * (optional) the php Date format used for the date passed to the Form (default: 'Y-m-d')
      */
-    $valueStorageFormat_dateTime = (isset($params['valuestorageformat'])) ? $params['valuestorageformat'] : 'Y-m-d';
+    $valueStorageFormat_dateTime = (isset($params['valuestorageformat'])) ? $params['valuestorageformat'] : 'Ym';
     unset($params['valuestorageformat']);
     /**
      * valuestorageformat_javascript
@@ -100,7 +107,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     /**
      * readonly
      * boolean
-     * (optional) whether the display field is readonly of active (default: (boolean)true - IS readonly)
+     * (optional) whether the display field is readonly or active (default: (boolean)true - IS readonly)
      */
     $readOnly = (isset($params['readonly'])) ? $params['readonly'] : true;
     unset($params['readonly']);
@@ -117,7 +124,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * (optional) minimum date allowed to be selected in datepicker (default: null - choose any date)
      */
     $minDate = (isset($params['mindate']) && ($params['mindate'] instanceof DateTime)) ? $params['mindate'] : null;   
-    $minDateString = (isset($params['mindate']) && ($params['mindate'] instanceof DateTime)) ? null : $params['mindate'];
+    $minDateString = (isset($params['mindate']) && !($params['mindate'] instanceof DateTime)) ? $params['mindate'] : null;
     unset($params['mindate']);      
     /**$minDate = (isset($params['mindate'])) ? $params['mindate'] : null;
     unset($params['mindate']);*/
@@ -127,7 +134,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * (optional) maximum date allowed to be selected in datepicker (default: null - choose any date)
      */
     $maxDate = (isset($params['maxdate']) && ($params['maxdate'] instanceof DateTime)) ? $params['maxdate'] : null;   
-    $maxDateString = (isset($params['maxdate']) && ($params['maxdate'] instanceof DateTime)) ? null : $params['maxdate'];
+    $maxDateString = (isset($params['maxdate']) && !($params['maxdate'] instanceof DateTime)) ? $params['maxdate'] : null;
     unset($params['maxdate']);  
     /**
      * theme
@@ -217,8 +224,10 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     $english = explode(" ", 'January February March April May June July August September October November December');
     $translated = explode(" ", __('January February March April May June July August September October November December'));
     $displayDateString = str_replace($english, $translated, $defaultDate->format($displayFormat_dateTime));
+
+    $class = isset($displayElement_class) ? " class='$displayElement_class'" : '';
     
-    $html = "<input type='text'{$readOnlyHtml} id='$displayElement' name='$name' value='{$displayDateString}' />\n";
+    $html = "<input type='text'{$readOnlyHtml} id='$displayElement'{$class} name='$name' value='{$displayDateString}' />\n";
     if (isset($valueStorageElement)) {
         $name = isset($object) ? "{$object}[{$valueStorageElement}]" : $valueStorageElement;
         $html .= "<input type='hidden' id='$valueStorageElement' name='$name' value='{$defaultDate->format($valueStorageFormat_dateTime)}' />";
