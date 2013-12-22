@@ -24,6 +24,7 @@ use Zikula_View;
 use CookieUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * User controllers for the theme module
@@ -42,7 +43,9 @@ class UserController extends \Zikula_AbstractController
     {
         // check if theme switching is allowed
         if (!System::getVar('theme_change')) {
-            throw new \RuntimeException($this->__('Notice: Theme switching is currently disabled.'));
+            LogUtil::registerWarning($this->__('Notice: Theme switching is currently disabled.'));
+            $response = new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
+            return $response;
         }
 
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
