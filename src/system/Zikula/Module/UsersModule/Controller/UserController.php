@@ -491,7 +491,7 @@ class UserController extends \Zikula_AbstractController
                             if (!$authenticationRegistered) {
                                 LogUtil::registerWarning($this->__('There was a problem associating your log-in information with your account. Please contact the site administrator.'));
                                 $response = new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
-                                $response->send();
+                                return $response;
                             }
                         } elseif ($this->getVar(UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::LOGIN_METHOD_UNAME) == UsersConstant::LOGIN_METHOD_EMAIL) {
                             // The authentication method IS the Users module, prepare for auto-login.
