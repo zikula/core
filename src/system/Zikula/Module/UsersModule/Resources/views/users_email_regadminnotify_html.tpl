@@ -1,8 +1,8 @@
 {strip}
-{if $reginfo.pendingApproval}
+{if $reginfo.pendingApproval|default:false}
     {gt text='New registration pending approval' assign='heading'}
     {gt text='New registration pending approval: %s' tag1=$reginfo.uname assign='subject'}
-{elseif $reginfo.pendingVerification}
+{elseif $reginfo.pendingVerification|default:false}
     {gt text='New registration pending e-mail verification' assign='heading'}
     {gt text='New registration pending verification: %s' tag1=$reginfo.uname assign='subject'}
 {else}
