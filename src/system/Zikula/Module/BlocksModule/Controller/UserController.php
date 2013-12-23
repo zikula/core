@@ -20,6 +20,7 @@ use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * User controllers for the blocks module
@@ -87,7 +88,7 @@ class UserController extends \Zikula_AbstractController
      *
      * Invert the status of a given block id (collapsed/uncollapsed).
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function changestatusAction()
     {
@@ -106,6 +107,6 @@ class UserController extends \Zikula_AbstractController
         $this->entityManager->flush();
 
         // now lets get back to where we came from
-        $this->redirect(System::serverGetVar('HTTP_REFERER'));
+        return new RedirectResponse(System::serverGetVar('HTTP_REFERER'));
     }
 }
