@@ -38,7 +38,6 @@ use Zikula_Api_AbstractAuthentication;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * User controllers for the Users module.
