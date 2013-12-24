@@ -16,10 +16,10 @@ namespace Zikula\Module\MailerModule\Form\Handler;
 use Zikula_Form_View;
 use SecurityUtil;
 use LogUtil;
-use DataUtil;
-use ZLanguage;
 use ModUtil;
+use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Form handler for the mailer modules testconfig form
@@ -63,9 +63,7 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
      *      @type string $commandName the command to execute
      *                      }
      *
-     * @return void
-     *
-     * @throws \RuntimeException Thrown if the message couldn't be sent
+     * @return RedirectResponse
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
@@ -109,15 +107,15 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                     LogUtil::registerStatus($this->__('Done! Message sent.'));
                 } elseif ($result === false) {
                     // Failiure
-                    throw new \RuntimeException($this->__f('Error! Could not send message. %s', ''));
+                    LogUtil::registerError($this->__f('Error! Could not send message. %s', ''));
                 } else {
                     // Failiure with error
-                    throw new \RuntimeException($this->__f('Error! Could not send message. %s', $result));
+                    LogUtil::registerError($this->__f('Error! Could not send message. %s', $result));
                 }
 
                 break;
         }
 
-        return $view->redirect(ModUtil::url('ZikulaMailerModule', 'admin', 'testconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'testconfig')));
     }
 }
