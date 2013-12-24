@@ -18,7 +18,6 @@ use SecurityUtil;
 use UserUtil;
 use Zikula_View;
 use Zikula\Module\GroupsModule\Helper\CommonHelper;
-use LogUtil;
 use DataUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -165,24 +164,24 @@ class UserController extends \Zikula_AbstractController
         // $isopen = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getginfo', array('gid' => $gid));
         if ($action == 'subscribe') {
             if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
-                LogUtil::registerError($this->__('Error! You are already a member of this group.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! You are already a member of this group.'));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
             }
 
             if ($group['gtype'] == CommonHelper::GTYPE_CORE) {
-               LogUtil::registerError($this->__('Sorry! You cannot apply for membership of that group.'));
+               $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! You cannot apply for membership of that group.'));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
             }
 
             if ($group['nbumax'] != 0) {
                 if (($group['nbumax'] - $group['nbuser']) <= 0) {
-                    LogUtil::registerError($this->__('Sorry! That group has reached full membership.'));
+                    $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! That group has reached full membership.'));
                     return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
                 }
             }
 
             if ($group['state'] == CommonHelper::STATE_CLOSED) {
-                LogUtil::registerError($this->__('Sorry! That group is closed.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! That group is closed.'));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
             }
         }
@@ -219,7 +218,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (empty($tag)) {
-            LogUtil::registerError($this->__('Error! You must click on the checkbox to confirm your action.'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! You must click on the checkbox to confirm your action.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
         }
 
@@ -235,7 +234,7 @@ class UserController extends \Zikula_AbstractController
                       'applytext' => $applytext));
 
         if ($result == true) {
-            LogUtil::registerStatus($this->__('Done! Saved the action.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved the action.'));
         }
 
         $this->view->clear_cache('User/memberslist.tpl');
