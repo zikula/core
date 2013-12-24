@@ -13,14 +13,15 @@
 
 namespace Zikula\Module\MailerModule\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula_View;
 use ModUtil;
 use SecurityUtil;
 use FormUtil;
+use System;
 use Zikula\Module\MailerModule\Form\Handler\ModifyConfigHandler;
 use Zikula\Module\MailerModule\Form\Handler\TestConfigHandler;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Administrative controllers for the mailer module
@@ -41,12 +42,12 @@ class AdminController extends \Zikula_AbstractController
     /**
      * the main administration function
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function indexAction()
     {
         // Security check will be done in modifyconfig()
-        $this->redirect(ModUtil::url('ZikulaMailerModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
