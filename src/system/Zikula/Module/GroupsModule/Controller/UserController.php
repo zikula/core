@@ -24,6 +24,7 @@ use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * User controllers for the groups module
@@ -38,7 +39,7 @@ class UserController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check will be done in view()
-        return $this->redirect(ModUtil::url('ZikulaGroupsModule', 'user', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
     }
 
     /**
@@ -128,10 +129,6 @@ class UserController extends \Zikula_AbstractController
      * @throws AccessDeniedException Thrown if the user isn't logged in or 
      *                                          if the user doesn't have overview access to the module
      * @throws NotFoundHttpException Thrown if the group cannot be found
-     * @throws \RuntimeException Thrown if the user is already a member of the group or
-     *                                  if the group cannot be applied for or
-     *                                  if the maximum user count for the group has been reached or
-     *                                  if the group is closed
      */
     public function membershipAction()
     {
@@ -168,21 +165,25 @@ class UserController extends \Zikula_AbstractController
         // $isopen = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getginfo', array('gid' => $gid));
         if ($action == 'subscribe') {
             if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
-                throw new \RuntimeException($this->__('Error! You are already a member of this group.'));
+                LogUtil::registerError($this->__('Error! You are already a member of this group.'));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
             }
 
             if ($group['gtype'] == CommonHelper::GTYPE_CORE) {
-                throw new \RuntimeException($this->__('Sorry! You cannot apply for membership of that group.'));
+               LogUtil::registerError($this->__('Sorry! You cannot apply for membership of that group.'));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
             }
 
             if ($group['nbumax'] != 0) {
                 if (($group['nbumax'] - $group['nbuser']) <= 0) {
-                    throw new \RuntimeException($this->__('Sorry! That group has reached full membership.'));
+                    LogUtil::registerError($this->__('Sorry! That group has reached full membership.'));
+                    return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
                 }
             }
 
             if ($group['state'] == CommonHelper::STATE_CLOSED) {
-                throw new \RuntimeException($this->__('Sorry! That group is closed.'));
+                LogUtil::registerError($this->__('Sorry! That group is closed.'));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
             }
         }
 
@@ -203,7 +204,6 @@ class UserController extends \Zikula_AbstractController
      *
      * @throws \InvalidArgumentsException Thrown if the group id isn't set or isn't numeric or
      *                                           if no action is requested
-     * @throws \RuntimeException Thrown if the user hasn't confirmed the action
      */
     public function userupdateAction()
     {
@@ -219,7 +219,8 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (empty($tag)) {
-            throw new \RuntimeException($this->__('Error! You must click on the checkbox to confirm your action.'));
+            LogUtil::registerError($this->__('Error! You must click on the checkbox to confirm your action.'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
         }
 
         $applytext = '';
@@ -239,7 +240,7 @@ class UserController extends \Zikula_AbstractController
 
         $this->view->clear_cache('User/memberslist.tpl');
 
-        return $this->redirect(ModUtil::url('ZikulaGroupsModule', 'user', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
     }
 
     /**
