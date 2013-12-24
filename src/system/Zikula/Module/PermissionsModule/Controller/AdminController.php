@@ -15,13 +15,12 @@ namespace Zikula\Module\PermissionsModule\Controller;
 
 use Zikula_View;
 use ModUtil;
-use LogUtil;
 use SecurityUtil;
 use UserUtil;
-use DataUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Permissions_Controller_Admin class.
@@ -42,12 +41,12 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Main administration function.
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function mainAction()
     {
         // Security check will be done in view()
-        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -230,7 +229,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param int 'pid' permissions id
      *
-     * @return boolean true
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
@@ -257,12 +256,12 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'inc', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
-            LogUtil::registerStatus($this->__('Done! Incremented permission rule.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Incremented permission rule.'));
         }
 
         // Redirect
-        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view',
-                        array('permgrp' => $permgrp)));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view',
+                        array('permgrp' => $permgrp))));
     }
 
     /**
@@ -270,7 +269,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param int 'pid' permissions id.
      *
-     * @return boolean true
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
@@ -296,21 +295,20 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'dec', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
-            LogUtil::registerStatus($this->__('Done! Decremented permission rule.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Decremented permission rule.'));
         }
 
         // Redirect
-        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view',
-                        array('permgrp' => $permgrp)));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view',
+                        array('permgrp' => $permgrp))));
     }
 
     /**
      * Edit / Create permissions in the mainview.
      *
-     * @return boolean
+     * @return Response
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
-     * @throws \RuntimeException Thrown if no matching permission rules were found
      */
     public function listeditAction()
     {
@@ -321,7 +319,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Get parameters from whatever input we need.
         $chgpid = $this->request->query->get('chgpid', null);
-        $action = $this->request->query->get('action', null);
+        $action = $this->request->query->get('action', 'add');
         $insseq = $this->request->query->get('insseq', null);
         $permgrp = $this->request->get('permgrp', null);
 
@@ -331,7 +329,9 @@ class AdminController extends \Zikula_AbstractController
         // get all permissions
         $allperms = $this->entityManager->getRepository('Zikula\Module\PermissionsModule\Entity\PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
         if (!$allperms && $action != 'add') {
-            throw new \RuntimeException($this->__('Error! No permission rules of this kind were found. Please add some first.'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! No permission rules of this kind were found. Please add some first.'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'listedit',
+                array('action' => 'add'))));
         }
 
         $viewperms = ($action == 'modify') ? $this->__('Modify permission rule') : $this->__('Create new permission rule');
@@ -405,10 +405,9 @@ class AdminController extends \Zikula_AbstractController
      * @param string 'instance' instance string.
      * @param int 'level' permission level.
      *
-     * @return boolean true.
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
-     * @throws \InvalidArgumentException Thrown if invalid content were found in either the component or instance parameters
      */
     public function updateAction()
     {
@@ -453,13 +452,13 @@ class AdminController extends \Zikula_AbstractController
                               'level' => $level))) {
             // Success
             if ($warnmsg == '') {
-                LogUtil::registerStatus($this->__('Done! Saved permission rule.'));
+                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved permission rule.'));
             } else {
-                throw new \InvalidArgumentException($warnmsg);
+                $this->request->getSession()->getFlashbag()->add('error', $warnmsg);
             }
         }
 
-        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -471,10 +470,9 @@ class AdminController extends \Zikula_AbstractController
      * @param string 'instance' instance string.
      * @param int 'level' permission level.
      *
-     * @return bool true
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
-     * @throws \InvalidArgumentException Thrown if invalid content were found in either the component or instance parameters
      */
     public function createAction()
     {
@@ -515,13 +513,13 @@ class AdminController extends \Zikula_AbstractController
                               'insseq' => $insseq))) {
             // Success
             if ($warnmsg == '') {
-                LogUtil::registerStatus($this->__('Done! Created permission rule.'));
+                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Created permission rule.'));
             } else {
-                throw new \InvalidArgumentException($warnmsg);
+                $this->request->getSession()->getFlashbag()->add('error', $warnmsg);
             }
         }
 
-        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -529,7 +527,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param int 'pid' permissions id.
      *
-     * @return bool true
+     * @return Response
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
@@ -565,11 +563,11 @@ class AdminController extends \Zikula_AbstractController
         if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete',
                         array('pid' => $pid))) {
             // Success
-            LogUtil::registerStatus($this->__('Done! Deleted permission rule.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted permission rule.'));
         }
 
-        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view',
-                        array('permgrp' => $permgrp)));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view',
+                        array('permgrp' => $permgrp))));
     }
 
     /**
@@ -642,10 +640,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Save new settings.
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
-     * @throws \InvalidArgumentException Thrown if the id for the admin permission rule couldn't be found
      */
     public function updateconfigAction()
     {
@@ -681,20 +678,21 @@ class AdminController extends \Zikula_AbstractController
 
         // the module configuration has been updated successfuly
         if ($error == true) {
-            throw new \InvalidArgumentException($this->__('Error! Could not save configuration: unknown permission rule ID.'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Could not save configuration: unknown permission rule ID.'));
+        } else {
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
         }
-        LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
-        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
      * Check permissions.
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function checkpermissionsAction()
     {
         $returnto = $this->request->request->get('returnto', \System::getCurrentUri());
-        return $this->redirect($returnto);
+        return new RedirectResponse(System::normalizeUrl($returnto));
     }
 }
