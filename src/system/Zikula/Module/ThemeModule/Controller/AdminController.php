@@ -1250,7 +1250,7 @@ class AdminController extends \Zikula_AbstractController
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
 
         if ($themeinfo == false) {
-            throw new NotFoundHttpException($this->__('Sorry! No such theme found.'), 404);
+            throw new NotFoundHttpException($this->__('Sorry! No such theme found.'), null, 404);
         }
 
         // Security check
