@@ -28,6 +28,7 @@ use Zikula\Module\ThemeModule\Util;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * administrative controllers for the theme module
@@ -54,23 +55,23 @@ class AdminController extends \Zikula_AbstractController
     /**
      * the main admin function
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function indexAction()
     {
         // Security check will be done in view()
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
      * the main admin function
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function mainAction()
     {
         // Security check will be done in view()
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -135,7 +136,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * filter theme array by letter
      *
-     * @param bool $allthemes the list of themes to filter
+     * @param array $allthemes the list of themes to filter
      * @param string $startlet the starting letter for the filter
      *
      * @return array filtered themes array
@@ -161,8 +162,6 @@ class AdminController extends \Zikula_AbstractController
      * @param array $themeinfo theme information array
      *
      * @return void
-     *
-     * @throws \RuntimeException Thrown if no theme ini files can be written to
      */
     private function checkRunningConfig($themeinfo)
     {
@@ -181,15 +180,15 @@ class AdminController extends \Zikula_AbstractController
             if (!file_exists($zpath) || is_writable($zpath)) {
                 ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'createrunningconfig', array('themename' => $themeinfo['name']));
 
-                LogUtil::registerStatus($this->__f('Notice: The changes made via Admin Panel will be saved on \'%1$s\' because it seems that the .ini files on \'%2$s\' are not writable.', array($zpath, $tpath)));
+                $this->request->getSession()->getFlashbag()->add('status', $this->__f('Notice: The changes made via Admin Panel will be saved on \'%1$s\' because it seems that the .ini files on \'%2$s\' are not writable.', array($zpath, $tpath)));
             } else {
-                throw new \RuntimeException($this->__f('Error! Cannot write any configuration changes. Make sure that the .ini files on \'%1$s\' or \'%2$s\', and the folder itself, are writable.', array($tpath, $zpath)));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! Cannot write any configuration changes. Make sure that the .ini files on \'%1$s\' or \'%2$s\', and the folder itself, are writable.', array($tpath, $zpath)));
             }
         } else {
-            LogUtil::registerStatus($this->__f('Notice: Seems that your %1$s\'s .ini files are writable. Be sure that there are no .ini files on \'%2$s\' because if so, the Theme Engine will consider them and not your %1$s\'s ones.', array($themeinfo['name'], $zpath)));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__f('Notice: Seems that your %1$s\'s .ini files are writable. Be sure that there are no .ini files on \'%2$s\' because if so, the Theme Engine will consider them and not your %1$s\'s ones.', array($themeinfo['name'], $zpath)));
         }
 
-        LogUtil::registerStatus($this->__f("If the system cannot write on any .ini file, the changes will be saved on '%s' and the Theme Engine will use it.", $zpath));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__f("If the system cannot write on any .ini file, the changes will be saved on '%s' and the Theme Engine will use it.", $zpath));
     }
 
     /**
@@ -240,7 +239,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type array  $themeinfo updated theme information
      *                       }
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
@@ -277,11 +276,11 @@ class AdminController extends \Zikula_AbstractController
         // rewrite the variables to the running config
         $updatesettings = ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'updatesettings', array('theme' => $themename, 'themeinfo' => $newthemeinfo));
         if ($updatesettings) {
-            LogUtil::registerStatus($this->__('Done! Updated theme settings.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Updated theme settings.'));
         }
 
         // redirect back to the variables page
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -352,7 +351,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type string $newvariablevalue value for the new variable
      *                       }
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
@@ -426,10 +425,10 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => $filename));
 
         // set a status message
-        LogUtil::registerStatus($this->__('Done! Saved your changes.'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved your changes.'));
 
         // redirect back to the variables page
-        return $this->redirect($returnurl);
+        return new RedirectResponse(System::normalizeUrl($returnurl));
     }
 
     /**
@@ -495,7 +494,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type string $hover     link hover colour
      *                       }
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
@@ -555,17 +554,18 @@ class AdminController extends \Zikula_AbstractController
                 'color4' => $color4, 'color5' => $color5, 'color6' => $color6, 'color7' => $color7, 'color8' => $color8,
                 'sepcolor' => $sepcolor, 'link' => $link, 'vlink' => $vlink, 'hover' => $hover);
         } else {
-            throw new \RuntimeException($this->__('Notice: Please make sure you type an entry in every field. Your palette cannot be saved if you do not.'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Notice: Please make sure you type an entry in every field. Your palette cannot be saved if you do not.'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'palettes', array('themename' => $themename))));
         }
 
         // rewrite the settings to the running config
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
 
         // set a status message
-        LogUtil::registerStatus($this->__('Done! Saved your changes.'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved your changes.'));
 
         // redirect back to the settings page
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'palettes', array('themename' => $themename)));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'palettes', array('themename' => $themename))));
     }
 
     /**
@@ -777,7 +777,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type array  $blockpositiontemplates templates for specific block postions
      *                       }
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist or
      *                                          if pagetemplate isn't provided or
@@ -844,10 +844,10 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfiguration, 'has_sections' => true, 'file' => $filename));
 
         // set a status message
-        LogUtil::registerStatus($this->__('Done! Saved your changes.'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved your changes.'));
 
         // return the user to the correct place
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'pageconfigurations', array('themename' => $themename)));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'pageconfigurations', array('themename' => $themename))));
     }
 
     /**
@@ -857,6 +857,8 @@ class AdminController extends \Zikula_AbstractController
      * @param array  $filters array of filters
      *
      * @return string comma seperated list of filters
+     * 
+     * @throws \RuntimeException if filter has leftovers
      */
     private function _checkfilters($type, $filters)
     {
@@ -999,7 +1001,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type bool   $pageimportat   flag to override other matches
      *                       }
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
@@ -1075,10 +1077,10 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
 
         // set a status message
-        LogUtil::registerStatus($this->__('Done! Saved your changes.'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved your changes.'));
 
         // return the user to the correct place
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'pageconfigurations', array('themename' => $themename)));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'pageconfigurations', array('themename' => $themename))));
     }
 
     /**
@@ -1090,7 +1092,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type bool   $confirmation conformation to delete the page configuration
      *                      }
      *
-     * @return Response|void symfony response object if confirmation isn't provided, void otherwise
+     * @return Response symfony response object if confirmation isn't provided
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the theme
@@ -1133,11 +1135,11 @@ class AdminController extends \Zikula_AbstractController
         // The return value of the function is checked
         if (ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deletepageconfigurationassignment', array('themename' => $themename, 'pcname' => $pcname))) {
             // Success
-            LogUtil::registerStatus($this->__('Done! Deleted it.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted it.'));
         }
 
         // return the user to the correct place
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'pageconfigurations', array('themename' => $themename)));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'pageconfigurations', array('themename' => $themename))));
     }
 
     /**
@@ -1181,7 +1183,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type bool   $resetuserselected reset any user chosen themes back to site default
      *                       }
      *
-     * @return Response|void symfony response object if confirmation isn't provided, void otherwise
+     * @return Response symfony response object if confirmation isn't provided
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
@@ -1222,10 +1224,10 @@ class AdminController extends \Zikula_AbstractController
         // Set the default theme
         if (ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'setasdefault', array('themename' => $themename, 'resetuserselected' => $resetuserselected))) {
             // Success
-            LogUtil::registerStatus($this->__('Done! Changed default theme.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Changed default theme.'));
         }
 
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -1236,7 +1238,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type string $confirmation      confirmation to set theme as default
      *                       }
      *
-     * @return Response|void symfony response object if confirmation isn't provided, void otherwise
+     * @return Response symfony response object if confirmation isn't provided
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the module
@@ -1277,12 +1279,12 @@ class AdminController extends \Zikula_AbstractController
         // The return value of the function is checked
         if (ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'delete', array('themename' => $themename, 'deletefiles' => $deletefiles))) {
             // Success
-            LogUtil::registerStatus($this->__('Done! Deleted it.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted it.'));
         }
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -1362,7 +1364,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type bool   $render_expose_template expose template filenames in source
      *                       }
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
@@ -1479,9 +1481,9 @@ class AdminController extends \Zikula_AbstractController
         $this->view->clear_all_cache();
 
         // the module configuration has been updated successfuly
-        LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
 
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
@@ -1490,10 +1492,9 @@ class AdminController extends \Zikula_AbstractController
      * Using this function, the admin can clear all theme engine compiled
      * templates for the system.
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
-     * @throws \RuntimeException Thrown if the compiled templates couldn't be cleared
      */
     public function clear_compiledAction()
     {
@@ -1509,12 +1510,12 @@ class AdminController extends \Zikula_AbstractController
         $res = $theme->clear_compiled();
 
         if ($res) {
-            LogUtil::registerStatus($this->__('Done! Deleted theme engine compiled templates.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted theme engine compiled templates.'));
         } else {
-            throw new \RuntimeException($this->__('Error! Failed to clear theme engine compiled templates.'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Failed to clear theme engine compiled templates.'));
         }
 
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
@@ -1523,10 +1524,9 @@ class AdminController extends \Zikula_AbstractController
      * Using this function, the admin can clear all theme engine cached
      * templates for the system.
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
-     * @throws \RuntimeException Thrown if the cache templates couldn't be cleared
      */
     public function clear_cacheAction()
     {
@@ -1550,22 +1550,22 @@ class AdminController extends \Zikula_AbstractController
                 $themedir = $themearr['directory'];
                 $res = $theme->clear_cache(null, $cacheid, null, null, $themedir);
                 if ($res) {
-                    LogUtil::registerStatus($this->__('Done! Deleted theme engine cached templates.').' '.$cacheid.', '.$themedir);
+                    $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted theme engine cached templates.').' '.$cacheid.', '.$themedir);
                 } else {
-                    throw new \RuntimeException($this->__('Error! Failed to clear theme engine cached templates.').' '.$cacheid.', '.$themedir);
+                    $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Failed to clear theme engine cached templates.').' '.$cacheid.', '.$themedir);
                 }
             }
         } else {
             // this clear all cache for all themes
             $res = $theme->clear_all_cache();
             if ($res) {
-                LogUtil::registerStatus($this->__('Done! Deleted theme engine cached templates.'));
+                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted theme engine cached templates.'));
             } else {
-                throw new \RuntimeException($this->__('Error! Failed to clear theme engine cached templates.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Failed to clear theme engine cached templates.'));
             }
         }
 
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
@@ -1574,10 +1574,9 @@ class AdminController extends \Zikula_AbstractController
      * Using this function, the admin can clear all CSS/JS combination cached
      * files for the system.
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
-     * @throws \RuntimeException Thrown if the cache cssjs combination files couldn't be cleared
      */
     public function clear_cssjscombinecacheAction()
     {
@@ -1592,8 +1591,8 @@ class AdminController extends \Zikula_AbstractController
         $theme = Zikula_View_Theme::getInstance();
         $theme->clear_cssjscombinecache();
 
-        LogUtil::registerStatus($this->__('Done! Deleted CSS/JS combination cached files.'));
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted CSS/JS combination cached files.'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
@@ -1602,10 +1601,9 @@ class AdminController extends \Zikula_AbstractController
      * Using this function, the admin can clear all theme engine configuration
      * copies created inside the temporary directory.
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
-     * @throws \RuntimeException Thrown if the compiled templates couldn't be cleared
      */
     public function clear_configAction()
     {
@@ -1621,12 +1619,12 @@ class AdminController extends \Zikula_AbstractController
         $res = $theme->clear_theme_config();
 
         if ($res) {
-            LogUtil::registerStatus($this->__('Done! Deleted theme engine configurations.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted theme engine configurations.'));
         } else {
-            throw new \RuntimeException($this->__('Error! Failed to clear theme engine configurations.'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Failed to clear theme engine configurations.'));
         }
 
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
@@ -1635,10 +1633,9 @@ class AdminController extends \Zikula_AbstractController
      * Using this function, the admin can clear all render compiled templates
      * for the system.
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
-     * @throws \RuntimeException Thrown if the compiled templates couldn't be cleared
      */
     public function render_clear_compiledAction()
     {
@@ -1653,12 +1650,12 @@ class AdminController extends \Zikula_AbstractController
         $res = $this->view->clear_compiled();
 
         if ($res) {
-            LogUtil::registerStatus($this->__('Done! Deleted rendering engine compiled templates.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted rendering engine compiled templates.'));
         } else {
-            throw new \RuntimeException($this->__('Error! Failed to clear rendering engine compiled templates.'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Failed to clear rendering engine compiled templates.'));
         }
 
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
@@ -1667,10 +1664,9 @@ class AdminController extends \Zikula_AbstractController
      * Using this function, the admin can clear all render cached templates
      * for the system.
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
-     * @throws \RuntimeException Thrown if the cached templates couldn't be cleared
      */
     public function render_clear_cacheAction()
     {
@@ -1685,12 +1681,12 @@ class AdminController extends \Zikula_AbstractController
         $res = $this->view->clear_all_cache();
 
         if ($res) {
-            LogUtil::registerStatus($this->__('Done! Deleted rendering engine cached pages.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted rendering engine cached pages.'));
         } else {
-            throw new \RuntimeException($this->__('Error! Failed to clear rendering engine cached pages.'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Failed to clear rendering engine cached pages.'));
         }
 
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
@@ -1699,7 +1695,7 @@ class AdminController extends \Zikula_AbstractController
      * Using this function, the admin can clear all theme and render cached,
      * compiled and combined files for the system.
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access over the module
      */
@@ -1712,7 +1708,7 @@ class AdminController extends \Zikula_AbstractController
 
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
 
-        LogUtil::registerStatus($this->__('Done! Cleared all cache and compile directories.'));
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Cleared all cache and compile directories.'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 }
