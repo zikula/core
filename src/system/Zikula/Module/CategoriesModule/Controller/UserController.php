@@ -36,7 +36,7 @@ class UserController extends \Zikula_AbstractController
     /**
      * main user function
      *
-     * @return Response|RedirectResponse symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the module
      */

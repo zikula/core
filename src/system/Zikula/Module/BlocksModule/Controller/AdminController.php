@@ -541,7 +541,7 @@ class AdminController extends \Zikula_AbstractController
      * @param int bid the block id.
      * @param bool confirm to delete block.
      *
-     * @return Response|RedirectResponse symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the block
      * @throws NotFoundHttpException Thrown the requested block doesn't exist
@@ -760,7 +760,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type bool $confirmation confirmation that this item can be deleted
      *                       }
      *
-     * @return Response|RedirectResponse symfony response if confirmation is null, RedirectResponse otherwise.
+     * @return Response symfony response if confirmation is null, RedirectResponse otherwise.
      *
      * @throws NotFoundHttpException Thrown if the position doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the position

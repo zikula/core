@@ -246,7 +246,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type bool $confirmation confirmation that this item can be deleted
      *                       }
      *
-     * @return Response|RedirectResponse Symfony response object if confirmation is null
+     * @return Response Symfony response object if confirmation is null
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the category
      * @throws NotFoundHttpException Thrown if the category cannot be found
