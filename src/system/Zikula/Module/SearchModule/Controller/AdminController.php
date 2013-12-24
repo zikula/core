@@ -18,8 +18,10 @@ use ModUtil;
 use LogUtil;
 use SecurityUtil;
 use EventUtil;
+use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Administrative controllers for the search module
@@ -40,12 +42,12 @@ class AdminController extends \Zikula_AbstractController
     /**
      * The main administration function.
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function mainAction()
     {
         // Security check will be done in modifyconfig()
-        return $this->redirect(ModUtil::url('ZikulaSearchModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
@@ -86,7 +88,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Update the module configuration
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
@@ -130,10 +132,10 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // the module configuration has been updated successfuly
-        LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return $this->redirect(ModUtil::url('ZikulaSearchModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 }
