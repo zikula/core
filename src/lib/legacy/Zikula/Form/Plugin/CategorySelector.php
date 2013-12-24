@@ -348,6 +348,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             $this->setSelectedValue($value);
 
         } elseif ($this->doctrine2) {
+            // doesn't seem to check where this is no group like other options above...
             if (isset($values[$this->group])) {
                 $entity = $values[$this->group];
                 if (isset($entity[$this->dataField])) {

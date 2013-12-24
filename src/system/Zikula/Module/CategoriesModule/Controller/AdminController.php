@@ -21,7 +21,6 @@ use CategoryUtil;
 use ZLanguage;
 use StringUtil;
 use System;
-use LogUtil;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -125,13 +124,13 @@ class AdminController extends \Zikula_AbstractController
             }
 
             if (!$cid) {
-                LogUtil::registerError($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
             }
 
             $editCat = CategoryUtil::getCategoryByID($cid);
             if (!$editCat) {
-                LogUtil::registerError($this->__('Sorry! No such item found.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! No such item found.'));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
             }
         } else {
