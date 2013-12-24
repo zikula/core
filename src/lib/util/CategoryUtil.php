@@ -91,7 +91,7 @@ class CategoryUtil
      *
      * @param integer $cid The category-ID to retrieve.
      *
-     * @return array resulting folder object
+     * @return array|bool resulting folder object or false if not found
      */
     public static function getCategoryByID($cid)
     {
@@ -105,6 +105,10 @@ class CategoryUtil
 
         // get category
         $category = $em->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $cid);
+
+        if (!isset($category)) {
+            return false;
+        }
 
         // convert to array
         $cat = $category->toArray();

@@ -19,8 +19,9 @@ use System;
 use CategoryUtil;
 use ModUtil;
 use ObjectUtil;
-use Zikula\Module\CategoriesModuleGenericUtil;
+use Zikula\Module\CategoriesModule\GenericUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * User form controllers for the categories module
@@ -30,11 +31,10 @@ class UserformController extends \Zikula_AbstractController
     /**
      * delete category
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the module
      * @throws \InvalidArgumentException Thrown if the category or document root aren't supplied or are invalid
-     * @throws \RuntimeException Thrown if the category is locked
      */
     public function deleteAction()
     {
@@ -62,22 +62,22 @@ class UserformController extends \Zikula_AbstractController
 
         if ($category['is_locked']) {
             //! %1$s is the id, %2$s is the name
-            throw new \RuntimeException($this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $category['name'])), null, $url);
+            LogUtil::registerError($this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $category['name'])), null, $url);
+            return new RedirectResponse(System::normalizeUrl($url));
         }
 
         CategoryUtil::deleteCategoryByID($cid);
-        return $this->redirect($url);
+        return new RedirectResponse(System::normalizeUrl($url));
     }
 
     /**
      * update category
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      * @throws \InvalidArgumentException Thrown if the document root is invalid or
      *                                          if the category id doesn't match a valid category
-     * @throws \RuntimeException Thrown if the category is locked
      */
     public function editAction()
     {
@@ -102,7 +102,7 @@ class UserformController extends \Zikula_AbstractController
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
-            return $this->redirect($url);
+            return new RedirectResponse(System::normalizeUrl($url));
         }
 
         // process name
@@ -123,7 +123,8 @@ class UserformController extends \Zikula_AbstractController
         }
 
         if ($category['is_locked']) {
-            throw new \RuntimeException($this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($data['id'], $category['name'])));
+            LogUtil::registerError($this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($data['id'], $category['name'])));
+            return new RedirectResponse(System::normalizeUrl($url));
         }
 
         $category_old_name = $category['name'];
@@ -152,13 +153,13 @@ class UserformController extends \Zikula_AbstractController
         $msg = $this->__f('Done! Saved the %s category.', $category_old_name);
         LogUtil::registerStatus($msg);
 
-        return $this->redirect($url);
+        return new RedirectResponse(System::normalizeUrl($url));
     }
 
     /**
      * move field
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      * @throws \InvalidArgumentException Thrown if the document root is invalid or
@@ -222,13 +223,13 @@ class UserformController extends \Zikula_AbstractController
 
         $url = System::serverGetVar('HTTP_REFERER');
 
-        return $this->redirect($url);
+        return new RedirectResponse(System::normalizeUrl($url));
     }
 
     /**
      * create category
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have add permissions to the module
      * @throws \InvalidArgumentException Thrown if the document root is invalid
@@ -253,7 +254,7 @@ class UserformController extends \Zikula_AbstractController
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
-            return $this->redirect(ModUtil::url('Categories', 'user', 'edit', array('dr' => $dr)));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url('Categories', 'user', 'edit', array('dr' => $dr))));
         }
 
         // process name
@@ -288,13 +289,13 @@ class UserformController extends \Zikula_AbstractController
 
         $msg = $this->__f('Done! Inserted the %s category.', $data['name']);
         LogUtil::registerStatus($msg);
-        return $this->redirect($url);
+        return new RedirectResponse(System::normalizeUrl($url));
     }
 
     /**
      * resequence categories
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      * @throws \InvalidArgumentException Thrown if the document root isn't valid
@@ -323,6 +324,6 @@ class UserformController extends \Zikula_AbstractController
 
         $this->entityManager->flush();
 
-        return $this->redirect($url);
+        return new RedirectResponse(System::normalizeUrl($url));
     }
 }
