@@ -13,11 +13,11 @@
 
 namespace Zikula\Module\SecurityCenterModule\Controller;
 
-use LogUtil;
 use SecurityUtil;
 use ModUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * form handler controllers for the security centre module
@@ -37,10 +37,9 @@ class AdminformController extends \Zikula_AbstractController
     /**
      * Delete an ids log entry
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if the object id is not numeric or if
-     * @throws NotFoundHttpException Thrown if the object cannot be found
      */
     public function deleteidsentryAction()
     {
@@ -53,7 +52,7 @@ class AdminformController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-        // get paramters
+        // get parameters
         $id = (int)$this->request->get('id', 0);
 
         // sanity check
@@ -65,7 +64,7 @@ class AdminformController extends \Zikula_AbstractController
 
         // check for valid object
         if (!$intrusion) {
-            throw new NotFoundHttpException($this->__f('Error! Invalid %s received.', "object ID [$id]"));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! Invalid %s received.', "object ID [$id]"));
         } else {
             // delete object
             $this->entityManager->remove($intrusion);
@@ -73,6 +72,6 @@ class AdminformController extends \Zikula_AbstractController
         }
 
         // redirect back to view function
-        return $this->redirect(ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'viewidslog'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'viewidslog')));
     }
 }
