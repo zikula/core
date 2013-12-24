@@ -654,7 +654,7 @@ class AdminController extends \Zikula_AbstractController
 
         if ($pid) {
             $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Block position created.'));
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyposition', array('pid' => $pid), null, 'blockpositionform'))));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyposition', array('pid' => $pid), null, 'blockpositionform')));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
