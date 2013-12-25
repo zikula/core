@@ -109,7 +109,6 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      *
      * @throws FatalErrorException Thrown if no authentication module name or method is specified, or if the module name or method
      *                                  is invalid for this module.
-     * @throws \InvalidArgumentException Thrown if invalid authentication parameterd are recieved
      */
     public function validateAuthenticationInformationAction(array $args)
     {
@@ -155,23 +154,23 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
             if (!empty($authenticationInfo['pass'])) {
                 $validates = true;
             } else {
-                throw new \InvalidArgumentException($this->__('Please provide a password.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a password.'));
             }
         } elseif (empty($authenticationInfo['pass'])) {
             if ($authenticationMethod['method'] == 'uname') {
-                throw new \InvalidArgumentException($this->__('Please provide an user name and password.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name and password.'));
             } elseif ($authenticationMethod['method'] == 'email') {
-                throw new \InvalidArgumentException($this->__('Please provide an e-mail address and password.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide an e-mail address and password.'));
             } elseif ($authenticationMethod['method'] == 'unameoremail') {
-                throw new \InvalidArgumentException($this->__('Please provide an user name / e-mail address and password.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name / e-mail address and password.'));
             }
         } else {
             if ($authenticationMethod['method'] == 'uname') {
-                throw new \InvalidArgumentException($this->__('Please provide an user name.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name.'));
             } elseif ($authenticationMethod['method'] == 'email') {
-                throw new \InvalidArgumentException($this->__('Please provide an e-mail address.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide an e-mail address.'));
             } elseif ($authenticationMethod['method'] == 'unameoremail') {
-                throw new \InvalidArgumentException($this->__('Please provide an user name / e-mail address.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name / e-mail address.'));
             }
         }
 
