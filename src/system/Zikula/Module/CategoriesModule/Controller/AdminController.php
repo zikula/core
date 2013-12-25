@@ -20,11 +20,13 @@ use SecurityUtil;
 use CategoryUtil;
 use ZLanguage;
 use StringUtil;
+use System;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Administrative controllers for the categories module
@@ -45,12 +47,12 @@ class AdminController extends \Zikula_AbstractController
     /**
      * main admin function
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function mainAction()
     {
         // Security check will be done in view()
-        return $this->redirect(ModUtil::url('ZikulaCategoriesModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -122,12 +124,14 @@ class AdminController extends \Zikula_AbstractController
             }
 
             if (!$cid) {
-                throw new \RuntimeException($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
             }
 
             $editCat = CategoryUtil::getCategoryByID($cid);
             if (!$editCat) {
-                throw new NotFoundHttpException($this->__('Sorry! No such item found.'), 404);
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! No such item found.'));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
             }
         } else {
             // new category creation
@@ -209,8 +213,6 @@ class AdminController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
-     * @throws \RuntimeException Thrown if a valid category ID isn't supplied
-     * @throws NotFoundHttpException Thrown if the category isn't found 
      */
     public function editregistryAction()
     {

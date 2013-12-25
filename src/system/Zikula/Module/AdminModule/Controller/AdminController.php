@@ -16,7 +16,6 @@ namespace Zikula\Module\AdminModule\Controller;
 use Zikula_View;
 use ModUtil;
 use SecurityUtil;
-use LogUtil;
 use System;
 use DataUtil;
 use StringUtil;
@@ -24,6 +23,7 @@ use Zikula_Core;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Administrative controllers for the admin module
@@ -51,12 +51,12 @@ class AdminController extends \Zikula_AbstractController
      * designer feels should be the default function (often this is the
      * view() function)
      *
-     * @return Response symfony response object
+     * @return RedirectResponse symfony response object
      */
     public function mainAction()
     {
         // Security check will be done in view()
-        $this->redirect(ModUtil::url('ZikulaAdminModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -127,7 +127,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type string $description the description of the category to be created
      *                     }
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to add the category
      */
@@ -147,10 +147,10 @@ class AdminController extends \Zikula_AbstractController
                           'description' => $category['description']));
 
         if (is_numeric($cid)) {
-            LogUtil::registerStatus($this->__('Done! Created new category.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Created new category.'));
         }
 
-        $this->redirect(ModUtil::url('ZikulaAdminModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -203,7 +203,7 @@ class AdminController extends \Zikula_AbstractController
      *      @type string $description the description of the item to be updated
      *                       }
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission over the category
      */
@@ -227,10 +227,10 @@ class AdminController extends \Zikula_AbstractController
 
         if ($update) {
             // Success
-            LogUtil::registerStatus($this->__('Done! Saved category.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved category.'));
         }
 
-        $this->redirect(ModUtil::url('ZikulaAdminModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -245,11 +245,10 @@ class AdminController extends \Zikula_AbstractController
      *      @type bool $confirmation confirmation that this item can be deleted
      *                       }
      *
-     * @return Response|void Symfony response object if confirmation is null
+     * @return Response Symfony response object if confirmation is null
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the category
      * @throws NotFoundHttpException Thrown if the category cannot be found
-     * @throws \InvalidArgumentException thrown if the category id cannot be found
      */
     public function deleteAction($args)
     {
@@ -296,10 +295,10 @@ class AdminController extends \Zikula_AbstractController
 
         // Success
         if ($delete) {
-            LogUtil::registerStatus($this->__('Done! Category deleted.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Category deleted.'));
         }
 
-        $this->redirect(ModUtil::url('ZikulaAdminModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -473,10 +472,9 @@ class AdminController extends \Zikula_AbstractController
      * @param  int    $admingraphic   switch for display of admin icons
      * @param  int    $modulename,... the id of the category to set for each module
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
-     * @throws \InvalidArgumentException Thrown if the modulesperrow or itemsperpage parameters are not numeric
      * @throws \RuntimeException Thrown if a module couldn't be added to the requested category
      */
     public function updateconfigAction()
@@ -493,10 +491,12 @@ class AdminController extends \Zikula_AbstractController
         // check module vars
         $modvars['modulesperrow'] = isset($modvars['modulesperrow']) ? $modvars['modulesperrow'] : 5;
         if (!is_numeric($modvars['modulesperrow'])) {
-            throw new \InvalidArgumentException($this->__("Error! You must enter a number for the 'Modules per row' setting."));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! You must enter a number for the 'Modules per row' setting."));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
         }
         if (!is_numeric($modvars['itemsperpage'])) {
-            throw new \InvalidArgumentException($this->__("Error! You must enter a number for the 'Modules per page' setting."));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! You must enter a number for the 'Modules per page' setting."));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
         }
 
         // set the module vars
@@ -512,7 +512,7 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::setVars('ZikulaAdminModule', $modvars);
 
         // get admin modules
-        $adminmodules = ModUtil::getAdminMods();
+        $adminmodules = ModUtil::getModulesCapableOf('admin');
         $adminmods = $this->request->request->get('adminmods', null);
 
         foreach ($adminmodules as $adminmodule) {
@@ -525,17 +525,19 @@ class AdminController extends \Zikula_AbstractController
                                   'category' => $category));
 
                 if ($result == false) {
-                    throw new \RuntimeException($this->__('Error! Could not add module to module category.'));
+                    /** @var $cat \Zikula\Module\AdminModule\Entity\AdminCategoryEntity */
+                    $cat = ModUtil::apiFunc($this->name, 'admin', 'get', array('cid' => $category));
+                    $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! Could not add module %1$s to module category %2$s.', array($adminmodule['name'], $cat->getName())));
                 }
             }
         }
 
         // the module configuration has been updated successfuly
-        LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        $this->redirect(ModUtil::url('ZikulaAdminModule', 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -817,7 +819,7 @@ class AdminController extends \Zikula_AbstractController
      * or find an alternative solution later.
      *
      * @param  string $url
-     * @param  ing    $timeout default=5
+     * @param  int    $timeout default=5
      *
      * @return string|bool false if no url handling functions are present or url string
      */

@@ -13,7 +13,6 @@
 
 namespace Zikula\Module\ThemeModule\Controller;
 
-use LogUtil;
 use ModUtil;
 use System;
 use SecurityUtil;
@@ -43,7 +42,7 @@ class UserController extends \Zikula_AbstractController
     {
         // check if theme switching is allowed
         if (!System::getVar('theme_change')) {
-            LogUtil::registerWarning($this->__('Notice: Theme switching is currently disabled.'));
+            $this->request->getSession()->getFlashbag()->add('warning', $this->__('Notice: Theme switching is currently disabled.'));
             $response = new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
             return $response;
         }
@@ -108,9 +107,9 @@ class UserController extends \Zikula_AbstractController
     public function resettodefaultAction()
     {
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'resettodefault');
-        LogUtil::registerStatus($this->__('Done! Theme has been reset to the default site theme.'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Theme has been reset to the default site theme.'));
 
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'user', 'index'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'index')));
     }
         
     /**
@@ -122,7 +121,7 @@ class UserController extends \Zikula_AbstractController
     {
         CookieUtil::setCookie('zikula_mobile_theme', '1', time()+3600*24*365, '/');
 
-        return $this->redirect(System::getHomepageUrl());
+        return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
     }
     
     /**
@@ -134,6 +133,6 @@ class UserController extends \Zikula_AbstractController
     {
         CookieUtil::setCookie('zikula_mobile_theme', '2', time()+3600*24*365, '/');
 
-        return $this->redirect(System::getHomepageUrl());
+        return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
     }
 }

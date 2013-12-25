@@ -23,6 +23,7 @@ use DataUtil;
 use ZLanguage;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * User controllers for the search module
@@ -32,23 +33,23 @@ class UserController extends \Zikula_AbstractController
     /**
      * Main user function
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function mainAction()
     {
         // Security check will be done in form()
-        return $this->redirect(ModUtil::url('ZikulaSearchModule', 'user', 'form'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
     }
 
     /**
      * Main user function
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function indexAction()
     {
         // Security check will be done in form()
-        return $this->redirect(ModUtil::url('ZikulaSearchModule', 'user', 'form'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
     }
 
     /**
@@ -183,7 +184,8 @@ class UserController extends \Zikula_AbstractController
         $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar'));
 
         if (empty($vars['q'])) {
-            throw new \InvalidArgumentException($this->__('Error! You did not enter any keywords to search for.'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! You did not enter any keywords to search for.'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
         }
 
         // set some defaults
