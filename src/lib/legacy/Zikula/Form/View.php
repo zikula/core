@@ -624,7 +624,7 @@ class Zikula_Form_View extends Zikula_View
             $this->validate();
         }
 
-        return $this->_IsValid;
+        return $this->_isValid;
     }
 
     /**
@@ -644,12 +644,12 @@ class Zikula_Form_View extends Zikula_View
      */
     public function validate()
     {
-        $this->_IsValid = true;
+        $this->_isValid = true;
 
         $lim = count($this->validators);
         for ($i = 0; $i < $lim; ++$i) {
             $this->validators[$i]->validate($this);
-            $this->_IsValid = $this->_IsValid && $this->validators[$i]->isValid;
+            $this->_isValid = $this->_isValid && $this->validators[$i]->isValid;
         }
 
         $this->validationChecked = true;
@@ -662,7 +662,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function clearValidation()
     {
-        $this->_IsValid = true;
+        $this->_isValid = true;
 
         $lim = count($this->validators);
         for ($i = 0; $i < $lim; ++$i) {
