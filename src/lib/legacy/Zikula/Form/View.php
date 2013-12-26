@@ -834,6 +834,7 @@ class Zikula_Form_View extends Zikula_View
             // for BC: if only url is provided, send redirect immediately, discarding all future lifecycle changes
             $response =  new RedirectResponse(System::normalizeUrl($url));
             $response->send();
+            exit;
         }
     }
 
