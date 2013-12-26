@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 /**
  * User interaction handler for Form system.
  *
@@ -135,6 +137,11 @@ class Zikula_Form_View extends Zikula_View
      * @internal
      */
     public $redirected;
+
+    /**
+     * @var Zikula\Core\ModUrl
+     */
+    public $redirectTarget;
 
     /**
      * Unique form ID.
@@ -294,7 +301,8 @@ class Zikula_Form_View extends Zikula_View
         // We cannot skip HTML generation entirely in case of System::redirect since there might be
         // some relevant code to execute in the plugins.
         if ($this->redirected) {
-            return true;
+            // only reach this point if redirectTarget is a Zikula\Core\ModUrl
+            return new RedirectResponse(System::normalizeUrl($this->redirectTarget->getUrl()));
         }
 
         return $output;
@@ -810,7 +818,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Redirect.
      *
-     * @param string $url Url.
+     * @param Zikula\Core\ModUrl|string $url Url.
      *
      * @return boolean True if redirected successfully, otherwise false.
      */
@@ -818,9 +826,15 @@ class Zikula_Form_View extends Zikula_View
     {
         $this->redirected = true;
 
-        // FIXME this executes the redirect immediately,
-        // should the View store the url and do it in the end of its lifecycle?
-        return System::redirect($url);
+        if ($url instanceof Zikula\Core\ModUrl) {
+            $this->redirectTarget = $url;
+            // return and complete lifecycle events. redirect will complete in the `execute` method
+            return true;
+        } else {
+            // for BC: if only url is provided, send redirect immediately, discarding all future lifecycle changes
+            $response =  new RedirectResponse(System::normalizeUrl($url));
+            $response->send();
+        }
     }
 
     /**
