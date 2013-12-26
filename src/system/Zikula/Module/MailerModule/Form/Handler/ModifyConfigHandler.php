@@ -21,7 +21,7 @@ use ZLanguage;
 use ModUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Core\ModUrl;
 
 /**
  * Form handler for the mailer modules modifyconfig form
@@ -83,7 +83,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
      * @param \Zikula_Form_View $view view object
      * @param array $args
      *
-     * @return RedirectResponse|bool false if the form to be saved isn't valid, RedirectResponse otherwise
+     * @return bool|void false if the form to be saved isn't valid, void otherwise
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
@@ -133,7 +133,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                 break;
         }
 
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
+        return $view->redirect(new ModUrl($this->name, 'admin', 'modifyconfig', ZLanguage::getLanguageCode()));
     }
 
     /**
