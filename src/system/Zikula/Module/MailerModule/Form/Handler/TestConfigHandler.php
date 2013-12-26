@@ -19,7 +19,8 @@ use LogUtil;
 use ModUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Core\ModUrl;
+use ZLanguage;
 
 /**
  * Form handler for the mailer modules testconfig form
@@ -63,7 +64,7 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
      *      @type string $commandName the command to execute
      *                      }
      *
-     * @return RedirectResponse
+     * @return boolean|void
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
@@ -116,6 +117,6 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 break;
         }
 
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'testconfig')));
+        return $view->redirect(new ModUrl($this->name, 'admin', 'testconfig', ZLanguage::getLanguageCode()));
     }
 }
