@@ -381,7 +381,6 @@ class DBObject
             }
 
             $this->_objKey = $where;
-            $this->_objField = 'WHERE';
         } else {
             // generic key=>value lookup
             if ($this->_objJoin) {
@@ -679,7 +678,7 @@ class DBObject
             return false;
         }
 
-        $res = DBUtil::updateObject($this->_objData, $this->_objType, '', $this->_objField);
+        $res = DBUtil::updateObject($this->_objData, $this->_objType, '', $this->_objField, $this->_objInsertPreserve);
         if ($res) {
             $this->updatePostProcess();
             return $this->_objData;
