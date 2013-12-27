@@ -215,10 +215,12 @@ Object.extend(Zikula.AdminPanel.Tab, /** @lends Zikula.AdminPanel.Tab */{
         };
         Draggables.addObserver({
             onStart: function(name, draggable, event) {
-                draggable.element.down('a').stopObserving('click', preventDefault);
-                setTimeout(function() {
-                    draggable.element.down('a').observe('click', preventDefault);
-                }, 200);
+                if (draggable.element.down('a') != undefined) {
+                    draggable.element.down('a').stopObserving('click', preventDefault);
+                    setTimeout(function() {
+                        draggable.element.down('a').observe('click', preventDefault);
+                    }, 200);
+                }
             }
         });
         $('admintabs').select('li.admintab').each(function(tab) {

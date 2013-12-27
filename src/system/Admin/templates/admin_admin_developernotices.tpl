@@ -1,4 +1,4 @@
-{checkpermissionblock component='::' instance='::' level=ACCESS_ADMIN}
+{checkpermissionblock component='Admin::' instance='::' level=ACCESS_ADMIN}
 {modurl modname=Theme type=admin func=modifyconfig assign=themeurl}
 {if $notices.developer.devmode}
 <div id="z-developernotices">
