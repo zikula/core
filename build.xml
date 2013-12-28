@@ -109,6 +109,9 @@
         <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor"/>
         <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor"/>
 
+        <!-- install assets -->
+        <exec command="php ${packagepath}/app/console assets:install ${packagepath}/web"/>
+
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs"/>
 
