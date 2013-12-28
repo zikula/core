@@ -1,0 +1,2 @@
+_main:
+    resource: @CoreBundle/Resources/config/routing.php
