@@ -81,6 +81,7 @@ class ValidationProviders extends Container
                 $errors = array_merge($errors, $response->getErrors());
             }
         }
+
         return $errors;
     }
 }
