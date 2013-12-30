@@ -26,10 +26,10 @@ class ValidationProviders extends Container
    /**
      * Constructor.
      *
-     * @param string      $name       The name of the collection.
-     * @param ArrayObject $collection The collection (optional).
+     * @param string       $name       The name of the collection.
+     * @param \ArrayObject $collection The collection (optional).
      */
-    public function __construct($name='validation', ArrayObject $collection = null)
+    public function __construct($name='validation', \ArrayObject $collection = null)
     {
         parent::__construct($name, $collection);
     }
@@ -37,8 +37,8 @@ class ValidationProviders extends Container
     /**
      * Set response.
      *
-     * @param string                         $name     Name.
-     * @param Zikula_Hook_ValidationResponse $response Validation response.
+     * @param string             $name     Name.
+     * @param ValidationResponse $response Validation response.
      *
      * @return void
      */
@@ -58,11 +58,29 @@ class ValidationProviders extends Container
     public function hasErrors()
     {
         foreach ($this->collection as $response) {
+            /** @var $response ValidationResponse */
             if ($response->hasErrors()) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Fetch all the errors thrown in the validation check
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        $errors = array();
+        /** @var $response ValidationResponse */
+        foreach ($this->collection as $response) {
+            if ($response->hasErrors()) {
+                $errors = array_merge($errors, $response->getErrors());
+            }
+        }
+        return $errors;
     }
 }
