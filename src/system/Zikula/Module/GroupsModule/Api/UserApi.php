@@ -520,14 +520,14 @@ class UserApi extends \Zikula_AbstractApi
      * Update user.
      *
      * @param mixed[] $args {
-     *      @type int    $uid    user id
+     *      @type int    $gid    group id
      *      @type int    $gtype  group type
      *      @type string $action action
      *                       }
      *
      * @return bool true if successful
      *
-     * @throws \InvalidArgumentException Thrown if either gtype or uid are not set or not numeric or 
+     * @throws \InvalidArgumentException Thrown if either gtype or gid are not set or not numeric or
      *                                          if action isn't set or one of 'subscribe', 'unsubscribe' or 'cancel'
      * @throws AccessDeniedException Thrown if the user is not logged in.
      * @throws \RuntimeException Thrown if the user couldn't be added to the group, 
@@ -537,7 +537,7 @@ class UserApi extends \Zikula_AbstractApi
     public function userupdate($args)
     {
         if (!isset($args['gtype']) && !is_numeric($args['gtype']) || 
-            (!isset($args['uid']) && !is_numeric($args['uid'])) ||
+            (!isset($args['gid']) && !is_numeric($args['gid'])) ||
             !isset($args['action'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
