@@ -263,7 +263,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * Get the EventManager.
      *
      * @deprecated since 1.3.6
-     * @use self::getDispatcher()
+     * @see self::getDispatcher()
      *
      * @return ContainerAwareEventDispatcher
      */

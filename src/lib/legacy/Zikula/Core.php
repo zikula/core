@@ -151,7 +151,7 @@ class Zikula_Core
      * Getter for servicemanager property.
      *
      * @depracated since 1.4
-     * @use self::getContainer()
+     * @see self::getContainer()
      *
      * @return Zikula_ServiceManager
      */
@@ -174,7 +174,7 @@ class Zikula_Core
      * Getter for eventmanager property.
      *
      * @deprecated since 1.4
-     * @use self::getDispatcher()
+     * @see self::getDispatcher()
      *
      * @return Zikula_Eventmanager
      */
