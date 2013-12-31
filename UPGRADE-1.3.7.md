@@ -354,6 +354,7 @@ public function getRoutingConfig()
 {
     return "@AcmeExampleModule/Resources/config/routing.yml";
 }
+```
 
 
 Service Manager
