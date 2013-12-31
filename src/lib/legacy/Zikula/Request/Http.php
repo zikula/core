@@ -144,7 +144,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      * Is this method a GET.
      *
      * @deprecated since 1.3.6
-     * @use Request::isMethod('GET')
+     * @see Request::isMethod('GET')
      *
      * @return boolean
      */
@@ -159,7 +159,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      * Is this method a POST.
      *
      * @deprecated since 1.3.6
-     * @use Request::isMethod('POST')
+     * @see Request::isMethod('POST')
      *
      * @return boolean
      */
@@ -174,7 +174,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      * Is this method a PUT.
      *
      * @deprecated since 1.3.6
-     * @use Request::isMethod('PUT')
+     * @see Request::isMethod('PUT')
      *
      * @return boolean
      */
@@ -189,7 +189,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      * Is this method a DELETE.
      *
      * @deprecated since 1.3.6
-     * @use Request::isMethod('DELETE')
+     * @see Request::isMethod('DELETE')
      *
      * @return boolean
      */
@@ -204,7 +204,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      * Is this method a HEAD.
      *
      * @deprecated since 1.3.6
-     * @use Request::isMethod('HEAD')
+     * @see Request::isMethod('HEAD')
      *
      * @return boolean
      */
@@ -219,7 +219,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      * Is this method a OPTIONS.
      *
      * @deprecated since 1.3.6
-     * @use Request::isMethod('OPTIONS')
+     * @see Request::isMethod('OPTIONS')
      *
      * @return boolean
      */

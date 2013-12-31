@@ -271,10 +271,10 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true if successful
      *
-     * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the permission rule.
      * @throws \InvalidArgumentException Thrown if any of id, insseq or level are not set or not numeric or 
-     *                                          if any of realm, component or instance are not set
-     * @throws \RuntimeException Thrown if the permission rule couldn't be saved
+     *                                          if any of realm, component or instance are not set.
+     * @throws \RuntimeException Thrown if the permission rule couldn't be saved.
      */
     public function create($args)
     {

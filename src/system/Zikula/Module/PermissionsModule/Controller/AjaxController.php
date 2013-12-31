@@ -169,7 +169,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return \Zikula_Response_Ajax Ajax response containing the id of the permission that has been deleted
      *
-     * @thrown FatalErrorException Thrown if the requested permission rule is the default admin rule or if
+     * @throws FatalErrorException Thrown if the requested permission rule is the default admin rule or if
      *                                    if the permission rule couldn't be deleted
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
