@@ -85,7 +85,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      * @param Hook $hook Hook interface.
      *
      * @deprecated since 1.3.6
-     * @use self::dispatchHooks()
+     * @see self::dispatchHooks()
      *
      * @return Zikula\Component\HookDispatcher\Hook
      */

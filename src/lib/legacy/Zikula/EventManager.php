@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\Event;
  * Manages event handlers and invokes them for notified events.
  *
  * @deprecated from 1.3.6
- * @use \Symfony\Component\EventDispatcher\EventDispatcher
+ * @see \Symfony\Component\EventDispatcher\EventDispatcher
  */
 class Zikula_EventManager extends EventDispatcher
 {
