@@ -286,7 +286,7 @@ There is a script to automate this change:
 
 Old method names will continue to work for the time being.
 
-The default action should be named `indexAction()` however please not that all routes
+The default action should be named `indexAction()` however please note that all routes
 must be explicitly referenced so there is in fact no default route any more for a module.
 
 
@@ -356,6 +356,38 @@ public function getRoutingConfig()
 }
 ```
 
+However, there are some things not being fully implemented by Zikula for the time being:
+
+1. Every module MUST make sure it isn't overriding routes of other modules. For now this
+means that every module has to use a unique prefix prepended to all it's routes. In the
+example above, the prefix is "acmeexample".
+2. `ModUtil::url()` will always use the *old* Zikula way of routing, generating urls like
+this: `index.php?module=user&type=user&func=login`. For now there is no way to generate a
+"new-styled" urls in Smarty, for url generation in PHP and Twig take a look at
+[the Symfony docs](http://symfony.com/doc/current/book/routing.html#generating-urls).
+3. There currently is no way to add the `theme` or `lang` parameters to the route.
+4. Even if routing worked, you'll get a fatal error for the time being, as the Symfony
+ControllerResolver (who actually calls `FooController::barAction`) cannot handle the Zikula
+Controller base classes yet.
+5. Routes are currently directly loaded from the modules configuration file (i.e. `routing.yml`).
+That's why it is important that routes do not conflict with other module's routes. However the
+**future plan** reads as follows:
+
+   On module installation, all routes are read from the `routing.yml` file and saved into
+   a database. If a conflict with another module's routes is detected, the user is prompted
+   to fix the conflict or possibly *auto-fix* it (still during module installation). Example:
+   
+   Imagine the users module declares a route `/login` to `@ZikulaUsersModule::UsersController::loginAction`
+   and doesn't add any prefix. As long as no other module claims the `/login` route, all works
+   fine, and your users can login throgh an url like this: *http://example.com/login*.
+   
+   But now imagine a second module is installed, also claiming the `/login` route. This would
+   result in a routing conflict. Now either the user has to decide, which route is more
+   important for him, or this is *auto-decided*. In case the user decides, he may want to keep
+   the `@ZikulaUsersModule::UsersController::loginAction` route and rename the route of the second
+   module to `/loginToBla`. => Conflict fixed.
+   
+   As stated in (1), for now the only way to avoid conflicts is adding a prefix to each route.
 
 Service Manager
 ---------------
