@@ -700,7 +700,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @thrown AccessDeniedHttpException Thrown if the parameters aren't available in either GET or POST
+     * @throws AccessDeniedHttpException Thrown if the parameters aren't available in either GET or POST
      */
     public function lostUnameAction()
     {
