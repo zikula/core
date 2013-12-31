@@ -166,6 +166,7 @@ The final structure looks as follows:
                     FooHook.php
                 Resources/
                     config/
+                        routing.yml
                     docs/
                     locale/
                         foomymodule.pot
@@ -325,6 +326,34 @@ If you wish to not display the theme, it should emit a
 Zikula will wrap controller return in an appropriate Response.
 
 Documentation: http://symfony.com/doc/master/components/http_foundation/introduction.html#response
+
+
+Routing
+-------
+
+Routing follows standard Symfony routing specifications:
+
+  - http://symfony.com/doc/current/book/routing.html
+  - http://symfony.com/doc/current/cookbook/routing/index.html
+  - http://symfony.com/doc/current/components/routing/hostname_pattern.html
+
+By default Zikula will look for routing in the module's `Resources/config/routing.yml` file.
+
+```yml
+acmeexamplemodule:
+    resource: "@AcmeExampleModule/Controller"
+    prefix:   /acmeexample
+    type:     annotation
+```
+
+The file location can be customized or disabled by overriding `getRoutingConfig()` in
+the module bundle class (`AcmeExampleModule`).
+
+```php
+public function getRoutingConfig()
+{
+    return "@AcmeExampleModule/Resources/config/routing.yml";
+}
 
 
 Service Manager
