@@ -38,6 +38,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * User controllers for the Users module.
@@ -58,6 +59,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/useraccount")
+     *
      * Render and display the user's account panel. If he is not logged in, then redirect to the login screen.
      *
      * @return Response symfony response object
@@ -87,6 +90,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/view")
+     *
      * Display the base user form (login/lostpassword/register options).
      *
      * If the user is logged in, then he is redirected to the home page.
@@ -95,16 +100,18 @@ class UserController extends \Zikula_AbstractController
      */
     public function viewAction()
     {
-        // If has logged in, readirect to homepage
+        // If user has logged in, redirect to homepage
         if (UserUtil::isLoggedIn()) {
             return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
         }
 
-        $this->view->assign($this->getVars())
-                ->fetch('User/view.tpl');
+        return $this->response($this->view->assign($this->getVars())
+            ->fetch('User/view.tpl'));
     }
 
     /**
+     * @Route("/register")
+     *
      * Display the registration form.
      *
      * Parameters passed via GET:
@@ -400,6 +407,9 @@ class UserController extends \Zikula_AbstractController
                                 //if (isset($registrationInfo['lang']) && !empty($registrationInfo['lang'])) {
                                 //    $formData->setField('lang', $registrationInfo['lang']);
                                 //}
+
+                                // @todo React to emailVerified !
+                                // $registrationInfo['emailVerified']
                             }
 
                             $state = 'display_registration';
@@ -669,6 +679,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/lost-account-details")
+     *
      * Display the lost user name / password choices.
      *
      * @return Response symfony response object
@@ -684,6 +696,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/lost-username")
+     *
      * Display the account information recovery form.
      *
      * Parameters passed via GET:
@@ -750,6 +764,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/lost-password")
+     *
      * Display the lost password form.
      *
      * Parameters passed via GET:
@@ -895,6 +911,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/lost-password/code")
+     *
      * Display the lost password confirmation code entry form.
      *
      * Parameters passed via GET:
@@ -1077,6 +1095,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/login")
+     *
      * Display the login form, or process a user log-in request.
      *
      * This displays the main log-in screen to the user, allowing him to select a method of authenticating himself
@@ -1470,6 +1490,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/logout")
+     *
      * Log a user out.
      *
      * The user is redirected to the entry point of the site, or to a redirect
@@ -1512,6 +1534,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/verify-registration")
+     *
      * Render and process a registration e-mail verification code.
      *
      * This function will render and display to the user a form allowing him to enter
@@ -1976,6 +2000,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/password")
+     *
      * Display the change password form.
      *
      * Parameters passed via the $args array:
@@ -2080,6 +2106,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/password/update")
+     *
      * Update the user's password.
      *
      * Parameters passed via GET:
@@ -2208,6 +2236,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/email")
+     *
      * Display the change email address form.
      *
      * @return Response symfony response object
@@ -2228,6 +2258,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/email/update")
+     *
      * Update the email address.
      *
      * Parameters passed via GET:
@@ -2298,6 +2330,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/lang")
+     *
      * Display the form that allows the user to change the language displayed to him on the site.
      *
      * @return Response symfony response object if a form is to be displayed
@@ -2317,6 +2351,8 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/user/email/confirm")
+     *
      * Confirm the update of the email address.
      *
      * Available Get Parameters:

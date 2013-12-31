@@ -14,6 +14,7 @@
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -1228,6 +1229,53 @@ class ModUtil
         return self::exec($modname, $type, $func, $args, true, $instanceof);
     }
 
+    private static function symfonyRoute($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang)
+    {
+        /** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
+        $router = ServiceUtil::get('router');
+
+        if (isset($args['lang'])) {
+            $args['_locale'] = $args['lang'];
+        }
+
+        $routeNames = array(strtolower($modname) . "_" . strtolower($type) . "_" . strtolower($func));
+        if ($func == 'index' || $func == 'main') {
+            if ($func == 'index') {
+                $routeNames[] = strtolower($modname) . "_" . strtolower($type) . "_main";
+            } else {
+                $routeNames[] = strtolower($modname) . "_" . strtolower($type) . "_index";
+            }
+        }
+
+        $foundRoute = false;
+        foreach ($routeNames as $routeName) {
+            if ($router->getRouteCollection()->get($routeName) !== null) {
+                $foundRoute = $routeName;
+            }
+        }
+
+        if ($foundRoute === false) {
+            return false;
+        }
+
+        if ($ssl) {
+            $oldScheme = $router->getContext()->getScheme();
+            $router->getContext()->setScheme('https');
+        }
+
+        $url = $router->generate($foundRoute, $args, ($fqurl) ? $router::ABSOLUTE_URL : $router::ABSOLUTE_PATH);
+
+        if ($ssl) {
+            $router->getContext()->setScheme($oldScheme);
+        }
+
+        if (isset($fragment)) {
+            $url .= '#' . $fragment;
+        }
+
+        return $url;
+    }
+
     /**
      * Generate a module function URL.
      *
@@ -1283,6 +1331,12 @@ class ModUtil
         if (System::isLegacyMode() && $modname == 'Modules') {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::url() or {modurl} calls with $module = "ZikulaExtensionsModule".'));
             $modname = 'ZikulaExtensionsModule';
+        }
+
+        // Try to generate the url using Symfony routing.
+        $url = self::symfonyRoute($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang);
+        if ($url !== false) {
+            return $url;
         }
 
         //get the module info

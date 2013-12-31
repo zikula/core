@@ -1,0 +1,8 @@
+zikulausersmodule_user:
+    resource: "@ZikulaUsersModule/Controller/UserController.php"
+    prefix:   /
+    type:     annotation
+
+zikulausersmodule_admin:
+    resource: "@ZikulaUsersModule/Controller/AdminController.php"
+    type:     annotation

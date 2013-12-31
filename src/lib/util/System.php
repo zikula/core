@@ -13,6 +13,8 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
  * System class.
@@ -657,6 +659,32 @@ class System
     {
         if (self::isInstalling()) {
             return;
+        }
+
+        // Try to match a route first.
+        /** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
+        $router = ServiceUtil::get('router');
+        try {
+            $parameters = $router->matchRequest($request);
+
+            if (!isset($parameters['_module']) || !isset($parameters['_type']) || !isset($parameters['_func'])) {
+                // This might be the web profiler or another native bundle.
+            } else {
+                $request->attributes->set('_module', strtolower($parameters['_module']));
+                $request->attributes->set('_type', strtolower($parameters['_type']));
+                $request->attributes->set('_func', strtolower($parameters['_func']));
+                $request->query->set('module', strtolower($parameters['_module']));
+                $request->query->set('type', strtolower($parameters['_type']));
+                $request->query->set('func', strtolower($parameters['_func']));
+                $request->overrideGlobals();
+
+                return;
+            }
+
+        } catch (ResourceNotFoundException $e) {
+            // This is an old style url.
+        } catch (RouteNotFoundException $e) {
+            // This is an old style url.
         }
 
         // get our base parameters to work out if we need to decode the url

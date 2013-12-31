@@ -6,17 +6,44 @@
 
     <parameters>
         <parameter key="event_dispatcher.class">Zikula_EventManager</parameter>
-        <parameter key="routing.loader.php.class">Zikula\Bundle\CoreBundle\Routing\Loader\PhpFileLoader</parameter>
+        <!-- Make controller resolving working with Zikula base classes. -->
+        <parameter key="controller_resolver.class">Zikula\Bundle\CoreBundle\Controller\ControllerResolver</parameter>
+        <!-- Event listener to add / update / remove routes on module install / upgrade / uninstall. -->
+        <parameter key="corebundle.event_listener.class">Zikula\Bundle\CoreBundle\EventListener\ModuleRoutingListener</parameter>
+        <!-- The custom Zikula Route provider, providing the routes of all the Zikula modules -->
+        <parameter key="corebundle.route_provider.class">Zikula\Bundle\CoreBundle\Routing\RouteProvider</parameter>
+        <parameter key="corebundle.route_provider.cache.class">ZikulaRoutes</parameter>
+        <!-- The Zikula specific matcher, making sure that the module, type, func options are returned-->
+        <parameter key="cmf_routing.final_matcher.class">Zikula\Bundle\CoreBundle\Routing\Matcher\UrlMatcher</parameter>
     </parameters>
 
     <services>
+        <!-- Custom Zikula Route Provider -->
+        <service id="corebundle.route_provider" class="%corebundle.route_provider.class%">
+            <call method="setCachePath">
+                <argument type="string">%kernel.cache_dir%</argument>
+                <argument type="string">%router.cache_class_prefix%</argument>
+                <argument type="string">%corebundle.route_provider.cache.class%</argument>
+            </call>
+        </service>
+
+        <!-- Event listener used to update routing configuration -->
+        <service id="corebundle.event_listener" class="%corebundle.event_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="kernel" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="routing.loader" />
+            <argument type="service" id="logger" />
+            <argument type="service" id="corebundle.route_provider" />
+            <call method="setCachePath">
+                <argument type="string">%kernel.cache_dir%</argument>
+                <argument type="string">%router.cache_class_prefix%</argument>
+                <argument type="string">%corebundle.route_provider.cache.class%</argument>
+            </call>
+        </service>
+
         <service id="data_collector.zikula_version" class="Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector" public="false">
             <tag name="data_collector" template="CoreBundle:Collector:ZikulaVersion.html.twig" id="zikula_version" priority="300" />
-        </service>
-        <service id="routing.loader.php" class="%routing.loader.php.class%" public="false">
-            <tag name="routing.loader" />
-            <argument type="service" id="service_container" />
-            <argument type="service" id="file_locator" />
         </service>
     </services>
 </container>

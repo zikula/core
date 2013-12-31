@@ -31,6 +31,24 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      */
     protected $view;
 
+    public function __construct(Zikula_ServiceManager $serviceManager, \Zikula\Core\AbstractModule $bundle = null)
+    {
+        parent::__construct($serviceManager, $bundle);
+
+        if ($bundle !== null) {
+            // Get bundle from route.
+            $module = $bundle->getName();
+            // Load module.
+            \ModUtil::load($module);
+
+            // Set legacy to true, as the Controller's response will not have the theme around it otherwise.
+            // See Zikula\Bundle\CoreBundle\EventListener\ThemeListener::onKernelResponse() - The only place it is used.
+            $request = $serviceManager->get("request");
+            $request->attributes->set('_legacy', true);
+        }
+    }
+
+
     /**
      * {@inheritdoc}
      */
