@@ -66,7 +66,7 @@ class ModifyUserForm extends AbstractFormData
                 $this->serviceManager,
                 '/^'. UsersConstant::UNAME_VALIDATION_PATTERN .'$/uD',
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')))
-            ->addValidator(new Validator\StringLowercase(
+            ->addValidator(new Validator\StringLowerCase(
                 $this->serviceManager,
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')));
 
