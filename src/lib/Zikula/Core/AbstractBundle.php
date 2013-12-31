@@ -55,6 +55,11 @@ abstract class AbstractBundle extends Bundle
         return $class;
     }
 
+    public function getRoutingConfig()
+    {
+         return "@{$this->name}/Resources/config/routing.yml";
+    }
+
     public function getTranslationDomain()
     {
         return strtolower($this->getName());
@@ -78,6 +83,16 @@ abstract class AbstractBundle extends Bundle
     public function getViewsPath()
     {
         return $this->getPath().'/Resources/views';
+    }
+
+    /**
+     * Gets the config path.
+     *
+     * @return string
+     */
+    public function getConfigPath()
+    {
+        return $this->getPath().'/Resources/config';
     }
 
     /**

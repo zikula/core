@@ -6,11 +6,17 @@
 
     <parameters>
         <parameter key="event_dispatcher.class">Zikula_EventManager</parameter>
+        <parameter key="routing.loader.php.class">Zikula\Bundle\CoreBundle\Routing\Loader\PhpFileLoader</parameter>
     </parameters>
 
     <services>
         <service id="data_collector.zikula_version" class="Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector" public="false">
             <tag name="data_collector" template="CoreBundle:Collector:ZikulaVersion.html.twig" id="zikula_version" priority="300" />
+        </service>
+        <service id="routing.loader.php" class="%routing.loader.php.class%" public="false">
+            <tag name="routing.loader" />
+            <argument type="service" id="service_container" />
+            <argument type="service" id="file_locator" />
         </service>
     </services>
 </container>
