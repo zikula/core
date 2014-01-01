@@ -93,13 +93,13 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
      * This method is static because it is also called by the
      * CategoryCheckboxList plugin
      *
-     * @param object  &$list               The list object (here: $this).
+     * @param object  $list               The list object (here: $this).
      * @param boolean $includeEmptyElement Whether or not to include an empty null item.
      * @param array   $params              The parameters passed from the Smarty plugin.
      *
      * @return void
      */
-    public static function loadParameters(&$list, $includeEmptyElement, $params)
+    public static function loadParameters($list, $includeEmptyElement, $params)
     {
         $all            = isset($params['all'])         ? $params['all']         : false;
         $lang           = isset($params['lang'])        ? $params['lang']        : ZLanguage::getLanguageCode();
@@ -128,6 +128,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
         } elseif (is_numeric($list->category)) {
             // check if we have a numeric category
             $list->category = CategoryUtil::getCategoryByID($list->category);
+            unset($list->category['parent']); // prevent form serialization errors in session
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
 
         } elseif (is_string($list->category) && strpos($list->category, '/') === 0) {
