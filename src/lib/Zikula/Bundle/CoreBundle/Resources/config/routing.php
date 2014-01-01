@@ -18,8 +18,7 @@ use Symfony\Component\DependencyInjection\Loader;
 
 /** @var ZikulaKernel $kernel */
 $kernel = $container->get('kernel');
-$bundles = $kernel->getModules();
-$bundles = array_merge($bundles, $kernel->getThemes());
+$bundles = array_merge($kernel->getModules(), $kernel->getThemes());
 
 $collection = new RouteCollection();
 
@@ -28,11 +27,12 @@ foreach ($bundles as $bundle) {
     try {
         $collection->addCollection(
             /** @var \Symfony\Component\Routing\Loader\PhpFileLoader $loader */
-            $loader->import($module->getRoutingConfig()),
+            $loader->import($bundle->getRoutingConfig()),
             '/'
         );
     } catch (FileLoaderLoadException $e) {
         // Fail silently if routing config file does not exist.
     }
 }
+
 return $collection;
