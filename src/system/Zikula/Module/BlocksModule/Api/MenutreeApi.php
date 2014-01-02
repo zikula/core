@@ -72,7 +72,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             return array(); // Since no permission, return empty links
         }
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
@@ -228,7 +228,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             parse_str($extrainfo, $extrainfo);
         }
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = MenutreeUtil::getIdOffset($item['id']);
 
         $links = array();
@@ -324,7 +324,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         $extrainfo['flat'] = isset($extrainfo['flat']) ? (bool)$extrainfo['flat'] : false;
         $extrainfo['orderby'] = isset($extrainfo['orderby']) ? $extrainfo['orderby'] : null;
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
         $links = array();
@@ -417,7 +417,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         $extrainfo['parent'] = isset($extrainfo['parent']) ? (int)$extrainfo['parent'] : 0;
         $extrainfo['groupby'] = isset($extrainfo['groupby'])? $extrainfo['groupby'] : 'menuitem';
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
@@ -508,7 +508,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             return false;
         }
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
@@ -597,7 +597,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         $extrainfo['flat'] = isset($extrainfo['flat'])? (bool)$extrainfo['flat'] : false;
         $extrainfo['links'] = isset($extrainfo['links'])? explode(',',$extrainfo['links']) : array('all');
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
@@ -791,7 +791,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             return false;
         }
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
