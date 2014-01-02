@@ -347,8 +347,11 @@ class MenutreeApi extends \Zikula_AbstractApi
                 'orderBy' => 'setLeft',
                 'makeTree' => false,
                 'language' => $lang,
+                'includeContent' => false,
+                'includeLayout' => false,
+                'includeCategories' => false,
                 'filter' => array(
-                        'superParentId' => $extrainfo['parent']
+                    'superParentId' => $extrainfo['parent']
                 )
         );
         $pages = ModUtil::apiFunc('Content', 'page', 'getPages', $options);
