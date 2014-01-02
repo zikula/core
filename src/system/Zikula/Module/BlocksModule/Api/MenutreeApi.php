@@ -287,7 +287,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * Return Clip publications
      *
      * Syntax used in menutree
-     * {ext:ZikulaBlocksModule:Clip:[tid=2&fieldname=title&maxitems=5&flat=1&orderby=somefield]}
+     * {ext:ZikulaBlocksModule:clip:[tid=2&fieldname=title&maxitems=5&flat=1&orderby=somefield]}
      * Params in [] are optional and
      *      tid         = The publication type
      *      fieldname   = The publication field to show as menuitem name
@@ -300,7 +300,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * @param  string $args['extrainfo'] additional params
      * @return mixed  array of links if successful, false otherwise
      */
-    public function Clip($args)
+    public function clip($args)
     {
         $item       = isset($args['item']) && !empty($args['item']) ? $args['item'] : null;
         $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
@@ -325,7 +325,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         $extrainfo['orderby'] = isset($extrainfo['orderby']) ? $extrainfo['orderby'] : null;
 
         // get id for first element, use api func to avoid id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
         $links = array();
 
@@ -387,7 +387,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * Return Content pages
      *
      * Syntax used in menutree
-     * {ext:ZikulaBlocksModule:Content:[groupby=page&parent=1]}
+     * {ext:ZikulaBlocksModule:content:[groupby=page&parent=1]}
      * Params in [] are optional and
      *      groupby = menuitem (default) or page, all other values stands for none
      *      parent - id of parent node - this allows to get specified node of Content pages
@@ -400,7 +400,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      *
      * @return array|bool array of links if successful, false otherwise
      */
-    public function Content($args)
+    public function content($args)
     {
         $item       = isset($args['item']) && !empty($args['item']) ? $args['item'] : null;
         $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
