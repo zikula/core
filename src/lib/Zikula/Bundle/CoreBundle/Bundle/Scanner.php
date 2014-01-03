@@ -50,15 +50,22 @@ class Scanner
             // add base-path for future use
             $json['extra']['zikula']['base-path'] = $base;
 
-            // calculate PSR-0 autoloading path for this namespace
+            // calculate PSR-0/4 autoloading path for this namespace
             $class = $json['extra']['zikula']['class'];
             $ns = substr($class, 0, strrpos($class, '\\') + 1);
-            if (false === isset($json['autoload']['psr-0'][$ns])) {
+            if (false === isset($json['autoload']['psr-0'][$ns]) &&
+                false === isset($json['autoload']['psr-4'][$ns])
+            ) {
                 return false;
             }
 
             $nsShort = str_replace('\\', '/', substr($class, 0, strrpos($class, '\\')));
-            $json['autoload']['psr-0'][$ns] = $json['extra']['zikula']['root-path'] = substr($base, 0, strpos($base, $nsShort) - 1);
+            $path = $json['extra']['zikula']['root-path'] = substr($base, 0, strpos($base, $nsShort) - 1);
+            if (isset($json['autoload']['psr-0'][$ns])) {
+                $json['autoload']['psr-0'][$ns] = $path;
+            } else if (isset($json['autoload']['psr-4'][$ns])) {
+                $json['autoload']['psr-4'][$ns] = $path;
+            }
             $json['extra']['zikula']['short-name'] = substr($class, strrpos($class, '\\') + 1, strlen($class));
 
             return $json;
@@ -102,7 +109,7 @@ class Scanner
                 return false;
         }
 
-        if (!isset($json['autoload']['psr-0'])) {
+        if (!isset($json['autoload']['psr-0']) && !isset($json['autoload']['psr-4'])) {
             return false;
         }
 
