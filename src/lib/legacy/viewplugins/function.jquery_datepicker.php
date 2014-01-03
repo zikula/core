@@ -168,14 +168,14 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
 
     // build the datepicker
     $javascript = "
-        var {$displayElement}DefaultDate = new Date(\"{$defaultDate->format($displayFormat_dateTime)}\")";
+        var {$displayElement}DefaultDate = new Date(\"{$defaultDate->format($displayFormat_dateTime)}\");";
     if (isset($minDate)) {
         $javascript .= "
-        var {$displayElement}minDate = new Date(\"{$minDate->format($displayFormat_dateTime)}\")";
+        var {$displayElement}minDate = new Date(\"{$minDate->format($displayFormat_dateTime)}\");";
     }
     if (isset($maxDate)) {
         $javascript .= "
-        var {$displayElement}maxDate = new Date(\"{$maxDate->format($displayFormat_dateTime)}\")";
+        var {$displayElement}maxDate = new Date(\"{$maxDate->format($displayFormat_dateTime)}\");";
     }    
     $javascript .= "    
         jQuery(document).ready(function() {
