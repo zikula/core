@@ -63,7 +63,7 @@ class Scanner
             $path = $json['extra']['zikula']['root-path'] = substr($base, 0, strpos($base, $nsShort) - 1);
             if (isset($json['autoload']['psr-0'][$ns])) {
                 $json['autoload']['psr-0'][$ns] = $path;
-            } else if ($json['autoload']['psr-4'][$ns]) {
+            } else if (isset($json['autoload']['psr-4'][$ns])) {
                 $json['autoload']['psr-4'][$ns] = $path;
             }
             $json['extra']['zikula']['short-name'] = substr($class, strrpos($class, '\\') + 1, strlen($class));

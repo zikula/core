@@ -11,7 +11,7 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Acme\\ExampleModule\\": "" }
+        "psr-4": { "Acme\\ExampleModule\\": "" }
     },
     "require": {
         "php": ">5.3.3"
