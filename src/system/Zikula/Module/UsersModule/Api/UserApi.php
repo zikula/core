@@ -746,7 +746,7 @@ class UserApi extends \Zikula_AbstractApi
             $links[] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'login'),
                 'text'  => $this->__('Log in'),
-                'icon' => 'signin',
+                'icon' => 'sign-in',
             );
             $links[] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'lostPwdUname'),
