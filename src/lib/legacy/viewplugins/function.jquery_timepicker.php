@@ -57,6 +57,13 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
     $displayElement = (isset($params['displayelement'])) ? $params['displayelement'] : '';
     unset($params['displayelement']);
     /**
+     * displayelement_class
+     * string
+     * (optional) The css class applied to the display element (default: null)
+     */
+    $displayElement_class = (isset($params['displayelement_class'])) ? $params['displayelement_class'] : null;
+    unset($params['displayelement_class']);
+    /**
      * valuestorageelement
      * string (do not include the '#' character)
      * (optional) the id text of the html element where the selected time will be stored (default null)
@@ -171,7 +178,9 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
     $inlineStyle = (isset($inlineStyle)) ? " style='$inlineStyle'" : '';
 
     $name = isset($object) ? "{$object}[{$displayElement}]" : $displayElement;
-    $html = "<input type='text'{$readOnlyHtml}{$inlineStyle} id='$displayElement' name='$name' value='{$defaultDate->format($dateTimeFormat)}' />\n";
+    $class = isset($displayElement_class) ? " class='$displayElement_class'" : '';
+
+    $html = "<input type='text'{$readOnlyHtml}{$inlineStyle} id='$displayElement'{$class} name='$name' value='{$defaultDate->format($dateTimeFormat)}' />\n";
     if (isset($valueStorageElement)) {
         $name = isset($object) ? "{$object}[{$valueStorageElement}]" : $valueStorageElement;
         $html .="<input type='hidden' id='$valueStorageElement' name='$name' value='{$defaultDate->format('G:i')}' />\n";
