@@ -489,6 +489,11 @@ class AdminApi extends \Zikula_AbstractApi
             foreach ($module->getPsr0() as $ns => $path) {
                 ZLoader::addPrefix($ns, $path);
             }
+
+            foreach ($module->getPsr4() as $ns => $path) {
+                ZLoader::addPrefixPsr4($ns, $path);
+            }
+
             $class = $module->getClass();
 
             /** @var $bundle \Zikula\Core\AbstractModule */
