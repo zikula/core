@@ -30,7 +30,7 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\ThemeModule\Entity\ThemeEntity'));
+            DoctrineHelper::createSchema($this->entityManager, array('ZikulaThemeModule:ThemeEntity'));
         } catch (\Exception $e) {
             return false;
         }

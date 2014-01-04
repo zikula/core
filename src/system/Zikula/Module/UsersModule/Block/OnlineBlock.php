@@ -97,7 +97,7 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
 
         $query = $this->entityManager->createQueryBuilder()
                       ->select('count(s.uid)')
-                      ->from('Zikula\Module\UsersModule\Entity\UserSessionEntity', 's')
+                      ->from('ZikulaUsersModule:UserSessionEntity', 's')
                       ->where('s.lastused > :activetime')
                       ->setParameter('activetime', $activetime)
                       ->andWhere('s.uid <> 0')
@@ -106,7 +106,7 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
 
         $query = $this->entityManager->createQueryBuilder()
                       ->select('count(s.uid)')
-                      ->from('Zikula\Module\UsersModule\Entity\UserSessionEntity', 's')
+                      ->from('ZikulaUsersModule:UserSessionEntity', 's')
                       ->where('s.lastused > :activetime')
                       ->setParameter('activetime', $activetime)
                       ->andWhere('s.uid = 0')

@@ -60,7 +60,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get info on current perm
-        $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
+        $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
         if (!$permission) {
             throw new NotFoundHttpException($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
         }
@@ -73,7 +73,7 @@ class AdminApi extends \Zikula_AbstractApi
             // get info on displaced perm
             $qb = $this->entityManager->createQueryBuilder()
                                       ->select('p')
-                                      ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                      ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
                                       ->where('p.sequence = :altsequence')
                                       ->setParameter('altsequence', $altsequence);
 
@@ -104,10 +104,10 @@ class AdminApi extends \Zikula_AbstractApi
             $altpid = $d_permission['pid'];
 
             // swap sequence numbers
-            $perm1 = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\Permission', $altpid);
+            $perm1 = $this->entityManager->find('ZikulaPermissionsModule:Permission', $altpid);
             $perm1['sequence'] = $sequence;
 
-            $perm2 = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\Permission', $args['pid']);
+            $perm2 = $this->entityManager->find('ZikulaPermissionsModule:Permission', $args['pid']);
             $perm2['sequence'] = $altsequence;
 
             $this->entityManager->flush();
@@ -144,7 +144,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get info on current perm
-        $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
+        $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
         if (!$permission) {
             throw new NotFoundHttpException($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
         }
@@ -158,7 +158,7 @@ class AdminApi extends \Zikula_AbstractApi
             // get info on displaced perm
             $qb = $this->entityManager->createQueryBuilder()
                                       ->select('p')
-                                      ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                      ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
                                       ->where('p.sequence = :altsequence')
                                       ->setParameter('altsequence', $altsequence);
 
@@ -189,10 +189,10 @@ class AdminApi extends \Zikula_AbstractApi
             $altpid = $d_permission['pid'];
 
             // swap sequence numbers
-            $perm1 = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $altpid);
+            $perm1 = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $altpid);
             $perm1['sequence'] = $sequence;
 
-            $perm2 = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
+            $perm2 = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
             $perm2['sequence'] = $altsequence;
 
             $this->entityManager->flush();
@@ -241,7 +241,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get and update permission
-        $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
+        $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
         $permission['gid'] = $args['id'];
         $permission['realm'] = $args['realm'];
         $permission['component'] = $args['component'];
@@ -300,7 +300,7 @@ class AdminApi extends \Zikula_AbstractApi
         } else {
             // Increase sequence numbers
             $query = $this->entityManager->createQueryBuilder()
-                                         ->update('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                         ->update('ZikulaPermissionsModule:PermissionEntity', 'p')
                                          ->set('p.sequence = p.sequence + 1')
                                          ->where('p.sequence >= :insseq')
                                          ->setParameter('insseq', $args['insseq'])
@@ -356,7 +356,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get and delete permission
-        $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
+        $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
         $this->entityManager->remove($permission);
         $this->entityManager->flush();
 
@@ -381,7 +381,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $qb = $this->entityManager->createQueryBuilder();
         $query = $qb->select($qb->expr()->max('p.sequence'))
-                    ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                    ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
                     ->getQuery();
 
         return (int)$query->getSingleScalarResult();;
@@ -403,7 +403,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get all permissions
-        $permissions = $this->entityManager->getRepository('Zikula\Module\PermissionsModule\Entity\PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
+        $permissions = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
         if (!$permissions) {
             throw new NotFoundHttpException();
         }
@@ -466,7 +466,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             $query = $this->entityManager->createQueryBuilder()
                                          ->select('p')
-                                         ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                         ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
                                          ->where('p.sequence >= :newseq')
                                          ->andWhere('p.sequence <= :oldseq')
                                          ->setParameter('newseq', $newseq)
@@ -500,7 +500,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             $query = $this->entityManager->createQueryBuilder()
                                          ->select('p')
-                                         ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                         ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
                                          ->where('p.sequence >= :oldseq')
                                          ->andWhere('p.sequence <= :newseq')
                                          ->setParameter('oldseq', $oldseq)

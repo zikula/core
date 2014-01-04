@@ -359,7 +359,7 @@ function createuser($username, $password, $email)
     $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
     $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
 
-    $entity = $em->find('\Zikula\Module\UsersModule\Entity\UserEntity', 2);
+    $entity = $em->find('ZikulaUsersModule:UserEntity', 2);
     $entity->setUname($username);
     $entity->setEmail($email);
     $entity->setPass($password);

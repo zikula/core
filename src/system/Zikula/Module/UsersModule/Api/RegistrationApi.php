@@ -850,7 +850,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
             // delete attribute from user without using UserUtil::delVar
             // so that we don't get an update event. (Create hasn't happened yet.);
-            $user = $this->entityManager->find('Zikula\Module\UsersModule\Entity\UserEntity', $reginfo['uid']);
+            $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $reginfo['uid']);
             $user->delAttribute('_Users_isVerified');
 
             // NOTE: See below for the firing of the item-create hook.
@@ -860,7 +860,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Set appropriate activated status. Again, use Doctrine so we don't get an update event. (Create hasn't happened yet.)
             // Need to do this here so that it happens for both the case where $reginfo is coming in new, and the case where
             // $reginfo was already in the database.
-            $user = $this->entityManager->find('Zikula\Module\UsersModule\Entity\UserEntity', $userObj['uid']);
+            $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $userObj['uid']);
             $user['activated'] = UsersConstant::ACTIVATED_ACTIVE;
 
             $userObj['activated'] = UsersConstant::ACTIVATED_ACTIVE;
@@ -1297,7 +1297,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $registration = UserUtil::getVars($uid, true, 'uid', true);
 
         if (isset($registration) && $registration) {
-            $user = $this->entityManager->find('Zikula\Module\UsersModule\Entity\UserEntity', $uid);
+            $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $uid);
             $this->entityManager->remove($user);
             $this->entityManager->flush();
 
@@ -1349,7 +1349,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                     // delete user record
                     $query = $this->entityManager->createQueryBuilder()
                                                  ->delete()
-                                                 ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                                 ->from('ZikulaUsersModule:UserEntity', 'u')
                                                  ->where('u.uid = :uid')
                                                  ->setParameter('uid', $verifyChg['uid'])
                                                  ->getQuery();
@@ -1508,7 +1508,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $verifyChg = $this->entityManager->getRepository('Zikula\Module\UsersModule\Entity\UserVerificationEntity')->findOneby(array('uid' => $args['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL));
+        $verifyChg = $this->entityManager->getRepository('ZikulaUsersModule:UserVerificationEntity')->findOneby(array('uid' => $args['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL));
         return $verifyChg;
     }
 

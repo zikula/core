@@ -50,9 +50,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         foreach ($cats as $k => $cat) {
             $cid = $cat['id'];
             if (isset($data[$cid])) {
-                $category = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $cid);
+                $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
                 $category['sort_value'] = $data[$cid]['lineno'];
-                $category['parent'] = $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $data[$cid]['parent']);
+                $category['parent'] = $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $data[$cid]['parent']);
             }
         }
 
@@ -312,7 +312,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         $cid = $this->request->request->get('cid');
-        $cat = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity', $cid);
+        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $cid);
         $cat['status'] = 'A';
         $this->entityManager->flush();
 
@@ -339,7 +339,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         $cid = $this->request->request->get('cid');
-        $cat = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity', $cid);
+        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $cid);
         $cat['status'] = 'I';
         $this->entityManager->flush();
 
@@ -403,7 +403,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         // save category
         if ($mode == 'edit') {
-            $category = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $data['id']);
+            $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
         } else {
             $category = new \Zikula\Module\CategoriesModule\Entity\CategoryEntity;
         }

@@ -110,7 +110,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
         $parts = explode('\\', $from[0]->getFrom());
         $entityName = str_replace('Entity', '', end($parts));
         $em = $this->config->getEntityManager();
-        $rCategories = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')
+        $rCategories = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
             ->findBy(
                 array(
                      'modname' => $this->modname,

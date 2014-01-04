@@ -51,7 +51,7 @@ class GenericUtil
         // on the same level
         $qb = $em->createQueryBuilder();
         $qb->select('count(c.id)')
-           ->from('Zikula\Module\CategoriesModule\Entity\CategoryEntity', 'c')
+           ->from('ZikulaCategoriesModule:CategoryEntity', 'c')
            ->where('c.name = :name')
            ->andWhere('c.parent = :parentid')
            ->setParameter('name', $data['name'])
@@ -94,7 +94,7 @@ class GenericUtil
     public static function processCategoryParent($parent_id)
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        return $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $parent_id);
+        return $em->getReference('ZikulaCategoriesModule:CategoryEntity', $parent_id);
     }
 
     /**

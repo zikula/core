@@ -231,7 +231,7 @@ class UserController extends \Zikula_AbstractController
 
             $cat = array(
                 'id' => '',
-                'parent' => $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $userRootCat['id']),
+                'parent' => $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $userRootCat['id']),
                 'name' => $userCatName,
                 'display_name' => unserialize($installer->makeDisplayName($userCatName)),
                 'display_desc' => unserialize($installer->makeDisplayDesc()),
@@ -256,7 +256,7 @@ class UserController extends \Zikula_AbstractController
                 $userdefaultcatname = $this->getVar('userdefaultcatname', $this->__('Default'));
                 $cat = array(
                     'id' => '',
-                    'parent' => $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $dr),
+                    'parent' => $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $dr),
                     'is_leaf' => 1,
                     'name' => $userdefaultcatname,
                     'sort_value' => 0,

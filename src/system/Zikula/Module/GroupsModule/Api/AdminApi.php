@@ -108,7 +108,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get item
-        $item = $this->entityManager->find('Zikula\Module\GroupsModule\Entity\GroupEntity', $args['gid']);
+        $item = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
         if (!$item) {
             throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
@@ -140,7 +140,7 @@ class AdminApi extends \Zikula_AbstractApi
         // remove all memberships of this group
         $query = $this->entityManager->createQueryBuilder()
                                      ->delete()
-                                     ->from('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity', 'm')
+                                     ->from('ZikulaGroupsModule:GroupMembershipEntity', 'm')
                                      ->where('m.gid = :gid')
                                      ->setParameter('gid', $args['gid'])
                                      ->getQuery();
@@ -152,7 +152,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Remove any group permissions for this group
         $query = $this->entityManager->createQueryBuilder()
                                      ->delete()
-                                     ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                     ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
                                      ->where('p.gid = :gid')
                                      ->setParameter('gid', $args['gid'])
                                      ->getQuery();
@@ -188,7 +188,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get item
-        $item = $this->entityManager->find('Zikula\Module\GroupsModule\Entity\GroupEntity', $args['gid']);
+        $item = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
         if (!$item) {
             throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
@@ -310,7 +310,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete user from group
-        $membership = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $membership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
         if (null !== $membership) {
             $this->entityManager->remove($membership);
             $this->entityManager->flush();
@@ -350,7 +350,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('g')
-           ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g');
+           ->from('ZikulaGroupsModule:GroupEntity', 'g');
 
         // add clause for filtering name
         $qb->andWhere($qb->expr()->eq('g.name', $qb->expr()->literal($args['name'])));
@@ -385,7 +385,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getapplications()
     {
-        $objArray = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findBy(array(), array('app_id' => 'ASC'));
+        $objArray = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findBy(array(), array('app_id' => 'ASC'));
 
         if ($objArray === false) {
             throw new NotFoundHttpException($this->__('Error! Could not load data.'));
@@ -431,7 +431,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $appInfo = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
+        $appInfo = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
 
         if (!$appInfo) {
             throw new NotFoundHttpException($this->__('Error! Could not load data.'));
@@ -460,7 +460,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete group application
-        $application = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
+        $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
         $this->entityManager->remove($application);
         $this->entityManager->flush();
 
@@ -495,7 +495,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $query = $this->entityManager->createQueryBuilder()
                                      ->select('count(g.gid)')
-                                     ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g')
+                                     ->from('ZikulaGroupsModule:GroupEntity', 'g')
                                      ->getQuery();
 
         return (int)$query->getSingleScalarResult();;
