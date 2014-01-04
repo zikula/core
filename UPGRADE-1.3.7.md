@@ -53,22 +53,20 @@ Namespaces
 ----------
 
 Zikula Core 1.3.7 supports PHP namespaces and module should be refactored
-for namespace compliance which should MUST be in line with PSR-0, PSR-1 and
-PSR-2.
+for namespace compliance which should MUST be in line with PSR-0 or PSR-4; and 
+both PSR-1 and PSR-2.
 
-In order to be PSR-0 compliant, module the PHP assets in `lib/Modname/*`
+The examples below will use PSR-4.
+
+In order to be PSR-0/4 compliant, module the PHP assets in `lib/Modname/*`
 need to moved into the module root (see below).
-
-The current specification mandates: (still in dev)
-Vendor - PSR-0 mandates a class must contain a vendor. The examples will
-illustrate this.
 
 `Foo` is the vendor and 'MyModule' is the module name (`Module` suffic required).
 Here are a a few examples of how module classes should look like:
 
 Controllers:
   - Named like `Foo\MyModule\Controller\UserController`
-  - Stored in `Foo/MyModule/Controller/UserController.php`
+  - Stored in `foo-my/Controller/UserController.php`
   - Example:
 
     ```php
@@ -82,7 +80,7 @@ Controllers:
 
 Apis:
   - Named like `Foo\MyModule\Api\UserApi`
-  - Stored in `Foo/MyModule/Api/UserApi.php`
+  - Stored in `foo-my/Api/UserApi.php`
   - Example:
 
     ```php
@@ -96,7 +94,7 @@ Apis:
 
 Entities:
   - Named like `Foo\MyModule\Entity\BarEntity`
-  - Stored in `Foo/MyModule/Entity/BarEntity.php`
+  - Stored in `foo-my/Entity/BarEntity.php`
   - Example:
 
     ```php
@@ -150,48 +148,46 @@ Module Structure
 The final structure looks as follows:
 
     foo-my/
-        Foo/
-            MyModule/
-                Api/
-                    AdminApi.php (was Admin.php)
-                    UserApi.php (was User.php)
-                Controller/
-                    AdminController.php (was Admin.php)
-                    UserController.php (was User.php)
-                Entity/
-                    FooEntity.php
-                Listener/
-                    FooListener.php
-                Hook/
-                    FooHook.php
-                Resources/
-                    config/
-                        routing.yml
-                    docs/
-                    locale/
-                        foomymodule.pot
-                    public/
-                        css/
-                        images/
-                        js/
-                    views/
-                        Admin/
-                            view.tpl
-                        User/
-                            list.tpl
-                            view.tpl
-                        plugins/
-                Tests/
-                    AdminControllerTest.php
-                vendor/
-                MyModuleInstaller.php (was Installer.php)
-                MyModuleVersion.php (was Version.php) (todo - this file may go away)
-                FooMyModule.php
-                CHANGELOG.md
-                LICENSE
-                README.md
-                composer.json       (this file is required, see example)
-                phpunit.xml.dist
+        Api/
+            AdminApi.php (was Admin.php)
+            UserApi.php (was User.php)
+        Controller/
+            AdminController.php (was Admin.php)
+            UserController.php (was User.php)
+        Entity/
+            FooEntity.php
+        Listener/
+            FooListener.php
+        Hook/
+            FooHook.php
+        Resources/
+            config/
+                routing.yml
+            docs/
+            locale/
+                foomymodule.pot
+            public/
+                css/
+                images/
+                js/
+            views/
+                Admin/
+                    view.tpl
+                User/
+                    list.tpl
+                    view.tpl
+                plugins/
+        Tests/
+            AdminControllerTest.php
+        vendor/
+        MyModuleInstaller.php (was Installer.php)
+        MyModuleVersion.php (was Version.php) (todo - this file may go away)
+        FooMyModule.php
+        CHANGELOG.md
+        LICENSE
+        README.md
+        composer.json       (this file is required, see example)
+        phpunit.xml.dist
 
 The last file `FooMyModule.php` is new and should look like this
 combining the vendor name (`Foo` with the class name).
@@ -227,13 +223,13 @@ with the interrim structure created, and you can begin refactoring to namespaces
 It is also recommended you place templates in the `Resource/views` folder in a
 hierarchy as follows:
 
-        Resources/
-            views/
-                Admin/
-                    view.tpl
-                    list.tpl
-                User/
-                    view.tpl
+    Resources/
+        views/
+            Admin/
+                view.tpl
+                list.tpl
+            User/
+                view.tpl
 
 This necessitates a change in template calls such as:
 
@@ -259,7 +255,7 @@ Modules must have a `composer.json` manifest which looks like the following:
         }
     ],
     "autoload": {
-        "psr-0": { "Foo\\MyModule\\": "" }
+        "psr-4": { "Foo\\MyModule\\": "" }
     },
     "require": {
         "php": ">5.3.3"
@@ -271,7 +267,7 @@ Modules must have a `composer.json` manifest which looks like the following:
     }
 }
 ```
-PhpStorm 6 and MOST 0.6.1 have create tools for this.
+PhpStorm 7 and MOST 0.6.1 have create tools for this.
 
 
 Controller Methods
@@ -604,43 +600,42 @@ Theme Standard
 Theme's look very similar to modules.
 
     foo-my/
-        Foo/
-            MyTheme/
-                Resources/
-                    config/
-                        admin.ini
-                        home.ini
-                        master.ini
-                        overrides.yml
-                        pageconfigurations.ini
-                        themepalettes.ini
-                        themevariables.ini
-                    docs/
-                    locale/
-                        foomytheme.pot
-                    public/
-                        css/
-                        images/
-                        js/
-                    views/
-                        blocks/
-                        includes/
-                        modules/
-                            ZikulaSearchModule/
-                                Block/
-                                    search.tpl
-                        admin.tpl
-                        home.tpl
-                        master.tpl
-                        plugins/
-                Tests/
-                MyThemeVersion.php (was Version.php) (todo - this file may go away)
-                FooMyTheme.php
-                CHANGELOG.md
-                LICENSE
-                README.md
-                composer.json       (this file is required, see example)
-                phpunit.xml.dist
+        Resources/
+            config/
+                admin.ini
+                home.ini
+                master.ini
+                overrides.yml
+                pageconfigurations.ini
+                themepalettes.ini
+                themevariables.ini
+            docs/
+            locale/
+                foomytheme.pot
+            public/
+                css/
+                images/
+                js/
+            views/
+                blocks/
+                includes/
+                modules/
+                    ZikulaSearchModule/
+                        Block/
+                            search.tpl
+                admin.tpl
+                home.tpl
+                master.tpl
+                plugins/
+        Tests/
+        MyThemeVersion.php (was Version.php) (todo - this file may go away)
+        FooMyTheme.php
+        CHANGELOG.md
+        LICENSE
+        README.md
+        composer.json       (this file is required, see example)
+        phpunit.xml.dist
+
 
 Theme composer.json
 -------------------
@@ -660,7 +655,7 @@ Themes must have a `composer.json` manifest which looks like the following:
         }
     ],
     "autoload": {
-        "psr-0": { "Foo\\Theme\\MyTheme\\": "" }
+        "psr-4": { "Foo\\Theme\\MyTheme\\": "" }
     },
     "require": {
         "php": ">5.3.3"
