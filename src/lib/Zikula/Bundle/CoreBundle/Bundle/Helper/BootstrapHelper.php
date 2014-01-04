@@ -116,7 +116,7 @@ class BootstrapHelper
         $table = new Table('bundles');
         $table->addColumn('id', 'integer', array('autoincrement' => true));
         $table->addColumn('bundlename', 'string', array('length' => 100));
-        $table->addColumn('autoload', 'string', array('length' => 10));
+        $table->addColumn('autoload', 'string', array('length' => 100));
         $table->addColumn('bundleclass', 'string', array('length' => 100));
         $table->addColumn('bundletype', 'string', array('length' => 2));
         $table->addColumn('bundlestate', 'integer', array('length' => 1));
