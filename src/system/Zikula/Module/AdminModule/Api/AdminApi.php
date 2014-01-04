@@ -260,14 +260,12 @@ class AdminApi extends \Zikula_AbstractApi
             throw new AccessDeniedException();
         }
 
-        $entity = 'ZikulaAdminModule:AdminModuleEntity';
-
         // get module id
         $mid = (int)ModUtil::getIdFromName($args['module']);
 
-        $item = $this->entityManager->getRepository($entity)->findOneBy(array('mid' => $mid));
+        $item = $this->entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(array('mid' => $mid));
         if (!$item) {
-            $item = new $entity;
+            $item = new \Zikula\Module\AdminModule\Entity\AdminModuleEntity;
         }
 
         $values = array();
