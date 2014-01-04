@@ -377,6 +377,49 @@ class AdminApi extends \Zikula_AbstractApi
     }
 
     /**
+     * Get a specific group name from a group id.
+     *
+     * @param mixed[] $args {
+     *      @type int $gid id of group item to get
+     *                      }
+     *
+     * @return string|bool item, or false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if the id parameter isn't provided.
+     */
+    public function getnamebygid($args)
+    {
+        // Argument check
+        if (!isset($args['gid'])) {
+            throw new \InvalidArgumentException($this->__('Error! Invalid arguments array received.'));
+        }
+
+        // create a QueryBuilder instance
+        $qb = $this->entityManager->createQueryBuilder();
+
+        // add select and from params
+        $qb->select('g')
+           ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g');
+
+        // add clause for filtering name
+        $qb->andWhere($qb->expr()->eq('g.gid', $qb->expr()->literal($args['gid'])));
+
+        // convert querybuilder instance into a Query object
+        $query = $qb->getQuery();
+
+        // execute query
+        $result = $query->getOneOrNullResult();
+
+        // error message and return
+        if (!$result) {
+            return false;
+        }
+
+        // Return the gid
+        return $result['name'];
+    }
+
+    /**
      * Get applications.
      *
      * @return array array of group applications
