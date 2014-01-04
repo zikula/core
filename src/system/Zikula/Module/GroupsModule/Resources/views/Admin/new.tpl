@@ -10,7 +10,7 @@
         <div class="form-group">
             <label class="col-lg-3 control-label required" for="group_name">{gt text="Name"}</label>
             <div class="col-lg-9">
-                <input id="group_name" name="name" type="text" class="form-control" size="30" maxlength="30" required />
+                <input id="group_name" name="name" type="text" class="form-control" size="30" maxlength="255" required />
             </div>
         </div>
         <div class="form-group">
