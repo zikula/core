@@ -35,6 +35,7 @@ class BootstrapHelper
     private function sync($array)
     {
         // add what is in array but missing from db
+        /** @var $metadata MetaData */
         foreach ($array as $name => $metadata) {
             $qb = $this->conn->createQueryBuilder();
             $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype', 'b.bundlestate')
@@ -44,9 +45,15 @@ class BootstrapHelper
             $result = $qb->execute();
             $row = $result->fetch();
             if (!$row) {
+                // bundle doesn't exist
                 $this->insert($metadata);
             } elseif ($row['bundlestate'] === AbstractBundle::STATE_MISSING) {
+                // bundle now exists, but was previously missing
                 $this->updateState($row['id'], AbstractBundle::STATE_DISABLED);
+            } elseif (($metadata->getClass() != $row['bundleclass']) || (serialize($metadata->getAutoload()) != $row['autoload'])) {
+                // bundle json has been updated
+                $updatedMeta = array("bundleclass" => $metadata->getClass(), "autoload" => serialize($metadata->getAutoload()));
+                $this->conn->update('bundles', $updatedMeta, array('id' => $row['id']));
             }
         }
 
