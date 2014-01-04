@@ -353,6 +353,17 @@ public function getRoutingConfig()
 ```
 
 
+Bundle Entity Shortcuts
+-----------------------
+
+Entities can now be referenced as a string by using the shortcut name `'BundleName:EntityName'` instead of the full
+name `'Vendor/Module/MyModule/Entity/EntityName'`. For example, `'Zikula\Module\ProfileModule\Entity\PropertyEntity'`
+becomes `'ZikulaProfileModule:PropertyEntity'`. This can be used in cases where you are using the entityManager to
+find entities like `$this->entityManager->find('ZikulaProfileModule:PropertyEntity', $id);`, but cannot be used in
+instances of the the SchemaTool. So here, you must use the whole string:
+`DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\ProfileModule\Entity\PropertyEntity'));`
+
+
 Service Manager
 ---------------
 
