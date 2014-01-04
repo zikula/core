@@ -92,7 +92,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             case '1.2.1':
             case '1.2.2':
                 try {
-                    DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity'));
+                    DoctrineHelper::createSchema($this->entityManager, array('ZikulaCategoriesModule:CategoryAttributeEntity'));
                 } catch (\Exception $e) {
                 }
                 // rename old tablename column for Core 1.3.6
@@ -683,7 +683,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             if ($obj['parent_id'] == 0) {
                 $obj['parent'] = null;
             } else {
-                $obj['parent'] = $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $obj['parent_id']);
+                $obj['parent'] = $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $obj['parent_id']);
             }
             unset($obj['parent_id']);
 
@@ -750,7 +750,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             if (!isset($data['__ATTRIBUTES__'])) {
                 continue;
             }
-            $category = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryEntity')->findOneBy(array('id' => $data['id']));
+            $category = $em->getRepository('ZikulaCategoriesModule:CategoryEntity')->findOneBy(array('id' => $data['id']));
             foreach ($data['__ATTRIBUTES__'] as $name => $value) {
                 $category->setAttribute($name ,$value);
             }

@@ -67,7 +67,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $qb = $this->entityManager->createQueryBuilder()
                                   ->select('u')
-                                  ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                  ->from('ZikulaUsersModule:UserEntity', 'u')
                                   ->orderBy('u.uname', 'ASC');
 
         if (!isset($args['condition']) || !$args['condition']) {
@@ -199,7 +199,7 @@ class AdminApi extends \Zikula_AbstractApi
                 // TODO? - This should be in the Groups module, and happen as a result of an event.
                 $query = $this->entityManager->createQueryBuilder()
                                              ->delete()
-                                             ->from('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity', 'm')
+                                             ->from('ZikulaGroupsModule:GroupMembershipEntity', 'm')
                                              ->where('m.uid = :uid')
                                              ->setParameter('uid', $userObj['uid'])
                                              ->getQuery();
@@ -211,14 +211,14 @@ class AdminApi extends \Zikula_AbstractApi
                 // delete session
                 $query = $this->entityManager->createQueryBuilder()
                                              ->delete()
-                                             ->from('Zikula\Module\UsersModule\Entity\UserSessionEntity', 'u')
+                                             ->from('ZikulaUsersModule:UserSessionEntity', 'u')
                                              ->where('u.uid = :uid')
                                              ->setParameter('uid', $userObj['uid'])
                                              ->getQuery();
                 $query->getResult();
 
                 // delete user
-                $user = $this->entityManager->find('Zikula\Module\UsersModule\Entity\UserEntity', $userObj['uid']);
+                $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $userObj['uid']);
                 $this->entityManager->remove($user);
                 $this->entityManager->flush();
 

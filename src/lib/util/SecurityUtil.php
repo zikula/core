@@ -348,7 +348,7 @@ class SecurityUtil
         // Get all groups that user is in
         $qb = $em->createQueryBuilder();
         $query = $qb->select('g.gid')
-                    ->from('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity', 'g')
+                    ->from('ZikulaGroupsModule:GroupMembershipEntity', 'g')
                     ->where($qb->expr()->in('g.uid', ':uids'))
                     ->setParameter('uids', $uids)
                     ->getQuery();
@@ -369,7 +369,7 @@ class SecurityUtil
         // Get all group permissions
         $qb = $em->createQueryBuilder();
         $query = $qb->select('p')
-                    ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                    ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
                     ->where($qb->expr()->in('p.gid', ':allgroups'))
                     ->setParameter('allgroups', $allgroups)
                     ->orderBy('p.sequence', 'ASC')

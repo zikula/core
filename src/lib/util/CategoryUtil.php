@@ -59,7 +59,7 @@ class CategoryUtil
             $em = ServiceUtil::get('doctrine.entitymanager');
             $em->persist($cat);
             $data = array();
-            $data['parent'] = $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $rootCat['id']);
+            $data['parent'] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $rootCat['id']);
             $data['name'] = $name;
             $data['display_name'] = array($lang => $displayname);
             $data['display_desc'] = array($lang => $description);
@@ -104,7 +104,7 @@ class CategoryUtil
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
         // get category
-        $category = $em->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $cid);
+        $category = $em->find('ZikulaCategoriesModule:CategoryEntity', $cid);
 
         if (!isset($category)) {
             return array();
@@ -294,7 +294,7 @@ class CategoryUtil
         }
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $cat = $em->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $id);
+        $cat = $em->find('ZikulaCategoriesModule:CategoryEntity', $id);
 
         $cats = array();
         if (!$cat) {
@@ -744,7 +744,7 @@ class CategoryUtil
         $em = ServiceUtil::get('doctrine.entitymanager');
 
         $oldToNewID = array();
-        $oldToNewID[$cats[0]['parent']['id']] = $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $newParent['id']);
+        $oldToNewID[$cats[0]['parent']['id']] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
 
         // since array_shift() resets numeric array indexes, we remove the leading element like this
         if (!$includeRoot) {
@@ -767,14 +767,14 @@ class CategoryUtil
 
             $oldID = $cat['id'];
             $cat['id'] = '';
-            $cat['parent'] = isset($oldToNewID[$cat['parent']['id']]) ? $oldToNewID[$cat['parent']['id']] : $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $newParent['id']);
+            $cat['parent'] = isset($oldToNewID[$cat['parent']['id']]) ? $oldToNewID[$cat['parent']['id']] : $em->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
 
             $catObj = new Zikula\Module\CategoriesModule\Entity\CategoryEntity;
             $catObj->merge($cat);
             $em->persist($catObj);
             $em->flush();
 
-            $oldToNewID[$oldID] = $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $catObj['id']);
+            $oldToNewID[$oldID] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $catObj['id']);
         }
 
         $em->flush();

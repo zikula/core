@@ -137,7 +137,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // update group's name
-        $group = $this->entityManager->find('Zikula\Module\GroupsModule\Entity\GroupEntity', $group_id);
+        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $group_id);
         $group['name'] = $this->__f('Group %s', $group_id);
         $this->entityManager->flush();
 

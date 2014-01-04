@@ -109,7 +109,7 @@ class UserApi extends \Zikula_AbstractApi
             // Count number of found results (pointless, this will alays be 0 as we just deleted these! - drak)
             $query = $this->entityManager->createQueryBuilder()
                                          ->select('count(s.sesid)')
-                                         ->from('Zikula\Module\SearchModule\Entity\SearchResultEntity', 's')
+                                         ->from('ZikulaSearchModule:SearchResultEntity', 's')
                                          ->where('s.sesid = :sid')
                                          ->setParameter('sid',$sessionId)
                                          ->getQuery();
@@ -146,7 +146,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $query = $this->entityManager->createQueryBuilder()
                                      ->select('s')
-                                     ->from('Zikula\Module\SearchModule\Entity\SearchResultEntity', 's')
+                                     ->from('ZikulaSearchModule:SearchResultEntity', 's')
                                      ->where('s.sesid = :sid')
                                      ->setParameter('sid', $sessionId)
                                      ->orderBy('s.created', 'ASC')
@@ -211,7 +211,7 @@ class UserApi extends \Zikula_AbstractApi
         // Get items
         $qb = $this->entityManager->createQueryBuilder()
                                   ->select('s')
-                                  ->from('Zikula\Module\SearchModule\Entity\SearchStatEntity', 's');
+                                  ->from('ZikulaSearchModule:SearchStatEntity', 's');
         if (isset($args['sortorder'])) {
             $qb->orderBy('s.'.$args['sortorder'], 'DESC');
         }
@@ -232,7 +232,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $query = $this->entityManager->createQueryBuilder()
                                      ->select('count(s.id)')
-                                     ->from('Zikula\Module\SearchModule\Entity\SearchStatEntity', 's')
+                                     ->from('ZikulaSearchModule:SearchStatEntity', 's')
                                      ->getQuery();
 
         return (int)$query->getSingleScalarResult();;
@@ -283,7 +283,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function log($args)
     {
-        $obj = $this->entityManager->getRepository('Zikula\Module\SearchModule\Entity\SearchStatEntity')->findOneBy(array('search' => $args['q']));
+        $obj = $this->entityManager->getRepository('ZikulaSearchModule:SearchStatEntity')->findOneBy(array('search' => $args['q']));
 
         if (!$obj) {
             $obj = new SearchStatEntity();

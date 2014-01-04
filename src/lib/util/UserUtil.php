@@ -63,7 +63,7 @@ class UserUtil
 
         // we've now ruled out BC parameters
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $users = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+        $users = $em->getRepository('ZikulaUsersModule:UserEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
         foreach ($users as $user) {
@@ -101,7 +101,7 @@ class UserUtil
     public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey='gid')
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $groups = $em->getRepository('Zikula\Module\GroupsModule\Entity\GroupEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+        $groups = $em->getRepository('ZikulaGroupsModule:GroupEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
         foreach ($groups as $group) {
@@ -983,7 +983,7 @@ class UserUtil
         // count of uname appearances in users table
         $qb = $em->createQueryBuilder()
                  ->select('count(u.uid)')
-                 ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                 ->from('ZikulaUsersModule:UserEntity', 'u')
                  ->where('u.uname = :uname')
                  ->setParameter('uname', $uname);
 
@@ -1019,7 +1019,7 @@ class UserUtil
         // count of email appearances in users table
         $qb = $em->createQueryBuilder()
                  ->select('count(u.uid)')
-                 ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                 ->from('ZikulaUsersModule:UserEntity', 'u')
                  ->where('u.email = :email')
                  ->setParameter('email', $emailAddress);
 
@@ -1035,7 +1035,7 @@ class UserUtil
         // count of email appearances in users verification table
         $qb = $em->createQueryBuilder()
                  ->select('count(v.uid)')
-                 ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                 ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
                  ->where('v.newemail = :email')
                  ->andWhere('v.changetype = :chgtype')
                  ->setParameter('email', $emailAddress)
@@ -1078,7 +1078,7 @@ class UserUtil
 
             $query = $em->createQueryBuilder()
                         ->select('v')
-                        ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                        ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
                         ->where('v.uid = :uid')
                         ->andWhere('v.changetype = :changetype')
                         ->setParameter('uid', $userObj['uid'])
@@ -1162,7 +1162,7 @@ class UserUtil
 
         if (!isset($user) || $force) {
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array($idfield => $id));
+            $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array($idfield => $id));
 
             if ($user) {
                 $user = $user->toArray();
@@ -1385,7 +1385,7 @@ class UserUtil
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array('uid' => $uid));
+            $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => $uid));
 
             // check if var to set belongs to table or it's an attribute
             if (self::fieldAlias($name)) {
@@ -1736,7 +1736,7 @@ class UserUtil
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array('uid' => $uid));
+            $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => $uid));
 
             if (self::fieldAlias($name)) {
                 // this value comes from the users table

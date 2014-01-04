@@ -425,7 +425,7 @@ class BlockUtil
             $uid = UserUtil::getVar('uid');
             $sm = ServiceUtil::getManager();
             $entityManager = $sm->get('doctrine.entitymanager');
-            $entity = 'Zikula\Module\BlocksModule\Entity\UserBlockEntity';
+            $entity = 'ZikulaBlocksModule:UserBlockEntity';
             $item = $entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
             if (!$item) {
                 $item = new $entity;

@@ -278,7 +278,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                     'tag'     => $tagVal,
                     'value'   => $event->getValue(),
                     'page'    => $currentPage,
-                    'user'    => $em->getReference('Zikula\Module\UsersModule\Entity\UserEntity', $currentUid),
+                    'user'    => $em->getReference('ZikulaUsersModule:UserEntity', $currentUid),
                     'ip'      => $ipAddress,
                     'impact'  => $result->getImpact(),
                     'filters' => serialize($filters),

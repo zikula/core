@@ -105,7 +105,7 @@ class Util
         $entityManager = $sm->get('doctrine.entitymanager');
 
         $dbthemes = array();
-        $themeEntities = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findAll();
+        $themeEntities = $entityManager->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
 
         foreach ($themeEntities as $entity) {
             $entity = $entity->toArray();
@@ -119,7 +119,7 @@ class Util
                 ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', array('themename' => $name));
 
                 // delete item from db
-                $item = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findOneBy(array('name' => $name));
+                $item = $entityManager->getRepository('ZikulaThemeModule:ThemeEntity')->findOneBy(array('name' => $name));
                 $entityManager->remove($item);
 
                 unset($dbthemes[$name]);
@@ -155,7 +155,7 @@ class Util
 
                     // update item
                     /** @var $item ThemeEntity */
-                    $item = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->find($themeinfo['id']);
+                    $item = $entityManager->getRepository('ZikulaThemeModule:ThemeEntity')->find($themeinfo['id']);
                     $item->merge($themeinfo);
                 }
             }

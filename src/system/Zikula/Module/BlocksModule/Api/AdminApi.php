@@ -66,7 +66,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // remove old placements and insert the new ones
-        $items = $this->entityManager->getRepository('Zikula\Module\BlocksModule\Entity\BlockPlacementEntity')
+        $items = $this->entityManager->getRepository('ZikulaBlocksModule:BlockPlacementEntity')
                                      ->findBy(array('bid'=>$args['bid']));
 
         // refactor position array (keys=values)
@@ -288,7 +288,7 @@ class AdminApi extends \Zikula_AbstractApi
         // delete block's placements
         $query = $this->entityManager->createQueryBuilder()
                                      ->delete()
-                                     ->from('Zikula\Module\BlocksModule\Entity\BlockPlacementEntity', 'p')
+                                     ->from('ZikulaBlocksModule:BlockPlacementEntity', 'p')
                                      ->where('p.bid = :bid')
                                      ->setParameter('bid', $block['bid'])
                                      ->getQuery();
@@ -428,7 +428,7 @@ class AdminApi extends \Zikula_AbstractApi
         // delete placements of the position to be deleted
         $query = $this->entityManager->createQueryBuilder()
                                      ->delete()
-                                     ->from('Zikula\Module\BlocksModule\Entity\BlockPlacementEntity', 'p')
+                                     ->from('ZikulaBlocksModule:BlockPlacementEntity', 'p')
                                      ->where('p.pid = :pid')
                                      ->setParameter('pid', $position['pid'])
                                      ->getQuery();

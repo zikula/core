@@ -15,6 +15,7 @@ namespace Zikula\Module\SecurityCenterModule\Controller;
 
 use SecurityUtil;
 use ModUtil;
+use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -60,7 +61,7 @@ class AdminformController extends \Zikula_AbstractController
             throw new \InvalidArgumentException($this->__f("Error! Received a non-numeric object ID '%s'.", $id));
         }
 
-        $intrusion = $this->entityManager->find('Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity', $id);
+        $intrusion = $this->entityManager->find('ZikulaSecurityCenterModule:IntrusionEntity', $id);
 
         // check for valid object
         if (!$intrusion) {

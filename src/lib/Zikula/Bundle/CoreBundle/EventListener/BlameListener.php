@@ -42,7 +42,7 @@ class BlameListener implements EventSubscriberInterface
         }
 
         $em = ServiceUtil::get('doctrine.entitymanager');
-        $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array('uid' => UserUtil::getVar('uid')));
+        $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => UserUtil::getVar('uid')));
         $this->blameableListener->setUserValue($user);
     }
 

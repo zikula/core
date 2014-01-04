@@ -250,7 +250,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
                 continue;
             }
 
-            $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array('uid' => $data['uid']));
+            $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => $data['uid']));
             foreach ($data['__ATTRIBUTES__'] as $name => $value) {
                 $user->setAttribute($name ,$value);
             }
