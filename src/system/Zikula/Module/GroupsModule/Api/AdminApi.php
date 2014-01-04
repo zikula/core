@@ -415,7 +415,6 @@ class AdminApi extends \Zikula_AbstractApi
             return false;
         }
 
-        // Return the gid
         return $result['name'];
     }
 
