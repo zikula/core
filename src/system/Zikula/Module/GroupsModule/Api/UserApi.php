@@ -56,7 +56,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('g')
-           ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g');
+           ->from('ZikulaGroupsModule:GroupEntity', 'g');
 
          // add clause for ordering
         $qb->addOrderBy('g.name', 'ASC');
@@ -105,7 +105,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // get item
-        $result = $this->entityManager->find('Zikula\Module\GroupsModule\Entity\GroupEntity', $args['gid']);
+        $result = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
         if (!$result) {
             return false;
@@ -123,7 +123,7 @@ class UserApi extends \Zikula_AbstractApi
             $args['numitems'] = null;
         }
 
-        $groupmembership = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity')->findBy(array('gid' => $args['gid']), array(), $args['numitems'], $args['startnum']);
+        $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy(array('gid' => $args['gid']), array(), $args['numitems'], $args['startnum']);
 
         // Check for an error with the database code
         if ($groupmembership === false) {
@@ -165,7 +165,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('count(g.gid)')
-           ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g')
+           ->from('ZikulaGroupsModule:GroupEntity', 'g')
            ->where('g.gtype = :gtype')
            ->setParameter('gtype', CommonHelper::GTYPE_CORE);
 
@@ -198,7 +198,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('count(m.gid)')
-           ->from('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity', 'm')
+           ->from('ZikulaGroupsModule:GroupMembershipEntity', 'm')
            ->where('m.gid = :gid')
            ->setParameter('gid', $args['gid']);
 
@@ -236,7 +236,7 @@ class UserApi extends \Zikula_AbstractApi
             return $items;
         }
 
-        $groupmembership = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity')->findBy(array('uid' => $args['uid']));
+        $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy(array('uid' => $args['uid']));
 
         // Check for an error with the database code
         if ($groupmembership === false) {
@@ -287,7 +287,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('g')
-           ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g');
+           ->from('ZikulaGroupsModule:GroupEntity', 'g');
 
         // add clause for filtering type
         $qb->andWhere($qb->expr()->neq('g.gtype', $qb->expr()->literal(CommonHelper::GTYPE_CORE)));
@@ -480,7 +480,7 @@ class UserApi extends \Zikula_AbstractApi
                               'uid' => $args['uid']));
 
         if ($ispending == true) {
-            $application = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+            $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
             $this->entityManager->remove($application);
             $this->entityManager->flush();
         }
@@ -507,7 +507,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $applications = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $applications = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
 
         if (count($applications) >= 1) {
             return true;
@@ -704,7 +704,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // delete user from group
-        $membership = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $membership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
         $this->entityManager->remove($membership);
         $this->entityManager->flush();
 
@@ -727,7 +727,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('DISTINCT s.uid')
-           ->from('Zikula\Module\UsersModule\Entity\UserSessionEntity', 's')
+           ->from('ZikulaUsersModule:UserSessionEntity', 's')
            ->where('s.lastused > :activetime')
            ->setParameter('activetime', $activetime)
            ->andWhere('s.uid <> 0');

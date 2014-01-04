@@ -143,7 +143,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         // Look for existing lock
         $query = $this->entityManager->createQueryBuilder()
                                      ->select('count(p.id)')
-                                     ->from('Zikula\Module\PageLockModule\Entity\PageLockEntity', 'p')
+                                     ->from('ZikulaPageLockModule:PageLockEntity', 'p')
                                      ->where('p.name = :lockName')
                                      ->setParameter('lockName', $lockName)
                                      ->andWhere('p.session = :sessionId')
@@ -157,7 +157,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         if ($count > 0) {
             // update the existing lock with a new expiry date
             $query = $this->entityManager->createQueryBuilder()
-                                         ->update('Zikula\Module\PageLockModule\Entity\PageLockEntity', 'p')
+                                         ->update('ZikulaPageLockModule:PageLockEntity', 'p')
                                          ->set('p.edate = :expireDate')
                                          ->where('p.name = :lockName')
                                          ->setParameter('lockName', $lockName)
@@ -205,7 +205,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         // remove expired locks
         $query = $this->entityManager->createQueryBuilder()
                                      ->delete()
-                                     ->from('Zikula\Module\PageLockModule\Entity\PageLockEntity', 'p')
+                                     ->from('ZikulaPageLockModule:PageLockEntity', 'p')
                                      ->where('p.edate < :now')
                                      ->setParameter('now', time())
                                      ->getQuery();
@@ -214,7 +214,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         // get remaining active locks
         $query = $this->entityManager->createQueryBuilder()
                                      ->select('p')
-                                     ->from('Zikula\Module\PageLockModule\Entity\PageLockEntity', 'p')
+                                     ->from('ZikulaPageLockModule:PageLockEntity', 'p')
                                      ->where('p.name = :lockName')
                                      ->setParameter('lockName', $lockName)
                                      ->andWhere('p.session = :sessionId')
@@ -249,7 +249,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $query = $this->entityManager->createQueryBuilder()
                                      ->delete()
-                                     ->from('Zikula\Module\PageLockModule\Entity\PageLockEntity', 'p')
+                                     ->from('ZikulaPageLockModule:PageLockEntity', 'p')
                                      ->where('p.name = :lockName')
                                      ->setParameter('lockName', $lockName)
                                      ->andWhere('p.session = :sessionId')

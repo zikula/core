@@ -87,7 +87,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         unset($args['themeinfo']['i18n']);
 
-        $item = $this->entityManager->find('Zikula\Module\ThemeModule\Entity\ThemeEntity', $args['themeinfo']['id']);
+        $item = $this->entityManager->find('ZikulaThemeModule:ThemeEntity', $args['themeinfo']['id']);
         $item->merge($args['themeinfo']);
         $this->entityManager->flush();
 
@@ -125,7 +125,7 @@ class AdminApi extends \Zikula_AbstractApi
         // if chosen reset all user theme selections
         if ($args['resetuserselected']) {
             $query = $this->entityManager->createQueryBuilder()
-                                         ->update('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                         ->update('ZikulaUsersModule:UserEntity', 'u')
                                          ->set('u.theme', ':null')
                                          ->setParameter('null', '')
                                          ->getQuery();
@@ -233,7 +233,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // reset the theme for any users utilising this theme.
         $query = $this->entityManager->createQueryBuilder()
-                                     ->update('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                     ->update('ZikulaUsersModule:UserEntity', 'u')
                                      ->set('u.theme', ':null')
                                      ->where('u.theme = :themeName')
                                      ->setParameter('null', '')
@@ -248,7 +248,7 @@ class AdminApi extends \Zikula_AbstractApi
         // delete theme
         $query = $this->entityManager->createQueryBuilder()
                                      ->delete()
-                                     ->from('Zikula\Module\ThemeModule\Entity\ThemeEntity', 't')
+                                     ->from('ZikulaThemeModule:ThemeEntity', 't')
                                      ->where('t.id = :id')
                                      ->setParameter('id', $themeid)
                                      ->getQuery();

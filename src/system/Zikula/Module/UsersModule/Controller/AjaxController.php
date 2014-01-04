@@ -50,7 +50,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
             $qb = $this->entityManager->createQueryBuilder();
             $query = $qb->select('u')
-                 ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                 ->from('ZikulaUsersModule:UserEntity', 'u')
                  ->where($qb->expr()->like('u.uname', ':fragment'))
                  ->setParameter('fragment', '%' . $fragment . '%')
                  ->getQuery();

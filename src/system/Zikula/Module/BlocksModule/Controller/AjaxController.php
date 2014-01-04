@@ -50,7 +50,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // remove all blocks from this position
         $query = $this->entityManager->createQueryBuilder()
                                      ->delete()
-                                     ->from('Zikula\Module\BlocksModule\Entity\BlockPlacementEntity', 'p')
+                                     ->from('ZikulaBlocksModule:BlockPlacementEntity', 'p')
                                      ->where('p.pid = :pid')
                                      ->setParameter('pid', $position)
                                      ->getQuery();

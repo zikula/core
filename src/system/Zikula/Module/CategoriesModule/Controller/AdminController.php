@@ -231,7 +231,7 @@ class AdminController extends \Zikula_AbstractController
             $obj = $obj->toArray();
         }
 
-        $registries = $this->entityManager->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')->findBy(array(), array('modname' => 'ASC', 'property' => 'ASC'));
+        $registries = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(array(), array('modname' => 'ASC', 'property' => 'ASC'));
 
         $this->view->assign('objectArray', $registries)
                    ->assign('newobj', $obj)
@@ -256,7 +256,7 @@ class AdminController extends \Zikula_AbstractController
 
         $id = $this->request->get('id', 0);
 
-        $obj = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity', $id);
+        $obj = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $id);
         $data = $obj->toArray();
 
         $this->view->assign('data', $data)

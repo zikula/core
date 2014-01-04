@@ -57,7 +57,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('u')
-           ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u');
+           ->from('ZikulaUsersModule:UserEntity', 'u');
 
         // add clauses for filtering activation states
         $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_REG)));
@@ -160,7 +160,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('count(u.uid)')
-           ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u');
+           ->from('ZikulaUsersModule:UserEntity', 'u');
 
         // add clauses for filtering activation states
         $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_REG)));
@@ -292,7 +292,7 @@ class UserApi extends \Zikula_AbstractApi
         if ($args['idfield'] == 'email') {
             $query = $this->entityManager->createQueryBuilder()
                                          ->select('count(u.uid)')
-                                         ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                         ->from('ZikulaUsersModule:UserEntity', 'u')
                                          ->where('u.email = :email')
                                          ->setParameter('email', $args['id'])
                                          ->getQuery();
@@ -382,7 +382,7 @@ class UserApi extends \Zikula_AbstractApi
             if ($hashedConfirmationCode !== false) {
                 $query = $this->entityManager->createQueryBuilder()
                                              ->delete()
-                                             ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                                             ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
                                              ->where('v.uid = :uid')
                                              ->andWhere('v.changetype = :changetype')
                                              ->setParameter('uid', $user['uid'])
@@ -479,7 +479,7 @@ class UserApi extends \Zikula_AbstractApi
 
                 $query = $this->entityManager->createQueryBuilder()
                                              ->delete()
-                                             ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                                             ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
                                              ->where('v.created_dt < :staleRecordUTCStr')
                                              ->andWhere('v.changetype = :changetype')
                                              ->setParameter('staleRecordUTCStr', $staleRecordUTCStr)
@@ -488,7 +488,7 @@ class UserApi extends \Zikula_AbstractApi
                 $query->getResult();
             }
 
-            $verifychgObj = $this->entityManager->getRepository('Zikula\Module\UsersModule\Entity\UserVerificationEntity')->findOneBy(array('uid' => $user['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_PWD));
+            $verifychgObj = $this->entityManager->getRepository('ZikulaUsersModule:UserVerificationEntity')->findOneBy(array('uid' => $user['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_PWD));
             if ($verifychgObj) {
                 $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
             } else {
@@ -591,7 +591,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $query = $this->entityManager->createQueryBuilder()
                                      ->delete()
-                                     ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                                     ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
                                      ->where('v.uid = :uid')
                                      ->andWhere('v.changetype = :changetype')
                                      ->setParameter('uid', $uid)
@@ -658,7 +658,7 @@ class UserApi extends \Zikula_AbstractApi
 
             $query = $this->entityManager->createQueryBuilder()
                                          ->delete()
-                                         ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                                         ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
                                          ->where('v.created_dt < :staleRecordUTCStr')
                                          ->andWhere('v.changetype = :changetype')
                                          ->setParameter('staleRecordUTCStr', $staleRecordUTCStr)
@@ -669,7 +669,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $uid = UserUtil::getVar('uid');
 
-        $item = $this->entityManager->getRepository('Zikula\Module\UsersModule\Entity\UserVerificationEntity')->findOneBy(array('uid' => $uid, 'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL));
+        $item = $this->entityManager->getRepository('ZikulaUsersModule:UserVerificationEntity')->findOneBy(array('uid' => $uid, 'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL));
 
         return $item;
     }
@@ -719,7 +719,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $qb = $this->entityManager->createQueryBuilder()
                                   ->delete()
-                                  ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                                  ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
                                   ->where('v.uid = :uid')
                                   ->setParameter('uid', $uid);
         if (isset($changeType)) {

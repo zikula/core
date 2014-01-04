@@ -98,7 +98,7 @@ class AdminformController extends \Zikula_AbstractController
         $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
 
         // get existing category
-        $category = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $data['id']);
+        $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
 
         $prevCategoryName = $category['name'];
 
@@ -326,7 +326,7 @@ class AdminformController extends \Zikula_AbstractController
         // delete registry
         if ($this->request->request->get('mode', null) == 'delete') {
             $id = $this->request->get('id', 0);
-            $obj = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity', $id);
+            $obj = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $id);
             $this->entityManager->remove($obj);
             $this->entityManager->flush();
 
@@ -371,7 +371,7 @@ class AdminformController extends \Zikula_AbstractController
 
         if (isset($data['id']) && (int)$data['id'] > 0) {
             // update existing registry
-            $obj = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity', $data['id']);
+            $obj = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $data['id']);
         } else {
             // create new registry
             $obj = new CategoryRegistryEntity();

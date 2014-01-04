@@ -140,7 +140,7 @@ class AdminApi extends \Zikula_AbstractApi
         // move all modules from the category to be deleted into the
         // default category.
         $query = $this->entityManager->createQueryBuilder()
-                                     ->update('Zikula\Module\AdminModule\Entity\AdminModuleEntity', 'm')
+                                     ->update('ZikulaAdminModule:AdminModuleEntity', 'm')
                                      ->set('m.cid', $defaultcategory)
                                      ->where('m.cid = :cid')
                                      ->setParameter('cid', $item['cid'])
@@ -183,7 +183,7 @@ class AdminApi extends \Zikula_AbstractApi
             return $items;
         }
 
-        $entity = 'Zikula\Module\AdminModule\Entity\AdminCategoryEntity';
+        $entity = 'ZikulaAdminModule:AdminCategoryEntity';
         $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'ASC'), $args['numitems'], $args['startnum']);
 
         return $items;
@@ -198,7 +198,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $query = $this->entityManager->createQueryBuilder()
                                      ->select('count(c.cid)')
-                                     ->from('Zikula\Module\AdminModule\Entity\AdminCategoryEntity', 'c')
+                                     ->from('ZikulaAdminModule:AdminCategoryEntity', 'c')
                                      ->getQuery();
 
         return (int)$query->getSingleScalarResult();;
@@ -223,7 +223,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // retrieve the category object
-        $entity = 'Zikula\Module\AdminModule\Entity\AdminCategoryEntity';
+        $entity = 'ZikulaAdminModule:AdminCategoryEntity';
         $category = $this->entityManager->getRepository($entity)->findOneBy(array('cid' => (int)$args['cid']));
 
         if (!$category) {
@@ -260,7 +260,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new AccessDeniedException();
         }
 
-        $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';
+        $entity = 'ZikulaAdminModule:AdminModuleEntity';
 
         // get module id
         $mid = (int)ModUtil::getIdFromName($args['module']);
@@ -309,7 +309,7 @@ class AdminApi extends \Zikula_AbstractApi
             return $catitems[$args['mid']];
         }
 
-        $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';
+        $entity = 'ZikulaAdminModule:AdminModuleEntity';
 
         // retrieve the admin module object array
         $associations = $this->entityManager->getRepository($entity)->findAll();
@@ -350,7 +350,7 @@ class AdminApi extends \Zikula_AbstractApi
         static $associations = array();
 
         if (empty($associations)) {
-            $associations = $this->entityManager->getRepository('Zikula\Module\AdminModule\Entity\AdminModuleEntity')->findAll();
+            $associations = $this->entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findAll();
         }
 
         $sortorder = -1;
@@ -458,7 +458,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $query = $this->entityManager->createQueryBuilder()
                                      ->select('count(m.amid)')
-                                     ->from('Zikula\Module\AdminModule\Entity\AdminModuleEntity', 'm')
+                                     ->from('ZikulaAdminModule:AdminModuleEntity', 'm')
                                      ->where('m.cid = :cid')
                                      ->setParameter('cid', $args['cid'])
                                      ->getQuery();

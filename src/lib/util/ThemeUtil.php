@@ -103,7 +103,7 @@ class ThemeUtil
             $em = ServiceUtil::get('doctrine.entitymanager');
             $qb = $em->createQueryBuilder()
                      ->select('t')
-                     ->from('Zikula\Module\ThemeModule\Entity\ThemeEntity', 't');
+                     ->from('ZikulaThemeModule:ThemeEntity', 't');
                      
             if ($state != self::STATE_ALL) {
                 $qb->andWhere('t.state = :state')
@@ -243,7 +243,7 @@ class ThemeUtil
             /** @var $em Doctrine\ORM\EntityManager */
             $em = ServiceUtil::get('doctrine.entitymanager');
             /** @var $array ThemeEntity[] */
-            $array = $em->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findAll();
+            $array = $em->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
             foreach ($array as $theme) {
                 $theme = $theme->toArray();
                 $theme['i18n'] = (is_dir("themes/$theme[name]/locale") ? 1 : 0);
