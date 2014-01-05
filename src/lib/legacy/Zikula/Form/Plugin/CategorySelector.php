@@ -128,7 +128,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
         } elseif (is_numeric($list->category)) {
             // check if we have a numeric category
             $list->category = CategoryUtil::getCategoryByID($list->category);
-            unset($list->category['parent']); // prevent form serialization errors in session
+            unset($list->category['parent'], $list->category['cr_uid'], $list->category['lu_uid']); // prevent form serialization errors in session
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
 
         } elseif (is_string($list->category) && strpos($list->category, '/') === 0) {
