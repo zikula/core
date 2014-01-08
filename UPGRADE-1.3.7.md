@@ -576,7 +576,7 @@ class MyFooExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(realpath(__DIR__.'/../Resources/config')));
 
         $loader->load('services.xml');
 
@@ -584,10 +584,12 @@ class MyFooExtension extends Extension
 }
 ```
 
-Simply create a service definition and in `Resources/config/services.xml` or `.yml`
+Simply create a service definition and in `Resources/config/services.xml` (or `.yml`)
 and `tag` the service with `kernel.event_subscriber`.
 
 ```xml
+<parameter key="mymodule.foo_listener.class">Path\To\Your\Listener\ClassListener</parameter>
+
 <service id="mymodule.foo_listener" class="%mymodule.foo_listener.class%">
     <tag name="kernel.event_subscriber" />
 </service>
