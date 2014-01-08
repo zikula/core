@@ -320,10 +320,14 @@ class EventUtil
                         if (isset($handler['classname'])) {
                             self::attachEventHandler($handler['classname']);
                         } else {
-                            self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
+                            if (is_callable($handler['callable'])) {
+                                self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
+                            } else {
+                                LogUtil::log(sprintf("Event handler was not attached for event '%s' because method '%s' is not callable", $handler['eventname'], $handler['callable'][0].'::'.$handler['callable'][1]), \Monolog\Logger::ERROR);
+                            }
                         }
                     } catch (InvalidArgumentException $e) {
-                        LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), \Monolog\Logger::ERR);
+                        LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), \Monolog\Logger::ERROR);
                     }
                 }
             }
