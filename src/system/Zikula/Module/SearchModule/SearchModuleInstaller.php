@@ -47,13 +47,6 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         $this->setVar('opensearch_enabled', true);
         $this->setVar('opensearch_adult_content', false);
 
-
-        // register event handler to activate new modules in the search block.
-        EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.installed', array('Zikula\Module\SearchModule\Listener\ModuleListener', 'moduleInstall'));
-
-        // register event handler for opensearch.
-        EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\PageloadListener', 'pageload'));
-
         // Initialisation successful
         return true;
     }
@@ -75,8 +68,9 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
             case '1.5.2':
                 $this->setVar('opensearch_enabled', true);
                 $this->setVar('opensearch_adult_content', false);
-                EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\PageloadListener', 'pageload'));
             case '1.5.3':
+                EventUtil::unregisterPersistentModuleHandlers('ZikulaSearchModule');
+            case '1.5.4':
             // future upgrade routines
         }
 
@@ -105,9 +99,6 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
 
         // Delete any module variables
         $this->delVars();
-
-        // unregister event handlers
-        EventUtil::unregisterPersistentModuleHandlers('ZikulaSearchModule');
 
         // Deletion successful
         return true;

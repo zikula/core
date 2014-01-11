@@ -13,26 +13,37 @@
 
 namespace Zikula\Module\SearchModule\Listener;
 
-use BlockUtil;
 use ModUtil;
-use Zikula_Event;
+use BlockUtil;
+use PageUtil;
+use DataUtil;
+use System;
+use SecurityUtil;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Core\Event\GenericEvent;
 
-/**
- * EventHandlers class.
- */
-class ModuleListener
+class CoreEventListener implements EventSubscriberInterface
 {
+
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'installer.module.installed' => array('moduleInstall'),
+            'frontcontroller.predispatch' => array('pageload'),
+        );
+    }
+
     /**
      * Handle module install event "installer.module.installed".
      * Receives $modinfo as $args
      *
-     * @param Zikula_Event $event
+     * @param GenericEvent $event
      *
      * @return void
      */
-    public static function moduleInstall(Zikula_Event $event)
+    public function moduleInstall(GenericEvent $event)
     {
-        $mod = $event['name'];
+        $mod = $event->getName();
 
         // determine search capability
         if (ModUtil::apiFunc($mod, 'search', 'info')) {
@@ -60,4 +71,20 @@ class ModuleListener
             }
         }
     }
+
+    /**
+     * Handle page load event "frontcontroller.predispatch".
+     *
+     * @param GenericEvent $event
+     *
+     * @return void
+     */
+    public function pageload(GenericEvent $event)
+    {
+        if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
+            // The current user has the rights to search the page.
+            PageUtil::addVar('header', '<link rel="search" type="application/opensearchdescription+xml" title="' . DataUtil::formatForDisplay(System::getVar('sitename')) . '" href="/' . DataUtil::formatForDisplay(ModUtil::url('ZikulaSearchModule', 'user', 'opensearch')) . '" />');
+        }
+    }
+
 }
