@@ -177,16 +177,16 @@
         {$eventDisplay}
     {/foreach}
 
+    {notifydisplayhooks eventname='users.ui_hooks.registration.form_edit' id=null assign='hooks'}
+    {if is_array($hooks) && count($hooks)}
     <fieldset>
         <legend>{gt text='Further information'}</legend>
-        {notifydisplayhooks eventname='users.ui_hooks.registration.form_edit' id=null assign='hooks'}
-        {if is_array($hooks) && count($hooks)}
             {foreach key='providerArea' item='hook' from=$hooks}
                 {$hook}
                 <div class="clearfix"></div>
             {/foreach}
-        {/if}
     </fieldset>
+    {/if}
 
     {if !empty($modvars.ZikulaUsersModule.reg_question)}
     <fieldset>
