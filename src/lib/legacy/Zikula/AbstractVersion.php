@@ -247,6 +247,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
         $meta['securityschema'] = $this->securityschema;
         $meta['core_min'] = $this->core_min;
         $meta['core_max'] = $this->core_max;
+        $meta['oldnames'] = $this->oldnames;
 
         return $meta;
     }
