@@ -58,17 +58,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         $this->defaultdata();
         $this->setVars($this->getDefaultModvars());
 
-        // Register persistent event listeners (handlers)
-        EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content',
-            array('Zikula\Module\UsersModule\Listener\PendingContentListener', 'pendingContentListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto',
-            array('Zikula\Module\UsersModule\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded',
-            array('Zikula\Module\UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception',
-            array('Zikula\Module\UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
-
-        // Register persistent hook bundles
+        // Register hook bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
         HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
 
@@ -93,7 +83,9 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             case '2.2.0':
                 $this->migrateAttributes();
             case '2.2.1':
-                // This is the current version: add 2.2.1 --> next when appropriate
+                EventUtil::unregisterPersistentModuleHandlers($this->name);
+            case '2.2.2':
+                // This is the current version: add 2.2.2 --> next when appropriate
 
             $currentModVars = $this->getVars();
             $defaultModVars = $this->getDefaultModvars();
