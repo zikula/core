@@ -525,7 +525,7 @@ class AdminApi extends \Zikula_AbstractApi
             $array['dependencies'] = serialize($array['dependencies']);
 
             $filemodules[$bundle->getName()] = $array;
-            $filemodules[$bundle->getName()]['oldnames'] = serialize(array());
+            $filemodules[$bundle->getName()]['oldnames'] = isset($array['oldnames']) ? $array['oldnames'] : '';
         }
 
         // set the paths to search
@@ -721,21 +721,23 @@ class AdminApi extends \Zikula_AbstractApi
                     if (isset($dbmodinfo['name']) && in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
                         // migrate its modvars
                         $query = $this->entityManager->createQueryBuilder()
-                                                     ->update('UPDATE Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
-                                                     ->set('v.modname', $modinfo['name'])
-                                                     ->where('v.modname = :dbname')
-                                                     ->setParameter('dbanme', $dbname)
-                                                     ->getQuery();
-                        $query->getResult();
+                             ->update('Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
+                             ->set('v.modname', ':modname')
+                             ->setParameter('modname', $modinfo['name'])
+                             ->where('v.modname = :dbname')
+                             ->setParameter('dbname', $dbname)
+                             ->getQuery();
+                        $query->execute();
 
                         // rename the module register
                         $query = $this->entityManager->createQueryBuilder()
-                                                     ->update('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e')
-                                                     ->set('e.name', $modinfo['name'])
-                                                     ->where('e.id = :dbname')
-                                                     ->setParameter('dbanme', $dbmodules[$dbname]['id'])
-                                                     ->getQuery();
-                        $query->getResult();
+                             ->update('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e')
+                             ->set('e.name', ':modname')
+                             ->setParameter('modname', $modinfo['name'])
+                             ->where('e.id = :dbname')
+                             ->setParameter('dbname', $dbmodules[$dbname]['id'])
+                             ->getQuery();
+                        $query->execute();
 
                         // replace the old module with the new one in the dbmodules array
                         $newmodule = $dbmodules[$dbname];
