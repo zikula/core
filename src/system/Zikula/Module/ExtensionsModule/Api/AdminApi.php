@@ -291,7 +291,8 @@ class AdminApi extends \Zikula_AbstractApi
 
         if (isset($eventName)) {
             // only notify for enable or disable transitions
-            $event = new ModuleStateEvent(\ModUtil::getModule($modinfo['name']));
+            $module = \ModUtil::getModule($modinfo['name']);
+            $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
             $this->getDispatcher()->dispatch($eventName, $event);
         }
 
@@ -444,11 +445,8 @@ class AdminApi extends \Zikula_AbstractApi
         $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.uninstalled', $event);
 
-        if (null !== $module) {
-            // remove if in 1.4.0
-            $event = new ModuleStateEvent($module);
-            $this->getDispatcher()->dispatch(CoreEvents::MODULE_REMOVE, $event);
-        }
+        $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
+        $this->getDispatcher()->dispatch(CoreEvents::MODULE_REMOVE, $event);
 
         return true;
     }
@@ -1014,7 +1012,7 @@ class AdminApi extends \Zikula_AbstractApi
         $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.installed', $event);
 
-        $event = new ModuleStateEvent($module);
+        $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
         $this->getDispatcher()->dispatch(CoreEvents::MODULE_INSTALL, $event);
 
         // Success
@@ -1137,11 +1135,8 @@ class AdminApi extends \Zikula_AbstractApi
         $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.upgraded', $event);
 
-        if (null !== $module) {
-            // remove if in 1.4.0
-            $event = new ModuleStateEvent($module);
-            $this->getDispatcher()->dispatch(CoreEvents::MODULE_UPGRADE, $event);
-        }
+        $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
+        $this->getDispatcher()->dispatch(CoreEvents::MODULE_UPGRADE, $event);
 
         // Success
         return true;
