@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\AbstractModule;
 use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -448,7 +449,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Exception\AccessDeniedHttpException exception.
+     * Throw AccessDeniedException exception.
      *
      * Used to immediately halt execution.
      *
@@ -456,14 +457,14 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
-     * @throws Exception\AccessDeniedHttpException Exception.
+     * @throws AccessDeniedException Exception.
      * @deprecated since 1.3.6
      *
      * @return void
      */
     protected function throwForbidden($message='', $code=0, $debug=null)
     {
-        throw new Exception\AccessDeniedHttpException($message, $debug, $code);
+        throw new AccessDeniedException($message, $debug, $code);
     }
 
     /**
