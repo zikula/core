@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
-  *
+ *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -26,11 +26,11 @@ class SettingsModuleVersion extends \Zikula_AbstractVersion
     public function getMetaData()
     {
         $meta = array();
-        $meta['displayname']    = $this->__('General settings');
-        $meta['description']    = $this->__('General site configuration interface.');
+        $meta['displayname'] = $this->__('General settings');
+        $meta['description'] = $this->__('General site configuration interface.');
         //! module name that appears in URL
-        $meta['url']            = $this->__('settings');
-        $meta['version']        = '2.9.8';
+        $meta['url'] = $this->__('settings');
+        $meta['version'] = '2.9.9';
         $meta['core_min'] = '1.3.7';
         $meta['securityschema'] = array('ZikulaSettingsModule::' => '::');
 
