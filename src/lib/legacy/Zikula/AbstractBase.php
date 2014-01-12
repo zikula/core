@@ -468,7 +468,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Exception\AccessDeniedHttpException exception if $condition.
+     * Throw AccessDeniedException exception if $condition.
      *
      * Used to immediately halt execution if condition.
      *
@@ -477,7 +477,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Exception\AccessDeniedHttpException Exception.
+     * @throws AccessDeniedException Exception.
      *
      * @return void
      */
@@ -489,7 +489,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Exception\AccessDeniedHttpException exception unless $condition.
+     * Throw AccessDeniedException exception unless $condition.
      *
      * Used to immediately halt execution unless condition.
      *
@@ -498,7 +498,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Exception\AccessDeniedHttpException Exception.
+     * @throws AccessDeniedException Exception.
      * @deprecated since 1.3.6
      *
      * @return void
@@ -791,7 +791,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @param string $token The token, if not set, will pull from $_POST['csrftoken'].
      *
-     * @throws Exception\AccessDeniedHttpException If check fails.
+     * @throws AccessDeniedException If check fails.
      *
      * @return void
      */
