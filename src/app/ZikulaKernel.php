@@ -17,6 +17,7 @@ class ZikulaKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
             new Zikula\Bundle\CoreBundle\CoreBundle(),
             new Zikula\Bundle\JQueryBundle\ZikulaJQueryBundle(),
             new Zikula\Bundle\JQueryUIBundle\ZikulaJQueryUIBundle(),

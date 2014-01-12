@@ -57,7 +57,7 @@ abstract class AbstractBundle extends Bundle
 
     public function getRoutingConfig()
     {
-         return "@{$this->name}/Resources/config/routing.yml";
+        return "@{$this->name}/Resources/config/routing.yml";
     }
 
     public function getTranslationDomain()

@@ -17,19 +17,13 @@ use Zikula_View;
 use UserUtil;
 use SecurityUtil;
 use ModUtil;
-use Zikula_Exception_Forbidden;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use DataUtil;
 use DateUtil;
 use System;
-use Zikula\Module\UsersModule\Controller\FormData\NewUserForm;
-
-use Zikula\Module\UsersModule\Controller\FormData\ModifyUserForm;
 use LogUtil;
 use DateTimeZone;
 use DateTime;
-use Zikula\Module\UsersModule\Controller\FormData\ModifyRegistrationForm;
-use Zikula\Module\UsersModule\Controller\FormData\ConfigForm;
 use FileUtil;
 use Zikula\Core\Event\GenericEvent;
 use Exception;
@@ -42,8 +36,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
+ * @Route("/users/admin")
+ *
  * Administrator-initiated actions for the Users module.
  */
 class AdminController extends \Zikula_AbstractController
@@ -73,6 +70,8 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("")
+     *
      * Redirects users to the "view" page.
      *
      * @return RedirectResponse
@@ -84,6 +83,8 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/view")
+     *
      * Shows all items and lists the administration options.
      *
      * Parameters passed via GET:
