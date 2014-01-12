@@ -31,7 +31,7 @@ class ModuleStateEvent extends Event
     /**
      * @param AbstractModule $module
      */
-    public function construct(AbstractModule $module)
+    public function __construct(AbstractModule $module)
     {
         $this->module = $module;
     }
