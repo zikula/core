@@ -14,29 +14,36 @@
 namespace Zikula\Module\ExtensionsModule\Listener;
 
 use Zikula_View;
-use LogUtil;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use SecurityUtil;
 use HookUtil;
 use EventUtil;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Module\ExtensionsModule\Util;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Module\ExtensionsModule\ZikulaExtensionsModule;
 
-/**
- * HooksUI class.
- */
-class HookUiListener
+class CoreEventListener implements EventSubscriberInterface
 {
+    private $view;
+
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'controller.method_not_found' => array(array('hooks'), array('moduleservices')),
+        );
+    }
+
     /**
      * Display hooks user interface
      *
-     * @param Zikula\Core\Event\GenericEvent $event
+     * @param GenericEvent $event
      *
      * @return void
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public static function hooks(GenericEvent $event)
+    public function hooks(GenericEvent $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();
@@ -47,7 +54,6 @@ class HookUiListener
 
         // get view
         $view = Zikula_View::getInstance('ZikulaExtensionsModule', false);
-
         // get module's name and assign it to template
         $moduleName = $subject->getName();
         $view->assign('currentmodule', $moduleName);
@@ -252,15 +258,15 @@ class HookUiListener
     }
 
     /**
-     * Display services availble to the module
+     * Display services available to the module
      *
-     * @param Zikula\Core\Event\GenericEvent $event
+     * @param GenericEvent $event
      *
      * @return void
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public static function moduleservices(GenericEvent $event)
+    public function moduleservices(GenericEvent $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();
@@ -274,7 +280,7 @@ class HookUiListener
             throw new AccessDeniedException();
         }
 
-        $view = Zikula_View::getInstance('ZikulaExtensionsModule', false);
+        $view = Zikula_View::getInstance(ZikulaExtensionsModule::MODNAME, false);
         $view->assign('currentmodule', $moduleName);
 
         // notify EVENT here to gather any system service links
