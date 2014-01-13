@@ -799,7 +799,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         $lineno = 0;
 
         // module config
-        $profileModule = System::getVar('profilemodule') ? System::getVar('profilemodule') : 'Profile';
+        $profileModule = System::getVar('profilemodule') ? System::getVar('profilemodule') : 'ZikulaProfileModule';
         $profileModule = ModUtil::available($profileModule) ? $profileModule : null;
 
         $messageModule = System::getVar('messagemodule') ? System::getVar('messagemodule') : 'InterCom';
