@@ -76,7 +76,7 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('shorturlsseparator', '-');
         System::setVar('shorturlsstripentrypoint', true);
         System::setVar('shorturlsdefaultmodule', '');
-        System::setVar('profilemodule', ModUtil::available('Profile') ? 'Profile' : '');
+        System::setVar('profilemodule', ((ModUtil::available('ZikulaProfileModule')) ? 'ZikulaProfileModule' : ''));
         System::setVar('messagemodule', '');
         System::setVar('languageurl', 0);
         System::setVar('ajaxtimeout', 5000);
