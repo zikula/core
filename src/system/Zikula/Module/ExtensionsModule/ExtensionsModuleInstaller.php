@@ -51,9 +51,6 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
-        EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('Zikula\Module\ExtensionsModule\Listener\HookUiListener', 'hooks'));
-        EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('Zikula\Module\ExtensionsModule\Listener\HookUiListener', 'moduleservices'));
-
         // populate default data
         $this->defaultdata();
         $this->setVar('itemsperpage', 25);
@@ -89,6 +86,8 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
                     $stmt = $connection->executeQuery($sql);
                 }
             case '3.7.11':
+                EventUtil::unregisterPersistentModuleHandlers($this->name);
+            case '3.7.12':
                 // future upgrade routines
         }
 
