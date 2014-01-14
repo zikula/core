@@ -69,8 +69,6 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
                 $this->setVar('opensearch_enabled', true);
                 $this->setVar('opensearch_adult_content', false);
             case '1.5.3':
-                EventUtil::unregisterPersistentModuleHandlers('ZikulaSearchModule');
-            case '1.5.4':
             // future upgrade routines
         }
 

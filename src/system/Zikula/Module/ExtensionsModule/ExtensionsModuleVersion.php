@@ -32,7 +32,7 @@ class ExtensionsModuleVersion extends \Zikula_AbstractVersion
         @$meta['description'] = $this->__('Manage your modules and plugins.');
         //! module name that appears in URL
         $meta['url']  = $this->__('extensions');
-        $meta['version'] = '3.7.12';
+        $meta['version'] = '3.7.11';
         $meta['core_min'] = '1.3.7';
         $meta['securityschema'] = array('ZikulaExtensionsModule::' => '::');
 

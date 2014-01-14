@@ -83,9 +83,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             case '2.2.0':
                 $this->migrateAttributes();
             case '2.2.1':
-                EventUtil::unregisterPersistentModuleHandlers($this->name);
-            case '2.2.2':
-                // This is the current version: add 2.2.2 --> next when appropriate
+                // This is the current version: add 2.2.1 --> next when appropriate
 
             $currentModVars = $this->getVars();
             $defaultModVars = $this->getDefaultModvars();

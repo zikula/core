@@ -444,12 +444,14 @@ function upgrade_137($dbname, Connection $conn)
     foreach ($modules as $module) {
         $conn->executeQuery("UPDATE $dbname.modules SET name = 'Zikula{$module}Module', directory = 'Zikula/Module/{$module}Module' WHERE name = '$module'");
         $conn->executeQuery("UPDATE $dbname.module_vars SET modname = 'Zikula{$module}Module' WHERE modname = '$module'");
-        $conn->executeQuery("UPDATE $dbname.module_vars SET name = 'Zikula{$module}Module' WHERE name = '$module' AND modname = '/EventHandlers'");
         $strlen = strlen($module) + 1;
         $conn->executeQuery("UPDATE $dbname.group_perms SET component = CONCAT('Zikula{$module}Module', SUBSTRING(component, $strlen)) WHERE component LIKE '{$module}%'");
         echo "Updated module: $module<br />\n";
     }
     echo "<br />\n";
+
+    // remove event handlers that were replaced by DependencyInjection
+    $conn->executeQuery("DELETE FROM $dbname.module_vars WHERE modname = '/EventHandlers' AND name IN ('Extensions', 'Users', 'Search', 'Settings')");
 
     $themes = array(
         'Andreas08', 'Atom', 'SeaBreeze', 'Mobile', 'Printer',

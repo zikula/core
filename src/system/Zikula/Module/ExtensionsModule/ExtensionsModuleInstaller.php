@@ -86,8 +86,6 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
                     $stmt = $connection->executeQuery($sql);
                 }
             case '3.7.11':
-                EventUtil::unregisterPersistentModuleHandlers($this->name);
-            case '3.7.12':
                 // future upgrade routines
         }
 
