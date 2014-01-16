@@ -263,8 +263,8 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                }
             }
 
-            $em->flush();
-
+            // we do NOT flush here, as the calling module is responsible for that (Guite)
+            //$em->flush();
 
             foreach ($selectedValues as $selectedValue) {
 
