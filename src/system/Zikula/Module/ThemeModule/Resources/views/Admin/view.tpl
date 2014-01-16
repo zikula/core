@@ -1,3 +1,4 @@
+{pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.View.js'}
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"https://github.com/zikula-modules\">`$extdbtitle`</a></strong>" var=extdblink}
 
@@ -35,23 +36,19 @@
         {/if}
         <tr {if $theme.displayname|strtolower eq $currenttheme|strtolower}class="success"{/if}>
             <td>
-                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}">
-                    {if !$theme.structure}<strike>{/if}
-                    <span title="#title_{$theme.name}" class="tooltips marktooltip">{$theme.displayname|safetext}</span>
-                    {if !$theme.structure}</strike>{/if}
+                {if !$theme.structure}<strike>{/if}
+                {previewimage name=$theme.name assign='img'}
+                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}{if $theme.displayname|strtolower eq $currenttheme|strtolower} ({gt text='Default theme'}){/if}" class="marktooltip" data-trigger="hover" data-html="true" data-content="{$img|safetext}">
+                   {$theme.displayname|safetext}
                 </a>
-                {if $theme.displayname|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips required"></span>{/if}
-                <div id="title_{$theme.name}" class="theme_preview text-center" style="display: none;">
-                    <h4>{$theme.displayname}</h4>
-                    {if $themeinfo.system neq 1}
-                    <p>{previewimage name=$theme.name}</p>
-                    {/if}
-                </div>
+                {if !$theme.structure}</strike>{/if}
+                {if $theme.displayname|strtolower eq $currenttheme|strtolower}<span class="required"></span>{/if}
             </td>
             <td>
                 {if !$theme.structure}<strike>{/if}
-                {$theme.description|default:$theme.displayname}</td>
+                {$theme.description|default:$theme.displayname}
                 {if !$theme.structure}</strike>{/if}
+            </td>
             <td class="actions">
                 {gt text='Preview: %s' tag1=$theme.displayname assign=strPreviewTheme}
                 {gt text='Edit: %s' tag1=$theme.displayname assign=strEditTheme}
