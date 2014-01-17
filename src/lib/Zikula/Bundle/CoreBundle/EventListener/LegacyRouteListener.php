@@ -90,8 +90,14 @@ class LegacyRouteListener implements EventSubscriberInterface
         if (!$module) {
             // we have a static homepage
             $response = new Response('');
-        } elseif ($modinfo) {
+        } else {
             try {
+                if (!$modinfo) {
+                    $response = new Response(__('Page not found.'), 404);
+
+                    return $this->setResponse($event, $response);
+                }
+
                 // call the requested/homepage module
                 try {
                     ModUtil::getModule($module);
@@ -146,8 +152,6 @@ class LegacyRouteListener implements EventSubscriberInterface
                 LogUtil::registerError(!empty($errorMessage) ? $errorMessage : LogUtil::getErrorMsgPermission(), 403, $url);
                 $this->setResponse($event, $response);
             }
-        } else {
-            throw new \Exception('Something unexpected happened');
         }
         $this->setResponse($event, $response);
     }
