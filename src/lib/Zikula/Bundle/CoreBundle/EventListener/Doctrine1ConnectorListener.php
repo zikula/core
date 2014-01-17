@@ -87,12 +87,37 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
         $lazyConnect = isset($event['lazy']) ? $event['lazy'] : true;
         $name = isset($event['name']) ? $event['name'] : 'default';
 
-        $connectionInfo = $this->container['databases'][$name];
+
+        $connections = $this->container->getParameter('doctrine.connections');
+        if (!isset($connections[$name])) {
+            throw new \RuntimeException("Connection $name is not available or configured");
+        }
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $this->container->get($connections[$name]);
+
+        $driver = $connection->getDriver()->getName();
+        if (substr($driver, 0, 4) == 'pdo_') {
+            $driver = substr($driver, 4);
+        }
+
+        $port = $connection->getPort();
+        $connectionInfo = array(
+            'dbdriver'    => $driver,
+            'dbtabletype' => 'myisam',
+            'host'        => $connection->getHost(),
+            'port'        => $port,
+            'user'        => $connection->getUsername(),
+            'password'    => $connection->getPassword(),
+            'dbname'      => $connection->getDatabase(),
+            'charset'     => 'UTF8',
+            'collate'     => 'utf8_general_ci'
+        );
+        $port = !empty($port) ? ":$port" : '';
 
         // test the DB connection works or just set lazy
         try {
             if ($lazyConnect) {
-                $dsn = "$connectionInfo[dbdriver]://$connectionInfo[user]:$connectionInfo[password]@$connectionInfo[host]/$connectionInfo[dbname]";
+                $dsn = "$connectionInfo[dbdriver]://$connectionInfo[user]:$connectionInfo[password]@$connectionInfo[host]$port/$connectionInfo[dbname]";
                 $connection = Doctrine_Manager::connection($dsn, $name);
             } else {
                 $dbh = null;
@@ -100,9 +125,9 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
                     $class = 'Doctrine_Connection_' . ucwords($connectionInfo['dbdriver']) . '_Pdo';
                     $dbh   = new $class ("odbc:$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
                 } elseif ($connectionInfo['dbdriver'] == 'jdbcbridge') {
-                    $dbh = new Doctrine_Adapter_Jdbcbridge($connectionInfo, $connectionInfo['user'], $connectionInfo['password']);
+                    $dbh = new \Doctrine_Adapter_Jdbcbridge($connectionInfo, $connectionInfo['user'], $connectionInfo['password']);
                 } else {
-                    $dbh = new \PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host];dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
+                    $dbh = new \PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host]$port;dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
                 }
                 $connection = Doctrine_Manager::connection($dbh, $name);
                 $connection->setOption('username', $connectionInfo['user']);
