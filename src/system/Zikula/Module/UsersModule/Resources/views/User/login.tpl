@@ -11,7 +11,7 @@
 {include file='User/menu.tpl'}
 {if (count($authentication_method_display_order) > 1)}
     <div>
-        <h5 id="users_login_h5_no_authentication_method"class="alert alert-info{if !empty($selected_authentication_method)} hide{/if}">{gt text="Choose how you would like to log in by clicking on one of the following buttons."}</h5>
+        <h5 id="users_login_h5_no_authentication_method" class="alert alert-info{if !empty($selected_authentication_method)} hide{/if}">{gt text="Choose how you would like to log in by clicking on one of the following buttons."}</h5>
         <h5 id="users_login_h5_authentication_method" class="alert alert-info{if empty($selected_authentication_method)} hide{/if}">{gt text="Log in below, or change how you would like to log in by clicking on one of the following buttons."}</h5>
         <h5 id="users_login_h5" class="alert alert-info hide"></h5>
         {modurl modname='ZikulaUsersModule' type='user' func='login' returnpage=$returnpage|urlencode assign='form_action'}
@@ -97,7 +97,7 @@
         {/if}
     </p>
 </div>
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
     if (document.getElementById("users_login_login_id") !== null) {
         document.getElementById("users_login_login_id").focus();
     }
