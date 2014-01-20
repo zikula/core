@@ -21,7 +21,6 @@ use Zikula\Core\Event\GenericEvent;
 
 class ModuleListener implements EventSubscriberInterface
 {
-
     public static function getSubscribedEvents()
     {
         return array(

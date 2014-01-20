@@ -32,6 +32,5 @@ class ZikulaSettingsExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(realpath(__DIR__.'/../Resources/config')));
 
         $loader->load('services.xml');
-
     }
 }

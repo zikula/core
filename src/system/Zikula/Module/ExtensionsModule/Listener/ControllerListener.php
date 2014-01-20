@@ -21,16 +21,13 @@ use EventUtil;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Module\ExtensionsModule\Util;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Module\ExtensionsModule\ZikulaExtensionsModule;
 
-class CoreEventListener implements EventSubscriberInterface
+class ControllerListener implements EventSubscriberInterface
 {
-    private $view;
-
     public static function getSubscribedEvents()
     {
         return array(
-            'controller.method_not_found' => array(array('hooks'), array('moduleservices')),
+            'controller.method_not_found' => array(array('hooks'), array('moduleServices')),
         );
     }
 
@@ -266,7 +263,7 @@ class CoreEventListener implements EventSubscriberInterface
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public function moduleservices(GenericEvent $event)
+    public function moduleServices(GenericEvent $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();
@@ -280,7 +277,7 @@ class CoreEventListener implements EventSubscriberInterface
             throw new AccessDeniedException();
         }
 
-        $view = Zikula_View::getInstance(ZikulaExtensionsModule::MODNAME, false);
+        $view = Zikula_View::getInstance('ZikulaExtensionsModule', false);
         $view->assign('currentmodule', $moduleName);
 
         // notify EVENT here to gather any system service links
