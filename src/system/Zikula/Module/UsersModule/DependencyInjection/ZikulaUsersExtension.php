@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
@@ -11,7 +10,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 
 namespace Zikula\Module\UsersModule\DependencyInjection;
 
