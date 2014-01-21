@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2013 - Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -15,28 +15,34 @@ namespace Zikula\Module\SearchModule\Listener;
 
 use ModUtil;
 use PageUtil;
-use Zikula_Event;
+use DataUtil;
 use System;
 use SecurityUtil;
-use DataUtil;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Core\Event\GenericEvent;
 
-/**
- * EventHandlers class.
- */
-class PageloadListener
+class FrontControllerListener implements EventSubscriberInterface
 {
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'frontcontroller.predispatch' => array('pageload'),
+        );
+    }
+
     /**
      * Handle page load event "frontcontroller.predispatch".
      *
-     * @param Zikula_Event $event
+     * @param GenericEvent $event
      *
      * @return void
      */
-    public static function pageload(Zikula_Event $event)
+    public function pageload(GenericEvent $event)
     {
         if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             // The current user has the rights to search the page.
             PageUtil::addVar('header', '<link rel="search" type="application/opensearchdescription+xml" title="' . DataUtil::formatForDisplay(System::getVar('sitename')) . '" href="/' . DataUtil::formatForDisplay(ModUtil::url('ZikulaSearchModule', 'user', 'opensearch')) . '" />');
         }
     }
+
 }

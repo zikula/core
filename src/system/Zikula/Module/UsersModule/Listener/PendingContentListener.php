@@ -13,23 +13,22 @@
 
 namespace Zikula\Module\UsersModule\Listener;
 
-use Zikula\Module\UsersModule\Constant as UsersConstant;
 use ModUtil;
+use SecurityUtil;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Module\UsersModule\Constant as UsersConstant;
+use Zikula\Core\Event\GenericEvent;
 use Zikula_Collection_Container;
 use Zikula_Provider_AggregateItem;
-use SecurityUtil;
 
-/**
- * Persistent event listener for pending content queries.
- */
-class PendingContentListener
+class PendingContentListener implements EventSubscriberInterface
 {
-    /**
-     * The module name.
-     *
-     * @var string
-     */
-    protected static $modname = Users_Constant::MODNAME;
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'get.pending_content' => array('pendingContent'),
+        );
+    }
 
     /**
      * Respond to 'get.pending_content' events with registration requests pending approval.
@@ -50,25 +49,26 @@ class PendingContentListener
      * assemped as a {@link Zikula_Provider_AggregateItem} and added to the event
      * subject's collection.
      *
-     * @param \Zikula_Event $event The event that was fired, a 'get_pending_content' event.
+     * @param GenericEvent $event The event that was fired, a 'get_pending_content' event.
      *
      * @return void
      */
-    public static function pendingContentListener(\Zikula_Event $event)
+    public static function pendingContent(GenericEvent $event)
     {
         if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            $approvalOrder = ModUtil::getVar(self::$modname, 'moderation_order', UsersConstant::APPROVAL_ANY);
+            $approvalOrder = ModUtil::getVar(UsersConstant::MODNAME, 'moderation_order', UsersConstant::APPROVAL_ANY);
             if ($approvalOrder == UsersConstant::APPROVAL_AFTER) {
-                $numPendingApproval = ModUtil::apiFunc(self::$modname, 'registration', 'countAll', array('filter' => array('approved_by' => 0, 'isverified' => true)));
+                $numPendingApproval = ModUtil::apiFunc(UsersConstant::MODNAME, 'registration', 'countAll', array('filter' => array('approved_by' => 0, 'isverified' => true)));
             } else {
-                $numPendingApproval = ModUtil::apiFunc(self::$modname, 'registration', 'countAll', array('filter' => array('approved_by' => 0)));
+                $numPendingApproval = ModUtil::apiFunc(UsersConstant::MODNAME, 'registration', 'countAll', array('filter' => array('approved_by' => 0)));
             }
 
             if (!empty($numPendingApproval)) {
-                $collection = new Zikula_Collection_Container(self::$modname);
+                $collection = new Zikula_Collection_Container(UsersConstant::MODNAME);
                 $collection->add(new Zikula_Provider_AggregateItem('registrations', __('Registrations pending approval'), $numPendingApproval, 'admin', 'viewRegistrations'));
                 $event->getSubject()->add($collection);
             }
         }
     }
+
 }

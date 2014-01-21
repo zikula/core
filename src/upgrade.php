@@ -450,6 +450,9 @@ function upgrade_137($dbname, Connection $conn)
     }
     echo "<br />\n";
 
+    // remove event handlers that were replaced by DependencyInjection
+    $conn->executeQuery("DELETE FROM $dbname.module_vars WHERE modname = '/EventHandlers' AND name IN ('Extensions', 'Users', 'Search', 'Settings')");
+
     $themes = array(
         'Andreas08', 'Atom', 'SeaBreeze', 'Mobile', 'Printer',
     );

@@ -26,11 +26,11 @@ class SearchModuleVersion extends \Zikula_AbstractVersion
     public function getMetaData()
     {
         $meta = array();
-        $meta['displayname']    = $this->__('Site search');
-        $meta['description']    = $this->__('Site search module.');
+        $meta['displayname'] = $this->__('Site search');
+        $meta['description'] = $this->__('Site search module.');
         //! module name that appears in URL
-        $meta['url']            = $this->__('search');
-        $meta['version']        = '1.5.3';
+        $meta['url'] = $this->__('search');
+        $meta['version'] = '1.5.3';
         $meta['core_min'] = '1.3.7';
 
         $meta['securityschema'] = array('ZikulaSearchModule::' => 'Module name::');

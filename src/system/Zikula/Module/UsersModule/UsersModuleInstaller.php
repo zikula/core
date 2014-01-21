@@ -58,17 +58,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         $this->defaultdata();
         $this->setVars($this->getDefaultModvars());
 
-        // Register persistent event listeners (handlers)
-        EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content',
-            array('Zikula\Module\UsersModule\Listener\PendingContentListener', 'pendingContentListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto',
-            array('Zikula\Module\UsersModule\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded',
-            array('Zikula\Module\UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception',
-            array('Zikula\Module\UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
-
-        // Register persistent hook bundles
+        // Register hook bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
         HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
 

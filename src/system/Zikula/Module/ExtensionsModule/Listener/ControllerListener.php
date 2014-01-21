@@ -14,7 +14,7 @@
 namespace Zikula\Module\ExtensionsModule\Listener;
 
 use Zikula_View;
-use LogUtil;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use SecurityUtil;
 use HookUtil;
 use EventUtil;
@@ -22,21 +22,25 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\Module\ExtensionsModule\Util;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-/**
- * HooksUI class.
- */
-class HookUiListener
+class ControllerListener implements EventSubscriberInterface
 {
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'controller.method_not_found' => array(array('hooks'), array('moduleServices')),
+        );
+    }
+
     /**
      * Display hooks user interface
      *
-     * @param Zikula\Core\Event\GenericEvent $event
+     * @param GenericEvent $event
      *
      * @return void
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public static function hooks(GenericEvent $event)
+    public function hooks(GenericEvent $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();
@@ -47,7 +51,6 @@ class HookUiListener
 
         // get view
         $view = Zikula_View::getInstance('ZikulaExtensionsModule', false);
-
         // get module's name and assign it to template
         $moduleName = $subject->getName();
         $view->assign('currentmodule', $moduleName);
@@ -252,15 +255,15 @@ class HookUiListener
     }
 
     /**
-     * Display services availble to the module
+     * Display services available to the module
      *
-     * @param Zikula\Core\Event\GenericEvent $event
+     * @param GenericEvent $event
      *
      * @return void
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public static function moduleservices(GenericEvent $event)
+    public function moduleServices(GenericEvent $event)
     {
         // check if this is for this handler
         $subject = $event->getSubject();

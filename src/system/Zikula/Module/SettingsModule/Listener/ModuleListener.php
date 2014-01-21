@@ -16,32 +16,33 @@ namespace Zikula\Module\SettingsModule\Listener;
 use LogUtil;
 use ModUtil;
 use System;
-use Zikula_Event;
-use ZLanguage;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Core\Event\GenericEvent;
 
-/**
- * Event Handler for the settings moodule.
- *
- * Listens for installer.module.deactivated to change the start page if the deactivated module was the default module.
- */
-class ModuleListener
+class ModuleListener implements EventSubscriberInterface
 {
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'installer.module.deactivated' => array('moduleDeactivated'),
+        );
+    }
+
     /**
      * Handle module deactivated event "installer.module.deactivated".
      * Receives $modinfo as $args
      *
-     * @param Zikula_Event $event
+     * @param GenericEvent $event
      *
      * @return void
      */
-    public static function moduleDeactivated(Zikula_Event $event)
+    public static function moduleDeactivated(GenericEvent $event)
     {
         $modname = $event['name'];
-        $dom = ZLanguage::getModuleDomain('ZikulaSettingsModule');
 
         if ($modname == System::getVar('startpage')) {
             ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'resetStartModule');
-            LogUtil::registerStatus(__('The start module was resetted to a static frontpage.', $dom));
+            LogUtil::registerStatus(__('The start module was reset to a static frontpage.'));
         }
     }
 }
