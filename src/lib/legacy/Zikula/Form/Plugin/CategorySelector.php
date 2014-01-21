@@ -255,12 +255,20 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             } else {
                 $selectedValues[] = $this->getSelectedValue();
             }
+            $selectedValues = array_combine($selectedValues, $selectedValues);
 
-           foreach ($collection->getKeys() as $key) {
-               $categoryId = $collection->get($key)->getCategoryRegistryId();
-               if ($categoryId == $this->registryId) {
-                    $collection->remove($key);
-               }
+            foreach ($collection->getKeys() as $key) {
+                $entityCategory = $collection->get($key);
+
+                if ($entityCategory->getCategoryRegistryId() == $this->registryId) {
+                    $categoryId = $entityCategory->getCategory()->getId();
+
+                    if (isset($selectedValues[$categoryId])) {
+                        unset($selectedValues[$categoryId]);
+                    } else {
+                        $collection->remove($key);
+                    }
+                }
             }
 
             // we do NOT flush here, as the calling module is responsible for that (Guite)
