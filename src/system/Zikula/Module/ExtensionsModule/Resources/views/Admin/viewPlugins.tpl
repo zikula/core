@@ -80,10 +80,10 @@
                 <br />({$plugin.newversion|safetext})
                 {/if}
             </td>
-            <td class="text-right nowrap">
+            <td class="actions text-right nowrap">
                 {strip}
                 {foreach from=$plugin.actions item="action"}
-                <a href="{$action.url|safetext}">{img modname=core src=$action.image set=icons/extrasmall title=$action.title alt=$action.title class='tooltips'}</a>&nbsp;
+                <a href="{$action.url|safetext}" class="fa fa-{$action.image} tooltips" style="color:{$action.color|default:'#000'}" title="{$action.title}"></a>&nbsp;
                 {/foreach}
                 {/strip}
             </td>
