@@ -1107,7 +1107,8 @@ class AdminController extends \Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'plus-sign',
+                                       'image' => 'cog fa-lg text-success',
+                                       'color' => '#0c0',
                                        'title' => $this->__('Install'));
                     break;
                 case PluginUtil::ENABLED:
@@ -1122,7 +1123,8 @@ class AdminController extends \Zikula_AbstractController
 
                     if ($instance instanceof Zikula_Plugin_ConfigurableInterface) {
                         $actions[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'adminplugin', 'dispatch', $pluginLink),
-                                           'image' => 'configure.png',
+                                           'image' => 'wrench fa-lg',
+                                           'color' => '#111',
                                            'title' => $this->__('Configure plugin'));
                     }
 
@@ -1136,7 +1138,8 @@ class AdminController extends \Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'star',
+                                       'image' => 'minus-circle fa-lg text-danger',
+                                       'color' => '#c00',
                                        'title' => $this->__('Deactivate'));
 
                         $actions[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'removePlugin',
@@ -1147,7 +1150,8 @@ class AdminController extends \Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'trash-o',
+                                       'image' => 'trash-o fa-lg',
+                                       'color' => '#c00',
                                        'title' => $this->__('Remove plugin'));
                     }
                     break;
@@ -1163,7 +1167,8 @@ class AdminController extends \Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'star',
+                                       'image' => 'plus-square fa-lg text-success',
+                                       'color' => '#0c0',
                                        'title' => $this->__('Activate'));
 
                     $actions[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'removePlugin',
@@ -1174,7 +1179,8 @@ class AdminController extends \Zikula_AbstractController
                                                            'systemplugins' => $systemplugins,
                                                            'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'trash-o',
+                                       'image' => 'trash-o fa-lg',
+                                       'color' => '#c00',
                                        'title' => $this->__('Remove plugin'));
 
                     break;
@@ -1194,10 +1200,10 @@ class AdminController extends \Zikula_AbstractController
                                                       'bymodule' => $module,
                                                       'sort'   => $sort,
                                                       'systemplugins' => $systemplugins,
-                                                      'csrftoken' => $csrfToken)
-                                            ),
-                                       'image' => 'folder_favorites.png',
-                                       'title' => $this->__('Upgrade'));
+                                                      'csrftoken' => $csrfToken)),
+                                    'image' => 'refresh fa-lg',
+                                    'color' => '#00c',
+                                    'title' => $this->__('Upgrade'));
 
                 $actions[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'removePlugin',
                                                 array('plugin' => $className,
@@ -1205,10 +1211,10 @@ class AdminController extends \Zikula_AbstractController
                                                        'bymodule' => $module,
                                                        'sort'   => $sort,
                                                        'systemplugins' => $systemplugins,
-                                                       'csrftoken' => $csrfToken)
-                                            ),
-                                       'image' => 'trash-o',
-                                       'title' => $this->__('Remove plugin'));
+                                                       'csrftoken' => $csrfToken)),
+                                    'image' => 'trash-o fa-lg',
+                                    'color' => '#c00',
+                                    'title' => $this->__('Remove plugin'));
             }
 
             $info =  array('instance'    => $instance,
