@@ -16,7 +16,7 @@
  *  - image         (string)        Path to source image (required)
  *  - width         (int)           Thumbnail width in pixels (optional, default value based on 'default' preset)
  *  - height        (int)           Thumbnail width in pixels (optional, default value based on 'default' preset)
- *  - mode          (string)        Thumbnail mode; 'inset' or 'outset' (optional, default 'inset')
+ *  - mode          (string)        Thumbnail mode; 'inset' or 'outbound' (optional, default 'inset')
  *  - extension     (string)        File extension for thumbnails: jpg, png, gif; null for original file type
  *                                  (optional, default value based on 'default' preset)
  *  - objectid      (string)        Unique signature for object, which owns this thumbnail (optional)
