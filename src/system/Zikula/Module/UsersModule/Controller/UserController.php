@@ -1179,6 +1179,19 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (!$args['from_password_change']) {
+
+            // Get return page parameter. First try to get it from args and POST.
+            $returnPage = (isset($args['returnpage'])) ? $args['returnpage'] : $this->request->request->get('returnpage', '');
+            if (empty($returnPage)) {
+                // Check if returnurl was set instead of returnpage
+                $returnPage = (isset($args['returnurl'])) ? $args['returnurl'] : $this->request->request->get('returnurl', '');
+
+                if (empty($returnPage)) {
+                    // Still no return page. Try to get it from query.
+                    $returnPage = urldecode($this->request->query->get('returnpage', $this->request->query->get('returnurl', '')));
+                }
+            }
+
             if ($this->request->isMethod('POST')) {
                 // We got here from a POST, either from the login, the login block, or some reasonable facsimile thereof.
                 if (System::getVar('anonymoussessions', false)) {
@@ -1188,12 +1201,6 @@ class UserController extends \Zikula_AbstractController
                 $authenticationInfo = (isset($args['authentication_info'])) ? (array)$args['authentication_info'] : (array)$this->request->request->get('authentication_info', array());
                 $selectedAuthenticationMethod = (isset($args['authentication_method'])) ? (array)$args['authentication_method'] : (array)$this->request->request->get('authentication_method', array());
                 $rememberMe = (isset($args['rememberme'])) ? (bool)$args['rememberme'] : (bool)$this->request->request->get('rememberme', false);
-                $returnPage = (isset($args['returnpage'])) ? (string)urldecode($args['returnpage']) : (string)urldecode($this->request->request->get('returnpage', ''));
-                
-                if (empty($returnPage)) {
-                    // Check if returnurl was set instead of returnpage
-                    $returnPage = (isset($args['returnurl'])) ? (string)urldecode($args['returnurl']) : (string)urldecode($this->request->request->get('returnurl', ''));
-                }
 
                 $eventType = (isset($args['event_type'])) ? $args['event_type'] : $this->request->request->get('event_type', false);
             } elseif ($this->request->isMethod('GET')) {
@@ -1211,7 +1218,7 @@ class UserController extends \Zikula_AbstractController
                     $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
                     $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
                     $rememberMe         = isset($sessionVars['rememberme']) ? $sessionVars['rememberme'] : false;
-                    $returnPage         = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $this->request->query->get('returnpage', '');
+                    $returnPage         = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $returnPage;
                     $eventType          = isset($sessionVars['event_type']) ? $sessionVars['event_type'] : false;
                     $user               = isset($sessionVars['user_obj']) ? $sessionVars['user_obj'] : null;
 
@@ -1220,7 +1227,6 @@ class UserController extends \Zikula_AbstractController
                     $authenticationInfo = array();
                     $selectedAuthenticationMethod = array();
                     $rememberMe         = false;
-                    $returnPage         = urldecode($this->request->query->get('returnpage', $this->request->query->get('returnurl', '')));
                     $eventType          = 'login_screen';
                     $user               = array();
 
