@@ -7,7 +7,7 @@
         <button style="min-height: 67px;" type="submit" id="authentication_select_method_submit_{$authentication_method.modname|lower}_{$authentication_method.method|lower}" class="btn {if $is_selected}btn-info{else}btn-default{/if} btn-sm authentication_select_method_button" name="submit">
             {if isset($icon) && !empty($icon)}
                 {if !$isFontAwesomeIcon}
-                    <img src="{$icon}" class="zikulausersmodule-authentication-select-method-image" />
+                    <img src="{$icon}" class="zikulausersmodule-authentication-select-method-image" alt="" />
                 {else}
                     <i class="fa {$icon} fa-fw fa-3x zikulausersmodule-authentication-select-method-image"></i>
                 {/if}

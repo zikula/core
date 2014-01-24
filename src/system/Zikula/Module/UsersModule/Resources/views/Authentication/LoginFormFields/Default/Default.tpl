@@ -32,18 +32,15 @@
             {gt text='User name or e-mail address'}
         {/if}
     {/strip}</label>
-    <div class="col-lg-9 input-group">
-        {if $authentication_method == 'email'}
-            <i class="fa fa-envelope fa-fw input-group-addon"></i>
-        {elseif $authentication_method == 'uname'}
-            <i class="fa fa-user fa-fw input-group-addon"></i>
-        {elseif $authentication_method == 'unameoremail'}
-            <span class="fa-stack fa-fw input-group-addon zikulausersmodule-uname-email-stack">
-                <i class="fa fa-envelope"></i>
-                <i class="fa fa-user fa-stack-1x"></i>
-            </span>
-        {/if}
-        <input id="users_login_login_id" class="form-control"  type="text" name="authentication_info[login_id]" maxlength="64" value="{if isset($authentication_info.login_id)}{$authentication_info.login_id}{/if}" placeholder="{if $authentication_method == 'email'}{gt text='Email address'}{elseif $authentication_method == 'uname'}{gt text='User name'}{elseif $authentication_method == 'unameoremail'}{gt text='User name or e-mail address'}{/if}" />
+    <div class="col-lg-9">
+        <div class="input-group">
+            {if $authentication_method == 'email'}
+                <i class="fa fa-fw fa-envelope input-group-addon"></i>
+            {elseif $authentication_method == 'uname' || $authentication_method == 'unameoremail'}
+                <i class="fa fa-fw fa-user input-group-addon"></i>
+            {/if}
+            <input id="users_login_login_id" class="form-control"  type="text" name="authentication_info[login_id]" maxlength="64" value="{if isset($authentication_info.login_id)}{$authentication_info.login_id}{/if}" placeholder="{if $authentication_method == 'email'}{gt text='Email address'}{elseif $authentication_method == 'uname'}{gt text='User name'}{elseif $authentication_method == 'unameoremail'}{gt text='User name or e-mail address'}{/if}" />
+        </div>
     </div>
 </div>
 {* @todo move this into a js file once these are refactored to javascript!*}
@@ -57,10 +54,12 @@
 
 <div class="form-group">
     <label class="col-lg-3 control-label" for="users_login_pass">{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}</label>
-    <div class="col-lg-9 input-group">
-        <i class="fa fa-asterisk input-group-addon"></i>
-        <input id="users_login_pass" class="form-control" type="password" name="authentication_info[pass]" maxlength="25" placeholder="{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}" />
-        <i id="capsLok" class="fa fa-arrow-circle-up input-group-addon hide"> {gt text='Caps Lock is on!'}</i>
+    <div class="col-lg-9">
+        <div class="input-group">
+            <i class="fa fa-fw fa-asterisk input-group-addon"></i>
+            <input id="users_login_pass" class="form-control" type="password" name="authentication_info[pass]" maxlength="25" placeholder="{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}" />
+            <i id="capsLok" class="fa fa-fw fa-arrow-circle-up input-group-addon hide"> {gt text='Caps Lock is on!'}</i>
+        </div>
     </div>
 </div>
 

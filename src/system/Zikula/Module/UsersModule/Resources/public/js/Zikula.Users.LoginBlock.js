@@ -2,7 +2,7 @@
 
 (function($) {
     $(function() {
-        $('[id^=authentication_select_method_form_]').each(function() {
+        $('[id^=zikulausersmodule-authentication-select-method-loginblock]').each(function() {
             $(this).submit(function(event){
                 onSubmitSelectAuthenticationMethod(event);
             });
@@ -19,7 +19,7 @@
             parameterObj.form_type = 'loginblock';
 
             $.ajax({
-                url: 'index.php?module=Users&type=ajax&func=getLoginFormFields',
+                url: 'index.php?module=ZikulaUsersModule&type=ajax&func=getLoginFormFields',
                 data: parameterObj
             }).success(function(result) {
                 var data = result.data;
@@ -30,7 +30,7 @@
 
                 if (data.method !== false) {
                     // Hide the chosen authentication method in the list
-                    $('#authentication_select_method_form_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase()).addClass('hide');
+                    $('#zikulausersmodule-authentication-select-method-loginblock-form_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase()).addClass('hide');
                 }
                 showAjaxComplete(false);
 
