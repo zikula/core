@@ -249,15 +249,14 @@ class UserController extends \Zikula_AbstractController
                     $this->getDispatcher()->dispatch('module.users.ui.registration.started', $event);
 
                     // Get a list of authentication methods available for registration
-                    // NOTE: The Users module methods should NOT appear on this list!
                     $authenticationMethodList = new AuthenticationMethodListHelper($this, array(), Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
 
-                    if ($authenticationMethodList->countEnabledForRegistration() <= 0) {
-                        // There are no (non-Users module) methods available for registration, so just default to Users.
-                        // Note that the method name is 'uname' here no matter what loginviaoption says. This is on purpose.
+                    if ($authenticationMethodList->countEnabledForRegistration() == 1 && $authenticationMethodList[0]->modname == $this->name) {
+                        // There is only the default ZikulaUsersModule method available. Skip method selection.
+
                         $selectedAuthenticationMethod = array(
-                            'modname' => 'ZikulaUsersModule',
-                            'method'  => 'uname',
+                            'modname'   => $authenticationMethodList[0]->modname,
+                            'method'    => $authenticationMethodList[0]->method,
                         );
 
                         $state = 'display_registration';
@@ -299,7 +298,7 @@ class UserController extends \Zikula_AbstractController
                     // TODO - The order and availability should be set by configuration
                     $authenticationMethodDisplayOrder = array();
                     foreach ($authenticationMethodList as $am) {
-                        if ($am->isEnabledForAuthentication()) {
+                        if ($am->isEnabledForRegistration()) {
                             $authenticationMethodDisplayOrder[] = array(
                                 'modname'   => $am->modname,
                                 'method'    => $am->method,
@@ -307,17 +306,11 @@ class UserController extends \Zikula_AbstractController
                         }
                     }
 
-                    $usersAuthenticationMethod = array(
-                        'modname' => 'ZikulaUsersModule',
-                        'method'  => 'uname',
-                    );
-
                     $state = 'stop';
 
                     $arguments = array(
                         'authentication_info'                   => isset($authenticationInfo) ? $authenticationInfo : array(),
                         'selected_authentication_method'        => $selectedAuthenticationMethod,
-                        'users_authentication_method'           => $usersAuthenticationMethod,
                         'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
                     );
 

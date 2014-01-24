@@ -55,13 +55,15 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                 'uname',
                 $this->__('User name'),
                 $this->__('User name and password'),
-                false,
+                true,
                 "fa-user"
         );
         if (($loginViaOption == UsersConstant::LOGIN_METHOD_UNAME)) {
             $authenticationMethod->enableForAuthentication();
+            $authenticationMethod->enableForRegistration();
         } else {
             $authenticationMethod->disableForAuthentication();
+            $authenticationMethod->disableForRegistration();
         }
         $this->authenticationMethods['uname'] = $authenticationMethod;
 
@@ -71,13 +73,15 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                 'email',
                 $this->__('E-mail address'),
                 $this->__('E-mail address and password'),
-                false,
+                true,
                 "fa-envelope"
         );
         if (($loginViaOption == UsersConstant::LOGIN_METHOD_EMAIL)) {
             $authenticationMethod->enableForAuthentication();
+            $authenticationMethod->enableForRegistration();
         } else {
             $authenticationMethod->disableForAuthentication();
+            $authenticationMethod->disableForRegistration();
         }
         $this->authenticationMethods['email'] = $authenticationMethod;
 
@@ -85,15 +89,17 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
         $authenticationMethod = new AuthenticationMethodHelper(
             $this->name,
             'unameoremail',
-            $this->__('User name or e-mail address'),
+            $this->__('User name or e-mail'),
             $this->__('User name / e-mail address and password'),
-            false,
+            true,
             "fa-user"
         );
         if ($loginViaOption == UsersConstant::LOGIN_METHOD_ANY) {
             $authenticationMethod->enableForAuthentication();
+            $authenticationMethod->enableForRegistration();
         } else {
             $authenticationMethod->disableForAuthentication();
+            $authenticationMethod->disableForRegistration();
         }
         $this->authenticationMethods['unameoremail'] = $authenticationMethod;
     }
@@ -198,7 +204,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                 $authenticationMethods = array();
                 foreach ($this->authenticationMethods as $index => $authenticationMethod) {
                     if ($authenticationMethod->isEnabledForAuthentication()) {
-                        $authenticationMethods[$authenticationMethod->getMethod()] -> $authenticationMethod;
+                        $authenticationMethods[$authenticationMethod->getMethod()] = $authenticationMethod;
                     }
                 }
                 break;
@@ -206,7 +212,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                 $authenticationMethods = array();
                 foreach ($this->authenticationMethods as $index => $authenticationMethod) {
                     if ($authenticationMethod->isEnabledForRegistration()) {
-                        $authenticationMethods[$authenticationMethod->getMethod()] -> $authenticationMethod;
+                        $authenticationMethods[$authenticationMethod->getMethod()] = $authenticationMethod;
                     }
                 }
                 break;
