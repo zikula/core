@@ -6,7 +6,6 @@
         {if !empty($adminlinks)}
         <ul id="modulelist">
             {foreach from=$adminlinks name=adminlink item=adminlink}
-
             <li data-modid="{$adminlink.id}" class="draggable">
                 {* module icon *}
                 {if $modvars.ZikulaAdminModule.admingraphic eq 1}
@@ -14,45 +13,36 @@
                     <img src="{$adminlink.adminicon}" title="{$adminlink.menutext|safetext}" alt="{$adminlink.menutext|safetext}" />
                 </a>
                 {/if}
-                
                 <div>
                     {* movable icon *}
-                    <div class="dropdown" style="text-align:left">
-                        <span title="{gt text="Drag and drop into a new module category"}" class="tooltips fa fa-arrows admintabs-lock"></span>
+                    <span title="{gt text="Drag and drop into a new module category"}" class="tooltips fa fa-arrows admintabs-lock"></span>
 
-                        {* module title *}
-                        <a title="{$adminlink.menutexttitle|safetext}" href="{$adminlink.menutexturl|safehtml}">{$adminlink.menutext|safetext}</a>
+                    {* module title *}
+                    <a title="{$adminlink.menutexttitle|safetext}" href="{$adminlink.menutexturl|safehtml}">{$adminlink.menutext|safetext}</a>
 
-                        {assign var="modlinks" value=false}
-                        {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
-                        {if $modlinks}
-                        <a class="dropdown-toggle caret" data-toggle="dropdown" href="#" title="{gt text="Functions"}"></a>
-                        <ul class="dropdown-menu" role="menu">
-                        {foreach from=$modlinks item="item"}
-                            <li><a role="menuitem" href="{$item.url|safehtml}">{$item.text}</a></li>
-                        {/foreach}
-                        </ul>
-                        {/if}
-                        {* module description *}
-                    </div>
-                    <p>
-                        {$adminlink.menutexttitle|safetext}
-                    </p>
-                    
+                    {assign var="modlinks" value=false}
+                    {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
+                    {if $modlinks}
+                        <div class="dropdown" style="display: inline">
+                            <a class="caret" data-toggle="dropdown" href="#" title="{gt text="Functions"}"></a>
+                            <ul class="dropdown-menu" role="menu">
+                                {foreach from=$modlinks item="item"}
+                                    <li><a href="{$item.url|safehtml}">{$item.text}</a></li>
+                                {/foreach}
+                            </ul>
+                        </div>
+                    {/if}
+                    {* module description *}
+                    <p>{$adminlink.menutexttitle|safetext}</p>
                 </div>
             </li>
-
             {/foreach}
         </ul>
-        
         <div class="clearfix"></div>
-
         {else}
         <p class="bold text-center">{gt text="There are currently no modules in this category."}</p>
         {/if}
-    
 </div>
-
 <div class="z-admin-coreversion">Zikula {$coredata.version_num}</div>
 
 
