@@ -42,7 +42,7 @@
                    {$theme.displayname|safetext}
                 </a>
                 {if !$theme.structure}</strike>{/if}
-                {if $theme.displayname|strtolower eq $currenttheme|strtolower}<span class="required"></span>{/if}
+                {if $theme.name|strtolower eq $currenttheme|strtolower}<span class="required"></span>{/if}
             </td>
             <td>
                 {if !$theme.structure}<strike>{/if}
@@ -56,7 +56,7 @@
                 {gt text='Set as default: %s' tag1=$theme.displayname assign=strSetDefaultTheme}
                 {gt text='Credits: %s' tag1=$theme.displayname assign=strCreditsTheme}
                 {if $theme.displayname neq $currenttheme and $theme.user and $theme.state neq 2 and $theme.structure}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="setasdefault" themename=$theme.displayname}"><span class="fa fa-check tooltips" title="{$strSetDefaultTheme}"></span></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="setasdefault" themename=$theme.name}"><span class="fa fa-check tooltips" title="{$strSetDefaultTheme}"></span></a>
                 {/if}
                 {if $theme.structure}
                 <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}"><span class="fa fa-eye tooltips" title="{$strPreviewTheme}"></span></a>

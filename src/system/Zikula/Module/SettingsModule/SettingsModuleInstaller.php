@@ -50,7 +50,7 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('defaultmetadescription', $this->__('Site description'));
         System::setVar('startdate', date('m/Y', time()));
         System::setVar('adminmail', 'example@example.com');
-        System::setVar('Default_Theme', 'Andreas08');
+        System::setVar('Default_Theme', 'ZikulaAndreas08Theme');
         System::setVar('timezone_offset', '0');
         System::setVar('timezone_server', '0');
         System::setVar('funtext', '1');
