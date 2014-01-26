@@ -23,7 +23,6 @@ use ModUtil;
 use System;
 use Zikula;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * User API functions for the groups module
@@ -38,9 +37,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $numitems  number of items to get
      *                     }
      *
-     * @return array array of group items
-     *
-     * @throws NotFoundHttpException Thrown if no items are found
+     * @return array|bool array of group items, false if none are found.
      */
     public function getall($args)
     {
@@ -77,7 +74,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Check for an error with the database code
         if ($objArray === false) {
-            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
+            return false;
         }
 
         // Return the items
@@ -214,10 +211,9 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $clean flag to return an array of GIDs
      *                     }
      *
-     * @return array array of group items
+     * @return array|bool array of group items, false if no group memberships are found for the input user id.
      *
      * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided or isn't numeric
-     * @throws NotFoundHttpException Thrown if no group memberships are found for the input user id
      */
     public function getusergroups($args)
     {
@@ -240,7 +236,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Check for an error with the database code
         if ($groupmembership === false) {
-            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
+            return false;
         }
 
         $objArray = array();
@@ -270,9 +266,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $numitems  number of items to get
      *                     }
      *
-     * @return array array of groups.
-     *
-     * @throws NotFoundHttpException Thrown if no groups are found
+     * @return array|bool array of groups, false if no groups are found.
      */
     public function getallgroups($args)
     {
@@ -315,7 +309,7 @@ class UserApi extends \Zikula_AbstractApi
         $objArray = $query->getResult();
 
         if ($objArray === false) {
-            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
+            return false;
         }
 
         $uid = UserUtil::getVar('uid');
@@ -410,11 +404,10 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $gid group id
      *                     }
      *
-     * @return bool true if successful
+     * @return bool true if successful, false if the group isn't found.
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      * @throws AccessDeniedException Thrown if the current user does not have read access to the group.
-     * @throws NotFoundHttpException Thrown if the group isn't found
      * @throws \RuntimeException Thrown if the user has already applied for this group
      */
     public function saveapplication($args)
@@ -427,7 +420,7 @@ class UserApi extends \Zikula_AbstractApi
         $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$item) {
-            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
@@ -618,10 +611,9 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int $uid the ID of the user
      *                     }
      *
-     * @return bool true if successful, false otherwise
+     * @return bool true if successful, false otherwise.
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
-     * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws AccessDeniedException Thrown if the current user does not have read access to the group.
      */
     public function adduser($args)
@@ -636,7 +628,7 @@ class UserApi extends \Zikula_AbstractApi
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
-            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
@@ -681,7 +673,6 @@ class UserApi extends \Zikula_AbstractApi
      * @return bool true if successful, false otherwise.
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
-     * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws AccessDeniedException Thrown if the current user does not have read access tp the group.
      */
     public function removeuser($args)
@@ -695,7 +686,7 @@ class UserApi extends \Zikula_AbstractApi
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
-            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check

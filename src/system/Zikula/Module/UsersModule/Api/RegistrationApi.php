@@ -16,11 +16,10 @@ namespace Zikula\Module\UsersModule\Api;
 use Zikula\Core\Event\GenericEvent;
 use UserUtil;
 use SecurityUtil;
-use Users_Constant as UsersConstant;
+use Zikula\Module\UsersModule\Constant as UsersConstant;
 use System;
 use ModUtil;
 use ThemeUtil;
-use LogUtil;
 use DateTimeZone;
 use DateTime;
 use Zikula;
@@ -29,7 +28,6 @@ use ObjectUtil;
 use DateUtil;
 use DataUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * The system-level and database-level functions for user-initiated actions related to new account registrations.
@@ -384,7 +382,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      *                      the information saved is returned; false on error.
      *
      * @throws AccessDeniedException Thrown if the user does not have read access.
-     * @throws NotFoundHttpException Thrown if registration is disabled.
+     * @throws \LogicException Thrown if registration is disabled.
      * @throws \InvalidArgumentException Thrown if reginfo is invalid
      */
     public function registerNewUser($args)
@@ -398,7 +396,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         if (!$isAdmin && !$this->getVar('reg_allowreg', false)) {
             $registrationUnavailableReason = $this->getVar('reg_noregreasons', $this->__('New user registration is currently disabled.'));
-            throw new NotFoundHttpException($registrationUnavailableReason);
+            throw new \LogicException($registrationUnavailableReason);
         }
 
         if (!isset($args['reginfo']) || empty($args['reginfo']) || !is_array($args['reginfo'])) {
@@ -1383,7 +1381,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
      * @throws AccessDeniedException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
-     * @throws NotFoundHttpException     Thrown if the registration couldn't be found
+     * @throws \RuntimeException     Thrown if the registration couldn't be found
      */
     public function sendVerificationCode($args)
     {
@@ -1410,7 +1408,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
             if (!$reginfo || empty($reginfo)) {
-                throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+                throw new \RuntimeException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
             }
             if (!isset($reginfo['email'])) {
                 throw new \InvalidArgumentException($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
@@ -1522,7 +1520,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      * @return bool True on success; otherwise false.
      *
      * @throws \InvalidArgumentException Thrown if the registration information isn't invalid
-     * @throws NotFoundHttpException Thrown if th registration information cannot be found
+     * @throws \RuntimeException Thrown if th registration information cannot be found
      */
     public function verify($args)
     {
@@ -1541,7 +1539,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
             if (!$reginfo || empty($reginfo)) {
-                throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $args['uid']));
+                throw new \RuntimeException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $args['uid']));
             }
             if (!isset($reginfo['email'])) {
                throw new \InvalidArgumentException($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $args['uid']));

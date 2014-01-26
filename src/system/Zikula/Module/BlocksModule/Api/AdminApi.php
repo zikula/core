@@ -20,7 +20,6 @@ use ModUtil;
 use Zikula\Module\BlocksModule\Entity\BlockEntity;
 use Zikula\Module\BlocksModule\Entity\BlockPositionEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * API functions used by administrative controllers
@@ -66,6 +65,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // remove old placements and insert the new ones
+        /** @var BlockPlacementEntity[] $items */
         $items = $this->entityManager->getRepository('ZikulaBlocksModule:BlockPlacementEntity')
                                      ->findBy(array('bid'=>$args['bid']));
 
@@ -278,6 +278,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
+        /** @var \Zikula\Module\BlocksModule\Entity\BlockEntity $block */
         $block = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'get', array('bid' => $args['bid']));
 
         // Security check
@@ -360,7 +361,6 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      * @throws AccessDeniedException Thrown if the user doesn't have permission to update the block position
-     * @throws NotFoundHttpException Thrown if the block position to be updated doesn't exist
      * @throws \RuntimeException Thrown if a block position with the same name, but different id, already exists
      */
     public function updateposition($args)
@@ -373,10 +373,11 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Get the existing position
+        /** @var \Zikula\Module\BlocksModule\Entity\BlockPositionEntity $item */
         $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
 
         if ($item == false) {
-            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
@@ -419,6 +420,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
+        /** @var \Zikula\Module\BlocksModule\Entity\BlockPositionEntity $position */
         $position = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
 
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$position[name]::$position[pid]", ACCESS_DELETE)) {

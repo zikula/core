@@ -136,7 +136,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Return the item array
-        $entity = 'Zikula\Module\BlocksModule\\Entity\BlockEntity';
+        $entity = 'ZikulaBlocksModule:BlockEntity';
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('bid' => $args['bid']));
 
         return $item;

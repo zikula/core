@@ -19,15 +19,14 @@ use ModUtil;
 use System;
 use DataUtil;
 use Zikula\Core\CoreEvents;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use ZLoader;
 use Zikula\Module\ExtensionsModule\Util as ExtensionsUtil;
 use ZLanguage;
 use ReflectionClass;
-use SessionUtil;
 use HookUtil;
 use EventUtil;
-use FormUtil;
 use Zikula;
 use FileUtil;
 use Zikula_AbstractVersion;
@@ -37,7 +36,6 @@ use Zikula\Core\Doctrine\Entity\ExtensionEntity;
 use Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Administrative API functions for the Extensions module.
@@ -312,7 +310,6 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if the id parameter is either not set or not numeric
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
-     * @throws NotFoundHttpException Thrown if requested module id isn't a valid module
      * @throws \RuntimeException Thrown if the module state cannot be changed or
      *                                  if the installer class isn't of the correct type
      */
@@ -337,7 +334,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Get module information
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
-            throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
+            return false;
         }
 
         switch ($modinfo['state']) {
@@ -442,7 +439,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // remove in 1.4.0
-        $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
+        $event = new GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.uninstalled', $event);
 
         $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
@@ -662,7 +659,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if the filemodules parameter is either not set or not an array
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
-     * @throws NotFoundHttpException Thrown if module information cannot be obtained from the database
+     * @throws \RuntimeException Thrown if module information cannot be obtained from the database
      */
     public function regenerate($args)
     {
@@ -692,7 +689,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Get all modules in DB
         $allmodules = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findAll();
         if (!$allmodules) {
-            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
+            throw new \RuntimeException($this->__('Error! Could not load data.'));
         }
 
         // index modules by name
@@ -800,7 +797,7 @@ class AdminApi extends \Zikula_AbstractApi
             if (!in_array($name, $module_names)) {
                 $lostmodule = $this->entityManager->getRepository($entity)->findOneBy(array('name' => $name));
                 if (!$lostmodule) {
-                    throw new NotFoundHttpException($this->__f('Error! Could not load data for module %s.', array($name)));
+                    throw new \RuntimeException($this->__f('Error! Could not load data for module %s.', array($name)));
                 }
 
                 if ($dbmodules[$name]['state'] == ModUtil::STATE_INVALID) {
@@ -923,7 +920,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean|void True on success, false on failure, or null when we bypassed the installation
      *
      * @throws \InvalidArgumentException Thrown if the module id parameter is either not set or not numeric
-     * @throws NotFoundHttpException Thrown if the module id isn't a valid module
+     * @throws \RuntimeException Thrown if the module id isn't a valid module
      * @throws \RuntimeException Thrown if the module state prevents installation or if
      *                                  if the module isn't compatible with this version of Zikula or
      *                                  if the installer class isn't of the correct type or
@@ -939,7 +936,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Get module information
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
-            throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
+            throw new \RuntimeException($this->__('Error! No such module ID exists.'));
         }
 
         switch ($modinfo['state']) {
@@ -1009,7 +1006,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // All went ok so issue installed event
         // remove this legacy in 1.4.0
-        $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
+        $event = new GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.installed', $event);
 
         $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
@@ -1030,7 +1027,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean True on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if the module id parameter is either not set or not numeric
-     * @throws NotFoundHttpException Thrown if the module id isn't a valid module
+     * @throws \RuntimeException Thrown if the module id isn't a valid module
      * @throws \RuntimeException Thrown if the module state prevents upgrade or if
      *                                  if the module isn't compatible with this version of Zikula or
      *                                  if the installer class isn't of the correct type
@@ -1047,7 +1044,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Get module information
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
-            throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
+            throw new \RuntimeException($this->__('Error! No such module ID exists.'));
         }
 
         switch ($modinfo['state']) {
@@ -1132,7 +1129,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Upgrade succeeded, issue event.
         // remove this legacy in 1.4.0
-        $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
+        $event = new GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.upgraded', $event);
 
         $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
@@ -1215,12 +1212,6 @@ class AdminApi extends \Zikula_AbstractApi
             $qb->andWhere($qb->expr()->eq('e.type', $qb->expr()->literal($type)));
         }
 
-        if ($this->serviceManager['multisites.enabled'] == 1) {
-            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
-        } else {
-            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int)$args['state'];
-        }
-
         // filter by module state
         if ($this->serviceManager['multisites.enabled'] == 1) {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
@@ -1258,10 +1249,6 @@ class AdminApi extends \Zikula_AbstractApi
     public function getlinks()
     {
         $links = array();
-
-        // assign variables from input
-        $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
-        $letter = FormUtil::getPassedValue('letter', null, 'GET');
 
         if (SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'),

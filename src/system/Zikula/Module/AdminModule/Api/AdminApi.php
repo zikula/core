@@ -19,7 +19,7 @@ use SecurityUtil;
 use System;
 use DataUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zikula\Module\AdminModule\Entity\AdminModuleEntity;
 
 /**
  * API functions used by administrative controllers
@@ -69,7 +69,6 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws NotFoundHttpException Thrown if item to be updated isn't found
      * @throws AccessDeniedException Thrown if the user doesn't have permission to update the item
      */
     public function update($args)
@@ -82,10 +81,11 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Get the existing item
+        /** @var AdminCategoryEntity $item */
         $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $args['cid']));
 
         if (empty($item)) {
-            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check (old item)
@@ -110,7 +110,6 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws NotFoundHttpException Thrown if item to be updated isn't found
      * @throws \RuntimeException Thrown if the category to be deleted is the default for new modules or 
      *                                  if the category to be deleted is the initial category to be displayed
      */
@@ -122,7 +121,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $args['cid']));
         if (empty($item)) {
-            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // Avoid deletion of the default category
@@ -201,7 +200,7 @@ class AdminApi extends \Zikula_AbstractApi
                                      ->from('ZikulaAdminModule:AdminCategoryEntity', 'c')
                                      ->getQuery();
 
-        return (int)$query->getSingleScalarResult();;
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -211,7 +210,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $cid id of example item to get
      *                     }
      *
-     * @return array|bool item array, or false on failure
+     * @return AdminCategoryEntity|bool item , or false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
@@ -265,7 +264,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $item = $this->entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(array('mid' => $mid));
         if (!$item) {
-            $item = new \Zikula\Module\AdminModule\Entity\AdminModuleEntity;
+            $item = new AdminModuleEntity;
         }
 
         $values = array();

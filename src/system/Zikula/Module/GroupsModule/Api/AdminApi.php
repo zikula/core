@@ -23,7 +23,6 @@ use ModUtil;
 use UserUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Adminstrative API functions for the groups module
@@ -93,11 +92,10 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @todo call permissions API to remove group permissions associated with the group
      *
-     * @return boolean true if successful
+     * @return boolean true if successful, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided
      * @throws AccessDeniedException Thrown if the current user does not have delete access for the group.
-     * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws \RuntimeException Thrown if the requested group is either the default users group or primary admins group
      */
     public function delete($args)
@@ -111,7 +109,7 @@ class AdminApi extends \Zikula_AbstractApi
         $item = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
         if (!$item) {
-            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // keep item to pass it to dispatcher later
@@ -174,10 +172,9 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $name the new name of the item
      *                      }
      *
-     * @return bool true if successful
+     * @return bool true if successful, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if either the gid or name parameters are not provided
-     * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws AccessDeniedException Thrown if the current user does not have edit access to the group.
      */
     public function update($args)
@@ -191,7 +188,7 @@ class AdminApi extends \Zikula_AbstractApi
         $item = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
         if (!$item) {
-            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
@@ -236,10 +233,9 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $uid the ID of the user
      *                    }
      *
-     * @return bool true if successful
+     * @return bool true if successful, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
-     * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws AccessDeniedException Thrown if the current user does not have edit access to the group.
      */
     public function adduser($args)
@@ -253,7 +249,7 @@ class AdminApi extends \Zikula_AbstractApi
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
-            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
@@ -284,10 +280,9 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $uid the ID of the user
      *                    }
      *
-     * @return bool true if successful
+     * @return bool true if successful, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
-     * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws AccessDeniedException Thrown if the current user does not have edit access to the group.
      */
     public function removeuser($args)
@@ -301,7 +296,7 @@ class AdminApi extends \Zikula_AbstractApi
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
-            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
@@ -421,16 +416,14 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get applications.
      *
-     * @return array array of group applications
-     *
-     * @throws NotFoundHttpException Thrown if no group applications are found
+     * @return array|bool array of group applications or false if no group applications are found.
      */
     public function getapplications()
     {
         $objArray = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findBy(array(), array('app_id' => 'ASC'));
 
         if ($objArray === false) {
-            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
+            return false;
         }
 
         $items = array();
@@ -462,10 +455,9 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $userid user id
      *                    }
      *
-     * @return array
+     * @return array|bool False if no application is found.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws NotFoundHttpException Thrown if the group application cannot be found
      */
     public function getapplicationinfo($args)
     {
@@ -476,7 +468,7 @@ class AdminApi extends \Zikula_AbstractApi
         $appInfo = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
 
         if (!$appInfo) {
-            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
+            return false;
         }
 
         return $appInfo->toArray();
@@ -513,19 +505,17 @@ class AdminApi extends \Zikula_AbstractApi
         // Send message part
         switch ($args['sendtag']) {
             case 1:
-                if (ModUtil::available('ZikulaMailerModule')) {
-                    $send = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage',
-                                    array('toname' => UserUtil::getVar('uname', $args['userid']),
-                                          'toaddress' => UserUtil::getVar('email', $args['userid']),
-                                          'subject' => $args['reasontitle'],
-                                          'body' => $args['reason']));
-                } else {
-                    $send = System::mail(UserUtil::getVar('email', $args['userid']), $args['reasontitle'], $args['reason'], "From: " . System::getVar('adminmail') . "\nX-Mailer: PHP/" . phpversion(), 0);
-                }
+                $send = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage',
+                                array('toname' => UserUtil::getVar('uname', $args['userid']),
+                                      'toaddress' => UserUtil::getVar('email', $args['userid']),
+                                      'subject' => $args['reasontitle'],
+                                      'body' => $args['reason']));
                 break;
+            default:
+                $send = true;
         }
 
-        return true;
+        return $send;
     }
 
     /**
@@ -540,7 +530,7 @@ class AdminApi extends \Zikula_AbstractApi
                                      ->from('ZikulaGroupsModule:GroupEntity', 'g')
                                      ->getQuery();
 
-        return (int)$query->getSingleScalarResult();;
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
