@@ -83,7 +83,7 @@
                     <p class="help-block sub">
                         {gt text='Thumbnail generation mode.'}<br />
                         {gt text='Inset mode - thumbnails are scale down to not exceed dimensions.'}<br />
-                        {gt text='Outset mode - thumbnails are cut out to exactly fit dimmensions.'}
+                        {gt text='Outbound mode - thumbnails are cut out to exactly fit dimmensions.'}
                     </p>
                 </div>
             </div>
