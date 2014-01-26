@@ -13,21 +13,17 @@
 
 namespace Zikula\Module\PermissionsModule\Api;
 
-use LogUtil;
 use SecurityUtil;
-use DataUtil;
 use BlockUtil;
 use ModUtil;
 use Zikula\Module\PermissionsModule\Entity\PermissionEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * API functions used by administrative controllers
  */
 class AdminApi extends \Zikula_AbstractApi
 {
-
     /**
      * Increment sequence number of a permission.
      *
@@ -39,11 +35,10 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $pid the ID of the permission to increment.
      *                    }
      *
-     * @return bool true on success
+     * @return bool true on success, false if the permission rule doesn't exist.
      *
      * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
      * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
-     * @throws NotFoundHttpException Thrown if the permission rule doesn't exist
      * @throws \RuntimeException Thrown if there is no permission rule above the requested one or
      *                                  if there is both affected permissions, in partial view, are seperated by a hidden rule 
      */
@@ -62,7 +57,7 @@ class AdminApi extends \Zikula_AbstractApi
         // get info on current perm
         $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
         if (!$permission) {
-            throw new NotFoundHttpException($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
+            return false;
         }
 
         $sequence = $permission['sequence'];
@@ -123,11 +118,10 @@ class AdminApi extends \Zikula_AbstractApi
      *       @type int    $pid  the ID of the permission to decrement.
      *                    }
      *
-     * @return bool true on success
+     * @return bool true on success, false if the permission rule doesn't exist
      *
      * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
      * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
-     * @throws NotFoundHttpException Thrown if the permission rule doesn't exist
      * @throws \RuntimeException Thrown if there is no permission rule below the requested one or
      *                                  if there is both affected permissions, in partial view, are seperateed by a hidden rule 
      */
@@ -146,7 +140,7 @@ class AdminApi extends \Zikula_AbstractApi
         // get info on current perm
         $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
         if (!$permission) {
-            throw new NotFoundHttpException($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
+            return false;
         }
 
         $sequence = $permission['sequence'];
@@ -390,10 +384,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Resequence a permissions table.
      *
-     * @return bool true if successful
+     * @return bool true if successful, false if no permissions rules are found
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
-     * @throws NotFoundHttpException Thrown if no permissions rules are found
      */
     public function resequence()
     {
@@ -405,7 +398,7 @@ class AdminApi extends \Zikula_AbstractApi
         // get all permissions
         $permissions = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
         if (!$permissions) {
-            throw new NotFoundHttpException();
+            return false;
         }
 
         // fix sequence numbers

@@ -23,7 +23,6 @@ use DataUtil;
 use FileUtil;
 use CacheUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * API functions used by administrative controllers
@@ -197,7 +196,7 @@ class AdminApi extends \Zikula_AbstractApi
     }
 
     /**
-     * delete a theme
+     * Delete a theme.
      *
      * @param string[] $args {
      *      @type $themename string the name of the theme to delete
@@ -206,7 +205,6 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true if successful, false otherwise
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the theme
-     * @throws NotFoundHttpException Thrown if the themename parameter isn't a valid theme
      * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
      * @throws \RuntimeException Thrown if the theme cannot be deleted
      */
@@ -223,7 +221,7 @@ class AdminApi extends \Zikula_AbstractApi
         $themeinfo = ThemeUtil::getInfo($themeid);
 
         if ($themeinfo == false) {
-            throw new NotFoundHttpException(__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
@@ -421,10 +419,9 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $themename the name of the theme the page configuration belongs to
      *                       }
      *
-     * @return bool true if successful
+     * @return bool true if successful, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if either the themename or pcname parameters aren't provided
-     * @throws NotFoundHttpException Thrown if the requested theme isn't found
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the theme
      */
     public function deletepageconfigurationassignment($args)
@@ -440,7 +437,7 @@ class AdminApi extends \Zikula_AbstractApi
         $themeinfo = ThemeUtil::getInfo($themeid);
 
         if ($themeinfo == false) {
-            throw new NotFoundHttpException(__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
