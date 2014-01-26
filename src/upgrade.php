@@ -474,6 +474,6 @@ function upgrade_137($dbname, Connection $conn)
     }
     echo "Updated hook tables for User module hooks.<br />\n";
 
-//$conn->executeQuery("UPDATE $dbname.module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
-//echo "Updated default theme to Andreas08<br />\n";
+    $conn->executeQuery("UPDATE $dbname.module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
+    echo "Updated default theme to ZikulaAndreas08Theme<br />\n";
 }
