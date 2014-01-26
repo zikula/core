@@ -6,9 +6,18 @@
         <meta name="description" content="Zikula Installer">
         <meta name="author" content="Zikula Development Team">
         <title>{gt text="Zikula is not installed!"}</title>
-        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />
+        <meta name="generator" content="Zikula Installer -- http://www.zikula.org" />
+        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap-theme.css" type="text/css" />
+        <link rel="stylesheet" href="web/font-awesome/css/font-awesome.min.css" type="text/css" />
+        <link rel="stylesheet" href="install/style/installer.css" type="text/css" />
+        <link rel="stylesheet" href="style/core.css" type="text/css" />
+        {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" />{/browserhack}
+        {browserhack condition="if IE 7"}<link rel="stylesheet" type="text/css" href="web/font-awesome/css/font-awesome-ie7.min.css" media="print,projection,screen" />{/browserhack}
+        <script type="text/javascript" src="web/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="install/javascript/install.js"></script>
         <link rel="stylesheet" href="install/style/systemdialogs.css" type="text/css" />
-        		        
     </head>
     <body>
         <div class="container">
