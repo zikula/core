@@ -468,9 +468,9 @@ class AdminController extends \Zikula_AbstractController
                 }
 
                 $groupmembers[] = array(
-                    'uname'   => UserUtil::getVar('uname', $user['uid']),
-                    'name'    => UserUtil::getVar('name', $user['uid']),
-                    'email'    => UserUtil::getVar('email', $user['uid']),
+                    'uname'   => UserUtil::getVar('uname', $user['uid'], null, UserUtil::isRegistration($user['uid'])),
+                    'name'    => UserUtil::getVar('name', $user['uid'], null, UserUtil::isRegistration($user['uid'])),
+                    'email'    => UserUtil::getVar('email', $user['uid'], null, UserUtil::isRegistration($user['uid'])),
                     'uid'     => $user['uid'],
                     'options' => $options
                 );
