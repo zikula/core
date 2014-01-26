@@ -196,36 +196,17 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      * This will result in a 404 response code. Usage example:
      *
-     *     throw $this->createNotFoundException('Page not found!');
+     *     throw $this->createNotFoundException();
      *
-     * @param string    $message  A message
-     * @param \Exception $previous The previous exception
+     * @param string     $message  A message.
+     * @param \Exception $previous The previous exception.
      *
      * @return NotFoundHttpException
      */
     public function createNotFoundException($message = null, \Exception $previous = null)
     {
-        $message = null === $message ? __('Not Found') : $message;
+        $message = null === $message ? __('Page not found') : $message;
 
         return new NotFoundHttpException($message, $previous);
-    }
-
-    /**
-     * Returns a NotFoundHttpException.
-     *
-     * This will result in a 403 response code. Usage example:
-     *
-     *      throw $this->createAccessDeniedHttpException('Access Denied');
-     *
-     * @param string    $message  A message
-     * @param \Exception $previous The previous exception
-     *
-     * @return NotFoundException
-     */
-    public function createAccessDeniedHttpException($message = null, \Exception $previous = null)
-    {
-        $message = null === $message ? __('Access Denied') : $message;
-
-        return new AccessDeniedException($message, $previous);
     }
 }

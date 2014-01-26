@@ -815,6 +815,25 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
+     * Returns a AccessDeniedException.
+     *
+     * This will result in a 403 response code. Usage example:
+     *
+     *     throw $this->createAccessDeniedException();
+     *
+     * @param string     $message  A message.
+     * @param \Exception $previous The previous exception.
+     *
+     * @return AccessDeniedException
+     */
+    public function createAccessDeniedException($message = null, \Exception $previous = null)
+    {
+        $message = null === $message ? __('Access denied') : $message;
+
+        return new AccessDeniedException($message, $previous);
+    }
+
+    /**
      * Convenience to get a service.
      *
      * @param string $id Service Name.
