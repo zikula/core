@@ -295,15 +295,7 @@ class AdminController extends \Zikula_AbstractController
                             break;
 
                         case ModUtil::STATE_MISSING:
-                            $actions[] = array(
-                                    'url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'remove', array(
-                                    'id' => $mod['id'],
-                                    'startnum' => $startnum,
-                                    'letter' => $letter,
-                                    'state' => $state)),
-                                    'image' => 'trash-o',
-                                    'color' => '#c00',
-                                    'title' => $this->__f('Remove \'%s\' module', $mod['name']));
+                            // Nothing to do.
                             break;
                         case ModUtil::STATE_UPGRADED:
                             $actions[] = array(
@@ -858,6 +850,12 @@ class AdminController extends \Zikula_AbstractController
 
         if (empty($id) || !is_numeric($id) || !ModUtil::getInfo($id)) {
             throw new \InvalidArgumentException($this->__('Error! No module ID provided.'));
+        }
+
+        $modinfo = ModUtil::getInfo($id);
+        if ($modinfo['state'] == ModUtil::STATE_MISSING) {
+            // The module's files are missing. Deny uninstalling it.
+            throw new \RuntimeException($this->__("Error! The requested module cannot be uninstalled as it's files are missing!"));
         }
 
         // Check for confirmation.
