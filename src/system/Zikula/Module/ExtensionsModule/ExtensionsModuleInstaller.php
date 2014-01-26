@@ -120,6 +120,7 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
         $meta['state'] = \ModUtil::STATE_ACTIVE;
 
         unset($meta['dependencies']);
+        unset($meta['oldnames']);
 
         $item = new ExtensionEntity();
         $item->merge($meta);
