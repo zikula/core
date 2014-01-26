@@ -1,17 +1,26 @@
+{ajaxheader ui=true}
+{pageaddvarblock}
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        Zikula.UI.Tooltips($$('.tooltips'));
+    });
+</script>
+{/pageaddvarblock}
+
 {gt text="Extensions database" assign=extdbtitle}
 {assign value="<strong><a href=\"http://go.zikula.org/inappstore\">`$extdbtitle`</a></strong>" var=extdblink}
 
 {adminheader}
-<h3>
-    <span class="fa fa-list"></span>
-    {gt text="Modules list"}
-</h3>
+<div class="z-admin-content-pagetitle">
+    {icon type="view" size="small"}
+    <h3>{gt text="Modules list"}</h3>
+</div>
 
 <p class="alert alert-info">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>
 
-{pagerabc posvar="letter" forwardvars="module,type,func" printempty=true}
+<div style="padding:0 0 1em;"><strong>[{pagerabc posvar="letter" forwardvars="module,type,func"}]</strong></div>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>
@@ -23,7 +32,7 @@
             <th>{gt text="Module URL"}</th>
             <th>{gt text="Description"}</th>
             <th>{gt text="Version"}</th>
-            <th class="nowrap">
+            <th class="z-nowrap">
                 <form action="{modurl modname="Extensions" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
                     <div>
                         <label for="modules_state">{gt text="State"}</label><br />
@@ -43,12 +52,12 @@
                     </div>
                 </form>
             </th>
-            <th class="text-right">{gt text="Actions"}</th>
+            <th class="z-right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
         {section name=modules loop=$modules}
-        <tr>
+        <tr class="{cycle values="z-odd,z-even"}">
             <td>
                 {if isset($modules[modules].modinfo.capabilities.admin) and $modules[modules].modinfo.state eq 3}
                 <a title="{gt text="Go to the module's administration panel"}" href="{modurl modname=$modules[modules].modinfo.url type=admin func=index}">{$modules[modules].modinfo.name|safetext}</a>
@@ -60,25 +69,23 @@
             <td>{$modules[modules].modinfo.url|safetext}</td>
             <td>{$modules[modules].modinfo.description|safetext|default:"&nbsp;"}</td>
             <td>{$modules[modules].modinfo.version|safetext}</td>
-            <td class="nowrap">                
-                <span class="label label-{$modules[modules].statusclass|safetext}">
-                    {$modules[modules].status|safetext}
-                </span>
+            <td class="z-nowrap">
+                {img src=$modules[modules].statusimage modname=core set=icons/extrasmall alt=$modules[modules].status title=$modules[modules].status}&nbsp;{$modules[modules].status|safetext}
                 {if isset($modules[modules].modinfo.newversion)}
                 <br />({$modules[modules].modinfo.newversion|safetext})
                 {/if}
             </td>
-            <td class="actions">
+            <td class="z-right z-nowrap">
                 {assign var="options" value=$modules[modules].options}
                 {strip}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|safetext}" class="fa fa-{$options[options].image} tooltips" style="color:{$options[options].color}" title="{$options[options].title}"></a>&nbsp;
+                <a href="{$options[options].url|safetext}" class="glyphicon glyphicon-{$options[options].image} tooltips" style="color:{$options[options].color}" title="{$options[options].title}"></a>&nbsp;
                 {/section}
                 {/strip}
             </td>
         </tr>
         {sectionelse}
-        <tr><td colspan="7">{gt text="No items found."}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="7">{gt text="No items found."}</td></tr>
         {/section}
     </tbody>
 </table>

@@ -129,7 +129,7 @@ msgid "Inset mode - thumbnails are scale down to not exceed dimensions."
 msgstr ""
 
 #: templates/configuration.tpl:73
-msgid "Outset mode - thumbnails are cut out to exactly fit dimmensions."
+msgid "Outbound mode - thumbnails are cut out to exactly fit dimmensions."
 msgstr ""
 
 #: templates/configuration.tpl:78
