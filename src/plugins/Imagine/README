@@ -221,7 +221,7 @@ Both types of presets are handled by SystemPlugin_Imagine_Preset class.
 Preset allows to define:
 - width - thumbnail width in pixels
 - height - thumbnail height in pixels
-- mode - "inset" or "outset"
+- mode - "inset" or "outbound"
 - extension - file extension for thumbnails (jpg, png, gif; null for original file type)
 
 There are also special options  which allows to store in preset additional settings for thumbnail manager:
@@ -240,7 +240,7 @@ There are also special options  which allows to store in preset additional setti
     $data = array(
         'width' => 100,
         'heigth' => 100,
-        'mode' => 'outset',
+        'mode' => 'outbound',
         '__module' => 'Foo',
         '__transformation' => $your_custom_transformations
     );

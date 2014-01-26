@@ -35,7 +35,7 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
     {
         $modVars = $this->plugin->getVars();
         $options = array(
-            'mode' => array('inset', 'outset'),
+            'mode' => array('inset', 'outbound'),
             'extension' => array('jpg', 'png', 'gif'),
         );
 
