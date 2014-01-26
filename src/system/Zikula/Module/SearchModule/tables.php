@@ -50,7 +50,7 @@ function ZikulaSearchModule_tables()
                                                   'title'   => 'C(255) NOTNULL DEFAULT ""',
                                                   'text'    => 'XL',
                                                   'module'  => 'C(100)',
-                                                  'extra'   => 'C(100)',
+                                                  'extra'   => 'C(1000)',
                                                   'found'   => 'T DEFTIMESTAMP',
                                                   'created' => 'T',
                                                   'session' => 'C(50)');

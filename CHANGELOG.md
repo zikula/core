@@ -96,6 +96,7 @@ Features:
 - Login provider now can specify the path to an icon or the name of a FontAwesome icon to display in the login buttons.
 - Added functionality for authentication modules to redirect the user to the registration screen if the given login
   information does not match an existing user account.
+- Increased SearchResultEntity:extra field from 100 to 1000 chars #834.
 
 
 CHANGELOG - ZIKULA 1.3.6

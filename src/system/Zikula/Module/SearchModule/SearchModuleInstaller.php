@@ -68,6 +68,15 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
             case '1.5.2':
                 $this->setVar('opensearch_enabled', true);
                 $this->setVar('opensearch_adult_content', false);
+                
+                // update schema
+                try {
+                    DoctrineHelper::updateSchema($this->entityManager, array(
+                        'Zikula\Module\SearchModule\Entity\SearchResultEntity',
+                    ));
+                } catch (\Exception $e) {
+                    return LogUtil::registerError($e->getMessage);
+                }
             case '1.5.3':
             // future upgrade routines
         }
