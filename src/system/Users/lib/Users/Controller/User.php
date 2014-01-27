@@ -171,8 +171,8 @@ class Users_Controller_User extends Zikula_AbstractController
                 // The user submitted the acutal registration form, so we need to validate the entries and register him.
                 $formData = new Users_Controller_FormData_RegistrationForm('users_register', $this->serviceManager);
                 $formData->setFromRequestCollection($this->request->request);
-                $selectedAuthenticationMethod = unserialize($this->request->request->get('authentication_method_ser', false));
-                $authenticationInfo = unserialize($this->request->request->get('authentication_info_ser', false));
+                $selectedAuthenticationMethod = json_decode($this->request->request->get('authentication_method_ser', false));
+                $authenticationInfo = json_decode($this->request->request->get('authentication_info_ser', false));
 
                 $state = 'validate';
             }

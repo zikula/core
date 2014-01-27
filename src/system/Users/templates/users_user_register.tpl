@@ -70,8 +70,8 @@
         <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_registration" />
         <input id="{$formData->getFormId()}_registration_info" type="hidden" name="registration_info" value="1" />
-        <input id="{$formData->getFormId()}_authentication_method" type="hidden" name="authentication_method_ser" value="{$authentication_method|@serialize|safetext}" />
-        <input id="{$formData->getFormId()}_authentication_info" type="hidden" name="authentication_info_ser" value="{$authentication_info|@serialize|safetext}" />
+        <input id="{$formData->getFormId()}_authentication_method" type="hidden" name="authentication_method_ser" value="{$authentication_method|@json_encode|safetext}" />
+        <input id="{$formData->getFormId()}_authentication_info" type="hidden" name="authentication_info_ser" value="{$authentication_info|@json_encode|safetext}" />
 {capture name='uname'}
         <fieldset>
             <legend>{gt text="Choose a user name"}</legend>
