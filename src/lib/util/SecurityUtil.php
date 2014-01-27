@@ -532,9 +532,9 @@ class SecurityUtil
     public static function signData($data)
     {
         $key = System::getVar('signingkey');
-        $unsignedData = serialize($data);
+        $unsignedData = json_encode($data);
         $signature = sha1($unsignedData . $key);
-        $signedData = serialize(array($unsignedData, $signature));
+        $signedData = json_encode(array($unsignedData, $signature));
 
         return $signedData;
     }
@@ -549,13 +549,13 @@ class SecurityUtil
     public static function checkSignedData($data)
     {
         $key = System::getVar('signingkey');
-        $signedData = unserialize($data);
+        $signedData = json_decode($data);
         $signature = sha1($signedData[0] . $key);
         if ($signature != $signedData[1]) {
             return false;
         }
 
-        return unserialize($signedData[0]);
+        return json_decode($signedData[0]);
     }
 
     /**
