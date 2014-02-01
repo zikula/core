@@ -15,6 +15,8 @@
 
 /**
  * Abstract API for modules.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractApi extends Zikula_AbstractBase
 {

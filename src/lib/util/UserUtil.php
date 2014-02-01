@@ -42,62 +42,6 @@ class UserUtil
     }
 
     /**
-     * Return a user object.
-     *
-     * @param integer $uid     The userID of the user to retrieve.
-     * @param boolean $getVars Obsolete, we also return the attributes.
-     *
-     * @deprecated since 1.3.0
-     * @see    self::getVars()
-     *
-     * @return array The resulting user object.
-     */
-    public static function getPNUser($uid, $getVars = false)
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getVars')), E_USER_DEPRECATED);
-
-        return self::getVars($uid);
-    }
-
-    /**
-     * Return a field from a user object.
-     *
-     * @param integer $id    The userID of the user to retrieve.
-     * @param string  $field The field from the user object to get.
-     *
-     * @deprecated since 1.3.0
-     * @see    self::getVars()
-     *
-     * @return mixed The requested field.
-     */
-    public static function getPNUserField($id, $field)
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getVar')), E_USER_DEPRECATED);
-
-        return self::getVar($field, $id);
-    }
-
-    /**
-     * Return a hash structure mapping uid to username.
-     *
-     * @param string  $where        The where clause to use (optional).
-     * @param string  $orderBy      The order by clause to use (optional).
-     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
-     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
-     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return array An array mapping uid to username.
-     */
-    public static function getPNUsers($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'uid')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUsers')), E_USER_DEPRECATED);
-
-        return self::getUsers($where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
-    }
-
-    /**
      * Return a hash structure mapping uid to username.
      *
      * @param array   $where        Array of field values to filter by (optional, default=array()).
@@ -119,7 +63,7 @@ class UserUtil
 
         // we've now ruled out BC parameters
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $users = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+        $users = $em->getRepository('ZikulaUsersModule:UserEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
         foreach ($users as $user) {
@@ -127,23 +71,6 @@ class UserUtil
         }
 
         return $items;
-    }
-
-    /**
-     * Return a group object.
-     *
-     * @param integer $gid The groupID to retrieve.
-     *
-     * @deprecated since 1.3.0
-     * @see    UserUtil::getGroup()
-     *
-     * @return array The resulting group object.
-     */
-    public static function getPNGroup($gid)
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroup')), E_USER_DEPRECATED);
-
-        return self::getGroup($gid);
     }
 
     /**
@@ -174,7 +101,7 @@ class UserUtil
     public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey='gid')
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $groups = $em->getRepository('Zikula\Module\GroupsModule\Entity\GroupEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+        $groups = $em->getRepository('ZikulaGroupsModule:GroupEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
         foreach ($groups as $group) {
@@ -182,26 +109,6 @@ class UserUtil
         }
 
         return $items;
-    }
-
-    /**
-     * Return a hash structure mapping gid to groupname.
-     *
-     * @param string  $where        The where clause to use (optional) (default='').
-     * @param string  $orderBy      The order by clause to use (optional) (default='').
-     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
-     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
-     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return array An array mapping gid to groupname
-     */
-    public static function getPNGroups($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'gid')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroups')), E_USER_DEPRECATED);
-
-        return self::getGroups();
     }
 
     /**
@@ -225,25 +132,6 @@ class UserUtil
         }
 
         return $list;
-    }
-
-    /**
-     * Return a (string) list of group-ids which can then be used in a SQL 'IN (...)' clause.
-     *
-     * @param string $where     The where clause to use (optional).
-     * @param string $orderBy   The order by clause to use (optional).
-     * @param string $separator The field separator to use (default=",") (optional).
-     *
-     * @deprecated since 1.3.0
-     * @see    UserUtil::getGroupIdList()
-     *
-     * @return string A string list of group ids
-     */
-    public static function getPNGroupIdList($where = '', $orderBy = '', $separator = ',')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroupIdList')), E_USER_DEPRECATED);
-
-        return self::getGroupIdList($where, $orderBy, $separator);
     }
 
     /**
@@ -1087,21 +975,26 @@ class UserUtil
             return false;
         }
 
-        $uname = DataUtil::formatForStore(mb_strtolower($uname));
+        $uname = mb_strtolower($uname);
 
         // get doctrine manager
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
         // count of uname appearances in users table
-        $dql = "SELECT count(u.uid) FROM Zikula\Module\UsersModule\Entity\UserEntity u WHERE u.uname = '{$uname}'";
+        $qb = $em->createQueryBuilder()
+                 ->select('count(u.uid)')
+                 ->from('ZikulaUsersModule:UserEntity', 'u')
+                 ->where('u.uname = :uname')
+                 ->setParameter('uname', $uname);
+
         if ($excludeUid > 1) {
-            $dql .= " AND u.uid <> {$excludeUid}";
+            $qb->andWhere('u.uid <> :excludeUid')
+               ->setParameter('excludeUid', $excludeUid);
         }
 
-        $query = $em->createQuery($dql);
-        $ucount = $query->getSingleScalarResult();
+        $query = $qb->getQuery();
 
-        return (int)$ucount;
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -1118,27 +1011,43 @@ class UserUtil
             return false;
         }
 
-        $emailAddress = DataUtil::formatForStore(mb_strtolower($emailAddress));
+        $emailAddress = mb_strtolower($emailAddress);
 
         // get doctrine manager
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
         // count of email appearances in users table
-        $dql = "SELECT COUNT(u.uid) FROM Zikula\Module\UsersModule\Entity\UserEntity u WHERE u.email = '{$emailAddress}'";
+        $qb = $em->createQueryBuilder()
+                 ->select('count(u.uid)')
+                 ->from('ZikulaUsersModule:UserEntity', 'u')
+                 ->where('u.email = :email')
+                 ->setParameter('email', $emailAddress);
+
         if ($excludeUid > 1) {
-            $dql .= " AND u.uid <> {$excludeUid}";
+            $qb->andWhere('u.uid <> :excludeUid')
+               ->setParameter('excludeUid', $excludeUid);
         }
 
-        $query = $em->createQuery($dql);
+        $query = $qb->getQuery();
+
         $ucount = (int)$query->getSingleScalarResult();
 
         // count of email appearances in users verification table
-        $dql = "SELECT COUNT(v.id) FROM Zikula\Module\UsersModule\Entity\UserVerificationEntity v WHERE v.newemail = '{$emailAddress}' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+        $qb = $em->createQueryBuilder()
+                 ->select('count(v.uid)')
+                 ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
+                 ->where('v.newemail = :email')
+                 ->andWhere('v.changetype = :chgtype')
+                 ->setParameter('email', $emailAddress)
+                 ->setParameter('chgtype', UsersConstant::VERIFYCHGTYPE_EMAIL);
+
         if ($excludeUid > 1) {
-            $dql .= " AND v.uid <> {$excludeUid}";
+            $qb->andWhere('v.uid <> :excludeUid')
+               ->setParameter('excludeUid', $excludeUid);
         }
 
-        $query = $em->createQuery($dql);
+        $query = $qb->getQuery();
+
         $vcount = (int)$query->getSingleScalarResult();
 
         return ($ucount + $vcount);
@@ -1166,8 +1075,16 @@ class UserUtil
 
             // Get verificationsent from the users_verifychg table
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $dql = "SELECT v FROM Zikula\Module\UsersModule\Entity\UserVerificationEntity v WHERE v.uid = {$userObj['uid']} AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL;
-            $query = $em->createQuery($dql);
+
+            $query = $em->createQueryBuilder()
+                        ->select('v')
+                        ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
+                        ->where('v.uid = :uid')
+                        ->andWhere('v.changetype = :changetype')
+                        ->setParameter('uid', $userObj['uid'])
+                        ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_REGEMAIL)
+                        ->getQuery();
+
             $verifyChgList = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
             if ($verifyChgList && is_array($verifyChgList) && !empty($verifyChgList) && is_array($verifyChgList[0]) && !empty($verifyChgList[0])) {
@@ -1245,7 +1162,7 @@ class UserUtil
 
         if (!isset($user) || $force) {
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array($idfield => $id));
+            $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array($idfield => $id));
 
             if ($user) {
                 $user = $user->toArray();
@@ -1468,7 +1385,7 @@ class UserUtil
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array('uid' => $uid));
+            $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => $uid));
 
             // check if var to set belongs to table or it's an attribute
             if (self::fieldAlias($name)) {
@@ -1522,7 +1439,7 @@ class UserUtil
                     'new_value' => $value,
                 );
 
-                $updateEvent = new GenericEvent($eventName, $updatedUserObj, $eventArgs, $eventData);
+                $updateEvent = new GenericEvent($updatedUserObj, $eventArgs, $eventData);
                 EventUtil::dispatch($eventName, $updateEvent);
             }
         }
@@ -1592,7 +1509,7 @@ class UserUtil
         if (!isset($hashAlgorithmName) || !is_string($hashAlgorithmName) || empty($hashAlgorithmName) || !isset($hashMethodCodesByName[$hashAlgorithmName])
                 || empty($hashMethodCodesByName[$hashAlgorithmName]) || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
 
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__f('Invalid argument %s', 'hashAlgorithmName'));
         }
 
         return $hashMethodCodesByName[$hashAlgorithmName];
@@ -1616,7 +1533,7 @@ class UserUtil
         if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
                 || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
 
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__f('Invalid argument %s', 'hashAlgorithmCode'));
         }
 
         return $hashMethodNamesByCode[$hashAlgorithmCode];
@@ -1664,18 +1581,18 @@ class UserUtil
     {
         if (isset($hashMethodCode)) {
             if (!is_numeric($hashMethodCode) || ((int)$hashMethodCode != $hashMethodCode)) {
-                return LogUtil::registerArgsError();
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
             $hashAlgorithmName = self::getPasswordHashMethodName($hashMethodCode);
             if (!$hashAlgorithmName) {
-                return LogUtil::registerArgsError();
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
 
         } else {
             $hashAlgorithmName = ModUtil::getVar('ZikulaUsersModule', 'hash_method', '');
             $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
             if (!$hashMethodCode) {
-                return LogUtil::registerArgsError();
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
         }
 
@@ -1751,11 +1668,11 @@ class UserUtil
         $passwordsMatch = false;
 
         if (!isset($unhashedPassword) || !is_string($unhashedPassword) || empty($unhashedPassword)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!isset($hashedPassword) || !is_string($hashedPassword) || empty($hashedPassword) || (strpos($hashedPassword, UsersConstant::SALT_DELIM) === false)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $passwordsMatch = SecurityUtil::checkSaltedHash($unhashedPassword, $hashedPassword, self::getPasswordHashMethods(true), UsersConstant::SALT_DELIM);
@@ -1819,7 +1736,7 @@ class UserUtil
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array('uid' => $uid));
+            $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => $uid));
 
             if (self::fieldAlias($name)) {
                 // this value comes from the users table
@@ -2033,8 +1950,6 @@ class UserUtil
         }
 
         if (!System::isInstalling()) {
-//            $request->attributes->set('_theme', $themeName = 'ZikulaAndreas08Theme');
-//            return $themeName;
             throw new RuntimeException(__('UserUtil::getTheme() is unable to calculate theme name.'));
         }
     }

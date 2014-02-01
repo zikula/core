@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 /**
  * Custom Hook Handler interface.
  *
@@ -21,7 +23,7 @@
  */
 abstract class Zikula_Hook_AbstractHandler extends Zikula\Core\Hook\AbstractHookListener
 {
-    function __construct(Zikula_EventManager $eventManager)
+    function __construct(EventDispatcherInterface $eventManager)
     {
         LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         parent::__construct($eventManager);

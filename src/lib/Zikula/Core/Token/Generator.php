@@ -14,6 +14,7 @@
  */
 
 namespace Zikula\Core\Token;
+
 use Zikula\Core\Token\Storage\StorageInterface;
 
 /**
@@ -24,7 +25,7 @@ class Generator
     /**
      * Storage driver.
      *
-     * @var \Zikula\Core\Token\Storage\StorageInterface
+     * @var StorageInterface
      */
     private $storage;
 
@@ -126,7 +127,7 @@ class Generator
      * @param string  $id        Token ID.
      * @param integer $timestamp Create with this timestamp (defaults null = now)
      *
-     * @return \Zikula\Core\Token\Generator
+     * @return Generator
      */
     public function generate($id, $timestamp = null)
     {
@@ -153,7 +154,7 @@ class Generator
     /**
      * Gets storage driver.
      *
-     * @return \Zikula\Core\Token\Storage\StorageInterface
+     * @return StorageInterface
      */
     public function getStorage()
     {

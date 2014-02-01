@@ -36,6 +36,8 @@
  * If you want to override this styling then either copy the styles to another stylesheet in the
  * templates directory or change the cssClass attribute to something different than the default
  * class name.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
 {

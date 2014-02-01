@@ -15,6 +15,8 @@
 
 /**
  * Hook interface
+ *
+ * @deprecated
  */
 interface Zikula_HookInterface extends Zikula_EventInterface
 {

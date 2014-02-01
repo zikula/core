@@ -14,6 +14,8 @@
 
 /**
  * ObjectUtil.
+ *
+ * @deprecated
  */
 class ObjectUtil
 {
@@ -1122,7 +1124,7 @@ class ObjectUtil
         }
 
         $cats = implode(',', array_values($catlist));
-        $where = "WHERE id IN ($cats)";
+        $where = "c.id IN ($cats)";
         $catsdata = CategoryUtil::getCategories($where, '', 'id', $enablePermissionCheck);
 
         $result = array();

@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -15,12 +14,11 @@
 namespace Zikula\Module\BlocksModule\Api;
 
 use SecurityUtil;
-use LogUtil;
 use System;
 use ModUtil;
 
 /**
- * Blocks_Api_User class.
+ * API functions used by user controllers
  */
 class UserApi extends \Zikula_AbstractApi
 {
@@ -29,12 +27,16 @@ class UserApi extends \Zikula_AbstractApi
      *
      * This function gets all block entries from the database.
      *
-     * @param 'blockposition_id'    block position id to filter block selection for.
-     * @param 'module_id'           module id to filter block selection for.
-     * @param 'language'            language to filter block selection for.
-     * @param 'active_status'       filter by active status (0=all, 1=active, 2=inactive).
+     * @param mixed[] $args {
+     *      @type  int     blockposition_id    block position id to filter block selection for.
+     *      @type  int     module_id           module id to filter block selection for.
+     *      @type  string  language            language to filter block selection for.
+     *      @type  int     active_status       filter by active status (0=all, 1=active, 2=inactive).
+     *                       }
      *
-     * @return array array of items, or false on failure.
+     * @return array|bool array of items, or false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getall($args)
     {
@@ -51,16 +53,23 @@ class UserApi extends \Zikula_AbstractApi
             $args['module_id'] = $args['modid'];
         }
 
+        // Argument check
+        if (isset($args['blockposition_id']) && !is_numeric($args['blockposition_id']) ||
+            isset($args['module_id']) && !is_numeric($args['module_id']) ||
+            isset($args['active_status']) && !is_numeric($args['active_status'])) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
+        }
+
         // create a QueryBuilder instance
         $qb = $this->entityManager->createQueryBuilder();
 
         // add select and from params
         $qb->select('b')
-           ->from('Zikula\Module\BlocksModule\Entity\BlockEntity', 'b');
+           ->from('ZikulaBlocksModule:BlockEntity', 'b');
 
         // add clause for filtering blockposition
         if (isset($args['blockposition_id']) && is_numeric($args['blockposition_id']) && $args['blockposition_id']) {
-            $entity = 'Zikula\Module\BlocksModule\Entity\BlockPlacementEntity';
+            $entity = 'ZikulaBlocksModule:BlockPlacementEntity';
             $blockitems = $this->entityManager->getRepository($entity)->findBy(array('pid' => $args['blockposition_id']));
 
             $bidList = array(0);
@@ -111,18 +120,23 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get a specific block
      *
-     * @param        $args['bid'] id of block to get
-     * @return array item array, or false on failure
+     * @param int[] $args {
+     *      @type        $args['bid'] id of block to get
+     *                     }
+     *
+     * @return array|bool item array, or false on failure
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function get($args)
     {
         // Argument check
         if (!isset($args['bid']) || !is_numeric($args['bid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Return the item array
-        $entity = 'Zikula\Module\BlocksModule\\Entity\BlockEntity';
+        $entity = 'ZikulaBlocksModule:BlockEntity';
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('bid' => $args['bid']));
 
         return $item;
@@ -135,12 +149,12 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $entity = 'Zikula\Module\BlocksModule\\Entity\BlockEntity';
-        $dql = "SELECT count(b.bid) FROM $entity b";
-        $query = $this->entityManager->createQuery($dql);
-        $numitems = $query->getSingleScalarResult();
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('count(b.bid)')
+                                     ->from('ZikulaBlocksModule:BlockEntity', 'b')
+                                     ->getQuery();
 
-        return $numitems;
+        return (int)$query->getSingleScalarResult();;
     }
 
     /**
@@ -162,7 +176,7 @@ class UserApi extends \Zikula_AbstractApi
 
         if (empty($block_positions)) {
 
-            $entity = 'Zikula\Module\BlocksModule\\Entity\BlockPositionEntity';
+            $entity = 'ZikulaBlocksModule:BlockPositionEntity';
             $items = $this->entityManager->getRepository($entity)->findBy(array(), array('name' => 'ASC'));
 
             foreach ($items as $item) {
@@ -182,7 +196,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getallplacements()
     {
-        $entity = 'Zikula\Module\BlocksModule\\Entity\BlockPlacementEntity';
+        $entity = 'ZikulaBlocksModule:BlockPlacementEntity';
         $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'ASC'));
 
         return $items;
@@ -191,19 +205,23 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get a specific block position.
      *
-     * @param int $args['pid'] position id.
+     * @param int[] $args {
+     *      @type int $args['pid'] position id.
+     *                     }
      *
-     * @return mixed item array, or false on failure.
+     * @return array|bool item array, or false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getposition($args)
     {
         // Argument check
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Return the item array
-        $entity = 'Zikula\Module\BlocksModule\\Entity\BlockPositionEntity';
+        $entity = 'ZikulaBlocksModule:BlockPositionEntity';
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('pid' => $args['pid']));
 
         return $item;
@@ -212,18 +230,22 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all blocks that are placed in a position
      *
-     * @param int $args['pid'] position id.
+     * @param int[] $args {
+     *      @type int $args['pid'] position id.
+     *                     }
      *
-     * @return mixed item array, or false on failure.
+     * @return array|bool item array, or false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getblocksinposition($args)
     {
         // Argument check
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $entity = 'Zikula\Module\BlocksModule\Entity\BlockPlacementEntity';
+        $entity = 'ZikulaBlocksModule:BlockPlacementEntity';
         $items = $this->entityManager->getRepository($entity)->findBy(array('pid' => $args['pid']), array('sortorder' => 'ASC'));
 
         return $items;
@@ -232,18 +254,22 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all placements of a block
      *
-     * @param int $args['bid'] block id.
+     * @param int[] $args {
+     *      @type int $args['bid'] block id.
+     *                     }
      *
-     * @return mixed item array, or false on failure.
+     * @return array|bool item array, or false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getallblockspositions($args)
     {
         // Argument check
         if (!isset($args['bid']) || !is_numeric($args['bid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $entity = 'Zikula\Module\BlocksModule\Entity\BlockPlacementEntity';
+        $entity = 'ZikulaBlocksModule:BlockPlacementEntity';
         $items = $this->entityManager->getRepository($entity)->findBy(array('bid' => $args['bid']), array('sortorder' => 'ASC'));
 
         return $items;
@@ -252,7 +278,7 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Common method for decoding url from bracket notation.
      *
-     * @param strign url String to decode.
+     * @param string $url the input url
      *
      * @return string Decoded url.
      */
@@ -264,6 +290,12 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if (!preg_match('#\{(.*)\}#', $url, $matches)) {
+            return $url;
+        }
+
+        // filter out links that begin with `ext` (Menutree)
+        // send original string back for later processing
+        if (strpos($url,'{ext:') === 0) {
             return $url;
         }
 

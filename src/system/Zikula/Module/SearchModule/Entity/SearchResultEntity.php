@@ -1,4 +1,15 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Module\SearchModule\Entity;
 
@@ -13,6 +24,8 @@ use Doctrine\ORM\Mapping as ORM;
 class SearchResultEntity
 {
     /**
+     * ID of the search
+     *
      * @var integer $id
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
@@ -22,6 +35,8 @@ class SearchResultEntity
     private $id;
 
     /**
+     * title of the search
+     *
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
@@ -29,6 +44,8 @@ class SearchResultEntity
     private $title;
 
     /**
+     * the matching search text
+     *
      * @var text $text
      *
      * @ORM\Column(name="text", type="text", nullable=true)
@@ -36,6 +53,8 @@ class SearchResultEntity
     private $text;
 
     /**
+     * the module providing the search hit
+     *
      * @var string $module
      *
      * @ORM\Column(name="module", type="string", length=100, nullable=true)
@@ -43,13 +62,17 @@ class SearchResultEntity
     private $module;
 
     /**
+     * additional information about this search result 
+     *
      * @var string $extra
      *
-     * @ORM\Column(name="extra", type="string", length=100, nullable=true)
+     * @ORM\Column(name="extra", type="string", length=1000, nullable=true)
      */
     private $extra;
 
     /**
+     * creation timestamp of this search hit
+     *
      * @var \Datetime $created
      *
      * @ORM\Column(name="created", type="datetime", nullable=true)
@@ -57,6 +80,8 @@ class SearchResultEntity
     private $created;
 
     /**
+     * Last found timestamp of this search hit
+     *
      * @var \Datetime $found
      *
      * @ORM\Column(name="found", type="datetime", nullable=true)
@@ -64,6 +89,8 @@ class SearchResultEntity
     private $found;
 
     /**
+     * Session id assoiciated
+     *
      * @var string $sesid
      *
      * @ORM\Column(name="sesid", type="string", length=50, nullable=true)

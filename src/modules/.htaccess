@@ -1,5 +1,5 @@
-deny from all
-<FilesMatch "(?i)\.(css|js|jpg|jpeg|gif|png|swf)$">
-order allow,deny
-allow from all
-</filesmatch>
+Deny from all
+<FilesMatch "(?i)\.(css|eot|gif|jpeg|jpg|js|pdf|png|svg|swf|ttf|woff)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>

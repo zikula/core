@@ -1,8 +1,9 @@
-{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/blocks.js'}
+{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js'}
+{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Modifyposition.js'}
 {pageaddvar name='javascript' value='jquery-ui'}
 {adminheader}
 <h3>
-    <span class="icon icon-pencil"></span>
+    <span class="fa fa-pencil"></span>
     {gt text="Edit block position"}
 </h3>
 
@@ -53,9 +54,12 @@
             </tr>
         </thead>
         <tbody>
+            <tr {if !empty($assignedblocks)}style="display: none;"{/if}class="sortable-placeholder">
+                <td class="warning" colspan="7">{gt text='No blocks assigned yet.'}</td>
+            </tr>
             {foreach item=block from=$assignedblocks}
             <tr data-bid="{$block.bid}">
-                <td><span class="icon icon-move"></span></td>
+                <td><span class="fa fa-arrows"></span></td>
                 <td>{$block.bid|safetext}</td>
                 <td id="blockdrag_{$block.bid}">{$block.title|safehtml|default:"&nbsp;"}{if $block.title && $block.description},&nbsp;{/if}{$block.description|safehtml}</td>
                 <td>{$block.modname|safetext}</td>
@@ -84,9 +88,12 @@
             </tr>
         </thead>
         <tbody>
+            <tr {if !empty($unassignedblocks)}style="display: none;"{/if}class="sortable-placeholder">
+                <td class="warning" colspan="7">{gt text='All blocks assigned.'}</td>
+            </tr>
             {foreach item=block from=$unassignedblocks}
             <tr data-bid="{$block.bid}">
-                <td><span class="icon icon-move"></span></td>
+                <td><span class="fa fa-arrows"></span></td>
                 <td>{$block.bid|safetext}</td>
                 <td id="blockdrag_{$block.bid}">
                     {$block.title|safehtml|default:"&nbsp;"}{if $block.title && $block.description},&nbsp;{/if}{$block.description|safehtml}

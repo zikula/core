@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -55,9 +54,13 @@ class PendingContentBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display block.
      *
-     * @param array $blockinfo Blockinfo structure.
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
      *
-     * @return output Rendered block.
+     * @return string Rendered block.
      */
     public function display($blockinfo)
     {

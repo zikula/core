@@ -17,6 +17,8 @@ use Zikula\Core\Response\Ajax\NotFoundResponse;
 
 /**
  * Ajax class.
+ *
+ * @deprecated
  */
 class Zikula_Response_Ajax_NotFound extends NotFoundResponse
 {

@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -21,17 +20,21 @@ use UserUtil;
 use ZLanguage;
 use ModUtil;
 use Zikula\Module\BlocksModule\MenutreeUtil;
-use FormUtil;
+use Zikula\Module\BlocksModule\MenutreeTree;
 use System;
 use Zikula_View;
 use DataUtil;
-use LogUtil;
 use Zikula_View_Theme;
 
+/**
+ * Block to display a multi-level menu
+ */
 class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
+     *
+     * @return void
      */
     public function init()
     {
@@ -40,6 +43,8 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * get information on block
+     *
+     * @return array block information array
      */
     public function info()
     {
@@ -55,6 +60,14 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * display block
+     *
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string html of rendered block
      */
     public function display($blockinfo)
     {
@@ -67,7 +80,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // stylesheet
-        if (file_exists($vars['menutree_stylesheet'])) {
+        if (isset($vars['menutree_stylesheet']) && file_exists($vars['menutree_stylesheet'])) {
             PageUtil::addVar('stylesheet', $vars['menutree_stylesheet']);
         }
 
@@ -99,7 +112,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $lang = ZLanguage::getLanguageCode();
         $deflang = 'en';
 
-        if (!in_array($lang, array_keys(current($vars['menutree_content'])))) {
+        if ((count($vars['menutree_content']) > 0) && !in_array($lang, array_keys(current($vars['menutree_content'])))) {
             $lang = $deflang;
         }
 
@@ -145,7 +158,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
                            'list' => $lang,
                            'flat' => true);
 
-            $tree = new Blocks_MenutreeTree();
+            $tree = new MenutreeTree();
             $tree->setOption('langs',(array)$langs['list']);
             $tree->setOption('flat',$langs['flat']);
             $tree->setOption('parseURL',true);
@@ -172,6 +185,14 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * block configuration
+     *
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string html of block modification form
      */
     public function modify($blockinfo)
     {
@@ -189,19 +210,19 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars['menutree_stripbaseurl'] =    isset($vars['menutree_stripbaseurl']) ? $vars['menutree_stripbaseurl'] : true;
         $vars['menutree_maxdepth'] =        isset($vars['menutree_maxdepth']) ? $vars['menutree_maxdepth'] : 0;
         $vars['oldlanguages'] =             isset($vars['oldlanguages']) ? $vars['oldlanguages'] : array();
-        $vars['olddefaultanguage'] =        isset($vars['olddefaultanguage']) ? $vars['olddefaultanguage'] :'';
+        $vars['olddefaultlanguage'] =        isset($vars['olddefaultlanguage']) ? $vars['olddefaultlanguage'] :'';
 
         // get list of languages
         $vars['languages'] = ZLanguage::getInstalledLanguageNames();
         $userlanguage = ZLanguage::getLanguageCode();
 
         // get default langs
-        $vars['defaultanguage'] = !empty($blockinfo['language']) ? $blockinfo['language'] : $userlanguage;
+        $vars['defaultlanguage'] = !empty($blockinfo['language']) ? $blockinfo['language'] : $userlanguage;
 
         // rebuild langs array - default lang has to be first
         if (isset($vars['languages']) && count($vars['languages']) > 1) {
-            $deflang[$vars['defaultanguage']] = $vars['languages'][$vars['defaultanguage']];
-            unset($vars['languages'][$vars['defaultanguage']]);
+            $deflang[$vars['defaultlanguage']] = $vars['languages'][$vars['defaultlanguage']];
+            unset($vars['languages'][$vars['defaultlanguage']]);
             $vars['languages'] = array_merge($deflang,$vars['languages']);
             $vars['multilingual'] = true;
         } else {
@@ -221,14 +242,14 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             // if so - need to set reference lang to copy initial menu items data
             if (count(array_diff($vars['languages'],$vars['oldlanguages'])) > 1) {
                 // fisrt try current default lang
-                if (in_array($vars['defaultanguage'],$vars['oldlanguages'])) {
-                    $langs['ref'] = $vars['defaultanguage'];
+                if (in_array($vars['defaultlanguage'],$vars['oldlanguages'])) {
+                    $langs['ref'] = $vars['defaultlanguage'];
                     // or user lang
                 } elseif (in_array($userlanguage,$vars['oldlanguages'])) {
                     $langs['ref'] = $userlanguage;
                     // or old default lang
-                } elseif (in_array($vars['olddefaultanguage'],$vars['languages'])) {
-                    $langs['ref'] = $vars['olddefaultanguage'];
+                } elseif (in_array($vars['olddefaultlanguage'],$vars['languages'])) {
+                    $langs['ref'] = $vars['olddefaultlanguage'];
                     // it must be any language present in old and new lang list
                 } else {
                     $langs['ref'] = current(array_intersect($vars['languages'], $vars['oldlanguages']));
@@ -236,7 +257,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             }
         }
         // decode tree array
-        $tree = new Blocks_MenutreeTree();
+        $tree = new MenutreeTree();
         $tree->setOption('id', 'adm-menutree'.$blockinfo['bid']);
         $tree->setOption('sortable', true);
         if (isset($langs)) {
@@ -248,8 +269,8 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars['menutree_content'] = $tree->getHTML();
 
         // get all templates and stylesheets.
-        $vars['tpls'] = Blocks_MenutreeUtil::getTemplates();
-        $vars['styles'] =  Blocks_MenutreeUtil::getStylesheets();
+        $vars['tpls'] = MenutreeUtil::getTemplates();
+        $vars['styles'] =  MenutreeUtil::getStylesheets();
         $someThemes = $this->__('Only in some themes');
         $vars['somethemes'] = isset($vars['tpls'][$someThemes]) || isset($vars['styles'][$someThemes]) ? true : false;
 
@@ -282,10 +303,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars['menutree_anysettingsaccess'] = $vars['menutree_adminaccess'] || $vars['menutree_titlesaccess'] || $vars['menutree_displayaccess'] || $vars['menutree_settingsaccess'];
 
         // check if the users wants to add a new link via the "Add current url" link in the block
-        $addurl = FormUtil::getPassedValue('addurl', 0, 'GET');
+        $addurl = $this->request->query->get('addurl', 0);
 
         // or if we come from the normal "edit this block" link
-        $fromblock = FormUtil::getPassedValue('fromblock', null, 'GET');
+        $fromblock = $this->request->query->get('fromblock', null);
 
         $vars['redirect'] = '';
         $vars['menutree_newurl'] = '';
@@ -315,6 +336,16 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * update block configuration
+     *
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return array updated block information array
+     *
+     * @throws \RuntimeException Thrown if the changes couldn't be saved
      */
     public function update($blockinfo)
     {
@@ -322,24 +353,24 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // check if import old menu
-        $menutree_menus = FormUtil::getPassedValue('menutree_menus', 'null');
+        $menutree_menus = $this->request->request->get('menutree_menus', 'null');
 
         if ($menutree_menus != 'null') {
             $vars['menutree_content'] = $this->_import_menu($menutree_menus);
         } else {
-            $vars['menutree_content'] = FormUtil::getPassedValue('menutree_content', '', 'POST');
+            $vars['menutree_content'] = $this->request->request->get('menutree_content', '');
             $vars['menutree_content'] = DataUtil::urlsafeJsonDecode($vars['menutree_content']);
         }
 
         if (!$this->validate_menu($vars['menutree_content'])) {
-            return LogUtil::registerError($this->__('Error! Could not save your changes.'));
+            throw new \RuntimeException($this->__('Error! Could not save your changes.'));
         }
 
         // sort tree array according to lineno key
-        uasort($vars['menutree_content'], array('Blocks_Block_Menutree','sort_menu'));
+        uasort($vars['menutree_content'], array('Zikula\Module\BlocksModule\Block\MenutreeBlock','sort_menu'));
 
         // get other form data
-        $menutree_data = FormUtil::getPassedValue('menutree');
+        $menutree_data = $this->request->request->get('menutree');
 
         $vars['menutree_tpl'] = isset($menutree_data['tpl']) ? $menutree_data['tpl'] : '';
         if (empty($vars['menutree_tpl']) || !$this->view->template_exists($vars['menutree_tpl'])) {
@@ -383,7 +414,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             // check langs and save current langs list and current default lang
             $tmp = current($vars['menutree_content']);
             $vars['oldlanguages'] = array_keys($tmp);
-            $vars['olddefaultanguage'] = $vars['oldlanguages'][0];
+            $vars['olddefaultlanguage'] = $vars['oldlanguages'][0];
 
             // strip base url - if needed
             if ($vars['menutree_stripbaseurl'] === true) {
@@ -411,6 +442,11 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         return $blockinfo;
     }
 
+    /**
+     * Return an array of localised permissions levels strings
+     *
+     * @return array list if permisisons level strings
+     */
     private function _permlevels()
     {
         return array('ACCESS_EDIT'   => $this->__('Edit access'),
@@ -421,6 +457,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * Get list of menus with type supported to import
+     *
+     * @param int $bid the block id
+     *
+     * @return array list of menu types
      */
     private function _get_current_menus($bid)
     {
@@ -441,6 +481,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Convert data of selected menu to menutree style
      * Used to import menus
+     *
+     * @param int $bid block id
+     *
+     * @return array converted block data
      */
     private function _import_menu($bid)
     {
@@ -537,17 +581,23 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         return $data;
     }
 
+    /**
+     * Validate an array as a valid menutree data array
+     *
+     * Menu should be an array of arrays:
+     * [id] = array(
+     *     [lang] = array (
+     *         [data][lang] = [lang]
+     *         [data][parent] = exist
+     *     )
+     * )
+     *
+     * @param array $array the array to validate
+     *
+     * @return bool true if the array validates, false otherwise
+     */
     private function validate_menu($array)
     {
-        /*
-         * Menu should be an array of arrays:
-         * [id] = array(
-         *     [lang] = array (
-         *         [data][lang] = [lang]
-         *         [data][parent] = exist
-         *     )
-         * )
-         */
         if (!is_array($array)) {
             return false;
         }

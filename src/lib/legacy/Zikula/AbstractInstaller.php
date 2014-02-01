@@ -15,6 +15,8 @@
 
 /**
  * Abstract controller for module installer.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
 {

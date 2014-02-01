@@ -6,27 +6,23 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
-
-
 /**
  * define table information for the module
- *
  */
 function ZikulaPageLockModule_tables()
 {
-  $dbtable = array();
+    $dbtable = array();
 
-  // Lock table setup
-  $tableName = 'pagelock';
-  $dbtable['pagelock'] = $tableName;
+    // Lock table setup
+    $tableName = 'pagelock';
+    $dbtable['pagelock'] = $tableName;
 
-  $dbtable['pagelock_column'] =
+    $dbtable['pagelock_column'] =
     array('id'                => 'id',
           'name'              => 'name',
           'createdDate'       => 'cdate',
@@ -36,7 +32,7 @@ function ZikulaPageLockModule_tables()
           'lockedByIPNo'      => 'ipno');
 
 
-  $def =
+    $def =
     array('id'                => "I NOTNULL AUTO PRIMARY",
           'name'              => "C(100) NOTNULL DEFAULT ''",
           'createdDate'       => "T NOTNULL",
@@ -45,8 +41,8 @@ function ZikulaPageLockModule_tables()
           'lockedByTitle'     => "C(100) NOTNULL",
           'lockedByIPNo'      => "C(30) NOTNULL");
 
-  $dbtable['pagelock_column_def'] = $def;
+    $dbtable['pagelock_column_def'] = $def;
 
-  return $dbtable;
+    return $dbtable;
 }
 

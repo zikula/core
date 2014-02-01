@@ -320,11 +320,6 @@ class SecurityUtil
      */
     public static function getAuthInfo($user = null)
     {
-        // Table columns we use - ModUtil::dbInfoLoad is done in pnInit
-        $dbtable = DBUtil::getTables();
-        $groupmembershipcolumn = $dbtable['group_membership_column'];
-        $grouppermcolumn = $dbtable['group_perms_column'];
-
         // Empty arrays
         $groupperms = array();
 
@@ -347,28 +342,40 @@ class SecurityUtil
             $uids[] = (int)$user;
             $vars['Active User'] = (int)$user;
         }
-        $uids = implode(',', $uids);
+
+        $em = ServiceUtil::get('doctrine.entitymanager');
 
         // Get all groups that user is in
-        $where = "WHERE $groupmembershipcolumn[uid] IN (" . DataUtil::formatForStore($uids) . ')';
-        $fldArray = DBUtil::selectFieldArray('group_membership', 'gid', $where);
+        $qb = $em->createQueryBuilder();
+        $query = $qb->select('g.gid')
+                    ->from('ZikulaGroupsModule:GroupMembershipEntity', 'g')
+                    ->where($qb->expr()->in('g.uid', ':uids'))
+                    ->setParameter('uids', $uids)
+                    ->getQuery();
+
+        $fldArray = $query->getResult();
         if ($fldArray === false) {
             return $groupperms;
         }
 
         $usergroups = array();
-        $usergroups[] = -1;
+        $usergroups[] = array('gid' => -1);
         if ($user == 0 || !UserUtil::isLoggedIn()) {
             $usergroups[] = 0; // Unregistered GID
         }
 
-        $allgroups = array_merge($usergroups, $fldArray);
-        $allgroups = implode(',', $allgroups);
+        $allgroups = array_merge_recursive($usergroups, $fldArray);
 
         // Get all group permissions
-        $where = "WHERE $grouppermcolumn[gid] IN (" . DataUtil::formatForStore($allgroups) . ')';
-        $orderBy = "ORDER BY $grouppermcolumn[sequence]";
-        $objArray = DBUtil::selectObjectArray('group_perms', $where, $orderBy);
+        $qb = $em->createQueryBuilder();
+        $query = $qb->select('p')
+                    ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
+                    ->where($qb->expr()->in('p.gid', ':allgroups'))
+                    ->setParameter('allgroups', $allgroups)
+                    ->orderBy('p.sequence', 'ASC')
+                    ->getQuery();
+
+        $objArray = $query->getArrayResult();
         if (!$objArray) {
             return $groupperms;
         }

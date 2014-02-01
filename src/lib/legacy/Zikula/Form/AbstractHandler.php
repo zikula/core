@@ -35,6 +35,8 @@ use Zikula\Component\HookDispatcher\Hook;
  *
  * - <b>handleCommand</b>: this event is fired by various plugins on the page. Typically it is done by the
  *   Zikula_Form_Plugin_Button plugin to signal that the user activated a button.
+ *
+ * @deprecated for Symfony2 Forms
  */
 abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterface
 {
@@ -269,7 +271,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      *
      * @param Zikula\Component\HookDispatcher\Hook $hook Hook interface.
      *
-     * @return Zikula_AbstractHook
+     * @return Zikula\Component\HookDispatcher\Hook
      */
     public function dispatchHooks($name, Hook $hook)
     {

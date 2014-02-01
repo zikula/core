@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -16,13 +15,15 @@ namespace Zikula\Module\GroupsModule;
 
 use DoctrineHelper;
 
+/**
+ * Installation and upgrade routines for the groups module
+ */
 class GroupsModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the groups module
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     * @return bool true if initialisation succesful, false otherwise
+     *
+     * @return bool true if initialisation successful, false otherwise
      */
     public function install()
     {
@@ -59,11 +60,9 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * upgrade the module from an old version
      *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
+     * @param string $oldversion version number string to upgrade from
      *
-     * @param  string $oldVersion version number string to upgrade from
-     * @return mixed  true on success, last valid version string or false if fails
+     * @return bool|string true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
@@ -79,9 +78,9 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
 
     /**
      * delete the groups module
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     * @return bool true if delete succesful, false otherwise */
+     *
+     * @return bool false this module cannot be deleted
+     */
     public function uninstall()
     {
         // Deletion not allowed
@@ -91,10 +90,7 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * create the default data for the groups module
      *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * @return bool false
+     * @return void
      */
     public function defaultdata()
     {

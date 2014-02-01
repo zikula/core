@@ -63,7 +63,7 @@ class ServiceUtil
      * @param string $id Service name.
      *
      * @deprecated since 1.3.6
-     * @use get()
+     * @see get()
      *
      * @return object
      */
@@ -81,10 +81,6 @@ class ServiceUtil
      */
     public static function get($id)
     {
-        if ($id === 'request') {
-            return $GLOBALS['__request'];
-        }
-
         return self::getManager()->get($id);
     }
 

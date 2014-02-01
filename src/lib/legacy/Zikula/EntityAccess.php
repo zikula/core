@@ -14,6 +14,11 @@
 
 use Zikula\Core\Doctrine\EntityAccess;
 
+/**
+ * Class Zikula_EntityAccess
+ *
+ * @deprecated
+ */
 class Zikula_EntityAccess extends EntityAccess
 {
 }

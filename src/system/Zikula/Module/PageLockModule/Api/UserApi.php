@@ -6,31 +6,45 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-namespace Zikula\Module\PageLockModule\Api;
 
-/**
- * length of time to lock a page
- *
- */
-define('PageLockLifetime', 30);
+namespace Zikula\Module\PageLockModule\Api;
 
 use UserUtil;
 use PageUtil;
 use ThemeUtil;
 use ModUtil;
 use Zikula_View;
-use DBUtil;
 use DataUtil;
 use DateUtil;
-use System;
+use ServiceUtil;
+use Zikula\Module\PageLockModule\Entity\PageLockEntity;
 
+/**
+ * API functions used by user controllers
+ */
 class UserApi extends \Zikula_AbstractApi
 {
+    /**
+     * length of time to lock a page
+     *
+     */
+    const PAGELOCKLIFETIME = 30;
+
+    /**
+     * Add the page locking code to the page header
+     *
+     * @param mixed[] $args {
+     *      @type string $lockName         The name of the lock to be released
+     *      @type string $returnUrl        The URL to return control to (optional) (default: null)
+     *      @type bool   $ignoreEmptyLock  Ignore an empty lock name (optional) (default: false)
+     *                      }
+     *
+     * @returns bool true
+     */
     public function pageLock($args)
     {
         $lockName = $args['lockName'];
@@ -46,7 +60,7 @@ class UserApi extends \Zikula_AbstractApi
             PageUtil::AddVar('javascript', 'system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js');
             PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('pagelock'));
 
-            $lockInfo = ModUtil::apiFunc('pagelock', 'user', 'requireLock',
+            $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',
                     array('lockName'      => $lockName,
                     'lockedByTitle' => $uname,
                     'lockedByIPNo'  => $_SERVER['REMOTE_ADDR']));
@@ -75,7 +89,7 @@ class UserApi extends \Zikula_AbstractApi
         $lockedHtml = str_replace("\n", "", $lockedHtml);
         $lockedHtml = str_replace("\r", "", $lockedHtml);
 
-        // Use "PageLockLifetime*2/3" to add a good margin to lock timeout when pinging
+        // Use "self::PAGELOCKLIFETIME*2/3" to add a good margin to lock timeout when pinging
 
         // disabled due to #2556 and #2745
         // $returnUrl = DataUtil::formatForDisplayHTML($returnUrl);
@@ -83,7 +97,7 @@ class UserApi extends \Zikula_AbstractApi
         $html .= "
 PageLock.LockName = '$lockName';
 PageLock.ReturnUrl = '$returnUrl';
-PageLock.PingTime = " . (PageLockLifetime*2/3) . ";
+PageLock.PingTime = " . (self::PAGELOCKLIFETIME*2/3) . ";
 PageLock.LockedHTML = '" . $lockedHtml . "';
  /* ]]> */</script>";
 
@@ -92,7 +106,17 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         return true;
     }
 
-
+    /**
+     * Generate a lock on a page
+     *
+     * @param string[] $args { 
+     *      @type string $lockName   The name of the page to create/update a lock on
+     *      @type string $sessionId  The ID of the session owning the lock (optional) (default: current session ID
+     *                       }
+     *
+     * @returns array('haslock' => true if this user has a lock, false otherwise,
+     *                'lockedBy' => if 'haslock' is false then the user who has the lock, null otherwise)
+     */
     public function requireLock($args)
     {
         $lockName = $args['lockName'];
@@ -102,53 +126,58 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $this->_pageLockRequireAccess();
 
-        $locks = ModUtil::apiFunc('pagelock', 'user', 'getLocks', $args);
+        $locks = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'getLocks', $args);
         if (count($locks) > 0) {
             $lockedBy = '';
             foreach ($locks as $lock) {
                 if (strlen($lockedBy) > 0) {
                     $lockedBy .= ', ';
                 }
-                $lockedBy .= $lock['lockedByTitle'] . " ($lock[lockedByIPNo]) " . $lock['createdDate'];
+                $lockedBy .= $lock['title'] . " ($lock[ipno]) " . $lock['cdate']->format('Y-m-d H:m:s');
             }
-
             return array('hasLock' => false, 'lockedBy' => $lockedBy);
         }
 
         $args['lockedBy'] = null;
 
-        $dbtable = DBUtil::getTables();
-        $pageLockTable = &$dbtable['pagelock'];
-        $pageLockColumn = &$dbtable['pagelock_column'];
-
         // Look for existing lock
-
-        $sql = "
-SELECT COUNT(*)
-FROM $pageLockTable
-WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND $pageLockColumn[lockedBySessionId] = '" . DataUtil::formatForStore($sessionId) . "'";
-
-        $count = DBUtil::selectScalar($sql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('count(p.id)')
+                                     ->from('ZikulaPageLockModule:PageLockEntity', 'p')
+                                     ->where('p.name = :lockName')
+                                     ->setParameter('lockName', $lockName)
+                                     ->andWhere('p.session = :sessionId')
+                                     ->setParameter('sessionId', $sessionId)
+                                     ->getQuery();
+        $count = (int)$query->getSingleScalarResult();
 
         $now = time();
-        $expireDate = $now + PageLockLifetime;
+        $expireDate = $now + self::PAGELOCKLIFETIME;
 
         if ($count > 0) {
-            // Update existing lock
-            $sql = "
-UPDATE $pageLockTable
-SET $pageLockColumn[expiresDate] = '" . DateUtil::getDatetime($expireDate) . "'
-WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND $pageLockColumn[lockedBySessionId] = '" . DataUtil::formatForStore($sessionId) . "'";
-
-            DBUtil::executeSql($sql);
+            // update the existing lock with a new expiry date
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->update('ZikulaPageLockModule:PageLockEntity', 'p')
+                                         ->set('p.edate = :expireDate')
+                                         ->where('p.name = :lockName')
+                                         ->setParameter('lockName', $lockName)
+                                         ->andWhere('p.session = :sessionId')
+                                         ->setParameter('sessionId', $sessionId)
+                                         ->getQuery();
+            $query->getResult();
+            $this->entityManager->flush();
         } else {
-            $data = array('name' => $lockName,
-                    'createdDate' => DateUtil::getDatetime($now),
-                    'expiresDate' => DateUtil::getDatetime($expireDate),
-                    'lockedBySessionId' => $sessionId,
-                    'lockedByTitle' => $lockedByTitle,
-                    'lockedByIPNo' => $lockedByIPNo);
-            DBUtil::insertObject($data, 'pagelock');
+            // create the new object
+            $newLock = new PageLockEntity();
+            $newLock->setName($lockName);
+            $newLock->setCdate(new \DateTime(DateUtil::getDatetime($now)));
+            $newLock->setEdate(new \DateTime(DateUtil::getDatetime($expireDate)));
+            $newLock->setSession($sessionId);
+            $newLock->setTitle($lockedByTitle);
+            $newLock->setIpno($lockedByIPNo);
+            // write this back to the db
+            $this->entityManager->persist($newLock);
+            $this->entityManager->flush();
         }
 
         $this->_pageLockReleaseAccess();
@@ -156,7 +185,16 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
         return array('hasLock' => true);
     }
 
-
+    /**
+     * Get all the locks for a given page
+     *
+     * @param string[] $args {
+     *      @type string $lockName   The name of the page to return locks for
+     *      @type string $sessionId  The ID of the session owning the lock (optional) (default: current session ID)
+     *                       }
+     *
+     * @return array array of locks for $args['lockName']
+     */
     public function getLocks($args)
     {
         $lockName = $args['lockName'];
@@ -164,21 +202,44 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
 
         $this->_pageLockRequireAccess();
 
-        $dbtable = DBUtil::getTables();
-        $pageLockColumn = &$dbtable['pagelock_column'];
-        $now = time();
+        // remove expired locks
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('ZikulaPageLockModule:PageLockEntity', 'p')
+                                     ->where('p.edate < :now')
+                                     ->setParameter('now', time())
+                                     ->getQuery();
+        $query->getResult();
 
-        $where = "{$pageLockColumn['expiresDate']} < '" . DateUtil::getDatetime($now) . "'";
-        DBUtil::deleteWhere('pagelock', $where);
+        // get remaining active locks
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('p')
+                                     ->from('ZikulaPageLockModule:PageLockEntity', 'p')
+                                     ->where('p.name = :lockName')
+                                     ->setParameter('lockName', $lockName)
+                                     ->andWhere('p.session = :sessionId')
+                                     ->setParameter('sessionId', $sessionId)
+                                     ->getQuery();
+        $locks = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
-        $where = "{$pageLockColumn['name']} = '" . DataUtil::formatForStore($lockName) . "' AND {$pageLockColumn['lockedBySessionId']} != '" . DataUtil::formatForStore($sessionId) . "'";
-        $locks = DBUtil::selectObjectArray('pagelock', $where);
+        // now flush to database
+        $this->entityManager->flush();
 
         $this->_pageLockReleaseAccess();
 
         return $locks;
     }
 
+    /**
+     * Releases a lock on a page
+     *
+     * @param string[] $args {
+     *      @type string $lockName   The name of the lock to be released
+     *      @type string $sessionId  The ID of the session owning the lock (optional) (default: current session ID)
+     *                       }
+     *
+     * @return bool true
+     */
     public function releaseLock($args)
     {
         $lockName = $args['lockName'];
@@ -186,20 +247,28 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
 
         $this->_pageLockRequireAccess();
 
-        $dbtable = DBUtil::getTables();
-        $pageLockTable = &$dbtable['pagelock'];
-        $pageLockColumn = &$dbtable['pagelock_column'];
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('ZikulaPageLockModule:PageLockEntity', 'p')
+                                     ->where('p.name = :lockName')
+                                     ->setParameter('lockName', $lockName)
+                                     ->andWhere('p.session = :sessionId')
+                                     ->setParameter('sessionId', $sessionId)
+                                     ->getQuery();
+        $query->getResult();
 
-        $sql = "DELETE FROM $pageLockTable WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND $pageLockColumn[lockedBySessionId] = '" . DataUtil::formatForStore($sessionId) . "'";
-        DBUtil::executeSql($sql);
+        $this->entityManager->flush();
 
         $this->_pageLockReleaseAccess();
 
         return true;
     }
 
-
-    // Internal locking mechanism to avoid concurrency inside the PageLock functions
+    /**
+     * Internal locking mechanism to avoid concurrency inside the PageLock functions
+     *
+     * @return void
+     */
     private function _pageLockRequireAccess()
     {
         global $PageLockAccessCount;
@@ -209,18 +278,21 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
 
         if ($PageLockAccessCount == 0) {
             global $PageLockFile;
-            $ostemp = DataUtil::formatForOS(System::getVar('temp'), true);
-            $PageLockFile = fopen($ostemp . '/pagelock.lock', "w+");
+            $ostemp = DataUtil::formatForOS(ServiceUtil::get('service_container')->getParameter('temp_dir'));
+            $PageLockFile = fopen($ostemp . '/pagelock.lock', 'w+');
             flock($PageLockFile, LOCK_EX);
-            fwrite($PageLockFile, "This is a locking file for synchronizing access to the PageLock module. Please do not delete.");
+            fwrite($PageLockFile, 'This is a locking file for synchronizing access to the PageLock module. Please do not delete.');
             fflush($PageLockFile);
         }
 
         ++$PageLockAccessCount;
     }
 
-
-    // Internal locking mechanism to avoid concurrency inside the PageLock functions
+    /**
+     * Internal locking mechanism to avoid concurrency inside the PageLock functions
+     *
+     * @return void
+     */
     private function _pageLockReleaseAccess()
     {
         global $PageLockAccessCount;
@@ -233,5 +305,4 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
             fclose($PageLockFile);
         }
     }
-
 }

@@ -14,6 +14,8 @@
 
 /**
  * DBObject.
+ *
+ * @deprecated
  */
 class DBObject
 {

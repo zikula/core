@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -31,6 +30,8 @@ use Doctrine\ORM\Mapping as ORM;
 class UserAttributeEntity extends EntityAccess
 {
     /**
+     * user id to which the attribute belongs
+     *
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="attributes")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="uid")
@@ -38,18 +39,26 @@ class UserAttributeEntity extends EntityAccess
     private $user;
 
     /**
+     * the name of the attribute
+     *
      * @ORM\Id
      * @ORM\Column(type="string", length=80)
      */
     private $name;
 
     /**
+     * the value for the attribute
+     *
      * @ORM\Column(type="text")
      */
     private $value;
 
     /**
      * constructor
+     *
+     * @param int    $user  user id
+     * @param string $name  name of the attribute
+     * @param string $value value of the attribute
      */
     public function __construct($user, $name, $value)
     {

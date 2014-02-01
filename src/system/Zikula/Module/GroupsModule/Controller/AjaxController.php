@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,29 +13,32 @@
 
 namespace Zikula\Module\GroupsModule\Controller;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Module\GroupsModule\Helper\CommonHelper;
 use SecurityUtil;
 use ModUtil;
 use LogUtil;
-use Zikula_Exception_Fatal;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
- * Groups_Controller_Ajax class.
+ * Ajax controllers for the groups module
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Updates a group in the database
      *
-     * @param gid the group id.
-     * @param gtype the group type.
-     * @param state the group state.
-     * @param nbumax the maximum of users.
-     * @param name the group name.
-     * @param description the group description.
+     * @param int $gid the group id.
+     * @param int $gtype the group type.
+     * @param bool $state the group state.
+     * @param int $nbumax the maximum of users.
+     * @param string $name the group name.
+     * @param string $description the group description.
      *
-     * @return AjaxResponse
+     * @return AjaxResponse ajax response object
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
      */
     public function updategroupAction()
     {
@@ -49,7 +51,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $name = $this->request->request->get('name');
         $description = $this->request->request->get('description');
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
 
         if (empty($name)) {
             return new AjaxResponse(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $this->__('Error! The group name is missing.')));
@@ -75,7 +79,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             // check for sessionvar
             $msgs = LogUtil::getStatusMessagesText();
             if (!empty($msgs)) {
-                // return with msg, but not via Zikula_Exception_Fatal
+                // return with msg, but not via FatalErrorException
                 return new AjaxResponse(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $msgs));
             }
         }
@@ -100,13 +104,18 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Create a blank group and return it.
      *
-     * @return AjaxResponse
+     * @return AjaxResponse ajax response object
+     *
+     * @throws FatalErrorException Thrown if the group id isn't a valid group
+     * @throws AccessDeniedException Thrown if the user doesn't have add access to the module
      */
     public function creategroupAction()
     {
         $this->checkAjaxToken();
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
+            throw new AccessDeniedException();
+        }
 
         $groupsCommon = new CommonHelper();
         $typelabel = $groupsCommon->gtypeLabels();
@@ -124,11 +133,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $group_id = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'create', $obj);
 
         if ($group_id == false) {
-            throw new Zikula_Exception_Fatal($this->__('Error! Could not create the new group.'));
+            throw new FatalErrorException($this->__('Error! Could not create the new group.'));
         }
 
         // update group's name
-        $group = $this->entityManager->find('Zikula\Module\GroupsModule\Entity\GroupEntity', $group_id);
+        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $group_id);
         $group['name'] = $this->__f('Group %s', $group_id);
         $this->entityManager->flush();
 
@@ -145,9 +154,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Delete a group.
      *
-     * @param gid the group id.
+     * @param int $gid the group id.
      *
-     * @return AjaxResponse
+     * @return AjaxResponse ajax response object
+     *
+     * @throws FatalErrorException Thrown if the requested group is the default group or
+     *                                    if the requested group cannot be deleted
+     * @throws AccessDeniedException Thrown if the user doesn't have delete access to the group
      */
     public function deletegroupAction()
     {
@@ -156,22 +169,35 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $gid = $this->request->request->get('gid');
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)) {
+            throw new AccessDeniedException();
+        }
 
         // Check if it is the default group...
         $defaultgroup = $this->getVar('defaultgroup');
 
         if ($group['gid'] == $defaultgroup) {
-            throw new Zikula_Exception_Fatal($this->__('Error! You cannot delete the default user group.'));
+            throw new FatalErrorException($this->__('Error! You cannot delete the default user group.'));
         }
 
         if (ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'delete', array('gid' => $gid)) == true) {
             return new AjaxResponse(array('gid' => $gid));
         }
 
-        throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete the \'%s\' group.', $gid));
+        throw new FatalErrorException($this->__f('Error! Could not delete the \'%s\' group.', $gid));
     }
 
+    /**
+     * Remove a user from a group
+     *
+     * @param int $uid the user id
+     * @param int $gid the group id
+     *
+     * @return AjaxResponse ajax response object
+     *
+     * @throws FatalErrorException Thrown if the user cannot be deleted from the group
+     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
+     */
     public function removeuserAction()
     {
         $this->checkAjaxToken();
@@ -179,10 +205,12 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $gid = (int)$this->request->request->get('gid');
         $uid = (int)$this->request->request->get('uid');
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
 
         if (!ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
-            throw new Zikula_Exception_Fatal($this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
+            throw new FatalErrorException($this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
         }
 
         $result = array(

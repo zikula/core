@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,6 +16,8 @@ namespace Zikula\Module\ExtensionsModule\Controller;
 use LogUtil;
 use SecurityUtil;
 use PluginUtil;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula_Plugin_ConfigurableInterface;
 
 /**
@@ -45,18 +46,22 @@ class AdminpluginController extends \Zikula_AbstractController
      */
     protected function initialize()
     {
-        // Do not setupt a view for this controller.
+        // Do not setup a view for this controller.
     }
 
     /**
      * Dispatch a module view request.
      *
      * @return mixed
+     * 
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module or
+     *                                          if the plugin isn't configurable
+     * @throws NotFoundHttpException Thrown if the plugin doesn't have the requested service or action methods
      */
     public function dispatchAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Get input.
@@ -79,16 +84,21 @@ class AdminpluginController extends \Zikula_AbstractController
             $serviceId = PluginUtil::getServiceId("{$type}_{$pluginName}_Plugin");
         }
 
-        $this->throwNotFoundUnless($this->getContainer()->has($serviceId));
+        if (!$this->getContainer()->has($serviceId)) {
+            throw new NotFoundHttpException();
+        }
 
         $this->plugin = $this->getContainer()->get($serviceId);
 
         // Sanity checks.
-        $this->throwNotFoundUnless($this->plugin->isInstalled(), __f('Plugin "%s" is not installed', $this->plugin->getMetaDisplayName()));
-        $this->throwForbiddenUnless($this->plugin instanceof Zikula_Plugin_ConfigurableInterface, __f('Plugin "%s" is not configurable', $this->plugin->getMetaDisplayName()));
+        if (!$this->plugin instanceof Zikula_Plugin_ConfigurableInterface) {
+            throw new AccessDeniedException(__f('Plugin "%s" is not configurable', $this->plugin->getMetaDisplayName()));
+        }
 
         $this->pluginController = $this->plugin->getConfigurationController();
-        $this->throwNotFoundUnless($this->pluginController->getReflection()->hasMethod($action));
+        if (!$this->pluginController->getReflection()->hasMethod($action)) {
+            throw new NotFoundHttpException();
+        }
 
         return $this->pluginController->$action();
     }

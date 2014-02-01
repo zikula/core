@@ -18,6 +18,8 @@
  *
  * This plugin represents a menu item.
  * See Zikula_Form_Plugin_ContextMenu.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_ContextMenu_Separator extends Zikula_Form_AbstractPlugin
 {

@@ -33,8 +33,8 @@
     {else}
     {assign var='themeurl' value="`$homepageurl`?theme=`$theme.name`"}
     {/if}
-    <dd><a href="{$themeurl|safetext}"><span class="icon icon-eye-open"></span> {gt text="Preview theme"}</a></dd>
-    <dd><a href="?newtheme={$theme.name}"><span class="icon icon-ok"></span>{gt text="Use theme"}</a></dd>
+    <dd><a href="{$themeurl|safetext}"><span class="fa fa-eye"></span> {gt text="Preview theme"}</a></dd>
+    <dd><a href="?newtheme={$theme.name}"><span class="fa fa-check"></span>{gt text="Use theme"}</a></dd>
 </dl>
 {/foreach}
 

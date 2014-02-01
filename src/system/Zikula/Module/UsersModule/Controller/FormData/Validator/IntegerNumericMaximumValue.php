@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -30,8 +29,8 @@ class IntegerNumericMaximumValue extends AbstractValidator
      * Constructs a new validator, initializing the maximum valid value.
      *
      * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
-     * @param integer               $value          The maximum valid value for the field data.
-     * @param string                $errorMessage   The error message to return if the field data is not valid.
+     * @param integer                $value          The maximum valid value for the field data.
+     * @param string                 $errorMessage   The error message to return if the field data is not valid.
      *
      * @throws \InvalidArgumentException If the maximum value specified is not an integer.
      */

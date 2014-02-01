@@ -15,6 +15,8 @@
 
 /**
  * Zikula_Exception class.
+ *
+ * @deprecated
  */
 class Zikula_Exception extends Exception
 {

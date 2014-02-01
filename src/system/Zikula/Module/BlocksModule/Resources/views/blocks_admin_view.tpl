@@ -1,4 +1,4 @@
-{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/blocks.js'}
+{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js'}
 
 {gt text="Click to activate this block" assign=activate}
 {gt text="Click to deactivate this block" assign=deactivate}
@@ -6,7 +6,7 @@
 {adminheader}
 
 <h3>
-    <span class="icon icon-list"></span>
+    <span class="fa fa-list"></span>
     {gt text="Blocks list"}
 </h3>
 
@@ -102,12 +102,12 @@
                 <a class="label label-danger tooltips{if $block.active} hide{/if}" href="{modurl modname=$module type='admin' func='activate' bid=$block.bid|safetext csrftoken=$csrftoken}" title="{$lbl_activate_block}" data-bid="{$block.bid}">{gt text="Inactive"}</a>
             </td>
             <td class="actions">
-                <a class="icon icon-eye-open tooltips" href="{modurl modname=$module type='user' func='display' bid=$block.bid|safetext showinactive=true}" title="{$lbl_preview_block}"></a>
+                <a class="fa fa-eye tooltips" href="{modurl modname=$module type='user' func='display' bid=$block.bid|safetext showinactive=true}" title="{$lbl_preview_block}"></a>
                 {if $access_edit}
-                <a class="icon icon-pencil tooltips" href="{modurl modname=$module type='admin' func='modify' bid=$block.bid|safetext}" title="{$lbl_edit_block}"></a>
+                <a class="fa fa-pencil tooltips" href="{modurl modname=$module type='admin' func='modify' bid=$block.bid|safetext}" title="{$lbl_edit_block}"></a>
                 {/if}
                 {if $access_delete}
-                <a class="icon icon-trash tooltips" href="{modurl modname=$module type='admin' func='delete' bid=$block.bid|safetext}" title="{$lbl_delete_block}"></a>
+                <a class="fa fa-trash-o tooltips" href="{modurl modname=$module type='admin' func='delete' bid=$block.bid|safetext}" title="{$lbl_delete_block}"></a>
                 {/if}
             </td>
         </tr>
@@ -141,10 +141,10 @@
             <td><code>&#123;blockposition name='{$position.name|safehtml}'&#125;</code></td>
             <td class="actions">
                 {if $access_edit}
-                <a class="icon icon-pencil tooltips" href="{modurl modname=$module type='admin' func='modifyposition' pid=$position.pid|safetext}" title="{$lbl_edit_blockposition}"></a>
+                <a class="fa fa-pencil tooltips" href="{modurl modname=$module type='admin' func='modifyposition' pid=$position.pid|safetext}" title="{$lbl_edit_blockposition}"></a>
                 {/if}
                 {if $access_delete}
-                <a class="icon icon-trash tooltips" href="{modurl modname=$module type='admin' func='deleteposition' pid=$position.pid|safetext}" title="{$lbl_delete_blockposition}"></a>
+                <a class="fa fa-trash-o tooltips" href="{modurl modname=$module type='admin' func='deleteposition' pid=$position.pid|safetext}" title="{$lbl_delete_blockposition}"></a>
                 {/if}
             </td>
         </tr>

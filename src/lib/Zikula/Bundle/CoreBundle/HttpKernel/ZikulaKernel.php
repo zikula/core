@@ -3,6 +3,7 @@
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use Symfony\Component\Debug\DebugClassLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Zikula\Bridge\DependencyInjection\PhpDumper;
@@ -366,5 +367,37 @@ abstract class ZikulaKernel extends Kernel
         }
 
         return $parameters;
+    }
+
+    /**
+     * Prepares the ContainerBuilder before it is compiled.
+     *
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     */
+    protected function prepareContainer(ContainerBuilder $container)
+    {
+        $extensions = array();
+        foreach ($this->bundles as $bundle) {
+            if ($bundle instanceof AbstractBundle && $bundle->getState() != AbstractBundle::STATE_ACTIVE) {
+                continue;
+            }
+            if ($extension = $bundle->getContainerExtension()) {
+                $container->registerExtension($extension);
+                $extensions[] = $extension->getAlias();
+            }
+
+            if ($this->debug) {
+                $container->addObjectResource($bundle);
+            }
+        }
+        foreach ($this->bundles as $bundle) {
+            if ($bundle instanceof AbstractBundle && $bundle->getState() != AbstractBundle::STATE_ACTIVE) {
+                continue;
+            }
+            $bundle->build($container);
+        }
+
+        // ensure these extensions are implicitly loaded
+        $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
     }
 }

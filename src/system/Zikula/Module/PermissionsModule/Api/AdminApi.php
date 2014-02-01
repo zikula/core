@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,20 +13,17 @@
 
 namespace Zikula\Module\PermissionsModule\Api;
 
-use LogUtil;
 use SecurityUtil;
-use DBUtil;
-use DataUtil;
 use BlockUtil;
 use ModUtil;
 use Zikula\Module\PermissionsModule\Entity\PermissionEntity;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Permissions_Api_Admin class.
+ * API functions used by administrative controllers
  */
 class AdminApi extends \Zikula_AbstractApi
 {
-
     /**
      * Increment sequence number of a permission.
      *
@@ -35,34 +31,33 @@ class AdminApi extends \Zikula_AbstractApi
      * permissions sequence, thus making it more likely to be acted
      * against.
      *
-     * @param int $args ['pid'] the ID of the permission to increment.
+     * @param int[] $args {
+     *      @type int $pid the ID of the permission to increment.
+     *                    }
      *
-     * @return bool true on success, false on failure.
+     * @return bool true on success, false if the permission rule doesn't exist.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
+     * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
+     * @throws \RuntimeException Thrown if there is no permission rule above the requested one or
+     *                                  if there is both affected permissions, in partial view, are seperated by a hidden rule 
      */
     public function inc($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Argument check
-        if (!isset($args['pid'])) {
-            return LogUtil::registerArgsError();
-        }
-
-        if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
-            $where_gid = " AND (p.gid = " . SecurityUtil::PERMS_ALL . " OR p.gid = " . DataUtil::formatForStore($args['permgrp']) . ")";
-            $showpartly = true;
-        } else {
-            $where_gid = '';
-            $showpartly = false;
+        if (!isset($args['pid']) || is_numeric($args['pid'])) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get info on current perm
-        $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
+        $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
         if (!$permission) {
-            return LogUtil::registerError($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
+            return false;
         }
 
         $sequence = $permission['sequence'];
@@ -71,18 +66,31 @@ class AdminApi extends \Zikula_AbstractApi
             $altsequence = $sequence - 1;
 
             // get info on displaced perm
-            $where = "WHERE p.sequence = " . (int)DataUtil::formatForStore($altsequence) . " $where_gid";
-            $dql = "SELECT p FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p $where";
-            $query = $this->entityManager->createQuery($dql);
-            $d_permission = $query->getOneOrNullResult();
+            $qb = $this->entityManager->createQueryBuilder()
+                                      ->select('p')
+                                      ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
+                                      ->where('p.sequence = :altsequence')
+                                      ->setParameter('altsequence', $altsequence);
+
+            if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
+                $qb->andWhere('(p.gid = :permsall OR p.gid = :permgrp)')
+                   ->setParameter('permsall', SecurityUtil::PERMS_ALL)
+                   ->setParameter('permgrp', $args['permgrp']);
+                $showpartly = true;
+            } else {
+                $showpartly = false;
+            }
+
+            $d_permission = $qb->getQuery()
+                               ->getOneOrNullResult();
 
             if (!$d_permission) {
                 if ($showpartly) {
                     // Changing the sequence by moving while in partial view may only be done if there
                     // are no invisible permissions inbetween that might be affected by the move.
-                    LogUtil::registerError($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
+                    throw new \RuntimeException($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
                 } else {
-                    LogUtil::registerError($this->__('Error! No permission rule directly above that one.'));
+                    throw new \RuntimeException($this->__('Error! No permission rule directly above that one.'));
                 }
 
                 return false;
@@ -91,10 +99,10 @@ class AdminApi extends \Zikula_AbstractApi
             $altpid = $d_permission['pid'];
 
             // swap sequence numbers
-            $perm1 = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\Permission', $altpid);
+            $perm1 = $this->entityManager->find('ZikulaPermissionsModule:Permission', $altpid);
             $perm1['sequence'] = $sequence;
 
-            $perm2 = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\Permission', $args['pid']);
+            $perm2 = $this->entityManager->find('ZikulaPermissionsModule:Permission', $args['pid']);
             $perm2['sequence'] = $altsequence;
 
             $this->entityManager->flush();
@@ -106,35 +114,33 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Decrement sequence number of a permission.
      *
-     * @param string $args ['type'] the type of the permission to decrement (user or group).
-     * @param int    $args ['pid'] the ID of the permission to decrement.
+     * @param int[] $args {
+     *       @type int    $pid  the ID of the permission to decrement.
+     *                    }
      *
-     * @return boolean true on success, false on failure.
+     * @return bool true on success, false if the permission rule doesn't exist
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
+     * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
+     * @throws \RuntimeException Thrown if there is no permission rule below the requested one or
+     *                                  if there is both affected permissions, in partial view, are seperateed by a hidden rule 
      */
     public function dec($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Argument check
-        if (!isset($args['pid'])) {
-            return LogUtil::registerArgsError();
-        }
-
-        if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
-            $where_gid = " AND (p.gid = " . SecurityUtil::PERMS_ALL . " OR p.gid = " . DataUtil::formatForStore($args['permgrp']) . ")";
-            $showpartly = true;
-        } else {
-            $where_gid = '';
-            $showpartly = false;
+        if (!isset($args['pid']) || is_numeric($args['pid'])) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get info on current perm
-        $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
+        $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
         if (!$permission) {
-            return LogUtil::registerError($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
+            return false;
         }
 
         $sequence = $permission['sequence'];
@@ -144,18 +150,31 @@ class AdminApi extends \Zikula_AbstractApi
             $altsequence = $sequence + 1;
 
             // get info on displaced perm
-            $where = "WHERE p.sequence = " . (int)DataUtil::formatForStore($altsequence) . " $where_gid";
-            $dql = "SELECT p FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p $where";
-            $query = $this->entityManager->createQuery($dql);
-            $d_permission = $query->getOneOrNullResult();
+            $qb = $this->entityManager->createQueryBuilder()
+                                      ->select('p')
+                                      ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
+                                      ->where('p.sequence = :altsequence')
+                                      ->setParameter('altsequence', $altsequence);
+
+            if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
+                $qb->andWhere('(p.gid = :permsall OR p.gid = :permgrp)')
+                   ->setParameter('permsall', SecurityUtil::PERMS_ALL)
+                   ->setParameter('permgrp', $args['permgrp']);
+                $showpartly = true;
+            } else {
+                $showpartly = false;
+            }
+
+            $d_permission = $qb->getQuery()
+                               ->getOneOrNullResult();
 
             if (!$d_permission) {
                 if ($showpartly) {
                     // Changing the sequence by moving while in partial view may only be done if there
                     // are no invisible permissions inbetween that might be affected by the move.
-                    LogUtil::registerError($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
+                    throw new \RuntimeException($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
                 } else {
-                    LogUtil::registerError($this->__('Error! No permission rule directly below that one.'));
+                    throw new \RuntimeException($this->__('Error! No permission rule directly below that one.'));
                 }
 
                 return false;
@@ -164,10 +183,10 @@ class AdminApi extends \Zikula_AbstractApi
             $altpid = $d_permission['pid'];
 
             // swap sequence numbers
-            $perm1 = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $altpid);
+            $perm1 = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $altpid);
             $perm1['sequence'] = $sequence;
 
-            $perm2 = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
+            $perm2 = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
             $perm2['sequence'] = $altsequence;
 
             $this->entityManager->flush();
@@ -179,36 +198,44 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Update attributes of a permission.
      *
-     * @param int    $args ['pid'] the ID of the permission to update.
-     * @param string $args ['realm'] the new realm of the permission.
-     * @param int    $args ['id'] the new group/user id of the permission.
-     * @param string $args ['component'] the new component of the permission.
-     * @param string $args ['instance'] the new instance of the permission.
-     * @param int    $args ['level'] the new level of the permission.
+     * @param mixed[] $args {
+     *       @type int    $pid       the ID of the permission to update
+     *       @type int    $seq       the order number of the permission
+     *       @type int    $oldseq    the old order number of the permission
+     *       @type string $realm     the new realm of the permission
+     *       @type int    $id        the new group/user id of the permission
+     *       @type string $component the new component of the permission
+     *       @type string $instance  the new instance of the permission
+     *       @type int    $level     the new level of the permission
+     *                      }
      *
-     * @return bool true on success, false on failure.
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
+     * @throws \InvalidArgumentException Thrown if any of pid, seq, oldseq, id or level are not set or not numeric or 
+     *                                          if any of realm, component or instance are not set
      */
     public function update($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Argument check
-        if ((!isset($args['pid'])) ||
-                (!isset($args['seq'])) ||
-                (!isset($args['oldseq'])) ||
+        if ((!isset($args['pid']) || !is_numeric($args['pid'])) ||
+                (!isset($args['seq']) || !is_numeric($args['seq'])) ||
+                (!isset($args['oldseq']) || !is_numeric($args['oldseq'])) ||
                 (!isset($args['realm'])) ||
-                (!isset($args['id'])) ||
+                (!isset($args['id']) || !is_numeric($args['id'])) ||
                 (!isset($args['component'])) ||
                 (!isset($args['instance'])) ||
-                (!isset($args['level']))) {
-            return LogUtil::registerArgsError();
+                (!isset($args['level']) || !is_numeric($args['level']))) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get and update permission
-        $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
+        $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
         $permission['gid'] = $args['id'];
         $permission['realm'] = $args['realm'];
         $permission['component'] = $args['component'];
@@ -227,29 +254,37 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Create a new perm.
      *
-     * @param string $args ['realm'] the new realm of the permission.
-     * @param int    $args ['id'] the new group/user id of the permission.
-     * @param string $args ['component'] the new component of the permission.
-     * @param string $args ['instance'] the new instance of the permission.
-     * @param int    $args ['level'] the new level of the permission.
+     * @param mixed[] $args {
+     *       @type string $realm     the new realm of the permission
+     *       @type int    $id        the new group/user id of the permission
+     *       @type string $component the new component of the permission
+     *       @type string $instance  the new instance of the permission
+     *       @type int    $level     the new level of the permission
+     *       @type int    $insseq    the place to insert the new permission rule
+     *                      }
      *
-     * @return boolean true on success, false on failure.
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access over the permission rule.
+     * @throws \InvalidArgumentException Thrown if any of id, insseq or level are not set or not numeric or 
+     *                                          if any of realm, component or instance are not set.
+     * @throws \RuntimeException Thrown if the permission rule couldn't be saved.
      */
     public function create($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[id]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Argument check
         if ((!isset($args['realm'])) ||
-                (!isset($args['id'])) ||
+                (!isset($args['id']) || !is_numeric($args['id'])) ||
                 (!isset($args['component'])) ||
                 (!isset($args['instance'])) ||
-                (!isset($args['level'])) ||
-                (!isset($args['insseq']))) {
-            return LogUtil::registerArgsError();
+                (!isset($args['level']) || !is_numeric($args['level'])) ||
+                (!isset($args['insseq']) || !is_numeric($args['insseq']))) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Insert Capability
@@ -258,12 +293,16 @@ class AdminApi extends \Zikula_AbstractApi
             $newseq = $maxseq + 1;
         } else {
             // Increase sequence numbers
-            $dql = "UPDATE Zikula\Module\PermissionsModule\Entity\PermissionEntity p SET p.sequence = p.sequence + 1 WHERE p.sequence >= " . (int)DataUtil::formatForStore($args['insseq']);
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->update('ZikulaPermissionsModule:PermissionEntity', 'p')
+                                         ->set('p.sequence = p.sequence + 1')
+                                         ->where('p.sequence >= :insseq')
+                                         ->setParameter('insseq', $args['insseq'])
+                                         ->getQuery();
             $result = $query->getResult();
 
             if (!$result) {
-                return LogUtil::registerError($this->__('Error! Could not save permission rule sequences.'));
+                throw new \RuntimeException($this->__('Error! Could not save permission rule sequences.'));
             }
 
             $newseq = $args['insseq'];
@@ -289,25 +328,29 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Delete a perm.
      *
-     * @param string $args ['type'] the type of the permission to update (user or group).
-     * @param int    $args ['pid'] the ID of the permission to delete.
+     * @param int[] $args {
+     *       @type int $pid the ID of the permission to delete.
+     *                    }
      *
-     * @return boolean true on success, false on failure.
+     * @return boolean true on success
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the group
+     * @throws \InvalidArgumentException Thrown if the pid parameter isn't set or isn't numeric
      */
     public function delete($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Argument check
-        if (!isset($args['pid'])) {
-            return LogUtil::registerArgsError();
+        if (!isset($args['pid']) || !is_numeric($args['pid'])) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get and delete permission
-        $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
+        $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
         $this->entityManager->remove($permission);
         $this->entityManager->flush();
 
@@ -320,33 +363,40 @@ class AdminApi extends \Zikula_AbstractApi
      * Get the maximum sequence number in permissions table.
      *
      * @return int the maximum sequence number.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function maxsequence()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
-        $dql = "SELECT MAX(p.sequence) FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p";
-        $query = $this->entityManager->createQuery($dql);
-        return (int)$query->getSingleScalarResult();
+        $qb = $this->entityManager->createQueryBuilder();
+        $query = $qb->select($qb->expr()->max('p.sequence'))
+                    ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
+                    ->getQuery();
+
+        return (int)$query->getSingleScalarResult();;
     }
 
     /**
      * Resequence a permissions table.
      *
-     * @return boolean
+     * @return bool true if successful, false if no permissions rules are found
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function resequence()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', 'group::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
         }
 
         // get all permissions
-        $permissions = $this->entityManager->getRepository('Zikula\Module\PermissionsModule\Entity\PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
+        $permissions = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
         if (!$permissions) {
             return false;
         }
@@ -372,21 +422,26 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * Called when a permission is assigned the same sequence number as an existing permission.
      *
-     * @param string $args ['newseq'] the desired sequence.
-     * @param string $args ['oldseq'] the original sequence number.
+     * @param string[] $args {
+     *       @type string $newseq the desired sequence
+     *       @type string $oldseq the original sequence number
+     *                       }
      *
-     * @return boolean
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
+     * @throws \InvalidArgumentException Thrown if either the newseq or oldseq parameters aren't set
      */
     public function full_resequence($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Argument check
         if (!isset($args['newseq']) || !isset($args['oldseq'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $newseq = $args['newseq'];
@@ -402,8 +457,16 @@ class AdminApi extends \Zikula_AbstractApi
                 $newseq = 1;
             }
 
-            $dql = "SELECT p FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p WHERE p.sequence >= {$newseq} AND p.sequence <= {$oldseq} ORDER BY p.sequence DESC";
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->select('p')
+                                         ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
+                                         ->where('p.sequence >= :newseq')
+                                         ->andWhere('p.sequence <= :oldseq')
+                                         ->setParameter('newseq', $newseq)
+                                         ->setParameter('oldseq', $oldseq)
+                                         ->orderBy('p.sequence', 'DESC')
+                                         ->getQuery();
+
             $permissions = $query->getResult();
 
             foreach ($permissions as $permission) {
@@ -428,8 +491,16 @@ class AdminApi extends \Zikula_AbstractApi
                 $newseq = (int)$maxseq;
             }
 
-            $dql = "SELECT p FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p WHERE p.sequence >= {$oldseq} AND p.sequence <= {$newseq} ORDER BY p.sequence ASC";
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->select('p')
+                                         ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
+                                         ->where('p.sequence >= :oldseq')
+                                         ->andWhere('p.sequence <= :newseq')
+                                         ->setParameter('oldseq', $oldseq)
+                                         ->setParameter('newseq', $newseq)
+                                         ->orderBy('p.sequence', 'ASC')
+                                         ->getQuery();
+
             $permissions = $query->getResult();
 
             foreach ($permissions as $permission) {
@@ -455,12 +526,14 @@ class AdminApi extends \Zikula_AbstractApi
      * Get all security permissions schemas.
      *
      * @return array array if permission schema values.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function getallschemas()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         $schemas = SecurityUtil::getSchemas();

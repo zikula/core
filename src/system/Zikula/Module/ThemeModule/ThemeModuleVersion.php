@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,8 +13,16 @@
 
 namespace Zikula\Module\ThemeModule;
 
+/**
+ * Version information for the theme module
+ */
 class ThemeModuleVersion extends \Zikula_AbstractVersion
 {
+    /**
+     * Generate an array of meta data about this module
+     *
+     * @return array meta data array
+     */
     public function getMetaData()
     {
         $meta = array();
@@ -24,7 +31,7 @@ class ThemeModuleVersion extends \Zikula_AbstractVersion
         //! module name that appears in URL
         $meta['url']            = $this->__('theme');
         $meta['version']        = '3.4.3';
-        $meta['core_min'] = '1.3.6';
+        $meta['core_min'] = '1.3.7';
         $meta['securityschema'] = array('ZikulaThemeModule::' => 'Theme name::');
 
         return $meta;

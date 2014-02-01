@@ -61,6 +61,11 @@ class ZLoader
         self::$autoloader->add($prefix, $paths);
     }
 
+    public static function addPrefixPsr4($prefix, $paths)
+    {
+        self::$autoloader->addPsr4($prefix, $paths);
+    }
+
     /**
      * Simple PEAR autoloader and handling for non-PEAR classes.
      *

@@ -6,8 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,7 +20,7 @@ use System;
 use DateTime;
 use DateTimeZone;
 use ServiceUtil;
-use Zikula_Exception_Fatal;
+
 use DBUtil;
 use EventUtil;
 use HookUtil;
@@ -60,17 +58,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         $this->defaultdata();
         $this->setVars($this->getDefaultModvars());
 
-        // Register persistent event listeners (handlers)
-        EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content',
-            array('Zikula\Module\UsersModule\Listener\PendingContentListener', 'pendingContentListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto',
-            array('Zikula\Module\UsersModule\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded',
-            array('Zikula\Module\UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception',
-            array('Zikula\Module\UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
-
-        // Register persistent hook bundles
+        // Register hook bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
         HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
 
@@ -86,7 +74,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
      *
      * @param string $oldVersion Version number string to upgrade from.
      *
-     * @return mixed True on success, last valid version string or false if fails.
+     * @return bool|string True on success, last valid version string or false if fails.
      */
     public function upgrade($oldVersion)
     {
@@ -238,6 +226,11 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         $this->entityManager->flush();
     }
 
+    /**
+     * Migrate attributes to user entity
+     *
+     * @return void
+     */
     private function migrateAttributes()
     {
         $dataset = DBUtil::selectObjectArray('users');
@@ -247,7 +240,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
                 continue;
             }
 
-            $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array('uid' => $data['uid']));
+            $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => $data['uid']));
             foreach ($data['__ATTRIBUTES__'] as $name => $value) {
                 $user->setAttribute($name ,$value);
             }

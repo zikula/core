@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,32 +16,40 @@ namespace Zikula\Module\SearchModule\Controller;
 use ModUtil;
 use LogUtil;
 use SecurityUtil;
-use FormUtil;
 use SessionUtil;
 use UserUtil;
 use System;
 use DataUtil;
 use ZLanguage;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * User controllers for the search module
+ */
 class UserController extends \Zikula_AbstractController
 {
     /**
      * Main user function
      *
-     * This function is the default function. Call the function to show the search form.
-     *
-     * @return string HTML string templated
+     * @return RedirectResponse
      */
     public function mainAction()
     {
         // Security check will be done in form()
-        return $this->redirect(ModUtil::url('ZikulaSearchModule', 'user', 'form'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
     }
 
+    /**
+     * Main user function
+     *
+     * @return RedirectResponse
+     */
     public function indexAction()
     {
         // Security check will be done in form()
-        return $this->redirect(ModUtil::url('ZikulaSearchModule', 'user', 'form'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
     }
 
     /**
@@ -51,23 +58,33 @@ class UserController extends \Zikula_AbstractController
      * Generate the whole search form, including the various plugins options.
      * It uses the Search API's getallplugins() function to find plugins.
      *
-     * @return string HTML string templated
+     * @param mixed[] $vars {
+     *      @type string $q           search query
+     *      @type string $searchtype  type of search being requested
+     *      @type string $searchorder order to sort the results in
+     *      @type int    $numlimit    number of search results to return
+     *      @type array  $active      array of search plugins to search (if empty all plugins are used)
+     *      @type array  $modvar      array with extrainfo for search plugins
+     *                      }
+     *
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
      */
     public function formAction($vars = array())
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // get parameter from input
-        $vars['q'] = strip_tags(FormUtil::getPassedValue('q', '', 'REQUEST'));
-        $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
-        $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
+        $vars['q'] = strip_tags($this->request->request->get('q', ''));
+        $vars['searchtype'] = $this->request->request->get('searchtype', SessionUtil::getVar('searchtype'));
+        $vars['searchorder'] = $this->request->request->get('searchorder', SessionUtil::getVar('searchorder'));
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
-        $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'REQUEST');
-        $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
-
+        $vars['active'] = $this->request->request->get('active', SessionUtil::getVar('searchactive'));
+        $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar'));
 
         // this var allows the headers to not be displayed
         if (!isset($vars['titles']))
@@ -136,36 +153,39 @@ class UserController extends \Zikula_AbstractController
      * This function includes all the search plugins, then call every one passing
      * an array that contains the string to search for, the boolean operators.
      *
-     * @return string HTML string templated
+     * @return Response symfony response object templated
+     *
+     * @thrown \InvalidArgumentException Thrown if no search query parameters were provided
+     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
      */
     public function searchAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // get parameter from HTTP input
         $vars = array();
-        $vars['q'] = strip_tags(FormUtil::getPassedValue('q', '', 'REQUEST'));
-        $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
-        $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
+        $vars['q'] = strip_tags($this->request->request->get('q', ''));
+        $vars['searchtype'] = $this->request->request->get('searchtype', SessionUtil::getVar('searchtype'));
+        $vars['searchorder'] = $this->request->request->get('searchorder', SessionUtil::getVar('searchorder'));
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
-        $vars['page'] = (int)FormUtil::getPassedValue('page', 1, 'REQUEST');
+        $vars['page'] = (int)$this->request->request->get('page', 1);
 
         // $firstpage is used to identify the very first result page
         // - and to disable calls to plugins on the following pages
         $vars['firstPage'] = empty($_REQUEST['page']);
 
         // The modulename exists in this array as key, if the checkbox was filled
-        $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'REQUEST');
+        $vars['active'] = $this->request->request->get('active', SessionUtil::getVar('searchactive'));
 
         // All formular data from the modules search plugins is contained in:
-        $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
+        $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar'));
 
         if (empty($vars['q'])) {
-            LogUtil::registerError ($this->__('Error! You did not enter any keywords to search for.'));
-            $this->redirect(ModUtil::url('ZikulaSearchModule', 'user', 'form'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! You did not enter any keywords to search for.'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
         }
 
         // set some defaults
@@ -237,12 +257,16 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * display a list of recent searches
+     *
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module or no user is logged in
      */
     public function recentAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ) || !UserUtil::isLoggedIn()) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need.
@@ -266,10 +290,17 @@ class UserController extends \Zikula_AbstractController
         return $this->view->fetch('User/recent.tpl');
     }
 
+    /**
+     * Generate xml for opensearch syndication
+     *
+     * @return void
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
+     */
     public function opensearchAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         $sitename = DataUtil::formatForDisplay(System::getVar('sitename'));

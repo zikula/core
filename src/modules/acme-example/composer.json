@@ -1,0 +1,24 @@
+{
+    "name": "acme/examplemodule-module",
+    "description": "AcmeExampleModule description",
+    "type": "zikula-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Name",
+            "homepage": "http://example.com/",
+            "email": "example@example.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Acme\\ExampleModule\\": "" }
+    },
+    "require": {
+        "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Acme\\ExampleModule\\AcmeExampleModule"
+        }
+    }
+}

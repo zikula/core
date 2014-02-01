@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 /**
  * User interaction handler for Form system.
  *
@@ -28,6 +30,8 @@
  * }
  * </code>
  * See tutorials elsewhere for general introduction to Form.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_View extends Zikula_View
 {
@@ -133,6 +137,11 @@ class Zikula_Form_View extends Zikula_View
      * @internal
      */
     public $redirected;
+
+    /**
+     * @var Zikula\Core\ModUrl
+     */
+    public $redirectTarget;
 
     /**
      * Unique form ID.
@@ -292,7 +301,8 @@ class Zikula_Form_View extends Zikula_View
         // We cannot skip HTML generation entirely in case of System::redirect since there might be
         // some relevant code to execute in the plugins.
         if ($this->redirected) {
-            return true;
+            // only reach this point if redirectTarget is a Zikula\Core\ModUrl
+            return new RedirectResponse(System::normalizeUrl($this->redirectTarget->getUrl()));
         }
 
         return $output;
@@ -614,7 +624,7 @@ class Zikula_Form_View extends Zikula_View
             $this->validate();
         }
 
-        return $this->_IsValid;
+        return $this->_isValid;
     }
 
     /**
@@ -634,12 +644,12 @@ class Zikula_Form_View extends Zikula_View
      */
     public function validate()
     {
-        $this->_IsValid = true;
+        $this->_isValid = true;
 
         $lim = count($this->validators);
         for ($i = 0; $i < $lim; ++$i) {
             $this->validators[$i]->validate($this);
-            $this->_IsValid = $this->_IsValid && $this->validators[$i]->isValid;
+            $this->_isValid = $this->_isValid && $this->validators[$i]->isValid;
         }
 
         $this->validationChecked = true;
@@ -652,7 +662,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function clearValidation()
     {
-        $this->_IsValid = true;
+        $this->_isValid = true;
 
         $lim = count($this->validators);
         for ($i = 0; $i < $lim; ++$i) {
@@ -808,7 +818,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Redirect.
      *
-     * @param string $url Url.
+     * @param Zikula\Core\ModUrl|string $url Url.
      *
      * @return boolean True if redirected successfully, otherwise false.
      */
@@ -816,9 +826,16 @@ class Zikula_Form_View extends Zikula_View
     {
         $this->redirected = true;
 
-        // FIXME this executes the redirect immediately,
-        // should the View store the url and do it in the end of its lifecycle?
-        return System::redirect($url);
+        if ($url instanceof Zikula\Core\ModUrl) {
+            $this->redirectTarget = $url;
+            // return and complete lifecycle events. redirect will complete in the `execute` method
+            return true;
+        } else {
+            // for BC: if only url is provided, send redirect immediately, discarding all future lifecycle changes
+            $response =  new RedirectResponse(System::normalizeUrl($url));
+            $response->send();
+            exit;
+        }
     }
 
     /**

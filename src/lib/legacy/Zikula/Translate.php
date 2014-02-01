@@ -15,6 +15,8 @@
 
 /**
  * Zikula Translate helper.
+ *
+ * @deprecated
  */
 class Zikula_Translate implements Zikula_TranslatableInterface
 {

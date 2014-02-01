@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -17,30 +16,33 @@ namespace Zikula\Module\SettingsModule\Listener;
 use LogUtil;
 use ModUtil;
 use System;
-use Zikula_Event;
-use ZLanguage;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Core\Event\GenericEvent;
 
-/**
- * EventHandlers class.
- */
-class ModuleListener
+class ModuleListener implements EventSubscriberInterface
 {
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'installer.module.deactivated' => array('moduleDeactivated'),
+        );
+    }
+
     /**
      * Handle module deactivated event "installer.module.deactivated".
      * Receives $modinfo as $args
      *
-     * @param Zikula_Event $event
+     * @param GenericEvent $event
      *
      * @return void
      */
-    public static function moduleDeactivated(Zikula_Event $event)
+    public static function moduleDeactivated(GenericEvent $event)
     {
         $modname = $event['name'];
-        $dom = ZLanguage::getModuleDomain('ZikulaSettingsModule');
 
         if ($modname == System::getVar('startpage')) {
             ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'resetStartModule');
-            LogUtil::registerStatus(__('The start module was resetted to a static frontpage.', $dom));
+            LogUtil::registerStatus(__('The start module was reset to a static frontpage.'));
         }
     }
 }

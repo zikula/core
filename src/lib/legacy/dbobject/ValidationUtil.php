@@ -14,6 +14,8 @@
 
 /**
  * ValidationUtil
+ *
+ * @deprecated
  */
 class ValidationUtil
 {

@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,11 +17,14 @@ use Zikula_View;
 use ModUtil;
 use LogUtil;
 use SecurityUtil;
-use FormUtil;
 use EventUtil;
+use System;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Search_Controller_Admin class.
+ * Administrative controllers for the search module
  */
 class AdminController extends \Zikula_AbstractController
 {
@@ -40,33 +42,26 @@ class AdminController extends \Zikula_AbstractController
     /**
      * The main administration function.
      *
-     * This function is the default function, and is called whenever the
-     * module is called without defining arguments.
-     * As such it can be used for a number of things, but most commonly
-     * it either just shows the module menu and returns or calls whatever
-     * the module designer feels should be the default function (often this
-     * is the view() function)
-     *
-     * @return string The main module admin page.
+     * @return RedirectResponse
      */
     public function mainAction()
     {
         // Security check will be done in modifyconfig()
-        return $this->redirect(ModUtil::url('ZikulaSearchModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
-     * Modify configuration.
+     * Display a form to modify the module configuration
      *
-     * This is a standard function to modify the configuration parameters of the module.
+     * @return Response symfony response object
      *
-     * @return string The configuration page.
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // get the list of available plugins
@@ -91,13 +86,11 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * Update the configuration.
+     * Update the module configuration
      *
-     * This is a standard function to update the configuration parameters of the
-     * module given the information passed back by the modification form
-     * Modify configuration.
+     * @return RedirectResponse
      *
-     * @return void
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function updateconfigAction()
     {
@@ -105,7 +98,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Update module variables.
@@ -139,10 +132,10 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // the module configuration has been updated successfuly
-        LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return $this->redirect(ModUtil::url('ZikulaSearchModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 }

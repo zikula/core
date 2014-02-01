@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -36,6 +35,7 @@
  *                  this params have to be given in this order:
  *                  'first,last,single,parent,childless,level'
  *                  (string - coma separated list of values, optional)
+ *   - bootstrap:   if true, bootstrap style markup will be added (only used for extended menu) (boolean, default: false)
  *   - assign:      if set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
@@ -45,9 +45,9 @@
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      $smarty     Reference to the Smarty object
+ *
  * @return       string      unordered html list
  */
-
 function smarty_function_menutree($params, $smarty)
 {
     $treeArray          = isset($params['data'])       ? $params['data'] : '';
@@ -57,6 +57,7 @@ function smarty_function_menutree($params, $smarty)
     $treeClassPrefix    = isset($params['classprefix']) ? $params['classprefix'] : '';
     $extended           = isset($params['ext'])        ? $params['ext'] : false;
     $extendedOpt        = isset($params['extopt'])     ? $params['extopt'] : '';
+    $bootstrap          = !empty($params['bootstrap']) ? true : false;
     if ($extended) {
         $ext_tmp = explode(',', $extendedOpt);
         $ext = array();
@@ -67,9 +68,9 @@ function smarty_function_menutree($params, $smarty)
         $ext['childless']   = !empty($ext_tmp[4]) ? $ext_tmp[4] : 'childless';
         $ext['level']       = !empty($ext_tmp[5]) ? $ext_tmp[5] : 'level';
         $depth = 1;
-        $html = _htmlListExt($treeArray,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId,$treeClass);
+        $html = _htmlListExt($treeArray,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId,$treeClass,$bootstrap);
     } else {
-        $html = _htmlList($treeArray,$treeNodePrefix,$treeClassPrefix,$treeId,$treeClass);
+        $html = _htmlList($treeArray,$treeNodePrefix,$treeClassPrefix,$treeId,$treeClass,$bootstrap);
     }
 
     if (isset($params['assign'])) {
@@ -77,10 +78,20 @@ function smarty_function_menutree($params, $smarty)
     } else {
         return $html;
     }
-
 }
 
-function _htmlList($tree,$treeNodePrefix,$treeClassPrefix,$treeId = '',$treeClass = '')
+/**
+ * Helper function to build an html list from a menutree tree structure
+ *
+ * @param array  $tree            menutree array
+ * @param string $treeNodePrefix  string to prefix the css id attribute of the list items
+ * @param string $treeClassPrefix string to prefix the css class attribute of the list items
+ * @param string $treeId          the id of the list control
+ * @param string $treeClass       the class of the tree control
+ *
+ * @return string the rendered list
+ */
+function _htmlList($tree, $treeNodePrefix, $treeClassPrefix, $treeId = '', $treeClass = '', $boostrap = false)
 {
     $html = '<ul';
     $html .= !empty($treeId) ? ' id="'.$treeId.'"' : '';
@@ -99,7 +110,7 @@ function _htmlList($tree,$treeNodePrefix,$treeClassPrefix,$treeId = '',$treeClas
         } else {
             $html .= '<span'.$attr.'>'.$tab['item']['name'].'</span>';
         }
-        $html .= !empty($tab['nodes']) ? _htmlList($tab['nodes'],$treeNodePrefix,$treeClassPrefix) : '';
+        $html .= !empty($tab['nodes']) ? _htmlList($tab['nodes'], $treeNodePrefix, $treeClassPrefix) : '';
         $html .= '</li>';
     }
 
@@ -107,38 +118,68 @@ function _htmlList($tree,$treeNodePrefix,$treeClassPrefix,$treeId = '',$treeClas
 
     return $html;
 }
-function _htmlListExt($tree,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId = '',$treeClass = '')
+
+/**
+ * Helper function to build an html list from a menutree tree structure
+ *
+ * @param array  $tree            menutree array
+ * @param string $treeNodePrefix  string to prefix the css id attribute of the list items
+ * @param string $treeClassPrefix string to prefix the css class attribute of the list items
+ * @param array  $ext             TODO what does this parameter do?
+ * @param int    $depth           TODO what does this parameter do?
+ * @param string $treeId          the id of the list control
+ * @param string $treeClass       the class of the tree control
+ * @param boolean $bootstrap      is the menu to be styled with bootstrap?
+ *
+ * @return string the rendered list
+ */
+function _htmlListExt($tree, $treeNodePrefix, $treeClassPrefix, $ext, $depth, $treeId = '', $treeClass = '', $bootstrap = false)
 {
     $html = '<ul';
     $html .= !empty($treeId) ? ' id="'.$treeId.'"' : '';
-    $html .= !empty($treeClass) ? ' class="'.$treeClass.' '.$ext['level'].$depth.'"' : ' class="'.$ext['level'].$depth.'"';
+    if ($bootstrap) {
+        $ulClass = (($depth - 1) > 0) ? "dropdown-menu" : '';
+        if (empty($ulClass)) {
+            $ulClass = !empty($treeClass) ? $treeClass : '';
+        }
+        $html .= !empty($ulClass) ? " class='$ulClass'" : '';
+    } else {
+        $html .= !empty($treeClass) ? ' class="'.$treeClass.' '.$ext['level'].$depth.'"' : ' class="'.$ext['level'].$depth.'"';
+    }
     $html .= '>';
 
     $size = count($tree);
     $i = 1;
     foreach ($tree as $tab) {
-        $class = array();
-        $class[] = $size == 1 ? $ext['single'] : '';
-        $class[] = ($i == 1 && $size > 1) ? $ext['first'] : '';
-        $class[] = ($i == $size && $size > 1) ? $ext['last'] : '';
-        $class[] = !empty($tab['nodes']) ? $ext['parent'] : $ext['childless'];
-        $class[] = !empty($treeClassPrefix) ? $treeClassPrefix.$tab['item']['id'] : '';
-        $class = trim(implode(' ', $class));
+        $classes = array();
+        if (!$bootstrap) {
+            $classes[] = $size == 1 ? $ext['single'] : '';
+            $classes[] = ($i == 1 && $size > 1) ? $ext['first'] : '';
+            $classes[] = ($i == $size && $size > 1) ? $ext['last'] : '';
+            $classes[] = !empty($treeClassPrefix) ? $treeClassPrefix.$tab['item']['id'] : '';
+            $classes[] = !empty($tab['nodes']) ? $ext['parent'] : $ext['childless'];
+        } else {
+            $classes[] = !empty($tab['nodes']) ? $ext['parent'] : '';
+        }
+        $classList = trim(implode(' ', $classes));
         $i++;
 
         $html .= '<li';
         $html .= !empty($treeNodePrefix) ? ' id="'.$treeNodePrefix.$tab['item']['id'].'"' : '';
-        $html .= ' class="'.$class.'">';
+        $html .= !empty($classList) ? ' class="'.$classList.'">' : '>';
         $attr  = !empty($tab['item']['title']) ? ' title="'.$tab['item']['title'].'"' : '';
         $attr .= !empty($tab['item']['class']) ? ' class="'.$tab['item']['class'].'"' : '';
         if (!empty($tab['item']['href'])) {
-            $html .= '<a href="'.DataUtil::formatForDisplay($tab['item']['href']).'"'.$attr.'>'.$tab['item']['name'].'</a>';
+            if ($bootstrap && in_array('dropdown', $classes)) {
+                $html .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$tab['item']['name'].' <b class="caret"></b></a>';
+            } else {
+                $html .= '<a href="'.DataUtil::formatForDisplay($tab['item']['href']).'"'.$attr.'>'.$tab['item']['name'].'</a>';
+            }
         } else {
             $html .= '<span'.$attr.'>'.$tab['item']['name'].'</span>';
         }
-        $html .= !empty($tab['nodes']) ? _htmlListExt($tab['nodes'],$treeNodePrefix,$treeClassPrefix,$ext,$depth+1) : '';
+        $html .= !empty($tab['nodes']) ? _htmlListExt($tab['nodes'],$treeNodePrefix,$treeClassPrefix,$ext,$depth+1,'','',$bootstrap) : '';
         $html .= '</li>';
-
     }
 
     $html .= '</ul>';

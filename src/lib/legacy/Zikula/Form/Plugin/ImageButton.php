@@ -25,6 +25,8 @@
  * - commandArgument: command argument
  * - posX: X position of click
  * - posY: Y position of click
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_ImageButton extends Zikula_Form_Plugin_Button
 {

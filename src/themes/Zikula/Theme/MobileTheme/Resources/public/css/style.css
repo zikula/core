@@ -1,3 +1,26 @@
+/**
+ * jQuery Mobile customisations
+ */
+.ui-panel-inner {
+    padding: 0;
+}
+
+#leftPanel .z-bkey-extmenu > h4, #rightPanel .z-bkey-extmenu > h4 {
+    display: none;
+}
+
+.ui-body-c, .ui-overlay-c {
+    color: #333;
+    text-shadow: none;
+}
+
+.ui-btn {
+    text-shadow: none;
+}
+
+/**
+ * Other stuff
+ */
 .sub {
     color: #777;
     font-size: 75%;
@@ -13,77 +36,6 @@ h2 {
 h3 {
     margin-top: 0px;
     margin-bottom: 0px;
-}
-
-/******************************************************************************
-* CSS Based Messages
-* TODO: Replace by jquerymobile stuff, when it supports it.
-******************************************************************************/
-
-.alert alert-danger {
-    background: #F7CBCA url("../../../images/icons/extrasmall/error.png") 13px 50% no-repeat !important;
-    border: 1px solid #CC0000 !important;
-    color: #880000 !important;
-    margin: 5px 0 10px !important;
-    padding: 5px 5px 5px 36px !important;
-}
-.alert alert-danger p,
-.alert alert-danger h1,
-.alert alert-danger h2,
-.alert alert-danger h3 {
-    color:#880000 !important;
-    margin:0.5em 0 !important;
-    padding:0 !important;
-}
-.alert alert-danger ul {
-    list-style: none;
-    margin:0 !important;
-    padding:0 !important;
-}
-.alert alert-info {
-    background: #e6e6ff url('../../../images/icons/extrasmall/info.png') 13px 50% no-repeat !important;
-    border: 1px solid #9bb8d9 !important;
-    color: #27427D !important;
-    margin: 5px 0 10px !important;
-    padding: 5px 5px 5px 36px !important;
-}
-.alert alert-info p,
-.alert alert-info h1,
-.alert alert-info h2,
-.alert alert-info h3 {
-    color: #27427D !important;
-    margin:0.5em 0 !important;
-    padding:0 !important;
-}
-.alert alert-success {
-    background: #DFF2BF url('../../../images/icons/extrasmall/button_ok.png') 13px 50% no-repeat !important;
-    border: 1px solid #99CC99 !important;
-    color: #264409 !important;
-    margin: 5px 0 10px !important;
-    padding: 5px 5px 5px 36px !important;
-}
-.alert alert-success p,
-.alert alert-success h1,
-.alert alert-success h2,
-.alert alert-success h3 {
-    color: #264409 !important;
-    margin: 0.5em 0 !important;
-    padding: 0 !important;
-}
-.alert alert-warning {
-    background: #FEEFB3 url('../../../images/icons/extrasmall/bell.png') 13px 50% no-repeat !important;
-    border: 1px solid #EED324 !important;
-    color: #514721 !important;
-    margin: 5px 0 10px !important;
-    padding: 5px 5px 5px 36px !important;
-}
-.alert alert-warning p,
-.alert alert-warning h1,
-.alert alert-warning h2,
-.alert alert-warning h3 {
-    color: #514721 !important;
-    margin: 0.5em 0 !important;
-    padding: 0 !important;
 }
 
 /******************************************************************************

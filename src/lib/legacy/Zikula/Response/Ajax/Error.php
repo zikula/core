@@ -17,6 +17,8 @@ use Zikula\Core\Response\Ajax\AbstractErrorResponse;
 
 /**
  * Ajax class.
+ *
+ * @deprecated
  */
 abstract class Zikula_Response_Ajax_Error extends AbstractErrorResponse
 {

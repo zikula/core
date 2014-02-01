@@ -14,7 +14,7 @@
 /**
  * HooksUI class.
  *
- * @deprecated
+ * @deprecated since 1.3.7 use Zikula\Module\ExtensionsModule\Listener\HookUiListener instead
  */
 class Extensions_HookUI extends Zikula\Module\ExtensionsModule\Listener\HookUiListener
 {

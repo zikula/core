@@ -14,12 +14,6 @@
  */
 
 /**
- * Dropdown list plugin
- *
- * @author Jorn Wildt
- */
-
-/**
  * Drop down list
  *
  * Renders an HTML <select> element with the supplied items.
@@ -92,6 +86,8 @@
  * In these plugins you must set the items in the load event handler.
  * See {@link Zikula_Form_Plugin_LanguageSelector} for a good example of how this
  * can be done.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelector
 {

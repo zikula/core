@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,19 +16,35 @@ namespace Zikula\Module\MailerModule\Form\Handler;
 use Zikula_Form_View;
 use SecurityUtil;
 use LogUtil;
-use DataUtil;
-use Zikula_Exception_Forbidden;
-use ZLanguage;
 use ModUtil;
+use System;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Core\ModUrl;
+use ZLanguage;
 
+/**
+ * Form handler for the mailer modules testconfig form
+ */
 class TestConfigHandler extends \Zikula_Form_AbstractHandler
 {
+    /**
+     * @var array values for this form
+     */
     private $formValues;
 
+    /**
+     * initialise the form
+     *
+     * @param \Zikula_Form_view $view view object
+     *
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     */
     public function initialize(Zikula_Form_View $view)
     {
         if (!SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
-            throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
+            throw new AccessDeniedException();
         }
 
         $msgtype = $this->getVar('html') ? 'html' : 'text';
@@ -41,6 +56,16 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
         return true;
     }
 
+    /**
+     * handle commands the form
+     *
+     * @param \Zikula_Form_view $view view object
+     * @param array[] $args {
+     *      @type string $commandName the command to execute
+     *                      }
+     *
+     * @return boolean|void
+     */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
         switch($args['commandName']) {
@@ -92,6 +117,6 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 break;
         }
 
-        return $view->redirect(ModUtil::url('ZikulaMailerModule', 'admin', 'testconfig'));
+        return $view->redirect(new ModUrl($this->name, 'admin', 'testconfig', ZLanguage::getLanguageCode()));
     }
 }

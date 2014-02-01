@@ -1,9 +1,10 @@
+{pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.View.js'}
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"https://github.com/zikula-modules\">`$extdbtitle`</a></strong>" var=extdblink}
 
 {adminheader}
 <h3>
-    <span class="icon icon-list"></span>
+    <span class="fa fa-list"></span>
     {gt text="Themes list"}
 </h3>
 
@@ -35,23 +36,19 @@
         {/if}
         <tr {if $theme.displayname|strtolower eq $currenttheme|strtolower}class="success"{/if}>
             <td>
-                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}">
-                    {if !$theme.structure}<strike>{/if}
-                    <span title="#title_{$theme.name}" class="tooltips marktooltip">{$theme.displayname|safetext}</span>
-                    {if !$theme.structure}</strike>{/if}
+                {if !$theme.structure}<strike>{/if}
+                {previewimage name=$theme.name assign='img'}
+                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}{if $theme.displayname|strtolower eq $currenttheme|strtolower} ({gt text='Default theme'}){/if}" class="marktooltip" data-trigger="hover" data-html="true" data-content="{$img|safetext}">
+                   {$theme.displayname|safetext}
                 </a>
-                {if $theme.displayname|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips required"></span>{/if}
-                <div id="title_{$theme.name}" class="theme_preview text-center" style="display: none;">
-                    <h4>{$theme.displayname}</h4>
-                    {if $themeinfo.system neq 1}
-                    <p>{previewimage name=$theme.name}</p>
-                    {/if}
-                </div>
+                {if !$theme.structure}</strike>{/if}
+                {if $theme.name|strtolower eq $currenttheme|strtolower}<span class="required"></span>{/if}
             </td>
             <td>
                 {if !$theme.structure}<strike>{/if}
-                {$theme.description|default:$theme.displayname}</td>
+                {$theme.description|default:$theme.displayname}
                 {if !$theme.structure}</strike>{/if}
+            </td>
             <td class="actions">
                 {gt text='Preview: %s' tag1=$theme.displayname assign=strPreviewTheme}
                 {gt text='Edit: %s' tag1=$theme.displayname assign=strEditTheme}
@@ -59,16 +56,16 @@
                 {gt text='Set as default: %s' tag1=$theme.displayname assign=strSetDefaultTheme}
                 {gt text='Credits: %s' tag1=$theme.displayname assign=strCreditsTheme}
                 {if $theme.displayname neq $currenttheme and $theme.user and $theme.state neq 2 and $theme.structure}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="setasdefault" themename=$theme.displayname}"><span class="icon icon-ok tooltips" title="{$strSetDefaultTheme}"></span></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="setasdefault" themename=$theme.name}"><span class="fa fa-check tooltips" title="{$strSetDefaultTheme}"></span></a>
                 {/if}
                 {if $theme.structure}
-                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}"><span class="icon icon-eye-open tooltips" title="{$strPreviewTheme}"></span></a>
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="modify" themename=$theme.displayname}"><span class="icon icon-pencil tooltips" title="{$strEditTheme}"></span></a>
+                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}"><span class="fa fa-eye tooltips" title="{$strPreviewTheme}"></span></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="modify" themename=$theme.displayname}"><span class="fa fa-pencil tooltips" title="{$strEditTheme}"></span></a>
                 {/if}
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="delete" themename=$theme.displayname}"><span class="icon icon-trash tooltips" title="{$strDeleteTheme}"></span></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="delete" themename=$theme.displayname}"><span class="fa fa-trash-o tooltips" title="{$strDeleteTheme}"></span></a>
                 {/if}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="credits" themename=$theme.displayname}"><span class="icon icon-info-sign tooltips" title="{$strCreditsTheme}"></span></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="credits" themename=$theme.displayname}"><span class="fa fa-info-circle tooltips" title="{$strCreditsTheme}"></span></a>
             </td>
         </tr>
         {foreachelse}

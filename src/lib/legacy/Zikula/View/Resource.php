@@ -14,6 +14,8 @@
 
 /**
  * Zikula_View_Resource class.
+ *
+ * @deprecated
  */
 class Zikula_View_Resource
 {

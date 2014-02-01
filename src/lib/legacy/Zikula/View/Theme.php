@@ -17,6 +17,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Zikula_View_Theme class.
+ *
+ * @deprecated
  */
 class Zikula_View_Theme extends Zikula_View
 {
@@ -256,6 +258,8 @@ class Zikula_View_Theme extends Zikula_View
         if (ModUtil::getVar('ZikulaThemeModule', 'trimwhitespace')) {
             $this->load_filter('output', 'trimwhitespace');
         }
+
+        $this->load_filter('output', 'asseturls');
 
         $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('theme.init', $event);

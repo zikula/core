@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,20 +13,18 @@
 
 namespace Zikula\Module\UsersModule\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula_View;use ModUtil;
-use DBUtil;
-use DataUtil;
+use Zikula_View;
+use ModUtil;
 use SecurityUtil;
-use Zikula_Exception_Forbidden;
 use Zikula;
-use Zikula_Response_Ajax;
-use Zikula_Exception_Fatal;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Debug\Exception\FatalErrorException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Access to actions initiated through AJAX for the Users module.
@@ -41,7 +38,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * ---------------------------
      * string fragment A partial user name entered by the user.
      *
-     * @return string Zikula_Response_Ajax_Plain with list of users matching the criteria.
+     * @return string PlainResponse response object with list of users matching the criteria.
      */
     public function getUsersAction()
     {
@@ -51,10 +48,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
 
-            $dql = "SELECT u FROM Zikula\Module\UsersModule\Entity\UserEntity u WHERE u.uname LIKE '% " . DataUtil::formatForStore($fragment) . "%'";
-            $query = $this->entityManager->createQuery($dql);
-            $results = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+            $qb = $this->entityManager->createQueryBuilder();
+            $query = $qb->select('u')
+                 ->from('ZikulaUsersModule:UserEntity', 'u')
+                 ->where($qb->expr()->like('u.uname', ':fragment'))
+                 ->setParameter('fragment', '%' . $fragment . '%')
+                 ->getQuery();
 
+            $results = $query->getArrayResult();
             $view->assign('results', $results);
         }
 
@@ -80,7 +81,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return array A AjaxResponse containing error messages and message counts.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if registration is disbled.
+     * @throws AccessDeniedExceptionThrown if registration is disbled.
      */
     public function getRegistrationErrorsAction()
     {
@@ -102,7 +103,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         // Check if registration is disabled and the user is not an admin.
         if (($eventType == 'new_registration') && !$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            throw new Zikula_Exception_Forbidden($this->__('Sorry! New user registration is currently disabled.'));
+            throw new AccessDeniedException($this->__('Sorry! New user registration is currently disabled.'));
         }
 
         $returnValue = array(
@@ -178,9 +179,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * string form_type             An indicator of the type of form the fields will appear on.
      * array  authentication_method An array containing the authentication module name ('modname') and authentication method name ('method').
      *
-     * @return Zikula_Response_Ajax An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
+     * @return AjaxResponse An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
      *
-     * @throws Zikula_Exception_Fatal Thrown if the authentication module name or method name are not valid.
+     * @throws FatalErrorException Thrown if the authentication module name or method name are not valid.
      */
     public function getLoginFormFieldsAction()
     {
@@ -191,11 +192,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $method = (isset($selectedAuthenticationMethod['method']) && !empty($selectedAuthenticationMethod['method']) ? $selectedAuthenticationMethod['method'] : false);
 
         if (empty($modname) || !is_string($modname)) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid authentication module name was received.'));
+            throw new FatalErrorException($this->__('An invalid authentication module name was received.'));
         } elseif (!ModUtil::available($modname)) {
-            throw new Zikula_Exception_Fatal($this->__f('The \'%1$s\' module is not in an available state.', array($modname)));
+            throw new FatalErrorException($this->__f('The \'%1$s\' module is not in an available state.', array($modname)));
         } elseif (!ModUtil::isCapable($modname, 'authentication')) {
-            throw new Zikula_Exception_Fatal($this->__f('The \'%1$s\' module is not an authentication module.', array($modname)));
+            throw new FatalErrorException($this->__f('The \'%1$s\' module is not an authentication module.', array($modname)));
         }
 
         $loginFormFields = ModUtil::func($modname, 'Authentication', 'getLoginFormFields', array(
@@ -215,7 +216,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     }
 
     /**
-     * @deprecated
+     * Retrieve the form fields for the login form that are appropriate for the selected authentication method.
+     *
+     * @deprecated since 1.3.7 use $this->getLoginFormFieldsAction instead
      *
      * @todo Remove in 1.4.0
      */

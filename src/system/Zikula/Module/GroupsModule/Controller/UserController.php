@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -16,41 +15,44 @@ namespace Zikula\Module\GroupsModule\Controller;
 
 use ModUtil;
 use SecurityUtil;
-use FormUtil;
 use UserUtil;
 use Zikula_View;
 use Zikula\Module\GroupsModule\Helper\CommonHelper;
-use LogUtil;
 use DataUtil;
 use System;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * User controllers for the groups module
+ */
 class UserController extends \Zikula_AbstractController
 {
     /**
      * Groups Module main user function
-     * This function is the default function, and is called whenever the
-     * module is initiated without defining arguments.  As such it can
-     * be used for a number of things, but most commonly it either just
-     * shows the module menu and returns or calls whatever the module
-     * designer feels should be the default function (often this is the
-     * view() function)
-     * @return string HTML output string
+     *
+     * @return void
      */
     public function mainAction()
     {
         // Security check will be done in view()
-        return $this->redirect(ModUtil::url('ZikulaGroupsModule', 'user', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
     }
 
     /**
      * Display items
-     * This is a standard function to provide detailed information
-     * available from the module.
-     * @return string HTML string
+     *
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have overview access to the module
      */
     public function viewAction()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
+            throw new AccessDeniedException();
+        }
 
         // Get parameters from whatever input we need.
         $startnum = (int)$this->request->query->get('startnum', null);
@@ -119,24 +121,33 @@ class UserController extends \Zikula_AbstractController
     /**
      * display the membership of a public group
      *
+     * @return Response symfony response object
+     *
+     * @throws \InvalidArgumentException Thrown if the group isn't set or isn't numeric or
+     *                                          if the action isn't one of subscribe|unsubscribe|cancel
+     * @throws AccessDeniedException Thrown if the user isn't logged in or 
+     *                                          if the user doesn't have overview access to the module
+     * @throws NotFoundHttpException Thrown if the group cannot be found
      */
     public function membershipAction()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
+            throw new AccessDeniedException();
+        }
 
         $gid = (int)$this->request->query->get('gid', null);
         $action = $this->request->query->get('action', null);
 
         if (empty($gid) || !is_numeric($gid) || empty($action)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if ($action != 'subscribe' && $action != 'unsubscribe' && $action != 'cancel') {
-            return LogUtil::registerArgsError(ModUtil::url('ZikulaGroupsModule', 'user', 'view'));
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!UserUtil::isLoggedIn()) {
-            return LogUtil::registerError($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
+            throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
 
         $uid = UserUtil::getVar('uid');
@@ -145,7 +156,7 @@ class UserController extends \Zikula_AbstractController
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
 
         if (!$group) {
-            return DataUtil::formatForDisplay($this->__("Error! That group does not exist."));
+            throw new NotFoundHttpException($this->__('Error! That group does not exist.'));
         }
 
         // And lastly, we must check if he didn't rewrote the url,
@@ -153,21 +164,25 @@ class UserController extends \Zikula_AbstractController
         // $isopen = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getginfo', array('gid' => $gid));
         if ($action == 'subscribe') {
             if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
-                return DataUtil::formatForDisplay($this->__('Error! You are already a member of this group.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! You are already a member of this group.'));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
             }
 
             if ($group['gtype'] == CommonHelper::GTYPE_CORE) {
-                return DataUtil::formatForDisplay($this->__('Sorry! You cannot apply for membership of that group.'));
+               $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! You cannot apply for membership of that group.'));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
             }
 
             if ($group['nbumax'] != 0) {
                 if (($group['nbumax'] - $group['nbuser']) <= 0) {
-                    return DataUtil::formatForDisplay($this->__('Sorry! That group has reached full membership.'));
+                    $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! That group has reached full membership.'));
+                    return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
                 }
             }
 
             if ($group['state'] == CommonHelper::STATE_CLOSED) {
-                return DataUtil::formatForDisplay($this->__('Sorry! That group is closed.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! That group is closed.'));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
             }
         }
 
@@ -181,10 +196,14 @@ class UserController extends \Zikula_AbstractController
         return $this->response($this->view->fetch('User/membership.tpl'));
     }
 
-    /*
- * update a users group applications
- *
-    */
+    /**
+     * update a users group applications
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentsException Thrown if the group id isn't set or isn't numeric or
+     *                                           if no action is requested
+     */
     public function userupdateAction()
     {
         $this->checkCsrfToken();
@@ -195,11 +214,12 @@ class UserController extends \Zikula_AbstractController
         $tag = $this->request->request->get('tag', null);
 
         if (empty($gid) || !is_numeric($gid) || empty($action)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (empty($tag)) {
-            return DataUtil::formatForDisplay($this->__('Error! You must click on the checkbox to confirm your action.'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! You must click on the checkbox to confirm your action.'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
         }
 
         $applytext = '';
@@ -214,17 +234,21 @@ class UserController extends \Zikula_AbstractController
                       'applytext' => $applytext));
 
         if ($result == true) {
-            LogUtil::registerStatus($this->__('Done! Saved the action.'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved the action.'));
         }
 
         $this->view->clear_cache('User/memberslist.tpl');
 
-        return $this->redirect(ModUtil::url('ZikulaGroupsModule', 'user', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'view')));
     }
 
     /**
      * display the membership of a group
      *
+     * @return Response symfony response object
+     *
+     * @throws \InvalidArgumentException Thrown if the startnum parameter isn't numeric
+     * @throws AccessDeniedException Thrown if the user doesn't have overview access to the memberslist component of the module
      */
     public function memberslistAction()
     {
@@ -232,12 +256,14 @@ class UserController extends \Zikula_AbstractController
         $startnum = (int)$this->request->query->get('startnum', 0);
 
         if (!is_numeric($startnum)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $itemsperpage = $this->getVar('itemsperpage');
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW));
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW)) {
+            throw new AccessDeniedException();
+        }
 
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid,
                 'numitems' => $itemsperpage,

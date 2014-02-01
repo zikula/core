@@ -1,168 +1,100 @@
-// Copyright Zikula Foundation 2011 - license GNU/LGPLv3 (or at your option, any later version).
+// Copyright Zikula Foundation 2013 - license GNU/LGPLv3 (or at your option, any later version).
 
-// Create the Zikula.Users object if needed
-Zikula.define('Users');
+(function($) {
+    $(function() {
+        $('[id^=zikulausersmodule-authentication-select-method-loginblock]').each(function() {
+            $(this).submit(function(event){
+                onSubmitSelectAuthenticationMethod(event);
+            });
+        });
 
-// Create the Zikula.Users.ModifyConfig object
-Zikula.Users.LoginBlock =
-{
-    init: function()
-    {
-        if ($('authentication_select_method_form_zikulausersmodule_uname') != null) {
-            $('authentication_select_method_form_zikulausersmodule_uname').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'authentication_select_method_form_zikulausersmodule_uname');});
-        }
-        if ($('authentication_select_method_form_zikulausersmodule_email') != null) {
-            $('authentication_select_method_form_zikulausersmodule_email').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'authentication_select_method_form_zikulausersmodule_email');});
-        }
-        if ($('authentication_select_method_form_zikulausersmodule_unameoremail') != null) {
-            $('authentication_select_method_form_zikulausersmodule_unameoremail').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'authentication_select_method_form_zikulausersmodule_unameoremail');});
-        }
-    },
+        function onSubmitSelectAuthenticationMethod(event) {
+            showAjaxInProgress();
 
-    showAjaxInProgress: function()
-    {
-        // Hide login form
-        var elementChangingClass = $('users_loginblock_login_form');
-        if (!elementChangingClass.hasClassName('hide')) {
-            elementChangingClass.addClassName('hide');
-        }
+            var temp = $(event.target).serializeArray();
+            var parameterObj = {};
+            $.each(temp, function(index, value) {
+                parameterObj[value.name] = value.value;
+            });
+            parameterObj.form_type = 'loginblock';
 
-        // Hide error notice
-        elementChangingClass = $('users_loginblock_no_loginformfields');
-        if (!elementChangingClass.hasClassName('hide')) {
-            elementChangingClass.addClassName('hide');
-        }
+            $.ajax({
+                url: 'index.php?module=ZikulaUsersModule&type=ajax&func=getLoginFormFields',
+                data: parameterObj
+            }).success(function(result) {
+                var data = result.data;
 
-        // Unhide heading used when no authentication module is chosen
-        elementChangingClass = $('users_loginblock_h5_no_authentication_method');
-        if (elementChangingClass.hasClassName('hide')) {
-            elementChangingClass.removeClassName('hide');
-        }
+                $('#users_loginblock_fields').html(data.content);
+                $('#users_loginblock_selected_authentication_module').attr('value', data.modname);
+                $('#users_loginblock_selected_authentication_method').attr('value', data.method);
 
-        // Hide heading used when authentication module is chosen
-        elementChangingClass = $('users_loginblock_h5_authentication_method');
-        if (!elementChangingClass.hasClassName('hide')) {
-            elementChangingClass.addClassName('hide');
-        }
+                if (data.method !== false) {
+                    // Hide the chosen authentication method in the list
+                    $('#zikulausersmodule-authentication-select-method-loginblock-form_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase()).addClass('hide');
+                }
+                showAjaxComplete(false);
 
-        // Unhide all authentication method selectors
-        $$('form.authentication_select_method').invoke('removeClassName', 'hide');
-
-        // Unhide the waiting indicator
-        $('users_loginblock_waiting').removeClassName('hide');
-    },
-
-    showAjaxComplete: function(isError)
-    {
-        // Unhide waiting indicator
-        $('users_loginblock_waiting').addClassName('hide');
-
-        var elementChangingClass;
-        if (isError) {
-            // Hide login form
-            elementChangingClass = $('users_loginblock_login_form');
-            if (!elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.addClassName('hide');
-            }
-
-            // Unhide error notification
-            elementChangingClass = $('users_loginblock_no_loginformfields');
-            if (elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.removeClassName('hide');
-            }
-
-            // Unhide heading used when there is no authentication method selected
-            elementChangingClass = $('users_loginblock_h5_no_authentication_method');
-            if (elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.removeClassName('hide');
-            }
-
-            // Hide heading used when authentication method selected
-            elementChangingClass = $('users_loginblock_h5_authentication_method');
-            if (!elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.addClassName('hide');
-            }
-        } else {
-            // No error
-
-            // Unhide login form
-            elementChangingClass = $('users_loginblock_login_form');
-            if (elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.removeClassName('hide');
-            }
-
-            // Hide error notification
-            elementChangingClass = $('users_loginblock_no_loginformfields');
-            if (!elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.addClassName('hide');
-            }
-
-            // Hide heading used when there is no authentication method selected
-            elementChangingClass = $('users_loginblock_h5_no_authentication_method');
-            if (!elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.addClassName('hide');
-            }
-
-            // Unhide heading used when authentication method selected
-            elementChangingClass = $('users_loginblock_h5_authentication_method');
-            if (elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.removeClassName('hide');
-            }
-        }
-    },
-
-    onSubmitSelectAuthenticationMethod: function(event, formId)
-    {
-        Zikula.Users.LoginBlock.showAjaxInProgress();
-
-        var parameterObj = $(formId).serialize(true);
-        parameterObj.form_type = 'loginblock';
-
-        var r = new Zikula.Ajax.Request(
-            Zikula.Config.baseURL + 'index.php?module=Users&type=ajax&func=getLoginFormFields',
-            {
-                parameters: parameterObj,
-                onSuccess: Zikula.Users.LoginBlock.getSelectAuthenticationMethodResponse,
-                onFailure: Zikula.Users.LoginBlock.selectAuthenticationMethodResponseFailure
+            }).error(function(result) {
+                showAjaxComplete(true);
+                Zikula.showajaxerror(result.status + ': ' + result.statusText);
             });
 
-        // Prevent form from sumitting itself. We just did it here.
-        event.stop();
-    },
-    getSelectAuthenticationMethodResponse: function(req)
-    {
-        var data = req.getData();
+            // Prevent form from submitting itself. We just did it here.
+            event.preventDefault();
+        }
 
-        // Zikula.Ajax.Request calls onSuccess and onFailure if the AJAX operation times out.
-        if (data) {
-            // No timeout
-            Element.update('users_loginblock_fields', data.content);
-            $('users_loginblock_selected_authentication_module').setValue(data.modname);
-            $('users_loginblock_selected_authentication_method').setValue(data.method);
+        function showAjaxInProgress() {
+            // Hide login form
+            $('#users_loginblock_login_form').addClass('hide');
 
-            if (data.method !== false) {
-                // Hide the chosen authentication method in the list
-                $('authentication_select_method_form_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase()).addClassName('hide');
+            // Hide error notice
+            $('#users_loginblock_no_loginformfields').addClass('hide');
+
+            // Unhide heading used when no authentication module is chosen
+            $('#users_loginblock_h5_no_authentication_method').removeClass('hide');
+
+            // Hide heading used when authentication module is chosen
+            $('#users_loginblock_h5_authentication_method').addClass('hide');
+
+            // Unhide all authentication method selectors
+            $('form.authentication_select_method').removeClass('hide');
+
+            // Unhide the waiting indicator
+            $('#users_loginblock_waiting').removeClass('hide');
+        }
+
+        function showAjaxComplete(isError)
+        {
+            // Unhide waiting indicator
+            $('#users_loginblock_waiting').addClass('hide');
+
+            if (isError) {
+                // Hide login form
+                $('#users_loginblock_login_form').addClass('hide');
+
+                // Unhide error notification
+                $('#users_loginblock_no_loginformfields').removeClass('hide');
+
+                // Unhide heading used when there is no authentication method selected
+                $('#users_loginblock_h5_no_authentication_method').removeClass('hide');
+
+                // Hide heading used when authentication method selected
+                $('#users_loginblock_h5_authentication_method').addClass('hide');
+            } else {
+                // No error
+
+                // Unhide login form
+                $('#users_loginblock_login_form').removeClass('hide');
+
+                // Hide error notification
+                $('#users_loginblock_no_loginformfields').addClass('hide');
+
+                // Hide heading used when there is no authentication method selected
+                $('#users_loginblock_h5_no_authentication_method').addClass('hide');
+
+                // Unhide heading used when authentication method selected
+                $('#users_loginblock_h5_authentication_method').removeClass('hide');
             }
-
-            Zikula.Users.LoginBlock.showAjaxComplete(false);
-        } else {
-            Zikula.Users.LoginBlock.showAjaxComplete(true);
         }
-    },
-
-    selectAuthenticationMethodResponseFailure: function(req)
-    {
-        // Zikula.Ajax.Request calls both onSuccess and onFailure if the AJAX operation times out.
-        Zikula.Users.LoginBlock.showAjaxComplete(true);
-        if (req.readyState != 0) {
-            // readyState 0: uninitialized. This is probably a timeout.
-            Zikula.showajaxerror(req.getStatus() + ': ' + req.getMessage());
-        }
-    }
-
-}
-
-// Load and execute the initialization when the DOM is ready.
-// This must be below the definition of the init function!
-document.observe("dom:loaded", Zikula.Users.LoginBlock.init);
+    });
+})(jQuery);

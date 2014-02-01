@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,6 +19,9 @@ use BlockUtil;
 use ModUtil;
 use DataUtil;
 
+/**
+ * Administrative navigation block
+ */
 class AdminnavBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
@@ -35,6 +37,8 @@ class AdminnavBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * initialise block
+     *
+     * @return void
      */
     public function init()
     {
@@ -43,6 +47,8 @@ class AdminnavBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * get information on block
+     *
+     * @return array array of meta information on the block
      */
     public function info()
     {
@@ -58,6 +64,14 @@ class AdminnavBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * display block
+     *
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string html of the rendered blcok
      */
     public function display($blockinfo)
     {

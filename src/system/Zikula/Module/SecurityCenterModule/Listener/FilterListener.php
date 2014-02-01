@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,16 +21,23 @@ use UserUtil;
 use DateUtil;
 use ModUtil;
 use ServiceUtil;
-use LogUtil;
 use Zikula_Exception_Forbidden;
 use Zikula\Module\SecurityCenterModule\Util as SecurityCenterUtil;
 use Zikula_Event;
 use Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * Event handler for the security center module
+ *
+ * Adds the intrustion detection filter to the core.init phase and an output filter to the system.outputfiler phase.
+ */
 class FilterListener extends \Zikula_AbstractEventHandler
 {
     /**
      * Setup this handler.
+     *
+     * @return void
      */
     protected function setupHandlerDefinitions()
     {
@@ -45,12 +51,15 @@ class FilterListener extends \Zikula_AbstractEventHandler
      * @see    http://technicalinfo.net/papers/CSS.html
      *
      * @return void
+     *
+     * @throws \Exception Thrown if there was a problem running ids detection
      */
     public function idsInputFilter(Zikula_Event $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_MODS && System::getVar('useids') == 1) {
             // Run IDS if desired
             try {
+                $request = array();
                 // build request array defining what to scan
                 // @todo: change the order of the arrays to merge if ini_get('variables_order') != 'EGPCS'
                 if (isset($_REQUEST)) {
@@ -95,7 +104,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 $ids = new \IDS\Monitor($init);
 
                 // run the request check and fetch the results
-                $result = $ids->run();
+                $result = $ids->run($request);
 
                 // analyze the results
                 if (!$result->isEmpty()) {
@@ -128,7 +137,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             $config['General']['filter_type'] = 'xml';
         }
 
-        $config['General']['base_path'] = PHPIDS_PATH_PREFIX;
+        $config['General']['base_path'] = ''; //PHPIDS_PATH_PREFIX;
         // we don't use the base path because the tmp directory is in zkTemp (see below)
         $config['General']['use_base_path'] = false;
 
@@ -243,7 +252,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             }
 
             // get entity manager
-            $em = ServiceUtil::get('doctrine.manager');
+            $em = ServiceUtil::get('doctrine.entitymanager');
 
             $intrusionItems = array();
 
@@ -269,7 +278,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                     'tag'     => $tagVal,
                     'value'   => $event->getValue(),
                     'page'    => $currentPage,
-                    'user'    => $em->getReference('Zikula\Module\UsersModule\Entity\UserEntity', $currentUid),
+                    'user'    => $em->getReference('ZikulaUsersModule:UserEntity', $currentUid),
                     'ip'      => $ipAddress,
                     'impact'  => $result->getImpact(),
                     'filters' => serialize($filters),
@@ -345,15 +354,22 @@ class FilterListener extends \Zikula_AbstractEventHandler
 
             if (System::getVar('idssoftblock')) {
                 // warn only for debugging the ruleset
-                LogUtil::registerError(__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
+                throw new \RuntimeException(__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
             } else {
-                throw new Zikula_Exception_Forbidden(__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
+                throw new AccessDeniedException(__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
             }
         }
 
         return;
     }
 
+    /**
+     * output filter to implement html purifier
+     *
+     * @param \Zikula_Event $event event object
+     *
+     * @return mixed modified event data
+     */
     public function outputFilter(Zikula_Event $event)
     {
         if (System::getVar('outputfilter') > 1) {

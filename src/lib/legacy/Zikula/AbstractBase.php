@@ -17,12 +17,15 @@ use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\AbstractModule;
 use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * AbstractBase class for module abstract controllers and apis.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, ContainerAwareInterface
 {
@@ -261,7 +264,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * Get the EventManager.
      *
      * @deprecated since 1.3.6
-     * @use self::getDispatcher()
+     * @see self::getDispatcher()
      *
      * @return ContainerAwareEventDispatcher
      */
@@ -446,7 +449,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Exception\AccessDeniedHttpException exception.
+     * Throw AccessDeniedException exception.
      *
      * Used to immediately halt execution.
      *
@@ -454,18 +457,18 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
-     * @throws Exception\AccessDeniedHttpException Exception.
+     * @throws AccessDeniedException Exception.
      * @deprecated since 1.3.6
      *
      * @return void
      */
     protected function throwForbidden($message='', $code=0, $debug=null)
     {
-        throw new Exception\AccessDeniedHttpException($message, null, $code);
+        throw new AccessDeniedException($message, $debug, $code);
     }
 
     /**
-     * Throw Exception\AccessDeniedHttpException exception if $condition.
+     * Throw AccessDeniedException exception if $condition.
      *
      * Used to immediately halt execution if condition.
      *
@@ -474,7 +477,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Exception\AccessDeniedHttpException Exception.
+     * @throws AccessDeniedException Exception.
      *
      * @return void
      */
@@ -486,7 +489,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Exception\AccessDeniedHttpException exception unless $condition.
+     * Throw AccessDeniedException exception unless $condition.
      *
      * Used to immediately halt execution unless condition.
      *
@@ -495,7 +498,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Exception\AccessDeniedHttpException Exception.
+     * @throws AccessDeniedException Exception.
      * @deprecated since 1.3.6
      *
      * @return void
@@ -788,7 +791,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @param string $token The token, if not set, will pull from $_POST['csrftoken'].
      *
-     * @throws Exception\AccessDeniedHttpException If check fails.
+     * @throws AccessDeniedException If check fails.
      *
      * @return void
      */
@@ -809,6 +812,25 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
         }
 
         $this->throwForbidden(__f('Oops, something went wrong: security token validation failed. You might want to go to the <a href="%s">startpage</a>.', $this->request->getBaseUrl()));
+    }
+
+    /**
+     * Returns a AccessDeniedException.
+     *
+     * This will result in a 403 response code. Usage example:
+     *
+     *     throw $this->createAccessDeniedException();
+     *
+     * @param string     $message  A message.
+     * @param \Exception $previous The previous exception.
+     *
+     * @return AccessDeniedException
+     */
+    public function createAccessDeniedException($message = null, \Exception $previous = null)
+    {
+        $message = null === $message ? __('Access denied') : $message;
+
+        return new AccessDeniedException($message, $previous);
     }
 
     /**

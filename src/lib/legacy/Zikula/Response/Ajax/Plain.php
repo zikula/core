@@ -17,6 +17,8 @@ use Zikula\Core\Response\PlainResponse;
 
 /**
  * Ajax class.
+ *
+ * @deprecated
  */
 class Zikula_Response_Ajax_Plain extends PlainResponse
 {

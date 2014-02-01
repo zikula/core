@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,37 +13,46 @@
 
 namespace Zikula\Module\ThemeModule\Controller;
 
-use LogUtil;
 use ModUtil;
 use System;
 use SecurityUtil;
-use FormUtil;
 use UserUtil;
 use ThemeUtil;
 use DataUtil;
 use Zikula_View;
 use CookieUtil;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * User controllers for the theme module
+ */
 class UserController extends \Zikula_AbstractController
 {
     /**
      * display theme changing user interface
+     *
+     * @return Response symfony response object
+     *
+     * @throws \RuntimeException Thrown if theme switching is currently disabled
+     * @throws AccessDeniedException Thrown if the user doesn't have comment permissions over the theme module
      */
     public function indexAction()
     {
         // check if theme switching is allowed
         if (!System::getVar('theme_change')) {
-            LogUtil::registerError($this->__('Notice: Theme switching is currently disabled.'));
-
-            return $this->redirect(ModUtil::url('ZikulaUsersModule', 'user', 'index'));
+            $this->request->getSession()->getFlashbag()->add('warning', $this->__('Notice: Theme switching is currently disabled.'));
+            $response = new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
+            return $response;
         }
 
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // get our input
-        $startnum = FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 1, 'GET');
+        $startnum = $this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : 1);
 
         // we need this value multiple times, so we keep it
         $itemsperpage = $this->getVar('itemsperpage');
@@ -93,38 +101,38 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * reset the current users theme to the site default
+     *
+     * @return void
      */
     public function resettodefaultAction()
     {
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'resettodefault');
-        LogUtil::registerStatus($this->__('Done! Theme has been reset to the default site theme.'));
+        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Theme has been reset to the default site theme.'));
 
-        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'user', 'index'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'index')));
     }
         
     /**
      * Enable mobile Theme 
      *
-     * @return string html output
+     * @return void
      */
     public function enableMobileTheme()
     {
         CookieUtil::setCookie('zikula_mobile_theme', '1', time()+3600*24*365, '/');
 
-        return $this->redirect(System::getHomepageUrl());
+        return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
     }
-    
     
     /**
      * Disable mobile Theme 
      *
-     * @return string html output
+     * @return void
      */
     public function disableMobileTheme()
     {
         CookieUtil::setCookie('zikula_mobile_theme', '2', time()+3600*24*365, '/');
 
-        return $this->redirect(System::getHomepageUrl());
+        return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
     }
-
 }

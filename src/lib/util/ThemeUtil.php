@@ -97,32 +97,40 @@ class ThemeUtil
 
         $key = md5((string)$filter . (string)$state . (string)$type);
 
-        /** @var $em Doctrine\ORM\EntityManager */
-        $em = ServiceUtil::get('doctrine.entitymanager');
-
-        if (empty($themesarray[$key])) {
-            $whereargs = array();
+        if (empty($themesarray[$key]))
+        {
+            /** @var $em Doctrine\ORM\EntityManager */
+            $em = ServiceUtil::get('doctrine.entitymanager');
+            $qb = $em->createQueryBuilder()
+                     ->select('t')
+                     ->from('ZikulaThemeModule:ThemeEntity', 't');
+                     
             if ($state != self::STATE_ALL) {
-                $whereargs[] = "t.state = '" . DataUtil::formatForStore($state) . "'";
+                $qb->andWhere('t.state = :state')
+                   ->setParameter('state', $state);
             }
             if ($type != self::TYPE_ALL) {
-                $whereargs[] = "t.type = '" . (int)DataUtil::formatForStore($type) . "'";
+                $qb->andWhere('t.type = :type')
+                   ->setParameter('type', $type);
             }
-            if ($filter == self::FILTER_USER) {
-                $whereargs[] = "t.user = '1'";
-            }
-            if ($filter == self::FILTER_SYSTEM) {
-                $whereargs[] = "t.system = '1'";
-            }
-            if ($filter == self::FILTER_ADMIN) {
-                $whereargs[] = "t.admin = '1'";
+            switch ($filter)
+            {
+                case self::FILTER_USER:
+                    $qb->andWhere('t.user = 1');
+                    break;
+                case self::FILTER_SYSTEM:
+                    $qb->andWhere('t.system = 1');
+                    break;
+                case self::FILTER_ADMIN:
+                    $qb->andWhere('t.admin = 1');
+                    break;
             }
 
-            $where = $whereargs ? 'WHERE '.implode($whereargs, ' AND ') : '';
-            $orderBy = "ORDER BY t.name ASC";
-            $query = $em->createQuery('SELECT t FROM Zikula\Module\ThemeModule\Entity\ThemeEntity t '.$where.' '.$orderBy);
+            $qb->orderBy('t.name', 'ASC');
+            $query = $qb->getQuery();
+
             /** @var $array ThemeEntity[] */
-            $array = $query->execute();
+            $array = $query->getResult();
             foreach ($array as $value) {
                 $themesarray[$key][$value['directory']] = $value->toArray();
             }
@@ -235,7 +243,7 @@ class ThemeUtil
             /** @var $em Doctrine\ORM\EntityManager */
             $em = ServiceUtil::get('doctrine.entitymanager');
             /** @var $array ThemeEntity[] */
-            $array = $em->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findAll();
+            $array = $em->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
             foreach ($array as $theme) {
                 $theme = $theme->toArray();
                 $theme['i18n'] = (is_dir("themes/$theme[name]/locale") ? 1 : 0);
@@ -302,8 +310,6 @@ class ThemeUtil
         }
         $paths[] = "modules/$osmoddir/style";
         $paths[] = "system/$osmoddir/style";
-        $paths[] = "modules/$osmoddir/pnstyle";
-        $paths[] = "system/$osmoddir/pnstyle";
 
         // search for the style sheet
         $csssrc = '';

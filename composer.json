@@ -39,6 +39,7 @@
         "elao/web-profiler-extra-bundle" : "dev-master",
         "gedmo/doctrine-extensions": "dev-master",
         "imagine/Imagine": "dev-master",
+        "matthiasnoback/symfony-service-definition-validator": "dev-master",
         "michelf/php-markdown": "1.3.*@dev",
         "mobiledetect/mobiledetectlib": "~2",
         "phpids/phpids": "dev-master",
@@ -49,13 +50,14 @@
         "symfony/assetic-bundle": "~2.3",
         "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.4",
+        "symfony-cmf/routing-bundle": "dev-master",
         "twig/extensions": "~1.0",
         "zikula/generator-bundle": "dev-master",
         "zikula/filesystem": "dev-master",
         "zikula/jquery-bundle": "dev-master",
         "zikula/jquery-ui-bundle": "dev-master",
         "zikula/bootstrap-bundle": "dev-master",
-        "zikula/fontawesome-bundle": "dev-master"
+        "zikula/fontawesome-bundle": "4.0@dev"
     },
     "scripts": {
         "post-install-cmd": [

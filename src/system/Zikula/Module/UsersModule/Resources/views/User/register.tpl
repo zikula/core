@@ -134,7 +134,7 @@
     {/if}
 {/capture}
 {capture name='email'}
-    <fieldset>
+    <fieldset {if isset($hideEmail) && $hideEmail}class="hide"{/if}>
         <legend>{gt text="Enter your e-mail address"}</legend>
         <div class="form-group{if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='email'}
@@ -177,16 +177,16 @@
         {$eventDisplay}
     {/foreach}
 
+    {notifydisplayhooks eventname='users.ui_hooks.registration.form_edit' id=null assign='hooks'}
+    {if is_array($hooks) && count($hooks)}
     <fieldset>
         <legend>{gt text='Further information'}</legend>
-        {notifydisplayhooks eventname='users.ui_hooks.registration.form_edit' id=null assign='hooks'}
-        {if is_array($hooks) && count($hooks)}
             {foreach key='providerArea' item='hook' from=$hooks}
                 {$hook}
                 <div class="clearfix"></div>
             {/foreach}
-        {/if}
     </fieldset>
+    {/if}
 
     {if !empty($modvars.ZikulaUsersModule.reg_question)}
     <fieldset>

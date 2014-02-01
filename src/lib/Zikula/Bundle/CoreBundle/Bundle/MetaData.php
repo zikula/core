@@ -37,7 +37,12 @@ class MetaData
 
     public function getPsr0()
     {
-        return $this->autoload['psr-0'];
+        return isset($this->autoload['psr-0']) ? $this->autoload['psr-0'] : array();
+    }
+
+    public function getPsr4()
+    {
+        return isset($this->autoload['psr-4']) ? $this->autoload['psr-4'] : array();
     }
 
     public function getAutoload()

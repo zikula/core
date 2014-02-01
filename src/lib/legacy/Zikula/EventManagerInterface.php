@@ -15,6 +15,8 @@
 
 /**
  * EventManagerInterface interface.
+ *
+ * @deprecated
  */
 interface Zikula_EventManagerInterface
 {

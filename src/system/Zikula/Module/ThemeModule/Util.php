@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,19 +17,20 @@ use ModUtil;
 use FileUtil;
 use LogUtil;
 use ThemeUtil;
-use DBUtil;
 use ServiceUtil;
 use Zikula\Module\ThemeModule\Entity\ThemeEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use ZLoader;
 
 /**
- * Theme_Util class.
+ * Helper functions for the theme module
  */
 class Util
 {
     /**
-     * Regenerates the theme list.
+     * Regenerates the theme list
+     *
+     * @return bool true
      */
     public static function regenerate()
     {
@@ -105,7 +105,7 @@ class Util
         $entityManager = $sm->get('doctrine.entitymanager');
 
         $dbthemes = array();
-        $themeEntities = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findAll();
+        $themeEntities = $entityManager->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
 
         foreach ($themeEntities as $entity) {
             $entity = $entity->toArray();
@@ -119,7 +119,7 @@ class Util
                 ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', array('themename' => $name));
 
                 // delete item from db
-                $item = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findOneBy(array('name' => $name));
+                $item = $entityManager->getRepository('ZikulaThemeModule:ThemeEntity')->findOneBy(array('name' => $name));
                 $entityManager->remove($item);
 
                 unset($dbthemes[$name]);
@@ -155,7 +155,7 @@ class Util
 
                     // update item
                     /** @var $item ThemeEntity */
-                    $item = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->find($themeinfo['id']);
+                    $item = $entityManager->getRepository('ZikulaThemeModule:ThemeEntity')->find($themeinfo['id']);
                     $item->merge($themeinfo);
                 }
             }

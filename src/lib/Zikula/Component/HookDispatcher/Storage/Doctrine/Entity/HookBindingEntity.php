@@ -245,7 +245,7 @@ class HookBindingEntity
     /**
      * Set sortorder
      *
-     * @param smallint $sortorder
+     * @param integer $sortorder
      * @return HookBindingEntity
      */
     public function setSortorder($sortorder)
@@ -257,7 +257,7 @@ class HookBindingEntity
     /**
      * Get sortorder
      *
-     * @return smallint
+     * @return integer
      */
     public function getSortorder()
     {

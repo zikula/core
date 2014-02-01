@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,15 +13,17 @@
 
 namespace Zikula\Module\BlocksModule\Controller;
 
-use LogUtil;
-use FormUtil;
 use UserUtil;
 use BlockUtil;
 use SecurityUtil;
 use System;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Blocks_Controller_User class.
+ * User controllers for the blocks module
  */
 class UserController extends \Zikula_AbstractController
 {
@@ -30,27 +31,42 @@ class UserController extends \Zikula_AbstractController
     /**
      * The main blocks user function.
      *
-     * @return HTML String.
+     * @throws NotFoundHttpException Thrown when accessed to indicate this function isn't valid
+     * @return void
      */
     public function mainAction()
     {
-        return LogUtil::registerError(__('Sorry! This module is not designed or is not currently configured to be accessed in the way you attempted.'), 403);
+        throw new NotFoundHttpException(__('Sorry! This module is not designed or is not currently configured to be accessed in the way you attempted.'));
     }
 
     /**
      * Display a block if is active
      *
-     * @param array $args Arguments.
+     * @param mixed[] $args {
+     *      @type int  $bid          The id of the block
+     *      @type bool $showinactive Override active status of block
+     *                       }
+     *
+     * @return Response symfony response object
+     *
+     * @throws AccessDeniedException Throw if the user doesn't have edit permissions to the module
      */
     public function displayAction($args)
     {
         // Block Id - if passed - display the block
-        $bid   = (int)FormUtil::getPassedValue('bid', isset($args['bid']) ? $args['bid'] : null, 'REQUEST');
-        $showinactive = (bool)FormUtil::getPassedValue('showinactive', isset($args['showinactive']) ? $args['showinactive'] : false, 'REQUEST');
+        // check both post and get
+        $bid = (int)$this->request->query->get('bid', null);
+        if (!$bid) {
+            $bid = (int)$this->request->request->get('bid', isset($args['bid']) ? $args['bid'] : null);
+        }
+        $showinactive = (int)$this->request->query->get('showinactive', null);
+        if (!$showinactive) {
+            $showinactive = (int)$this->request->request->get('showinactive', isset($args['showinactive']) ? $args['showinactive'] : null);
+        }
 
         // Security check for $showinactive only
         if ($showinactive && !SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         if ($bid > 0) {
@@ -72,14 +88,14 @@ class UserController extends \Zikula_AbstractController
      *
      * Invert the status of a given block id (collapsed/uncollapsed).
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function changestatusAction()
     {
-        $bid = FormUtil::getPassedValue('bid');
+        $bid = $this->request->query->get('bid');
         $uid = UserUtil::getVar('uid');
 
-        $entity = 'Zikula\Module\BlocksModule\Entity\UserBlockEntity';
+        $entity = 'ZikulaBlocksModule:UserBlockEntity';
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $bid));
 
         if ($item['active'] == 1) {
@@ -91,7 +107,6 @@ class UserController extends \Zikula_AbstractController
         $this->entityManager->flush();
 
         // now lets get back to where we came from
-        $this->redirect(System::serverGetVar('HTTP_REFERER'));
+        return new RedirectResponse(System::serverGetVar('HTTP_REFERER'));
     }
-
 }

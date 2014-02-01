@@ -12,13 +12,15 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Component\HookDispatcher\Hook;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Abstract controller for modules.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractController extends Zikula_AbstractBase
 {
@@ -28,6 +30,24 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      * @var Zikula_View
      */
     protected $view;
+
+    public function __construct(Zikula_ServiceManager $serviceManager, \Zikula\Core\AbstractModule $bundle = null)
+    {
+        parent::__construct($serviceManager, $bundle);
+
+        if ($bundle !== null) {
+            // Get bundle from route.
+            $module = $bundle->getName();
+            // Load module.
+            \ModUtil::load($module);
+
+            // Set legacy to true, as the Controller's response will not have the theme around it otherwise.
+            // See Zikula\Bundle\CoreBundle\EventListener\ThemeListener::onKernelResponse() - The only place it is used.
+            $request = $serviceManager->get("request");
+            $request->attributes->set('_legacy', true);
+        }
+    }
+
 
     /**
      * {@inheritdoc}
@@ -83,9 +103,9 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      * @param Hook $hook Hook interface.
      *
      * @deprecated since 1.3.6
-     * @use self::dispatchHooks()
+     * @see self::dispatchHooks()
      *
-     * @return Zikula_AbstractHook
+     * @return Zikula\Component\HookDispatcher\Hook
      */
     public function notifyHooks(Hook $hook)
     {
@@ -97,7 +117,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      * @param Hook $hook Hook interface.
      *
-     * @return Zikula_AbstractHook
+     * @return Zikula\Component\HookDispatcher\Hook
      */
     public function dispatchHooks($name, Hook $hook)
     {
@@ -176,36 +196,17 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      * This will result in a 404 response code. Usage example:
      *
-     *     throw $this->createNotFoundException('Page not found!');
+     *     throw $this->createNotFoundException();
      *
-     * @param string    $message  A message
-     * @param \Exception $previous The previous exception
+     * @param string     $message  A message.
+     * @param \Exception $previous The previous exception.
      *
      * @return NotFoundHttpException
      */
     public function createNotFoundException($message = null, \Exception $previous = null)
     {
-        $message = null === $message ? __('Not Found') : $message;
+        $message = null === $message ? __('Page not found') : $message;
 
         return new NotFoundHttpException($message, $previous);
-    }
-
-    /**
-     * Returns a NotFoundHttpException.
-     *
-     * This will result in a 404 response code. Usage example:
-     *
-     *     throw $this->createNotFoundException('Page not found!');
-     *
-     * @param string    $message  A message
-     * @param \Exception $previous The previous exception
-     *
-     * @return NotFoundHttpException
-     */
-    public function createAccessDeniedHttpException($message = null, \Exception $previous = null)
-    {
-        $message = null === $message ? __('Access Denied') : $message;
-
-        return new AccessDeniedHttpException($message, $previous);
     }
 }

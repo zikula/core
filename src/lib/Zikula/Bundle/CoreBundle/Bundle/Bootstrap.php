@@ -44,6 +44,11 @@ class Bootstrap
                     $kernel->getAutoloader()->add($prefix, $path);
                 }
             }
+            if (isset($autoload['psr-4'])) {
+                foreach($autoload['psr-4'] as $prefix => $path) {
+                    $kernel->getAutoloader()->addPsr4($prefix, $path);
+                }
+            }
             if (isset($autoload['classmap'])) {
                 $kernel->getAutoloader()->addClassMap($autoload['classmaps']);
             }
@@ -61,9 +66,10 @@ class Bootstrap
                 } catch (\InvalidArgumentException $e) {
                     // continue
                 }
-            } else {
-                throw new \RuntimeException(sprintf('Looks like the bundle %s files are missing', $name));
             }
+
+            // todo - should we catch class not loadable here or not? If so how to handle it?
+            // see https://github.com/zikula/core/issues/1424
         }
         $conn->close();
     }

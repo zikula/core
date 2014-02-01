@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-plus"></span>
+    <span class="fa fa-plus"></span>
     {gt text="Create new block position"}
 </h3>
 

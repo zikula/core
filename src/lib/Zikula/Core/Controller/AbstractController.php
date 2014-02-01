@@ -3,7 +3,7 @@
 namespace Zikula\Core\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Bundle\ModuleBundle\AbstractModule;
 use Zikula\Common\I18n\TranslatorAwareInterface;
@@ -88,42 +88,43 @@ abstract class AbstractController extends Controller implements TranslatorAwareI
 
         return $parameters;
     }
+
     /**
      * Returns a NotFoundHttpException.
      *
      * This will result in a 404 response code. Usage example:
      *
-     *     throw $this->createNotFoundException('Page not found!');
+     *     throw $this->createNotFoundException();
      *
-     * @param string    $message  A message
-     * @param \Exception $previous The previous exception
+     * @param string     $message  A message.
+     * @param \Exception $previous The previous exception.
      *
      * @return NotFoundHttpException
      */
     public function createNotFoundException($message = null, \Exception $previous = null)
     {
-        $message = null === $message ? __('Not Found') : $message;
+        $message = null === $message ? __('Page not found') : $message;
 
         return new NotFoundHttpException($message, $previous);
     }
 
     /**
-     * Returns a NotFoundHttpException.
+     * Returns a AccessDeniedException.
      *
-     * This will result in a 404 response code. Usage example:
+     * This will result in a 403 response code. Usage example:
      *
-     *     throw $this->createNotFoundException('Page not found!');
+     *     throw $this->createAccessDeniedException();
      *
-     * @param string    $message  A message
-     * @param \Exception $previous The previous exception
+     * @param string     $message  A message.
+     * @param \Exception $previous The previous exception.
      *
-     * @return NotFoundHttpException
+     * @return AccessDeniedException
      */
-    public function createAccessDeniedHttpException($message = null, \Exception $previous = null)
+    public function createAccessDeniedException($message = null, \Exception $previous = null)
     {
-        $message = null === $message ? __('Access Denied') : $message;
+        $message = null === $message ? __('Access denied') : $message;
 
-        return new AccessDeniedHttpException($message, $previous);
+        return new AccessDeniedException($message, $previous);
     }
 
 }

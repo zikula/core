@@ -1,6 +1,6 @@
 imports:
     - { resource: parameters.yml }
-#    - { resource: security.yml }
+    - { resource: security.yml }
 
 framework:
     #esi:             ~
@@ -29,17 +29,17 @@ twig:
     strict_variables: %kernel.debug%
 
 ## Assetic Configuration
-#assetic:
-#    debug:          %kernel.debug%
-#    use_controller: false
-#    bundles:        [ ]
-#    #java: /usr/bin/java
-#    filters:
-#        cssrewrite: ~
-#        #closure:
-#        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
-#        #yui_css:
-#        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        [ ]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        #closure:
+        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
+        #yui_css:
+        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
 
 # Doctrine Configuration
 doctrine:
@@ -57,7 +57,6 @@ doctrine:
                 path:     %database_path%
 
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
         proxy_namespace: DoctrineProxy
         proxy_dir: %kernel.cache_dir%/doctrine/orm/DoctrineProxy
         default_entity_manager: default
@@ -131,9 +130,26 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
 
+cmf_routing:
+    dynamic:
+        enabled: true
+        route_provider_service_id: corebundle.route_provider
+    chain:
+        routers_by_id:
+            # enable the symfony default router with a higher priority.
+            router.default: 100
+
+            # enable the DynamicRouter with a low priority
+            # this way the non dynamic routes take precedence.
+            cmf_routing.dynamic_router: 20
+
 parameters:
     # Append the 'web/' folder to any asset path, because the application kernel of Zikula is not located in
     # the 'web' folder.
     templating.asset.path_package.class: Zikula\Bundle\CoreBundle\Templating\Asset\PathPackage
     # override stof BlameListener to set Zikula User
     stof_doctrine_extensions.event_listener.blame.class: Zikula\Bundle\CoreBundle\EventListener\BlameListener
+    # zikula core stylesheet and javascript component locations
+    zikula.stylesheet.bootstrap.min.path: web/bootstrap/css/bootstrap.min.css
+    zikula.javascript.bootstrap.min.path: web/bootstrap/js/bootstrap.min.js
+    zikula.stylesheet.fontawesome.min.path: web/font-awesome/css/font-awesome.min.css

@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-user"></span>
+    <span class="fa fa-user"></span>
     {gt text='Confirm verification code is to be sent to \'%1$s\'' tag1=$reginfo.uname}
 </h3>
 
@@ -24,8 +24,8 @@
             {assign var='actionTitle' value=$titleIfNotSent}
             {/if}
             {/strip}
-                {button id='confirm' type='submit' src='button_ok.png' set='icons/extrasmall' alt=$actionTitle title=$actionTitle text=$actionTitle}
-                <a class="btn btn-default" href="{$cancelurl|safetext}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+                {button class="btn btn-success" id='confirm' type='submit' alt=$actionTitle title=$actionTitle text=$actionTitle}
+                <a class="btn btn-default" href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>
         </div>
     </div>

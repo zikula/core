@@ -13,14 +13,14 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Zikula_Exception_Forbidden class.
  *
  * @deprecated since 1.3.6
- * @see AccessDeniedHttpException
+ * @see AccessDeniedException
  */
-class Zikula_Exception_Forbidden extends AccessDeniedHttpException
+class Zikula_Exception_Forbidden extends AccessDeniedException
 {
 }

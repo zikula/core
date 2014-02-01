@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-globe"></span>
+    <span class="fa fa-globe"></span>
     {gt text="Localisation settings"}
 </h3>
 

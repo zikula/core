@@ -40,7 +40,7 @@ class CategoryRegistryUtil
             $params = array('id' => $entryID);
         }
 
-        $entity = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')->findOneBy($params);
+        $entity = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findOneBy($params);
         if ($entity) {
             $em->remove($entity);
             $em->flush();
@@ -137,7 +137,7 @@ class CategoryRegistryUtil
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
         if (isset($catreg['id'])) {
-            $entity = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')->find($catreg['id']);
+            $entity = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->find($catreg['id']);
         } else {
             $entity = new CategoryRegistryEntity();
         }
@@ -166,7 +166,7 @@ class CategoryRegistryUtil
 
         foreach ($catregs as $catreg) {
             if ($catreg['id']) {
-                $entity = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')->find($catreg['id']);
+                $entity = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->find($catreg['id']);
             } else {
                 $entity = new CategoryRegistryEntity();
             }
@@ -202,7 +202,7 @@ class CategoryRegistryUtil
         /** @var $em Doctrine\ORM\EntityManager */
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $rCategories = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')->findBy(array('modname' => $modname, 'entityname' => $entityname), array('id' => 'ASC'));
+        $rCategories = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(array('modname' => $modname, 'entityname' => $entityname), array('id' => 'ASC'));
 
         $fArr = array();
 
@@ -266,7 +266,7 @@ class CategoryRegistryUtil
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $rCategories = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')->findBy(array('modname' => $modname, 'entityname' => $entityname));
+        $rCategories = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(array('modname' => $modname, 'entityname' => $entityname));
 
         $fArr = array();
 

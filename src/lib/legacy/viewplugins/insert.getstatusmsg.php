@@ -41,53 +41,123 @@
  */
 function smarty_insert_getstatusmsg($params, $view)
 {
-    // NOTE: assign parameter is handled by the smarty_core_run_insert_handler(...) function in lib/vendor/Smarty/internals/core.run_insert_handler.php
 
-    $class  = isset($params['class'])   ? $params['class']   : null;
-    $style  = isset($params['style'])   ? $params['style']   : null;
-    $tag    = isset($params['tag'])     ? $params['tag']     : null;
+    /**
+     * Note: The "assign" parameter is handled by the smarty_core_run_insert_handler()
+     * function in lib/vendor/Smarty/internals/core.run_insert_handler.php.
+     */
 
-    //prepare output var
-    $output = '';
+    $params['class'] = (isset($params['class'])) ? $params['class'] : null;
+    $params['style'] = (isset($params['style'])) ? $params['style'] : null;
+    $params['tag'] = (isset($params['tag'])) ? $params['tag'] : null;
 
-    // $msgStatus = LogUtil::getStatusMessages();
-    // we do not use LogUtil::getStatusMessages() because we need to know if we have to
-    // show a status or an error
+    /**
+     * Prepare output.
+     */
+    $result = '';
+
+    $total_messages = array();
+     
+    /**
+     * Get session.
+     */
     $session = $view->getContainer()->get('session');
-    $msgStatus = $session->getFlashBag()->get(Zikula_Session::MESSAGE_STATUS);
-    $msgtype   = ($class ? $class : 'alert alert-success');
-    $msgWarning = $session->getFlashBag()->get(Zikula_Session::MESSAGE_WARNING);
-    $msgError = $session->getFlashBag()->get(Zikula_Session::MESSAGE_ERROR);
 
-    if (!empty($msgWarning)) {
-        $msgStatus = $msgWarning;
-        $msgtype = ($class ? $class : 'alert alert-warning');
+    /**
+     * Get error messages.
+     */
+    $messages = $session->getFlashBag()->get(Zikula_Session::MESSAGE_ERROR);
+    
+    if (count($messages) > 0) {
+        /**
+         * Set class for the messages.
+         */
+        $class = (!is_null($params['class'])) ? $params['class'] : 'alert alert-danger';
+    
+        $total_messages = $total_messages + $messages;
+    
+        /**
+         * Build output of the messages.
+         */
+        if ((!$params['tag']) || ($params['tag'] != 'span')) {
+            $params['tag'] = 'div';
+        }
+
+        $result .= '<'.$params['tag'].' class="'.$class.'"';
+    
+        if (!is_null($params['style'])) {
+            $result .= ' style="'.$params['style'].'"';
+        }
+
+        $result .= '>';
+        $result .= implode('<hr />', $messages);
+        $result .= '</'.$params['tag'].'>';
+    } 
+    /**
+     * Get warning messages.
+     */
+    $messages = $session->getFlashBag()->get(Zikula_Session::MESSAGE_WARNING);
+    
+    if (count($messages) > 0) {
+        /**
+         * Set class for the messages.
+         */
+        $class = (!is_null($params['class'])) ? $params['class'] : 'alert alert-success';
+    
+        $total_messages = $total_messages + $messages;
+    
+        /**
+         * Build output of the messages.
+         */
+        if ((!$params['tag']) || ($params['tag'] != 'span')) {
+            $params['tag'] = 'div';
+        }
+
+        $result .= '<'.$params['tag'].' class="'.$class.'"';
+    
+        if ($params['style']) {
+            $result .= ' style="'.$params['style'].'"';
+        }
+
+        $result .= '>';
+        $result .= implode('<hr />', $messages);
+        $result .= '</'.$params['tag'].'>';
+    } 
+
+    /**
+     * Get status messages.
+     */
+    $messages = $session->getFlashBag()->get(Zikula_Session::MESSAGE_STATUS);
+    
+    if (count($messages) > 0) {
+        /**
+         * Set class for the messages.
+         */
+        $class = (!is_null($params['class'])) ? $params['class'] : 'alert alert-success';
+    
+        $total_messages = $total_messages + $messages;
+    
+        /**
+         * Build output of the messages.
+         */
+        if ((!$params['tag']) || ($params['tag'] != 'span')) {
+            $params['tag'] = 'div';
+        }
+
+        $result .= '<'.$params['tag'].' class="'.$class.'"';
+    
+        if ($params['style']) {
+            $result .= ' style="'.$params['style'].'"';
+        }
+
+        $result .= '>';
+        $result .= implode('<hr />', $messages);
+        $result .= '</'.$params['tag'].'>';
+    } 
+    
+    if (empty($total_messages)) {
+        return;  
     }
-    // Error message overrides status and warning message
-    if (!empty($msgError)) {
-        $msgStatus = $msgError;
-        $msgtype   = ($class ? $class : 'alert alert-danger');
-    }
 
-    if (empty($msgStatus) || count($msgStatus)==0) {
-        return $output;
-    }
-
-    // some parameters have been set, so we build the complete tag
-    if (!$tag || $tag != 'span') {
-        $tag = 'div';
-    }
-
-    // need to build a proper error message from message array
-    $output = '<' . $tag . ' class="' . $msgtype . '"';
-    if ($style) {
-        $output .= ' style="' . $style . '"';
-    }
-
-    $output .= '>';
-    $output .= implode ('<hr />', $msgStatus);
-    $output .= '</' . $tag . '>';
-
-    return $output;
+    return $result;
 }
-

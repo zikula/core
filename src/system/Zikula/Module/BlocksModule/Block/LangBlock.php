@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -23,10 +22,15 @@ use FormUtil;
 use ModUtil;
 use Zikula_View_Theme;
 
+/**
+ * Block to display a language selection interface
+ */
 class LangBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
+     *
+     * @return void
      */
     public function init()
     {
@@ -62,7 +66,13 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display the block
      *
-     * @param        row           blockinfo array
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string the rendered block
      */
     public function display($blockinfo)
     {
@@ -199,8 +209,13 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
     /**
      * modify block settings
      *
-     * @param  array  $blockinfo a blockinfo structure
-     * @return output the bock form
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string the bock form
      */
     public function modify($blockinfo)
     {
@@ -231,8 +246,13 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
     /**
      * update block settings
      *
-     * @param  array $blockinfo a blockinfo structure
-     * @return       $blockinfo  the modified blockinfo structure
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return array $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)
     {
@@ -240,10 +260,10 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // Read inputs
-        $vars['format'] = FormUtil::getPassedValue('format');
+        $vars['format'] = $this->request->request->get('format');
 
         // Read inputs
-        $vars['fulltranslation'] = FormUtil::getPassedValue('fulltranslation');
+        $vars['fulltranslation'] = $this->request->request->get('fulltranslation');
 
         // Scan for languages and save cached version
         $vars['languages'] = $this->getAvailableLanguages();
@@ -260,6 +280,13 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
         return $blockinfo;
     }
 
+    /**
+     * Get a list of available languages
+     *
+     * @param int $translate flag to localise the language name
+     *
+     * @return array list of languages
+     */
     public function getAvailableLanguages($translate)
     {
         $savedLanguage = ZLanguage::getLanguageCode();
@@ -288,6 +315,16 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
     }
 }
 
+/**
+ * Callback function to assist in sorting languages
+ *
+ * @param string $a the first language
+ * @param string $b the second language
+ *
+ * @see LangBlock::getAvailableLanguages
+ *
+ * @return int <0 if $a < $b, >0 otherwise
+ */
 function _blocks_thelangblock_sort($a, $b)
 {
     return strcmp($a['name'], $b['name']);

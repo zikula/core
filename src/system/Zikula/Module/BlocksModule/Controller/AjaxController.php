@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -15,15 +14,16 @@
 namespace Zikula\Module\BlocksModule\Controller;
 
 use SecurityUtil;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Module\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula_Response_Ajax;
-use Zikula_Exception_Fatal;
 use BlockUtil;
 use DataUtil;
 use ModUtil;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
- * Blocks_Controller_Ajax class.
+ * Ajax controllers for the blocks module
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
@@ -33,20 +33,27 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @param blockorder array of sorted blocks (value = block id)
      * @param position int zone id
      *
-     * @return mixed true or Ajax error
+     * @return Zikula_Response_Ajax true or Ajax error
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function changeblockorderAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
 
         $blockorder = $this->request->request->get('blockorder');
         $position = $this->request->request->get('position');
 
         // remove all blocks from this position
-        $entity = 'Zikula\Module\BlocksModule\Entity\BlockPlacementEntity';
-        $dql = "DELETE FROM $entity p WHERE p.pid = {$position}";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('ZikulaBlocksModule:BlockPlacementEntity', 'p')
+                                     ->where('p.pid = :pid')
+                                     ->setParameter('pid', $position)
+                                     ->getQuery();
         $query->getResult();
 
         // add new block positions
@@ -67,25 +74,31 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * This function toggles active/inactive.
      *
-     * @param bid int  id of block to toggle.
+     * @param bid int id of block to toggle.
      *
-     * @return mixed true or Ajax error
+     * @return Zikula_Response_Ajax true or Ajax error
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     * @throws FatalErrorException Thrown if no block id is supplied or
+     *                                     if the requested block isn't valid
      */
     public function toggleblockAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
 
         $bid = $this->request->request->get('bid', -1);
 
         if ($bid == -1) {
-            throw new Zikula_Exception_Fatal($this->__('No block ID passed.'));
+            throw new FatalErrorException($this->__('No block ID passed.'));
         }
 
         // read the block information
         $blockinfo = BlockUtil::getBlockInfo($bid);
         if ($blockinfo == false) {
-            throw new Zikula_Exception_Fatal($this->__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid)));
+            throw new FatalErrorException($this->__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid)));
         }
 
         if ($blockinfo['active'] == 1) {

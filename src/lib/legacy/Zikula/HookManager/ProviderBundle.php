@@ -14,6 +14,8 @@
 
 /**
  * Provider Bundle for Hook Providers
+ *
+ * @deprecated
  */
 class Zikula_HookManager_ProviderBundle extends Zikula\Component\HookDispatcher\ProviderBundle
 {

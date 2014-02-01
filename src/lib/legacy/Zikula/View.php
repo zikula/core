@@ -14,6 +14,8 @@
 
 /**
  * Zikula_View class.
+ *
+ * @deprecated
  */
 class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 {
@@ -184,7 +186,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $func   = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
 
         // set vars based on the module structures
-        $this->homepage = empty($module) ? true : false;
+        $this->homepage = PageUtil::isHomepage();
         $this->type = strtolower(!$this->homepage ? $type : System::getVar('starttype'));
         $this->func = strtolower(!$this->homepage ? $func : System::getVar('startfunc'));
 
@@ -215,17 +217,14 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             case ModUtil::TYPE_MODULE :
                 $mpluginPathNew = "modules/" . $this->modinfo['directory'] . "/Resources/views/plugins";
                 $mpluginPath = "modules/" . $this->modinfo['directory'] . "/templates/plugins";
-                $mpluginPathOld = "modules/" . $this->modinfo['directory'] . "/pntemplates/plugins";
                 break;
             case ModUtil::TYPE_SYSTEM :
                 $mpluginPathNew = "system/" . $this->modinfo['directory'] . "/Resources/views/plugins";
                 $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
-                $mpluginPathOld = "system/" . $this->modinfo['directory'] . "/pntemplates/plugins";
                 break;
             default:
                 $mpluginPathNew = "system/" . $this->modinfo['directory'] . "/Resources/views/plugins";
                 $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
-                $mpluginPathOld = "system/" . $this->modinfo['directory'] . "/pntemplates/plugins";
         }
 
         // add standard plugin search path
@@ -248,10 +247,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             }
         }
 
-        // adds legacy plugin paths if needed
-        if (System::isLegacyMode()) {
-            $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
-        }
         // theme plugins module overrides
         $themePluginsPath = isset($themeBundle) ? $themeBundle->getRelativePath() . '/modules/$moduleName/plugins' : "themes/$theme/templates/modules/$moduleName/plugins";
         $this->addPluginDir($themePluginsPath);
@@ -351,7 +346,24 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         parent::assign('eventManager', $this->eventManager);
         parent::assign('zikula_core', $this->serviceManager->get('zikula'));
         parent::assign('request', $this->request);
-        parent::assign('modvars', ModUtil::getModvars()); // Get all modvars from any modules that have accessed their modvars at least once.
+        $modvars = ModUtil::getModvars(); // Get all modvars from any modules that have accessed their modvars at least once.
+        // provide compatibility 'alias' array keys
+        // @todo remove after v1.3.7
+        if (isset($modvars['ZikulaAdminModule'])) { $modvars['Admin'] = $modvars['ZikulaAdminModule']; }
+        if (isset($modvars['ZikulaBlocksModule'])) { $modvars['Blocks'] = $modvars['ZikulaBlocksModule']; }
+        if (isset($modvars['ZikulaCategoriesModule'])) { $modvars['Categories'] = $modvars['ZikulaCategoriesModule']; }
+        if (isset($modvars['ZikulaExtensionsModule'])) { $modvars['Extensions'] = $modvars['ZikulaExtensionsModule']; }
+        if (isset($modvars['ZikulaGroupsModule']))  { $modvars['Groups'] = $modvars['ZikulaGroupsModule']; }
+        if (isset($modvars['ZikulaMailerModule'])) { $modvars['Mailer'] = $modvars['ZikulaMailerModule']; }
+        if (isset($modvars['ZikulaPageLockModule'])) { $modvars['PageLock'] = $modvars['ZikulaPageLockModule']; }
+        if (isset($modvars['ZikulaPermissionsModule'])) { $modvars['Permissions'] = $modvars['ZikulaPermissionsModule']; }
+        if (isset($modvars['ZikulaSearchModule'])) { $modvars['Search'] = $modvars['ZikulaSearchModule']; }
+        if (isset($modvars['ZikulaSecurityCenterModule'])) { $modvars['SecurityCenter'] = $modvars['ZikulaSecurityCenterModule']; }
+        if (isset($modvars['ZikulaSettingsModule'])) { $modvars['Settings'] = $modvars['ZikulaSettingsModule']; }
+        if (isset($modvars['ZikulaThemeModule'])) { $modvars['Theme'] = $modvars['ZikulaThemeModule']; }
+        if (isset($modvars['ZikulaUsersModule'])) { $modvars['Users'] = $modvars['ZikulaUsersModule']; }
+        // end compatibility aliases
+        parent::assign('modvars', $modvars);
 
         $this->add_core_data();
 
@@ -417,10 +429,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             // load the usemodules configuration if exists
             $modpath = ($view->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
             $usepath = "$modpath/" . $view->module[$module]['directory'] . '/templates/config';
-            $usepathOld = "$modpath/" . $view->module[$module]['directory'] . '/pntemplates/config';
             $usemod_confs = array();
             $usemod_confs[] = "$usepath/usemodules.txt";
-            $usemod_confs[] = "$usepathOld/usemodules.txt";
             $usemod_confs[] = "$usepath/usemodules"; // backward compat for < 1.2 // TODO A depreciate from 1.4
             // load the config file
             foreach ($usemod_confs as $usemod_conf) {
@@ -632,7 +642,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                         "config/templates/$os_module", //global path
                         $relativepath,
                         "$os_dir/$os_module/templates", // modpath
-                        "$os_dir/$os_module/pntemplates", // modpath old
                 );
             } else {
                 $search_path = array("themes/$os_theme/templates/modules/$os_module/$os_modname", // themehookpath
@@ -642,8 +651,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                         $relativepath,
                         "$os_dir/$os_module/templates/$os_modname", //modhookpath
                         "$os_dir/$os_module/templates", // modpath
-                        "$os_dir/$os_module/pntemplates/$os_modname", // modhookpathold
-                        "$os_dir/$os_module/pntemplates", // modpath old
                 );
             }
 
@@ -848,7 +855,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $path .= '/' . $this->modinfo['directory'];
 
         if ($this instanceof Zikula_View_Plugin) {
-            $path .= '_' . $this->pluginName;
+            $path .= '_' . $this->getPluginName();
         }
 
         // add the cache_id path if set

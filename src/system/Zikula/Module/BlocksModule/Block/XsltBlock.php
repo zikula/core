@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -19,8 +18,10 @@ use BlockUtil;
 use DOMDocument;
 use XSLTProcessor;
 use Zikula_View;
-use FormUtil;
 
+/**
+ * Block to display a parsed xml document
+ */
 class XsltBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
@@ -51,8 +52,13 @@ class XsltBlock extends \Zikula_Controller_AbstractBlock
     /**
      * display block
      *
-     * @param  array  $blockinfo a blockinfo structure
-     * @return output the rendered bock
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string the rendered bock
      */
     public function display($blockinfo)
     {
@@ -95,8 +101,13 @@ class XsltBlock extends \Zikula_Controller_AbstractBlock
     /**
      * modify block settings
      *
-     * @param  array  $blockinfo a blockinfo structure
-     * @return output the bock form
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string the bock form
      */
     public function modify($blockinfo)
     {
@@ -115,15 +126,20 @@ class XsltBlock extends \Zikula_Controller_AbstractBlock
     /**
      * update block settings
      *
-     * @param  array $blockinfo a blockinfo structure
-     * @return       $blockinfo  the modified blockinfo structure
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return array $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)
     {
-        $vars['docurl']        = FormUtil::getPassedValue('docurl', '', 'POST');
-        $vars['styleurl']      = FormUtil::getPassedValue('styleurl', '', 'POST');
-        $vars['doccontents']   = FormUtil::getPassedValue('doccontents', '', 'POST');
-        $vars['stylecontents'] = FormUtil::getPassedValue('stylecontents', '', 'POST');
+        $vars['docurl']        = $this->request->request->get('docurl', '');
+        $vars['styleurl']      = $this->request->request->get('styleurl', '');
+        $vars['doccontents']   = $this->request->request->get('doccontents', '');
+        $vars['stylecontents'] = $this->request->request->get('stylecontents', '');
 
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 

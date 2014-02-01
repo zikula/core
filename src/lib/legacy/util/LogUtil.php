@@ -250,7 +250,7 @@ class LogUtil
     public static function addWarningPopup($message)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
-        self::_addPopup($message, Log::WARN);
+        self::_addPopup($message, Log::WARNING);
     }
 
     /**
@@ -350,6 +350,7 @@ class LogUtil
      */
     public static function registerError($message, $type = 500, $url = null)
     {
+        self::log(__f('Deprecated call %s - depending on where this is called you may need to throw an exception instead', __METHOD__), Log::INFO);
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
 
         self::addErrorPopup($message);
@@ -362,7 +363,7 @@ class LogUtil
         // since we're registering an error, it makes sense to return false here.
         // This allows the calling code to just return the result of LogUtil::registerError
         // if it wishes to return 'false' (which is what usually happens).
-        return new Response('', $type);
+        return false;
     }
 
     /**
@@ -374,6 +375,8 @@ class LogUtil
      */
     public static function registerArgsError($url = null)
     {
+        self::log(__f('Deprecated call %s - throw an exception instead', __METHOD__), Log::INFO);
+
         return self::registerError(self::getErrorMsgArgs(), null, $url);
     }
 

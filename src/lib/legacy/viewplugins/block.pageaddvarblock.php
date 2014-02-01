@@ -36,9 +36,9 @@
  *  This inline script will appear in the page's <body> section just before the closing </body>:
  * <code>
  *   {pageaddvarblock name='footer'}
- *   <script language="javascript" type="text/javascript">
+ *   <script type="text/javascript">
  *       alert ('The closing </body> tag is coming.');
- *   </style>
+ *   </script>
  *   {/pageaddvarblock}
  * </code>
  *

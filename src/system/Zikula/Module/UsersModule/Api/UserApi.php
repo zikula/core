@@ -6,20 +6,15 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 namespace Zikula\Module\UsersModule\Api;
 
-use Zikula_Fatal_Exception;
-use Zikula_Exception_Forbidden;
 use SecurityUtil;
 use LogUtil;
-use Zikula_Exception_Fatal;
-use DBUtil;
 use DataUtil;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use UserUtil;
@@ -29,6 +24,7 @@ use ModUtil;
 use DateTimeZone;
 use DateTime;
 use Doctrine\ORM\AbstractQuery;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * The system-level and database-level functions for user-initiated actions for the Users module.
@@ -38,26 +34,22 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all users (for which the current user has permission to read).
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string  $args['letter']   The first letter of the set of user names to return.
-     * integer $args['starnum']  First item to return (optional).
-     * integer $args['numitems'] Number if items to return (optional).
-     * array   $args['sort']     The field(s) on which to sort the result (optional).
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type string  $letter   The first letter of the set of user names to return.
+     *      @type int     $starnum  First item to return (optional).
+     *      @type int     $numitems Number if items to return (optional).
+     *      @type array   $sort     The field(s) on which to sort the result (optional).
+     *                      }
      *
      * @return array An array of users, or false on failure.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are received in $args, or if the data cannot be loaded from the database.
-     *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have overview access.
+     * @throws AccessDeniedException Thrown if the current user does not have overview access.
      */
     public function getAll($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         // create a QueryBuilder instance
@@ -65,7 +57,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('u')
-           ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u');
+           ->from('ZikulaUsersModule:UserEntity', 'u');
 
         // add clauses for filtering activation states
         $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_REG)));
@@ -105,31 +97,27 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get a specific user record.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * numeric $args['uid']   The id of user to get (required, unless uname specified).
-     * string  $args['uname'] The user name of user to get (ignored if uid is specified, otherwise required).
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type int    $uid   The id of user to get (required, unless uname specified).
+     *      @type string $uname The user name of user to get (ignored if uid is specified, otherwise required).
+     *                      }
      *
      * @return array The user record as an array, or false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args, or if the data cannot be loaded from the database.
      */
     public function get($args)
     {
         // Argument check
         if (isset($args['uid'])) {
             if (!is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             } else {
                 $key = (int)$args['uid'];
                 $field = 'uid';
             }
         } elseif (!isset($args['uname']) || !is_string($args['uname'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $key = $args['uname'];
             $field = 'uname';
@@ -139,9 +127,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Check for a DB error
         if ($obj === false) {
-            $this->registerError($this->__('Error! Could not load data.'));
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Return the item array
@@ -151,24 +137,22 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Count and return the number of users.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string $args['letter'] If specified, then only those user records whose user name begins with the specified letter are counted.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param string[] $args {
+     *      @type string $letter If specified, then only those user records whose user name begins with the specified letter are counted.
+     *                       }
      *
      * @return int Number of users.
      *
      * @todo Shouldn't there be some sort of limit on the select/loop??
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
      */
     public function countItems($args)
     {
         // Check validity of letter arg.
         // $args['letter'] is really an SQL LIKE filter
         if (isset($args['letter']) && (empty($args['letter']) || !is_string($args['letter']) || strstr($args['letter'], '%'))) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // create a QueryBuilder instance
@@ -176,7 +160,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('count(u.uid)')
-           ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u');
+           ->from('ZikulaUsersModule:UserEntity', 'u');
 
         // add clauses for filtering activation states
         $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_REG)));
@@ -199,15 +183,13 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Sends a notification e-mail of a specified type to a user or registrant.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string $args['toAddress']        The destination e-mail address.
-     * string $args['notificationType'] The type of notification, converted to the name of a template
-     *                                          in the form users_userapi_{type}mail.tpl and/or .txt.
-     * array  $args['templateArgs']     One or more arguments to pass to the renderer for use in the template.
-     * string $args['subject']          The e-mail subject, overriding the template's subject.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type string $toAddress        The destination e-mail address.
+     *      @type string $notificationType The type of notification, converted to the name of a template
+     *                                     in the form users_userapi_{type}mail.tpl and/or .txt.
+     *      @type array  $templateArgs     One or more arguments to pass to the renderer for use in the template.
+     *      @type string $subject          The e-mail subject, overriding the template's subject.
+     *                      }
      *
      * @return <type>
      */
@@ -286,14 +268,15 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Send the user an account information recovery e-mail.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string $args['idfield'] The value 'email'.
-     * string $args['id']      The user's e-mail address.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type string $idfield The value 'email'.
+     *      @type string $id      The user's e-mail address.
+     *                      }
      *
      * @return bool True if user name sent; otherwise false.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
+     * @throws \RuntimeException Thrown if the e-mail couldn't be sent
      */
     public function mailUname($args)
     {
@@ -301,16 +284,19 @@ class UserApi extends \Zikula_AbstractApi
 
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
                 || (($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
         if ($args['idfield'] == 'email') {
-            $dql = "SELECT count(u.uid) FROM Zikula\\Module\\UsersModule\\Entity\\UserEntity u WHERE u.email = '{$args['id']}'";
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->select('count(u.uid)')
+                                         ->from('ZikulaUsersModule:UserEntity', 'u')
+                                         ->where('u.email = :email')
+                                         ->setParameter('email', $args['id'])
+                                         ->getQuery();
+
             $ucount = (int)$query->getSingleScalarResult();
 
             if ($ucount > 1) {
@@ -348,7 +334,7 @@ class UserApi extends \Zikula_AbstractApi
             ));
 
             if (!$emailMessageSent) {
-                $this->registerError($this->__('Error! Unable to send user name e-mail message.'));
+                throw new \RuntimeException($this->__('Error! Unable to send user name e-mail message.'));
             }
         }
 
@@ -358,13 +344,14 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Send the user a lost password confirmation code.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string $args['email'] The user's e-mail address.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param string[] $args {
+     *      @type string $email The user's e-mail address.
+     *                       }
      *
      * @return bool True if confirmation code sent; otherwise false.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args, or if the data cannot be loaded from the database.
+     * @throws \RuntimeException Thrown if the confirmation code couldn't be created, saved or sent by e-mail
      */
     public function mailConfirmationCode($args)
     {
@@ -373,9 +360,7 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
                 || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))
                 ) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if ($args['idfield'] == 'email') {
@@ -395,8 +380,14 @@ class UserApi extends \Zikula_AbstractApi
             $hashedConfirmationCode = UserUtil::getHashedPassword($confirmationCode);
 
             if ($hashedConfirmationCode !== false) {
-                $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.uid = " . $user['uid'] . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
-                $query = $this->entityManager->createQuery($dql);
+                $query = $this->entityManager->createQueryBuilder()
+                                             ->delete()
+                                             ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
+                                             ->where('v.uid = :uid')
+                                             ->andWhere('v.changetype = :changetype')
+                                             ->setParameter('uid', $user['uid'])
+                                             ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_PWD)
+                                             ->getQuery();
                 $query->getResult();
 
                 $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
@@ -438,13 +429,13 @@ class UserApi extends \Zikula_AbstractApi
                     ));
 
                     if (!$emailMessageSent) {
-                        $this->registerError($this->__('Error! Unable to send confirmation code e-mail message.'));
+                        throw new \RuntimeException($this->__('Error! Unable to send confirmation code e-mail message.'));
                     }
                 } else {
-                    $this->registerError($this->__('Error! Unable to save confirmation code.'));
+                    throw new \RuntimeException($this->__('Error! Unable to save confirmation code.'));
                 }
             } else {
-                $this->registerError($this->__("Error! Unable to create confirmation code."));
+                throw new \RuntimeException($this->__("Error! Unable to create confirmation code."));
             }
         }
 
@@ -454,15 +445,16 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Check a lost password confirmation code.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string $args['idfield'] Either 'uname' or 'email'.
-     * string $args['id']      The user's user name or e-mail address, depending on the value of idfield.
-     * string $args['code']    The confirmation code.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param string[] $args {
+     *      @type string $idfield Either 'uname' or 'email'.
+     *      @type string $id      The user's user name or e-mail address, depending on the value of idfield.
+     *      @type string $code    The confirmation code.
+     *                       }
      *
      * @return bool True if the new password was sent; otherwise false.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args, or if the data cannot be loaded from the database.
+     * @throws \RuntimeException Thrown if the confirmation code couldn't be obtained
      */
     public function checkConfirmationCode($args)
     {
@@ -470,17 +462,13 @@ class UserApi extends \Zikula_AbstractApi
 
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) || !isset($args['code'])
                 || empty($args['code']) || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email'))) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $user = UserUtil::getVars($args['id'], true, $args['idfield']);
 
         if (!$user) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             // delete all the records for password reset confirmation that have expired
             $chgPassExpireDays = $this->getVar(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
@@ -489,16 +477,22 @@ class UserApi extends \Zikula_AbstractApi
                 $staleRecordUTC->modify("-{$chgPassExpireDays} days");
                 $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
 
-                $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
-                $query = $this->entityManager->createQuery($dql);
+                $query = $this->entityManager->createQueryBuilder()
+                                             ->delete()
+                                             ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
+                                             ->where('v.created_dt < :staleRecordUTCStr')
+                                             ->andWhere('v.changetype = :changetype')
+                                             ->setParameter('staleRecordUTCStr', $staleRecordUTCStr)
+                                             ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_PWD)
+                                             ->getQuery();
                 $query->getResult();
             }
 
-            $verifychgObj = $this->entityManager->getRepository('Zikula\Module\UsersModule\Entity\UserVerificationEntity')->findOneBy(array('uid' => $user['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_PWD));
+            $verifychgObj = $this->entityManager->getRepository('ZikulaUsersModule:UserVerificationEntity')->findOneBy(array('uid' => $user['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_PWD));
             if ($verifychgObj) {
                 $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
             } else {
-                $this->registerError('Sorry! Could not retrieve a confirmation code for that account.');
+                throw new \RuntimeException('Sorry! Could not retrieve a confirmation code for that account.');
             }
         }
 
@@ -572,20 +566,18 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Save the preliminary user e-mail until user's confirmation.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string $args['newemail'] The new e-mail address to store pending confirmation.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param string[] $args {
+     *      @type string $newemail The new e-mail address to store pending confirmation.
+     *                       }
      *
      * @return bool True if success and false otherwise.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user is logged in.
+     * @throws AccessDeniedException Thrown if the current user is logged in.
      */
     public function savePreEmail($args)
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
@@ -597,14 +589,20 @@ class UserApi extends \Zikula_AbstractApi
         $confirmCode = UserUtil::generatePassword();
         $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
 
-        $dql = 'DELETE FROM Zikula\Module\UsersModule\Entity\UserVerificationEntity v WHERE v.uid = ' . $uid . ' AND v.changetype = ' . UsersConstant::VERIFYCHGTYPE_EMAIL;
-        $query = $this->entityManager->createQuery($dql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
+                                     ->where('v.uid = :uid')
+                                     ->andWhere('v.changetype = :changetype')
+                                     ->setParameter('uid', $uid)
+                                     ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_EMAIL)
+                                     ->getQuery();
         $query->getResult();
 
         $obj = new \Zikula\Module\UsersModule\Entity\UserVerificationEntity;
         $obj['changetype'] = UsersConstant::VERIFYCHGTYPE_EMAIL;
         $obj['uid'] = $uid;
-        $obj['newemail'] = DataUtil::formatForStore($args['newemail']);
+        $obj['newemail'] = $args['newemail'];
         $obj['verifycode'] = $confirmCodeHash;
         $obj['created_dt'] = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
         $this->entityManager->persist($obj);
@@ -643,12 +641,12 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return string The e-mail address waiting for confirmation for the current user.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user is logged in.
+     * @throws AccessDeniedException Thrown if the current user is logged in.
      */
     public function getUserPreEmail()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         // delete all the records from e-mail confirmation that have expired
@@ -658,14 +656,20 @@ class UserApi extends \Zikula_AbstractApi
             $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
             $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
 
-            $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->delete()
+                                         ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
+                                         ->where('v.created_dt < :staleRecordUTCStr')
+                                         ->andWhere('v.changetype = :changetype')
+                                         ->setParameter('staleRecordUTCStr', $staleRecordUTCStr)
+                                         ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_PWD)
+                                         ->getQuery();
             $query->getResult();
         }
 
         $uid = UserUtil::getVar('uid');
 
-        $item = $this->entityManager->getRepository('Zikula\Module\UsersModule\Entity\UserVerificationEntity')->findOneBy(array('uid' => $uid, 'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL));
+        $item = $this->entityManager->getRepository('ZikulaUsersModule:UserVerificationEntity')->findOneBy(array('uid' => $uid, 'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL));
 
         return $item;
     }
@@ -673,32 +677,28 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Removes a record from the users_verifychg table for a specified uid and changetype.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * integer       $args['uid']        The uid of the verifychg record to remove. Required.
-     * integer|array $args['changetype'] The changetype(s) of the verifychg record to remove. If more
-     *                                          than one type is to be removed, use an array. Optional. If
-     *                                          not specifed, all verifychg records for the user will be
-     *                                          removed. Note: specifying an empty array will remove none.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type int       $uid        The uid of the verifychg record to remove. Required.
+     *      @type int|array $changetype The changetype(s) of the verifychg record to remove. If more
+     *                                  than one type is to be removed, use an array. Optional. If
+     *                                  not specifed, all verifychg records for the user will be
+     *                                  removed. Note: specifying an empty array will remove none.
+     *                      }
      *
      * @return void|bool Null on success, false on error.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
      */
     public function resetVerifyChgFor($args)
     {
         if (!isset($args['uid'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $uid = $args['uid'];
 
         if (!is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!isset($args['changetype'])) {
@@ -712,18 +712,21 @@ class UserApi extends \Zikula_AbstractApi
             }
             foreach ($changeType as $theType) {
                 if (!is_numeric($theType) || ((int)$theType != $theType) || ($theType < 0)) {
-                    $this->registerError(LogUtil::getErrorMsgArgs());
-
-                    return false;
+                    throw new \InvalidArgumentException(__('Invalid arguments array received'));
                 }
             }
         }
 
-        $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.uid = " . $uid;
+        $qb = $this->entityManager->createQueryBuilder()
+                                  ->delete()
+                                  ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
+                                  ->where('v.uid = :uid')
+                                  ->setParameter('uid', $uid);
         if (isset($changeType)) {
-            $dql .= " AND v.changetype IN (" . implode(', ', $changeType) . ")";
+            $qb->andWhere($qb->expr()->in('v.changetype', ':changeType'))
+               ->setParameter('changeType', $changeType);
         }
-        $query = $this->entityManager->createQuery($dql);
+        $query = $qb->getQuery();
         $query->getResult();
     }
 
@@ -743,7 +746,7 @@ class UserApi extends \Zikula_AbstractApi
             $links[] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'login'),
                 'text'  => $this->__('Log in'),
-                'icon' => 'signin',
+                'icon' => 'sign-in',
             );
             $links[] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'lostPwdUname'),
@@ -766,11 +769,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Convenience function for several functions; converts registration errors into easily displayable sets of data.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * array   $args['registrationErrors'] The array of registration errors from getRegistrationErrors or one of its related functions.
-     *
-     * @param array $args All parameters passed to the function.
+     * @param array[] $args {
+     *      @type array $registrationErrors The array of registration errors from getRegistrationErrors or one of its related functions.
+     *                      }
      *
      * @return array Modified error information.
      */

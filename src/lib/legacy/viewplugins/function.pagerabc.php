@@ -101,7 +101,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
                 $pager['values'] = $params['values'];
             }
             if (count($pager['values']) != count($pager['names'])) {
-                LogUtil::registerError('pagerabc: Values length must be the same of the names');
+                LogUtil::addErrorPopup('pagerabc: Values length must be the same of the names');
                 $pager['values'] = $pager['names'];
             }
         } else {

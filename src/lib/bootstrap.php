@@ -23,7 +23,9 @@ if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
 }
 $kernelConfig = $kernelConfig['parameters'];
-$kernelConfig['debug'] === 'prod' ?: Debug::enable();
+if ($kernelConfig['env'] !== 'prod') {
+    Debug::enable();
+}
 
 require __DIR__.'/../app/ZikulaKernel.php';
 

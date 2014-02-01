@@ -104,6 +104,7 @@ class SystemPlugin_Imagine_Preset extends ArrayObject
             'height' => 100,
             'mode' => null,
             'extension' => null,
+            'options' => array(),
             '__module' => null,
             '__imagine' => null,
             '__transformation' => null

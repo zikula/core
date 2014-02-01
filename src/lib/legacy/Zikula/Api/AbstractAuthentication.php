@@ -81,6 +81,21 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
     abstract public function getAuthenticationMethods(array $args = null);
 
     /**
+     * Retrieves an authentication method defined by this module.
+     *
+     * Parameters passed in $args:
+     * ---------------------------
+     * string 'method' The name of the authentication method.
+     *
+     * @param array $args All arguments passed to this function.
+     *
+     * @return array An array containing the authentication method requested.
+     *
+     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     */
+    abstract public function getAuthenticationMethod(array $args);
+
+    /**
      * Registers a user account record or a user registration request with the authentication method.
      *
      * This is called during the user registration process to associate an authentication method provided by this authentication module

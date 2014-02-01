@@ -14,6 +14,8 @@
 
 /**
  * Zikula_View_Plugin for plugin system.
+ *
+ * @deprecated
  */
 class Zikula_View_Plugin extends Zikula_View
 {

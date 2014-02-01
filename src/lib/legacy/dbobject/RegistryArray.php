@@ -14,6 +14,8 @@
 
 /**
  * CategoryRegistryArray
+ *
+ * @deprecated
  */
 class Categories_DBObject_RegistryArray extends DBObjectArray
 {

@@ -34,13 +34,15 @@ mb_regex_encoding('UTF-8');
  * System class.
  *
  * Core class with the base methods.
+ *
+ * @deprecated
  */
 class Zikula_Core
 {
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = '1.3.6';
+    const VERSION_NUM = '1.3.7';
 
     /**
      * The version ID.
@@ -149,7 +151,7 @@ class Zikula_Core
      * Getter for servicemanager property.
      *
      * @depracated since 1.4
-     * @use self::getContainer()
+     * @see self::getContainer()
      *
      * @return Zikula_ServiceManager
      */
@@ -172,7 +174,7 @@ class Zikula_Core
      * Getter for eventmanager property.
      *
      * @deprecated since 1.4
-     * @use self::getDispatcher()
+     * @see self::getDispatcher()
      *
      * @return Zikula_Eventmanager
      */

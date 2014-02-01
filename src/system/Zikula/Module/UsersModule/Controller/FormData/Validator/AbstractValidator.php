@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -34,7 +33,7 @@ abstract class AbstractValidator extends \Zikula_AbstractBase
      * @param Zikula_ServiceManager $serviceManager The current service manager instance.
      * @param string                $errorMessage   The error message to report if the field's data does not validate.
      *
-     * @throws InvalidArgumentException Thrown if the error message is not a string or is empty.
+     * @throws \InvalidArgumentException Thrown if the error message is not a string or is empty.
      */
     public function __construct(\Zikula_ServiceManager $serviceManager, $errorMessage = null)
     {

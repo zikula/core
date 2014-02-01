@@ -14,6 +14,7 @@
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -200,31 +201,6 @@ class ModUtil
             // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
             if (System::isUpgrading()) {
                 self::initCoreVars(true);
-                /* This code is being kept for the time being incase the above fix doesnt work.
-                $tables = DBUtil::getTables();
-                $col = $tables['module_vars_column'];
-                $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
-                // The following line is not a mistake. A sort string containing one space is used to disable the default sort for DBUtil::selectFieldArray().
-                $sort = ' ';
-
-                $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
-
-                if (is_array($results)) {
-                    if (!empty($results)) {
-                        foreach ($results as $k => $v) {
-                            // ref #2045 vars are being stored with 0/1 unserialised.
-                            if (array_key_exists($k, $GLOBALS['ZConfig']['System'])) {
-                                self::$modvars[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
-                            } elseif ($v == '0' || $v == '1') {
-                                self::$modvars[$modname][$k] = $v;
-                            } else {
-                                self::$modvars[$modname][$k] = unserialize($v);
-                            }
-                        }
-                    }
-                }
-                // TODO - There should probably be an exception thrown here if $results === false
-            */
             } else {
                 // Prevent a re-query for the same module in the future, where the module does not define any module variables.
                 self::$modvars[$modname] = array();
@@ -352,14 +328,19 @@ class ModUtil
 
         // if $name is not provided, delete all variables of this module
         // else just delete this specific variable
-        if (empty($name)) {
-            $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\ExtensionVarEntity v WHERE v.modname = '{$modname}'";
-        } else {
-            $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\ExtensionVarEntity v WHERE v.modname = '{$modname}' AND v.name = '{$name}'";
+        /** @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $em->createQueryBuilder()
+                 ->delete('Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
+                 ->where('v.modname = :modname')
+                 ->setParameter('modname', $modname);
+
+        if (!empty($name)) {
+            $qb->andWhere('v.name = :name')
+               ->setParameter('name', $name);
         }
 
-        $query = $em->createQuery($dql);
-        $result = $query->getResult();
+        $query = $qb->getQuery();
+        $result = $query->execute();
 
         return (boolean)$result;
     }
@@ -829,30 +810,7 @@ class ModUtil
             return $modname;
         }
 
-        // is OOP module
-        if (self::isOO($modname)) {
-            self::initOOModule($modname);
-        } else {
-            $osdir = DataUtil::formatForOS($modinfo['directory']);
-            $ostype = DataUtil::formatForOS($type);
-
-            $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
-            $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
-            $mosdir = "$modpath/$osdir/pn{$ostype}{$osapi}";
-
-            if (file_exists($cosfile)) {
-                // Load the file from config
-                include_once $cosfile;
-            } elseif (file_exists($mosfile)) {
-                // Load the file from modules
-                include_once $mosfile;
-            } elseif (is_dir($mosdir)) {
-
-            } else {
-                // File does not exist
-                return false;
-            }
-        }
+        self::initOOModule($modname);
 
         self::$cache['loaded'][$modtype] = $modname;
 
@@ -925,11 +883,6 @@ class ModUtil
      */
     public static function getClass($modname, $type, $api = false, $force = false)
     {
-        // do not cache this process - drak
-        if (!self::isOO($modname)) {
-            return false;
-        }
-
         if ($api) {
             $result = self::loadApi($modname, $type);
         } else {
@@ -1097,7 +1050,7 @@ class ModUtil
         }
 
         // Remove from 1.4
-        if (System::isLegacyMode('1.3.6') && $modname == 'Modules') {
+        if (System::isLegacyMode('1.3.7') && $modname == 'Modules') {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
             $modname = 'ZikulaExtensionsModule';
         }
@@ -1131,10 +1084,57 @@ class ModUtil
 
                 // Check $modfunc is an object instance (OO) or a function (old)
                 if (is_array($modfunc)) {
-                    if (!$api && !$modfunc[0] instanceof Zikula_AbstractBase) {
-                        // resolve request args
+                    try {
+                        self::getModule($modname);
+                        $newType = true;
+                    } catch (\Exception $e) {
+                        $newType = false;
+                    }
+                    if ($args) {
+                        $newType = false;
+                    }
+                    if (!$api && $newType) {
+                        // resolve request args.
                         $resolver = new ControllerResolver($sm, new ControllerNameParser(ServiceUtil::get('kernel')));
-                        $methodArgs = $resolver->getArguments($request = $sm->get('request'), $modfunc);
+                        try {
+                            $r = new \ReflectionClass($modfunc[0]);
+                            if (!$r->hasMethod($modfunc[1])) {
+                                // Method doesn't exist. Do some BC handling.
+                                // First try to remove the 'Action' suffix.
+                                $modfunc[1] = preg_replace('/(\w+)Action$/', '$1', $modfunc[1]);
+                                if (!$r->hasMethod($modfunc[1])) {
+                                    // Method still not found. Try to use the old 'main' method name.
+                                    if ($modfunc[1] == 'index') {
+                                        $modfunc[1] = $r->hasMethod('mainAction') ? 'mainAction' : 'main';
+                                    }
+                                }
+                            }
+
+                            if ($r->hasMethod($modfunc[1])) {
+                                // Did we get a valid method? If so, resolve arguments!
+                                $methodArgs = $resolver->getArguments($sm->get('request'), $modfunc);
+                            } else {
+                                // We still didn't get a valid method. Do not use argument resolving.
+                                $newType = false;
+                            }
+                        } catch(\RuntimeException $e) {
+                            // Something went wrong. Check if the method still uses the old non-Symfony $args array.
+                            if ($modfunc[0] instanceof \Zikula_AbstractBase) {
+                                $r = new \ReflectionMethod($modfunc[0], $modfunc[1]);
+                                $parameters = $r->getParameters();
+                                if (count($parameters) == 1) {
+                                    $firstParameter = $parameters[0];
+                                    if ($firstParameter->getName() == 'args') {
+                                        // The method really uses the old $args parameter. In this case we can continue
+                                        // using the old Controller call and don't have to throw an exception.
+                                        $newType = false;
+                                    }
+                                }
+                            }
+                            if ($newType !== false) {
+                                throw $e;
+                            }
+                        }
                     }
 
                     if ($modfunc[0] instanceof Zikula_AbstractController) {
@@ -1147,7 +1147,7 @@ class ModUtil
                         $modfunc[0]->preDispatch();
                     }
 
-                    if (!$api && !$modfunc[0] instanceof Zikula_AbstractBase && isset($methodArgs)) {
+                    if (!$api && $newType && isset($methodArgs)) {
                         $postExecuteEvent->setData(call_user_func_array($modfunc, $methodArgs));
                     } else {
                         $postExecuteEvent->setData(call_user_func($modfunc, $args));
@@ -1229,6 +1229,53 @@ class ModUtil
         return self::exec($modname, $type, $func, $args, true, $instanceof);
     }
 
+    private static function symfonyRoute($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang)
+    {
+        /** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
+        $router = ServiceUtil::get('router');
+
+        if (isset($args['lang'])) {
+            $args['_locale'] = $args['lang'];
+        }
+
+        $routeNames = array(strtolower($modname) . "_" . strtolower($type) . "_" . strtolower($func));
+        if ($func == 'index' || $func == 'main') {
+            if ($func == 'index') {
+                $routeNames[] = strtolower($modname) . "_" . strtolower($type) . "_main";
+            } else {
+                $routeNames[] = strtolower($modname) . "_" . strtolower($type) . "_index";
+            }
+        }
+
+        $foundRoute = false;
+        foreach ($routeNames as $routeName) {
+            if ($router->getRouteCollection()->get($routeName) !== null) {
+                $foundRoute = $routeName;
+            }
+        }
+
+        if ($foundRoute === false) {
+            return false;
+        }
+
+        if ($ssl) {
+            $oldScheme = $router->getContext()->getScheme();
+            $router->getContext()->setScheme('https');
+        }
+
+        $url = $router->generate($foundRoute, $args, ($fqurl) ? $router::ABSOLUTE_URL : $router::ABSOLUTE_PATH);
+
+        if ($ssl) {
+            $router->getContext()->setScheme($oldScheme);
+        }
+
+        if (isset($fragment)) {
+            $url .= '#' . $fragment;
+        }
+
+        return $url;
+    }
+
     /**
      * Generate a module function URL.
      *
@@ -1284,6 +1331,12 @@ class ModUtil
         if (System::isLegacyMode() && $modname == 'Modules') {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::url() or {modurl} calls with $module = "ZikulaExtensionsModule".'));
             $modname = 'ZikulaExtensionsModule';
+        }
+
+        // Try to generate the url using Symfony routing.
+        $url = self::symfonyRoute($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang);
+        if ($url !== false) {
+            return $url;
         }
 
         //get the module info
@@ -1755,6 +1808,8 @@ class ModUtil
      *
      * @param string $moduleName Module name.
      *
+     * @deprecated
+     *
      * @return boolean
      */
     public static function isOO($moduleName)
@@ -1764,24 +1819,11 @@ class ModUtil
             self::$ooModules[$moduleName]['initialized'] = false;
             self::$ooModules[$moduleName]['oo'] = false;
             $modinfo = self::getInfo(self::getIdFromName($moduleName));
-            $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-            $osdir = DataUtil::formatForOS($modinfo['directory']);
-
             if (!$modinfo) {
                 return false;
             }
 
-            if (file_exists("$modpath/$osdir/$osdir.php")) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            } else if (file_exists("$modpath/$osdir/{$osdir}Version.php")) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            } else if (is_dir("$modpath/$osdir/lib")) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            } else if (file_exists("$modpath/$osdir/Version.php")) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            } else if (self::getModule($moduleName)) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            }
+            self::$ooModules[$moduleName]['oo'] = true;
         }
 
         return self::$ooModules[$moduleName]['oo'];
@@ -1841,10 +1883,6 @@ class ModUtil
         $paths[] = $modpath . '/' . $osmoddir . '/images/admin.png';
         $paths[] = $modpath . '/' . $osmoddir . '/images/admin.jpg';
         $paths[] = $modpath . '/' . $osmoddir . '/images/admin.gif';
-        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.gif';
-        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.jpg';
-        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.jpeg';
-        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.png';
         $paths[] = 'system/Zikula/Module/AdminModule/Resources/public/images/default.gif';
 
         foreach ($paths as $path) {
@@ -1881,6 +1919,8 @@ class ModUtil
     }
 
     /**
+     * Gets the object associated with a given module name 
+     *
      * @param $moduleName
      *
      * @return null|\Zikula\Core\AbstractModule
@@ -1898,6 +1938,8 @@ class ModUtil
     }
 
     /**
+     * Gets the file system path of the module relative to site root
+     *
      * @param $modName
      *
      * @return bool|mixed False or path
@@ -1914,6 +1956,13 @@ class ModUtil
         return $path;
     }
 
+    /**
+     * Checks if a module is a core (i.e. located in system/) module
+     *
+     * @param $modName
+     *
+     * @return bool|mixed False or path
+     */
     public static function isCore($module)
     {
         return ('system' === self::getModuleBaseDir($module)) ? true : false;

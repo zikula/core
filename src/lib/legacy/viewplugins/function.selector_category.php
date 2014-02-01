@@ -37,8 +37,7 @@ function smarty_function_selector_category($params, Zikula_View $view)
     $defaultText      = isset($params['defaultText'])      ? $params['defaultText']      : '';
     $allValue         = isset($params['allValue'])         ? $params['allValue']         : 0;
     $allText          = isset($params['allText'])          ? $params['allText']          : '';
-    $lang             = isset($params['lang'])             ? $params['lang']             : ZLanguage::getLanguageCode();
-    $name             = isset($params['name'])             ? $params['name']             : 'defautlselectorname';
+    $name             = isset($params['name'])             ? $params['name']             : 'defaultselectorname';
     $submit           = isset($params['submit'])           ? $params['submit']           : false;
     $recurse          = isset($params['recurse'])          ? $params['recurse']          : true;
     $relative         = isset($params['relative'])         ? $params['relative']         : true;
@@ -53,6 +52,15 @@ function smarty_function_selector_category($params, Zikula_View $view)
     $sortField        = isset($params['sortField'])        ? $params['sortField']        : 'sort_value';
     $doReplaceRootCat = isset($params['doReplaceRootCat']) ? $params['doReplaceRootCat'] : null;
     $cssClass         = isset($params['cssClass'])         ? $params['cssClass']         : '';
+
+    if (isset($params['lang'])) {
+        $lang = $params['lang'];
+        $oldLocale = ZLanguage::getLocale();
+        ZLanguage::setLocale($lang);
+    } else {
+        $lang = ZLanguage::getLanguageCode();
+    }
+
 
     if (!$category && !$path && $categoryRegistryModule && $categoryRegistryTable && $categoryRegistryProperty) {
         $category = CategoryRegistryUtil::getRegisteredModuleCategory ($categoryRegistryModule, $categoryRegistryTable, $categoryRegistryProperty);
@@ -81,12 +89,17 @@ function smarty_function_selector_category($params, Zikula_View $view)
     }
 
     $html = CategoryUtil::getSelector_Categories ($catCache[$cacheKey], $field, $selectedValue, $name, $defaultValue, $defaultText,
-                                                  $allValue, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize, $fieldIsAttribute, $cssClass
+                                                  $allValue, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize, $fieldIsAttribute, $cssClass, $lang
                                                   );
 
     if ($editLink && !empty($category) && SecurityUtil::checkPermission( 'ZikulaCategoriesModule::', "$category[id]::", ACCESS_EDIT)) {
         $url = DataUtil::formatForDisplay(ModUtil::url ('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $category['id'])));
         $html .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"".System::getBaseUrl()."images/icons/extrasmall/xedit.png\" title=\"" . __('Edit sub-category') . '" alt="' . __('Edit sub-category') . '" /></a>';
+    }
+
+    if (isset($params['lang'])) {
+        // Reset language again.
+        ZLanguage::setLocale($oldLocale);
     }
 
     if ($assign) {

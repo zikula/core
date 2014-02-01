@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-cut"></span>
+    <span class="fa fa-scissors"></span>
     {gt text="Move category"}
 </h3>
 

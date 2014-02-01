@@ -7,23 +7,23 @@
     <ul id="admintabs" class="nav nav-mouseover nav-tabs nav-tabs-admin">
         {foreach from=$menuoptions name='menuoption' item='menuoption'}
         <li class="dropdown droppable nowrap{if $currentcat eq $menuoption.cid} active{/if}" data-catid="{$menuoption.cid}">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="icon icon-move admintabs-lock"></span>
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-arrows admintabs-lock"></span>
             <span>{$menuoption.title|safetext}</span>
-            <span class="icon icon-caret-down"></span>
+            <span class="fa fa-caret-down"></span>
             </a>
                 <ul class="dropdown-menu">
                     <li class="admintabs-lock admintabs-makedefault{if $currentcat eq $menuoption.cid} hide{/if}">
-                        <a href="#"><span class="icon icon-asterisk icon-fixed-width" ></span> {gt text='Make default category'}</a>
+                        <a href="#"><span class="fa fa-asterisk fa-fw" ></span> {gt text='Make default category'}</a>
                     </li>
                     <li class="admintabs-lock admintabs-edit" data-toggle="modal" data-target="#admintabs-rename-category-modal">
-                        <a href="#"><span class="icon icon-pencil icon-fixed-width" ></span> {gt text='Edit category'}</a>
+                        <a href="#"><span class="fa fa-pencil fa-fw" ></span> {gt text='Edit category'}</a>
                     </li>
                     <li class="admintabs-lock admintabs-delete">
-                        <a href="#"><span class="icon icon-trash icon-red icon-fixed-width" ></span> {gt text='Delete category'}</a>
+                        <a href="#"><span class="fa fa-trash-o fa-red fa-fw" ></span> {gt text='Delete category'}</a>
                     </li>
                     <li class="divider admintabs-lock"></li>
                     <li>
-                        <a href="{$menuoption.url|safehtml}"><span class="icon icon-th-large icon-bluelight icon-fixed-width" ></span> {gt text="Overview"}</a>
+                        <a href="{$menuoption.url|safehtml}"><span class="fa fa-th-large fa-bluelight fa-fw" ></span> {gt text="Overview"}</a>
                     </li>
                     {if count($menuoption.items) > 0}
                     <li class="divider"></li>
@@ -38,15 +38,15 @@
         </li>
         {/foreach}
         <li id="admintabs-locker">
-            <a href="#" title="{gt text='Lock/Unlock editing'}" data-placement="top" class="tooltips tooltips-bottom"><span class="icon icon-lock icon-fixed-width"></span></a>
+            <a href="#" title="{gt text='Lock/Unlock editing'}" data-placement="top" class="tooltips tooltips-bottom"><span class="fa fa-lock fa-fw"></span></a>
         </li>
         <li class="admintabs-add admintabs-lock">
-            <a href="{modurl modname=ZikulaAdminModule type=admin func=new}" title="{gt text='New module category'}" class="tooltips tooltips-bottom" data-placement="top"><span class="icon icon-plus"></span></a>
+            <a href="{modurl modname=ZikulaAdminModule type=admin func=new}" title="{gt text='New module category'}" class="tooltips tooltips-bottom" data-placement="top"><span class="fa fa-plus"></span></a>
             <div id="admintabs-add-popover" class="hide">
                 <div class="input-group">
                     <input type="text" class="form-control" name="name" id="admintabs-add-name" />
-                    <span class="input-group-addon icon icon-remove icon-red pointer"></span>
-                    <span class="input-group-addon icon icon-ok icon-green pointer"></span>
+                    <span class="input-group-addon fa fa-times fa-red pointer"></span>
+                    <span class="input-group-addon fa fa-check fa-green pointer"></span>
                 </div>
             </div>
 

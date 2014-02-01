@@ -36,6 +36,7 @@ ul.navbar-modulelinks > li:last-child {
 ul.navbar-modulelinks {
     min-height: inherit;
     padding: 3px;
+    z-index: inherit;
     margin-left: 0;
 }
 
@@ -84,7 +85,8 @@ ul.navbar-modulelinks ul > li > a {
     background: linear-gradient(#fafafa, #f2f2f2); /*CSS3*/
 }
 
-.form-horizontal legend {
+.form-horizontal legend,
+.form-inline legend {
     width: auto;
     padding: 0 .2em;
     font-size: 1.25em;
@@ -123,17 +125,17 @@ td.actions {
     width: 1px;
 }
 
-td.actions .icon {
+td.actions .fa {
     font-size: 1.3em;
     padding-left: 4px;
     color: #555
 }
 
-td.actions .icon-trash {
+td.actions .fa-trash-o {
     color: #C30;
 }
 
-td.actions .icon-ok {
+td.actions .fa-check {
     color: #61B329;
 }
 
@@ -145,49 +147,53 @@ td.actions a:hover {
 * Icon colors
 ******************************************************************************/
 
-.icon-green {
+.text-more-muted {
+    color: #eeeeee;
+}
+
+.fa-green {
     color: #61B329;
 }
 
-.icon-red {
+.fa-red {
     color: #C30;
 }
 
-.icon-orange {
+.fa-orange {
     color: darkorange;
 }
 
-.icon-yellow {
+.fa-yellow {
     color: yellow;
 }
 
-.icon-blue {
+.fa-blue {
     color: #0000ff;
 }
 
-.icon-bluelight {
+.fa-bluelight {
     color: #50A6C2;
 }
 
-.icon-black {
+.fa-black {
     color: #000;
 }
 
-.icon-bluedark a {
+.fa-bluedark a {
     color: #003366;
 }
 
 /******************************************************************************
 * Icon positioning
-* use icon-overlay classes in combination with icon-stack-base for first layer,
+* use fa-overlay classes in combination with fa-stack-base for first layer,
 *   then add overlay class to top layer
 ******************************************************************************/
 
-.icon-overlay-lower-right {
+.fa-overlay-lower-right {
     bottom: -0.4em;
     right: -0.4em;
 }
-.icon-overlay-upper-left {
+.fa-overlay-upper-left {
     top: -0.4em;
     left: -0.4em;
 }

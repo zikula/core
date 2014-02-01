@@ -318,12 +318,23 @@ class EventUtil
                 if (ModUtil::available($module)) {
                     try {
                         if (isset($handler['classname'])) {
-                            self::attachEventHandler($handler['classname']);
+                            if (class_exists($handler['classname'])) {
+                                $reflection = new ReflectionClass($handler['classname']);
+                                if ($reflection->isSubclassOf('Zikula_AbstractEventHandler')) {
+                                    self::attachEventHandler($handler['classname']);
+                                } else {
+                                    LogUtil::log(sprintf("Event handler class '%s' was not attached because class is not a subclass of '%s'", $handler['classname'], 'Zikula_AbstractEventHandler'), \Monolog\Logger::ERROR);
+                                }
+                            }
                         } else {
-                            self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
+                            if (is_callable($handler['callable'])) {
+                                self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
+                            } else {
+                                LogUtil::log(sprintf("Event handler was not attached for event '%s' because method '%s' is not callable", $handler['eventname'], $handler['callable'][0].'::'.$handler['callable'][1]), \Monolog\Logger::ERROR);
+                            }
                         }
                     } catch (InvalidArgumentException $e) {
-                        LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), \Monolog\Logger::ERR);
+                        LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), \Monolog\Logger::ERROR);
                     }
                 }
             }

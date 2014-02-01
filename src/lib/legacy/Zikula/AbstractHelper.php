@@ -16,6 +16,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * AbstractHelper class.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
 {

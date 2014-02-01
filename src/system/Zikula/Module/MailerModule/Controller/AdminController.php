@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,14 +13,19 @@
 
 namespace Zikula\Module\MailerModule\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula_View;
 use ModUtil;
 use SecurityUtil;
 use FormUtil;
+use System;
 use Zikula\Module\MailerModule\Form\Handler\ModifyConfigHandler;
 use Zikula\Module\MailerModule\Form\Handler\TestConfigHandler;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * Administrative controllers for the mailer module
+ */
 class AdminController extends \Zikula_AbstractController
 {
     /**
@@ -37,29 +41,29 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * the main administration function
-     * This function is the default function, and is called whenever the
-     * module is initiated without defining arguments.  As such it can
-     * be used for a number of things, but most commonly it either just
-     * shows the module menu and returns or calls whatever the module
-     * designer feels should be the default function (often this is the
-     * view() function)
-     * @return string HTML string
+     *
+     * @return RedirectResponse
      */
     public function indexAction()
     {
         // Security check will be done in modifyconfig()
-        $this->redirect(ModUtil::url('ZikulaMailerModule', 'admin', 'modifyconfig'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
 
     /**
      * This is a standard function to modify the configuration parameters of the
      * module
-     * @return string HTML string
+     *
+     * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {
         // security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
 
         $form = FormUtil::newForm('ZikulaMailerModule', $this);
 
@@ -68,11 +72,16 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * This function displays a form to sent a test mail
-     * @return string HTML string
+     *
+     * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function testconfigAction()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
 
         $form = FormUtil::newForm('ZikulaMailerModule', $this);
 

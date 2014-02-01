@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,12 +16,18 @@ namespace Zikula\Module\SearchModule;
 use EventUtil;
 use DoctrineHelper;
 
+/**
+ * installation routines for the search module
+ */
 class SearchModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the Search module
+     *
      * This function is only ever called once during the lifetime of a particular
      * module instance
+     *
+     * @return boolean True if initialisation successful, false otherwise.
      */
     public function install()
     {
@@ -42,17 +47,20 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         $this->setVar('opensearch_enabled', true);
         $this->setVar('opensearch_adult_content', false);
 
-
-        // register event handler to activate new modules in the search block.
-        EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.installed', array('Zikula\Module\SearchModule\Listener\ModuleListener', 'moduleInstall'));
-
-        // register event handler for opensearch.
-        EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\PageloadListener', 'pageload'));
-
         // Initialisation successful
         return true;
     }
 
+    /**
+     * upgrade the module from an old version
+     *
+     * This function must consider all the released versions of the module!
+     * If the upgrade fails at some point, it returns the last upgraded version.
+     *
+     * @param  string $oldversion version number string to upgrade from
+     *
+     * @return bool|string true on success, last valid version string or false if fails
+     */
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number
@@ -60,7 +68,15 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
             case '1.5.2':
                 $this->setVar('opensearch_enabled', true);
                 $this->setVar('opensearch_adult_content', false);
-                EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\PageloadListener', 'pageload'));
+                
+                // update schema
+                try {
+                    DoctrineHelper::updateSchema($this->entityManager, array(
+                        'Zikula\Module\SearchModule\Entity\SearchResultEntity',
+                    ));
+                } catch (\Exception $e) {
+                    return LogUtil::registerError($e->getMessage);
+                }
             case '1.5.3':
             // future upgrade routines
         }
@@ -71,8 +87,11 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
 
     /**
      * Delete the Search module
+     *
      * This function is only ever called once during the lifetime of a particular
      * module instance
+     *
+     * @return bool true if deletion successful, false otherwise
      */
     public function uninstall()
     {
@@ -87,9 +106,6 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
 
         // Delete any module variables
         $this->delVars();
-
-        // unregister event handlers
-        EventUtil::unregisterPersistentModuleHandlers('ZikulaSearchModule');
 
         // Deletion successful
         return true;

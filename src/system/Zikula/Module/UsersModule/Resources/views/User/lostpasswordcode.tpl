@@ -2,7 +2,7 @@
 {modulelinks modname='ZikulaUsersModule' type='user'}
 {include file='User/menu.tpl'}
 
-<p class="alert alert-info">{gt text="Please enter and EITHER your user name OR your e-mail address, and also enter the confirmation code you received. Once you enter this information and click the 'Submit' button you will receive a new password via e-mail."}</p>
+<p class="alert alert-info">{gt text="Please enter EITHER your user name OR your e-mail address, and also enter the confirmation code you received. Once you enter this information and click the 'Submit' button you will receive a new password via e-mail."}</p>
 
 <form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='lostPasswordCode'}" method="post">
     <div>
@@ -15,6 +15,7 @@
                     <input id="users_uname" type="text" class="form-control" name="uname" size="25" maxlength="25" value="{$uname}" />
                 </div>
             </div>
+            {if ($modvars.ZikulaUsersModule.reg_uniemail|default:true)}
             <div class="form-group">
                 <label class="col-lg-3 control-label">{gt text='or'}</label>
             </div>
@@ -24,6 +25,7 @@
                     <input id="users_email" type="text" class="form-control" name="email" size="40" maxlength="60" value="{$email}" />
                 </div>
             </div>
+            {/if}
         </fieldset>
         <fieldset>
             <div class="form-group">

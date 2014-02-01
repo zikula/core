@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-trash"></span>
+    <span class="fa fa-trash-o"></span>
     {gt text='Delete registry entry'}
 </h3>
 
@@ -20,7 +20,7 @@
             <legend>{gt text='Confirmation prompt'}</legend>
             <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                    {button class='z-btgreen' src='button_ok.png' set='icons/extrasmall' __alt='Delete' __title='Delete' __text='Delete'}
+                    {button class='btn btn-success' __alt='Delete' __title='Delete' __text='Delete'}
                     <a class="btn btn-danger" href="{modurl modname='ZikulaCategoriesModule' type='admin' func='editregistry'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
                 </div>
         </div>

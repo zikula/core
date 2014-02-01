@@ -13,14 +13,15 @@
             {assign var='show_login_form' value=true}
         {/if}
     {/if}
-    {/strip}<div id="users_loginblock_waiting" class="text-center hide">
+    {/strip}
+    <div id="users_loginblock_waiting" class="text-center hide">
         {img modname='core' set='ajax' src='indicator_circle.gif'}
     </div>
-    <form id="users_loginblock_login_form" class="form-horizontal{if !$show_login_form} hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
+    <form id="users_loginblock_login_form" class="{if !$show_login_form} hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
         <div>
-            <input type="hidden" id="users_loginblock_returnpage" name="returnpage" value="{$returnpage}" />
+            <input type="hidden" id="users_loginblock_returnpage" name="returnpage" value="{$returnpage|safetext}" />
             <input type="hidden" id="users_loginblock_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
-            <input id="users_login_event_type" type="hidden" name="event_type" value="login_block" />
+            <input type="hidden" id="users_loginblock_event_type" name="event_type" value="login_block" />
             <input type="hidden" id="users_loginblock_selected_authentication_module" name="authentication_method[modname]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|default:'false'}{/if}" />
             <input type="hidden" id="users_loginblock_selected_authentication_method" name="authentication_method[method]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.method|default:'false'}{/if}" />
             {if ($modvars.ZConfig.seclevel|lower == 'high')}
@@ -33,7 +34,7 @@
         {/if}
         </div>
         {if $modvars.ZConfig.seclevel|lower != 'high'}
-        <div class="checkbox">
+        <div class="checkbox" style="margin-bottom: 10px;">
             <label for="users_loginblock_rememberme">
                 <input id="users_loginblock_rememberme" type="checkbox" name="rememberme" value="1" />
                 {gt text="Keep me logged in on this computer"}
@@ -48,9 +49,9 @@
         {notifydisplayhooks eventname='users.ui_hooks.login_block.form_edit' id=null}
 
         {/if}
-        <div class="z-buttons text-right">
-            <input class="z-bt-ok z-bt-small" id="users_loginblock_submit" name="users_loginblock_submit" type="submit" value="{gt text="Log in"}" />
-        </div>
+        <button class="btn btn-success btn-sm btn-block" id="users_loginblock_submit" name="users_loginblock_submit" type="submit">
+            <i class="fa fa-arrow-right"></i> {gt text="Log in"}
+        </button>
     </form>
     <div id="users_loginblock_no_loginformfields"{if (!isset($selected_authentication_method) || !$selected_authentication_method) || (isset($selected_authentication_method) && $selected_authentication_method && isset($login_form_fields) && $login_form_fields)} class="hide"{/if}>
         <h5>{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|default:''}{/if}</h5>
@@ -73,6 +74,7 @@
         {/foreach}
     {/if}
     </div>
+    <div class="z-clearfix"></div>
 
     <h5>{gt text="Do you need to..."}</h5>
     {if $modvars.ZikulaUsersModule.reg_allowreg}

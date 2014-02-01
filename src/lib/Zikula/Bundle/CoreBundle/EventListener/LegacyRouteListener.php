@@ -48,7 +48,7 @@ use SecurityUtil;
 use PageUtil;
 use Zikula\Core\Response\PlainResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpKernel\Exception\FlattenException;
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController;
@@ -90,15 +90,33 @@ class LegacyRouteListener implements EventSubscriberInterface
         if (!$module) {
             // we have a static homepage
             $response = new Response('');
-        } elseif ($modinfo) {
+        } else {
             try {
+                if (!$modinfo) {
+                    $response = new Response(__('Page not found.'), 404);
+
+                    return $this->setResponse($event, $response);
+                }
+
                 // call the requested/homepage module
-                $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+                try {
+                    ModUtil::getModule($module);
+                    $newType = true;
+                } catch (\Exception $e) {
+                    $newType = false;
+                }
+
+                if ($newType) {
+                    $return = ModUtil::func($modinfo['name'], $type, $func);
+                } else {
+                    $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+                }
+
                 if (false === $return) {
                     // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
                     $response = new Response(__('Page not found.'), 404);
 
-                    return $event->setResponse($response);
+                    return $this->setResponse($event, $response);
                 } else {
                     if (true === $return) {
                         // controllers should not return boolean anymore, this is BC for the time being.
@@ -114,7 +132,7 @@ class LegacyRouteListener implements EventSubscriberInterface
             } catch (\Exception $e) {
                 if ($e instanceof NotFoundHttpException) {
                     $response = new Response($e->getMessage(), 404);
-                } elseif ($e instanceof AccessDeniedHttpException) {
+                } elseif ($e instanceof AccessDeniedException) {
                     $response = new Response($e->getMessage(), 403);
                 } elseif ($e instanceof \Zikula_Exception_Redirect) {
                     $response = new RedirectResponse(System::normalizeUrl($e->getUrl()), $e->getType());
@@ -130,13 +148,12 @@ class LegacyRouteListener implements EventSubscriberInterface
                     array('returnpage' => urlencode($request->getSchemeAndHttpHost().$request->getRequestUri()))
                 );
                 $response = new RedirectResponse($url, 302);
-                LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url);
-                $event->setResponse($response);
+                $errorMessage = $e->getMessage();
+                LogUtil::registerError(!empty($errorMessage) ? $errorMessage : LogUtil::getErrorMsgPermission(), 403, $url);
+                $this->setResponse($event, $response);
             }
-        } else {
-            throw new \Exception('Something unexpected happened');
         }
-        $event->setResponse($response);
+        $this->setResponse($event, $response);
     }
 
     private function ajax(GetResponseEvent $event)
@@ -163,7 +180,7 @@ class LegacyRouteListener implements EventSubscriberInterface
         try {
             if (!isset($response)) {
                 $response = ModUtil::func($modinfo['name'], $type, $func);
-                if (System::isLegacyMode() && $response === false && LogUtil::hasErrors()) {
+                if (System::isLegacyMode() && $response == false && LogUtil::hasErrors()) {
                     throw new FatalErrorException(__(
                         'An unknown error occurred in module %s, controller %s, action %s',
                         array($modinfo['name'], $type, $func)
@@ -172,7 +189,7 @@ class LegacyRouteListener implements EventSubscriberInterface
             }
         } catch (NotFoundHttpException $e) {
             $response = new NotFoundResponse($e->getMessage());
-        } catch (AccessDeniedHttpException $e) {
+        } catch (AccessDeniedException $e) {
             $response = new ForbiddenResponse($e->getMessage());
         } catch (\Exception $e) {
             $response = new FatalResponse($e->getMessage());
@@ -184,7 +201,7 @@ class LegacyRouteListener implements EventSubscriberInterface
             $response = new AjaxResponse($response, LogUtil::getStatusMessages());
         }
 
-        return $event->setResponse($response);
+        return $this->setResponse($event, $response);
     }
 
     public function onException(GetResponseForExceptionEvent $event)
@@ -192,7 +209,7 @@ class LegacyRouteListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $request = $event->getRequest();
         $exception = $event->getException();
-        if ($exception instanceof AccessDeniedHttpException && !UserUtil::isLoggedIn()) {
+        if ($exception instanceof AccessDeniedException && !UserUtil::isLoggedIn()) {
             $url = ModUtil::url(
                 'ZikulaUsersModule',
                 'user',
@@ -201,7 +218,7 @@ class LegacyRouteListener implements EventSubscriberInterface
             );
             $response = new RedirectResponse($url, 302);
             LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url, false);
-            $event->setResponse($response);
+            $this->setResponse($event, $response);
             $event->stopPropagation();
         }
     }
@@ -233,8 +250,8 @@ class LegacyRouteListener implements EventSubscriberInterface
         if (\SessionUtil::hasExpired()) {
             // Session has expired, display warning
             $response = new Response(\ModUtil::apiFunc('ZikulaUsersModule', 'user', 'expiredsession', 403));
-            $response = \Zikula_View_Theme::getInstance()->themefooter($response);
-            $event->setResponse($response);
+            //$response = \Zikula_View_Theme::getInstance()->themefooter($response);
+            $this->setResponse($event, $response);
         }
     }
 
@@ -245,5 +262,11 @@ class LegacyRouteListener implements EventSubscriberInterface
             KernelEvents::REQUEST => array(array('onKernelRequestSessionExpire', 31)),
             KernelEvents::REQUEST => array(array('onKernelRequest', 31)),
         );
+    }
+
+    private function setResponse(GetResponseEvent $event, Response $response)
+    {
+        $response->legacy = true;
+        $event->setResponse($response);
     }
 }

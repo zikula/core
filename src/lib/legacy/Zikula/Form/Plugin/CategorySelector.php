@@ -18,6 +18,8 @@
  *
  * This plugin creates a category selector using a dropdown list.
  * The selected value of the base dropdown list will be set to ID of the selected category.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownList
 {
@@ -91,13 +93,13 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
      * This method is static because it is also called by the
      * CategoryCheckboxList plugin
      *
-     * @param object  &$list               The list object (here: $this).
+     * @param object  $list               The list object (here: $this).
      * @param boolean $includeEmptyElement Whether or not to include an empty null item.
      * @param array   $params              The parameters passed from the Smarty plugin.
      *
      * @return void
      */
-    public static function loadParameters(&$list, $includeEmptyElement, $params)
+    public static function loadParameters($list, $includeEmptyElement, $params)
     {
         $all            = isset($params['all'])         ? $params['all']         : false;
         $lang           = isset($params['lang'])        ? $params['lang']        : ZLanguage::getLanguageCode();
@@ -126,6 +128,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
         } elseif (is_numeric($list->category)) {
             // check if we have a numeric category
             $list->category = CategoryUtil::getCategoryByID($list->category);
+            unset($list->category['parent'], $list->category['cr_uid'], $list->category['lu_uid']); // prevent form serialization errors in session
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
 
         } elseif (is_string($list->category) && strpos($list->category, '/') === 0) {
@@ -252,16 +255,24 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             } else {
                 $selectedValues[] = $this->getSelectedValue();
             }
+            $selectedValues = array_combine($selectedValues, $selectedValues);
 
-           foreach ($collection->getKeys() as $key) {
-               $categoryId = $collection->get($key)->getCategoryRegistryId();
-               if ($categoryId == $this->registryId) {
-                    $collection->remove($key);
-               }
+            foreach ($collection->getKeys() as $key) {
+                $entityCategory = $collection->get($key);
+
+                if ($entityCategory->getCategoryRegistryId() == $this->registryId) {
+                    $categoryId = $entityCategory->getCategory()->getId();
+
+                    if (isset($selectedValues[$categoryId])) {
+                        unset($selectedValues[$categoryId]);
+                    } else {
+                        $collection->remove($key);
+                    }
+                }
             }
 
-            $em->flush();
-
+            // we do NOT flush here, as the calling module is responsible for that (Guite)
+            //$em->flush();
 
             foreach ($selectedValues as $selectedValue) {
 
@@ -346,6 +357,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             $this->setSelectedValue($value);
 
         } elseif ($this->doctrine2) {
+            // doesn't seem to check where this is no group like other options above...
             if (isset($values[$this->group])) {
                 $entity = $values[$this->group];
                 if (isset($entity[$this->dataField])) {

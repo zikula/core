@@ -15,6 +15,8 @@
 
 /**
  * Url router base class.
+ *
+ * @deprecated
  */
 class Zikula_Routing_UrlRouter
 {

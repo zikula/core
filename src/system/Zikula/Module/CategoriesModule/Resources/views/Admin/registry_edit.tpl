@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-archive"></span>
+    <span class="fa fa-archive"></span>
     {gt text="Category registry"}
 </h3>
 
@@ -47,8 +47,8 @@
                     <td>{$obj.property}</td>
                     <td>{category_path id=$obj.category_id html=true}</td>
                     <td class="actions">
-                        <a class="icon icon-pencil tooltips" href="{modurl modname='ZikulaCategoriesModule' type='admin' func='editregistry' id=$obj.id}" title="{gt text='Edit'}" ></a>
-                        <a class="icon icon-trash tooltips" href="{modurl modname='ZikulaCategoriesModule' type='admin' func='deleteregistry' id=$obj.id}" title="{gt text='Delete'}"></a>
+                        <a class="fa fa-pencil tooltips" href="{modurl modname='ZikulaCategoriesModule' type='admin' func='editregistry' id=$obj.id}" title="{gt text='Edit'}" ></a>
+                        <a class="fa fa-trash-o tooltips" href="{modurl modname='ZikulaCategoriesModule' type='admin' func='deleteregistry' id=$obj.id}" title="{gt text='Delete'}"></a>
                     </td>
                     {/if}
                 </tr>

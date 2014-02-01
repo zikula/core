@@ -37,7 +37,7 @@ $dbname = $container['databases']['default']['dbname'];
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
-upgrade_136($dbname, $connection);
+upgrade_137($dbname, $connection);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
@@ -66,28 +66,20 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
     }
 }
 
-// deactivate file based shorturls
-if (System::getVar('shorturls') && System::getVar('shorturlstype')) {
-    System::setVar('shorturls', false);
-    System::delVar('shorturlstype');
-    System::delVar('shorturlsext');
-    LogUtil::registerError('You were using file based shorturls. This feature will no longer be supported. The shorturls were disabled. Directory based shorturls can be activated in the General settings manager.');
-}
-
 switch ($action) {
-    case 'upgradeinit':
+    case 'upgradeinit': // step two
         _upg_upgradeinit();
         break;
-    case 'login':
+    case 'login': // occurs in step two
         _upg_login(true);
         break;
-    case 'sanitycheck':
+    case 'sanitycheck': // step three
         _upg_sanity_check($username, $password);
         break;
-    case 'upgrademodules':
+    case 'upgrademodules': // step four
         _upg_upgrademodules($username, $password);
         break;
-    default:
+    default: // step one
         _upg_selectlanguage();
         break;
 }
@@ -178,7 +170,7 @@ function _upg_selectlanguage()
         echo '<option value="'.$lang.'" label="'.$name.'"'.$selected.'>'.$name."</option>\n";
     }
     echo '</select></div></fieldset>'."\n";
-    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Next').'</button></div>'."\n";
+    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="fa fa-angle-double-right"></span> '.__('Next').'</button></div>'."\n";
     
     echo '</form>'."\n";
     _upg_footer();
@@ -227,7 +219,7 @@ function _upg_login($showheader = true)
         echo '<input type="hidden" name="lang" value="'.htmlspecialchars($lang).'" />'."\n";
     }
     echo '</fieldset>'."\n";
-    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Next').'</button></div>'."\n";
+    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="fa fa-angle-double-right"></span> '.__('Next').'</button></div>'."\n";
     echo '</form>'."\n";
     echo '</div>'."\n";
     if ($showheader == true) {
@@ -329,7 +321,7 @@ function _upg_continue($action, $text, $username, $password)
     echo '<br />'."\n";
     echo '<br />'."\n";
     echo '<input type="hidden" name="action" value="'.htmlspecialchars($action).'" />'."\n";
-    echo '<div class="btn-group"><button type="submit" id="submit" value="'.htmlspecialchars($text).'" class="btn btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Proceed to Upgrade').'</button></div>'."\n";
+    echo '<div class="btn-group"><button type="submit" id="submit" value="'.htmlspecialchars($text).'" class="btn btn-primary"><span class="fa fa-angle-double-right"></span> '.__('Proceed to Upgrade').'</button></div>'."\n";
     echo '</fieldset></div>'."\n";
     echo '</form>'."\n";
 
@@ -366,7 +358,7 @@ function _upg_sanity_check($username, $password)
             _upg_continue('sanitycheck', __('Check again'), $username, $password);
             $validupgrade = false;
         }
-    } elseif (version_compare(Zikula_Core::VERSION_NUM, '1.3.6', '>=') && (is_dir('plugins/Doctrine') || is_dir('plugins/DoctrineExtensions'))) {
+    } elseif (version_compare(Zikula_Core::VERSION_NUM, '1.3.7', '>=') && (is_dir('plugins/Doctrine') || is_dir('plugins/DoctrineExtensions'))) {
         echo '<h2>'.__('Legacy plugins found.')."</h2>\n";
         echo '<p class="alert alert-warning text-center">'.__f('Please delete the folders <strong>plugins/Doctrine</strong> and <strong>plugins/DoctrineExtensions</strong> as they have been deprecated', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
         $validupgrade = false;
@@ -430,12 +422,12 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
 }
 
 /**
- * Upgrade tables from 1.3.5
+ * Upgrade tables from 1.3.5+
  *
  * @param $dbname
  * @param Connection $conn
  */
-function upgrade_136($dbname, Connection $conn)
+function upgrade_137($dbname, Connection $conn)
 {
     $res = $conn->executeQuery("SELECT name FROM $dbname.modules WHERE name = 'ZikulaExtensionsModule'");
     if ($res->fetch()) {
@@ -458,6 +450,9 @@ function upgrade_136($dbname, Connection $conn)
     }
     echo "<br />\n";
 
+    // remove event handlers that were replaced by DependencyInjection
+    $conn->executeQuery("DELETE FROM $dbname.module_vars WHERE modname = '/EventHandlers' AND name IN ('Extensions', 'Users', 'Search', 'Settings')");
+
     $themes = array(
         'Andreas08', 'Atom', 'SeaBreeze', 'Mobile', 'Printer',
     );
@@ -468,6 +463,17 @@ function upgrade_136($dbname, Connection $conn)
     $conn->executeQuery("UPDATE $dbname.themes SET name = 'ZikulaRssTheme', directory = 'Zikula/Theme/RssTheme' WHERE name = 'RSS'");
     echo "Updated theme: RSS<br />\n";
 
-//$conn->executeQuery("UPDATE $dbname.module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
-//echo "Updated default theme to Andreas08<br />\n";
+    // update 'Users' -> 'ZikulaUsersModule' in all the hook tables
+    $sqls = array();
+    $sqls[] = "UPDATE $dbname.hook_area SET owner = 'ZikulaUsersModule' WHERE owner = 'Users'";
+    $sqls[] = "UPDATE $dbname.hook_binding SET sowner = 'ZikulaUsersModule' WHERE sowner = 'Users'";
+    $sqls[] = "UPDATE $dbname.hook_runtime SET sowner = 'ZikulaUsersModule' WHERE sowner = 'Users'";
+    $sqls[] = "UPDATE $dbname.hook_subscriber SET owner = 'ZikulaUsersModule' WHERE owner = 'Users'";
+    foreach ($sqls as $sql) {
+        $conn->executeQuery($sql);
+    }
+    echo "Updated hook tables for User module hooks.<br />\n";
+
+    $conn->executeQuery("UPDATE $dbname.module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
+    echo "Updated default theme to ZikulaAndreas08Theme<br />\n";
 }

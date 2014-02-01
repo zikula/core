@@ -35,8 +35,12 @@ class ThemeListener implements EventSubscriberInterface
         $request = $event->getRequest();
         if ($response instanceof PlainResponse
             || $response instanceof JsonResponse
-            || $request->isXmlHttpRequest()
-            || $request->attributes->get('_route') == '_profiler') {
+            || $request->isXmlHttpRequest()) {
+            return;
+        }
+
+        // if theme has already been processed the new way, stop here
+        if (!isset($response->legacy) && !$request->attributes->get('_legacy', false)) {
             return;
         }
 

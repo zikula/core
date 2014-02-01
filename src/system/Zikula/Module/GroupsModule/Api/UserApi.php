@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -19,26 +18,26 @@ use Zikula\Module\GroupsModule\Helper\CommonHelper;
 use Zikula\Module\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\Module\GroupsModule\Entity\GroupMembershipEntity;
 use SecurityUtil;
-use DBUtil;
-use LogUtil;
-use DataUtil;
 use UserUtil;
 use ModUtil;
 use System;
 use Zikula;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Groups_Api_User class.
+ * User API functions for the groups module
  */
 class UserApi extends \Zikula_AbstractApi
 {
     /**
      * Get all group items.
      *
-     * @param int $args['startnum'] record number to start get from.
-     * @param int $args['numitems'] number of items to get.
+     * @param int[] $args {
+     *      @type int $startnum record number to start get from
+     *      @type int $numitems  number of items to get
+     *                     }
      *
-     * @return mixed array of group items, or false on failure.
+     * @return array|bool array of group items, false if none are found.
      */
     public function getall($args)
     {
@@ -54,7 +53,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('g')
-           ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g');
+           ->from('ZikulaGroupsModule:GroupEntity', 'g');
 
          // add clause for ordering
         $qb->addOrderBy('g.name', 'ASC');
@@ -75,7 +74,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Check for an error with the database code
         if ($objArray === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            return false;
         }
 
         // Return the items
@@ -85,21 +84,25 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get a specific group item.
      *
-     * @param int $args['gid'] id of group item to get.
-     * @param int $args['startnum'] record number to start get from (group membership).
-     * @param int $args['numitems'] number of items to get (group membership).
+     * @param int[] $args {
+     *      @type int $gid      id of group item to get
+     *      @type int $startnum record number to start get from (group membership)
+     *      @type int $numitems number of items to get (group membership)
+     *                     }
      *
-     * @return mixed item array, or false on failure.
+     * @return array|bool item array, or false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided
      */
     public function get($args)
     {
         // Argument check
         if (!isset($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get item
-        $result = $this->entityManager->find('Zikula\Module\GroupsModule\Entity\GroupEntity', $args['gid']);
+        $result = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
         if (!$result) {
             return false;
@@ -117,7 +120,7 @@ class UserApi extends \Zikula_AbstractApi
             $args['numitems'] = null;
         }
 
-        $groupmembership = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity')->findBy(array('gid' => $args['gid']), array(), $args['numitems'], $args['startnum']);
+        $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy(array('gid' => $args['gid']), array(), $args['numitems'], $args['startnum']);
 
         // Check for an error with the database code
         if ($groupmembership === false) {
@@ -157,42 +160,60 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $dql = "SELECT count(g.gid) FROM Zikula\Module\GroupsModule\Entity\GroupEntity g WHERE g.gtype <> " . CommonHelper::GTYPE_CORE;
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('count(g.gid)')
+           ->from('ZikulaGroupsModule:GroupEntity', 'g')
+           ->where('g.gtype = :gtype')
+           ->setParameter('gtype', CommonHelper::GTYPE_CORE);
 
         if ($this->getVar('hideclosed')) {
-            $dql .= " AND g.state <> " . CommonHelper::STATE_CLOSED;
+            $qb->andWhere('g.state <> :state')
+               ->setParameter('state', CommonHelper::STATE_CLOSED);
         }
 
-        $query = $this->entityManager->createQuery($dql);
+        $query = $qb->getQuery();
         return (int)$query->getSingleScalarResult();
     }
 
     /**
      * Utility function to count the number of items held by this module.
      *
-     * @param int $args['gid'] id of group item to get.
+     * @param int[] $args {
+     *      @type int $gid id of group item to get
+     *                     }
      *
      * @return int number of items held by this module.
+     *
+     * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided or isn't numeric
      */
     public function countgroupmembers($args)
     {
         // Argument check
-        if (!isset($args['gid'])) {
-            return LogUtil::registerArgsError();
+        if ((!isset($args['gid']) && !is_numeric($args['gid']))) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $dql = "SELECT count(m.gid) FROM Zikula\Module\GroupsModule\Entity\GroupMembershipEntity m WHERE m.gid = {$args['gid']}";
-        $query = $this->entityManager->createQuery($dql);
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('count(m.gid)')
+           ->from('ZikulaGroupsModule:GroupMembershipEntity', 'm')
+           ->where('m.gid = :gid')
+           ->setParameter('gid', $args['gid']);
+
+        $query = $qb->getQuery();
         return (int)$query->getSingleScalarResult();
     }
 
     /**
      * Get all of a user's group memberships.
      *
-     * @param int $args['uid'] user id.
-     * @param int $args['clean'] flag to return an array of GIDs.
+     * @param int[] $args {
+     *      @type int $uid   user id
+     *      @type int $clean flag to return an array of GIDs
+     *                     }
      *
-     * @return mixed array of group items, or false on failure.
+     * @return array|bool array of group items, false if no group memberships are found for the input user id.
+     *
+     * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided or isn't numeric
      */
     public function getusergroups($args)
     {
@@ -200,8 +221,8 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['uid'])) {
             $args['uid'] = UserUtil::getVar('uid');
         }
-        if (!isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+        if (!isset($args['uid']) && !is_numeric($args['gid'])) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $items = array();
@@ -211,11 +232,11 @@ class UserApi extends \Zikula_AbstractApi
             return $items;
         }
 
-        $groupmembership = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity')->findBy(array('uid' => $args['uid']));
+        $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy(array('uid' => $args['uid']));
 
         // Check for an error with the database code
         if ($groupmembership === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            return false;
         }
 
         $objArray = array();
@@ -240,9 +261,12 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all groups.
      *
-     * @param array $args
+     * @param int[] $args {
+     *      @type int $startnum record number to start get from
+     *      @type int $numitems  number of items to get
+     *                     }
      *
-     * @return array of groups.
+     * @return array|bool array of groups, false if no groups are found.
      */
     public function getallgroups($args)
     {
@@ -257,7 +281,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('g')
-           ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g');
+           ->from('ZikulaGroupsModule:GroupEntity', 'g');
 
         // add clause for filtering type
         $qb->andWhere($qb->expr()->neq('g.gtype', $qb->expr()->literal(CommonHelper::GTYPE_CORE)));
@@ -285,7 +309,7 @@ class UserApi extends \Zikula_AbstractApi
         $objArray = $query->getResult();
 
         if ($objArray === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            return false;
         }
 
         $uid = UserUtil::getVar('uid');
@@ -375,25 +399,32 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Save application.
      *
-     * @param int $args['uid'] user id.
-     * @param int $args['gid'] group id.
+     * @param int[] $args {
+     *      @type int $uid user id
+     *      @type int $gid group id
+     *                     }
      *
-     * @return boolean
+     * @return bool true if successful, false if the group isn't found.
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
+     * @throws AccessDeniedException Thrown if the current user does not have read access to the group.
+     * @throws \RuntimeException Thrown if the user has already applied for this group
      */
     public function saveapplication($args)
     {
-        if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+            (!isset($args['uid']) && !is_numeric($args['uid']))) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$item) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new \Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         // Check in case the user already applied
@@ -402,7 +433,7 @@ class UserApi extends \Zikula_AbstractApi
                               'uid' => $args['uid']));
 
         if ($pending) {
-            return LogUtil::registerError($this->__('Error! You have already applied for membership of this group.'));
+            throw new \RuntimeException($this->__('Error! You have already applied for membership of this group.'));
         }
 
         $application = new GroupApplicationEntity;
@@ -420,14 +451,20 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Delete app from group_applications.
      *
-     * @param array $args
+     * @param int[] $args {
+     *      @type int $gid group id
+     *      @type int $uid user id
+     *                     }
      *
-     * @return boolean
+     * @return bool true if successful
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      */
     public function cancelapp($args)
     {
-        if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+            (!isset($args['uid']) && !is_numeric($args['uid']))) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Checking first if this user is really pending.
@@ -436,7 +473,7 @@ class UserApi extends \Zikula_AbstractApi
                               'uid' => $args['uid']));
 
         if ($ispending == true) {
-            $application = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+            $application = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
             $this->entityManager->remove($application);
             $this->entityManager->flush();
         }
@@ -447,18 +484,23 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Check if user is pending.
      *
-     * @param int $args['uid'] user id.
-     * @param int $args['gid'] group id.
+     * @param int[] $args {
+     *      @type int $uid user id
+     *      @type int $gid group id
+     *                     }
      *
-     * @return boolean
+     * @return bool true if user has a pending application to the group, false otherwise
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      */
     public function isuserpending($args)
     {
-        if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+            (!isset($args['uid']) && !is_numeric($args['uid']))) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $applications = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $applications = $this->entityManager->getRepository('ZikulaGroupsModule:GroupApplicationEntity')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
 
         if (count($applications) >= 1) {
             return true;
@@ -470,24 +512,35 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Update user.
      *
-     * @param int    $args['uid']     user id.
-     * @param int    $args['gtype'].
-     * @param string $args['action'].
+     * @param mixed[] $args {
+     *      @type int    $gid    group id
+     *      @type int    $gtype  group type
+     *      @type string $action action
+     *                       }
      *
-     * @return boolean
+     * @return bool true if successful
+     *
+     * @throws \InvalidArgumentException Thrown if either gtype or gid are not set or not numeric or
+     *                                          if action isn't set or one of 'subscribe', 'unsubscribe' or 'cancel'
+     * @throws AccessDeniedException Thrown if the user is not logged in.
+     * @throws \RuntimeException Thrown if the user couldn't be added to the group, 
+     *                                  if the application to the group couldn't be cancelled, or
+     *                                  if the user couldn't be removed from the group
      */
     public function userupdate($args)
     {
-        if (!isset($args['gid']) || !isset($args['action']) || !isset($args['gtype'])) {
-            return LogUtil::registerArgsError();
+        if (!isset($args['gtype']) && !is_numeric($args['gtype']) || 
+            (!isset($args['gid']) && !is_numeric($args['gid'])) ||
+            !isset($args['action'])) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if ($args['action'] != 'subscribe' && $args['action'] != 'unsubscribe' && $args['action'] != 'cancel') {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!UserUtil::isLoggedIn()) {
-            LogUtil::registerError($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
+            throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
 
         $userid = UserUtil::getVar('uid');
@@ -496,7 +549,7 @@ class UserApi extends \Zikula_AbstractApi
 
             if ($args['gtype'] == CommonHelper::GTYPE_PRIVATE) {
                 if (!isset($args['applytext'])) {
-                    return LogUtil::registerArgsError();
+                    throw new \InvalidArgumentException(__('Invalid arguments array received'));
                 }
 
                 // We save the user in the application table
@@ -524,7 +577,7 @@ class UserApi extends \Zikula_AbstractApi
                                       'uid' => $userid));
 
                 if ($save == false) {
-                    return LogUtil::registerError($this->__('Error! Could not add the user to the group.'));
+                    throw new \RuntimeException($this->__('Error! Could not add the user to the group.'));
                 }
             }
         } elseif ($args['action'] == 'cancel') {
@@ -534,7 +587,7 @@ class UserApi extends \Zikula_AbstractApi
                                   'uid' => $userid));
 
             if ($save == false) {
-                return LogUtil::registerError($this->__('Error! Could not remove the user from the group.'));
+                throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
             }
         } else {
 
@@ -543,7 +596,7 @@ class UserApi extends \Zikula_AbstractApi
                                   'uid' => $userid));
 
             if ($save == false) {
-                return LogUtil::registerError($this->__('Error! Could not remove the user from the group.'));
+                throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
             }
         }
 
@@ -553,28 +606,34 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Add a user to a group item.
      *
-     * @param int $args['gid'] the ID of the item.
-     * @param int $args['uid'] the ID of the user.
+     * @param int[] $args {
+     *      @type int $gid the ID of the item
+     *      @type int $uid the ID of the user
+     *                     }
      *
      * @return bool true if successful, false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
+     * @throws AccessDeniedException Thrown if the current user does not have read access to the group.
      */
     public function adduser($args)
     {
         // Argument check
-        if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+            (!isset($args['uid']) && !is_numeric($args['uid']))) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get group
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new \Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         // verify if the user is alredy a member of this group
@@ -596,7 +655,7 @@ class UserApi extends \Zikula_AbstractApi
                 return false;
             }
 
-            return LogUtil::registerError($this->__('Error! You are already a member of this group.'));
+            throw new \RuntimeException($this->__('Error! You are already a member of this group.'));
         }
 
         // Let the calling process know that we have finished successfully
@@ -606,31 +665,37 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Remove a user from a group item.
      *
-     * @param int $args['gid'] the ID of the item.
-     * @param int $args['uid'] the ID of the user.
+     * @param int[] $args {
+     *      @type int $gid the ID of the item
+     *      @type int $uid the ID of the user
+     *                     }
      *
      * @return bool true if successful, false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
+     * @throws AccessDeniedException Thrown if the current user does not have read access tp the group.
      */
     public function removeuser($args)
     {
-        if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+            (!isset($args['uid']) && !is_numeric($args['uid']))) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get group
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new \Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         // delete user from group
-        $membership = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $membership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
         $this->entityManager->remove($membership);
         $this->entityManager->flush();
 
@@ -645,18 +710,22 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Find who is online.
      *
-     * @param unknown_type $args
-     *
-     * @return mixed array of users, or false.
+     * @return array array of users
      */
     public function whosonline()
     {
         $activetime = time() - (\System::getVar('secinactivemins') * 60);
 
-        $dql = "SELECT DISTINCT s.uid FROM Zikula\Module\UsersModule\Entity\UserSessionEntity s WHERE s.lastused > ' " . $activetime . "' AND s.uid <> 0";
-        $query = $this->entityManager->createQuery($dql);
-        $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('DISTINCT s.uid')
+           ->from('ZikulaUsersModule:UserSessionEntity', 's')
+           ->where('s.lastused > :activetime')
+           ->setParameter('activetime', $activetime)
+           ->andWhere('s.uid <> 0');
 
+        $query = $qb->getQuery();
+
+        $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
         return $items;
     }
@@ -664,16 +733,20 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Check if a user is a member of a group.
      *
-     * @param int $args['uid'] user id.
-     * @param int $args['gid'] group id.
+     * @param int[] $args {
+     *      @type int $uid user id
+     *      @type int $gid group id
+     *                     }
      *
      * @return boolean true if member of a group, false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      */
     public function isgroupmember($args)
     {
-        if (!isset($args['uid']) || !is_numeric($args['uid']) ||
-            !isset($args['gid']) || !is_numeric($args['gid'])) {
-            return LogUtil::registerArgsError();
+        if ((!isset($args['uid']) && !is_numeric($args['uid'])) ||
+            (!isset($args['gid']) && !is_numeric($args['gid']))) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Security check
@@ -686,18 +759,17 @@ class UserApi extends \Zikula_AbstractApi
 
         // check if group exists
         if (!$group) {
-            // report failiure
+            // report failure
             return false;
         }
 
         // check if the user exists in the group
         if (!isset($group['members'][$args['uid']])) {
-            // report failiure
+            // report failure
             return false;
         }
 
         // report the user is a member of the group
         return true;
     }
-
 }

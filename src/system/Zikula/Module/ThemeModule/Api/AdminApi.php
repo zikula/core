@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,19 +17,22 @@ use Zikula\Module\ThemeModule\Util;
 use ModUtil;
 use SecurityUtil;
 use LogUtil;
-use DBUtil;
 use System;
 use ThemeUtil;
 use DataUtil;
 use FileUtil;
 use CacheUtil;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * API functions used by administrative controllers
+ */
 class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Regenerate themes list.
      *
-     * @deprecated
+     * @deprecated since 1.3.7 use Util::regenerate instead
      *
      * @return boolean
      */
@@ -61,23 +63,30 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * update theme settings
      *
-     * @return bool true on success, false otherwise
+     * @param array[] $args {
+     *      @type array $themeinfo new theme information to update
+     *                      }
+     *
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     * @throws \InvalidArgumentException Thrown if the themeinfo parameter isn't provided
      */
     public function updatesettings($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Check our input arguments
         if (!isset($args['themeinfo'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         unset($args['themeinfo']['i18n']);
 
-        $item = $this->entityManager->find('Zikula\Module\ThemeModule\Entity\ThemeEntity', $args['themeinfo']['id']);
+        $item = $this->entityManager->find('ZikulaThemeModule:ThemeEntity', $args['themeinfo']['id']);
         $item->merge($args['themeinfo']);
         $this->entityManager->flush();
 
@@ -87,18 +96,26 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * set default site theme
      *
-     * optionally reset user theme selections
+     * @param mixed[] $args {
+     *      @type string $themename         the name of the theme to set as the default for the site
+     *      @type bool   $resetuserselected if true any existing user chosen themes will be reset to the site default
+     *                      }
+     *
+     * @return bool true if successful, false otherwise
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
      */
     public function setasdefault($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // Check our input arguments
         if (!isset($args['themename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
         if (!isset($args['resetuserselected'])) {
             $args['resetuserselected'] = false;
@@ -106,12 +123,12 @@ class AdminApi extends \Zikula_AbstractApi
 
         // if chosen reset all user theme selections
         if ($args['resetuserselected']) {
-            // this will have to be refactored to Doctrine 2 dql once Users module is refactored
-            $dbtables = DBUtil::getTables();
-            $sql ="UPDATE $dbtables[users] SET theme = ''";
-            if (!DBUtil::executeSQL($sql)) {
-                return false;
-            }
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->update('ZikulaUsersModule:UserEntity', 'u')
+                                         ->set('u.theme', ':null')
+                                         ->setParameter('null', '')
+                                         ->getQuery();
+            $query->getResult();
         }
 
         // change default theme
@@ -125,24 +142,33 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * create running configuration
      *
+     * @param string[] $args {
+     *      @type $themename string the name of the theme to create a running configuration for
+     *                       }
+     *
+     * @return bool true if successful
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided or 
+     *                                          if the requested theme version file cannot be found
      */
     public function createrunningconfig($args)
     {
         // check our input
         if (!isset($args['themename']) || empty($args['themename'])) {
-            LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $themename = $args['themename'];
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['themename']));
         if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // get the theme settings and write them back to the running config directory
@@ -170,13 +196,23 @@ class AdminApi extends \Zikula_AbstractApi
     }
 
     /**
-     * delete a theme
+     * Delete a theme.
+     *
+     * @param string[] $args {
+     *      @type $themename string the name of the theme to delete
+     *                       }
+     *
+     * @return bool true if successful, false otherwise
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the theme
+     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
+     * @throws \RuntimeException Thrown if the theme cannot be deleted
      */
     public function delete($args)
     {
         // Argument check
         if (!isset($args['themename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $themeid = (int)ThemeUtil::getIDFromName($args['themename']);
@@ -185,28 +221,39 @@ class AdminApi extends \Zikula_AbstractApi
         $themeinfo = ThemeUtil::getInfo($themeid);
 
         if ($themeinfo == false) {
-            return LogUtil::registerError(__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themeinfo[name]::", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // reset the theme for any users utilising this theme.
-        // this will have to be refactored to Doctrine 2 dql once Users module is refactored
-        $dbtables = DBUtil::getTables();
-        $sql ="UPDATE $dbtables[users] SET theme = '' WHERE theme = '".DataUtil::formatForStore($themeinfo['name']) ."'";
-        if (!DBUtil::executeSQL($sql)) {
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->update('ZikulaUsersModule:UserEntity', 'u')
+                                     ->set('u.theme', ':null')
+                                     ->where('u.theme = :themeName')
+                                     ->setParameter('null', '')
+                                     ->setParameter('themeName', $themeinfo['name'])
+                                     ->getQuery();
+
+        $result = $query->getResult();
+        if (!$result) {
             return false;
         }
 
         // delete theme
-        $dql = "DELETE FROM Zikula\\Module\\ThemeModule\\Entity\\ThemeEntity t WHERE t.id = {$themeid}";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('ZikulaThemeModule:ThemeEntity', 't')
+                                     ->where('t.id = :id')
+                                     ->setParameter('id', $themeid)
+                                     ->getQuery();
+
         $result = $query->getResult();
         if (!$result) {
-            return LogUtil::registerError(__('Error! Could not perform the deletion.'));
+            throw new \RuntimeException(__('Error! Could not perform the deletion.'));
         }
 
         // delete the running config
@@ -232,25 +279,35 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * delete theme files from the file system if possible
+     *
+     * @param string[] $args {
+     *      @type $themename string the name of the theme to remove from the file system
+     *                       }
+     *
+     * @return bool true if successful, false otherwise
+     *
+     * @throws \InvalidArgumentException Thrown if either the themename or themedirectory parameters aren't provided
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     * @throws RuntimeException Thrown if the theme files cannot be deleted from the file system
      */
     public function deletefiles($args)
     {
         // check our input
         if (!isset($args['themename']) || empty($args['themename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $themename = $args['themename'];
         }
 
         if (!isset($args['themedirectory']) || empty($args['themedirectory'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $osthemedirectory = DataUtil::formatForOS($args['themedirectory']);
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', $themename .'::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         if (is_writable('themes') && is_writable('themes/' . $osthemedirectory)) {
@@ -259,7 +316,7 @@ class AdminApi extends \Zikula_AbstractApi
                 return LogUtil::registerStatus(__('Done! Removed theme files from the file system.'));
             }
 
-            return LogUtil::registerError(__('Error! Could not delete theme files from the file system. Please remove them by another means (FTP, SSH, ...).'));
+            throw new \RuntimeException(__('Error! Could not delete theme files from the file system. Please remove them by another means (FTP, SSH, ...).'));
         }
 
         LogUtil::registerStatus(__f('Notice: Theme files cannot be deleted because Zikula does not have write permissions for the themes folder and/or themes/%s folder.', DataUtil::formatForDisplay($args['themedirectory'])));
@@ -269,19 +326,28 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * delete a running configuration
+     *
+     * @param string[] $args {
+     *      @type $themename the name of the theme of which to the delete the running configuration
+     *                       }
+     *
+     * @return bool true if successful
+     *
+     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the theme
      */
     public function deleterunningconfig($args)
     {
         // check our input
         if (!isset($args['themename']) || empty($args['themename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $themename = $args['themename'];
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // define the base files
@@ -308,22 +374,32 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * delete ini file
+     *
+     * @param string[] $args {
+     *      @type string $file the name of the ini file to delete
+     *      @type $themename the name of the theme to which the ini file belongs
+     *                       }
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if either the themename or file parameter isn't provided
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the theme
      */
     public function deleteinifile($args)
     {
         if (!isset($args['themename']) || empty($args['themename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $themename = $args['themename'];
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         if (!isset($args['file']) || empty($args['file'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $ostemp  = CacheUtil::getLocalDir();
@@ -337,12 +413,22 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * delete a page configuration assignment
+     *
+     * @param string[] $args {
+     *      @type string $pcname the name of the page configuration
+     *      @type string $themename the name of the theme the page configuration belongs to
+     *                       }
+     *
+     * @return bool true if successful, false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if either the themename or pcname parameters aren't provided
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the theme
      */
     public function deletepageconfigurationassignment($args)
     {
         // Argument check
         if (!isset($args['themename']) && !isset($args['pcname'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $themeid = ThemeUtil::getIDFromName($args['themename']);
@@ -351,12 +437,12 @@ class AdminApi extends \Zikula_AbstractApi
         $themeinfo = ThemeUtil::getInfo($themeid);
 
         if ($themeinfo == false) {
-            return LogUtil::registerError(__('Sorry! No such item found.'));
+            return false;
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themeinfo[name]::pageconfigurations", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedException();
         }
 
         // read the list of existing page config assignments

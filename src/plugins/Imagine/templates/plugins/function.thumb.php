@@ -16,7 +16,7 @@
  *  - image         (string)        Path to source image (required)
  *  - width         (int)           Thumbnail width in pixels (optional, default value based on 'default' preset)
  *  - height        (int)           Thumbnail width in pixels (optional, default value based on 'default' preset)
- *  - mode          (string)        Thumbnail mode; 'inset' or 'outset' (optional, default 'inset')
+ *  - mode          (string)        Thumbnail mode; 'inset' or 'outbound' (optional, default 'inset')
  *  - extension     (string)        File extension for thumbnails: jpg, png, gif; null for original file type
  *                                  (optional, default value based on 'default' preset)
  *  - objectid      (string)        Unique signature for object, which owns this thumbnail (optional)
@@ -80,6 +80,7 @@ function smarty_function_thumb($params, Zikula_View $view)
         $preset['height'] = isset($params['height']) ? $params['height'] : null;
         $preset['mode'] = isset($params['mode']) ? $params['mode'] : null;
         $preset['extension'] = isset($params['extension']) ? $params['extension'] : null;
+        $preset['options'] = isset($params['options']) ? $params['options'] : array();
         $preset = array_filter($preset);
     }
 

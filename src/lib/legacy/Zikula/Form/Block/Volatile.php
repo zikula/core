@@ -47,6 +47,8 @@
  *
  * You don't need the volatile block if you can guarantee that the number of elements will
  * be the same always.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Block_Volatile extends Zikula_Form_AbstractPlugin
 {

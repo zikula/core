@@ -6,8 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -19,20 +17,13 @@ use Zikula_View;
 use UserUtil;
 use SecurityUtil;
 use ModUtil;
-use Zikula_Exception_Forbidden;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use DataUtil;
 use DateUtil;
 use System;
-use Zikula\Module\UsersModule\Controller\FormData\NewUserForm;
-use Zikula_Exception_Fatal;
-use Zikula\Module\UsersModule\Controller\FormData\ModifyUserForm;
-use DBUtil;
 use LogUtil;
 use DateTimeZone;
 use DateTime;
-use Zikula\Module\UsersModule\Controller\FormData\ModifyRegistrationForm;
-use Zikula\Module\UsersModule\Controller\FormData\ConfigForm;
 use FileUtil;
 use Zikula\Core\Event\GenericEvent;
 use Exception;
@@ -40,8 +31,16 @@ use Zikula_Session;
 use Zikula\Core\Hook\ProcessHook;
 use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Core\Hook\ValidationHook;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Debug\Exception\FatalErrorException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
+ * @Route("/users/admin")
+ *
  * Administrator-initiated actions for the Users module.
  */
 class AdminController extends \Zikula_AbstractController
@@ -71,17 +70,21 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("")
+     *
      * Redirects users to the "view" page.
      *
-     * @return string HTML string containing the rendered view template.
+     * @return RedirectResponse
      */
     public function mainAction()
     {
         // Security check will be done in view()
-        return $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
+     * @Route("/view")
+     *
      * Shows all items and lists the administration options.
      *
      * Parameters passed via GET:
@@ -99,14 +102,14 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string HTML string containing the rendered template.
+     * @return Response symfony response object containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function viewAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         // we need this value multiple times, so we keep it
@@ -249,23 +252,22 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string HTML string containing the rendered template.
+     * @return Response symfony response object containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access, or if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have add access
+     * @throws FatalErrorException Thrown if the method of accessing this function is improper
      */
     public function newUserAction()
     {
         // The user must have ADD access to submit a new user record.
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         // When new user registration is disabled, the user must have ADMIN access instead of ADD access.
         if (!$this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, false) && !SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $registrationUnavailableReason = $this->getVar(UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON, $this->__('Sorry! New user registration is currently disabled.'));
-            $this->registerError($registrationUnavailableReason);
-            // TODO - The home page typically does not display errors.
-            return $this->redirect(System::getHomepageUrl());
+            $this->request->getSession()->getFlashbag()->add('error', $registrationUnavailableReason);
         }
 
         $proceedToForm = true;
@@ -332,20 +334,20 @@ class AdminController extends \Zikula_AbstractController
                     $this->dispatchHooks('users.ui_hooks.user.process_edit', $hook);
 
                     if ($registeredObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) {
-                        $this->registerStatus($this->__('Done! Created new registration application.'));
+                        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Created new registration application.'));
                     } elseif (isset($registeredObj['activated'])) {
-                        $this->registerStatus($this->__('Done! Created new user account.'));
+                        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Created new user account.'));
                     } else {
-                        $this->registerError($this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
+                        $this->request->getSession()->getFlashbag()->add('error', $this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
                     }
 
                     $proceedToForm = false;
                 } else {
-                    $this->registerError($this->__('Error! Could not create the new user account or registration application.'));
+                    $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Could not create the new user account or registration application.'));
                 }
             }
         } elseif (!$this->request->isMethod('GET')) {
-            throw new Zikula_Exception_Forbidden();
+            throw new FatalErrorException();
         }
 
         if ($proceedToForm) {
@@ -355,7 +357,7 @@ class AdminController extends \Zikula_AbstractController
                     ->assign('errorFields', $errorFields)
                     ->fetch('Admin/newuser.tpl'));
         } else {
-            return $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
         }
     }
 
@@ -364,7 +366,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param string $callbackFunc Either 'search' or 'mailUsers', indicating which operation is calling this function.
      *
-     * @return string The rendered output from the template, appropriate for the indicated operation.
+     * @return Response symfony response object
      */
     protected function renderSearchForm($callbackFunc = 'search')
     {
@@ -442,14 +444,16 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string HTML string containing the rendered template.
+     * @return Response symfony response object containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access
+     * @throws FatalErrorException if the method of accessing this function is improper.
+     * @throws \NotFoundHttpException Thrown if no users are found
      */
     public function searchAction()
     {
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->isMethod('POST')) {
@@ -477,7 +481,7 @@ class AdminController extends \Zikula_AbstractController
                     }
                 }
             } else {
-                $this->registerError($this->__('Sorry! No matching users found.'));
+                throw new NotFoundHttpException($this->__('Sorry! No matching users found.'));
             }
         }
 
@@ -489,7 +493,7 @@ class AdminController extends \Zikula_AbstractController
         } elseif ($this->request->isMethod('GET') || ($this->request->isMethod('POST') && (!isset($usersList) || !$usersList))) {
             return $this->renderSearchForm('search');
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new FatalErrorException();
         }
     }
 
@@ -510,16 +514,17 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string HTML string containing the rendered template.
+     * @return Response symfony response object containing the rendered template.
      *
-     * @throws Zikula_Exception_Fatal Thrown if the function enters an unknown state.
-     *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have comment access, or if the method of accessing this function is improper.
+     * @throws FatalErrorException Thrown if the function enters an unknown state or
+     *                                     if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have comment access
+     * @throws NotFoundHttpException Thrown if no users are found
      */
     public function mailUsersAction()
     {
         if (!SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->isMethod('POST')) {
@@ -531,7 +536,7 @@ class AdminController extends \Zikula_AbstractController
                 $userList = $this->getSearchResults('mailUsers');
 
                 if (!isset($userList) || !$userList) {
-                    $this->registerError($this->__('Sorry! No matching users found.'));
+                    Throw new NotFoundHttpException($this->__('Sorry! No matching users found.'));
                 }
             } elseif ($formId == 'users_mailusers') {
                 $uid = $this->request->request->get('userid', null);
@@ -542,10 +547,10 @@ class AdminController extends \Zikula_AbstractController
                     'sendmail'  => $sendmail,
                 ));
             } else {
-                throw new Zikula_Exception_Fatal($this->__f('An unknown form type was received by %1$s.', array('mailUsers')));
+                throw new FatalErrorException($this->__f('An unknown form type was received by %1$s.', array('mailUsers')));
             }
         } elseif (!$this->request->isMethod('GET')) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->isMethod('GET') || (($formId == 'users_search') && (!isset($userList) || !$userList)) || (($formId == 'users_mailusers') && !$mailSent)) {
@@ -555,9 +560,9 @@ class AdminController extends \Zikula_AbstractController
                 ->assign('mailusers', SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT))
                 ->fetch('Admin/mailusers.tpl'));
         } elseif ($formId == 'users_mailusers') {
-            return $this->redirect(ModUtil::url($this->name, 'admin', 'index'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
         } else {
-            throw new Zikula_Exception_Fatal($this->__f('The %1$s function has entered an unknown state.', array('mailUsers')));
+            throw new FatalErrorException($this->__f('The %1$s function has entered an unknown state.', array('mailUsers')));
         }
     }
 
@@ -579,15 +584,19 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string HTML string containing the rendered template.
+     * @return Response symfony response object containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have edit access or 
+     *                                          if the user id matches the guest account (uid = 1)
+     * @throws FatalErrorException Thrown if the method of accessing this function is improper
+     * @throws \InvalidArgumentException Thrown if either uid or uname is null
+     * @throws NotFoundHttpException Thrown if no such user is found
      */
     public function modifyAction()
     {
         // security check for generic edit access
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', 'ANY', ACCESS_EDIT)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         $proceedToForm = true;
@@ -605,7 +614,7 @@ class AdminController extends \Zikula_AbstractController
 
             // security check for this record
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new AccessDeniedException();
             }
 
             if ($formData->isValid()) {
@@ -636,7 +645,7 @@ class AdminController extends \Zikula_AbstractController
                 if ($originalUser['uname'] != $user['uname']) {
                     // UserUtil::setVar does not allow uname to be changed.
                     // UserUtil::setVar('uname', $user['uname'], $originalUser['uid']);
-                    $updatedUserObj = $this->entityManager->find('Zikula\Module\UsersModule\Entity\UserEntity', $originalUser['uid']);
+                    $updatedUserObj = $this->entityManager->find('ZikulaUsersModule:UserEntity', $originalUser['uid']);
                     $updatedUserObj['uname'] = $user['uname'];
                     $this->entityManager->flush();
 
@@ -710,7 +719,7 @@ class AdminController extends \Zikula_AbstractController
                 $hook = new ProcessHook($user['uid']);
                 $this->dispatchHooks('users.ui_hooks.user.process_edit', $hook);
 
-                $this->registerStatus($this->__("Done! Saved user's account information."));
+                $this->request->getSession()->getFlashbag()->add('status', $this->__("Done! Saved user's account information."));
                 $proceedToForm = false;
             }
         } elseif ($this->request->getMethod() == 'GET') {
@@ -719,8 +728,7 @@ class AdminController extends \Zikula_AbstractController
 
             // check arguments
             if (is_null($uid) && is_null($uname)) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-                $proceedToForm = false;
+                throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
             }
 
             // retreive userid from uname
@@ -730,15 +738,13 @@ class AdminController extends \Zikula_AbstractController
 
             // warning for guest account
             if ($uid == 1) {
-                $this->registerError($this->__("Error! You can't edit the guest account."));
-                $proceedToForm = false;
+                throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
             }
 
             // get the user vars
             $originalUser = UserUtil::getVars($uid);
             if ($originalUser == false) {
-                $this->registerError($this->__('Sorry! No such user found.'));
-                $proceedToForm = false;
+                throw new NotFoundHttpException($this->__('Sorry! No such user found.'));
             }
             $userAttributes = isset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
 
@@ -749,13 +755,13 @@ class AdminController extends \Zikula_AbstractController
             $accessPermissions = array();
             $errorFields = array();
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new FatalErrorException();
         }
 
         if ($proceedToForm) {
             // security check for this record
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new AccessDeniedException();
             }
 
             // groups
@@ -797,7 +803,7 @@ class AdminController extends \Zikula_AbstractController
                 ->assign('hasNoPassword', $originalUser['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION)
                 ->fetch('Admin/modify.tpl'));
         } else {
-            return $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
         }
     }
 
@@ -816,12 +822,13 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return void
+     * @return RedirectResponse
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access.
+     * @throws \InvalidArgumentException Thrown if the provided user id isn't an integer
+     * @throws NotFoundHttpException Thrown if user id doesn't match a valid user
      *
      * @todo The link on the view page should be a mini form, and should post.
-     *
      * @todo This should have a confirmation page.
      */
     public function lostUsernameAction()
@@ -835,18 +842,16 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
-            $this->registerError(LogUtil::getErrorMsgArgs())
-                 ->redirect(ModUtil::url($this->name, 'admin', 'view'));
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         }
 
         $user = UserUtil::getVars($uid);
         if (!$user) {
-            $this->registerError($this->__('Sorry! Unable to retrieve information for that user id.'))
-                    ->redirect(ModUtil::url($this->name, 'admin', 'view'));
+            throw new NotFoundHttpException($this->__('Sorry! Unable to retrieve information for that user id.'));
         }
 
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         $userNameSent = ModUtil::apiFunc($this->name, 'user', 'mailUname', array(
@@ -856,12 +861,11 @@ class AdminController extends \Zikula_AbstractController
         ));
 
         if ($userNameSent) {
-            $this->registerStatus($this->__f('Done! The user name for \'%s\' has been sent via e-mail.', $user['uname']))
-                 ->redirect(ModUtil::url($this->name, 'admin', 'view'));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The user name for \'%s\' has been sent via e-mail.', $user['uname']));
         } elseif (!$this->request->getSession()->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR)) {
-            $this->registerError($this->__f('Sorry! There was an unknown error while trying to send the user name for \'%s\'.', $user['uname']))
-                 ->redirect(ModUtil::url($this->name, 'admin', 'view'));
+            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Sorry! There was an unknown error while trying to send the user name for \'%s\'.', $user['uname']));
         }
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -879,12 +883,14 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return bool True on success and redirect; otherwise false.
+     * @return void
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access.
+     * @throws \InvalidArgumentException Thrown if the provided user id isn't an integer or
+     *                                          if the user has no password set
+     * @throws NotFoundHttpException Thrown if user id doesn't match a valid user
      *
      * @todo The link on the view page should be a mini form, and should post.
-     *
      * @todo This should have a confirmation page.
      */
     public function lostPasswordAction()
@@ -894,25 +900,21 @@ class AdminController extends \Zikula_AbstractController
         $uid = $this->request->query->get('userid', null);
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
-            $this->registerError(LogUtil::getErrorMsgArgs())
-                    ->redirect(ModUtil::url($this->name, 'admin', 'view'));
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         }
 
         $user = UserUtil::getVars($uid);
         if (!$user) {
-            $this->registerError($this->__('Sorry! Unable to retrieve information for that user id.'));
-
-            return false;
+            throw new NotFoundHttpException($this->__('Sorry! Unable to retrieve information for that user id.'));
         }
 
         if ($user['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
             // User has no password set -> Sending a recovery code is useless.
-            $this->registerError(LogUtil::getErrorMsgArgs())
-                ->redirect(ModUtil::url($this->name, 'admin', 'view'));
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         }
 
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         $confirmationCodeSent = ModUtil::apiFunc($this->name, 'user', 'mailConfirmationCode', array(
@@ -922,10 +924,10 @@ class AdminController extends \Zikula_AbstractController
         ));
 
         if ($confirmationCodeSent) {
-            $this->registerStatus($this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', $user['uname']));
+            $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', $user['uname']));
         }
 
-        return $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
+        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
 
     /**
@@ -945,15 +947,17 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string HTML string containing the rendered template.
+     * @return Response|RedirectResponse symfony response object containing the rendered template if a form is to be displayed, RedirectResponse otherwise
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have delete access, or if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have delete access
+     * @throws FatalErrorException Thrown if the method of accessing this function is improper
+     * @throws NotFoundHttpException Thrown if the user doesn't exist
      */
     public function deleteUsersAction()
     {
         // check permissions
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', 'ANY', ACCESS_DELETE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         $proceedToForm = false;
@@ -974,12 +978,11 @@ class AdminController extends \Zikula_AbstractController
 
             $proceedToForm = true;
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new FatalErrorException();
         }
 
         if (empty($userid)) {
-            $this->registerError($this->__('Sorry! No such user found.'));
-            $proceedToForm = false;
+            throw new NotFoundHttpException($this->__('Sorry! No such user found.'));
         }
 
         if (!is_array($userid)) {
@@ -990,15 +993,15 @@ class AdminController extends \Zikula_AbstractController
         $users = array();
         foreach ($userid as $key => $uid) {
             if ($uid == 1) {
-                $this->registerError($this->__("Error! You can't delete the guest account."));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! You can't delete the guest account."));
                 $proceedToForm = false;
                 $processDelete = false;
             } elseif ($uid == 2) {
-                $this->registerError($this->__("Error! You can't delete the primary administrator account."));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! You can't delete the primary administrator account."));
                 $proceedToForm = false;
                 $processDelete = false;
             } elseif ($uid == $currentUser) {
-                $this->registerError($this->__("Error! You can't delete the account you are currently logged into."));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! You can't delete the account you are currently logged into."));
                 $proceedToForm = false;
                 $processDelete = false;
             }
@@ -1006,7 +1009,7 @@ class AdminController extends \Zikula_AbstractController
             // get the user vars
             $users[$key] = UserUtil::getVars($uid);
             if ($users[$key] == false) {
-                $this->registerError($this->__('Sorry! No such user found.'));
+                throw new NotFoundHttpException($this->__('Sorry! No such user found.'));
                 $proceedToForm = false;
                 $processDelete = false;
             }
@@ -1040,7 +1043,7 @@ class AdminController extends \Zikula_AbstractController
                         $this->dispatchHooks('users.ui_hooks.user.process_delete', $hook);
                     }
                     $count = count($userid);
-                    $this->registerStatus($this->_fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', $count, array($count)));
+                    $this->request->getSession()->getFlashbag()->add('status', $this->_fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', $count, array($count)));
                 }
             }
         }
@@ -1049,14 +1052,12 @@ class AdminController extends \Zikula_AbstractController
             return $this->response($this->view->assign('users', $users)
                 ->fetch('Admin/deleteusers.tpl'));
         } else {
-            return $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
         }
     }
 
     /**
      * Constructs a list of various actions for a list of registrations appropriate for the current user.
-     *
-     * NOTE: Internal function.
      *
      * @param array  $reglist     The list of registration records.
      * @param string $restoreView Indicates where the calling function expects to return to; 'view' indicates
@@ -1169,15 +1170,15 @@ class AdminController extends \Zikula_AbstractController
      * Type:      array
      * Contents:  An array containing the parameters to restore the view configuration prior to executing an action.
      *
-     * @return string HTML string containing the rendered template.
+     * @return Response|RedirectResponse symfony response object containing the rendered template if a form is to be display, RedirectResponse otherwise
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access.
      */
     public function viewRegistrationsAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         $regCount = ModUtil::apiFunc($this->name, 'registration', 'countAll');
@@ -1207,7 +1208,7 @@ class AdminController extends \Zikula_AbstractController
             }
 
             // Reset the URL and load the proper page.
-            return $this->redirect(ModUtil::url($this->name, 'admin', 'viewRegistrations', $returnArgs));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'viewRegistrations', $returnArgs)));
         } else {
             $reset = false;
 
@@ -1234,7 +1235,7 @@ class AdminController extends \Zikula_AbstractController
                 if ($limitOffset >= 0) {
                     $returnArgs['startnum'] = $limitOffset + 1;
                 }
-                return $this->redirect(ModUtil::url($this->name, 'admin', 'viewRegistrations', $returnArgs));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'viewRegistrations', $returnArgs)));
             }
         }
 
@@ -1247,9 +1248,9 @@ class AdminController extends \Zikula_AbstractController
 
         if (($reglist === false) || !is_array($reglist)) {
             if (!$this->request->getSession()->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR)) {
-                $this->registerError($this->__('An error occurred while trying to retrieve the registration records.'));
+                $this->request->getSession()->getFlashbag()->add('error', $this->__('An error occurred while trying to retrieve the registration records.'));
             }
-            return $this->redirect(ModUtil::url($this->name, 'admin'), null, 500);
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')), 500);
         }
 
         $actions = $this->getActionsForRegistrations($reglist, 'view');
@@ -1288,14 +1289,16 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string HTML string containing the rendered template.
+     * @return Response symfony response object containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access
+     * @throws FatalErrorException Thrown if the method of accessing this function is improper
+     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      */
     public function displayRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         // Get parameters from whatever input we need.
@@ -1304,19 +1307,18 @@ class AdminController extends \Zikula_AbstractController
         if ($this->request->getMethod() == 'GET') {
             $uid = $this->request->query->get('uid', null);
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new FatalErrorException();
         }
 
         if (empty($uid) || !is_numeric($uid)) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-            return $this->redirect(ModUtil::url($this->name, 'admin', 'viewRegistrations', array('return' => true)));
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         }
 
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
             // get application could fail (return false) because of a nonexistant
             // record, no permission to read an existing record, or a database error
-            $this->registerError($this->__('Unable to retrieve registration record. '
+            $this->request->getSession()->getFlashbag()->add('error', $this->__('Unable to retrieve registration record. '
                 . 'The record with the specified id might not exist, or you might not have permission to access that record.'));
 
             return false;
@@ -1362,14 +1364,16 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string|bool The rendered template; false on error.
+     * @return Response symfony response object
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have edit access
+     * @throws FatalErrorException Thrown if the method of accessing this function is improper
+     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
      */
     public function modifyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', 'ANY', ACCESS_EDIT)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         $proceedToForm = true;
@@ -1391,7 +1395,7 @@ class AdminController extends \Zikula_AbstractController
 
             // security check for this record
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$originalRegistration['uname']}::{$originalRegistration['uid']}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new AccessDeniedException();
             }
 
             if ($formData->isValid()) {
@@ -1421,7 +1425,7 @@ class AdminController extends \Zikula_AbstractController
                 if ($originalRegistration['uname'] != $registration['uname']) {
                     // UserUtil::setVar does not allow uname to be changed.
                     // UserUtil::setVar('uname', $registration['uname'], $originalRegistration['uid']);
-                    $updatedRegistrationObj = $this->entityManager->find('Zikula\Module\UsersModule\Entity\UserEntity', $originalRegistration['uid']);
+                    $updatedRegistrationObj = $this->entityManager->find('ZikulaUsersModule:UserEntity', $originalRegistration['uid']);
                     $updatedRegistrationObj['uname'] = $registration['uname'];
                     $this->entityManager->flush();
 
@@ -1457,12 +1461,12 @@ class AdminController extends \Zikula_AbstractController
                 }
 
                 $event = new GenericEvent($registration);
-                $this->getDispatcher()->dispatch($event->getName(), $event);
+                $this->getDispatcher()->dispatch('module.users.ui.process_edit.modify_registration', $event);
 
                 $hook = new ProcessHook($registration['uid']);
                 $this->dispatchHooks('users.ui_hooks.registration.process_edit', $hook);
 
-                $this->registerStatus($this->__("Done! Saved user's account information."));
+                $this->request->getSession()->getFlashbag()->add('status', $this->__("Done! Saved user's account information."));
                 $proceedToForm = false;
             }
 
@@ -1471,16 +1475,14 @@ class AdminController extends \Zikula_AbstractController
 
             if (!is_int($uid)) {
                 if (!is_numeric($uid) || ((string)((int)$uid) != $uid)) {
-                    $this->registerError($this->__('Error! Invalid registration uid.'));
-                    return $this->redirect(ModUtil::url($this->name, 'admin', 'viewRegistrations', array('restoreview' => true)));
+                    throw new \InvalidArgumentException($this->__('Error! Invalid registration uid.'));
                 }
             }
 
             $registration = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
 
             if (!$registration) {
-                $this->registerError($this->__('Error! Unable to load registration record.'));
-                return $this->redirect(ModUtil::url($this->name, 'admin', 'viewRegistrations', array('restoreview' => true)));
+                throw new NotFoundHttpException($this->__('Error! Unable to load registration record.'));
             }
             $userAttributes = isset($registration['__ATTRIBUTES__']) ? $registration['__ATTRIBUTES__'] : array();
 
@@ -1489,13 +1491,13 @@ class AdminController extends \Zikula_AbstractController
 
             $restoreView = $this->request->query->get('restoreview', 'view');
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new FatalErrorException();
         }
 
         if ($proceedToForm) {
             // security check for this record
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$registration['uname']}::{$registration['uid']}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new AccessDeniedException();
             }
 
             $rendererArgs = array(
@@ -1511,9 +1513,9 @@ class AdminController extends \Zikula_AbstractController
                 ->fetch('Admin/modifyregistration.tpl'));
         } else {
             if ($restoreView == 'view') {
-                return $this->redirect(ModUtil::url($this->name, 'admin', 'viewRegistrations', array('restoreview' => true)));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'viewRegistrations', array('restoreview' => true))));
             } else {
-                return $this->redirect(ModUtil::url($this->name, 'admin', 'displayRegistration', array('uid' => $registration['uid'])));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'displayRegistration', array('uid' => $registration['uid']))));
             }
         }
     }
@@ -1543,14 +1545,17 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string|bool The rendered template; true on success; otherwise false.
+     * @return Response symfony response object
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access
+     * @throws FatalErrorException Thrown if the method of accessing this function is improper
+     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
+     * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
      */
     public function verifyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->getMethod() == 'GET') {
@@ -1565,21 +1570,17 @@ class AdminController extends \Zikula_AbstractController
             $restoreView = $this->request->request->get('restoreview', 'view');
             $confirmed = $this->request->request->get('confirmed', false);
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new FatalErrorException();
         }
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         }
 
         // Got just a uid.
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
-            $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
-
-            return false;
+            throw new \NotFoundException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
         }
 
         if ($restoreView == 'display') {
@@ -1591,11 +1592,9 @@ class AdminController extends \Zikula_AbstractController
         $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
 
         if ($reginfo['isverified']) {
-            $this->registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
-            return $this->redirect($cancelUrl);
+            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
         } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_BEFORE) && !$reginfo['isapproved']) {
-            $this->registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
-            return $this->redirect($cancelUrl);
+            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
         }
 
         if (!$confirmed) {
@@ -1625,12 +1624,11 @@ class AdminController extends \Zikula_AbstractController
             ));
 
             if (!$verificationSent) {
-                $this->registerError($this->__f('Sorry! There was a problem sending a verification code to \'%1$s\'.', $reginfo['uname']));
-                return $this->redirect($cancelUrl);
+                $this->request->getSession()->getFlashbag()->add('error', $this->__f('Sorry! There was a problem sending a verification code to \'%1$s\'.', $reginfo['uname']));
             } else {
-                $this->registerStatus($this->__f('Done! Verification code sent to \'%1$s\'.', $reginfo['uname']));
-                return $this->redirect($cancelUrl);
+                $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! Verification code sent to \'%1$s\'.', $reginfo['uname']));
             }
+            return new RedirectResponse(System::normalizeUrl($cancelUrl));
         }
     }
 
@@ -1658,14 +1656,17 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string|bool The rendered template; true on success; otherwise false.
+     * @return Response Symfony response object
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have moderate access
+     * @throws FatalErrorException Thrown if the method of accessing this function is improper
+     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
+     * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
      */
     public function approveRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->getMethod() == 'GET') {
@@ -1677,21 +1678,18 @@ class AdminController extends \Zikula_AbstractController
             $forceVerification = $this->currentUserIsAdmin() && $this->request->request->get('force', false);
             $restoreView = $this->request->request->get('restoreview', 'view');
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         }
 
         // Got just an id.
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
-            $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+            throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
 
-            return false;
         }
 
         if ($restoreView == 'display') {
@@ -1703,15 +1701,12 @@ class AdminController extends \Zikula_AbstractController
         $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
 
         if ($reginfo['isapproved'] && !$forceVerification) {
-            $this->registerError($this->__f('Warning! Nothing to do! The registration record with uid \'%1$s\' is already approved.', $reginfo['uid']));
-            return $this->redirect($cancelUrl);
+            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Warning! Nothing to do! The registration record with uid \'%1$s\' is already approved.', $reginfo['uid']));
         } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_AFTER) && !$reginfo['isapproved']
                 && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' cannot be approved. The registration\'s e-mail address must first be verified.', $reginfo['uid']));
-            return $this->redirect($cancelUrl);
+            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! The registration record with uid \'%1$s\' cannot be approved. The registration\'s e-mail address must first be verified.', $reginfo['uid']));
         } elseif ($forceVerification && (!isset($reginfo['pass']) || empty($reginfo['pass']))) {
-            $this->registerError($this->__f('Error! E-mail verification cannot be skipped for \'%1$s\'. The user must establish a password as part of the verification process.', $reginfo['uname']));
-            return $this->redirect($cancelUrl);
+            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! E-mail verification cannot be skipped for \'%1$s\'. The user must establish a password as part of the verification process.', $reginfo['uname']));
         }
 
 
@@ -1747,15 +1742,14 @@ class AdminController extends \Zikula_AbstractController
             ));
 
             if (!$approved) {
-                $this->registerError($this->__f('Sorry! There was a problem approving the registration for \'%1$s\'.', $reginfo['uname']));
-                return $this->redirect($cancelUrl);
+                $this->request->getSession()->getFlashbag()->add('error', $this->__f('Sorry! There was a problem approving the registration for \'%1$s\'.', $reginfo['uname']));
             } else {
                 if (isset($approved['uid'])) {
-                    $this->registerStatus($this->__f('Done! The registration for \'%1$s\' has been approved and a new user account has been created.', $reginfo['uname']));
-                    return $this->redirect($cancelUrl);
+                    $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The registration for \'%1$s\' has been approved and a new user account has been created.', $reginfo['uname']));
+                    return new RedirectResponse(System::normalizeUrl($cancelUrl));
                 } else {
-                    $this->registerStatus($this->__f('Done! The registration for \'%1$s\' has been approved and is awaiting e-mail verification.', $reginfo['uname']));
-                    return $this->redirect($cancelUrl);
+                    $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The registration for \'%1$s\' has been approved and is awaiting e-mail verification.', $reginfo['uname']));
+                    return new RedirectResponse(System::normalizeUrl($cancelUrl));
                 }
             }
         }
@@ -1785,14 +1779,17 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string|bool The rendered template; true on success; otherwise false.
+     * @return Response Symfony response object
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user does not have delete access, or if the method used to access this function is improper.
+     * @throws AccessDeniedException Thrown if the current user does not have delete access
+     * @throws FatalErrorException Thrown if the method of accessing this function is improper
+     * @throws \InvalidArgumentException Thrown if the user id isn't set or numeric
+     * @throws NotFoundHttpException Thrown if the registration record couldn't be retrieved
      */
     public function denyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_DELETE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         if ($this->request->getMethod() == 'GET') {
@@ -1807,21 +1804,17 @@ class AdminController extends \Zikula_AbstractController
             $reason = $this->request->request->get('reason', '');
             $confirmed = $this->request->request->get('confirmed', false);
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new FatalErrorException();
         }
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         }
 
         // Got just a uid.
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
-            $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
-
-            return false;
+            throw new \NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
         }
 
         if ($restoreView == 'display') {
@@ -1829,7 +1822,6 @@ class AdminController extends \Zikula_AbstractController
         } else {
             $cancelUrl = ModUtil::url($this->name, 'admin', 'viewRegistrations', array('restoreview' => true));
         }
-
 
         if (!$confirmed) {
             // Bad or no auth key, or bad or no confirmation, so display confirmation.
@@ -1858,8 +1850,7 @@ class AdminController extends \Zikula_AbstractController
             ));
 
             if (!$denied) {
-                $this->registerError($this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']));
-                return $this->redirect($cancelUrl);
+                $this->request->getSession()->getFlashbag()->add('error', $this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']));
             } else {
                 if ($sendNotification) {
                     $siteurl   = System::getBaseUrl();
@@ -1876,8 +1867,8 @@ class AdminController extends \Zikula_AbstractController
                         'templateArgs'      => $rendererArgs
                     ));
                 }
-                $this->registerStatus($this->__f('Done! The registration for \'%1$s\' has been denied and deleted.', $reginfo['uname']));
-                return $this->redirect($cancelUrl);
+                $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The registration for \'%1$s\' has been denied and deleted.', $reginfo['uname']));
+                return new RedirectResponse(System::normalizeUrl($cancelUrl));
             }
         }
     }
@@ -1897,16 +1888,16 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string The rendered configuration settings template.
+     * @return Response symfony response object
      *
-     * @throws \Zikula_Exception_Fatal     Thrown if the function is accessed improperly.
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access.
+     * @throws FatalErrorException Thrown if the function is accessed improperly.
+     * @throws AccessDeniedException Thrown if the current user does not have admin access.
      */
     public function configAction()
     {
         // Security check
         if (!(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         $configData = new FormData\ConfigForm('users_config', $this->getContainer());
@@ -1921,18 +1912,18 @@ class AdminController extends \Zikula_AbstractController
             if ($configData->isValid()) {
                 $modVars = $configData->toArray();
                 $this->setVars($modVars);
-                $this->registerStatus($this->__('Done! Users module settings have been saved.'));
+                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Users module settings have been saved.'));
                 $event = new GenericEvent(null, array(), $modVars);
                 $this->getDispatcher()->dispatch('module.users.config.updated', $event);
             } else {
                 $errorFields = $configData->getErrorMessages();
                 $errorCount = count($errorFields);
-                $this->registerError($this->_fn('There was a problem with one of the module settings. Please review the message below, correct the error, and resubmit your changes.',
+                $this->request->getSession()->getFlashbag()->add('error', $this->_fn('There was a problem with one of the module settings. Please review the message below, correct the error, and resubmit your changes.',
                         'There were problems with %1$d module settings. Please review the messages below, correct the errors, and resubmit your changes.',
                         $errorCount, array($errorCount)));
             }
         } elseif (!$this->request->getMethod() == 'GET') {
-            throw new \Zikula_Exception_Fatal();
+            throw new FatalErrorException();
         }
 
         return $this->response($this->view->assign_by_ref('configData', $configData)
@@ -1969,23 +1960,23 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param array $args All arguments passed to the function.
      *
-     * @return redirect user to admin main page if success and show again the forn otherwise
+     * @return Response symfony response object
      *
-     * @throws \Zikula_Exception_Fatal     Thrown if the $args parameter is not valid.
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access.
+     * @throws \InvalidArgumentException Thrown if the $args parameter is not valid.
+     * @throws AccessDeniedException Thrown if the current user does not have add access.
      */
     public function importAction(array $args = array())
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADD)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         // get input values. Check for direct function call first because calling function might be either get or post
         if (isset($args) && is_array($args) && !empty($args)) {
             $confirmed = isset($args['confirmed']) ? $args['confirmed'] : false;
         } elseif (isset($args) && !is_array($args)) {
-            throw new \Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         } elseif ($this->request->getMethod() == 'GET') {
             $confirmed = false;
         } elseif ($this->request->getMethod() == 'POST') {
@@ -2004,8 +1995,8 @@ class AdminController extends \Zikula_AbstractController
             $importResults = $this->uploadImport($importFile, $delimiter);
             if ($importResults == '') {
                 // the users have been imported successfully
-                $this->registerStatus($this->__('Done! Users imported successfully.'));
-                return $this->redirect(ModUtil::url($this->name, 'admin', 'index'));
+                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Users imported successfully.'));
+                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
             }
         }
 
@@ -2057,16 +2048,17 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param array $args All arguments passed to the function.
      *
-     * @return redirect user to the form if confirmed not 1, else export the csv file.
+     * @return Response
      *
-     * @throws \Zikula_Exception_Fatal     Thrown if parameters are passed via the $args array, but $args is invalid.
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access, or method this function was accessed is invalid.
+     * @throws \InvalidArgumentException Thrown if parameters are passed via the $args array, but $args is invalid.
+     * @throws AccessDeniedException Thrown if the current user does not have admin access
+     * @throws FatalErrorException Thrown if the method of accessing this function is improper
      */
     public function exporterAction(array $args = array())
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         // get input values. Check for direct function call first because calling function might be either get or post
@@ -2080,7 +2072,7 @@ class AdminController extends \Zikula_AbstractController
             $regDate    = isset($args['exportRegDate']) ? $args['exportRegDate'] : null;
             $groups     = isset($args['exportGroups']) ? $args['exportGroups'] : null;
         } elseif (isset($args) && !is_array($args)) {
-            throw new \Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
         } elseif ($this->request->getMethod() == 'GET') {
             $confirmed = false;
         } elseif ($this->request->getMethod() == 'POST') {
@@ -2094,7 +2086,7 @@ class AdminController extends \Zikula_AbstractController
             $regDate    = $this->request->request->get('exportRegDate', null);
             $groups     = $this->request->request->get('exportGroups', null);
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new FatalErrorException();
         }
 
         if ($confirmed) {
@@ -2251,7 +2243,7 @@ class AdminController extends \Zikula_AbstractController
      *                            default if $_POST['delimiter'] is not set. Allows this function to be called internally,
      *                            rather than as a result of a form post.
      *
-     * @return a empty message if success or an error message otherwise
+     * @return String an empty message if success or an error message otherwise
      */
     protected function uploadImport(array $importFile, $delimiter)
     {
@@ -2491,11 +2483,12 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @return string The rendered output from either the template for confirmation.
+     * @return Response symfony response object
      *
-     * @throws \Zikula_Exception_Fatal     Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
+     * @throws \InvalidArgumentException Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
      *                                      or the account record is not in a consistent state.
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access for the account record.
+     * @throws AccessDeniedException Thrown if the current user does not have edit access for the account record.
+     * @throws FatalErrorException Thrown if the method of accessing this function is improper
      */
     public function toggleForcedPasswordChangeAction()
     {
@@ -2503,17 +2496,17 @@ class AdminController extends \Zikula_AbstractController
             $uid = $this->request->query->get('userid', false);
 
             if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
-                throw new \Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+                throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
             }
 
             $userObj = UserUtil::getVars($uid);
 
             if (!isset($userObj) || !$userObj || !is_array($userObj) || empty($userObj) || $userObj['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
-                throw new \Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+                throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
             }
 
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new AccessDeniedException();
             }
 
             $userMustChangePassword = UserUtil::getVar('_Users_mustChangePassword', $uid, false);
@@ -2527,15 +2520,15 @@ class AdminController extends \Zikula_AbstractController
             $uid = $this->request->request->get('userid', false);
             $userMustChangePassword = $this->request->request->get('user_must_change_password', false);
 
-            if (!$uid || !is_numeric($uid) || ((int)$uid != $uid) || $userObj['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
-                throw new \Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-            }
-
             // Force reload of User object into cache.
             $userObj = UserUtil::getVars($uid);
 
+            if (!$uid || !is_numeric($uid) || ((int)$uid != $uid) || $userObj['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
+                throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
+            }
+
             if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new AccessDeniedException();
             }
 
             if ($userMustChangePassword) {
@@ -2549,21 +2542,21 @@ class AdminController extends \Zikula_AbstractController
 
             if ($userMustChangePassword) {
                 if (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword'])) {
-                    $this->registerStatus($this->__f('Done! A password change will be required the next time %1$s logs in.', array($userObj['uname'])));
+                    $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! A password change will be required the next time %1$s logs in.', array($userObj['uname'])));
                 } else {
-                    throw new \Zikula_Exception_Fatal();
+                    throw new \InvalidArgumentException();
                 }
             } else {
                 if (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword'])) {
-                    throw new \Zikula_Exception_Fatal();
+                    throw new \InvalidArgumentException();
                 } else {
-                    $this->registerStatus($this->__f('Done! A password change will no longer be required for %1$s.', array($userObj['uname'])));
+                    $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! A password change will no longer be required for %1$s.', array($userObj['uname'])));
                 }
             }
 
-            return $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
+            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new FatalErrorException();
         }
     }
 }

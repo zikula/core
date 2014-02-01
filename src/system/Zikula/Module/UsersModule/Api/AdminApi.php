@@ -6,8 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -19,13 +17,12 @@ use Zikula\Core\Event\GenericEvent;
 use SecurityUtil;
 use System;
 use ModUtil;
-use DBUtil;
 use DataUtil;
 use UserUtil;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula;
-use Zikula_Exception_Forbidden;
 use Zikula_View;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * The administrative system-level and database-level functions for the Users module.
@@ -35,30 +32,28 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Find users.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string $args['uname']         A fragment of a user name on which to search using an SQL
-     *                                      LIKE clause. The user name will be surrounded by wildcards.
-     * int    $args['ugroup']        A group id in which to search (only users who are members of
-     *                                      the specified group are returned).
-     * string $args['email']         A fragment of an e-mail address on which to search using an
-     *                                      SQL LIKE clause. The e-mail address will be surrounded by
-     *                                      wildcards.
-     * string $args['regdateafter']  An SQL date-time (in the form '1970-01-01 00:00:00'); only
-     *                                      user accounts with a registration date after the date
-     *                                      specified will be returned.
-     * string $args['regdatebefore'] An SQL date-time (in the form '1970-01-01 00:00:00'); only
-     *                                      user accounts with a registration date before the date
-     *                                      specified will be returned.
-     * array  $args['dynadata']      An array of search values to be passed to the designated
-     *                                      profile module. Only those user records also satisfying the
-     *                                      profile module's search of its data are returned.
-     * string $args['condition']     An SQL condition for finding users; overrides all other
-     *                                      parameters.
+     * @param mixed[] $args {
+     *      @type string $uname         A fragment of a user name on which to search using an SQL
+     *                                  LIKE clause. The user name will be surrounded by wildcards.
+     *      @type int    $ugroup        A group id in which to search (only users who are members of
+     *                                  the specified group are returned).
+     *      @type string $email         A fragment of an e-mail address on which to search using an
+     *                                  SQL LIKE clause. The e-mail address will be surrounded by
+     *                                  wildcards.
+     *      @type string $regdateafter  An SQL date-time (in the form '1970-01-01 00:00:00'); only
+     *                                  user accounts with a registration date after the date
+     *                                  specified will be returned.
+     *      @type string $regdatebefore An SQL date-time (in the form '1970-01-01 00:00:00'); only
+     *                                  user accounts with a registration date before the date
+     *                                  specified will be returned.
+     *      @type array  $dynadata      An array of search values to be passed to the designated
+     *                                  profile module. Only those user records also satisfying the
+     *                                  profile module's search of its data are returned.
+     *      @type string $condition     An SQL condition for finding users; overrides all other
+     *                                  parameters.
+     *                      }
      *
-     * @param array $args All parameters passed to this function.
-     *
-     * @return mixed array of items if succcessful, false otherwise
+     * @return array|bool array of items if succcessful, false otherwise
      */
     public function findUsers($args)
     {
@@ -70,8 +65,10 @@ class AdminApi extends \Zikula_AbstractApi
         $profileModule = System::getVar('profilemodule', '');
         $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
-        // Set query conditions (unless some one else sends a hardcoded one)
-        $where = array();
+        $qb = $this->entityManager->createQueryBuilder()
+                                  ->select('u')
+                                  ->from('ZikulaUsersModule:UserEntity', 'u')
+                                  ->orderBy('u.uname', 'ASC');
 
         if (!isset($args['condition']) || !$args['condition']) {
             // Do not include anonymous user
@@ -81,30 +78,39 @@ class AdminApi extends \Zikula_AbstractApi
                 if ($value) {
                     switch ($arg) {
                         case 'uname':
+                            $qb->andWhere($qb->expr()->like('u.uname', ':value'))
+                                ->setParameter('value', $value);
+                            break;
+
                         case 'email':
-                            $where[] = "u.$arg LIKE '%" . DataUtil::formatForStore($value) . "%'";
+                            $qb->andWhere($qb->expr()->like('u.email', ':value'))
+                               ->setParameter('value', $value);                            
                             break;
 
                         case 'ugroup':
                             $uidList = UserUtil::getUsersForGroup($value);
                             if (is_array($uidList) && !empty($uidList)) {
-                                $where[] = "u.uid IN (" . implode(', ', $uidList) . ")";
+                                $qb->andWhere($qb->expr()->in('u.uid', ':uids'))
+                                   ->setParameter('uids', $uidList);                            
                             }
                             break;
 
                         case 'regdateafter':
-                            $where[] = "u.user_regdate > '" . DataUtil::formatForStore($value) . "'";
+                            $qb->andWhere('u.user_regdate > :value')
+                               ->setParameter('value', $value);                            
                             break;
 
                         case 'regdatebefore':
-                            $where[] = "u.user_regdate < '" . DataUtil::formatForStore($value) . "'";
+                            $qb->andWhere('u.user_regdate < :value')
+                               ->setParameter('value', $value);                            
                             break;
 
                         case 'dynadata':
                             if ($useProfileMod) {
                                 $uidList = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array('dynadata' => $value));
                                 if (is_array($uidList) && !empty($uidList)) {
-                                    $where[] = "u.uid IN (" . implode(', ', $uidList) . ")";
+                                    $qb->andWhere($qb->expr()->in('u.uid', ':uids'))
+                                       ->setParameter('uids', $uidList);                            
                                 }
                             }
                             break;
@@ -117,12 +123,10 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // TODO - Should this exclude pending delete too?
-        $where[] = "u.activated <> " . UsersConstant::ACTIVATED_PENDING_REG;
+        $qb->andWhere('u.activated <> :statusfilter')
+           ->setParameter('statusfilter', UsersConstant::ACTIVATED_PENDING_REG);
 
-        $where = 'WHERE ' . implode(' AND ', $where);
-
-        $dql = "SELECT u FROM Zikula\Module\UsersModule\Entity\UserEntity u $where ORDER BY u.uname ASC";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $qb->getQuery();
         $objArray = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
         return $objArray;
@@ -136,15 +140,16 @@ class AdminApi extends \Zikula_AbstractApi
      * regular users list. The delete hook and delete events are not triggered if the records are only marked for
      * deletion.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * numeric|array $args['uid']  A single (numeric integer) user id, or an array of user ids to delete.
-     * boolean       $args['mark'] If true, then mark for deletion, but do not actually delete.
-     *                                  defaults to false.
+     * @param mixed[] $args {
+     *      @type numeric|array $uid  A single (numeric integer) user id, or an array of user ids to delete.
+     *      @type boolean       $mark If true, then mark for deletion, but do not actually delete. defaults to false.
+     *                      }
      *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True if successful, false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if uid is either not set or invalid
      */
     public function deleteUser($args)
     {
@@ -153,9 +158,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         if (!isset($args['uid']) || (!is_numeric($args['uid']) && !is_array($args['uid']))) {
-            $this->registerError("Error! Illegal argument were passed to 'deleteuser'");
-
-            return false;
+            throw new \InvalidArgumentException("Error! Illegal argument were passed to 'deleteuser'");
         }
 
         if (isset($args['mark']) && is_bool($args['mark'])) {
@@ -194,20 +197,28 @@ class AdminApi extends \Zikula_AbstractApi
             } else {
                 // remove all memberships of this user
                 // TODO? - This should be in the Groups module, and happen as a result of an event.
-                $dql = "DELETE FROM Zikula\Module\GroupsModule\Entity\GroupMembershipEntity m WHERE m.uid = {$userObj['uid']}";
-                $query = $this->entityManager->createQuery($dql);
+                $query = $this->entityManager->createQueryBuilder()
+                                             ->delete()
+                                             ->from('ZikulaGroupsModule:GroupMembershipEntity', 'm')
+                                             ->where('m.uid = :uid')
+                                             ->setParameter('uid', $userObj['uid'])
+                                             ->getQuery();
                 $query->getResult();
 
                 // delete verification records for this user
                 ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $userObj['uid']));
 
                 // delete session
-                $dql = "DELETE FROM Zikula\Module\UsersModule\Entity\UserEntity u WHERE u.uid = {$userObj['uid']}";
-                $query = $this->entityManager->createQuery($dql);
+                $query = $this->entityManager->createQueryBuilder()
+                                             ->delete()
+                                             ->from('ZikulaUsersModule:UserSessionEntity', 'u')
+                                             ->where('u.uid = :uid')
+                                             ->setParameter('uid', $userObj['uid'])
+                                             ->getQuery();
                 $query->getResult();
 
                 // delete user
-                $user = $this->entityManager->find('Zikula\Module\UsersModule\Entity\UserEntity', $userObj['uid']);
+                $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $userObj['uid']);
                 $this->entityManager->remove($user);
                 $this->entityManager->flush();
 
@@ -223,27 +234,28 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Send an e-mail message to one or more users.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * numeric|array $args['uid']                         A single (numeric integer) uid or an array of uids to which the e-mail should be sent.
-     * array         $args['sendmail']                    An array containing the information necessary to send an e-mail.
-     * string        $args['sendmail']['from']            The name of the e-mail message's sender.
-     * string        $args['sendmail']['rpemail']         The e-mail address of the e-mail message's sender.
-     * string        $args['sendmail']['subject']         The e-mail message's subject.
-     * string        $args['sendmail']['message']         The e-mail message's body (the message itself).
-     * array         $args['sendmail']['recipientsname']  An array indexed by uid of each recipient's name.
-     * array         $args['sendmail']['recipientsemail'] An array indexed by uid of each recipient's e-mail address.
-     *
-     * @param array $args All arguments passed to this function.
+     * @param mixed[] $args {
+     *      @type numeric|array $uid A single (numeric integer) uid or an array of uids to which the e-mail should be sent.
+     *      @type mixed[] $sendmail {
+     *          @type string        $from            The name of the e-mail message's sender.
+     *          @type string        $rpemail         The e-mail address of the e-mail message's sender.
+     *          @type string        $subject         The e-mail message's subject.
+     *          @type string        $message         The e-mail message's body (the message itself).
+     *          @type array         $recipientsname  An array indexed by uid of each recipient's name.
+     *          @type array         $recipientsemail An array indexed by uid of each recipient's e-mail address.
+     *                              }
+     *                      }
      *
      * @return bool True on success; otherwise false
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have sufficient access to send mail.
+     * @throws \InvalidArgumentException Thrown if either the uid or sendmail parameters weren't provided or were invalid
+     * @throws AccessDeniedException Thrown if the current user does not have sufficient access to send mail.
+     * @throws \RuntimeException Thrown if the e-mail message couldn't be sent
      */
     public function sendmail($args)
     {
         if (!SecurityUtil::checkPermission("{$this->name}::MailUsers", '::', ACCESS_COMMENT)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new AccessDeniedException();
         }
 
         if (isset($args['uid']) && !empty($args['uid'])) {
@@ -253,17 +265,13 @@ class AdminApi extends \Zikula_AbstractApi
                 $recipientUidList = array($args['uid']);
             }
         } else {
-            $this->registerError(__('Error! No users selected to receive e-mail, or invalid uid list.'));
-
-            return false;
+            throw new \InvalidArgumentException(__('Error! No users selected to receive e-mail, or invalid uid list.'));
         }
 
         if (isset($args['sendmail']) && !empty($args['sendmail']) && is_array($args['sendmail'])) {
             $sendmail = $args['sendmail'];
         } else {
-            $this->registerError(__('Error! E-mail message to be sent not specified or invalid.'));
-
-            return false;
+            throw new \InvalidArgumentException(__('Error! E-mail message to be sent not specified or invalid.'));
         }
 
         $missingFields = array();
@@ -284,9 +292,7 @@ class AdminApi extends \Zikula_AbstractApi
             $msg = _fn('Error! The required field \'%2$s\' was blank or missing',
                     'Error! %1$d required fields were blank or missing: \'%2$s\'.',
                     $count, array($count, implode("', '", $missingFields)));
-            $this->registerError($msg);
-
-            return false;
+            throw new \InvalidArugmentsException($msg);
         }
         unset($missingFields);
 
@@ -322,9 +328,7 @@ class AdminApi extends \Zikula_AbstractApi
                     $recipientscount += count($bcclist);
                     $bcclist = array();
                 } else {
-                    $this->registerError($this->__('Error! Could not send the e-mail message.'));
-
-                    return false;
+                    throw new \RuntimeException($this->__('Error! Could not send the e-mail message.'));
                 }
             }
         }
@@ -344,9 +348,7 @@ class AdminApi extends \Zikula_AbstractApi
             if (ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', $sendMessageArgs)) {
                 $recipientscount += count($bcclist);
             } else {
-                $this->registerError($this->__('Error! Could not send the e-mail message.'));
-
-                return false;
+                throw new \RuntimeException($this->__('Error! Could not send the e-mail message.'));
             }
         }
         if ($recipientscount > 0) {
@@ -413,12 +415,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Retrieve a list of users whose field specified by the key match one of the values specified in the keyValue.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * string $args['key']         The field to be searched, typically 'uname' or 'email'.
-     * array  $args['valuesarray'] An array containing the values to be matched.
-     *
-     * @param array $args All parameters passed to this function.
+     * @param mixed[] $args {
+     *      @type string $key         The field to be searched, typically 'uname' or 'email'.
+     *      @type array  $valuesarray An array containing the values to be matched.
+     *                      }
      *
      * @return array|bool An array of user records indexed by user name, each whose key field matches one value in the
      *                      valueArray; false on error.
@@ -448,15 +448,19 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Add new user accounts from the import process.
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * array $args['importvalues'] An array of information used to create new user records. Each element of the
-     *                                  array should represent the minimum information to create a user record, including
-     *                                  'uname', 'email', 'pass', etc.
+     * @param array[] $args {
+     *      @type array $importvalues An array of information used to create new user records. Each element of the
+     *                                array should represent the minimum information to create a user record, including
+     *                                'uname', 'email', 'pass', etc.
+     *                      }
      *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success; false otherwise.
+     *
+     * @throws \RuntimeException Thrown if the registration e-mail couldn't be sent or
+     *                                  if the users, following addition to the database, couldn't be retrieved again or
+     *                                  if the users couldn't be added to any groups
      */
     public function createImport($args)
     {
@@ -498,11 +502,10 @@ class AdminApi extends \Zikula_AbstractApi
                                       array('valuesarray' => $usersArray,
                                             'key' => 'uname'));
         if (!$usersInDB) {
-            $this->registerError($this->__(
+            throw new \RuntimeException($this->__(
                 'Error! The users have been created but something has failed trying to get them from the database. '
                 . 'Now all these users do not have group.'));
 
-            return false;
         }
 
         // add user to groups
@@ -518,9 +521,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         if ($error_membership) {
-            $this->registerError($this->__('Error! The users have been created but something has failed while trying to add the users to their groups. These users are not assigned to a group.'));
-
-            return false;
+            throw new \RuntimeException($this->__('Error! The users have been created but something has failed while trying to add the users to their groups. These users are not assigned to a group.'));
         }
 
         // check if module Mailer is active
@@ -554,7 +555,7 @@ class AdminApi extends \Zikula_AbstractApi
                         'html'      => true,
                     );
                     if (!ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', $sendMessageArgs)) {
-                        $this->registerError($this->__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. After this error, no more messages were sent.', $value['uname']));
+                        throw new \RuntimeException($this->__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. After this error, no more messages were sent.', $value['uname']));
                         break;
                     }
                 }

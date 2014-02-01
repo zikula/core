@@ -1,4 +1,3 @@
-{ajaxheader modname="Blocks" filename="blocks.js"}
 {pageaddvar name="javascript" value="javascript/helpers/Zikula.itemlist.js"}
 {pageaddvar name="stylesheet" value="system/Zikula/Module/BlocksModule/Resources/public/css/extmenu_modify.css"}
 {pageaddvarblock}
@@ -60,7 +59,7 @@
 <h4 id="editmenu">{gt text="Content" domain='zikula'}</h4>
 <p class="alert alert-info">{gt text="In the table below, drag and drop the menu items into your desired order. It is also possible to create nesting menu entries if you move an entry onto an existing row. The item order and the contents of each menu item are saved when you click the 'Save' button. The number in the right-hand column is the ID of the menu item. Use this ID number if you want to use permission rules to restrict access to the menu item." domain='zikula'}</p>
 <p class="alert alert-info">{gt text="You can use bracket URLs in the form: &#123;modname&#125;, &#123;modname:type:func&#125; or &#123;modname:type:func:param1=value1&amp;param2=value2&#125;.  You may also specify the homepage as &#123;homepage&#125;." domain='zikula'}</p>
-<p style="margin:2em 0; padding:0;"><a id="appendmenuitem" class="icon icon-plus" href="#">{gt text="Create new menu item" domain='zikula'}</a></p>
+<p style="margin:2em 0; padding:0;"><a id="appendmenuitem" class="fa fa-plus" href="#">{gt text="Create new menu item" domain='zikula'}</a></p>
 
 {* return to this block after saving *}
 <input type="hidden" id="returntoblock" name="returntoblock" value="{$blockinfo.bid}" />
@@ -125,16 +124,16 @@
                 {$thislanguage}
             </span>
             <span class="z-itemcell z-w20">
-                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_image" name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control listinput" type="text" id="links_{$thislanguage}_X_image" name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w22">
-                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_name"  name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control listinput" type="text" id="links_{$thislanguage}_X_name"  name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w22">
-                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_url"   name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control listinput" type="text" id="links_{$thislanguage}_X_url"   name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w15">
-                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_title" name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control listinput" type="text" id="links_{$thislanguage}_X_title" name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w10">
                 <input class="listinput" type="checkbox" id="links_{$thislanguage}_X_active" name="dummy[]" checked="checked" value="1" />

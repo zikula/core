@@ -26,6 +26,8 @@
  *
  * The Zikula_Form_Plugin_TextInput plugin supports basic CSS styling through attributes like "width", "color" and "font_weight". See
  * {@link Zikula_Form_StyledPlugin} for more info.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
 {
@@ -421,9 +423,9 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
 
         if ($this->mandatory && $this->isEmpty()) {
             $this->setError(__('Error! An entry in this field is mandatory.'));
-        } elseif (strlen($this->text) > $this->maxLength && $this->maxLength > 0) {
+        } elseif (mb_strlen($this->text) > $this->maxLength && $this->maxLength > 0) {
             $this->setError(sprintf(__f('Error! Input text must be no longer than %s characters.', $this->maxLength)));
-        } elseif (strlen($this->text) < $this->minLength && $this->minLength >= 0) {
+        } elseif (mb_strlen($this->text) < $this->minLength && $this->minLength >= 0) {
             $this->setError(sprintf(__f('Error! Input text must be longer than %s characters.', $this->minLength)));
         } elseif ($this->regexValidationPattern != null && $this->text != '' && !preg_match($this->regexValidationPattern, $this->text)) {
             $this->setError($view->translateForDisplay($this->regexValidationMessage));

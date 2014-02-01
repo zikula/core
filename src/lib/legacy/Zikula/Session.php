@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Zikula_Session class.
+ *
+ * @deprecated
  */
 class Zikula_Session extends Session
 {

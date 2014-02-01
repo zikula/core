@@ -6,8 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -19,7 +17,6 @@ use SecurityUtil;
 use UserUtil;
 use Zikula_View;
 use BlockUtil;
-use DBUtil;
 use System;
 use ModUtil;
 
@@ -61,11 +58,15 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display the output of the online block.
      *
-     * @param array $blockinfo A blockinfo structure.
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
      *
      * @todo Move sql queries to calls to relevant API's.
      *
-     * @return string|void The output.
+     * @return string|void The rendered block output if the user has read permissions over the block, void otherwise
      */
     public function display($blockinfo)
     {
@@ -92,16 +93,25 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
             }
         }
 
-        $table = DBUtil::getTables();
-
-        $sessioninfocolumn = $table['session_info_column'];
         $activetime = strftime('%Y-%m-%d %H:%M:%S', time() - (System::getVar('secinactivemins') * 60));
 
-        $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] > 0";
-        $numusers = DBUtil::selectObjectCount('session_info', $where, 'uid', true);
+        $query = $this->entityManager->createQueryBuilder()
+                      ->select('count(s.uid)')
+                      ->from('ZikulaUsersModule:UserSessionEntity', 's')
+                      ->where('s.lastused > :activetime')
+                      ->setParameter('activetime', $activetime)
+                      ->andWhere('s.uid <> 0')
+                      ->getQuery();
+        $numusers = (int)$query->getSingleScalarResult();
 
-        $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] = '0'";
-        $numguests = DBUtil::selectObjectCount('session_info', $where, 'ipaddr', true);
+        $query = $this->entityManager->createQueryBuilder()
+                      ->select('count(s.uid)')
+                      ->from('ZikulaUsersModule:UserSessionEntity', 's')
+                      ->where('s.lastused > :activetime')
+                      ->setParameter('activetime', $activetime)
+                      ->andWhere('s.uid = 0')
+                      ->getQuery();
+        $numguests = (int)$query->getSingleScalarResult();
 
         $msgmodule = System::getVar('messagemodule', '');
 

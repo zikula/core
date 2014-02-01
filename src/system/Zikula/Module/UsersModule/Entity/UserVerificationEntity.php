@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -33,48 +32,48 @@ use Doctrine\ORM\Mapping as ORM;
 class UserVerificationEntity extends EntityAccess
 {
     /**
+     * ID: Primary ID of the verification record. Not related to the uid.
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * ID: Primary ID of the verification record. Not related to the uid.
      */
     private $id;
 
     /**
-     * @ORM\Column(type="smallint")
-     *
      * Change type: a code indicating what type of change action created this record.
+     *
+     * @ORM\Column(type="smallint")
      */
     private $changetype;
 
     /**
-     * @ORM\Column(type="integer")
-     *
      * User ID: Primary ID of the user record to which this verification record is related. Foreign key to users table.
+     *
+     * @ORM\Column(type="integer")
      */
     private $uid;
 
     /**
-     * @ORM\Column(type="string", length=60)
-     *
      * New e-mail address: If the change type indicates that this verification record was created as a result of a user changing his e-mail address,
      * then this field holds the new address temporarily until the verification is complete.
      * Only after the verification code is received back from the user (thus, verifying the new e-mail address) is the new e-mail address saved to the user's account record.
+     *
+     * @ORM\Column(type="string", length=60)
      */
     private $newemail;
 
     /**
-     * @ORM\Column(type="string", length=138)
-     *
      * Verification Code: The verification code last sent to the user to verify the requested action, as a salted hash of the value sent.
+     *
+     * @ORM\Column(type="string", length=138)
      */
     private $verifycode;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * Date/Time created: The date and time the verification record was created, as a UTC date/time, used to expire the record.
+     *
+     * @ORM\Column(type="datetime")
      */
     private $created_dt;
 

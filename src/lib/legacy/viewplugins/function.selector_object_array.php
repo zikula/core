@@ -40,13 +40,16 @@ function smarty_function_selector_object_array ($params, Zikula_View $view)
     $submit         = (isset($params['submit'])         ? $params['submit']         : false);
     $disabled       = (isset($params['disabled'])       ? $params['disabled']       : false);
     $multipleSize   = (isset($params['multipleSize'])   ? $params['multipleSize']   : 1);
+    $entity         = (isset($params['entity'])         ? true                      : false);
+
+    $method = $entity ? 'getSelector_EntityArray' : 'getSelector_ObjectArray';
 
     // get all but force execution of new query for object get
     if (!$where) {
         $where = ' ';
     }
 
-    return HtmlUtil::getSelector_ObjectArray ($modname, $class, $name, $field, $displayField, $where, $sort,
-                                              $selectedValue, $defaultValue, $defaultText, $allValue, $allText,
-                                              $displayField2, $submit, $disabled, $fieldSeparator, $multipleSize);
+    return HtmlUtil::$method($modname, $class, $name, $field, $displayField, $where, $sort,
+                              $selectedValue, $defaultValue, $defaultText, $allValue, $allText,
+                              $displayField2, $submit, $disabled, $fieldSeparator, $multipleSize);
 }

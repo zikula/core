@@ -157,7 +157,7 @@ class ZLocale implements ArrayAccess
         // fatal errors require 404
         header('HTTP/1.1 404 Not Found');
         foreach ($this->errors as $error) {
-            LogUtil::registerError($error);
+            LogUtil::addErrorPopup($error);
         }
 
         return false;

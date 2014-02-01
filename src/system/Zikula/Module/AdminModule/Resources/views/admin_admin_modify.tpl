@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-pencil"></span>
+    <span class="fa fa-pencil"></span>
     {gt text="Edit module category"}
 </h3>
 

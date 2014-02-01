@@ -1,20 +1,6 @@
 Events
 ======
 
-You may register event listeners with
-
-    EventUtil::attach($name, $handler);
-
-You may trigger events with
-
-    [php]
-    $event = new \Zikula\Core\Event\GenericEvent($subject, $args, $data);
-    EventUtil::dispatch($eventName, $event);
-
-Any changes made to the `$event` object or `$subject` in the handlers will be carried over (standard PHP5 behavior).
-
-#### _List of event names you can take advantage of in the core._
-
 CORE
 ----
 

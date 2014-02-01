@@ -10,7 +10,7 @@
         BUILD_NUMBER - The current build number, such as "153"
         BUILD_ID - The current build id, (YYYY-MM-DD_hh-mm-ss)
         JOB_NAME - Name of the project of this build, such as "foo"
-        BUILD_TAG - String of "jenkins-${JOBNAME}-${BUILD_NUMBER}".
+        BUILD_TAG - String of "jenkins-${JOB_NAME}-${BUILD_NUMBER}".
         WORKSPACE - The absolute path of the workspace.
         SVN_REVISION - The revision this build is based on.
     -->
@@ -33,7 +33,8 @@
     javascript/helpers/Zikula.UI.js,
     system/Zikula/Module/AdminModule/Resources/public/js/admin_admin_ajax.js,
     system/Zikula/Module/AdminModule/Resources/public/js/admin_admin_modifyconfig.js,
-    system/Zikula/Module/BlocksModule/Resources/public/js/blocks.js,
+    system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js,
+    system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Modifyposition.js,
     system/Zikula/Module/BlocksModule/Resources/public/js/contextmenu.js,
     system/Zikula/Module/BlocksModule/Resources/public/js/functions.js,
     system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js,
@@ -97,16 +98,19 @@
 
         <exec command="cp -a ${workspace}/source/src ${packagepath}"/>
 
-        <exec command="svn export https://github.com/zikula-modules/Legal.git/branches/master
+        <exec command="svn export https://github.com/zikula-modules/Legal/branches/master
  ${builddir}/tmp/Legal"/>
         <exec command="mv ${builddir}/tmp/Legal ${packagepath}/modules"/>
 
-        <exec command="svn export https://github.com/zikula-modules/Profile.git/branches/master
+        <exec command="svn export https://github.com/zikula-modules/Profile/branches/master
  ${builddir}/tmp/Profile"/>
         <exec command="mv ${builddir}/tmp/Profile ${packagepath}/modules"/>
 
         <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor"/>
         <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor"/>
+
+        <!-- install assets -->
+        <exec command="php ${packagepath}/app/console assets:install ${packagepath}/web"/>
 
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs"/>

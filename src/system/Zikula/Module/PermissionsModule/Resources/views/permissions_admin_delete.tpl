@@ -1,7 +1,7 @@
 {adminheader}
 {include file="permissions_admin_header.tpl"}
 <h3>
-    <span class="icon icon-trash"></span>
+    <span class="fa fa-trash-o"></span>
     {gt text="Delete permission rule"}
 </h3>
 

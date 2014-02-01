@@ -59,7 +59,7 @@ class CategoryUtil
             $em = ServiceUtil::get('doctrine.entitymanager');
             $em->persist($cat);
             $data = array();
-            $data['parent'] = $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $rootCat['id']);
+            $data['parent'] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $rootCat['id']);
             $data['name'] = $name;
             $data['display_name'] = array($lang => $displayname);
             $data['display_desc'] = array($lang => $description);
@@ -91,7 +91,7 @@ class CategoryUtil
      *
      * @param integer $cid The category-ID to retrieve.
      *
-     * @return array resulting folder object
+     * @return array resulting object or empty array if not found
      */
     public static function getCategoryByID($cid)
     {
@@ -104,7 +104,11 @@ class CategoryUtil
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
         // get category
-        $category = $em->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $cid);
+        $category = $em->find('ZikulaCategoriesModule:CategoryEntity', $cid);
+
+        if (!isset($category)) {
+            return array();
+        }
 
         // convert to array
         $cat = $category->toArray();
@@ -290,7 +294,7 @@ class CategoryUtil
         }
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $cat = $em->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $id);
+        $cat = $em->find('ZikulaCategoriesModule:CategoryEntity', $id);
 
         $cats = array();
         if (!$cat) {
@@ -492,15 +496,14 @@ class CategoryUtil
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-
-        $cid = (int)DataUtil::formatForStore($cid);
-
-        $dql = "DELETE FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c WHERE c.id = " . $cid;
+        $dql = "DELETE FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c WHERE c.id = :cid";
         $query = $em->createQuery($dql);
+        $query->setParameter('cid', $cid);
         $query->getResult();
 
-        $dql = "DELETE FROM Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity a WHERE a.category = " . $cid;
+        $dql = "DELETE FROM Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity a WHERE a.category = :cid";
         $query = $em->createQuery($dql);
+        $query->setParameter('cid', $cid);
         $query->getResult();
     }
 
@@ -520,9 +523,9 @@ class CategoryUtil
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-
-        $dql = "SELECT c.id FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c WHERE c.$field LIKE '" . DataUtil::formatForStore($apath) . "%'";
+        $dql = "SELECT c.id FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c WHERE c.$field LIKE :apath";
         $query = $em->createQuery($dql);
+        $query->setParameter('apath', "{$apath}%");
         $categories = $query->getResult();
 
         foreach ($categories as $category) {
@@ -608,8 +611,10 @@ class CategoryUtil
         $dql = "
         SELECT c
         FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c
-        WHERE c.$pathField = '" . DataUtil::formatForStore($apath) . "' OR c.$pathField LIKE '" . DataUtil::formatForStore($apath) . "/%'";
+        WHERE c.$pathField = :apath OR c.$pathField LIKE :apathwc";
         $query = $em->createQuery($dql);
+        $query->setParameter('apath', $apath);
+        $query->setParameter('apathwc', "{$apath}/%");
         $categories = $query->getResult();
 
         foreach ($categories as $category) {
@@ -621,17 +626,13 @@ class CategoryUtil
 
         $pid = $cats[0]['id'];
         if ($includeRoot) {
-            $dql = "
-            UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c
-            SET c.parent = " . DataUtil::formatForStore($newparent_id) . "
-            WHERE c.id = " . DataUtil::formatForStore($pid);
+            $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.id = :pid";
         } else {
-            $dql = "
-            UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c
-            SET c.parent = " . DataUtil::formatForStore($newparent_id) . "
-            WHERE c.parent = " . DataUtil::formatForStore($pid);
+            $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.parent :pid";
         }
         $query = $em->createQuery($dql);
+        $query->setParameter('newparent', $newparent_id);
+        $query->setParameter('pid', $pid);
         $query->getResult();
 
         return true;
@@ -743,7 +744,7 @@ class CategoryUtil
         $em = ServiceUtil::get('doctrine.entitymanager');
 
         $oldToNewID = array();
-        $oldToNewID[$cats[0]['parent']['id']] = $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $newParent['id']);
+        $oldToNewID[$cats[0]['parent']['id']] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
 
         // since array_shift() resets numeric array indexes, we remove the leading element like this
         if (!$includeRoot) {
@@ -766,14 +767,14 @@ class CategoryUtil
 
             $oldID = $cat['id'];
             $cat['id'] = '';
-            $cat['parent'] = isset($oldToNewID[$cat['parent']['id']]) ? $oldToNewID[$cat['parent']['id']] : $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $newParent['id']);
+            $cat['parent'] = isset($oldToNewID[$cat['parent']['id']]) ? $oldToNewID[$cat['parent']['id']] : $em->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
 
             $catObj = new Zikula\Module\CategoriesModule\Entity\CategoryEntity;
             $catObj->merge($cat);
             $em->persist($catObj);
             $em->flush();
 
-            $oldToNewID[$oldID] = $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $catObj['id']);
+            $oldToNewID[$oldID] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $catObj['id']);
         }
 
         $em->flush();
@@ -1192,7 +1193,7 @@ class CategoryUtil
      *
      * @return The HTML selector code for the given category hierarchy
      */
-    public static function getSelector_Categories($cats, $field = 'id', $selectedValue = '0', $name = 'category[parent_id]', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1, $fieldIsAttribute = false, $cssClass = '')
+    public static function getSelector_Categories($cats, $field = 'id', $selectedValue = '0', $name = 'category[parent_id]', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1, $fieldIsAttribute = false, $cssClass = '', $lang = null)
     {
         $line = '---------------------------------------------------------------------';
 
@@ -1209,7 +1210,7 @@ class CategoryUtil
         $multipleSize = $multipleSize > 1 ? " size=\"$multipleSize\"" : '';
         $submit = $submit ? ' onchange="this.form.submit();"' : '';
         $cssClass = $cssClass ? " class=\"$cssClass\"" : '';
-        $lang = ZLanguage::getLanguageCode();
+        $lang = (isset($lang)) ? $lang : ZLanguage::getLanguageCode();
 
         $html = "<select name=\"$name\" id=\"$id\"{$multipleSize}{$multiple}{$submit}{$cssClass}>";
 
@@ -1503,8 +1504,10 @@ class CategoryUtil
 
             foreach ($cats as $k => $v) {
                 if (isset($v[$field]) && isset($paths[$k][$field]) && ($v[$field] != $paths[$k][$field])) {
-                    $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.$field = '" . $paths[$k] . "' WHERE c.id = $k";
+                    $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.$field = :path WHERE c.id = :id";
                     $query = $em->createQuery($dql);
+                    $query->setParameter('path', $paths[$k]);
+                    $query->setParameter('id', $k);
                     $query->getResult();
                 }
             }

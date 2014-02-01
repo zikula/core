@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandle
  *
  * This Storage driver couples directly to the old SessionUtil methodology.
  * This will eventually be phased out.
+ *
+ * @deprecated
  */
 class Zikula_Session_Storage_Legacy extends NativeSessionStorage
 {

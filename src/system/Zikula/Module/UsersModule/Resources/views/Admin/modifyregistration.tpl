@@ -30,7 +30,7 @@
 
 {adminheader}
 <h3>
-    <span class="icon icon-plus"></span>
+    <span class="fa fa-plus"></span>
     {gt text='Edit registration of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname')}
 </h3>
 
@@ -100,8 +100,8 @@
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-9">
                     {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
-                        {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
-                        {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='hide' src='quick_restart.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
+                        {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' class='btn btn-success' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
+                        {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='btn btn-warning' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
                         <a class="btn btn-default" href="{if $restoreview == 'view'}{modurl modname='ZikulaUsersModule' type='admin' func='viewRegistrations' restoreview=true}{else}{modurl modname='ZikulaUsersModule' type='admin' func='displayRegistration' uid=$formData->getFieldData('uid')}{/if}">{gt text='Cancel'}</a>
                 </div>
             </div>

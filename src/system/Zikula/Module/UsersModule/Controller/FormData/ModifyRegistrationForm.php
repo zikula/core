@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -68,7 +67,7 @@ class ModifyRegistrationForm extends AbstractFormData
                 $this->serviceManager,
                 '/^'. UsersConstant::UNAME_VALIDATION_PATTERN .'$/uD',
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')))
-            ->addValidator(new Validator\StringLowercase(
+            ->addValidator(new Validator\StringLowerCase(
                 $this->serviceManager,
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')));
 
@@ -116,7 +115,6 @@ class ModifyRegistrationForm extends AbstractFormData
         $passwordMinimumLength = (int)$this->getVar(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
         $this->passwordLengthValidator = new Validator\StringMinimumLength($this->serviceManager, $passwordMinimumLength,
                 $this->__f('Passwords must be at least %1$d characters in length.', array($passwordMinimumLength)));
-
     }
 
     /**

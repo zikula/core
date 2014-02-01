@@ -55,6 +55,11 @@ abstract class AbstractBundle extends Bundle
         return $class;
     }
 
+    public function getRoutingConfig()
+    {
+        return "@{$this->name}/Resources/config/routing.yml";
+    }
+
     public function getTranslationDomain()
     {
         return strtolower($this->getName());
@@ -71,13 +76,23 @@ abstract class AbstractBundle extends Bundle
     }
 
     /**
-     * Gets the translation domain path
+     * Gets the views path
      *
      * @return string
      */
     public function getViewsPath()
     {
         return $this->getPath().'/Resources/views';
+    }
+
+    /**
+     * Gets the config path.
+     *
+     * @return string
+     */
+    public function getConfigPath()
+    {
+        return $this->getPath().'/Resources/config';
     }
 
     /**
@@ -120,17 +135,8 @@ abstract class AbstractBundle extends Bundle
         return false;
     }
 
-    protected function hasExtensions()
-    {
-        return false;
-    }
-
     public function getContainerExtension()
     {
-        if ($this->getState() !== self::STATE_ACTIVE || !$this->hasExtensions()) {
-            return $this->extension = false;
-        }
-
         $type = $this->getNameType();
         $typeLower = strtolower($type);
         if (null === $this->extension) {

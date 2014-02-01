@@ -30,6 +30,8 @@
  * <code>
  * $this->styleAttributes['border-right'] = '1px solid green';
  * </code>
+ *
+ * @deprecated for Symfony2 Forms
  */
 abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlugin
 {

@@ -14,6 +14,8 @@
 
 /**
  * CategoryArray
+ *
+ * @deprecated
  */
 class Categories_DBObject_CategoryArray extends DBObjectArray
 {

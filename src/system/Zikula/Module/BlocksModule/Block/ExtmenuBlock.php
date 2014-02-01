@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,15 +21,19 @@ use UserUtil;
 use ZLanguage;
 use ModUtil;
 use System;
-use FormUtil;
 use Zikula_View;
 use Zikula_View_Theme;
 use DataUtil;
 
+/**
+ * Block to display an extended menu
+ */
 class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
+     *
+     * @return void
      */
     public function init()
     {
@@ -57,8 +60,13 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
     /**
      * display block
      *
-     * @param  array  $blockinfo a blockinfo structure
-     * @return output the rendered bock
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string the rendered bock
      */
     public function display($blockinfo)
     {
@@ -210,9 +218,10 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
     }
 
     /**
-     * do a simple check .. to see if the current URL is the menu item
+     * Check to see if the current URL is the menu item
      *
-     * @param none
+     * @param string $url The url to check
+     *
      * @return boolean
      */
     public function is_recent_page($url)
@@ -230,8 +239,13 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
     /**
      * modify block settings
      *
-     * @param  array  $blockinfo a blockinfo structure
-     * @return output the bock form
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string the bock form
      */
     public function modify($blockinfo)
     {
@@ -275,9 +289,9 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // check if the users wants to add a new link via the "Add current url" link in the block
-        $addurl = FormUtil::getPassedValue('addurl', 0, 'GET');
+        $addurl = $this->request->request->get('addurl', 0);
         // or if we come from the normal "edit this block" link
-        $fromblock = FormUtil::getPassedValue('fromblock', null, 'GET');
+        $fromblock = $this->request->request->get('fromblock', null);
 
         $redirect = '';
         if ($addurl == 1) {
@@ -358,15 +372,20 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
     /**
      * update block settings
      *
-     * @param  array $blockinfo a blockinfo structure
-     * @return       $blockinfo  the modified blockinfo structure
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return array $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)
     {
-        $vars['displaymodules'] = FormUtil::getPassedValue('displaymodules');
-        $vars['stylesheet']     = FormUtil::getPassedValue('stylesheet');
-        $vars['template']       = FormUtil::getPassedValue('template');
-        $vars['blocktitles']    = FormUtil::getPassedValue('blocktitles');
+        $vars['displaymodules'] = $this->request->request->get('displaymodules');
+        $vars['stylesheet']     = $this->request->request->get('stylesheet');
+        $vars['template']       = $this->request->request->get('template');
+        $vars['blocktitles']    = $this->request->request->get('blocktitles');
 
         // Defaults
         if (empty($vars['displaymodules'])) {
@@ -384,17 +403,24 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         // User links
         $content = array();
 
-        $vars['links'] = FormUtil::getPassedValue('links');
+        $vars['links'] = $this->request->request->get('links');
         $vars['blockversion'] = 1;
 
         // Save links hierarchy
-        $linksorder = FormUtil::getPassedValue('linksorder');
+        $linksorder = $this->request->request->get('linksorder');
         $linksorder = json_decode($linksorder, true);
         if (is_array($linksorder) && !empty($linksorder)) {
             foreach ((array)$vars['links'] as $lang => $langlinks) {
                 foreach ($langlinks as $linkid => $link) {
-                    $vars['links'][$lang][$linkid]['parentid'] = $linksorder[$linkid]['parentid'];
-                    $vars['links'][$lang][$linkid]['haschildren'] = $linksorder[$linkid]['haschildren'];
+                    if (isset($linksorder[$linkid]['parentid']) && $linksorder[$linkid]['haschildren']) {
+                        // existing links
+                        $vars['links'][$lang][$linkid]['parentid'] = $linksorder[$linkid]['parentid'];
+                        $vars['links'][$lang][$linkid]['haschildren'] = $linksorder[$linkid]['haschildren'];
+                    } else {
+                        // set defaults for new links
+                        $vars['links'][$lang][$linkid]['parentid'] = null;
+                        $vars['links'][$lang][$linkid]['haschildren'] = false;
+                    }
                 }
             }
         }
@@ -410,6 +436,13 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         return $blockinfo;
     }
 
+    /**
+     * helper function validate an image link
+     *
+     * @param string $link path to image
+     *
+     * @return void
+     */
     protected function checkImage(&$link)
     {
         if (!empty($link['image'])) {

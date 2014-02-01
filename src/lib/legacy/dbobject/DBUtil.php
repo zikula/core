@@ -14,6 +14,8 @@
 
 /**
  * DBUtil is the database abstraction class of Zikula.
+ *
+ * @deprecated
  */
 class DBUtil
 {
@@ -298,11 +300,8 @@ class DBUtil
                 if ($tab && strpos($tab, 'session_info') === false) {
                     self::flushCache($tab);
                 }
-                if (System::isLegacyMode()) {
-                    return new Zikula_Adapter_AdodbStatement($result);
-                } else {
-                    return $result;
-                }
+
+                return $result;
             }
         } catch (Exception $e) {
             echo 'Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />';
@@ -2774,7 +2773,7 @@ class DBUtil
         //$dst = ($distinct ? 'DISTINCT' : '');
         $sqlStart = "SELECT COUNT(*) ";
         $sqlFrom = "FROM $tableName AS tbl ";
-        $sqlGroupBy = 'GROUP BY ' . implode (', ', $sqlJoinArray[3]);
+        $sqlGroupBy = (empty($sqlJoinArray[3])) ? '' : 'GROUP BY '.implode(', ', $sqlJoinArray[3]);
 
         $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $sqlGroupBy";
         $res = self::executeSQL($sql);

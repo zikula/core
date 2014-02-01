@@ -26,6 +26,8 @@
  * This generates a JavaScript function named startMyPostBack() that you can call from your own JavaScript.
  * When called it will generate a postback and fire an event to be handled by the $onCommand
  * method in the form event handler.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_PostBackFunction extends Zikula_Form_AbstractPlugin
 {

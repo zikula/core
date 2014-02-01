@@ -1,4 +1,15 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Module\SearchModule\Entity;
 
@@ -14,6 +25,8 @@ use Zikula\Core\Doctrine\EntityAccess;
 class SearchStatEntity extends EntityAccess
 {
     /**
+     * id of the previous search
+     *
      * @var integer $id
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
@@ -23,6 +36,8 @@ class SearchStatEntity extends EntityAccess
     private $id;
 
     /**
+     * search terms of the previous search
+     *     
      * @var string $search
      *
      * @ORM\Column(name="search", type="string", length=50, nullable=false)
@@ -30,6 +45,8 @@ class SearchStatEntity extends EntityAccess
     private $search;
 
     /**
+     * Number of times previous search has been run
+     *
      * @var integer $scount
      *
      * @ORM\Column(name="scount", type="integer", nullable=false)
@@ -37,6 +54,8 @@ class SearchStatEntity extends EntityAccess
     private $scount;
 
     /**
+     * timestamp of last time this search was run
+     *
      * @var \Datetime $date
      *
      * @ORM\Column(name="date", type="date", nullable=true)

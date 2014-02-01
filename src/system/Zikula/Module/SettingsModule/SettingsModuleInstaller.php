@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -23,7 +22,7 @@ use DoctrineHelper;
 use EventUtil;
 
 /**
- * Settings_Installer class.
+ * Installation and upgrade routines for the settings module
  *
  * PLEASE NOTE CAREFULLY.  The use of System::get/set/delVar() is deliberate
  * we cannot use $this->get/set/delVar() because the keys will be incorrectly
@@ -51,7 +50,7 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('defaultmetadescription', $this->__('Site description'));
         System::setVar('startdate', date('m/Y', time()));
         System::setVar('adminmail', 'example@example.com');
-        System::setVar('Default_Theme', 'Andreas08');
+        System::setVar('Default_Theme', 'ZikulaAndreas08Theme');
         System::setVar('timezone_offset', '0');
         System::setVar('timezone_server', '0');
         System::setVar('funtext', '1');
@@ -77,7 +76,7 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('shorturlsseparator', '-');
         System::setVar('shorturlsstripentrypoint', true);
         System::setVar('shorturlsdefaultmodule', '');
-        System::setVar('profilemodule', ModUtil::available('Profile') ? 'Profile' : '');
+        System::setVar('profilemodule', ((ModUtil::available('ZikulaProfileModule')) ? 'ZikulaProfileModule' : ''));
         System::setVar('messagemodule', '');
         System::setVar('languageurl', 0);
         System::setVar('ajaxtimeout', 5000);
@@ -113,13 +112,17 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
-        // register event handler to remove the startpage module if it is deactivated.
-        EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\Module\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
-
         // Initialisation successful
         return true;
     }
 
+    /**
+     * upgrade the module from an old version
+     *
+     * @param  string $oldversion version number string to upgrade from
+     *
+     * @return bool|string true on success, last valid version string or false if fails
+     */
     public function upgrade($oldversion)
     {
         // always ensure that the version info is upgraded
@@ -133,6 +136,7 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\Module\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
             // future upgrade routines
             case '2.9.8':
+                // current version
         }
 
         // Update successful

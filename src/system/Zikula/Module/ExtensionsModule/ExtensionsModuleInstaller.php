@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,7 +13,6 @@
 
 namespace Zikula\Module\ExtensionsModule;
 
-use DBUtil;
 use Doctrine_Core;
 use EventUtil;
 use System;
@@ -23,12 +21,15 @@ use Zikula\Module\ExtensionsModule\ExtensionsModuleVersion;
 use ModUtil;
 use Zikula\Core\Doctrine\Entity\ExtensionEntity;
 
+/**
+ * Installation and upgrade routines for the extensions module
+ */
 class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * Install the Extensions module.
      *
-     * @return boolean
+     * @return boolean true if installation is successful, false otherwise
      */
     public function install()
     {
@@ -37,11 +38,11 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
             'Zikula\Core\Doctrine\Entity\ExtensionEntity',
             'Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity',
             'Zikula\Core\Doctrine\Entity\ExtensionVarEntity',
-            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
-            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity',
-            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity',
-            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookRuntimeEntity',
-            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookRuntimeEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
         );
 
         try {
@@ -49,13 +50,6 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
         } catch (\Exception $e) {
             return false;
         }
-
-
-        // create hook provider table.
-        Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
-        
-        EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('Zikula\Module\ExtensionsModule\Listener\HookUiListener', 'hooks'));
-        EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('Zikula\Module\ExtensionsModule\Listener\HookUiListener', 'moduleservices'));
 
         // populate default data
         $this->defaultdata();
@@ -71,7 +65,7 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param string $oldVersion Version number string to upgrade from.
+     * @param string $oldversion Version number string to upgrade from.
      *
      * @return  boolean|string True on success, last valid version string or false if fails.
      */
@@ -106,7 +100,7 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
      * module instance.
      *
      * Since the modules module should never be deleted we'all always return false here
-     * @return boolean False
+     * @return boolean false this module cannot be deleted
      */
     public function uninstall()
     {
@@ -126,6 +120,7 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
         $meta['state'] = \ModUtil::STATE_ACTIVE;
 
         unset($meta['dependencies']);
+        unset($meta['oldnames']);
 
         $item = new ExtensionEntity();
         $item->merge($meta);

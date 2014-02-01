@@ -1,12 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -32,6 +31,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class CategoryEntity extends EntityAccess
 {
     /**
+     * The id of the category
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -40,6 +41,8 @@ class CategoryEntity extends EntityAccess
     private $id;
 
     /**
+     * The parent id of the category
+     *
      * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @var CategoryEntity
@@ -47,72 +50,96 @@ class CategoryEntity extends EntityAccess
     private $parent;
 
     /**
+     * Any children of this category
+     *
      * @ORM\OneToMany(targetEntity="CategoryEntity", mappedBy="parent")
      * @var CategoryEntity
      */
     private $children;
 
     /**
+     * Is the category locked?
+     *
      * @ORM\Column(type="boolean", name="is_locked")
      * @var boolean
      */
     private $is_locked;
 
     /**
+     * Is this a leaf category?
+     *
      * @ORM\Column(type="boolean", name="is_leaf")
      * @var boolean
      */
     private $is_leaf;
 
     /**
+     * The name of the category
+     *
      * @ORM\Column(type="string", length=255)
      * @var string
      */
     private $name;
 
     /**
+     * The value of the category
+     *
      * @ORM\Column(type="string", length=255)
      * @var string
      */
     private $value;
 
     /**
+     * The sort value for the category
+     *
      * @ORM\Column(type="integer", name="sort_value")
      * @var integer
      */
     private $sort_value;
 
     /**
+     * The display name for the category
+     *
      * @ORM\Column(type="array", name="display_name")
      * @var array
      */
     private $display_name;
 
     /**
+     * The display description for the category
+     *
      * @ORM\Column(type="array", name="display_desc")
      * @var array
      */
     private $display_desc;
 
     /**
+     * The fully qualified path to the category in the tree
+     *
      * @ORM\Column(type="text")
      * @var string
      */
     private $path;
 
     /**
+     * The numeric version of the fully qualified path
+     *
      * @ORM\Column(type="string", length=255)
      * @var string
      */
     private $ipath;
 
     /**
+     * The status of the category
+     *
      * @ORM\Column(type="string", length=1)
      * @var string
      */
     private $status;
 
     /**
+     * Any attributes of this category
+     *
      * @ORM\OneToMany(targetEntity="CategoryAttributeEntity",
      *                mappedBy="category",
      *                cascade={"all"},
@@ -122,6 +149,8 @@ class CategoryEntity extends EntityAccess
     private $attributes;
 
     /**
+     * The user id of the creator of the category
+     *     
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
@@ -129,6 +158,8 @@ class CategoryEntity extends EntityAccess
     private $cr_uid;
 
     /**
+     * The user id of the last updater of the category
+     *     
      * @Gedmo\Blameable(on="update")
      * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
@@ -136,19 +167,26 @@ class CategoryEntity extends EntityAccess
     private $lu_uid;
 
     /**
+     * The creation timestamp of the category
+     *     
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
     private $cr_date;
 
     /**
+     * The last updated timestamp of the category
+     *     
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
     private $lu_date;
 
     /**
-     * maintain BC (same as status)
+     * Same as the status property - maintain BC
+     *
+     * @deprecated since 1.3.7 use status property instead
+     *
      * @ORM\Column(type="string", length=1)
      * @var string
      */
@@ -176,138 +214,270 @@ class CategoryEntity extends EntityAccess
         $this->attributes = new ArrayCollection();
     }
 
+    /**
+     * get the category id
+     *
+     * @return int the category id
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * set the category id
+     *
+     * @param int $id the category id
+     */
     public function setId($id)
     {
         $this->id = $id;
     }
 
+    /**
+     * get the categories parent id
+     *
+     * @return int the category id
+     */
     public function getParent()
     {
         return $this->parent;
     }
 
+    /**
+     * set the categories parent id
+     *
+     * @param CategoryEntity the parent category
+     */
     public function setParent(CategoryEntity $parent = null)
     {
         $this->parent = $parent;
     }
 
+    /**
+     * get the categories childen
+     *
+     * @return array the child categories
+     */
     public function getChildren()
     {
         return $this->children;
     }
 
+    /**
+     * set the categories childen
+     *
+     * @param array $children the child categories
+     */
     public function setChildren($children)
     {
         $this->children = $children;
     }
 
+    /**
+     * get the category locked status
+     *
+     * @return bool locked status flag
+     */
     public function getIs_locked()
     {
         return $this->is_locked;
     }
 
+    /**
+     * get the category locked status
+     *
+     * @param bool $is_locked locked status flag
+     */
     public function setIs_locked($is_locked)
     {
         $this->is_locked = $is_locked;
     }
 
+    /**
+     * get the category leaf status
+     *
+     * @return bool leaf status flag
+     */
     public function getIs_leaf()
     {
         return $this->is_leaf;
     }
 
+    /**
+     * set the category leaf status
+     *
+     * @param bool $is_leaf leaft status flag
+     */
     public function setIs_leaf($is_leaf)
     {
         $this->is_leaf = $is_leaf;
     }
 
+    /**
+     * get the category name
+     *
+     * @return string the category name
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * set the category name
+     *
+     * @param string $name the category name
+     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * get the category value
+     *
+     * @return string the category name
+     */
     public function getValue()
     {
         return $this->value;
     }
 
+    /**
+     * set the category value
+     *
+     * @param string $value the category name
+     */
     public function setValue($value)
     {
         $this->value = $value;
     }
 
+    /**
+     * get the category sort value
+     *
+     * @return int the category name
+     */
     public function getSort_value()
     {
         return $this->sort_value;
     }
 
+    /**
+     * set the category sort value
+     *
+     * @param int $sort_value the category name
+     */
     public function setSort_value($sort_value)
     {
         $this->sort_value = $sort_value;
     }
 
+    /**
+     * get the category display name
+     *
+     * @return string the category display name
+     */
     public function getDisplay_name()
     {
         return $this->display_name;
     }
 
+    /**
+     * set the category display name
+     *
+     * @param string $display_name the category display name
+     */
     public function setDisplay_name($display_name)
     {
         $this->display_name = $display_name;
     }
 
+    /**
+     * get the category display description
+     *
+     * @return string the category display description
+     */
     public function getDisplay_desc()
     {
         return $this->display_desc;
     }
 
+    /**
+     * set the category display description
+     *
+     * @param string $display_desc the category display description
+     */
     public function setDisplay_desc($display_desc)
     {
         $this->display_desc = $display_desc;
     }
 
+    /**
+     * get the fully qualified category path
+     *
+     * @return string the category path
+     */
     public function getPath()
     {
         return $this->path;
     }
 
+    /**
+     * set the fully qualified category path
+     *
+     * @param string $path the category path
+     */
     public function setPath($path)
     {
         $this->path = $path;
     }
 
+    /**
+     * get the numeric fully qualified category path
+     *
+     * @return string the category path
+     */
     public function getIPath()
     {
         return $this->ipath;
     }
 
+    /**
+     * set the numeric fully qualified category path
+     *
+     * @param string $ipath the category path
+     */
     public function setIPath($ipath)
     {
         $this->ipath = $ipath;
     }
 
+    /**
+     * get the category status
+     *
+     * @return bool the category status
+     */
     public function getStatus()
     {
         return $this->status;
     }
 
+    /**
+     * set the category status
+     *
+     * @param bool $status the category status
+     */
     public function setStatus($status)
     {
         $this->status = $status;
     }
 
     /**
-     * @param mixed $cr_date
+     * set the creation date of the category
+     *
+     * @param mixed $cr_date the creation date
      */
     public function setCr_date($cr_date)
     {
@@ -315,7 +485,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @return mixed
+     * get the creation date of the category
+     *
+     * @return mixed the creation date
      */
     public function getCr_date()
     {
@@ -323,7 +495,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @param mixed $cr_uid
+     * set the creation user id of the category
+     *
+     * @param int $cr_uid the user id
      */
     public function setCr_uid($cr_uid)
     {
@@ -331,7 +505,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @return mixed
+     * get the creation user id
+     *
+     * @return int the user id
      */
     public function getCr_uid()
     {
@@ -339,7 +515,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @param mixed $lu_date
+     * set the last updated timestamp of the category
+     *
+     * @param mixed $lu_date the last updated timestamp
      */
     public function setLu_date($lu_date)
     {
@@ -347,7 +525,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @return mixed
+     * get the last updated timestamp of the category
+     *
+     * @return mixed the last updated timestamp
      */
     public function getLu_date()
     {
@@ -355,7 +535,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @param mixed $lu_uid
+     * set the user id of the user who last updated the category
+     *
+     * @param int $lu_uid the user id
      */
     public function setLu_uid($lu_uid)
     {
@@ -363,7 +545,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @return mixed
+     * get the user id of the user who last updated the category
+     *
+     * @return int the user id
      */
     public function getLu_uid()
     {
@@ -371,7 +555,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @param string $obj_status
+     * set the status of the object
+     *
+     * @param string $obj_status the object status
      */
     public function setObj_status($obj_status)
     {
@@ -379,7 +565,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @return string
+     * get the status of the object
+     *
+     * @return string the object status
      */
     public function getObj_status()
     {
@@ -434,7 +622,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @deprecated since 1.3.6
+     * Get the lock status of the category
+     *
+     * @deprecated since 1.3.7 use getIs_locked instead
      *
      * @return bool|int
      */
@@ -444,9 +634,11 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @deprecated since 1.3.6
+     * Set the lock status of the category
      *
-     * @param $locked
+     * @deprecated since 1.3.7 use setIs_locked instead
+     *
+     * @param bool $locked
      */
     public function setLocked($locked)
     {
@@ -454,7 +646,9 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @deprecated since 1.3.6
+     * Get the leaf status of the category
+     *
+     * @deprecated since 1.3.7 use getIs_leaf instead
      *
      * @return bool|int
      */
@@ -464,9 +658,11 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @deprecated since 1.3.6
+     * Set the leaf status of the category
      *
-     * @param $leaf
+     * @deprecated since 1.3.7 use setIs_leaf instead
+     *
+     * @param bool $leaf
      */
     public function setLeaf($leaf)
     {
@@ -474,9 +670,11 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @deprecated since 1.3.6
+     * Get the sort value of the category
      *
-     * @return int
+     * @deprecated since 1.3.7 use getSort_value instead
+     *
+     * @return int the sort value
      */
     public function getSortValue()
     {
@@ -484,9 +682,11 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @deprecated since 1.3.6
+     * Set the sort value of the category
      *
-     * @param $sortValue
+     * @deprecated since 1.3.7 use setSort_value instead
+     *
+     * @param int $sortValue the sort value
      */
     public function setSortValue($sortValue)
     {
@@ -494,9 +694,11 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @deprecated since 1.3.6
+     * Get the display name(s) of the category
      *
-     * @return array
+     * @deprecated since 1.3.7 use getDisplay_name instead
+     *
+     * @return array the display name(s)
      */
     public function getDisplayName()
     {
@@ -504,9 +706,11 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @deprecated since 1.3.6
+     * Get the display name(s) of the category
      *
-     * @param $displayName
+     * @deprecated since 1.3.7 use setDisplay_name instead
+     *
+     * @param array $displayName the display name(s)
      */
     public function setDisplayName($displayName)
     {
@@ -514,9 +718,11 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @deprecated since 1.3.6
+     * Get the display description(s) of the category
      *
-     * @return array
+     * @deprecated since 1.3.7 use getDisplay_desc instead
+     *
+     * @return array the display description(s)
      */
     public function getDisplayDesc()
     {
@@ -524,9 +730,11 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * @deprecated since 1.3.6
+     * Set the display description(s) of the category
      *
-     * @param $displayDesc
+     * @deprecated since 1.3.7 use setDisplay_desc instead
+     *
+     * @param array $displayDesc the display descriptions(s)
      */
     public function setDisplayDesc($displayDesc)
     {
