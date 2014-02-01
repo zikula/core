@@ -59,7 +59,13 @@ class CookieUtil
      */
     public static function getCookie($name, $signed=true, $default='')
     {
-        $cookie = FormUtil::getPassedValue($name, $default, 'COOKIE');
+        $request = \ServiceUtil::get('request');
+
+        if (!$request->cookies->has($name)) {
+            return $default;
+        }
+
+        $cookie = $request->cookies->get($name);
         if (System::getVar('signcookies') && (!$signed == false)) {
             return SecurityUtil::checkSignedData($cookie);
         }
