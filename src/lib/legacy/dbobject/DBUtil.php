@@ -269,7 +269,7 @@ class DBUtil
         try {
             if ($limitNumRows > 0) {
                 $tStr = strtoupper(substr(trim($sql), 0, 7)); // Grab first 7 chars to allow syntax like "(SELECT" which may happen with UNION statements
-                if (strpos ($tStr, 'SELECT') !== false) {
+                if (strpos ($tStr, 'SELECT') === false) {
                     // TODO D [use normal Select instead of showing an error message if paging is desired for something different than SELECTs] (Guite)
                     throw new Exception(__('Paging parameters can only be used for SELECT statements'));
                 }
