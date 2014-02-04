@@ -268,8 +268,8 @@ class DBUtil
 
         try {
             if ($limitNumRows > 0) {
-                $tStr = strtoupper(substr(trim($sql), 0, 6));
-                if ($tStr !== 'SELECT') {
+                $tStr = strtoupper(substr(trim($sql), 0, 7)); // Grab first 7 chars to allow syntax like "(SELECT" which may happen with UNION statements
+                if (strpos ($tStr, 'SELECT') === false) {
                     // TODO D [use normal Select instead of showing an error message if paging is desired for something different than SELECTs] (Guite)
                     throw new Exception(__('Paging parameters can only be used for SELECT statements'));
                 }
@@ -2800,12 +2800,13 @@ class DBUtil
      * @param string $table       The treated table reference.
      * @param array  $joinInfo    The array containing the extended join information.
      * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
+     * @param string $alias       The alias to use a starting point for joined tables passed as a reference!!! (optional) (default=null).
      *
      * @return array $sqlJoin, $sqlJoinFieldList, $ca, $sqlJoinFieldArray.
      * @deprecated
      * @see    Doctrine_Record
      */
-    private static function _processJoinArray($table, $joinInfo, $columnArray = null)
+    private static function _processJoinArray($table, $joinInfo, $columnArray = null, &$alias=null)
     {
         $tables = self::getTables();
         $columns = $tables["{$table}_column"];
@@ -2813,7 +2814,7 @@ class DBUtil
         $allowedJoinMethods = array('LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN');
 
         $ca = self::getColumnsArray($table, $columnArray);
-        $alias = 'a';
+        $alias = $alias ? $alias : 'a';
         $sqlJoin = '';
         $sqlJoinFieldList = '';
         $sqlJoinFieldArray = array();
