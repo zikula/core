@@ -549,13 +549,13 @@ class SecurityUtil
     public static function checkSignedData($data)
     {
         $key = System::getVar('signingkey');
-        $signedData = json_decode($data);
+        $signedData = json_decode($data, true);
         $signature = sha1($signedData[0] . $key);
         if ($signature != $signedData[1]) {
             return false;
         }
 
-        return json_decode($signedData[0]);
+        return json_decode($signedData[0], true);
     }
 
     /**
