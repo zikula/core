@@ -59,7 +59,6 @@ function ZikulaGroupsModule_tables()
                                           'link'        => "I4 NOTNULL DEFAULT 0",
                                           'uidmaster'   => "I4 NOTNULL DEFAULT 0");
 
-    // limit table name, see DBUtil::limitTablename() for more information about this
     $group_applications = 'group_applications';
     $dbtable['group_applications'] = $group_applications;
     $dbtable['group_applications_column'] = array ('app_id'      => 'app_id',

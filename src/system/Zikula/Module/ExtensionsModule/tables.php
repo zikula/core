@@ -82,8 +82,7 @@ function ZikulaExtensionsModule_tables()
     // additional indexes
     $dbtable['module_vars_column_idx'] = array('mod_var' => array('modname', 'name'));
 
-
-    //$module_dependencies = DBUtil::getLimitedTablename('module_deps');
+    // dependencies table
     $module_deps = 'module_deps';
     $dbtable['module_deps'] = $module_deps;
     $dbtable['module_deps_column'] = array(
