@@ -12,8 +12,6 @@
             e.stop()
         });
         {{/if}}
-
-        Zikula.UI.Tooltips($$('.tooltips'));
     });
 </script>
 {/pageaddvarblock}
