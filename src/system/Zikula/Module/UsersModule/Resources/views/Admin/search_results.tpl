@@ -57,9 +57,11 @@
                         {$items[item].email}
                         {/if}
                     </td>
-                    <td class="text-right">
-                        {if $actions[item].modifyUrl}<a href="{$actions[item].modifyUrl|safehtml}">{img modname=core set=icons/extrasmall src=xedit.png __alt="Edit" __title="Edit" class="tooltips"}</a>{/if}
-                        {if $actions[item].deleteUrl}<a href="{$actions[item].deleteUrl|safehtml}">{img modname=core set=icons/extrasmall src=14_layer_deletelayer.png __alt="Delete" __title="Delete" class="tooltips"}</a>{/if}
+					<td class="actions">
+						{gt text="Edit '%s'" tag1=$items[item].uname assign='title'}
+						{if $actions[item].modifyUrl}<a class="fa fa-pencil tooltips" href="{$actions[item].modifyUrl|safehtml}" title="{$title}"></a>{/if}
+						{gt text="Delete '%s'" tag1=$items[item].uname assign='title'}
+                        {if $actions[item].deleteUrl}<a class="fa fa-trash-o fa-fw tooltips" href="{$actions[item].deleteUrl|safehtml}" title="{$title}"></a>{/if}
                     </td>
                 </tr>
                 {/section}
