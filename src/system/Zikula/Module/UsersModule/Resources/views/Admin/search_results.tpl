@@ -75,9 +75,9 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
             {if $deleteUsers}
-                {button type='submit' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete selected users" __title="Delete selected users" __text="Delete selected users"}
+                {button type='submit' class="btn btn-warning"  __alt="Delete selected users" __title="Delete selected users" __text="Delete selected users"}
             {/if}
-                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Return to User Administration'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Return to User Administration" __title="Return to User Administration"} {gt text='Return to User Administration'}</a>
+                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Return to User Administration'}">{gt text='Return to User Administration'}</a>
             </div>
         </div>
     </div>
