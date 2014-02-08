@@ -1,3 +1,4 @@
+{pageaddvar name='javascript' value='zikula.ui'}
 {strip}
 {pageaddvarblock}
 <script type="text/javascript">
