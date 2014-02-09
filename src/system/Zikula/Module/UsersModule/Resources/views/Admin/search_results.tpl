@@ -1,3 +1,4 @@
+{pageaddvar name='javascript' value='zikula.ui'}
 {strip}
 {pageaddvarblock}
 <script type="text/javascript">
@@ -12,8 +13,6 @@
             e.stop()
         });
         {{/if}}
-
-        Zikula.UI.Tooltips($$('.tooltips'));
     });
 </script>
 {/pageaddvarblock}
@@ -57,9 +56,11 @@
                         {$items[item].email}
                         {/if}
                     </td>
-                    <td class="text-right">
-                        {if $actions[item].modifyUrl}<a href="{$actions[item].modifyUrl|safehtml}">{img modname=core set=icons/extrasmall src=xedit.png __alt="Edit" __title="Edit" class="tooltips"}</a>{/if}
-                        {if $actions[item].deleteUrl}<a href="{$actions[item].deleteUrl|safehtml}">{img modname=core set=icons/extrasmall src=14_layer_deletelayer.png __alt="Delete" __title="Delete" class="tooltips"}</a>{/if}
+					<td class="actions">
+						{gt text="Edit '%s'" tag1=$items[item].uname assign='title'}
+						{if $actions[item].modifyUrl}<a class="fa fa-pencil tooltips" href="{$actions[item].modifyUrl|safehtml}" title="{$title}"></a>{/if}
+						{gt text="Delete '%s'" tag1=$items[item].uname assign='title'}
+                        {if $actions[item].deleteUrl}<a class="fa fa-trash-o fa-fw tooltips" href="{$actions[item].deleteUrl|safehtml}" title="{$title}"></a>{/if}
                     </td>
                 </tr>
                 {/section}
@@ -75,9 +76,9 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
             {if $deleteUsers}
-                {button type='submit' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete selected users" __title="Delete selected users" __text="Delete selected users"}
+                {button type='submit' class="btn btn-warning"  __alt="Delete selected users" __title="Delete selected users" __text="Delete selected users"}
             {/if}
-                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Return to User Administration'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Return to User Administration" __title="Return to User Administration"} {gt text='Return to User Administration'}</a>
+                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Return to User Administration'}">{gt text='Return to User Administration'}</a>
             </div>
         </div>
     </div>
