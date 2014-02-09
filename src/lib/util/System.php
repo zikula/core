@@ -678,6 +678,8 @@ class System
                 $request->query->set('func', strtolower($parameters['_func']));
                 $request->overrideGlobals();
 
+                $request->attributes->set('_symfonyRouteMatched', true);
+
                 return;
             }
 

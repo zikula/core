@@ -1338,6 +1338,11 @@ class ModUtil
         if ($url !== false) {
             return $url;
         }
+        
+        $request = \ServiceUtil::get('request');
+        if ($request->attributes->has('_symfonyRouteMatched') && $request->attributes->get('_symfonyRouteMatched')) {
+            $fqurl = true;
+        }
 
         //get the module info
         $modinfo = self::getInfo(self::getIDFromName($modname));
