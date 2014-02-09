@@ -98,7 +98,7 @@ function smarty_function_img($params, Zikula_View $view)
     // if the module name is 'core'
     if ($modname == 'core') {
         if (System::isLegacyMode() && (strpos($osset, 'icons/') !== false || strpos($osset, 'global/') !== false) && strpos($params['src'], '.gif')) {
-            LogUtil::log(__f('Core image %s does not exist, please use the png format (called from %s).', array($params['src'], $view->getTemplatePath())), E_DEPRECATED);
+            LogUtil::log(__f('Core image %s does not exist, please use the png format (called from %s).', array($params['src'], $view->getTemplatePath())), E_USER_DEPRECATED);
             $params['src'] = str_replace('.gif', '.png', $params['src']);
         }
     }
