@@ -55,7 +55,7 @@ class ValidationUtil
         }
 
         if ($required) {
-            if (!isset($object[$field]) || $object[$field] === '' || $object[$field] === '0') {
+            if (!isset($object[$field]) || $object[$field] === '') {
                 $rc = false;
             }
         }
