@@ -54,7 +54,7 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
             return array(); // Since no permission, return empty links
         }
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
@@ -211,7 +211,7 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
             parse_str($extrainfo, $extrainfo);
         }
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
 
         $links = array();
@@ -266,11 +266,113 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
         return $links;
     }
 
+
+    /**
+     * Return Clip publications
+     *
+     * Syntax used in menutree
+     * {ext:Blocks:clip:[tid=2&fieldname=title&maxitems=5&flat=1&orderby=somefield]}
+     * Params in [] are optional and
+     *      tid         = The publication type
+     *      fieldname   = The publication field to show as menuitem name
+     *      maxitems    = How many items to show in the generated list (default -1 = unlimited)
+     *      flat        = [0/1] without hiearchy or with hiearchy and parent publication link included
+     *      orderby     = The publication field to order by (default null)
+     *
+     * @param  array  $args['item']      menu node to be replaced
+     * @param  string $args['lang']      current menu language
+     * @param  string $args['extrainfo'] additional params
+     * @return mixed  array of links if successful, false otherwise
+     */
+    public function clip($args)
+    {
+        $item       = isset($args['item']) && !empty($args['item']) ? $args['item'] : null;
+        $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
+        $bid        = isset($args['bid']) && !empty($args['bid']) ? $args['bid'] : null;
+        $extrainfo  = isset($args['extrainfo']) && !empty($args['extrainfo']) ? $args['extrainfo'] : null;
+
+        // $item ang lang params are required
+        if(!$item || !$lang) {
+            return false;
+        }
+        // is there is extrainfo - convert it into array, parse_str is quite handy
+        if($extrainfo) {
+            parse_str($extrainfo, $extrainfo);
+        }
+        $extrainfo['tid'] = (is_numeric($extrainfo['tid'])) ? (int)$extrainfo['tid'] : -1;
+        $extrainfo['fieldname'] = isset($extrainfo['fieldname']) ? $extrainfo['fieldname'] : '';
+        if ($extrainfo['tid'] < 0 || empty($extrainfo['fieldname'])) {
+            return false;
+        }
+        $extrainfo['maxitems'] = isset($extrainfo['maxitems']) ? (int)$extrainfo['maxitems'] : -1;
+        $extrainfo['flat'] = isset($extrainfo['flat']) ? (bool)$extrainfo['flat'] : false;
+        $extrainfo['orderby'] = isset($extrainfo['orderby']) ? $extrainfo['orderby'] : null;
+
+        // get id for first element, use api func to avoid id conflicts inside menu
+        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $lineno = 0;
+        $links = array();
+
+        if(!$extrainfo['flat']) {
+            $links['clip'] = array(
+                $lang => array(
+                    'id' => $idoffset++, // always use id returned by api func for first element
+                    'name' => $item['name'], // you may use name given by user - but do not have to
+                    'href' => ModUtil::url('Clip', 'user', 'main', array('tid' => $extrainfo['tid'])),
+                    'title' => $item['title'], // the same as for name - you may use user input
+                    'className' => $item['className'],
+                    'state' => $item['state'],
+                    'lang' => $lang,
+                    'lineno' => $lineno++,
+                    'parent' => $item['parent'] // always use replaced item parent for element at first level
+                )
+            );
+        }
+
+        // need to set parent node id - if links are grouped - use item id
+        // otherwise parent id of replaced menu node
+        $parentNode = (!$extrainfo['flat']) ? $links['clip'][$lang]['id'] : $item['parent'];
+    
+        // Uses the API to get the list of publications
+        // More parameters can be added here if needed, Clip_User_getall has a lot of options
+        $result = ModUtil::apiFunc('Clip', 'user', 'getall',
+                               array('tid'          => $extrainfo['tid'],
+                                     'orderby'      => $extrainfo['orderby'],
+                                     'itemsperpage' => $extrainfo['maxitems'],
+                                     'checkPerm'    => false,
+                                     'array'        => true));
+        $publist = $result['publist'];
+
+        foreach((array)$publist as $pub) {
+            // skip publications not online
+            if ($pub['core_online'] != 1) {
+                continue;
+            }
+
+            $links[$pub['id']] = array(
+                $lang => array(
+                    'id' => $idoffset+$pub['id'],
+                    'name' => $pub[$extrainfo['fieldname']],
+                    'href' => ModUtil::url('Clip', 'user', 'display', array('tid' => $extrainfo['tid'], 'pid' => $pub['core_pid'])),
+                    'title' => $pub[$extrainfo['fieldname']],
+                    'className' => '',
+                    'state' => $pub['core_visible'],
+                    'lang' => $lang,
+                    'lineno' => $lineno++,
+                    'parent' => $parentNode
+                )
+            );
+        }
+
+        return $links;
+    }
+
+
     /**
      * Return Content pages
      *
      * Syntax used in menutree
-     * {ext:Blocks:Content:[groupby=page&parent=1]}
+     * {ext:Blocks:content:[groupby=page&parent=1]}
      * Params in [] are optional and
      *      groupby = menuitem (default) or page, all other values stands for none
      *      parent - id of parent node - this allows to get specified node of Content pages
@@ -281,7 +383,7 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
      * @param  string $args['extrainfo'] additional params
      * @return mixed  array of links if successful, false otherwise
      */
-    public function Content($args)
+    public function content($args)
     {
         $item       = isset($args['item']) && !empty($args['item']) ? $args['item'] : null;
         $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
@@ -298,10 +400,9 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
         $extrainfo['parent'] = isset($extrainfo['parent']) ? (int)$extrainfo['parent'] : 0;
         $extrainfo['groupby'] = isset($extrainfo['groupby'])? $extrainfo['groupby'] : 'menuitem';
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
-
         $links = array();
 
         // if $extrainfo['group'] if false - don't group pages
@@ -328,8 +429,11 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
                 'orderBy' => 'setLeft',
                 'makeTree' => false,
                 'language' => $lang,
+                'includeContent' => false,
+                'includeLayout' => false,
+                'includeCategories' => false,
                 'filter' => array(
-                        'superParentId' => $extrainfo['parent']
+                    'superParentId' => $extrainfo['parent']
                 )
         );
         $pages = ModUtil::apiFunc('Content', 'page', 'getPages', $options);
@@ -387,7 +491,7 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
             return false;
         }
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
@@ -473,7 +577,7 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
         $extrainfo['flat'] = isset($extrainfo['flat'])? (bool)$extrainfo['flat'] : false;
         $extrainfo['links'] = isset($extrainfo['links'])? explode(',',$extrainfo['links']) : array('all');
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
@@ -668,7 +772,7 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
             return false;
         }
 
-        // get id for first element, use api func to aviod id conflicts inside menu
+        // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
