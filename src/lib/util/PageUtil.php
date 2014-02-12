@@ -346,7 +346,8 @@ class PageUtil
 
         return true;
     }
-/**
+    
+    /**
      * Check if the current page is the homepage.
      *
      * @return boolean true If it is the homepage, false if it is not the homepage.
