@@ -163,7 +163,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param Zikula_Form_View $view    Reference to Form render object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -204,7 +204,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Zikula_Form_View $view Reference to Form render object.
+     * @param Zikula_Form_View $view  Reference to Form render object.
      * @param array            &$data Data object.
      *
      * @return void
@@ -220,7 +220,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                 }
                 $data[$this->group]['__CATEGORIES__'][$this->dataField] = $this->getSelectedValue();
             }
-        } elseif ($this->enableDoctrine && $this->dataBased) {
+        } else if ($this->enableDoctrine && $this->dataBased) {
             if ($this->group == null) {
                 $data['Categories'][$this->dataField] = array('category_id' => $this->getSelectedValue(),
                                                               'reg_property' => $this->dataField);
@@ -231,7 +231,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                 $data[$this->group]['Categories'][$this->dataField] = array('category_id' => $this->getSelectedValue(),
                                                                             'reg_property' => $this->dataField);
             }
-        } elseif ($this->doctrine2) {
+        } else if ($this->doctrine2) {
             $entity = $view->get_template_vars($this->group);
 
             // load category from db
@@ -247,21 +247,29 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             }
 
 
-            if (is_array($this->getSelectedValue())) {
+            if(is_array($this->getSelectedValue())) {
                 $selectedValues = $this->getSelectedValue();
             } else {
                 $selectedValues[] = $this->getSelectedValue();
             }
+            $selectedValues = array_combine($selectedValues, $selectedValues);
 
-           foreach ($collection->getKeys() as $key) {
-               $categoryId = $collection->get($key)->getCategoryRegistryId();
-               if ($categoryId == $this->registryId) {
-                    $collection->remove($key);
-               }
+            foreach ($collection->getKeys() as $key) {
+                $entityCategory = $collection->get($key);
+
+                if ($entityCategory->getCategoryRegistryId() == $this->registryId) {
+                    $categoryId = $entityCategory->getCategory()->getId();
+
+                    if (isset($selectedValues[$categoryId])) {
+                        unset($selectedValues[$categoryId]);
+                    } else {
+                        $collection->remove($key);
+                    }
+                }
             }
 
-            $em->flush();
-
+            // we do NOT flush here, as the calling module is responsible for that (Guite)
+            //$em->flush();
 
             foreach ($selectedValues as $selectedValue) {
 
@@ -280,7 +288,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Zikula_Form_View::setValues.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View render object.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View render object.
      * @param array            &$values Values to load.
      *
      * @return void
@@ -316,7 +324,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
 
             $this->setSelectedValue($value);
 
-        } elseif ($this->enableDoctrine && $this->dataBased) {
+        } else if ($this->enableDoctrine && $this->dataBased) {
             $items = null;
             $value = null;
 
@@ -345,13 +353,13 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
 
             $this->setSelectedValue($value);
 
-        } elseif ($this->doctrine2) {
+        } else if ($this->doctrine2) {
             if (isset($values[$this->group])) {
                 $entity = $values[$this->group];
                 if (isset($entity[$this->dataField])) {
                     $collection = $entity[$this->dataField];
                     $selectedValues = array();
-                    foreach ($collection as $c) {
+                    foreach($collection as $c) {
                         $categoryId = $c->getCategoryRegistryId();
                         if ($categoryId == $this->registryId) {
                             $selectedValues[] = $c->getCategory()->getId();

@@ -310,8 +310,10 @@ class Zikula_Workflow_Util
             $module = ModUtil::getName();
         }
 
-        if (!self::getWorkflowForObject($obj, $dbTable, $idcolumn, $module)) {
-            return false;
+        if (!isset($obj['__WORKFLOW__'])) {
+            if (!self::getWorkflowForObject($obj, $dbTable, $idcolumn, $module)) {
+                return false;
+            }
         }
 
         $workflow = $obj['__WORKFLOW__'];

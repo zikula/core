@@ -346,5 +346,20 @@ class PageUtil
 
         return true;
     }
+    
+    /**
+     * Check if the current page is the homepage.
+     *
+     * @return boolean true If it is the homepage, false if it is not the homepage.
+     */
+    public static function isHomepage()
+    {
+        $moduleGetName = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        if (empty($moduleGetName)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
