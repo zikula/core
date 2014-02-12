@@ -730,7 +730,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         if ($this->expose_template == true) {
             $template = DataUtil::formatForDisplay($template);
-            $output = "\n<!-- Start " . $this->template_dir . "/$template -->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
+            //$output = "\n<!-- Start " . $this->template_dir . "/$template -->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
+            // Changed comment into conditional statement for IE<10
+            $output = "\n<!--[if !IE]> Start " . $this->template_dir . "/$template <![endif]-->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
         }
 
         $event = new Zikula_Event('view.postfetch', $this, array('template' => $template), $output);
