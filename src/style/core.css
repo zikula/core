@@ -406,7 +406,6 @@ table.z-admintable ul li {
     background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)); /*webkit*/
     -webkit-border-radius: 3px;
 }
-
 .z-form .z-formrow select optgroup {
     font-style: normal;
     font-weight: bold;
@@ -536,7 +535,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 0.3em 2px 0.3em 1px;
     cursor: pointer;
     width: 68.6%;
-    display: block;
+    display: inline-block;
     position: relative;
 }
 
