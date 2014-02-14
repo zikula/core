@@ -132,21 +132,23 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
         // End parameter extraction and error checking
 
         if ($this->authenticationMethodIsEnabled($args['method'])) {
+            /** @var \Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper $authenticationMethod */
             $authenticationMethod = $this->getAuthenticationMethod($args['method']);
             $icon = $authenticationMethod->getIcon();
             $isFontAwesomeIcon = $authenticationMethod->isFontAwesomeIcon();
 
             $templateVars = array(
-                'authentication_method' => array(
+                'authentication_method'   => array(
                     'modname'   => $this->name,
                     'method'    => $args['method'],
                 ),
-                'is_selected'           => isset($args['is_selected']) && $args['is_selected'],
-                'form_type'             => $args['form_type'],
-                'form_action'           => $args['form_action'],
-                'submit_text'           => $authenticationMethod->getShortDescription(),
-                'icon'                  => $icon,
-                'isFontAwesomeIcon'     => $isFontAwesomeIcon,
+                'is_selected'             => isset($args['is_selected']) && $args['is_selected'],
+                'form_type'               => $args['form_type'],
+                'form_action'             => $args['form_action'],
+                'submit_text'             => $authenticationMethod->getShortDescription(),
+                'icon'                    => $icon,
+                'isFontAwesomeIcon'       => $isFontAwesomeIcon,
+                'skipLoginFormFieldsPage' => $authenticationMethod->getSkipLoginFormFieldsPage() && $args['form_type'] === 'registration'
             );
 
             $view = new Zikula_View($this->serviceManager, 'ZikulaUsersModule', Zikula_View::CACHE_ENABLED);
