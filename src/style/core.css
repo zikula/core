@@ -97,11 +97,11 @@ ul.navbar-modulelinks ul > li > a {
     text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.8);
 }
 
-.nav-tabs > li > a {
+#admintabs-container .nav-tabs > li > a {
     background-color: #dddddd;
 }
 
-.nav-tabs > li {
+#admintabs-container .nav-tabs > li {
     margin: 0 0 -1px 0;
 }
 
