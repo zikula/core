@@ -94,6 +94,13 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
     protected $icon;
 
     /**
+     * Whether or not to skip the login form fields page.
+     *
+     * @var bool
+     */
+    protected $skipLoginFormFieldsPage;
+
+    /**
      * Construct an instance of the method definition.
      *
      * @param string  $modname               The name of the authentication module that defines the method.
@@ -101,8 +108,10 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      * @param string  $shortDescription      The brief description.
      * @param string  $longDescription       The more complete description.
      * @param boolean $capableOfRegistration True if the method is an external authentication method that can be used with the registration process; otherwise false.
+     * @param boolean $skipLoginFormFields   Whether or not to skip the login form fields page, defaults to false.
      */
-    public function __construct($modname, $method, $shortDescription, $longDescription, $capableOfRegistration = false, $icon = false)
+    public function __construct($modname, $method, $shortDescription, $longDescription, $capableOfRegistration = false, $icon = false, $skipLoginFormFields = false)
+
     {
         $this->setModule($modname);
         $this->setMethod($method);
@@ -110,6 +119,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         $this->setLongDescription($longDescription);
         $this->setIcon($icon);
 
+        $this->skipLoginFormFieldsPage = $skipLoginFormFields;
         $this->enabledForAuthentication = true;
         $this->capableOfRegistration = (bool)$capableOfRegistration;
         $this->enabledForRegistration = $this->capableOfRegistration;
@@ -245,16 +255,31 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         }
     }
 
+    /**
+     * Get the authentication method's icon.
+     *
+     * @return string
+     */
     public function getIcon()
     {
         return $this->icon;
     }
 
+    /**
+     * Set the authentication method's icon.
+     *
+     * @param string $icon
+     */
     private function setIcon($icon)
     {
         $this->icon = $icon;
     }
 
+    /**
+     * Check whether or not the icon is a FontAwesome icon.
+     *
+     * @return bool
+     */
     public function isFontAwesomeIcon()
     {
         if(strpos($this->icon, '/') !== false || strpos($this->icon, 'fa-') !== 0 || empty($this->icon)) {
@@ -335,6 +360,16 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
     public function disableForRegistration()
     {
         $this->enabledForRegistration = false;
+    }
+
+    /**
+     * Check whether or not the login form fields page should be skipped.
+     *
+     * @return bool True if the login form fields page should be skipped.
+     */
+    public function getSkipLoginFormFieldsPage()
+    {
+        return $this->skipLoginFormFieldsPage;
     }
 
     /**

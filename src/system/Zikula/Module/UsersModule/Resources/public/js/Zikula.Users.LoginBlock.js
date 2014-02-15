@@ -2,7 +2,7 @@
 
 (function($) {
     $(function() {
-        $('[id^=zikulausersmodule-authentication-select-method-loginblock]').each(function() {
+        $('[id^=zikulausersmodule-authentication-select-method-loginblock-form]').each(function() {
             $(this).submit(function(event){
                 onSubmitSelectAuthenticationMethod(event);
             });
