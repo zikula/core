@@ -296,7 +296,7 @@ class PageUtil
      *
      * @return string The changed path.
      *
-     * @todo Remove in 1.4.0.
+     * @todo Remove in 1.5.0.
      */
     private static function fixJQueryThemesPath($path) {
         if (is_array($path)) {
@@ -350,7 +350,7 @@ class PageUtil
             $value = array_unique($value);
         }
         
-        // @todo Remove in 1.4.0.
+        // @todo Remove in 1.5.0.
         $value = self::fixJQueryThemesPath($value);
 
 

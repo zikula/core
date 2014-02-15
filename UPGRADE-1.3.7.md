@@ -5,7 +5,7 @@ User Upgrade Tasks
 ------------------
 
 Zikula Core 1.3.7 introduces a lot of forward compatibility for new features
-that will come in Zikula 1.4.0. For safety sake, please only upgrade from
+that will come in Zikula 1.5.0. For safety sake, please only upgrade from
 Zikula Core 1.3.6
 
   - Before uploading the new files please delete the `plugins/`, `lib/`, `system/`,

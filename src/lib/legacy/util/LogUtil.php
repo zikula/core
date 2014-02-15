@@ -429,7 +429,7 @@ class LogUtil
             return;
         }
 
-        // @todo remove in 1.4.0 this is a BC hack - drak
+        // @todo remove in 1.5.0 this is a BC hack - drak
         if ($level === E_USER_DEPRECATED) {
             $level = Log::DEBUG;
         }

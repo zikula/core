@@ -57,7 +57,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      *
      * @param array $args All parameters passed to this function.
      *
-     * @todo In 1.4.0, throw exception here and do not allow the "getLoginFormFields" method.
+     * @todo In 1.5.0, throw exception here and do not allow the "getLoginFormFields" method.
      *
      * @return string the rendered HTML fragment containing the authentication module fields for the login form or block.
      */
@@ -89,7 +89,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      *
      * @param array $args All parameters passed to this function.
      *
-     * @todo In 1.4.0, move content from "getAuthenticationMethodSelector" method to here.
+     * @todo In 1.5.0, move content from "getAuthenticationMethodSelector" method to here.
      *
      * @return string The rendered authentication method selector for the login page or block.
      */
@@ -203,7 +203,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      * @return boolean True if the authentication information (the user's credentials) pass initial user-interface level validation;
      *                  otherwise false and an error status message is set.
      *
-     * @todo In 1.4.0, throw exception here and do not allow the "validateAuthenticationInformation" method.
+     * @todo In 1.5.0, throw exception here and do not allow the "validateAuthenticationInformation" method.
      */
     public function validateAuthenticationInformationAction(array $args)
     {

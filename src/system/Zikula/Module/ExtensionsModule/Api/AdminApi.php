@@ -438,7 +438,7 @@ class AdminApi extends \Zikula_AbstractApi
             $query->getResult();
         }
 
-        // remove in 1.4.0
+        // remove in 1.5.0
         $event = new GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.uninstalled', $event);
 
@@ -1005,7 +1005,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // All went ok so issue installed event
-        // remove this legacy in 1.4.0
+        // remove this legacy in 1.5.0
         $event = new GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.installed', $event);
 
@@ -1128,7 +1128,7 @@ class AdminApi extends \Zikula_AbstractApi
         $this->entityManager->flush();
 
         // Upgrade succeeded, issue event.
-        // remove this legacy in 1.4.0
+        // remove this legacy in 1.5.0
         $event = new GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.upgraded', $event);
 
@@ -1318,7 +1318,7 @@ class AdminApi extends \Zikula_AbstractApi
      * Get all module dependencies.
      *
      * @deprecated since 1.3.7 use getalldependencies instead
-     * @todo remove in 1.4.0
+     * @todo remove in 1.5.0
      *
      * @see $this->getalldependencies instead.
      *

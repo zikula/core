@@ -93,7 +93,7 @@ function smarty_function_authentication_method_selector($params, $view)
     );
     $content = ModUtil::func($authenticationMethod['modname'], 'Authentication', 'getAuthenticationMethodSelector', $getSelectorArgs, 'Zikula_Controller_AbstractAuthentication');
     if ($content instanceof Response) {
-        // Forward compatability. @todo Remove check in 1.4.0
+        // Forward compatability. @todo Remove check in 1.5.0
         $content = $content->getContent();
     }
 

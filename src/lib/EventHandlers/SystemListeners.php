@@ -297,7 +297,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      * @link http://www.owasp.org/images/0/0e/OWASP_AppSec_Research_2010_Busting_Frame_Busting_by_Rydstedt.pdf
      * @link http://www.contextis.co.uk/resources/white-papers/clickjacking/Context-Clickjacking_white_paper.pdf
      *
-     * @todo Reimplement in response/header objects in 1.4.0 - drak.
+     * @todo Reimplement in response/header objects in 1.5.0 - drak.
      *
      * @param Zikula $event
      *
@@ -318,7 +318,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      * @param Zikula_Event $event The event handler.
      *
      * @deprecated since 1.3.6
-     * @todo remove in 1.4.0
+     * @todo remove in 1.5.0
      *
      * @return void
      */

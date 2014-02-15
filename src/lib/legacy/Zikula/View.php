@@ -631,7 +631,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                 }
             }
 
-            // The rest of this code is scheduled for removal from 1.4.0 - drak
+            // The rest of this code is scheduled for removal from 1.5.0 - drak
 
             // check the module for which we're looking for a template is the
             // same as the top level mods. This limits the places to look for
