@@ -27,7 +27,7 @@ function smarty_core_get_php_resource(&$params, &$smarty)
 
     if ($params['resource_type'] == 'file') {
         $_readable = false;
-        if(is_readable($params['resource_name'])) {
+        if(file_exists($params['resource_name']) && is_readable($params['resource_name'])) {
             $_readable = true;
         } else {
             // test for file in include_path

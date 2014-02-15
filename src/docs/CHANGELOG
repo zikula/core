@@ -2,7 +2,7 @@ CHANGELOG - ZIKULA 1.3.7
 ------------------------
 
 - Fixed unsanitized inputs (Secunia Advisory SA56274)
-
+- Updated Smarty to 2.6.28
 
 CHANGELOG - ZIKULA 1.3.6
 ------------------------
