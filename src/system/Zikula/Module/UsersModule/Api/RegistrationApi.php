@@ -368,12 +368,16 @@ class RegistrationApi extends \Zikula_AbstractApi
      *
      * @param array[] $args {
      *      @type array   $reginfo {
-     *          @type numeric $uid          If the information is for a new user registration, then this should not be set. Otherwise,
-     *                                      the uid of the registration record.
-     *          @type string  $uname        The user name for the registering user.
-     *          @type string  $pass         The password for the registering user.
-     *          @type string  $passreminder The password reminder for the registering user.
-     *          @type string  $email        The e-mail address for the registering user.
+     *          @type integer   $uid          If the information is for a new user registration, then this should not be set. Otherwise,
+     *                                        the uid of the registration record.
+     *          @type string    $uname        The user name for the registering user.
+     *          @type string    $pass         The password for the registering user.
+     *          @type string    $passreminder The password reminder for the registering user.
+     *          @type string    $email        The e-mail address for the registering user.
+     *          @type bool|null $isverified   This will overwrite the verification status. Do not specify to calculate
+     *                                        it automatically.
+     *          @type bool|null $isapproved   This will overwrite the approval status. Do not specify to calculate
+     *                                        it automatically.
      *                             }
      *                      }
      *
@@ -404,10 +408,15 @@ class RegistrationApi extends \Zikula_AbstractApi
         }
         $reginfo = $args['reginfo'];
 
-        $adminWantsVerification = $isAdminOrSubAdmin && ((isset($args['usermustverify']) ? (bool)$args['usermustverify'] : false)
-            || !isset($reginfo['pass']) || empty($reginfo['pass']));
-        $reginfo['isverified'] = ($isAdminOrSubAdmin && !$adminWantsVerification) || (!$isAdminOrSubAdmin && ($this->getVar('reg_verifyemail') == UsersConstant::VERIFY_NO));
-        $reginfo['isapproved'] = $isAdminOrSubAdmin || !$this->getVar('moderation', false);
+        if (!isset($reginfo['isverified'])) {
+            $adminWantsVerification = $isAdminOrSubAdmin && ((isset($args['usermustverify']) ? (bool)$args['usermustverify'] : false)
+                    || !isset($reginfo['pass']) || empty($reginfo['pass']));
+            $reginfo['isverified'] = ($isAdminOrSubAdmin && !$adminWantsVerification) || (!$isAdminOrSubAdmin && ($this->getVar('reg_verifyemail') == UsersConstant::VERIFY_NO));
+        }
+        if (!isset($reginfo['isapproved'])) {
+            $reginfo['isapproved'] = $isAdminOrSubAdmin || !$this->getVar('moderation', false);
+        }
+
         $createRegistration = !$reginfo['isapproved'] || !$reginfo['isverified'];
 
         // Notification flags
