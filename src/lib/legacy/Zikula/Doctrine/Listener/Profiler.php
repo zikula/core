@@ -20,7 +20,7 @@
  *   time: execution time in secounds
  *   query: sql query
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interface
 {

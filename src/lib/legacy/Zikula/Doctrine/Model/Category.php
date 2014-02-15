@@ -16,7 +16,7 @@
 /**
  * An category.
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 class Zikula_Doctrine_Model_Category extends Doctrine_Record
 {

@@ -25,7 +25,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Get current module name from the request stack.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return string
      */
@@ -37,7 +37,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Get current controller name from the request stack.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return string
      */
@@ -49,7 +49,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Get current action name from the request stack.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return string
      */
@@ -61,7 +61,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Add request to the stack.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @param string $module     Module controller name.
      * @param string $controller Controller type.
@@ -77,7 +77,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Getter for request property.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return object ArrayIterator.
      */
@@ -89,7 +89,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
     /**
      * Getter for args property.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return array
      */
@@ -103,7 +103,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
      *
      * @param array $args Array of args.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return void
      */
@@ -118,7 +118,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
      * @param string $key     Key to get.
      * @param string $default Default if not set.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return mixed
      */
@@ -133,7 +133,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
      * @param string $key   Key.
      * @param mixed  $value Value.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return void
      */
@@ -147,7 +147,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
      *
      * @param string $key Key.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return boolean
      */
@@ -161,7 +161,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
      *
      * @param string $key Key.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return void
      */

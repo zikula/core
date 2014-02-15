@@ -317,7 +317,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * @param Zikula_Event $event The event handler.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      * @todo remove in 1.5.0
      *
      * @return void

@@ -185,7 +185,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Same as the status property - maintain BC
      *
-     * @deprecated since 1.3.7 use status property instead
+     * @deprecated since 1.4.0 use status property instead
      *
      * @ORM\Column(type="string", length=1)
      * @var string
@@ -624,7 +624,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Get the lock status of the category
      *
-     * @deprecated since 1.3.7 use getIs_locked instead
+     * @deprecated since 1.4.0 use getIs_locked instead
      *
      * @return bool|int
      */
@@ -636,7 +636,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Set the lock status of the category
      *
-     * @deprecated since 1.3.7 use setIs_locked instead
+     * @deprecated since 1.4.0 use setIs_locked instead
      *
      * @param bool $locked
      */
@@ -648,7 +648,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Get the leaf status of the category
      *
-     * @deprecated since 1.3.7 use getIs_leaf instead
+     * @deprecated since 1.4.0 use getIs_leaf instead
      *
      * @return bool|int
      */
@@ -660,7 +660,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Set the leaf status of the category
      *
-     * @deprecated since 1.3.7 use setIs_leaf instead
+     * @deprecated since 1.4.0 use setIs_leaf instead
      *
      * @param bool $leaf
      */
@@ -672,7 +672,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Get the sort value of the category
      *
-     * @deprecated since 1.3.7 use getSort_value instead
+     * @deprecated since 1.4.0 use getSort_value instead
      *
      * @return int the sort value
      */
@@ -684,7 +684,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Set the sort value of the category
      *
-     * @deprecated since 1.3.7 use setSort_value instead
+     * @deprecated since 1.4.0 use setSort_value instead
      *
      * @param int $sortValue the sort value
      */
@@ -696,7 +696,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Get the display name(s) of the category
      *
-     * @deprecated since 1.3.7 use getDisplay_name instead
+     * @deprecated since 1.4.0 use getDisplay_name instead
      *
      * @return array the display name(s)
      */
@@ -708,7 +708,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Get the display name(s) of the category
      *
-     * @deprecated since 1.3.7 use setDisplay_name instead
+     * @deprecated since 1.4.0 use setDisplay_name instead
      *
      * @param array $displayName the display name(s)
      */
@@ -720,7 +720,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Get the display description(s) of the category
      *
-     * @deprecated since 1.3.7 use getDisplay_desc instead
+     * @deprecated since 1.4.0 use getDisplay_desc instead
      *
      * @return array the display description(s)
      */
@@ -732,7 +732,7 @@ class CategoryEntity extends EntityAccess
     /**
      * Set the display description(s) of the category
      *
-     * @deprecated since 1.3.7 use setDisplay_desc instead
+     * @deprecated since 1.4.0 use setDisplay_desc instead
      *
      * @param array $displayDesc the display descriptions(s)
      */

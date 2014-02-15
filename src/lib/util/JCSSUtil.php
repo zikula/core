@@ -126,7 +126,7 @@ class JCSSUtil
             $stylesheets = array();
         }
         // Add legacy stylesheet
-        if (System::isLegacyMode('1.3.7')) {
+        if (System::isLegacyMode('1.4.0')) {
             array_unshift($stylesheets, 'style/legacy.css');
         }
         // Add core stylesheet

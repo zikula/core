@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * Manages event handlers and invokes them for notified events.
  *
- * @deprecated from 1.3.6
+ * @deprecated since 1.4.0
  * @see \Symfony\Component\EventDispatcher\EventDispatcher
  */
 class Zikula_EventManager extends EventDispatcher
@@ -36,7 +36,7 @@ class Zikula_EventManager extends EventDispatcher
      *
      * @throws InvalidArgumentException If Handler is not callable or an instance of ServiceHandler.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return void
      */
@@ -60,7 +60,7 @@ class Zikula_EventManager extends EventDispatcher
      * @param string   $name    Handler name.
      * @param callable $handler Callable handler.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return void
      */
@@ -75,7 +75,7 @@ class Zikula_EventManager extends EventDispatcher
      * @param string $name  Event name.
      * @param Event  $event Event object, null creates new Event
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return Event
      */
@@ -120,7 +120,7 @@ class Zikula_EventManager extends EventDispatcher
      *
      * @throws LogicException If no ServiceManager exists.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return Zikula_ServiceManager instance.
      */
@@ -132,7 +132,7 @@ class Zikula_EventManager extends EventDispatcher
     /**
      * Has this got a ServiceManager.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return boolean
      */

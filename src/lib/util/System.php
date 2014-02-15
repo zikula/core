@@ -164,7 +164,7 @@ class System
      * @param mixed  $var  The variable to validate.
      * @param string $type The type of the validation to perform (email, url etc.).
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * @return boolean True if the validation was successful, false otherwise.
      */
@@ -253,7 +253,7 @@ class System
     /**
      * Get base URI for Zikula.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      * @see Request::getBasePath()
      *
      * @return string Base URI for Zikula.
@@ -280,7 +280,7 @@ class System
     /**
      * Get base URL for Zikula.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      * @see Request::getBaseUrl()
      *
      * @return string Base URL for Zikula.
@@ -340,7 +340,7 @@ class System
      * @param array   $additionalheaders Array of header strings to send with redirect.
      * @param integer $type              Number type of the redirect.
      *
-     * @deprecated Since 1.3.6 - from a controller, return RedirectResponse, or
+     * @deprecated since 1.4.0 - from a controller, return RedirectResponse, or
      * if necessary throw Zikula_Redirect_Exception.
      *
      * @return boolean True if redirect successful, false otherwise.
@@ -496,7 +496,7 @@ class System
      * Returns the server host name fetched from HTTP headers when possible.
      * The host name is in the canonical form (host + : + port) when the port is different than 80.
      *
-     * @deprecated since 1.3.6 use Request::getHttpHost()
+     * @deprecated since 1.4.0 use Request::getHttpHost()
      *
      * @return string HTTP host name.
      */
@@ -521,7 +521,7 @@ class System
      *
      * @param array $args Additional parameters to be added to/replaced in the URI (e.g. theme, ...).
      *
-     * @deprecated since 1.3.6 use Request::getUri()
+     * @deprecated since 1.4.0 use Request::getUri()
      *
      * @return string Current URI.
      */
@@ -593,7 +593,7 @@ class System
      *
      * Returns the HTTP protocol used by current connection, it could be 'http' or 'https'.
      *
-     * @deprecated since 1.3.6 use Request::getScheme()
+     * @deprecated since 1.4.0 use Request::getScheme()
      *
      * @return string Current HTTP protocol.
      */
@@ -614,7 +614,7 @@ class System
      *
      * @param array $args Additional parameters to be added to/replaced in the URL (e.g. theme, ...).
      *
-     * @deprecated since 1.3.6 use Request::getUri()
+     * @deprecated since 1.4.0 use Request::getUri()
      *
      * @return string Current URL.
      */

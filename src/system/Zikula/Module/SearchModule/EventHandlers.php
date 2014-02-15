@@ -14,7 +14,7 @@
 /**
  * BC class
  *
- * @deprecated since 1.3.7 use Zikula\Module\SearchModule\Listener\ModuleListener instead
+ * @deprecated since 1.4.0 use Zikula\Module\SearchModule\Listener\ModuleListener instead
  */
 class Search_EventHandler extends Zikula\Module\SearchModule\Listener\ModuleListener
 {

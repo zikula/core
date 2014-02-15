@@ -16,7 +16,7 @@
 /**
  * Hook validation collection
  *
- * @deprecated since Core 1.3.6
+ * @deprecated since 1.4.0
  * @see Zikula\Core\Hook\ValidationProviders
  */
 class Zikula_Hook_ValidationProviders extends Zikula\Core\Hook\ValidationProviders

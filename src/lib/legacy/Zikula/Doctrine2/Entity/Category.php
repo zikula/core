@@ -22,7 +22,7 @@ use Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity;
  * @ORM\Entity
  * @ORM\Table(name="categories_category")
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
 {

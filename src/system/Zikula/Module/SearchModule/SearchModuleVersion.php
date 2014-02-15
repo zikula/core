@@ -31,7 +31,7 @@ class SearchModuleVersion extends \Zikula_AbstractVersion
         //! module name that appears in URL
         $meta['url']         = $this->__('search');
         $meta['version']     = '1.5.3';
-        $meta['core_min']    = '1.3.7';
+        $meta['core_min']    = '1.4.0';
 
         $meta['securityschema'] = array('ZikulaSearchModule::' => 'Module name::');
 

@@ -27,13 +27,13 @@ namespace Zikula\Module\SearchModule {
 }
 
 /**
- * Classes for modules prior to 1.3.7
+ * Classes for modules prior to 1.4.0
  */
 namespace {
     /**
      * user api functions for the search module
      *
-     * @deprecated since 1.3.7 use \Zikula\Module\SearchModule\Api\UserApi instead
+     * @deprecated since 1.4.0 use \Zikula\Module\SearchModule\Api\UserApi instead
      */
     class Search_Api_User extends \Zikula\Module\SearchModule\Api\UserApi
     {

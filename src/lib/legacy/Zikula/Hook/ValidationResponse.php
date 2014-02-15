@@ -16,7 +16,7 @@
 /**
  * Validation object for hooks.
  *
- * @deprecated since Core 1.3.6
+ * @deprecated since 1.4.0
  * @see Zikula\Core\Hook\ValidationResponse
  */
 class Zikula_Hook_ValidationResponse extends Zikula\Core\Hook\ValidationResponse

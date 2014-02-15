@@ -110,7 +110,7 @@ class Categories_DBObject_Category extends DBObject
         // encode slash
         $data['name'] = str_replace('/', '&#47;', $data['name']);
 
-        // set defaults: necessary @since Core 1.3.6
+        // set defaults: necessary @since 1.4.0
         $data['obj_status'] = isset($data['obj_status']) ? $data['obj_status'] : 'A';
         $data['status'] = isset($data['status']) ? $data['status'] : 'A';
         $data['sort_value'] = isset($data['sort_value']) ? $data['sort_value'] : 2147483647;

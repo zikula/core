@@ -18,7 +18,7 @@ use Zikula\Core\ModUrl;
 /**
  * DisplayHook class.
  *
- * @deprecated since Core 1.3.6
+ * @deprecated since 1.4.0
  * @see Zikula\Core\Hook\DisplayHook
  */
 class Zikula_DisplayHook extends Zikula\Core\Hook\DisplayHook

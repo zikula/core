@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\MappedSuperclass
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 abstract class Zikula_Doctrine2_Entity_EntityAttribute extends Zikula_EntityAccess
 {

@@ -1,12 +1,12 @@
-Module Specification from Zikula Core 1.3.7
+Module Specification from Zikula Core 1.4.0
 ===========================================
 
 User Upgrade Tasks
 ------------------
 
-Zikula Core 1.3.7 introduces a lot of forward compatibility for new features
+Zikula Core 1.4.0 introduces a lot of forward compatibility for new features
 that will come in Zikula 1.5.0. For safety sake, please only upgrade from
-Zikula Core 1.3.6
+Zikula Core 1.3.7
 
   - Before uploading the new files please delete the `plugins/`, `lib/`, `system/`,
     `themes/` and `ztemp/` folders entirely (replace any custom themes afterwards).
@@ -52,7 +52,7 @@ Documentation: http://zikula.github.io/bootstrap-docs/
 Namespaces
 ----------
 
-Zikula Core 1.3.7 supports PHP namespaces and module should be refactored
+Zikula Core 1.4.0 supports PHP namespaces and module should be refactored
 for namespace compliance which should MUST be in line with PSR-0 or PSR-4; and 
 both PSR-1 and PSR-2.
 
@@ -382,14 +382,14 @@ The main changes are:
     
   - Events are triggered by `->dispatch($name, $event)` instead of `->notify($event)`.
 
-Example in Core 1.3.0-1.3.6
+Example in Core 1.3.0-1.3.x
 
 ```php
 $event = new Zikula_Event('event.name', $subject, $args, $data);
 $eventManager->notify($event);
 ```
 
-Example in Core 1.3.7+
+Example in Core 1.4.0+
 
 ```php
 $event = new Zikula\Core\Event\GenericEvent($subject, $args, $data);
@@ -444,14 +444,14 @@ The main changes are:
 
   - hooks are triggered by `->dispatch($name, $hook)` instead of `->notify($hook)`
 
-Example in Core 1.3.0-1.3.6
+Example in Core 1.3.0-1.3.x
 
 ```php
 $hook = new Zikula_DisplayHook('hook.name', $id, $url);
 $eventManager->notify($hook);
 ```
 
-Example in Core 1.3.7+
+Example in Core 1.4.0+
 
     $hook = new Zikula\Core\Hook\DisplayHook($id, $url);
     $hookDispatcher->dispatch('hook.name', $hook);
@@ -533,7 +533,7 @@ The Doctrine Extension Paginate is deprecated. If you are using it, you should r
 Version File
 ------------
 
-Modules should have `core_min = 1.3.7`.
+Modules should have `core_min = 1.4.0`.
 
 You now can add a reason for each dependency. Add a `reason` key to any dependency array you want. Example:
     
@@ -547,7 +547,7 @@ $meta['dependencies'] = array(
 );
 ```
 
-*Note: This only works for modules using the new >= 1.3.7 structure. Modules with the < 1.3.7 structure are ignoring this setting.*
+*Note: This only works for modules using the new >= 1.4.0 structure. Modules with the < 1.3.x structure are ignoring this setting.*
 
 
 Persistent Event Listeners

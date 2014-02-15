@@ -62,7 +62,7 @@ class EventUtil
      *
      * @param Zikula_Event $event Event.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      * @see dispatch()
      *
      * @return Zikula_Event
