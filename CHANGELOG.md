@@ -1,4 +1,4 @@
-CHANGELOG - ZIKULA 1.3.7
+CHANGELOG - ZIKULA 1.4.0
 ------------------------
 
 Fixes:
@@ -76,9 +76,9 @@ Features:
 - Do not register hooks twice, #484.
 - Do not register eventhandlers twice, #727.
 - Added a `reason` key to module dependendies array in module version file.
-- add 'moduleBundle' template variable for 1.3.6-type modules (is NULL for legacy mods)
+- add 'moduleBundle' template variable for 1.4.0-type modules (is NULL for legacy mods)
   instance of `\Zikula\Core\AbstractModule` for current module
-- add 'themeBundle' template variable for 1.3.6-type themes (is NULL for legacy mods)
+- add 'themeBundle' template variable for 1.4.0-type themes (is NULL for legacy mods)
     instance of `\Zikula\Core\AbstractTheme` for current module
 - Moved Categories to Doctrine2 and moved entities to module. Updated CategoryUtil & CategoryRegistryUtil to use new
 - Copy all category attributes data from `objectdata_attributes` to new `category_attributes` table and adjust

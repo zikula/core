@@ -16,7 +16,7 @@
 /**
  * Content filter hook.
  *
- * @deprecated since Core 1.3.6
+ * @deprecated since 1.4.0
  * @see Zikula\Core\Hook\DisplayHook
  */
 class Zikula_FilterHook extends Zikula\Core\Hook\FilterHook

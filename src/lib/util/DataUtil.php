@@ -314,7 +314,7 @@ class DataUtil
      *
      * @param string $var The variable to format.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      *
      * This API is insanely unsafe. Always prepare and bind variables in SQL statements.
      *

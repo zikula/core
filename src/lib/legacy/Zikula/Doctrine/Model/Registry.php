@@ -16,7 +16,7 @@
 /**
  * The categories table registry.
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 class Zikula_Doctrine_Model_Registry extends Doctrine_Record
 {

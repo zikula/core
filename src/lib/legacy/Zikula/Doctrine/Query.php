@@ -16,7 +16,7 @@
 /**
  * An Doctrine_Query subclass with zikula related extensions.
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 class Zikula_Doctrine_Query extends Doctrine_Query
 {

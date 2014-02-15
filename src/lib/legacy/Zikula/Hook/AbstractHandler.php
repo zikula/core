@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Custom Hook Handler interface.
  *
- * @deprecated since Core 1.3.6
+ * @deprecated since 1.4.0
  * @see Zikula\Core\Hook\AbstractHookListener
  */
 abstract class Zikula_Hook_AbstractHandler extends Zikula\Core\Hook\AbstractHookListener

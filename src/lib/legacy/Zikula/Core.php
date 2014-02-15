@@ -42,7 +42,7 @@ class Zikula_Core
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = '1.3.7';
+    const VERSION_NUM = '1.4.0';
 
     /**
      * The version ID.
@@ -403,7 +403,7 @@ class Zikula_Core
      */
     public function init($stage = self::STAGE_ALL, Request $request)
     {
-        $GLOBALS['__request'] = $request; // hack for pre 1.4.0 - drak
+        $GLOBALS['__request'] = $request; // hack for pre 1.5.0 - drak
 
         $coreInitEvent = new \Zikula\Core\Event\GenericEvent($this);
 

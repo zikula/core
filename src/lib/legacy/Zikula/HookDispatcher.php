@@ -23,7 +23,7 @@ use Zikula\Component\HookDispatcher\ProviderBundle;
 
 /**
  * HookDispatcher class.
- * @deprecated since 1.3.6 @see \Zikula\Component\HookDispatcher\HookDispatcher
+ * @deprecated since 1.4.0 @see \Zikula\Component\HookDispatcher\HookDispatcher
  */
 class Zikula_HookDispatcher
 {

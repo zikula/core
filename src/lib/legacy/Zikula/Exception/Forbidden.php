@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * Zikula_Exception_Forbidden class.
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  * @see AccessDeniedException
  */
 class Zikula_Exception_Forbidden extends AccessDeniedException

@@ -460,7 +460,7 @@ class Zikula_View_Theme extends Zikula_View
             }
         }
 
-        // The rest of this code is scheduled for removal from 1.4.0 - drak
+        // The rest of this code is scheduled for removal from 1.5.0 - drak
 
         $paths = array();
         if ($theme) {

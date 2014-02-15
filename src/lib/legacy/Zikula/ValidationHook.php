@@ -18,7 +18,7 @@ use Zikula\Core\Hook\ValidationProviders;
 /**
  * Content validation hook.
  *
- * @deprecated since Core 1.3.6
+ * @deprecated since 1.4.0
  * @see Zikula\Core\Hook\DisplayHook
  */
 class Zikula_ValidationHook extends Zikula\Core\Hook\ValidationHook

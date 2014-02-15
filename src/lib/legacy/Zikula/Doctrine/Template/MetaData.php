@@ -16,7 +16,7 @@
 /**
  * This behavior adds record meta data to the record.
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 class Zikula_Doctrine_Template_MetaData extends Doctrine_Template
 {

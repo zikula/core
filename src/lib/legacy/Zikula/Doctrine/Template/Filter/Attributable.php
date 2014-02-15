@@ -16,7 +16,7 @@
 /**
  * Doctrine filter for the Attributable doctrine template.
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 class Zikula_Doctrine_Template_Filter_Attributable extends Doctrine_Record_Filter
 {

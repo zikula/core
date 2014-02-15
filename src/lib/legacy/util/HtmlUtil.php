@@ -378,7 +378,7 @@ class HtmlUtil
      *
      * This method is Backward Compatible with all Core versions back to 1.2.x
      * It scans for tables in `tables.php` as well as locating Doctrine 1 tables
-     * or Doctrine 2 entities in either the 1.3.0 type directories or 1.3.6++ type
+     * or Doctrine 2 entities in either the 1.3.0 type directories or 1.4.0++ type
      *
      * @param string  $modname       Module name.
      * @param string  $name          Select field name.
@@ -468,7 +468,7 @@ class HtmlUtil
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
         $entityDirs = array(
-            "$modpath/$osdir/Entity/", // Core 1.3.6++
+            "$modpath/$osdir/Entity/", // Core 1.4.0++
             "$modpath/$osdir/lib/$osdir/Entity/", // Core 1.3.5--
         );
 
@@ -491,7 +491,7 @@ class HtmlUtil
                 $modname . '_Entity_' . substr($entity, 0, strlen($entity) - 4), // Core 1.3.5--
             );
             if ($module) {
-                $possibleClassNames[] = $module->getNamespace() . '\\Entity\\' . substr($entity, 0, strlen($entity) - 4); // Core 1.3.6++
+                $possibleClassNames[] = $module->getNamespace() . '\\Entity\\' . substr($entity, 0, strlen($entity) - 4); // Core 1.4.0++
             }
 
             foreach ($possibleClassNames as $class) {

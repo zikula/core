@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorMap({"categories_category" = "Zikula_Doctrine2_Entity_CategoryAttribute"})
  * @ORM\Table(name="objectdata_attributes")
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 abstract class Zikula_Doctrine2_Entity_AbstractAttribute extends Zikula_EntityAccess
 {

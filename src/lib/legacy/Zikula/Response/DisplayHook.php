@@ -18,7 +18,7 @@
  *
  * Hook handlers should return one of these.
  *
- * @deprecated since Core 1.3.6
+ * @deprecated since 1.4.0
  * @see Zikula\Core\Hook\DisplayHookResponse
  */
 class Zikula_Response_DisplayHook extends Zikula\Core\Hook\DisplayHookResponse

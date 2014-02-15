@@ -43,7 +43,7 @@ class Categories_DBObject_Registry extends DBObject
             return $data;
         }
 
-        // set defaults: necessary @since Core 1.3.6
+        // set defaults: necessary @since 1.4.0
         $data['obj_status'] = isset($data['obj_status']) ? $data['obj_status'] : 'A';
 
         $this->_objData = $data;

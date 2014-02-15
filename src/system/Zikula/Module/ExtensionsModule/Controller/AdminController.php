@@ -61,7 +61,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Extensions Module main admin function
      *
-     * @deprecated since 1.3.7 use indexAction instead
+     * @deprecated since 1.4.0 use indexAction instead
      *
      * @return RedirectResponse
      */

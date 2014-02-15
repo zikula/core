@@ -314,7 +314,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
              ->assign('themepath', isset($themeBundle) ? $themeBundle->getRelativePath() : $this->baseurl . 'themes/' . $theme)
              ->assign('baseurl', $this->baseurl)
              ->assign('baseuri', $this->baseuri)
-             ->assign('moduleBundle', ModUtil::getModule($moduleName)) // is NULL for pre-1.3.6-type modules
+             ->assign('moduleBundle', ModUtil::getModule($moduleName)) // is NULL for pre-1.4.0-type modules
              ->assign('themeBundle', $themeBundle);
 
         if (isset($themeBundle)) {
@@ -348,7 +348,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         parent::assign('request', $this->request);
         $modvars = ModUtil::getModvars(); // Get all modvars from any modules that have accessed their modvars at least once.
         // provide compatibility 'alias' array keys
-        // @todo remove after v1.3.7
+        // @todo remove after v1.4.0
         if (isset($modvars['ZikulaAdminModule'])) { $modvars['Admin'] = $modvars['ZikulaAdminModule']; }
         if (isset($modvars['ZikulaBlocksModule'])) { $modvars['Blocks'] = $modvars['ZikulaBlocksModule']; }
         if (isset($modvars['ZikulaCategoriesModule'])) { $modvars['Categories'] = $modvars['ZikulaCategoriesModule']; }
@@ -631,7 +631,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                 }
             }
 
-            // The rest of this code is scheduled for removal from 1.4.0 - drak
+            // The rest of this code is scheduled for removal from 1.5.0 - drak
 
             // check the module for which we're looking for a template is the
             // same as the top level mods. This limits the places to look for
@@ -1458,7 +1458,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get ServiceManager.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      * @see getContainer()
      *
      * @return Zikula_ServiceManager The service manager.
@@ -1481,7 +1481,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get EventManager.
      *
-     * @deprecated since 1.3.6
+     * @deprecated since 1.4.0
      * @see getDispatcher()
      *
      * @return Zikula_Eventmanager The event manager.

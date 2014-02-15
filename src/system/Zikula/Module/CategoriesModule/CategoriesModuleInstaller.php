@@ -46,7 +46,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
-        // needed for legacy - remove @1.4.0
+        // needed for legacy - remove @1.5.0
         DBUtil::createTable('categories_mapobj');
 
         // insert some default data
@@ -95,7 +95,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
                     DoctrineHelper::createSchema($this->entityManager, array('ZikulaCategoriesModule:CategoryAttributeEntity'));
                 } catch (\Exception $e) {
                 }
-                // rename old tablename column for Core 1.3.6
+                // rename old tablename column for Core 1.4.0
                 $connection = $this->entityManager->getConnection();
                 $sql = 'ALTER TABLE categories_registry CHANGE `tablename` `entityname` varchar (60) NOT NULL DEFAULT \'\'';
                 $connection->executeQuery($sql);

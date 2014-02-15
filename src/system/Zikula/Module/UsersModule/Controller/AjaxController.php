@@ -204,7 +204,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'method'    => $method,
         ));
         if ($loginFormFields instanceof Response) {
-            // Forward compatability. @todo Remove check in 1.4.0
+            // Forward compatability. @todo Remove check in 1.5.0
             $loginFormFields = $loginFormFields->getContent();
         }
 
@@ -218,9 +218,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Retrieve the form fields for the login form that are appropriate for the selected authentication method.
      *
-     * @deprecated since 1.3.7 use $this->getLoginFormFieldsAction instead
+     * @deprecated since 1.4.0 use $this->getLoginFormFieldsAction instead
      *
-     * @todo Remove in 1.4.0
+     * @todo Remove in 1.5.0
      */
     public function getLoginFormFields()
     {

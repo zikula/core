@@ -1205,7 +1205,7 @@ class DBUtil
     public static function deleteWhere($table, $where)
     {
         if ($table == 'categories_mapobj') {
-            // table no longer exists >= 1.3.7
+            // table no longer exists >= 1.4.0
             return true;
         }
         $tables = self::getTables();
@@ -3105,7 +3105,7 @@ class DBUtil
                 $fields = explode(' ', $clean);
 
                 if (preg_match('#B|C2|X2#', $fields[0])) {
-                    LogUtil::log(__('Warning! Table defintion type longblob [B, C2 and X2] is deprecated from Zikula 1.4.0.'), E_USER_DEPRECATED);
+                    LogUtil::log(__('Warning! Table defintion type longblob [B, C2 and X2] is deprecated from Zikula 1.5.0.'), E_USER_DEPRECATED);
                 }
 
                 // parse type and length

@@ -24,7 +24,7 @@
  * }
  * </code>
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
 {

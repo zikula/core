@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="hook_area",indexes={@ORM\Index(name="areaidx", columns={"areaname"})})
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  */
 class Zikula_Doctrine2_Entity_HookArea
 {

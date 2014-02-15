@@ -290,13 +290,13 @@ class PageUtil
     }
 
     /**
-     * Converts the <1.3.5 location of jQuery themes to the new one as of 1.3.6.
+     * Converts the <1.3.5 location of jQuery themes to the new one as of 1.4.0.
      *
      * @param array|string $path The path to check for a replacement. This is recursive array-safe.
      *
      * @return string The changed path.
      *
-     * @todo Remove in 1.4.0.
+     * @todo Remove in 1.5.0.
      */
     private static function fixJQueryThemesPath($path) {
         if (is_array($path)) {
@@ -350,7 +350,7 @@ class PageUtil
             $value = array_unique($value);
         }
         
-        // @todo Remove in 1.4.0.
+        // @todo Remove in 1.5.0.
         $value = self::fixJQueryThemesPath($value);
 
 

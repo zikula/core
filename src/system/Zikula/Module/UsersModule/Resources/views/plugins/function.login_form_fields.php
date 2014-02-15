@@ -69,7 +69,7 @@ function smarty_function_login_form_fields($params, $view)
     );
     $content = ModUtil::func($authenticationMethod['modname'], 'Authentication', 'getLoginFormFields', $args, 'Zikula_Controller_AbstractAuthentication');
     if ($content instanceof Response) {
-        // Forward compatability. @todo Remove check in 1.4.0
+        // Forward compatability. @todo Remove check in 1.5.0
         $content = $content->getContent();
     }
 

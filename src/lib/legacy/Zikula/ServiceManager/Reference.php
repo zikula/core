@@ -16,7 +16,7 @@
 /**
  * Reference class.
  *
- * @deprecated from 1.3.6
+ * @deprecated since 1.4.0
  * @see \Symfony\Component\DependencyInjection\Reference
  */
 class Zikula_ServiceManager_Reference extends \Symfony\Component\DependencyInjection\Reference

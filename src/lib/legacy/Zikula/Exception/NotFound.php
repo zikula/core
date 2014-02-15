@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Zikula_Exception_NotFound class.
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  * @see NotFoundHttpException
  */
 class Zikula_Exception_NotFound extends NotFoundHttpException

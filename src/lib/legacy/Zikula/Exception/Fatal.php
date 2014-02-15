@@ -18,7 +18,7 @@ use Symfony\Component\Debug\Exception\FatalErrorException;
 /**
  * Zikula_Exception_Fatal class.
  *
- * @deprecated since 1.3.6
+ * @deprecated since 1.4.0
  * @see FatalErrorException
  */
 class Zikula_Exception_Fatal extends FatalErrorException
