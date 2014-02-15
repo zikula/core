@@ -202,23 +202,21 @@ class DataUtil
      */
     public static function formatForDisplay($var)
     {
-        // This search and replace finds the text 'x@y' and replaces
-        // it with HTML entities, this provides protection against
-        // email harvesters
-        static $search = array('/(.)@(.)/se');
-
-        static $replace = array('"&#" .
-                                sprintf("%03d", ord("\\1")) .
-                                ";&#064;&#" .
-                                sprintf("%03d", ord("\\2")) . ";";');
-
         if (is_array($var)) {
             foreach ($var as $k => $v) {
                 $var[$k] = self::formatForDisplay($v);
             }
         } else {
-            $var = htmlspecialchars((string)$var);
-            $var = preg_replace($search, $replace, $var);
+            $var = htmlspecialchars((string) $var);
+            // This search and replace finds the text 'x@y' and replaces
+            // it with HTML entities, this provides protection against
+            // email harvesters
+            $var = preg_replace_callback(
+                '/(.)@(.)/s',
+                function($m) {
+                    return "&#".sprintf("%03d", ord($m[1])).";&#064;&#" .sprintf("%03d", ord($m[2])) . ";";
+                },
+                $var);
         }
 
         return $var;
