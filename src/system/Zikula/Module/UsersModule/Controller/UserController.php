@@ -210,7 +210,7 @@ class UserController extends \Zikula_AbstractController
                 $state = 'authenticate';
             } elseif ($this->request->request->get('registration_info', false)) {
                 // The user submitted the acutal registration form, so we need to validate the entries and register him.
-                $selectedAuthenticationMethod = unserialize($this->request->request->get('authentication_method_ser', false));
+                $selectedAuthenticationMethod = json_decode($this->request->request->get('authentication_method_ser', false), true);
 
                 $removePasswordReminderValidation = false;
                 if ($selectedAuthenticationMethod['modname'] != 'ZikulaUsersModule') {
@@ -218,7 +218,7 @@ class UserController extends \Zikula_AbstractController
                 }
                 $formData = new FormData\RegistrationForm('users_register', $this->getContainer(), $removePasswordReminderValidation);
                 $formData->setFromRequestCollection($this->request->request);
-                $authenticationInfo = unserialize($this->request->request->get('authentication_info_ser', false));
+                $authenticationInfo = json_decode($this->request->request->get('authentication_info_ser', false), true);
 
                 $state = 'validate';
             }
