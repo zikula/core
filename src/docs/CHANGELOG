@@ -20,7 +20,8 @@ CHANGELOG - ZIKULA 1.3.7
 - Fixed bugs in DBObject #616, #617, #618
 - Fixed Formutil z-formrow - label - input type file looks bad on Safari (webkit) #621
 - Added fileupload input styling Webkit #622 
-- Fix developer notices #564 
+- Fix developer notices #564
+- Fixed decoding of Block content which made problems on some servers
 
 
 CHANGELOG - ZIKULA 1.3.6

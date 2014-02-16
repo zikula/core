@@ -428,12 +428,12 @@ class BlockUtil
      */
     public static function varsFromContent($content)
     {
-        // Assume serialized content ends in a ";" followed by some curly-end-braces
-        if (preg_match('/;}*$/', $content)) {
-            // Serialised content
+        // Try to unserialize first
+        if (DataUtil::is_serialized($content, false)) {
             $vars = unserialize($content);
-
-            return $vars;
+            if ($vars !== false && is_array($vars)) {
+                return $vars;
+            }
         }
 
         // Unserialised content
