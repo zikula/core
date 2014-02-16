@@ -201,7 +201,7 @@
             <p id="{$formData->getFormId()}_validmessage" class="hide sub">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-9">
-                    {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
+                    <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
                     {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' class='btn btn-success' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
                     {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='btn btn-warning' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
                     <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}">{gt text='Cancel'}</a>
