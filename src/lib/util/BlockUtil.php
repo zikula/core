@@ -429,9 +429,11 @@ class BlockUtil
     public static function varsFromContent($content)
     {
         // Try to unserialize first
-        $vars = unserialize($content);
-        if ($vars !== false && is_array($vars)) {
-            return $vars;
+        if (DataUtil::is_serialized($content, false)) {
+            $vars = unserialize($content);
+            if ($vars !== false && is_array($vars)) {
+                return $vars;
+            }
         }
 
         // Unserialised content
