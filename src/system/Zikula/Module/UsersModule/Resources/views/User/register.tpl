@@ -208,11 +208,12 @@
         <legend>{gt text="Check your entries and submit your registration"}</legend>
         <p id="{$formData->getFormId()}_checkmessage" class="sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit registration' to continue."}</p>
         <p id="{$formData->getFormId()}_validmessage" class="hide">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
-        <div class="text-center z-buttons">
-            {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide' modname=core set='ajax' src='indicator_circle.gif' alt=''}
-            <button id="{$formData->getFormId()|cat:'_submitnewuser'}" type="submit" title="{gt text='Submit registration'}">
+        <div class="text-center">
+            <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
+            <button id="{$formData->getFormId()|cat:'_submitnewuser'}" class="btn btn-success" type="submit" title="{gt text='Submit registration'}">
                 {gt text='Submit registration'}
-            <button id="{$formData->getFormId()|cat:'_checkuserajax'}" type="button" class="hide" title="{gt text='Check your entries'}">
+            </button>
+            <button id="{$formData->getFormId()|cat:'_checkuserajax'}" type="button" class="btn btn-primary hide" title="{gt text='Check your entries'}">
                 {gt text='Check your entries'}
             </button>
         </div>
