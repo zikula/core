@@ -22,6 +22,7 @@
  *   - name:     The name of the page variable to set
  *   - value:    The value of the page variable to set, comma separated list is possible
  *               for stylesheet and javascript variables
+ *   - raw:      If raw is set to true then value is treated as a single string and not split (Default: false)
  *
  * Zikula doesn't impose any restriction on the page variable's name except for duplicate
  * and reserved names. As of this writing, the list of reserved names consists of
@@ -54,6 +55,7 @@ function smarty_function_pageaddvar($params, Zikula_View $view)
 {
     $name  = isset($params['name'])  ? $params['name']  : null;
     $value = isset($params['value']) ? $params['value'] : null;
+    $raw   = isset($params['raw'])   ? $params['raw']   : false;
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pageaddvar', 'name')));
@@ -67,7 +69,7 @@ function smarty_function_pageaddvar($params, Zikula_View $view)
         return false;
     }
 
-    if (in_array($name, array('stylesheet', 'javascript'))) {
+    if (in_array($name, array('stylesheet', 'javascript')) && !$raw) {
         $value = explode(',', $value);
     }
 
