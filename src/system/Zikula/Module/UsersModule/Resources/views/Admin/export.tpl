@@ -6,6 +6,7 @@
 
 <form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='exporter'}" method="post" enctype="multipart/form-data">
     <div>
+	<input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmed" value="1" />
         <fieldset>
             <legend>Export Options</legend>
