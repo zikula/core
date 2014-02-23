@@ -15,6 +15,7 @@ namespace Zikula\Module\UsersModule;
 
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use HookUtil;
+use Zikula\Module\SearchModule\AbstractSearchable;
 use Zikula_HookManager_SubscriberBundle;
 
 /**
@@ -30,11 +31,15 @@ class UsersModuleVersion extends \Zikula_AbstractVersion
     public function getMetaData()
     {
         return array(
-            'version' => '2.2.1',
+            'version' => '2.2.3',
             'displayname' => $this->__('Users'),
             'description' => $this->__('Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.'),
             'url' => $this->__('users'),
-            'capabilities' => array(UsersConstant::CAPABILITY_AUTHENTICATION => array('version' => '1.0'), HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true)),
+            'capabilities' => array(
+                UsersConstant::CAPABILITY_AUTHENTICATION => array('version' => '1.0'),
+                HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true),
+                AbstractSearchable::SEARCHABLE => array('class' => 'Zikula\Module\UsersModule\Helper\SearchHelper'),
+            ),
             'core_min' => '1.4.0',
             'securityschema' => array('ZikulaUsersModule::' => 'Uname::User ID', 'ZikulaUsersModule::MailUsers' => '::'));
     }
