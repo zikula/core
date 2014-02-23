@@ -15,13 +15,13 @@ namespace Zikula\Module\SearchModule\Controller;
 
 use Zikula_View;
 use ModUtil;
-use LogUtil;
 use SecurityUtil;
 use EventUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Module\SearchModule\AbstractSearchable;
 
 /**
  * Administrative controllers for the search module
@@ -64,9 +64,15 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-        // get the list of available plugins
+        // get all the LEGACY (<1.4.0) search plugins
         $plugins = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins', array('loadall' => true));
         $plugins = false === $plugins ? array() : $plugins;
+
+        // get 1.4.0+ type searchable modules and add to array
+        $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
+        foreach ($searchableModules as $searchableModule) {
+            $plugins[] = array('title' => $searchableModule['name']);
+        }
 
         // get the disabled status
         foreach ($plugins as $key => $plugin) {
@@ -111,16 +117,22 @@ class AdminController extends \Zikula_AbstractController
         $opensearchEnable = $this->request->request->filter('opensearch_enable', false, false, FILTER_VALIDATE_BOOLEAN);
 
         if ($opensearchEnable && !$this->getVar('opensearch_enable')) {
-            EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\PageloadListener', 'pageload'));
+            EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\FrontControllerListener', 'pageload'));
         } elseif (!$opensearchEnable && $this->getVar('opensearch_enable')) {
-            EventUtil::unregisterPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\PageloadListener', 'pageload'));
+            EventUtil::unregisterPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\FrontControllerListener', 'pageload'));
         }
 
         $this->setVar('opensearch_enable', $opensearchEnable);
 
         $disable = $this->request->request->get('disable', null);
-        // get the list of available plugins
+        // get all the LEGACY (<1.4.0) search plugins
         $plugins = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins', array('loadall' => true));
+        // get 1.4.0+ type searchable modules and add to array
+        $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
+        foreach ($searchableModules as $searchableModule) {
+            $plugins[] = array('title' => $searchableModule['name']);
+        }
+
         // loop round the plugins
         foreach ($plugins as $searchplugin) {
             // set the disabled flag

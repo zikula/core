@@ -15,15 +15,16 @@ namespace Zikula\Module\SearchModule\Api;
 
 use ModUtil;
 use UserUtil;
-use Doctrine_Manager;
 use SessionUtil;
 use System;
 use DataUtil;
+use Zikula\Core\ModUrl;
 use ZLanguage;
-use LogUtil;
 use SecurityUtil;
 use Zikula\Module\SearchModule\ResultHelper;
 use Zikula\Module\SearchModule\Entity\SearchStatEntity;
+use Zikula\Module\SearchModule\AbstractSearchable;
+use Zikula\Module\SearchModule\Entity\SearchResultEntity;
 
 /**
  * API's used by user controllers
@@ -56,7 +57,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
         $vars = array();
-        $vars['q'] = $args['q'];
+        $vars['q'] = str_replace('%', '\\%', $args['q']);  // Don't allow user input % as wildcard
         $vars['searchtype'] = isset($args['searchtype']) && !empty($args['searchtype']) ? $args['searchtype'] : 'AND';
         $vars['searchorder'] = isset($args['searchorder']) && !empty($args['searchorder']) ? $args['searchorder'] : 'newest';
         $vars['numlimit'] = isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : $this->getVar('itemsperpage', 25);
@@ -106,7 +107,33 @@ class UserApi extends \Zikula_AbstractApi
                 }
             }
 
-            // Count number of found results (pointless, this will alays be 0 as we just deleted these! - drak)
+            // Ask 1.4.0+ type modules for search results and persist them
+            $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
+            foreach ($searchableModules as $searchableModule) {
+                if (empty($active) || isset($active[$searchableModule['name']])) {
+                    if (isset($modvar[$searchableModule['name']])) {
+                        $param = array_merge($vars, $modvar[$searchableModule['name']]);
+                    } else {
+                        $param = $vars;
+                    }
+                    // send an *array* of queried words to 1.4.0+ type modules
+                    $param['q'] = preg_split('/ /', $param['q'], -1, PREG_SPLIT_NO_EMPTY);
+                    $moduleBundle = ModUtil::getModule($searchableModule['name']);
+                    /** @var $searchableInstance AbstractSearchable */
+                    $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->serviceManager, $moduleBundle);
+                    if ($searchableInstance instanceof AbstractSearchable) {
+                        $results = $searchableInstance->getResults($param);
+                        foreach ($results as $result) {
+                            $searchResult = new SearchResultEntity();
+                            $searchResult->merge($result);
+                            $this->entityManager->persist($searchResult);
+                        }
+                        $this->entityManager->flush();
+                    }
+                }
+            }
+
+            // Count number of found results
             $query = $this->entityManager->createQueryBuilder()
                                          ->select('count(s.sesid)')
                                          ->from('ZikulaSearchModule:SearchResultEntity', 's')
@@ -158,6 +185,9 @@ class UserApi extends \Zikula_AbstractApi
         // add displayname of modules found
         $sqlResult = array();
         foreach ($results as $result) {
+            // reformat url for 1.4.0+ type searches @todo - refactor to do this in the template
+            $result['url'] = (isset($result['url']) && ($result['url'] instanceof ModUrl)) ? $result['url']->getUrl() : null;
+            // process result for LEGACY (<1.4.0) searches
             if ($checker->checkResult($result)) {
                 $sqlResult[] = $result;
             }
@@ -470,6 +500,7 @@ class UserApi extends \Zikula_AbstractApi
                 $connector = $args['searchtype'] == 'AND' ? ' AND ' : ' OR ';
             } else {
                 $searchwords = array("%{$q}%");
+                $connector = ' OR ';
             }
             $start = true;
             foreach ($searchwords as $word) {

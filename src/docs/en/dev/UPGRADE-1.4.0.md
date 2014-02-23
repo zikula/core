@@ -16,12 +16,13 @@ Module Specification from Zikula Core 1.4.0
   13. [Event Names](#eventnames)
   14. [Hooks](#hooks)
   15. [Request](#request)
-  16. [Gedmo (Doctrine Extensions)](#gedmo)
-  17. [Paginate (Doctrine Extensions)](#paginate)
-  18. [Version File](#versionfile)
-  19. [Persistent Event Listeners](#eventlisteners)
-  20. [Theme Standard](#themes)
-  21. [Theme composer.json](#themecomposer)
+  16. [Search](#search)
+  17. [Gedmo (Doctrine Extensions)](#gedmo)
+  18. [Paginate (Doctrine Extensions)](#paginate)
+  19. [Version File](#versionfile)
+  20. [Persistent Event Listeners](#eventlisteners)
+  21. [Theme Standard](#themes)
+  22. [Theme composer.json](#themecomposer)
   
 <a name="installing" />
 Introduction
@@ -502,6 +503,34 @@ $request->files-> // this API now returns an object, not an array
 ```
 
 Documentation: http://symfony.com/doc/master/components/http_foundation/introduction.html#request
+
+
+<a name="search" />
+Search
+------
+
+The Api/methodology for the search module has changed. The previous method of using an Api call is deprecated (but still
+fully functional) in favor of a dedicated class that is identified in the Version file's `capabilities` area, like so:
+
+```php
+$meta['capabilities'][AbstractSearchable::SEARCHABLE] = array('class' => 'Zikula\Module\UsersModule\Helper\SearchHelper');
+```
+
+The `class` key must point to a helper class that extends `Zikula\Module\SearchModule\AbstractSearchable` and defines
+both the `getOptions()` method and the `getResults()` method. These two functions can nearly be cut and pasted from
+the old Api methods of similar names.
+
+The main difference here is that the `getResults()` method **MUST** return an array of arrays containing the module's
+result set and the sub-arrays **MUST** have keys matching the field names of the
+`Zikula\Module\SearchModule\Entity\SearchResultEntity` for merging and persisting the results.
+**Modules are no longer responsible for persisting their own search results**.
+
+Additional differences include the addition of a `url` field to the result set (results are no longer post-processed),
+various services (entityManager, translation, Zikula_View, etc) automatically available in the helper class, etc.
+A helper method, `formatWhere()` is available to construct a proper Expr() (search expression) for easy utilization in
+your module's search.
+
+The **UsersModule** has implemented the new Search method and can be used as a reference.
 
 
 <a name="gedmo" />

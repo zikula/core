@@ -101,6 +101,8 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
                     $this->setVar($modVar, $defaultValue);
                 }
             }
+            case '2.2.2':
+                // nothing to do
 
             // Update successful
             return true;

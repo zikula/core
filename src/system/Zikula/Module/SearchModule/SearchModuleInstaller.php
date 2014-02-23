@@ -13,7 +13,7 @@
 
 namespace Zikula\Module\SearchModule;
 
-use EventUtil;
+use LogUtil;
 use DoctrineHelper;
 
 /**
@@ -75,10 +75,19 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
                         'Zikula\Module\SearchModule\Entity\SearchResultEntity',
                     ));
                 } catch (\Exception $e) {
-                    return LogUtil::registerError($e->getMessage);
+                    return LogUtil::registerError($e->getMessage());
                 }
             case '1.5.3':
-            // future upgrade routines
+                // update schema
+                try {
+                    DoctrineHelper::updateSchema($this->entityManager, array(
+                        'Zikula\Module\SearchModule\Entity\SearchResultEntity',
+                    ));
+                } catch (\Exception $e) {
+                    return LogUtil::registerError($e->getMessage());
+                }
+            case '1.5.4':
+                // future upgrade routines
         }
 
         // Update successful
