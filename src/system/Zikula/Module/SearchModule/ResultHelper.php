@@ -53,6 +53,11 @@ class ResultHelper
      */
     public function checkResult(&$datarow)
     {
+        // make sure module is supposed to check the result, if not, return true to include result
+        if (!in_array($datarow['module'], $this->search_modules)) {
+            return true;
+        }
+
         // Get module name
         $module = $datarow['module'];
 
