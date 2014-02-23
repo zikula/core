@@ -24,18 +24,22 @@ use Doctrine\ORM\QueryBuilder;
 abstract class AbstractSearchable extends Translator
 {
     const SEARCHABLE = 'searchable';
+
     /**
      * @var ContainerInterface
      */
     private $container;
+
     /**
      * @var string The module name
      */
     protected $name;
+
     /**
      * @var \Doctrine\ORM\EntityManager;
      */
     protected $entityManager;
+
     /**
      * @var Zikula_View
      */
