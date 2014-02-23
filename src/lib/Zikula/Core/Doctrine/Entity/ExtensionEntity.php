@@ -82,7 +82,7 @@ class ExtensionEntity extends EntityAccess
     private $version;
 
     /**
-     * @ORM\Column(type="array", length=255)
+     * @ORM\Column(type="array")
      * @var array
      */
     private $capabilities;

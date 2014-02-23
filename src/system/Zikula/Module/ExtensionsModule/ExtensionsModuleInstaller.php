@@ -86,6 +86,8 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
                     $stmt = $connection->executeQuery($sql);
                 }
             case '3.7.11':
+                \DoctrineHelper::updateSchema($this->entityManager, array('Zikula\Core\Doctrine\Entity\ExtensionEntity'));
+            case '3.7.12':
                 // future upgrade routines
         }
 
