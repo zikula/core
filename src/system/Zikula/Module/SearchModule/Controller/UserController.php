@@ -24,6 +24,7 @@ use ZLanguage;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Module\SearchModule\AbstractSearchable;
 
 /**
  * User controllers for the search module
@@ -109,12 +110,16 @@ class UserController extends \Zikula_AbstractController
         SessionUtil::delVar('searchactive');
         SessionUtil::delVar('searchmodvar');
 
-        // get all the search plugins
+        // get all the LEGACY (<1.4.0) search plugins
         $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
         $search_modules = false === $search_modules ? array() : $search_modules;
 
-        if (count($search_modules) > 0) {
+        // get 1.4.0+ type searchable modules
+        $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
+
+        if (count($search_modules) > 0 || count($searchableModules) > 0) {
             $plugin_options = array();
+            // LEGACY handling (<1.4.0)
             foreach ($search_modules as $mods) {
                 // if active array is empty, we need to set defaults
                 if ($setActiveDefaults) {
@@ -130,6 +135,21 @@ class UserController extends \Zikula_AbstractController
 
                 if (isset($mods['title'])) {
                     $plugin_options[$mods['title']] = ModUtil::apiFunc($mods['title'], 'search', 'options', $vars);
+                }
+            }
+            // 1.4.0+ type handling
+            foreach ($searchableModules as $searchableModule) {
+                if ($setActiveDefaults) {
+                    $vars['active'][$searchableModule['name']] = '1';
+                }
+                $moduleBundle = ModUtil::getModule($searchableModule['name']);
+                /** @var $searchableInstance AbstractSearchable */
+                $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->serviceManager, $moduleBundle);
+
+                if ($searchableInstance instanceof AbstractSearchable) {
+                    if ((!$this->getVar("disable_{$searchableModule['name']}") && SecurityUtil::checkPermission('ZikulaSearchModule::Item', "{$searchableModule['name']}::", ACCESS_READ))) {
+                        $plugin_options[$searchableModule['name']] = $searchableInstance->getOptions($vars);
+                    }
                 }
             }
 
