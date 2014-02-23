@@ -133,7 +133,7 @@ class UserApi extends \Zikula_AbstractApi
                 }
             }
 
-            // Count number of found results (pointless, this will always be 0 as we just deleted these! - drak)
+            // Count number of found results
             $query = $this->entityManager->createQueryBuilder()
                                          ->select('count(s.sesid)')
                                          ->from('ZikulaSearchModule:SearchResultEntity', 's')
