@@ -148,7 +148,7 @@
                     <input id="securitycenter_sessioncsrftokenonetime_onetime" type="radio" name="sessioncsrftokenonetime" value="0"{if $modvars.ZConfig.sessioncsrftokenonetime ne 1} checked="checked"{/if} />
                     <label for="securitycenter_sessioncsrftokenonetime_onetime">{gt text="One time use"}</label>
                 </div>
-                <p class="help-block alert alert-info">{gt text="One time CSRF protection may affect the browser back button but it more secure."}</p>
+                <p class="help-block alert alert-info">{gt text="One time CSRF protection may affect the browser back button but is more secure."}</p>
             </div>
         </div>
 
