@@ -133,7 +133,7 @@ class SessionUtil
     public static function regenerate($force = false)
     {
         $session = ServiceUtil::getManager()->get('session');
-        $session->migrate();
+        $session->migrate($force);
 
         return;
     }
