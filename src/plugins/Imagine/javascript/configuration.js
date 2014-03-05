@@ -62,7 +62,7 @@ Zikula.Imagine.getPresetCopy = function(source) {
         element.writeAttribute('name', name.replace(prevId, newId));
     });
 
-    preset.select('.z-formbuttons a').invoke('removeClassName', 'z-hide');
+    preset.select('.z-formbuttons a').invoke('removeClassName', 'hide');
 
     return preset;
 };
