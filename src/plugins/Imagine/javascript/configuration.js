@@ -14,7 +14,7 @@ Zikula.Imagine.init = function() {
 Zikula.Imagine.addPreset = function(event, element) {
     event.preventDefault();
 
-    var preset = Zikula.Imagine.getPersetCopy($('imagine-configuration').down('fieldset.preset.default')),
+    var preset = Zikula.Imagine.getPresetCopy($('imagine-configuration').down('fieldset.preset.default')),
         name = preset.down('div.preset-name input');
 
     name.removeAttribute('readonly');
@@ -23,20 +23,20 @@ Zikula.Imagine.addPreset = function(event, element) {
     preset.select('input, select').invoke('clear');
     preset.hide();
 
-    Zikula.Imagine.insertPersetCopy(preset);
+    Zikula.Imagine.insertPresetCopy(preset);
 };
 
 Zikula.Imagine.copyPreset = function(event, element) {
     event.preventDefault();
 
-    var preset = Zikula.Imagine.getPersetCopy(element.up('fieldset.preset')),
+    var preset = Zikula.Imagine.getPresetCopy(element.up('fieldset.preset')),
         name = preset.down('div.preset-name input');
 
     name.removeAttribute('readonly');
     name.removeClassName('z-form-readonly');
     name.clear();
 
-    Zikula.Imagine.insertPersetCopy(preset);
+    Zikula.Imagine.insertPresetCopy(preset);
 };
 
 Zikula.Imagine.deletePreset = function(event, element) {
@@ -44,7 +44,7 @@ Zikula.Imagine.deletePreset = function(event, element) {
     element.up('fieldset.preset').remove();
 };
 
-Zikula.Imagine.getPersetCopy = function(source) {
+Zikula.Imagine.getPresetCopy = function(source) {
     var preset = source.clone(true),
         newId = $$('fieldset.preset').size(),
         prevId = /preset-(\d+)/.exec(preset.className)[1];
@@ -67,7 +67,7 @@ Zikula.Imagine.getPersetCopy = function(source) {
     return preset;
 };
 
-Zikula.Imagine.insertPersetCopy = function(preset) {
+Zikula.Imagine.insertPresetCopy = function(preset) {
     $$('.presets fieldset:last')[0].insert({
         after: preset
     });
