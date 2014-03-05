@@ -68,7 +68,7 @@ Zikula.Imagine.getPresetCopy = function(source) {
 };
 
 Zikula.Imagine.insertPresetCopy = function(preset) {
-    $$('.presets fieldset:last')[0].insert({
+    $$('fieldset:last')[0].insert({
         after: preset
     });
 
