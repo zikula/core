@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="search_opensearch_adult_content">{gt text='Does this page contain adult content?'}</label>
+                <label class="col-lg-3 control-label" for="search_opensearch_adult_content">{gt text='This page contains adult content'}</label>
                 <div class="col-lg-9">
                     <input id="search_opensearch_adult_content" type="checkbox" name="opensearch_adult_content" {if $opensearch_adult_content|default:false}checked="checked" {/if}/>
                 </div>
