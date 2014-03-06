@@ -85,7 +85,7 @@ class UserController extends \Zikula_AbstractController
         $vars['searchorder'] = $this->request->request->get('searchorder', SessionUtil::getVar('searchorder'));
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
         $vars['active'] = $this->request->request->get('active', SessionUtil::getVar('searchactive'));
-        $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar'));
+        $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar', array()));
 
         // this var allows the headers to not be displayed
         if (!isset($vars['titles']))
@@ -144,11 +144,12 @@ class UserController extends \Zikula_AbstractController
                 }
                 $moduleBundle = ModUtil::getModule($searchableModule['name']);
                 /** @var $searchableInstance AbstractSearchable */
-                $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->serviceManager, $moduleBundle);
+                $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->entityManager, $moduleBundle);
 
                 if ($searchableInstance instanceof AbstractSearchable) {
                     if ((!$this->getVar("disable_{$searchableModule['name']}") && SecurityUtil::checkPermission('ZikulaSearchModule::Item', "{$searchableModule['name']}::", ACCESS_READ))) {
-                        $plugin_options[$searchableModule['name']] = $searchableInstance->getOptions($vars);
+                        $active = !isset($vars['active']) || (isset($vars['active'][$searchableModule['name']]) && ($vars['active'][$searchableModule['name']] == '1'));
+                        $plugin_options[$searchableModule['name']] = $searchableInstance->getOptions($active, $vars['modvar']);
                     }
                 }
             }
@@ -265,6 +266,9 @@ class UserController extends \Zikula_AbstractController
                    ->assign($this->getVars())
                    ->assign($vars)
                    ->assign('limitsummary', $limitsummary);
+        if (isset($result['errors'])) {
+            $this->view->assign('errors', $result['errors']);
+        }
 
         // log the search if on first page
         if ($vars['firstPage']) {
