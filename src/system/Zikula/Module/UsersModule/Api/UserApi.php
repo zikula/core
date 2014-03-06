@@ -65,7 +65,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add clause for filtering letter
         if (isset($args['letter']) && !empty($args['letter'])) {
-            $qb->andWhere($qb->expr()->like('u.uname', $qb->expr()->literal($args['letter'] . '%')));
+            $qb->andWhere($qb->expr()->like('u.uname', ':uname'))->setParameter('uname', $args['letter'] . '%');
         }
 
         // add ordering
@@ -168,7 +168,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add clause for filtering letter
         if (isset($args['letter']) && !empty($args['letter'])) {
-            $qb->andWhere($qb->expr()->like('u.uname', $qb->expr()->literal($args['letter'] . '%')));
+            $qb->andWhere($qb->expr()->like('u.uname', ':uname'))->setParameter('uname', $args['letter'] . '%');
         }
 
         // convert querybuilder instance into a Query object

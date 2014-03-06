@@ -82,12 +82,12 @@ class UserApi extends \Zikula_AbstractApi
 
         // add clause for filtering module
         if (isset($args['module_id']) && is_numeric($args['module_id']) && $args['module_id']) {
-            $qb->andWhere($qb->expr()->eq('b.mid', $qb->expr()->literal($args['module_id'])));
+            $qb->andWhere($qb->expr()->eq('b.mid', ':mid'))->setParameter('mid', $args['module_id']);
         }
 
         // add clause for filtering language
         if (isset($args['language']) && $args['language']) {
-            $qb->andWhere($qb->expr()->eq('b.language', $qb->expr()->literal($args['language'])));
+            $qb->andWhere($qb->expr()->eq('b.language', ':language'))->setParameter('language', $args['language']);
         }
 
         // add clause for filtering status
@@ -98,7 +98,7 @@ class UserApi extends \Zikula_AbstractApi
                  $active = 0;
             }
 
-            $qb->andWhere($qb->expr()->eq('b.active', $qb->expr()->literal($active)));
+            $qb->andWhere($qb->expr()->eq('b.active', ':active'))->setParameter('active', $active);
         }
 
         // add clause for ordering
