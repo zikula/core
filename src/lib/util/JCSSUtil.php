@@ -26,12 +26,13 @@ class JCSSUtil
     {
         $return = '';
         $config = array(
-            'entrypoint'  => System::getVar('entrypoint', 'index.php'),
-            'baseURL'     => System::getBaseUrl(),
-            'baseURI'     => System::getBaseUri() . '/',
+            'entrypoint' => System::getVar('entrypoint', 'index.php'),
+            'baseURL' => System::getBaseUrl(),
+            'baseURI' => System::getBaseUri() . '/',
             'ajaxtimeout' => (int) System::getVar('ajaxtimeout', 5000),
-            'lang'        => ZLanguage::getLanguageCode(),
+            'lang' => ZLanguage::getLanguageCode(),
             'sessionName' => session_name(),
+            'uid' => (int)UserUtil::getVar('uid')
         );
         $config = DataUtil::formatForDisplay($config);
         $return .= "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
