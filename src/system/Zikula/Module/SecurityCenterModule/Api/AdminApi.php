@@ -135,7 +135,7 @@ class AdminApi extends \Zikula_AbstractApi
             if ($uid > 0) {
                 $qb->from('ZikulaUsersModule:UserEntity', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
-                $qb->andWhere($qb->expr()->eq('i.user', 'uid'))->setParameter('uid', $uid);
+                $qb->andWhere($qb->expr()->eq('i.user', ':uid'))->setParameter('uid', $uid);
             }
         }
 
