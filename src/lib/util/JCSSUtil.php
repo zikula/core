@@ -29,7 +29,7 @@ class JCSSUtil
             'entrypoint' => System::getVar('entrypoint', 'index.php'),
             'baseURL' => System::getBaseUrl(),
             'baseURI' => System::getBaseUri() . '/',
-            'ajaxtimeout' => (int) System::getVar('ajaxtimeout', 5000),
+            'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
             'lang' => ZLanguage::getLanguageCode(),
             'sessionName' => session_name(),
             'uid' => (int)UserUtil::getVar('uid')
