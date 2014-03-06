@@ -517,18 +517,19 @@ $meta['capabilities'][AbstractSearchable::SEARCHABLE] = array('class' => 'Zikula
 ```
 
 The `class` key must point to a helper class that extends `Zikula\Module\SearchModule\AbstractSearchable` and defines
-both the `getOptions()` method and the `getResults()` method. These two functions can nearly be cut and pasted from
-the old Api methods of similar names.
+both the `getOptions()` method and the `getResults()` method. These two functions are similar to the old Api methods of
+similar names, but now have specific parameters set. Please see `AbstractSearchable` for documentation of the parameters.
 
-The main difference here is that the `getResults()` method **MUST** return an array of arrays containing the module's
+The main difference now is that the `getResults()` method **MUST** return an array of arrays containing the module's
 result set and the sub-arrays **MUST** have keys matching the field names of the
-`Zikula\Module\SearchModule\Entity\SearchResultEntity` for merging and persisting the results.
+`Zikula\Module\SearchModule\Entity\SearchResultEntity` for merging and persisting the results (be sure to check `sesid`).
 **Modules are no longer responsible for persisting their own search results**.
 
 Additional differences include the addition of a `url` field to the result set (results are no longer post-processed),
 various services (entityManager, translation, Zikula_View, etc) automatically available in the helper class, etc.
 A helper method, `formatWhere()` is available to construct a proper Expr() (search expression) for easy utilization in
-your module's search.
+your module's search. Also, a helper method, `addError()` is available to provide feedback to the user if their search
+is invalid for your module.
 
 The **UsersModule** has implemented the new Search method and can be used as a reference.
 

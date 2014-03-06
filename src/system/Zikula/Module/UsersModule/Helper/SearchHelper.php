@@ -26,15 +26,16 @@ class SearchHelper extends AbstractSearchable
     /**
      * get the UI options for search form
      *
-     * @param $args
+     * @param boolean $active
+     * @param array|null $modVars
      * @return string
      */
-    public function getOptions($args)
+    public function getOptions($active, $modVars = null)
     {
         $options = '';
 
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            $options = $this->view->assign('active', !isset($args['active']) || isset($args['active'][$this->name]))
+            $options = $this->view->assign('active', $active)
                 ->fetch('users_search_options.tpl');
         }
 
@@ -44,10 +45,12 @@ class SearchHelper extends AbstractSearchable
     /**
      * Get the search results
      *
-     * @param $args
+     * @param array $words array of words to search for
+     * @param string $searchType AND|OR|EXACT
+     * @param array|null $modVars module form vars passed though
      * @return array
      */
-    public function getResults($args)
+    public function getResults(array $words, $searchType = 'AND', $modVars = null)
     {
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
             return array();
@@ -62,10 +65,10 @@ class SearchHelper extends AbstractSearchable
             ->from('ZikulaUsersModule:UserEntity', 'u')
             ->andWhere('u.activated <> :activated')
             ->setParameter('activated', UsersConstant::ACTIVATED_PENDING_REG);
-        $where = $this->formatWhere($qb, $args, array('u.uname'));
+        $where = $this->formatWhere($qb, $words, array('u.uname'), $searchType);
         $qb->andWhere($where);
         if ($useProfileMod) {
-            $uids = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array('dynadata' => array('all' => implode(' ', $args['q']))));
+            $uids = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array('dynadata' => array('all' => implode(' ', $words))));
             if (is_array($uids) && !empty($uids)) {
                 $qb->orWhere($qb->expr()->in('u.uid', $uids));
             }

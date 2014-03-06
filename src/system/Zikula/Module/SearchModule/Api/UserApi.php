@@ -57,7 +57,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
         $vars = array();
-        $vars['q'] = str_replace('%', '\\%', $args['q']);  // Don't allow user input % as wildcard
+        $vars['q'] = str_replace('%', '', $args['q']);  // Don't allow user input % as wildcard
         $vars['searchtype'] = isset($args['searchtype']) && !empty($args['searchtype']) ? $args['searchtype'] : 'AND';
         $vars['searchorder'] = isset($args['searchorder']) && !empty($args['searchorder']) ? $args['searchorder'] : 'newest';
         $vars['numlimit'] = isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : $this->getVar('itemsperpage', 25);
@@ -111,18 +111,18 @@ class UserApi extends \Zikula_AbstractApi
             $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
             foreach ($searchableModules as $searchableModule) {
                 if (empty($active) || isset($active[$searchableModule['name']])) {
-                    if (isset($modvar[$searchableModule['name']])) {
-                        $param = array_merge($vars, $modvar[$searchableModule['name']]);
-                    } else {
-                        $param = $vars;
-                    }
                     // send an *array* of queried words to 1.4.0+ type modules
-                    $param['q'] = preg_split('/ /', $param['q'], -1, PREG_SPLIT_NO_EMPTY);
+                    if ($vars['searchtype'] == 'EXACT') {
+                        $words = array(trim($vars['q']));
+                    } else {
+                        $words = preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
+                    }
                     $moduleBundle = ModUtil::getModule($searchableModule['name']);
                     /** @var $searchableInstance AbstractSearchable */
-                    $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->serviceManager, $moduleBundle);
+                    $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->entityManager, $moduleBundle);
                     if ($searchableInstance instanceof AbstractSearchable) {
-                        $results = $searchableInstance->getResults($param);
+                        $modvar[$searchableModule['name']] = isset($modvar[$searchableModule['name']]) ? $modvar[$searchableModule['name']] : null;
+                        $results = $searchableInstance->getResults($words, $vars['searchtype'], $modvar[$searchableModule['name']]);
                         foreach ($results as $result) {
                             $searchResult = new SearchResultEntity();
                             $searchResult->merge($result);
@@ -201,8 +201,11 @@ class UserApi extends \Zikula_AbstractApi
 
         $result = array(
                 'resultCount' => $resultCount,
-                'sqlResult' => $sqlResult
+                'sqlResult' => $sqlResult,
         );
+        if (isset($searchableInstance)) {
+            $result['errors'] = $searchableInstance->getErrors();
+        }
 
         return $result;
     }

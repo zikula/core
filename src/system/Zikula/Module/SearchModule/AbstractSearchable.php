@@ -14,21 +14,15 @@
 namespace Zikula\Module\SearchModule;
 
 use Zikula\Core\AbstractModule;
-use Zikula_ServiceManager;
 use Zikula_View;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use ZLanguage;
 use Zikula\Common\I18n\Translator;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityManager;
 
 abstract class AbstractSearchable extends Translator
 {
     const SEARCHABLE = 'searchable';
-
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
 
     /**
      * @var string The module name
@@ -36,7 +30,7 @@ abstract class AbstractSearchable extends Translator
     protected $name;
 
     /**
-     * @var \Doctrine\ORM\EntityManager;
+     * @var EntityManager;
      */
     protected $entityManager;
 
@@ -46,72 +40,64 @@ abstract class AbstractSearchable extends Translator
     protected $view;
 
     /**
+     * @var array
+     */
+    private $errors = array();
+
+    /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
-     * @param AbstractModule        $bundle
+     * @param EntityManager  $entityManager
+     * @param AbstractModule $bundle
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, AbstractModule $bundle)
+    public function __construct(EntityManager $entityManager, AbstractModule $bundle)
     {
-        $this->setContainer($serviceManager);
-        $this->entityManager = $this->getContainer()->get('doctrine.entitymanager');
+        $this->entityManager = $entityManager;
         $this->name = $bundle->getName();
         $this->view = Zikula_View::getInstance($this->name);
         parent::__construct(ZLanguage::getModuleDomain($this->name));
     }
 
     /**
-     * @param ContainerInterface $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * Get the Container.
-     *
-     * @return ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
-    /**
      * get the UI options for search form
      *
-     * @param $args
+     * @param boolean $active if the module should be checked as active
+     * @param array|null $modVars module form vars as previously set
      * @return string
      */
-    abstract public function getOptions($args);
+    abstract public function getOptions($active, $modVars = null);
 
     /**
      * Get the search results
-     * @param $args
+     *
+     * @param array $words array of words to search for
+     * @param string $searchType AND|OR|EXACT
+     * @param array|null $modVars module form vars passed though
      * @return array
      */
-    abstract function getResults($args);
+    abstract function getResults(array $words, $searchType = 'AND', $modVars = null);
 
     /**
      * Construct a QueryBuilder Where orX|andX Expr instance
      *
      * @param QueryBuilder $qb
-     * @param array $args
+     * @param array $words the words to query for
      * @param array $fields
+     * @param string $searchtype AND|OR|EXACT
      * @return null|\Doctrine\ORM\Query\Expr\Composite
      */
-    public function formatWhere(QueryBuilder $qb, array $args, array $fields)
+    public function formatWhere(QueryBuilder $qb, array $words, array $fields, $searchtype = 'AND')
     {
-        if (empty($args) || !isset($args['q']) || !isset($args['searchtype']) || empty($fields)) {
+        if (empty($words) || empty($fields)) {
             return null;
         }
-        $method = ($args['searchtype'] == 'EXACT') ? 'andX' : 'orX';
+        $method = ($searchtype == 'OR') ? 'orX' : 'andX';
         /** @var $where \Doctrine\ORM\Query\Expr\Composite */
         $where = $qb->expr()->$method();
-        foreach ($args['q'] as $word) {
+        foreach ($words as $word) {
             $subWhere = $qb->expr()->orX();
             foreach ($fields as $field) {
+                // @todo - find a way to bind this parameter instead of using literal
                 $expr = $qb->expr()->like($field, $qb->expr()->literal('%' . $word . '%'));
                 $subWhere->add($expr);
             }
@@ -120,4 +106,20 @@ abstract class AbstractSearchable extends Translator
 
         return $where;
     }
-} 
+
+    /**
+     * @param array $error
+     */
+    public function addError($error)
+    {
+        $this->errors[] = $this->name . ': ' . $error;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+}

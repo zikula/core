@@ -3,6 +3,14 @@
 
 <h3>{$templatetitle}</h3>
 
+{if (isset($errors))}
+    <div class="alert alert-danger">
+    {foreach from=$errors item="error"}
+        <p>{$error}</p>
+    {/foreach}
+    </div>
+{/if}
+
 <p>{gt text="Number of hits: %s" tag1=$resultcount domain='zikula'}</p>
 
 {if $resultcount gt 0}
