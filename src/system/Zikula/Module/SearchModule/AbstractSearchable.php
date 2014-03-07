@@ -94,12 +94,14 @@ abstract class AbstractSearchable extends Translator
         $method = ($searchtype == 'OR') ? 'orX' : 'andX';
         /** @var $where \Doctrine\ORM\Query\Expr\Composite */
         $where = $qb->expr()->$method();
+        $i = 1;
         foreach ($words as $word) {
             $subWhere = $qb->expr()->orX();
             foreach ($fields as $field) {
-                // @todo - find a way to bind this parameter instead of using literal
-                $expr = $qb->expr()->like($field, $qb->expr()->literal('%' . $word . '%'));
+                $expr = $qb->expr()->like($field, "?$i");
                 $subWhere->add($expr);
+                $qb->setParameter($i, '%' . $word . '%');
+                $i++;
             }
             $where->add($subWhere);
         }

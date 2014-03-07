@@ -58,14 +58,16 @@ class AdminApi extends \Zikula_AbstractApi
             if ($uid > 0) {
                 $qb->from('ZikulaUsersModule:UserEntity', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
-                $qb->andWhere($qb->expr()->eq('i.user', $qb->expr()->literal($uid)));
+                $qb->andWhere($qb->expr()->eq('i.user', ':uid'))->setParameter('uid', $uid);
             }
         }
 
         // add clauses for where
         if (isset($args['where'])) {
+            $i = 1;
             foreach ($args['where'] as $w_key => $w_value) {
-                $qb->andWhere($qb->expr()->eq('i.' . $w_key, $qb->expr()->literal($w_value)));
+                $qb->andWhere($qb->expr()->eq('i.' . $w_key, "?$i"))->setParameter($i, $w_value);
+                $i++;
             }
         }
 
@@ -133,14 +135,16 @@ class AdminApi extends \Zikula_AbstractApi
             if ($uid > 0) {
                 $qb->from('ZikulaUsersModule:UserEntity', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
-                $qb->andWhere($qb->expr()->eq('i.user', $qb->expr()->literal($uid)));
+                $qb->andWhere($qb->expr()->eq('i.user', ':uid'))->setParameter('uid', $uid);
             }
         }
 
         // add clauses for where
         if (isset($args['where'])) {
+            $i = 1;
             foreach ($args['where'] as $w_key => $w_value) {
-                $qb->andWhere($qb->expr()->eq('i.' . $w_key, $qb->expr()->literal($w_value)));
+                $qb->andWhere($qb->expr()->eq('i.' . $w_key, "?$i"))->setParameter($i, $w_value);
+                $i++;
             }
         }
 

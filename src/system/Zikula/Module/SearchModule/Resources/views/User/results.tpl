@@ -3,7 +3,7 @@
 
 <h3>{$templatetitle}</h3>
 
-{if (isset($errors))}
+{if (!empty($errors))}
     <div class="alert alert-danger">
     {foreach from=$errors item="error"}
         <p>{$error}</p>

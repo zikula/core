@@ -348,12 +348,12 @@ class AdminApi extends \Zikula_AbstractApi
            ->from('ZikulaGroupsModule:GroupEntity', 'g');
 
         // add clause for filtering name
-        $qb->andWhere($qb->expr()->eq('g.name', $qb->expr()->literal($args['name'])));
+        $qb->andWhere($qb->expr()->eq('g.name', ':gname'))->setParameter('gname', $args['name']);
 
         // Optional Where to use when modifying a group to check if there is
         // already another group by that name.
         if (isset($args['checkgid']) && is_numeric($args['checkgid'])) {
-            $qb->andWhere($qb->expr()->neq('g.gid', $qb->expr()->literal($args['checkgid'])));
+            $qb->andWhere($qb->expr()->neq('g.gid', ':ggid'))->setParameter('ggid', $args['checkgid']);
         }
 
         // convert querybuilder instance into a Query object
@@ -397,7 +397,7 @@ class AdminApi extends \Zikula_AbstractApi
            ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g');
 
         // add clause for filtering name
-        $qb->andWhere($qb->expr()->eq('g.gid', $qb->expr()->literal($args['gid'])));
+        $qb->andWhere($qb->expr()->eq('g.gid', ':ggid'))->setParameter('ggid', $args['gid']);
 
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();

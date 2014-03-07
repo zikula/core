@@ -155,15 +155,16 @@ class AdminApi extends \Zikula_AbstractApi
 
         // filter by first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
-            $clause1 = $qb->expr()->like('e.name', $qb->expr()->literal($args['letter'] . '%'));
-            $clause2 = $qb->expr()->like('e.name', $qb->expr()->literal(strtolower($args['letter']) . '%'));
-            $qb->andWhere($clause1 . ' OR ' . $clause2);
+            $or = $qb->expr()->orX();
+            $or->add($qb->expr()->like('e.name', ':letter1'));
+            $or->add($qb->expr()->like('e.name', ':letter2'));
+            $qb->andWhere($or)->setParameters(array('letter1' => $args['letter'] . '%', 'letter2' => strtolower($args['letter']) . '%'));
         }
 
         // filter by type
         $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int)$args['type'];
         if ($type != 0) {
-            $qb->andWhere($qb->expr()->eq('e.type', $qb->expr()->literal($type)));
+            $qb->andWhere($qb->expr()->eq('e.type', ':type'))->setParameter('type', $type);
         }
 
         // filter by module state
@@ -180,7 +181,7 @@ class AdminApi extends \Zikula_AbstractApi
             case ModUtil::STATE_UPGRADED:
             case ModUtil::STATE_NOTALLOWED:
             case ModUtil::STATE_INVALID:
-                $qb->andWhere($qb->expr()->eq('e.state', $qb->expr()->literal($state)));
+                $qb->andWhere($qb->expr()->eq('e.state', $qb->expr()->literal($state))); // allowed 'literal' because var is validated
                 break;
 
             case 10:
@@ -1201,15 +1202,16 @@ class AdminApi extends \Zikula_AbstractApi
 
         // filter by first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
-            $clause1 = $qb->expr()->like('e.name', $qb->expr()->literal($args['letter'] . '%'));
-            $clause2 = $qb->expr()->like('e.name', $qb->expr()->literal(strtolower($args['letter']) . '%'));
-            $qb->andWhere($clause1 . ' OR ' . $clause2);
+            $or = $qb->expr()->orX();
+            $or->add($qb->expr()->like('e.name', ':letter1'));
+            $or->add($qb->expr()->like('e.name', ':letter2'));
+            $qb->andWhere($or)->setParameters(array('letter1' => $args['letter'] . '%', 'letter2' => strtolower($args['letter']) . '%'));
         }
 
         // filter by type
         $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int)$args['type'];
         if ($type != 0) {
-            $qb->andWhere($qb->expr()->eq('e.type', $qb->expr()->literal($type)));
+            $qb->andWhere($qb->expr()->eq('e.type', ':type'))->setParameter('type', $type);
         }
 
         // filter by module state
@@ -1226,7 +1228,7 @@ class AdminApi extends \Zikula_AbstractApi
             case ModUtil::STATE_UPGRADED:
             case ModUtil::STATE_NOTALLOWED:
             case ModUtil::STATE_INVALID:
-                $qb->andWhere($qb->expr()->eq('e.state', $qb->expr()->literal($state)));
+                $qb->andWhere($qb->expr()->eq('e.state', $qb->expr()->literal($state))); // allowed 'literal' because var is validated
                 break;
 
             case 10:
