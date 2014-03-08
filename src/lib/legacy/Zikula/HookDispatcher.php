@@ -364,7 +364,8 @@ class Zikula_HookDispatcher
 
     /**
      * Revert the provided hook to backward compatible hooktype
-     * Do not need to revert FilterHook and DisplayHook because they are already reverted in the template plugins
+     * Do not need to revert DisplayHook because it is already reverted in the template plugin
+     * FilterHook conversion is also done in template plugin but also needed here for Ajax calls
      *
      * @param Hook $hook
      * @return Hook
@@ -387,6 +388,10 @@ class Zikula_HookDispatcher
                     $newUrl = null;
                 }
                 return new \Zikula_ProcessHook($name, $hook->getId(), $newUrl);
+                break;
+            case 'Zikula\Core\Hook\FilterHook':
+                /** @var $hook \Zikula\Core\Hook\FilterHook */
+                return new \Zikula_FilterHook($name, $hook->getData());
                 break;
             default:
                 return $hook;
