@@ -236,16 +236,17 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             }
         } elseif ($this->doctrine2) {
             $entity = $view->get_template_vars($this->group);
+            $entityClass = get_class($entity);
 
             // load category from db
             $em = ServiceUtil::getService('doctrine.entitymanager');
 
-            $collection = $em->getClassMetadata(get_class($entity))
+            $collection = $em->getClassMetadata($entityClass)
                              ->getFieldValue($entity, $this->dataField);
 
             if (!$collection) {
                 $collection = new \Doctrine\Common\Collections\ArrayCollection();
-                $em->getClassMetadata(get_class($entity))
+                $em->getClassMetadata($entityClass)
                    ->setFieldValue($entity, $this->dataField, $collection);
             }
 
@@ -274,10 +275,15 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             // we do NOT flush here, as the calling module is responsible for that (Guite)
             //$em->flush();
 
-            foreach ($selectedValues as $selectedValue) {
+            $categoryEntityClass = 'Zikula_Doctrine2_Entity_Category';
+            if (strpos($entityClass, '\\') !== false) {
+                // if using namespaces, use new base class
+                $categoryEntityClass = 'Zikula\Module\CategoriesModule\Entity\CategoryEntity';
+            }
 
-                $category = $em->find('Zikula_Doctrine2_Entity_Category', $selectedValue);
-                $class = $em->getClassMetadata(get_class($entity))->getAssociationTargetClass($this->dataField);
+            foreach ($selectedValues as $selectedValue) {
+                $category = $em->find($categoryEntityClass, $selectedValue);
+                $class = $em->getClassMetadata($entityClass)->getAssociationTargetClass($this->dataField);
                 $collection->add(new $class($this->registryId, $category, $entity));
             }
         } else {
@@ -357,7 +363,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             $this->setSelectedValue($value);
 
         } elseif ($this->doctrine2) {
-            // doesn't seem to check where this is no group like other options above...
+            // TODO doesn't seem to check where this is no group like other options above...
             if (isset($values[$this->group])) {
                 $entity = $values[$this->group];
                 if (isset($entity[$this->dataField])) {
