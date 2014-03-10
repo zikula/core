@@ -207,7 +207,10 @@ class Zikula_Workflow
             $this->workflowData['state'] = $nextState;
             $obj->mapValue('__WORKFLOW__', $this->workflowData);
         } else {
-            $obj['__WORKFLOW__']['state'] = $nextState;
+            // use helper var to prevent indirect modification exception
+            $workflow = $obj['__WORKFLOW__'];
+            $workflow['state'] = $nextState;
+            $obj['__WORKFLOW__'] = $workflow;
         }
 
         // return result of all operations (possibly okay to just return true here)
