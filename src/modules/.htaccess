@@ -3,7 +3,7 @@
 #                  stored under the modules/ directory
 # ----------------------------------------------------------------------
 deny from all
-<FilesMatch "\.(css|js|jpg|gif|png|swf)$">
+<FilesMatch "\.(css|eot|gif|jpeg|jpg|js|pdf|png|svg|swf|ttf|woff)$">
 order allow,deny
 allow from all
 </filesmatch>
