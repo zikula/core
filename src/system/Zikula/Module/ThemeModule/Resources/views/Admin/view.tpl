@@ -26,7 +26,7 @@
         {if $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint neq 1}
         {assign var='themeurl' value="`$homepageurl`/`$theme.name`"}
         {elseif $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint eq 1}
-        {assign var='themeurl' value="`$homepageurl``$theme.dislpayname`"}
+        {assign var='themeurl' value="`$homepageurl``$theme.displayname`"}
         {else}
         {if $homepageurl|strstr:"?"}
         {assign var='themeurl' value="`$homepageurl`&theme=`$theme.displayname`"}
