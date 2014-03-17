@@ -52,7 +52,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="groups_uid">{gt text="Users to add"}</label>
                 <div class="col-lg-9">
-                    <select class="form-control" id="groups_uid" name="uid[]" multiple="multiple" size="10">
+                    <select class="form-control" id="groups_uid" name="uid[]" multiple="multiple" size="10" placeholder="{gt text='Select...'}">
                         {html_options options=$uids}
                     </select>
                 </div>
