@@ -22,7 +22,8 @@
                 Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
 
                 Zikula.Users.NewUser.fieldId = {
-                    submit:         '{{$formData->getFormId()}}_submitnewuser',
+                    // Commented out line below, in favor of HTML5 form validation.
+                    //submit:         '{{$formData->getFormId()}}_submitnewuser',
                     checkUser:      '{{$formData->getFormId()}}_checkuserajax',
                     checkMessage:   '{{$formData->getFormId()}}_checkmessage',
                     validMessage:   '{{$formData->getFormId()}}_validmessage',
@@ -79,7 +80,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="User name"}<span class="required"></span></label>
             {assign var='fieldName' value='uname'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" required="required" title="{gt text='&quot;User Name&quot; is required.'}" x-moz-errormessage="{gt text='&quot;User Name&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
                 <em class="help-block sub">{gt text='User names can contain letters, numbers, underscores, periods and/or dashes.'}</em>
 
                 {if ($authentication_method.modname != 'ZikulaUsersModule') || (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
@@ -99,7 +100,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="required"></span></label>
             {assign var='fieldName' value='pass'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password" class="form-control" size="25" maxlength="60" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password" class="form-control" size="25" maxlength="60" required="required" title="{gt text='&quot;Password&quot; is required.'}" x-moz-errormessage="{gt text='&quot;Password&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
                 <em class="help-block sub">{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.ZikulaUsersModule.minpass}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 <div id="{$formData->getFormId()}_passmeter"></div>
@@ -110,7 +111,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your Password for verification"}<span class="required"></span></label>
             {assign var='fieldName' value='passagain'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="password" size="25" maxlength="60" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="password" size="25" maxlength="60" required="required" title="{gt text='&quot;Password&quot; is required.'}" x-moz-errormessage="{gt text='&quot;Password&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
@@ -120,7 +121,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}{if $modvars.ZikulaUsersModule.$modvar_password_reminder_mandatory}<span class="required"></span>{/if}</label>
             {assign var='fieldName' value='passreminder'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="128" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="128" value="{$formData->getFieldData($fieldName)|safetext}" required="required" title="{gt text='&quot;Password Reminder&quot; is required.'}" x-moz-errormessage="{gt text='&quot;Password Remindere&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
                 <div class="sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
                 <div class="help-block alert alert-info">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
@@ -141,7 +142,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="required"></span></label>
             {assign var='fieldName' value='email'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" title="{gt text='&quot;Email Address&quot; is required.'}" x-moz-errormessage="{gt text='&quot;User Name&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
 
                 {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
                 <em class="help-block sub">{gt text='You will use your e-mail address to identify yourself when you log in.'}</em>
@@ -154,7 +155,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your E-mail address for verification"}<span class="required"></span></label>
             {assign var='fieldName' value='emailagain'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" title="{gt text='&quot;Email Address&quot; is required.'}" x-moz-errormessage="{gt text='&quot;User Name&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
