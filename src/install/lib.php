@@ -18,7 +18,7 @@ use Symfony\Component\Yaml\Yaml;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
 
-ini_set('memory_limit', '128M');
+ini_set('memory_limit', '84M');
 ini_set('max_execution_time', 300);
 
 function install(Zikula_Core $core, Request $request)
