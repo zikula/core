@@ -242,7 +242,7 @@ function _upg_upgrademodules($username, $password)
 
     // Set the System Identifier as a unique string.
     if (!System::getVar('system_identifier')) {
-        System::setVar('system_identifier', uniqid());
+        System::setVar('system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
     }
 
     // force load the modules admin API

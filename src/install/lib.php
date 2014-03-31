@@ -266,7 +266,7 @@ function install(Zikula_Core $core, Request $request)
                     UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
 
                     // Set the System Identifier as a unique string.
-                    System::setVar('system_identifier', uniqid());
+                    System::setVar('system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
                     
                     // add admin email as site email
                     System::setVar('adminmail', $email);
