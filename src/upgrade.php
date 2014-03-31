@@ -240,6 +240,11 @@ function _upg_upgrademodules($username, $password)
 {
     _upg_header();
 
+    // Set the System Identifier as a unique string.
+    if (!System::getVar('system_identifier')) {
+        System::setVar('system_identifier', uniqid());
+    }
+
     // force load the modules admin API
     ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
 
