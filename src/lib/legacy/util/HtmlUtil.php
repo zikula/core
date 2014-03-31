@@ -963,7 +963,8 @@ class HtmlUtil
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      * @param string  $id            The ID of the generated selector (optional).
      * @param string  $class         The class of the generated selector (optional).
-     * @param boolean $required      Whether or not to disable selector (optional) (default=false).
+     * @param string $required      Specifies that the user is required to select a value
+     *                               before submitting the form (optional).
      * @param string  $title         The title of the generated selector (optional).
      *
      * @return The generated HTML for the selector.
