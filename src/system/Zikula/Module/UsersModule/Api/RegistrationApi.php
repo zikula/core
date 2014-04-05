@@ -424,7 +424,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $adminNotification = isset($args['adminnotification']) ? $args['adminnotification'] : true;
 
         // Handle password
-        $sendPassword = $isAdminOrSubAdmin && isset($args['sendpass']) ? $args['sendpass'] : false;
+        $sendPassword = isset($args['sendpass']) ? $args['sendpass'] : false;
 
         if ($sendPassword) {
             // Function called by admin adding user/reg, administrator created the password; no approval needed, so must need verification.
