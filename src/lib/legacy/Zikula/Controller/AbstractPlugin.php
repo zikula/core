@@ -54,9 +54,11 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
     /**
      * Setup base properties.
      *
+     * @param $bundle
+     *
      * @return void
      */
-    protected function _configureBase()
+    protected function _configureBase($bundle = null)
     {
         $this->systemBaseDir = realpath('.');
         $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';

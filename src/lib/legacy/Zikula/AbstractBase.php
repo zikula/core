@@ -146,7 +146,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return void
      */
-    protected function _configureBase($bundle)
+    protected function _configureBase($bundle = null)
     {
         $this->systemBaseDir = realpath('.');
 
