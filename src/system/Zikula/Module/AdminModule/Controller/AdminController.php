@@ -321,7 +321,7 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        if (!$this->getVar('ignoreinstallercheck') && System::getVar('development') == 0) {
+        if (!$this->getVar('ignoreinstallercheck') && System::isDevelopmentMode()) {
             // check if the Zikula Recovery Console exists
             $zrcexists = file_exists('zrc.php');
             // check if upgrade scripts exist
@@ -778,7 +778,7 @@ class AdminController extends \Zikula_AbstractController
         $modvars = ModUtil::getVar('ZikulaThemeModule');
 
         $data = array();
-        $data['devmode'] = $this->getContainer()->get('kernel')->getEnvironment();
+        $data['devmode'] = $this->getContainer()->get('kernel')->getEnvironment() === 'dev';
 
         if ($data['devmode'] == true) {
             $data['cssjscombine']                = $modvars['cssjscombine'];
