@@ -93,19 +93,19 @@
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_starttype">{gt text="Start function type (required)"}</label>
                     <div class="col-lg-9">
-                        <input id="settings_starttype" type="text" class="form-control" name="settings[starttype]" value="{$modvars.ZConfig.starttype|safetext}" size="10" maxlength="10" />
+                        <input id="settings_starttype" type="text" class="form-control" name="settings[starttype]" value="{$modvars.ZConfig.starttype|safetext}" size="10" maxlength="300" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_startfunc">{gt text="Start function (required)"}</label>
                     <div class="col-lg-9">
-                        <input id="settings_startfunc" type="text" class="form-control" name="settings[startfunc]" value="{$modvars.ZConfig.startfunc|safetext}" size="20" maxlength="40" />
+                        <input id="settings_startfunc" type="text" class="form-control" name="settings[startfunc]" value="{$modvars.ZConfig.startfunc|safetext}" size="20" maxlength="300" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_startargs">{gt text="Start function arguments"}</label>
                     <div class="col-lg-9">
-                        <input id="settings_startargs" type="text" class="form-control" name="settings[startargs]" value="{$modvars.ZConfig.startargs|safetext}" size="20" maxlength="60" />
+                        <input id="settings_startargs" type="text" class="form-control" name="settings[startargs]" value="{$modvars.ZConfig.startargs|safetext}" size="20" maxlength="300" />
                         <em class="help-block">{gt text="(Comma-separated)"}</em>
                     </div>
                 </div>
