@@ -73,15 +73,15 @@
             <div id="settings_startpage_container" style="overflow: none;">
                 <div class="z-formrow">
                     <label for="settings_starttype">{gt text="Start function type (required)"}</label>
-                    <input id="settings_starttype" type="text" name="settings[starttype]" value="{$modvars.ZConfig.starttype|safetext}" size="10" maxlength="10" />
+                    <input id="settings_starttype" type="text" name="settings[starttype]" value="{$modvars.ZConfig.starttype|safetext}" size="10" maxlength="300" />
                 </div>
                 <div class="z-formrow">
                     <label for="settings_startfunc">{gt text="Start function (required)"}</label>
-                    <input id="settings_startfunc" type="text" name="settings[startfunc]" value="{$modvars.ZConfig.startfunc|safetext}" size="20" maxlength="40" />
+                    <input id="settings_startfunc" type="text" name="settings[startfunc]" value="{$modvars.ZConfig.startfunc|safetext}" size="20" maxlength="300" />
                 </div>
                 <div class="z-formrow">
                     <label for="settings_startargs">{gt text="Start function arguments"}</label>
-                    <input id="settings_startargs" type="text" name="settings[startargs]" value="{$modvars.ZConfig.startargs|safetext}" size="20" maxlength="60" />
+                    <input id="settings_startargs" type="text" name="settings[startargs]" value="{$modvars.ZConfig.startargs|safetext}" size="20" maxlength="300" />
                     <em class="z-formnote">{gt text="(Comma-separated)"}</em>
                 </div>
             </div>
