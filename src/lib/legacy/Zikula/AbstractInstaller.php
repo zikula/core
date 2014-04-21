@@ -30,6 +30,8 @@ abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
     /**
      * Setup internal properties.
      *
+     * @param $bundle
+     *
      * @return void
      */
     protected function _configureBase($bundle = null)
