@@ -319,8 +319,8 @@ class DBUtil
 
 
     /**
-     * Transform a value for DB-storage-safe formatting, taking into account the columnt type. 
-     * Numeric values are not enclosed in single-quotes, anything else is. 
+     * Transform a value for DB-storage-safe formatting, taking into account the columnt type.
+     * Numeric values are not enclosed in single-quotes, anything else is.
      *
      * @param string $table   The treated table reference.
      * @param string $field   The table field the value needs to be stored in
@@ -788,7 +788,7 @@ class DBUtil
                 $columnDefinition = $columnDefList[$idfield];
                 $columnDefFields  = explode(' ', $columnDefinition);
                 $colType          = substr($columnDefinition, 0, 1);
-                $colAuto          = in_array('AUTO', $columnDefFields);
+                $colAuto          = in_array('AUTO', $columnDefFields) || in_array('AUTOINCREMENT', $columnDefFields);
                 if ($colType == 'I' && $colAuto) {
                     $obj_id = self::getInsertID($table, $idfield);
                     $object[$idfield] = $obj_id;
@@ -893,7 +893,7 @@ class DBUtil
 
         if ($tArray) {
             if (!$where) {
-                $_where = " WHERE $columnList[$idfield] = " . self::_typesafeQuotedValue ($table, $idfield, $object[$idfield]); 
+                $_where = " WHERE $columnList[$idfield] = " . self::_typesafeQuotedValue ($table, $idfield, $object[$idfield]);
             } else {
                 $_where = self::_checkWhereClause($where);
             }
@@ -1783,7 +1783,7 @@ class DBUtil
         $exitOnError = true;
         $tables = self::getTables();
         if (!isset($tables["{$table}_column"])) {
-            // For field arrays we construct a temporary literal table entry which allows us to 
+            // For field arrays we construct a temporary literal table entry which allows us to
             // do ad-hoc queries on dynamic reference tables which do not have tables.php entry.
             $tables[$table]                    = $table;
             $tables["{$table}_column"]         = array();
@@ -2777,7 +2777,7 @@ class DBUtil
         if ($res === false) {
             return $res;
         }
-    
+
         $count = false;
         $res   = $res->fetchAll(Doctrine::FETCH_COLUMN);
         if ($res && isset($res[0])) {
