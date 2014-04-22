@@ -1231,7 +1231,7 @@ class ModUtil
 
     private static function symfonyRoute($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang)
     {
-        /** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
+        /** @var \Symfony\Component\Routing\RouterInterface $router */
         $router = ServiceUtil::get('router');
 
         if (isset($args['lang'])) {
@@ -1249,7 +1249,8 @@ class ModUtil
 
         $foundRoute = false;
         foreach ($routeNames as $routeName) {
-            if ($router->getRouteCollection()->get($routeName) !== null) {
+            $routeCollection = ($router instanceof \JMS\I18nRoutingBundle\Router\I18nRouter) ? $router->getOriginalRouteCollection() : $router->getRouteCollection();
+            if ($routeCollection->get($routeName) !== null) {
                 $foundRoute = $routeName;
             }
         }
