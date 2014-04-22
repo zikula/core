@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+    translator:      { fallback: %locale% }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -117,7 +117,7 @@ stof_doctrine_extensions:
             sluggable: true
             tree: true
             loggable: true
-            sortable: false
+            sortable: true
             softdeleteable: false
             uploadable: false
             reference_integrity: false
