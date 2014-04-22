@@ -59,7 +59,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/useraccount")
+     * @Route("/useraccount", options={"zkNoBundlePrefix"=1})
      *
      * Render and display the user's account panel. If he is not logged in, then redirect to the login screen.
      *
@@ -90,7 +90,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/view")
+     * @Route("/view")
      *
      * Display the base user form (login/lostpassword/register options).
      *
@@ -110,7 +110,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/register")
+     * @Route("/register", options={"zkNoBundlePrefix"=1})
      *
      * Display the registration form.
      *
@@ -672,7 +672,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/lost-account-details")
+     * @Route("/lost-account-details")
      *
      * Display the lost user name / password choices.
      *
@@ -689,7 +689,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/lost-username")
+     * @Route("/lost-username")
      *
      * Display the account information recovery form.
      *
@@ -757,7 +757,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/lost-password")
+     * @Route("/lost-password")
      *
      * Display the lost password form.
      *
@@ -904,7 +904,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/lost-password/code")
+     * @Route("/lost-password/code")
      *
      * Display the lost password confirmation code entry form.
      *
@@ -1088,7 +1088,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/login")
+     * @Route("/login", options={"zkNoBundlePrefix"=1})
      *
      * Display the login form, or process a user log-in request.
      *
@@ -1489,7 +1489,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/logout")
+     * @Route("/logout", options={"zkNoBundlePrefix"=1})
      *
      * Log a user out.
      *
@@ -1533,7 +1533,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/verify-registration")
+     * @Route("/verify-registration")
      *
      * Render and process a registration e-mail verification code.
      *
@@ -1999,7 +1999,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/password")
+     * @Route("/password")
      *
      * Display the change password form.
      *
@@ -2105,7 +2105,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/password/update")
+     * @Route("/password/update")
      *
      * Update the user's password.
      *
@@ -2235,7 +2235,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/email")
+     * @Route("/email")
      *
      * Display the change email address form.
      *
@@ -2257,7 +2257,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/email/update")
+     * @Route("/email/update")
      *
      * Update the email address.
      *
@@ -2329,7 +2329,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/lang")
+     * @Route("/lang")
      *
      * Display the form that allows the user to change the language displayed to him on the site.
      *
@@ -2350,7 +2350,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/user/email/confirm")
+     * @Route("/email/confirm")
      *
      * Confirm the update of the email address.
      *

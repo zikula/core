@@ -39,7 +39,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * @Route("/users/admin")
+ * @Route("/admin")
  *
  * Administrator-initiated actions for the Users module.
  */
