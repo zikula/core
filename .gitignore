@@ -7,6 +7,7 @@
 /src/app/config/custom_*.yml
 /src/app/config/dynamic_config.yml
 /src/app/logs/
+/src/config/locale/*
 /src/config/personal_config.php
 /src/config/multisites_config.php
 /src/modules/*
