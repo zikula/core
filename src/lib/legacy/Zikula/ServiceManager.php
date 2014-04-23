@@ -14,6 +14,7 @@
  */
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bridge\DependencyInjection\ContainerBuilder;
+use Zikula_Request_Http as Request;
 
 /**
  * ServiceManager class.
@@ -111,6 +112,10 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
     {
         if ($id === 'request') {
+            if (!isset($GLOBALS['__request'])) {
+                $GLOBALS['__request'] = Request::createFromGlobals();
+            }
+
             return $GLOBALS['__request'];
         }
 
