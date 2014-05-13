@@ -309,8 +309,22 @@
                 </div>
             </div>
             <div class="form-group">
+                {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_ENABLED'|const}
+                <label class="col-lg-3 control-label">{gt text="Password reminder is enabled"}<span class="required"></span></label>
+                {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_ENABLED'|const}
+                <div class="col-lg-9">
+                    <div id="{$configData->getFieldId($fieldName)}">
+                        <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
+                        <label for="{$configData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
+                        <input id="{$configData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0" {if !$configData->getFieldData($fieldName)} checked="checked"{/if} />
+                        <label for="{$configData->getFieldId($fieldName)}_no">{gt text="No"}</label>
+                    </div>
+                    {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
+                </div>
+            </div>
+            <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_MANDATORY'|const}
-                <label class="col-lg-3 control-label">{gt text="The password reminder is mandatory"}<span class="required"></span></label>
+                <label class="col-lg-3 control-label">{gt text="Password reminder is mandatory"}<span class="required"></span></label>
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_MANDATORY'|const}
                 <div class="col-lg-9">
                     <div id="{$configData->getFieldId($fieldName)}">

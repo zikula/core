@@ -155,6 +155,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS                  => UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS,
             UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH               => UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
             UsersConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => UsersConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
+            UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED             => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
             UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY           => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
             UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',

@@ -115,18 +115,19 @@
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
-        {assign var='modvar_password_reminder_mandatory' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_MANDATORY'|const}
+        {if ($modvars.ZikulaUsersModule.password_reminder_enable)}
         <div class="form-group{if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='passreminder'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}{if $modvars.ZikulaUsersModule.$modvar_password_reminder_mandatory}<span class="required"></span>{/if}</label>
+            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}{if ($modvars.ZikulaUsersModule.password_reminder_mandatory)}<span class="required"></span>{/if}</label>
             {assign var='fieldName' value='passreminder'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="128" value="{$formData->getFieldData($fieldName)|safetext}" required="required" title="{gt text='&quot;Password Reminder&quot; is required.'}" x-moz-errormessage="{gt text='&quot;Password Remindere&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="128" value="{$formData->getFieldData($fieldName)|safetext}"{if ($modvars.ZikulaUsersModule.password_reminder_mandatory)} required="required" title="{gt text='&quot;Password Reminder&quot; is required.'}" x-moz-errormessage="{gt text='&quot;Password Remindere&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();"{/if} />
                 <div class="sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
                 <div class="help-block alert alert-info">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
+        {/if}
     </fieldset>
     {else}
         <input id="{$formData->getFieldId('pass')}" name="pass" type="hidden" value="{'Zikula\Module\UsersModule\Constant::PWD_NO_USERS_AUTHENTICATION'|const}" />

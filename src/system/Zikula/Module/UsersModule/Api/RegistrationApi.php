@@ -110,22 +110,24 @@ class RegistrationApi extends \Zikula_AbstractApi
             }
 
             if (!$this->currentUserIsAdminOrSubAdmin()) {
-                if ((!isset($reginfo['passreminder']) || empty($reginfo['passreminder'])) && $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY)) {
-                    $passwordErrors['passreminder'] = $this->__('Please enter a password reminder.');
-                } else {
-                    $testPass = mb_strtolower(trim($reginfo['pass']));
-                    $testPassreminder = mb_strtolower(trim($reginfo['passreminder']));
-
-                    if (!empty($testPass) && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
-                        $passwordErrors['passreminder'] = $this->__('You cannot include your password in your password reminder.');
+                if ($this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
+                    if ((!isset($reginfo['passreminder']) || empty($reginfo['passreminder'])) && $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY)) {
+                        $passwordErrors['passreminder'] = $this->__('Please enter a password reminder.');
                     } else {
-                        // See if they included their password with extra character in the middle--only tests if they included non alpha-numerics in the middle.
-                        // Removes non-alphanumerics (mb-safe), and then checks to see that the strings are still of sufficient length to have a reasonable test.
-                        $testPass = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPass));
-                        $testPassreminder = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPassreminder));
-                        if (!empty($testPass) && !empty($testPassreminder) && (strlen($testPass) >= $minPasswordLength)
+                        $testPass = mb_strtolower(trim($reginfo['pass']));
+                        $testPassreminder = mb_strtolower(trim($reginfo['passreminder']));
+
+                        if (!empty($testPass) && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
+                            $passwordErrors['passreminder'] = $this->__('You cannot include your password in your password reminder.');
+                        } else {
+                            // See if they included their password with extra character in the middle--only tests if they included non alpha-numerics in the middle.
+                            // Removes non-alphanumerics (mb-safe), and then checks to see that the strings are still of sufficient length to have a reasonable test.
+                            $testPass = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPass));
+                            $testPassreminder = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPassreminder));
+                            if (!empty($testPass) && !empty($testPassreminder) && (strlen($testPass) >= $minPasswordLength)
                                 && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
-                            $passwordErrors['passreminder'] = $this->__('Your password reminder is too similar to your password.');
+                                $passwordErrors['passreminder'] = $this->__('Your password reminder is too similar to your password.');
+                            }
                         }
                     }
                 }
