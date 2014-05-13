@@ -115,7 +115,7 @@
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
-        {if ($modvars.ZikulaUsersModule.password_reminder_enable)}
+        {if ($modvars.ZikulaUsersModule.password_reminder_enabled)}
         <div class="form-group{if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='passreminder'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}{if ($modvars.ZikulaUsersModule.password_reminder_mandatory)}<span class="required"></span>{/if}</label>
