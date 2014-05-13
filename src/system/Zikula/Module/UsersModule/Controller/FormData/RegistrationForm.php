@@ -81,7 +81,7 @@ class RegistrationForm extends AbstractFormData
                 $this->serviceManager,
                 $this->__('The value must be a string.')));
 
-        if (ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
+        if ((bool)$this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
             $passReminderField = new Field(
                 $this,
                 'passreminder',
@@ -96,7 +96,7 @@ class RegistrationForm extends AbstractFormData
                     $this->__('The value must be a string.')
             ));
 
-            if (ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY) && !$passwordReminderNotMandatory) {
+            if (((bool)$this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY)) && (!$passwordReminderNotMandatory)) {
                 $passReminderField->addValidator(new Validator\StringMinimumLength(
                     $this->serviceManager,
                     1,
@@ -211,7 +211,7 @@ class RegistrationForm extends AbstractFormData
         $user = array(
             'uname'         => $this->getField('uname')->getData(),
             'pass'          => $this->getField('pass')->getData(),
-            'passreminder'  => $this->getField('passreminder')->getData(),
+            'passreminder'  => (((bool)$this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) ? $this->getField('passreminder')->getData() : ''),
             'email'         => $this->getField('email')->getData(),
         );
 
