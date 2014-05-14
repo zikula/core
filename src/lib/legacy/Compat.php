@@ -695,7 +695,7 @@ class pnFormRender extends Zikula_Form_View
      *
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
      */
-    public function execute($template, pnFormHandler $eventHandler)
+    public function execute($template, Zikula_Form_AbstractHandler $eventHandler)
     {
         if (!$eventHandler instanceof pnFormHandler) {
             throw new Zikula_Exception_Fatal('Form handlers must inherit from pnFormHandler.');
