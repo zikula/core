@@ -481,4 +481,24 @@ function upgrade_140($dbname, Connection $conn)
 
     $conn->executeQuery("UPDATE $dbname.module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
     echo "Updated default theme to ZikulaAndreas08Theme<br />\n";
+
+    // install Bundles table
+    installBundlesTable();
+}
+
+/**
+ * add the bundles table
+ */
+function installBundlesTable()
+{
+    $sm = ServiceUtil::getManager();
+    $kernel = $sm->get('kernel');
+
+    $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+    $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($kernel));
+    $helper->createSchema();
+    $helper->load();
+    $bundles = array();
+    // this neatly autoloads
+    $boot->getPersistedBundles($kernel, $bundles);
 }
