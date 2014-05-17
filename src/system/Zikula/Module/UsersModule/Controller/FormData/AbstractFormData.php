@@ -87,9 +87,9 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
         } elseif ($field->getFormContainer() !== $this) {
             throw new \InvalidArgumentException($this->__('Form container mismatch.'));
         } elseif (array_key_exists($field->fieldName, $this->formFields)) {
-            throw new \InvalidArgumentException($this->__f('Field defintion for the \'%1$s\' field is already defined.', array($field->fieldName)));
+            throw new \InvalidArgumentException($this->__f('Field definition for the \'%1$s\' field is already defined.', array($field->fieldName)));
         } elseif (array_key_exists($field->fieldId, $this->fieldIds)) {
-            throw new \InvalidArgumentException($this->__f('Field defintion duplicates the field id \'%1$s\' already claimed by the field \'%2$s\'.', array($field->fieldId, $this->fieldIds[$field->fieldId])));
+            throw new \InvalidArgumentException($this->__f('Field definition duplicates the field id \'%1$s\' already claimed by the field \'%2$s\'.', array($field->fieldId, $this->fieldIds[$field->fieldId])));
         }
 
         $this->formFields[$field->fieldName] = $field;

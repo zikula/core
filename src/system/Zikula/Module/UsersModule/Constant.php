@@ -287,6 +287,14 @@ namespace Zikula\Module\UsersModule
          */
         const DEFAULT_PASSWORD_STRENGTH_METER_ENABLED = false;
         /**
+         * Module variable key for the flag indicating whether the password reminder should be enabled.
+         */
+        const MODVAR_PASSWORD_REMINDER_ENABLED = 'password_reminder_enabled';
+        /**
+         * Default value for the flag indicating whether the password reminder should be enabled.
+         */
+        const DEFAULT_PASSWORD_REMINDER_ENABLED = false;
+        /**
          * Module variable key for the flag indicating whether the password reminder should be mandatory or not.
          */
         const MODVAR_PASSWORD_REMINDER_MANDATORY = 'password_reminder_mandatory';
