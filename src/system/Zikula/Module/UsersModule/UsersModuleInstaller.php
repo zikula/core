@@ -80,7 +80,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {
-            case '2.2.0':
+            case '2.2.0': // version shipped with Core 1.3.5 -> current 1.3.x
                 $this->migrateAttributes();
             case '2.2.1':
                 // This is the current version: add 2.2.1 --> next when appropriate
@@ -101,6 +101,10 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
                     $this->setVar($modVar, $defaultValue);
                 }
             }
+
+            // add new table
+            DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\UsersModule\Entity\UserAttributeEntity'));
+
             case '2.2.2':
                 // nothing to do
 
