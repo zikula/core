@@ -37,7 +37,7 @@ $dbname = $container['databases']['default']['dbname'];
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
-upgrade_137($dbname, $connection);
+upgrade_140($dbname, $connection);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
@@ -432,7 +432,7 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
  * @param $dbname
  * @param Connection $conn
  */
-function upgrade_137($dbname, Connection $conn)
+function upgrade_140($dbname, Connection $conn)
 {
     $res = $conn->executeQuery("SELECT name FROM $dbname.modules WHERE name = 'ZikulaExtensionsModule'");
     if ($res->fetch()) {
