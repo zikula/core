@@ -37,7 +37,7 @@ $dbname = $container['databases']['default']['dbname'];
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
-upgrade_137($dbname, $connection);
+upgrade_140($dbname, $connection);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
@@ -432,7 +432,7 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
  * @param $dbname
  * @param Connection $conn
  */
-function upgrade_137($dbname, Connection $conn)
+function upgrade_140($dbname, Connection $conn)
 {
     $res = $conn->executeQuery("SELECT name FROM $dbname.modules WHERE name = 'ZikulaExtensionsModule'");
     if ($res->fetch()) {
@@ -481,4 +481,24 @@ function upgrade_137($dbname, Connection $conn)
 
     $conn->executeQuery("UPDATE $dbname.module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
     echo "Updated default theme to ZikulaAndreas08Theme<br />\n";
+
+    // install Bundles table
+    installBundlesTable();
+}
+
+/**
+ * add the bundles table
+ */
+function installBundlesTable()
+{
+    $sm = ServiceUtil::getManager();
+    $kernel = $sm->get('kernel');
+
+    $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+    $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($kernel));
+    $helper->createSchema();
+    $helper->load();
+    $bundles = array();
+    // this neatly autoloads
+    $boot->getPersistedBundles($kernel, $bundles);
 }
