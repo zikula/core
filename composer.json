@@ -44,7 +44,7 @@
         "mobiledetect/mobiledetectlib": "~2",
         "phpids/phpids": "dev-master",
         "sensio/distribution-bundle": "~2.3",
-        "sensio/framework-extra-bundle": "~2.3",
+        "sensio/framework-extra-bundle": "~3.0",
         "stof/doctrine-extensions-bundle": "1.1.*",
         "symfony/symfony": "2.4.*",
         "symfony/assetic-bundle": "~2.3",
