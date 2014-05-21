@@ -355,10 +355,10 @@ class DataUtil
         } else {
             static $cached;
             if (null === $cached) {
-                $cached = array();
+                $cached = array(0, 1);
             }
-            if (isset($cached[$var])) {
-                return $cached[$var];
+            if (isset($cached[(int)$absolute][$var])) {
+                return $cached[(int)$absolute][$var];
             }
             $orgVar = $var;
             $clean_array = array();
