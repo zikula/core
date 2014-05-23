@@ -37,7 +37,7 @@ $dbname = $container['databases']['default']['dbname'];
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
-upgrade_140($dbname, $connection);
+$upgradeFeedback = upgrade_140($dbname, $connection);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
@@ -47,6 +47,16 @@ $action = FormUtil::getPassedValue('action', false, 'GETPOST');
 
 // login to supplied admin credentials for action the following actions
 if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sanitycheck') {
+    // force upgrade of Users module before authentication check
+    $usersModuleID = ModUtil::getIdFromName('ZikulaUsersModule');
+    ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
+    $usersModuleUpgradeResult = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgrade', array('id' => $usersModuleID));
+    // should have some error check here but for some reason $usersModuleUpgradeResult is false even when upgrade is successful
+    // so this is disabled for now - craig
+//    if (!$usersModuleUpgradeResult) {
+//        throw new \RuntimeException("Fatal Error: Could not upgrade the Users module [id: $usersModuleID].");
+//    }
+
     $username = FormUtil::getPassedValue('username', null, 'POST');
     $password = FormUtil::getPassedValue('password', null, 'POST');
 
@@ -80,7 +90,7 @@ switch ($action) {
         _upg_upgrademodules($username, $password);
         break;
     default: // step one
-        _upg_selectlanguage();
+        _upg_selectlanguage($upgradeFeedback);
         break;
 }
 
@@ -139,11 +149,16 @@ function _upg_footer()
  * Generate the language selector page.
  * This function generate the language selector page.
  *
+ * @param $upgradeFeedback string list of previous results
+ *
  * @return void
  */
-function _upg_selectlanguage()
+function _upg_selectlanguage($upgradeFeedback)
 {
     _upg_header();
+    if (!empty($upgradeFeedback)) {
+        echo "<p class='alert alert-success'>$upgradeFeedback</p>";
+    }
     $validupgrade = true;
     if (!ServiceUtil::getManager()->getParameter('installed')) {
         $validupgrade = false;
@@ -194,7 +209,7 @@ function _upg_upgradeinit()
 
 /**
  * Generate the login bloc of login page.
- * This function generate the authentification part of login page.
+ * This function generates the authentication part of login page.
  *
  * @param boolean $showheader Show header and footer.
  *
@@ -335,7 +350,7 @@ function _upg_continue($action, $text, $username, $password)
 
 /**
  * Generate the sanity check page.
- * This function do and generate the stanity check page.
+ * This function generates the sanity check page.
  *
  * @param string $username Username of the admin user.
  * @param string $password Password of the admin user.
@@ -431,13 +446,16 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
  *
  * @param $dbname
  * @param Connection $conn
+ *
+ * @return string
  */
 function upgrade_140($dbname, Connection $conn)
 {
-    $res = $conn->executeQuery("SELECT name FROM $dbname.modules WHERE name = 'ZikulaExtensionsModule'");
+    $feedback = '';
+    $res = $conn->executeQuery("SELECT name FROM modules WHERE name = 'ZikulaExtensionsModule'");
     if ($res->fetch()) {
         // nothing to do, already converted.
-        return;
+        return '';
     }
 
     $modules = array(
@@ -447,43 +465,46 @@ function upgrade_140($dbname, Connection $conn)
     );
 
     foreach ($modules as $module) {
-        $conn->executeQuery("UPDATE $dbname.modules SET name = 'Zikula{$module}Module', directory = 'Zikula/Module/{$module}Module' WHERE name = '$module'");
-        $conn->executeQuery("UPDATE $dbname.module_vars SET modname = 'Zikula{$module}Module' WHERE modname = '$module'");
+        $conn->executeQuery("UPDATE modules SET name = 'Zikula{$module}Module', directory = 'Zikula/Module/{$module}Module' WHERE name = '$module'");
+        $conn->executeQuery("UPDATE module_vars SET modname = 'Zikula{$module}Module' WHERE modname = '$module'");
         $strlen = strlen($module) + 1;
-        $conn->executeQuery("UPDATE $dbname.group_perms SET component = CONCAT('Zikula{$module}Module', SUBSTRING(component, $strlen)) WHERE component LIKE '{$module}%'");
-        echo "Updated module: $module<br />\n";
+        $conn->executeQuery("UPDATE group_perms SET component = CONCAT('Zikula{$module}Module', SUBSTRING(component, $strlen)) WHERE component LIKE '{$module}%'");
+        $feedback .= "Updated module: $module<br />\n";
     }
-    echo "<br />\n";
+    $feedback .= "<br />\n";
 
     // remove event handlers that were replaced by DependencyInjection
-    $conn->executeQuery("DELETE FROM $dbname.module_vars WHERE modname = '/EventHandlers' AND name IN ('Extensions', 'Users', 'Search', 'Settings')");
+    $conn->executeQuery("DELETE FROM module_vars WHERE modname = '/EventHandlers' AND name IN ('Extensions', 'Users', 'Search', 'Settings')");
 
     $themes = array(
         'Andreas08', 'Atom', 'SeaBreeze', 'Mobile', 'Printer',
     );
     foreach ($themes as $theme) {
-        $conn->executeQuery("UPDATE $dbname.themes SET name = 'Zikula{$theme}Theme', directory = 'Zikula/Theme/{$theme}Theme' WHERE name = '$theme'");
-        echo "Updated theme: $theme<br />\n";
+        $conn->executeQuery("UPDATE themes SET name = 'Zikula{$theme}Theme', directory = 'Zikula/Theme/{$theme}Theme' WHERE name = '$theme'");
+        $feedback .= "Updated theme: $theme<br />\n";
     }
-    $conn->executeQuery("UPDATE $dbname.themes SET name = 'ZikulaRssTheme', directory = 'Zikula/Theme/RssTheme' WHERE name = 'RSS'");
-    echo "Updated theme: RSS<br />\n";
+    $conn->executeQuery("UPDATE themes SET name = 'ZikulaRssTheme', directory = 'Zikula/Theme/RssTheme' WHERE name = 'RSS'");
+    $feedback .= "Updated theme: RSS<br />\n";
 
     // update 'Users' -> 'ZikulaUsersModule' in all the hook tables
     $sqls = array();
-    $sqls[] = "UPDATE $dbname.hook_area SET owner = 'ZikulaUsersModule' WHERE owner = 'Users'";
-    $sqls[] = "UPDATE $dbname.hook_binding SET sowner = 'ZikulaUsersModule' WHERE sowner = 'Users'";
-    $sqls[] = "UPDATE $dbname.hook_runtime SET sowner = 'ZikulaUsersModule' WHERE sowner = 'Users'";
-    $sqls[] = "UPDATE $dbname.hook_subscriber SET owner = 'ZikulaUsersModule' WHERE owner = 'Users'";
+    $sqls[] = "UPDATE hook_area SET owner = 'ZikulaUsersModule' WHERE owner = 'Users'";
+    $sqls[] = "UPDATE hook_binding SET sowner = 'ZikulaUsersModule' WHERE sowner = 'Users'";
+    $sqls[] = "UPDATE hook_runtime SET sowner = 'ZikulaUsersModule' WHERE sowner = 'Users'";
+    $sqls[] = "UPDATE hook_subscriber SET owner = 'ZikulaUsersModule' WHERE owner = 'Users'";
     foreach ($sqls as $sql) {
         $conn->executeQuery($sql);
     }
-    echo "Updated hook tables for User module hooks.<br />\n";
+    $feedback .= "Updated hook tables for User module hooks.<br />\n";
 
-    $conn->executeQuery("UPDATE $dbname.module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
-    echo "Updated default theme to ZikulaAndreas08Theme<br />\n";
+    $conn->executeQuery("UPDATE module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
+    $feedback .= "Updated default theme to ZikulaAndreas08Theme<br />\n";
 
     // install Bundles table
     installBundlesTable();
+    $feedback .= "Bundles Table installed.<br />\n";
+
+    return $feedback;
 }
 
 /**
