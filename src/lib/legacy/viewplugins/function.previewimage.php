@@ -52,12 +52,18 @@ function smarty_function_previewimage($params, Zikula_View $view)
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($params['name']));
     $theme = ThemeUtil::getTheme($themeinfo['name']);
     $themePath = null === $theme ? '' : $theme->getRelativePath().'/Resources/public/images';
-    if (!file_exists($filesrc = "$themePath/preview_{$params['size']}.png") &&
-        !file_exists($filesrc = "themes/{$themeinfo['directory']}/images/preview_{$params['size']}.png")) {
+
+    if (file_exists("$themePath/preview_{$params['size']}.png")) {
+        $filesrc = "$themePath/preview_{$params['size']}.png";
+    } else if (file_exists("themes/{$themeinfo['directory']}/images/preview_{$params['size']}.png")) {
+        $filesrc = "themes/{$themeinfo['directory']}/images/preview_{$params['size']}.png";
+    } else if (file_exists("themes/{$themeinfo['directory']}/Resources/public/images/preview_{$params['size']}.png")) {
+        $filesrc = "themes/{$themeinfo['directory']}/Resources/public/images/preview_{$params['size']}.png";
+    } else {
         $filesrc = "system/Zikula/Module/ThemeModule/Resources/public/images/preview_{$params['size']}.png";
     }
 
-    $markup = "<img{$idstring} src=\"{$filesrc}\" alt=\"\" />";
+    $markup = "<img{$idstring} src={$filesrc} alt=\"\" />";
 
     if (isset($params['assign'])) {
         $view->assign($params['assign'], $markup);
