@@ -1,6 +1,6 @@
-function showthemeimage() {
-    var newTheme = $F('newtheme');
-    $('preview').src = $F('previmg_' + newTheme);
-    $('preview').title = $('theme_' + newTheme).title;
-    $('preview').alt = newTheme;
-}
+jQuery( document ).ready(function() {
+    jQuery('#newtheme').change( function() {
+        var previewSrc = jQuery(this).find(':selected').data('previewimage');
+        jQuery('#preview').attr('src', previewSrc);
+    });
+});
