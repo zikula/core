@@ -1,6 +1,8 @@
 jQuery( document ).ready(function() {
     jQuery('#newtheme').change( function() {
-        var previewSrc = jQuery(this).find(':selected').data('previewimage');
-        jQuery('#preview').attr('src', previewSrc);
+        var $selectedTheme = jQuery(this).find(':selected')
+        jQuery('#preview').attr('src', $selectedTheme.data('previewimage'));
+        jQuery('#preview').attr('title', $selectedTheme.attr('title'));
+        jQuery('#preview').attr('alt', $selectedTheme.attr('title'));
     });
 });
