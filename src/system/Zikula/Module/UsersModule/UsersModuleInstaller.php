@@ -81,29 +81,28 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '2.2.0': // version shipped with Core 1.3.5 -> current 1.3.x
+                // add new table
+                DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\UsersModule\Entity\UserAttributeEntity'));
                 $this->migrateAttributes();
             case '2.2.1':
                 // This is the current version: add 2.2.1 --> next when appropriate
 
-            $currentModVars = $this->getVars();
-            $defaultModVars = $this->getDefaultModvars();
+                $currentModVars = $this->getVars();
+                $defaultModVars = $this->getDefaultModvars();
 
-            // Remove modvars that are no longer defined.
-            foreach ($currentModVars as $modVar => $currentValue) {
-                if (!array_key_exists($modVar, $defaultModVars)) {
-                    $this->delVar($modVar);
+                // Remove modvars that are no longer defined.
+                foreach ($currentModVars as $modVar => $currentValue) {
+                    if (!array_key_exists($modVar, $defaultModVars)) {
+                        $this->delVar($modVar);
+                    }
                 }
-            }
 
-            // Add modvars that are new to the version
-            foreach ($defaultModVars as $modVar => $defaultValue) {
-                if (!array_key_exists($modVar, $currentModVars)) {
-                    $this->setVar($modVar, $defaultValue);
+                // Add modvars that are new to the version
+                foreach ($defaultModVars as $modVar => $defaultValue) {
+                    if (!array_key_exists($modVar, $currentModVars)) {
+                        $this->setVar($modVar, $defaultValue);
+                    }
                 }
-            }
-
-            // add new table
-            DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\UsersModule\Entity\UserAttributeEntity'));
 
             case '2.2.2':
                 // nothing to do

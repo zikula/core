@@ -515,12 +515,12 @@ class Zikula_Core
             PageUtil::registerVar('header', true);
             PageUtil::registerVar('footer', true);
 
-            $theme = Zikula_View_Theme::getInstance();
-
             // set some defaults
             // Metadata for SEO
-            $this->container['zikula_view.metatags']['description'] = System::getVar('defaultmetadescription');
-            $this->container['zikula_view.metatags']['keywords'] = System::getVar('metakeywords');
+            $this->container->setParameter('zikula_view.metatags', array(
+                'description' => System::getVar('defaultmetadescription'),
+                'keywords' => System::getVar('metakeywords')
+            ));
 
             $coreInitEvent->setArgument('stage', self::STAGE_THEME);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);

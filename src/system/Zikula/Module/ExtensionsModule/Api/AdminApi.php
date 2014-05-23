@@ -915,7 +915,6 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @param mixed[] $args {
      *      @type int     $id               The module ID
-     *      @type boolean $interactive_mode Perform the initialization in interactive mode or not
      *                       }
      *
      * @return boolean|void True on success, false on failure, or null when we bypassed the installation
