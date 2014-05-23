@@ -754,12 +754,14 @@ class Zikula_View_Theme extends Zikula_View
                 // find any page configurations that match in a sub string comparison
                 $match = '';
                 $matchlength = 0;
-                foreach (array_keys($pageconfigurations) as $pageconfiguration) {
-                    if (stristr($customargs, $pageconfiguration) && $matchlength < strlen($pageconfiguration)) {
-                        $match = $pageconfiguration;
-                        $matchlength = strlen($match);
-                        if (isset($pageconfigurations[$pageconfiguration]['important']) && $pageconfigurations[$pageconfiguration]['important']) {
-                            break;
+                if (is_array($pageconfigurations)) {
+                    foreach (array_keys($pageconfigurations) as $pageconfiguration) {
+                        if (stristr($customargs, $pageconfiguration) && $matchlength < strlen($pageconfiguration)) {
+                            $match = $pageconfiguration;
+                            $matchlength = strlen($match);
+                            if (isset($pageconfigurations[$pageconfiguration]['important']) && $pageconfigurations[$pageconfiguration]['important']) {
+                                break;
+                            }
                         }
                     }
                 }
