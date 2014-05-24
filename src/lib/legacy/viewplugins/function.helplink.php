@@ -163,9 +163,21 @@ function smarty_function_helplink($params, Zikula_View $view)
     if ($popup) {
         PageUtil::addVar('javascript', 'zikula.ui');
         $link = array();
-        $link[] = "<a id=\"{$linkID}\" {$class} href=\"#{$linkID}_content\" title=\"{$title}\">" . $linkContents . "</a>";
-        $link[] = "<div id=\"{$linkID}_content\" style=\"display: none;\">{$contents}</div>";
-        $link[] = "<script type=\"text/javascript\">var $linkID = new Zikula.UI.Window($('$linkID'),{resizable: true, width: $width, height: $height})</script>";
+        $link[] = "<a id=\"{$linkID}\" {$class} data-toggle=\"modal\" data-target=\"#{$linkID}_content\" title=\"{$title}\">" . $linkContents . "</a>";
+
+        $link[] = '<div class="modal fade" id="'.$linkID.'_content" tabindex="-1" role="dialog" aria-labelledby="'.$linkID.'_label" aria-hidden="true">';
+        $link[] = '<div class="modal-dialog">';
+        $link[] = '<div class="modal-content">';
+        $link[] = '<div class="modal-header">';
+        $link[] = '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+        $link[] = '<h4 class="modal-title" id="'.$linkID.'_label">'.$title.'</h4>';
+        $link[] = '</div>';
+        $link[] = '<div class="modal-body">';
+        $link[] = $contents;
+        $link[] = '</div>';
+        $link[] = '</div>';
+        $link[] = '</div>';
+        $link[] = '</div>';
         $link = implode("\n", $link);
     } else {
         $link = "<a id=\"{$linkID}\" {$class} href=\"" . DataUtil::formatForDisplay($url) . "\" title=\"{$title}\">" . $linkContents . "</a>";
