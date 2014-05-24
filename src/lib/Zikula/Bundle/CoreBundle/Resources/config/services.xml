@@ -8,8 +8,6 @@
         <parameter key="event_dispatcher.class">Zikula_EventManager</parameter>
         <!-- Make controller resolving working with Zikula base classes. -->
         <parameter key="controller_resolver.class">Zikula\Bundle\CoreBundle\Controller\ControllerResolver</parameter>
-        <!-- The Zikula specific matcher, making sure that the module, type, func options are returned-->
-        <parameter key="cmf_routing.final_matcher.class">Zikula\Bundle\CoreBundle\Routing\Matcher\UrlMatcher</parameter>
     </parameters>
 
     <services>
