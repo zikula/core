@@ -227,12 +227,14 @@ class LegacyRouteListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         // Get variables
-        $module = \FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
-        $func = \FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
+        $module = $request->attributes->get('_module');
+        $type = $request->attributes->get('_type');
+        $func = $request->attributes->get('_func');
+
         // Check for site closed
         if (\System::getVar('siteoff')
             && !\SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN)
-            && !($module == 'Users' && $func == 'siteOffLogin')
+            && !($module == 'Users' && $type == 'user' && $func == 'siteOffLogin')
             || (\Zikula_Core::VERSION_NUM != \System::getVar('Version_Num'))
         ) {
             if (\SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW) && \UserUtil::isLoggedIn()
@@ -258,9 +260,11 @@ class LegacyRouteListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST => array(array('onKernelRequestSiteOff', 31)),
-            KernelEvents::REQUEST => array(array('onKernelRequestSessionExpire', 31)),
-            KernelEvents::REQUEST => array(array('onKernelRequest', 31)),
+            KernelEvents::REQUEST => array(
+                array('onKernelRequestSiteOff', 31),
+                array('onKernelRequestSessionExpire', 31),
+                array('onKernelRequest', 31),
+            )
         );
     }
 
