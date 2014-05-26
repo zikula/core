@@ -10,7 +10,7 @@
 <input type="hidden" id="returntoblock" name="returntoblock" value="{$blockinfo.bid}" />
 {/if}
 
-<div class='pull-right clearfix'><i class='fa fa-ambulance fa-lg text-danger'></i> {helplink filename='Menutree/Adminhelp.txt' popup=1 __title='Help'|gt:$zikula_view}</div>
+{include file="menutree/blocks_block_menutree_help.tpl"}
 
 <ul id="menutree_tabs" class="nav nav-tabs">
     <li class="active"><a href="#menutree_tabmenu" id="menutree_tabmenu_control" data-toggle="tab">{gt text="Block content"}</a></li>
