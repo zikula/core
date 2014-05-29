@@ -110,7 +110,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
 
     public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
     {
-        if ($id === 'request') {
+        if ($id === 'request' && isset($GLOBALS['__request'])) {
             return $GLOBALS['__request'];
         }
 
