@@ -1,4 +1,5 @@
 {adminheader}
+<p class="alert alert-info">Settings from params: transport: {$transport}</p>
 <h3>
     <span class="fa fa-wrench"></span>
     {gt text="Settings"}
