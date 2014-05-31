@@ -1,9 +1,17 @@
 {adminheader}
 <div class="alert alert-info">
-    <h4>Settings from params:</h4>
+    <h4>Current Settings from <code>dynamic_config.yml</code>:</h4>
     <ul>
     {foreach from=$swiftmailer_params key='key' item='value'}
-        {if !is_array($value)}<li>{$key}: {$value}</li>{/if}
+        {if !is_array($value)}
+            <li>{$key}: {$value}</li>
+        {else}
+            <ul>
+            {foreach from=$value key='k2' item='v2'}
+                <li>{$k2}: {$v2}</li>
+            {/foreach}
+            </ul>
+        {/if}
     {/foreach}
     </ul>
 </div>

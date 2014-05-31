@@ -23,7 +23,7 @@ use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\ModUrl;
 use Zikula\Module\MailerModule\Api\AdminApi as MailerApi;
-use Swift_Mailer;
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper as Dumper;
 
 /**
  * Form handler for the mailer modules modifyconfig form
@@ -76,8 +76,8 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
         // assign all module vars
         $this->view->assign($this->getVars());
 
-        $serviceManager = \ServiceUtil::getManager();
-        $params =  $serviceManager->getParameter('swiftmailer');
+        $dumper = new Dumper('app/config');
+        $params =  $dumper->getConfiguration('swiftmailer');
         $view->assign('swiftmailer_params', $params);
 
         return true;
