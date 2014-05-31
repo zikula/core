@@ -30,7 +30,7 @@
                         <option value="">{gt text="Use site's theme"}</option>
                         {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const filter='ThemeUtil::FILTER_ADMIN'|const selected=$admintheme}
                     </select>
-                    <em class="sub help-block">{gt text='This theme will be used in the admin interface of Zikula. This setting does not override the mobile theme setting in admin area.'}</em>
+                    <em class="sub help-block">{gt text='This theme will be used in the admin interface of Zikula.'}</em>
                 </div>
             </div>
             <div class="form-group">
@@ -46,37 +46,6 @@
                 <label class="col-lg-3 control-label" for="alt_theme_domain">{gt text="Domain for alternative site view"}</label>
                 <div class="col-lg-9">
                     <input id="alt_theme_domain" type="text" class="form-control" name="alt_theme_domain" value="{$alt_theme_domain|default:''|safetext}" size="50" />
-                </div>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>{gt text="Mobile theme"}</legend>
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="mobile_theme_name">{gt text="Mobile theme"}</label>
-                <div class="col-lg-9">
-                    <select class="form-control" id="mobile_theme_name" name="mobile_theme_name">
-                        <option value="">{gt text="Use default mobile theme"}</option>
-                        {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$mobile_theme_name|default:''}
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="mobile_theme_domain">{gt text="Mobile theme domain"}</label>
-                <div class="col-lg-9">
-                    <input id="mobile_theme_domain" type="text" class="form-control" name="mobile_theme_domain" value="{$mobile_theme_domain|default:''|safetext}" size="50" />
-                    <em class="sub help-block">{gt text='This forces the mobile theme if your server is visited via the specified url, e.g. m.example.com'}</em>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="enable_mobile_theme">{gt text="Mobile device detection"}</label>
-                <div class="col-lg-9">
-                    <select class="form-control" id="enable_mobile_theme" name="enable_mobile_theme">
-                        <option value="0">{gt text="Disabled"}</option>
-                        <option value="1"{if $enable_mobile_theme == 1} selected="selected"{/if}>{gt text="Enabled: force for smartphones and tablets"}</option>
-                        <option value="2"{if $enable_mobile_theme == 2} selected="selected"{/if}>{gt text="Enabled: force for smartphones only"}</option>
-                        <option value="3"{if $enable_mobile_theme == 3} selected="selected"{/if}>{gt text="Enabled: force for tablets only"}</option>
-                    </select>
-                    <em class="sub help-block">{gt text='Here you can decide if you want to automatically enable the mobile theme for mobile devices.'}</em>
                 </div>
             </div>
         </fieldset>

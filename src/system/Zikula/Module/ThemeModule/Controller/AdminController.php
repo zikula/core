@@ -1347,9 +1347,6 @@ class AdminController extends \Zikula_AbstractController
      *      @type int    $maxsizeforlinks        maxmimum size for link text
      *      @type bool   $theme_change           allow users to change themes
      *      @type string $admintheme             admin theme for site
-     *      @type bool   $enable_mobile_theme    enable mobile detectio
-     *      @type string $mobile_theme_name      name of theme for mobile users
-     *      @type string $mobile_theme_domain    domain to use when forcing mobile theme
      *      @type string $alt_theme_name         name of alternate theme
      *      @type string $alt_theme_domain       domain to use when forcing alternate themes
      *      @type int    $itemsperpage           items per page in admin view
@@ -1419,15 +1416,6 @@ class AdminController extends \Zikula_AbstractController
 
         $admintheme = (string)$this->request->request->get('admintheme', isset($args['admintheme']) ? $args['admintheme'] : '');
         ModUtil::setVar('Admin', 'admintheme', $admintheme);
-
-        $enable_mobile_theme = (int)$this->request->request->get('enable_mobile_theme', isset($args['enable_mobile_theme']) ? $args['enable_mobile_theme'] : false);
-        $this->setVar('enable_mobile_theme', $enable_mobile_theme);
-
-        $mobile_theme_name = (string)$this->request->request->get('mobile_theme_name', isset($args['mobile_theme_name']) ? $args['mobile_theme_name'] : '');
-        $this->setVar('mobile_theme_name', $mobile_theme_name);
-
-        $mobile_theme_domain = (string)$this->request->request->get('mobile_theme_domain', isset($args['mobile_theme_domain']) ? $args['mobile_theme_domain'] : '');
-        $this->setVar('mobile_theme_domain', $mobile_theme_domain);
 
         $alt_theme_name = (string)$this->request->request->get('alt_theme_name', isset($args['alt_theme_name']) ? $args['alt_theme_name'] : '');
         $this->setVar('alt_theme_name', $alt_theme_name);

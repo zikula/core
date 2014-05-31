@@ -1,3 +1,0 @@
-        </div><!-- /page -->
-    </body>
-</html>
