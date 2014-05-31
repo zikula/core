@@ -88,8 +88,16 @@ class LegacyRouteListener implements EventSubscriberInterface
         // get module information
         $modinfo = ModUtil::getInfoFromName($module);
         if (!$module) {
-            // we have a static homepage
-            $response = new Response('');
+            // module could not be filtered from url.
+            $path = $event->getRequest()->getPathInfo();
+            if ($path == "" || $path == "/") {
+                // we have a static homepage
+                $response = new Response('');
+            } else {
+                $response = new Response(__('Page not found.'), 404);
+            }
+
+            return $this->setResponse($event, $response);
         } else {
             try {
                 if (!$modinfo) {
