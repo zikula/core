@@ -68,7 +68,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
         ));
 
         $view->assign('smtpsecuremethodItems', array(
-            array('value' => '', 'text' => 'None'),
+//            array('value' => '', 'text' => 'None'),
             array('value' => 'ssl', 'text' => 'SSL'),
             array('value' => 'tls', 'text' => 'TLS')
         ));
@@ -130,11 +130,29 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
 
                 $vars['smtppassword'] = (string)$this->getFormValue('smtppassword', '');
 
-                $vars['smtpsecuremethod'] = (string)$this->getFormValue('smtpsecuremethod', '');
+                $vars['smtpsecuremethod'] = (string)$this->getFormValue('smtpsecuremethod', 'ssl');
 
                 $this->setVars($vars);
 
-                // the module configuration has been updated successfuly
+                // write the config file
+                $transport = MailerApi::$transportTypes[$vars['mailertype']];
+                $config = array(
+                    'transport' => $transport,
+                    'username' => $vars['smtpusername'],
+                    'password' => $vars['smtppassword'],
+                    'host' => $vars['smtpserver'],
+                    'port' => $vars['smtpport'],
+                    'encryption' => $vars['smtpsecuremethod'],
+                    'auth_mode' => $vars['smtpauth'] ? 'login' : null,
+                    'spool' => array('type' => 'memory'),
+                    'delivery_address' => null,
+                    'disable_delivery' => false,
+                );
+
+                $configDumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
+                $configDumper->setConfiguartion('swiftmailer', $config);
+
+                // the module configuration has been updated successfully
                 LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
                 break;
         }
