@@ -1,5 +1,12 @@
 {adminheader}
-<p class="alert alert-info">Settings from params: transport: {$transport}</p>
+<div class="alert alert-info">
+    <h4>Settings from params:</h4>
+    <ul>
+    {foreach from=$swiftmailer_params key='key' item='value'}
+        {if !is_array($value)}<li>{$key}: {$value}</li>{/if}
+    {/foreach}
+    </ul>
+</div>
 <h3>
     <span class="fa fa-wrench"></span>
     {gt text="Settings"}

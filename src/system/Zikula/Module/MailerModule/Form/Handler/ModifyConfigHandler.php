@@ -81,7 +81,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
 
         $serviceManager = \ServiceUtil::getManager();
         $params =  $serviceManager->getParameter('swiftmailer');
-        $view->assign('transport', $params['transport']);
+        $view->assign('swiftmailer_params', $params);
 //        \System::dump($params);
 
         return true;

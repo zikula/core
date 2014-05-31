@@ -47,8 +47,36 @@ class CorePostInitListener implements EventSubscriberInterface
     public function config(GenericEvent $event)
     {
         $mailerVars = ModUtil::getVar('ZikulaMailerModule');
+        /**
+         * SwiftMail Parameters:
+         * http://symfony.com/doc/current/cookbook/email/email.html#configuration
+         *
+         * transport (smtp, mail, sendmail, or gmail)
+         * username
+         * password
+         * host
+         * port
+         * encryption (tls, or ssl)
+         * auth_mode (plain, login, or cram-md5)
+         * spool
+         *      type (how to queue the messages, file or memory is supported, see How to Spool Emails)
+         *      path (where to store the messages)
+         * delivery_address (an email address where to send ALL emails)
+         * disable_delivery (set to true to disable delivery completely)
+         */
         $transport = MailerApi::$transportTypes[$mailerVars['mailertype']];
-        $this->container->setParameter('swiftmailer', array('transport' => $transport));
+        $this->container->setParameter('swiftmailer', array(
+            'transport' => $transport,
+            'username' => $mailerVars['smtpusername'],
+            'password' => $mailerVars['smtppassword'],
+            'host' => $mailerVars['smtpserver'],
+            'port' => $mailerVars['smtpport'],
+            'encryption' => $mailerVars['smtpsecuremethod'],
+            'auth_mode' => $mailerVars['smtpauth'],
+            'spool' => array('type' => 'memory'),
+            'delivery_address' => null,
+            'disable_delivery' => false,
+        ));
     }
 
 }
