@@ -111,28 +111,4 @@ class UserController extends \Zikula_AbstractController
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'index')));
     }
-        
-    /**
-     * Enable mobile Theme 
-     *
-     * @return void
-     */
-    public function enableMobileTheme()
-    {
-        CookieUtil::setCookie('zikula_mobile_theme', '1', time()+3600*24*365, '/');
-
-        return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
-    }
-    
-    /**
-     * Disable mobile Theme 
-     *
-     * @return void
-     */
-    public function disableMobileTheme()
-    {
-        CookieUtil::setCookie('zikula_mobile_theme', '2', time()+3600*24*365, '/');
-
-        return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
-    }
 }

@@ -61,7 +61,6 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
         $this->setVar('render_cache',          false);
         $this->setVar('render_expose_template',false);
         $this->setVar('render_lifetime',       3600);
-        $this->setVar('enable_mobile_theme',   false);
 
         // Initialisation successful
         return true;
@@ -78,7 +77,7 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
     {
         switch ($oldversion) {
             case '3.4.2':
-                $this->setVar('enable_mobile_theme', false);
+                $this->delVar('enable_mobile_theme');
                 // future upgrade
         }
 
