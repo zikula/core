@@ -1,0 +1,28 @@
+.bootstrap-lightbox-caption-container {
+    position: absolute;
+    bottom: 10px;
+    padding: 0 20px;
+    width: 100%
+}
+
+.bootstrap-lightbox-caption {
+    background: none repeat scroll 0% 0% #000;
+    color: #FFF;
+    padding: 7px 15px;
+    border-radius: 30px;
+    width: 100%
+}
+
+.bootstrap-lightbox-backward {
+    position: absolute;
+    top: 45%;
+    left: 20px;
+    font-size: 300%;
+}
+
+.bootstrap-lightbox-forward {
+    position: absolute;
+    top: 45%;
+    right: 20px;
+    font-size: 300%;
+}
