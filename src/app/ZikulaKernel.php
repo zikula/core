@@ -44,6 +44,9 @@ class ZikulaKernel extends Kernel
         if (is_readable($this->rootDir.'/config/custom_parameters.yml')) {
             $loader->load($this->rootDir.'/config/custom_parameters.yml');
         }
+        if (is_readable($this->rootDir.'/config/dynamic_config.yml')) {
+            $loader->load($this->rootDir.'/config/dynamic_config.yml');
+        }
     }
 
     private function registerCoreModules(array &$bundles)
