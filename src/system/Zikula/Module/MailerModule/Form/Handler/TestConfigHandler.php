@@ -21,6 +21,7 @@ use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\ModUrl;
 use ZLanguage;
+use Swift_Message;
 
 /**
  * Form handler for the mailer modules testconfig form
@@ -92,6 +93,16 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                     $altBody = '';
                 }
 
+                // add swiftmailer config to message for testing
+                $msgBody .= "Swiftmailer Config:<br />\n";
+                $serviceManager = \ServiceUtil::getManager();
+                $params =  $serviceManager->getParameter('swiftmailer');
+                foreach ($params as $k => $v) {
+                    if (!is_array($v)) {
+                        $msgBody .= "$k: $v<br />\n";
+                    }
+                }
+
                 // set the email
                 $result = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', array(
                     'toname' => $toname,
@@ -107,12 +118,20 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                     // Success
                     LogUtil::registerStatus($this->__('Done! Message sent.'));
                 } elseif ($result === false) {
-                    // Failiure
+                    // Failure
                     LogUtil::registerError($this->__f('Error! Could not send message. %s', ''));
                 } else {
-                    // Failiure with error
+                    // Failure with error
                     LogUtil::registerError($this->__f('Error! Could not send message. %s', $result));
                 }
+
+                // test Swiftmailer
+                $message = Swift_Message::newInstance()
+                    ->setSubject('SWIFTMAILER: ' . $subject)
+                    ->setFrom(System::getVar('adminmail'))
+                    ->setTo($toaddress)
+                    ->setBody($msgBody);
+                \ServiceUtil::get('mailer')->send($message);
 
                 break;
         }

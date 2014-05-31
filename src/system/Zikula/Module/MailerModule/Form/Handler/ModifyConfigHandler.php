@@ -76,13 +76,9 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
         // assign all module vars
         $this->view->assign($this->getVars());
 
-        /** @var $mailer Swift_Mailer */
-//        $mailer = \ServiceUtil::get('mailer');
-
         $serviceManager = \ServiceUtil::getManager();
         $params =  $serviceManager->getParameter('swiftmailer');
         $view->assign('swiftmailer_params', $params);
-//        \System::dump($params);
 
         return true;
     }
