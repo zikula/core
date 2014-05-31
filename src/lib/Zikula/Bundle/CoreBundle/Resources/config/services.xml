@@ -45,5 +45,8 @@
         <service id="data_collector.zikula_version" class="Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector" public="false">
             <tag name="data_collector" template="CoreBundle:Collector:ZikulaVersion.html.twig" id="zikula_version" priority="300" />
         </service>
+        <service id="zikula.dynamic_config_dumper" class="Zikula\Bundle\CoreBundle\DynamicConfigDumper">
+            <argument type="expression">service('kernel').getRootDir() ~ "/config"</argument>
+        </service>
     </services>
 </container>
