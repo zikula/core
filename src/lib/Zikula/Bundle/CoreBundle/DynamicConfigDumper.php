@@ -71,7 +71,7 @@ class DynamicConfigDumper
         $this->dumpFile($configuration);
     }
 
-    public function setConfiguartion($name, $value)
+    public function setConfiguration($name, $value)
     {
         $this->validateName($name, false);
 
