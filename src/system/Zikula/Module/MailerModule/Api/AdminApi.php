@@ -22,18 +22,6 @@ use SecurityUtil;
  */
 class AdminApi extends \Zikula_AbstractApi
 {
-    const TYPE_MAIL = 1;
-    const TYPE_SENDMAIL = 2;
-    const TYPE_SMTP = 4;
-    const TYPE_TEST = 5;
-
-    static public $transportTypes = array(
-        self::TYPE_MAIL => 'mail',
-        self::TYPE_SENDMAIL => 'sendmail',
-        self::TYPE_SMTP => 'smtp',
-        self::TYPE_TEST => 'test',
-    );
-
     /**
      * Get available admin panel links.
      *

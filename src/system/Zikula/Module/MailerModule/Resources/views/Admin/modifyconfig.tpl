@@ -6,11 +6,12 @@
         {if !is_array($value)}
             <li>{$key}: {$value}</li>
         {else}
+            <li>{$key}:
             <ul>
             {foreach from=$value key='k2' item='v2'}
                 <li>{$k2}: {$v2}</li>
             {/foreach}
-            </ul>
+            </ul></li>
         {/if}
     {/foreach}
     </ul>
@@ -28,21 +29,6 @@
             {formlabel cssClass="col-lg-3 control-label" for='mailertype' __text='Mail transport' mandatorysym=true}
             <div class="col-lg-9">
                 {formdropdownlist cssClass="form-control" id='mailertype' mandatory=true}
-            </div>
-        </div>
-        <div class="form-group">
-            {charset assign=defaultcharset}
-            {formlabel cssClass="col-lg-3 control-label" for='charset' __text='Character set' mandatorysym=true}
-            <div class="col-lg-9">
-                {formtextinput cssClass="form-control" id='charset' size=10 maxLength=20 mandatory=true}
-                <p class="help-block sub">{gt text="Default: '%s'" tag1=$defaultcharset}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='encoding' __text="Encoding" mandatorysym=true}
-            <div class="col-lg-9">
-                {formdropdownlist cssClass="form-control" id='encoding' mandatory=true}
-                <p class="help-block sub">{gt text="Default: '%s'" tag1='8bit'}</p>
             </div>
         </div>
         <div class="form-group">
@@ -66,18 +52,7 @@
         </div>
     </fieldset>
 
-    <fieldset data-switch="mailertype[]" data-switch-value="2">
-        <legend>{gt text="'Sendmail' settings"}</legend>
-        <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='sendmailpath' __text="Path to 'Sendmail'"}
-            <div class="col-lg-9">
-                {formtextinput cssClass="form-control" id='sendmailpath' size=50 maxLength=255}
-                <p class="help-block sub">{gt text="Default: '%s'" tag1='/usr/sbin/sendmail'}</p>
-            </div>
-        </div>
-    </fieldset>
-
-    <fieldset data-switch="mailertype[]" data-switch-value="4">
+    <fieldset data-switch="mailertype[]" data-switch-value="smtp">
         <legend>{gt text="SMTP settings"}</legend>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='smtpserver' __text='SMTP server'}
@@ -109,10 +84,10 @@
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='smtpauth' __text='Enable SMTP authentication'}
             <div class="col-lg-9">
-                {formcheckbox id='smtpauth'}
+                {formdropdownlist cssClass="form-control" id='smtpAuth'}
             </div>
         </div>
-        <div data-switch="smtpauth" data-switch-value="1">
+        <div data-switch="smtpAuth[]" data-switch-value="login">
             <div class="form-group">
                 {formlabel cssClass="col-lg-3 control-label" for='smtpusername' __text='SMTP user name'}
                 <div class="col-lg-9">

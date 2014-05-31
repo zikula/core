@@ -22,7 +22,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\ModUrl;
 use ZLanguage;
 use Swift_Message;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper as Dumper;
 
 /**
  * Form handler for the mailer modules testconfig form
@@ -96,14 +95,15 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
 
                 // add swiftmailer config to message for testing
                 $msgBody .= "Swiftmailer Config:<br />\n";
-                $dumper = new Dumper('app/config');
+                $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
                 $params =  $dumper->getConfiguration('swiftmailer');
                 foreach ($params as $k => $v) {
                     if (!is_array($v)) {
                         $msgBody .= "$k: $v<br />\n";
                     } else {
+                        $msgBody .= "$k:<br />\n";
                         foreach ($v as $k2 => $v2) {
-                            $msgBody .= "$k2: $v2<br />\n";
+                            $msgBody .= "  $k2: $v2<br />\n";
                         }
                     }
                 }
