@@ -106,7 +106,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                 }
                 $this->formValues = $view->getValues();
 
-                // set our new module variable values
+                // set new module variable values
                 $vars = array();
                 $vars['charset'] = (string)$this->getFormValue('charset', ZLanguage::getEncoding());
                 $vars['encoding'] = (string)$this->getFormValue('encoding', '8bit');
@@ -116,6 +116,8 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
 
                 // write the config file
                 // http://symfony.com/doc/current/reference/configuration/swiftmailer.html
+                $configDumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
+                $currentConfig = $configDumper->getConfiguration('swiftmailer');
                 $config = array(
                     'transport' => (string)$this->getFormValue('transport', 'mail'),
                     'username' => (string)$this->getFormValue('username', null),
@@ -124,11 +126,11 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                     'port' => (int)$this->getFormValue('port', 25),
                     'encryption' => (string)$this->getFormValue('encryption', null),
                     'auth_mode' => $this->getFormValue('auth_mode', null),
-                    'spool' => array('type' => 'memory'),
-                    'delivery_address' => null,
-                    'disable_delivery' => false,
+                    // the items below can be configured by modifying the app/config/dynamic_config.yml file
+                    'spool' => !empty($currentConfig['spool']) ? $currentConfig['spool'] : array('type' => 'memory'),
+                    'delivery_address' => !empty($currentConfig['delivery_address']) ? $currentConfig['delivery_address'] : null,
+                    'disable_delivery' => !empty($currentConfig['disable_delivery']) ? $currentConfig['disable_delivery'] : false,
                 );
-                $configDumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
                 $configDumper->setConfiguration('swiftmailer', $config);
 
                 // the module configuration has been updated successfully
