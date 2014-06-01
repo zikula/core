@@ -43,7 +43,7 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
         }
 
         $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
-        $params =  $dumper->getConfiguration('swiftmailer');
+        $params = $dumper->getConfiguration('swiftmailer');
         $view->assign('swiftmailer_params', $params);
 
         $msgtype = $this->getVar('html') ? 'html' : 'text';
@@ -110,7 +110,7 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                     $msgBody = nl2br($msgBody);
                 }
 
-                // set the email
+                // send the email
                 $result = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', array(
                     'toname' => $toname,
                     'toaddress' => $toaddress,

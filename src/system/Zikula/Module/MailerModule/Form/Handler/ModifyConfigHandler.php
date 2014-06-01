@@ -66,24 +66,24 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
         ));
 
         $view->assign('encryptionItems', array(
-            array('value' => 'null', 'text' => 'None'),
+            array('value' => null, 'text' => 'None'),
             array('value' => 'ssl', 'text' => 'SSL'),
             array('value' => 'tls', 'text' => 'TLS')
         ));
 
         $view->assign('auth_modeItems', array(
-            array('value' => 'null', 'text' => 'None'),
+            array('value' => null, 'text' => 'None'),
             array('value' => 'plain', 'text' => 'Plain'),
             array('value' => 'login', 'text' => 'Login'),
             array('value' => 'cram-md5', 'text' => 'Cram-MD5'),
         ));
 
         $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
-        $params =  $dumper->getConfiguration('swiftmailer');
-        $view->assign('swiftmailer_params', $params);
+        $params = $dumper->getConfiguration('swiftmailer');
 
         // assign all config vars
         $this->view->assign($params);
+        $this->view->assign($this->getVars());
 
         return true;
     }
