@@ -1,15 +1,9 @@
-{ajaxheader modname=$modinfo.name filename='users.js' ui=true}
-{strip}
+{pageaddvar name="javascript" value="javascript/select2/select2.min.js"}
+{pageaddvar name="stylesheet" value="javascript/select2/select2.css"}
+{pageaddvar name="javascript" value="system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.Admin.View.js"}
+
+
 {insert name='csrftoken' assign='csrftoken'}
-{pageaddvarblock}
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        liveusersearch();
-        Zikula.UI.Tooltips($$('.tooltips'));
-    });
-</script>
-{/pageaddvarblock}
-{/strip}
 
 {adminheader}
 <h3>
@@ -19,11 +13,9 @@
 
 <div id="liveusersearch" class="hide z-form">
     <fieldset>
-        <label for="username">{gt text="Search"}:</label>&nbsp;<input size="25" maxlength="25" type="text" id="username" value="" />
-        <a id="modifyuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="xedit.png" __title="Edit" __alt="Edit" class='tooltips'}</a>
-        <a id="deleteuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.png" __title="Delete" __alt="Delete" class='tooltips'}</a>
-        {img id="ajax_indicator" style="display: none;" modname=core set="ajax" src="indicator_circle.gif" alt=""}
-        <div id="username_choices" class="autocomplete_user"></div>
+        <input size="25" maxlength="25" type="text" id="username" value="" style="width: 250px" title="{gt text="Search for a user name"}"/>
+        <a id="modifyuser" style="vertical-align:middle;color:black;font-size:120%;margin-left:10px" class="tooltips bold hide" title="{gt text="Edit"}"><i class="fa fa-edit"></i></a>
+        <a id="deleteuser" style="vertical-align:middle;color:black;font-size:120%" class="tooltips bold hide" title="{gt text="Delete"}"><i class="fa fa-trash-o"></i></a>
     </fieldset>
 </div>
 
