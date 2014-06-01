@@ -109,32 +109,27 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
 
                 // set our new module variable values
                 $vars = array();
-                $vars['transport'] = (string)$this->getFormValue('transport', 'mail');
+                $vars['charset'] = (string)$this->getFormValue('charset', ZLanguage::getEncoding());
+                $vars['encoding'] = (string)$this->getFormValue('encoding', '8bit');
                 $vars['html'] = (bool)$this->getFormValue('html', false);
                 $vars['wordwrap'] = (int)$this->getFormValue('wordwrap', 50);
-                $vars['auth_mode'] = $this->getFormValue('auth_mode', null);
-                $vars['host'] = (string)$this->getFormValue('host', 'localhost');
-                $vars['port'] = (int)$this->getFormValue('port', 25);
                 $vars['smtptimeout'] = (int)$this->getFormValue('smtptimeout', 10);
-                $vars['username'] = (string)$this->getFormValue('username', null);
-                $vars['password'] = (string)$this->getFormValue('password', null);
-                $vars['encryption'] = (string)$this->getFormValue('encryption', null);
+                $this->setVars($vars);
 
                 // write the config file
                 // http://symfony.com/doc/current/reference/configuration/swiftmailer.html
                 $config = array(
-                    'transport' => $vars['transport'],
-                    'username' => $vars['username'],
-                    'password' => $vars['password'],
-                    'host' => $vars['host'],
-                    'port' => $vars['port'],
-                    'encryption' => $vars['encryption'],
-                    'auth_mode' => $vars['auth_mode'],
+                    'transport' => (string)$this->getFormValue('transport', 'mail'),
+                    'username' => (string)$this->getFormValue('username', null),
+                    'password' => (string)$this->getFormValue('password', null),
+                    'host' => (string)$this->getFormValue('host', 'localhost'),
+                    'port' => (int)$this->getFormValue('port', 25),
+                    'encryption' => (string)$this->getFormValue('encryption', null),
+                    'auth_mode' => $this->getFormValue('auth_mode', null),
                     'spool' => array('type' => 'memory'),
                     'delivery_address' => null,
                     'disable_delivery' => false,
                 );
-
                 $configDumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
                 $configDumper->setConfiguration('swiftmailer', $config);
 
