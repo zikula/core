@@ -18,7 +18,6 @@ use SecurityUtil;
 use LogUtil;
 use DataUtil;
 use ZLanguage;
-use ModUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\ModUrl;
