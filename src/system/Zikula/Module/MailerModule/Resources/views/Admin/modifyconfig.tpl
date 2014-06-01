@@ -15,6 +15,21 @@
             </div>
         </div>
         <div class="form-group">
+            {charset assign=defaultcharset}
+            {formlabel cssClass="col-lg-3 control-label" for='charset' __text='Character set' mandatorysym=true}
+            <div class="col-lg-9">
+                {formtextinput cssClass="form-control" id='charset' size=10 maxLength=20 mandatory=true}
+                <p class="help-block sub">{gt text="Default: '%s'" tag1=$defaultcharset}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3 control-label" for='encoding' __text="Encoding" mandatorysym=true}
+            <div class="col-lg-9">
+                {formdropdownlist cssClass="form-control" id='encoding' mandatory=true}
+                <p class="help-block sub">{gt text="Default: '%s'" tag1='8bit'}</p>
+            </div>
+        </div>
+        <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='html' __text='HTML-formatted messages'}
             <div class="col-lg-9">
                 {formcheckbox id='html'}

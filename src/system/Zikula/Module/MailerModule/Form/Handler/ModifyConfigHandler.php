@@ -57,6 +57,14 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
             array('value' => 'null', 'text' => DataUtil::formatForDisplay($this->__('Development/debug mode (Redirect e-mails to LogUtil)')))
         ));
 
+        $view->assign('encodingItems', array(
+            array('value' => '8bit', 'text' => '8bit'),
+            array('value' => '7bit', 'text' => '7bit'),
+            array('value' => 'binary', 'text' => 'binary'),
+            array('value' => 'base64', 'text' => 'base64'),
+            array('value' => 'quoted-printable', 'text' => 'quoted-printable')
+        ));
+
         $view->assign('encryptionItems', array(
             array('value' => 'null', 'text' => 'None'),
             array('value' => 'ssl', 'text' => 'SSL'),
