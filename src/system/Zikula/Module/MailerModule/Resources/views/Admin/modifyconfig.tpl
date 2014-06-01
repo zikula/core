@@ -3,6 +3,14 @@
     <span class="fa fa-wrench"></span>
     {gt text="Settings"}
 </h3>
+{* http://swiftmailer.org/docs/sending.html *}
+{php}$works = function_exists('proc_open');$this->assign('works',$works);{/php}
+{if !$works}
+    <div class='alert alert-danger'>
+        <h3>{gt text='WARNING'}</h3>
+        <p>{gt text='The PHP functions, %s, that support SMPT and SENDMAIL do not appear to be functioning on this PHP installation. Please compile them and restart your server.', tag1='<code>proc_*</code>'}</p>
+    </div>
+{/if}
 
 {form cssClass='form-horizontal'}
     {formvalidationsummary}
@@ -61,13 +69,13 @@
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='encryption' __text='SMTP Encryption Method'}
+            {formlabel cssClass="col-lg-3 control-label" for='encryption' __text='SMTP encryption method'}
             <div class="col-lg-9">
                 {formdropdownlist cssClass="form-control" id='encryption'}
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='auth_mode' __text='Enable SMTP authentication'}
+            {formlabel cssClass="col-lg-3 control-label" for='auth_mode' __text='SMTP authentication type'}
             <div class="col-lg-9">
                 {formdropdownlist cssClass="form-control" id='auth_mode'}
             </div>
@@ -84,6 +92,22 @@
                 <div class="col-lg-9">
                     {formtextinput cssClass="form-control" id='password' textMode='password' size=30 maxLength=50}
                 </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset data-switch="transport[]" data-switch-value="gmail">
+        <legend>{gt text="Gmail settings"}</legend>
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3 control-label" for='username' __text='Gmail user name'}
+            <div class="col-lg-9">
+                {formtextinput cssClass="form-control" id='username' size=30 maxLength=50}
+            </div>
+        </div>
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3 control-label" for='password' __text='Gmail password'}
+            <div class="col-lg-9">
+                {formtextinput cssClass="form-control" id='password' textMode='password' size=30 maxLength=50}
             </div>
         </div>
     </fieldset>
