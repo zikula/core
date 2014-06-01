@@ -36,7 +36,8 @@ Features:
   - The GET request is available from `$request->query->get()` and POST from
     `$request->request->get()`.
   - The routing request can be retrieved with `$request->attributes->get($key)`
-    using the keys `_controller`, `_module`, `_type`, and `_func`.
+    using the keys `_controller`, `_zkModule`, `_zkType`, and `_zkFunc`. You MUST NOT rely on `_zkModule`, `_zkType`,
+    and `_zkFunc`. They are for core internals only and can be changed or removed at any time.
 
 - [FORWARD COMPAT] Merged `ajax.php` front controller into `index.php` - please use
   index.php?module=<modname>&type=ajax&func=<func> in AJAX calls.

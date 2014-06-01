@@ -947,7 +947,7 @@ class CategoryUtil
         $url = ModUtil::url('ZikulaCategoriesModule', 'admin', 'edit', $params);
 
         $request = ServiceUtil::get('request');
-        if ($request->attributes->get('_type') == 'admin') {
+        if ($request->attributes->get('_zkType') == 'admin') {
             $url .= '#top';
         }
 
@@ -1156,7 +1156,7 @@ class CategoryUtil
             $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'admin', 'edit', $params));
 
             $request = ServiceUtil::get('request');
-            if ($request->attributes->get('_type') == 'admin') {
+            if ($request->attributes->get('_zkType') == 'admin') {
                 $url .= '#top';
             }
 

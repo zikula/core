@@ -1231,7 +1231,7 @@ class ModUtil
 
     private static function symfonyRoute($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang)
     {
-        /** @var \Symfony\Component\Routing\RouterInterface $router */
+        /** @var \Symfony\Component\Routing\RouterInterface|\JMS\I18nRoutingBundle\Router\I18nRouter $router */
         $router = ServiceUtil::get('router');
 
         if (isset($args['lang'])) {
@@ -1341,7 +1341,8 @@ class ModUtil
         }
         
         $request = \ServiceUtil::get('request');
-        if ($request->attributes->has('_symfonyRouteMatched') && $request->attributes->get('_symfonyRouteMatched')) {
+        if ($request->attributes->has('_route_params')) {
+        	// If this attribute is set, a Symfony route has been matched. We need to generate full urls in that case.
             $fqurl = true;
         }
 

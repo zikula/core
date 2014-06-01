@@ -78,12 +78,10 @@ class LegacyRouteListener implements EventSubscriberInterface
             return $this->ajax($event);
         }
 
-        $module = $request->attributes->get('_module');
-        $type = $request->attributes->get('_type');
-        $func = $request->attributes->get('_func');
-
-        // check requested module
-        $arguments = $request->attributes->get('_args');
+        $module = $request->attributes->get('_zkModule');
+        $type = $request->attributes->get('_zkType');
+        $func = $request->attributes->get('_zkFunc');
+        $arguments = $request->attributes->get('_zkArgs');
 
         // get module information
         $modinfo = ModUtil::getInfoFromName($module);
@@ -169,9 +167,9 @@ class LegacyRouteListener implements EventSubscriberInterface
         // Get variables
         $request = $event->getRequest();
         $response = null;
-        $module = $request->attributes->get('_module');
-        $type = $request->attributes->get('_type', 'ajax');
-        $func = $request->attributes->get('_func');
+        $module = $request->attributes->get('_zkModule');
+        $type = $request->attributes->get('_zkType', 'ajax');
+        $func = $request->attributes->get('_zkFunc');
 
         // get module information
         $modinfo = ModUtil::getInfoFromName($module);

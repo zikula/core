@@ -662,23 +662,28 @@ class System
         }
 
         // Try to match a route first.
-        /** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
+        /** @var \Symfony\Component\Routing\Matcher\RequestMatcherInterface $router */
         $router = ServiceUtil::get('router');
         try {
             $parameters = $router->matchRequest($request);
 
-            if (!isset($parameters['_module']) || !isset($parameters['_type']) || !isset($parameters['_func'])) {
+            if (!isset($parameters['_zkModule']) || !isset($parameters['_zkType']) || !isset($parameters['_zkFunc'])) {
                 // This might be the web profiler or another native bundle.
+                return;
             } else {
-                $request->attributes->set('_module', strtolower($parameters['_module']));
-                $request->attributes->set('_type', strtolower($parameters['_type']));
-                $request->attributes->set('_func', strtolower($parameters['_func']));
-                $request->query->set('module', strtolower($parameters['_module']));
-                $request->query->set('type', strtolower($parameters['_type']));
-                $request->query->set('func', strtolower($parameters['_func']));
-                $request->overrideGlobals();
+                $modname = strtolower($parameters['_zkModule']);
+                $type = strtolower($parameters['_zkType']);
+                $func = strtolower($parameters['_zkFunc']);
 
-                $request->attributes->set('_symfonyRouteMatched', true);
+                $request->attributes->set('_zkModule', $modname);
+                $request->attributes->set('_zkType', $type);
+                $request->attributes->set('_zkFunc', $func);
+                $request->query->set('module', $modname);
+                $request->query->set('type', $type);
+                $request->query->set('func', $func);
+                self::queryStringSetVar('module', $modname);
+                self::queryStringSetVar('type', $type);
+                self::queryStringSetVar('func', $func);
 
                 return;
             }
@@ -883,10 +888,10 @@ class System
         //foreach ($_POST as $key => $value) {
         //    $request->attributes->set($key, $value);
         //}
-        $request->attributes->set('_module', strtolower($module)); // legacy - this is how they are received originally
-        $request->attributes->set('_type', strtolower($type)); // legacy - this is how they are received originally
-        $request->attributes->set('_func', strtolower($func)); // legacy - this is how they are received originally
-        $request->attributes->set('_args', $arguments);
+        $request->attributes->set('_zkModule', strtolower($module)); // legacy - this is how they are received originally
+        $request->attributes->set('_zkType', strtolower($type)); // legacy - this is how they are received originally
+        $request->attributes->set('_zkFunc', strtolower($func)); // legacy - this is how they are received originally
+        $request->attributes->set('_zkArgs', $arguments);
     }
 
     /**
