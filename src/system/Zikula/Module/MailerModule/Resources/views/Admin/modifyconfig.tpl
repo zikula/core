@@ -67,13 +67,6 @@
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='smtptimeout' __text='SMTP time-out'}
-            <div class="col-lg-9">
-                {formtextinput cssClass="form-control" id='smtptimeout' size=5 maxLength=5}
-                <p class="help-block sub">{gt text="Default: '%s'" tag1='10 seconds'}</p>
-            </div>
-        </div>
-        <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='auth_mode' __text='Enable SMTP authentication'}
             <div class="col-lg-9">
                 {formdropdownlist cssClass="form-control" id='auth_mode'}

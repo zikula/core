@@ -256,7 +256,9 @@ class UserApi extends \Zikula_AbstractApi
             ->setSubject($args['subject'])
             ->setFrom(System::getVar('adminmail'))
             ->setTo($args['toaddress'], $args['toname'])
-            ->setBody($args['body']);
+            ->setBody($args['body'])
+            ->setCharset($this->getVar('charset'))
+            ->setMaxLineLength($this->getVar('wordwrap'));
         \ServiceUtil::get('mailer')->send($message);
 
         return true; // message sent

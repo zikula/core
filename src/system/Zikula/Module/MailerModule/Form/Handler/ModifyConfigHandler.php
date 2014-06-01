@@ -113,7 +113,6 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                 $vars['encoding'] = (string)$this->getFormValue('encoding', '8bit');
                 $vars['html'] = (bool)$this->getFormValue('html', false);
                 $vars['wordwrap'] = (int)$this->getFormValue('wordwrap', 50);
-                $vars['smtptimeout'] = (int)$this->getFormValue('smtptimeout', 10);
                 $this->setVars($vars);
 
                 // write the config file
