@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -92,22 +92,25 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 }
 
                 // add swiftmailer config to message for testing
-                $msgBody .= "\n------\n";
-                $msgBody .= "Swiftmailer Config:\n";
+                $swift = "\n------\n";
+                $swift .= "Swiftmailer Config:\n";
                 $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
                 $params =  $dumper->getConfiguration('swiftmailer');
                 foreach ($params as $k => $v) {
                     if (!is_array($v)) {
-                        $msgBody .= "$k: $v\n";
+                        $swift .= "$k: $v\n";
                     } else {
-                        $msgBody .= "$k:\n";
+                        $swift .= "$k:\n";
                         foreach ($v as $k2 => $v2) {
-                            $msgBody .= "  $k2: $v2\n";
+                            $swift .= "  $k2: $v2\n";
                         }
                     }
                 }
                 if ($html) {
-                    $msgBody = nl2br($msgBody);
+                    $msgBody .= nl2br($swift);
+                    $altBody .= !empty($altBody) ? $swift : '';
+                } else {
+                    $msgBody .= $swift;
                 }
 
                 // send the email
@@ -124,12 +127,6 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 if ($result === true) {
                     // Success
                     LogUtil::registerStatus($this->__('Done! Message sent.'));
-                } elseif ($result === false) {
-                    // Failure
-                    LogUtil::registerError($this->__f('Error! Could not send message. %s', ''));
-                } else {
-                    // Failure with error
-                    LogUtil::registerError($this->__f('Error! Could not send message. %s', $result));
                 }
 
                 break;
