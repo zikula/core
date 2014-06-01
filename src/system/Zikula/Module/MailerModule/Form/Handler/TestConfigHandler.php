@@ -21,18 +21,12 @@ use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\ModUrl;
 use ZLanguage;
-use Swift_Message;
 
 /**
  * Form handler for the mailer modules testconfig form
  */
 class TestConfigHandler extends \Zikula_Form_AbstractHandler
 {
-    /**
-     * @var array values for this form
-     */
-    private $formValues;
-
     /**
      * initialise the form
      *
@@ -48,11 +42,15 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
             throw new AccessDeniedException();
         }
 
+        $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
+        $params =  $dumper->getConfiguration('swiftmailer');
+        $view->assign('swiftmailer_params', $params);
+
         $msgtype = $this->getVar('html') ? 'html' : 'text';
         $view->assign('msgtype', $msgtype);
 
         // assign all module vars
-        $this->view->assign($this->getVars());
+        $this->view->assign($params);
 
         return true;
     }
@@ -94,18 +92,22 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 }
 
                 // add swiftmailer config to message for testing
-                $msgBody .= "Swiftmailer Config:<br />\n";
+                $msgBody .= "\n------\n";
+                $msgBody .= "Swiftmailer Config:\n";
                 $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
                 $params =  $dumper->getConfiguration('swiftmailer');
                 foreach ($params as $k => $v) {
                     if (!is_array($v)) {
-                        $msgBody .= "$k: $v<br />\n";
+                        $msgBody .= "$k: $v\n";
                     } else {
-                        $msgBody .= "$k:<br />\n";
+                        $msgBody .= "$k:\n";
                         foreach ($v as $k2 => $v2) {
-                            $msgBody .= "  $k2: $v2<br />\n";
+                            $msgBody .= "  $k2: $v2\n";
                         }
                     }
+                }
+                if ($html) {
+                    $msgBody = nl2br($msgBody);
                 }
 
                 // set the email
@@ -129,14 +131,6 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                     // Failure with error
                     LogUtil::registerError($this->__f('Error! Could not send message. %s', $result));
                 }
-
-                // test Swiftmailer
-                $message = Swift_Message::newInstance()
-                    ->setSubject('SWIFTMAILER: ' . $subject)
-                    ->setFrom(System::getVar('adminmail'))
-                    ->setTo($toaddress)
-                    ->setBody($msgBody);
-                \ServiceUtil::get('mailer')->send($message);
 
                 break;
         }

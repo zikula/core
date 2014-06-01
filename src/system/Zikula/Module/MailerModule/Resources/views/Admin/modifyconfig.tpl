@@ -1,21 +1,4 @@
 {adminheader}
-<div class="alert alert-info">
-    <h4>Current Settings from <code>dynamic_config.yml</code>:</h4>
-    <ul>
-    {foreach from=$swiftmailer_params key='key' item='value'}
-        {if !is_array($value)}
-            <li>{$key}: {$value}</li>
-        {else}
-            <li>{$key}:
-            <ul>
-            {foreach from=$value key='k2' item='v2'}
-                <li>{$k2}: {$v2}</li>
-            {/foreach}
-            </ul></li>
-        {/if}
-    {/foreach}
-    </ul>
-</div>
 <h3>
     <span class="fa fa-wrench"></span>
     {gt text="Settings"}
@@ -26,9 +9,9 @@
     <fieldset>
         <legend>{gt text="General settings"}</legend>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='mailertype' __text='Mail transport' mandatorysym=true}
+            {formlabel cssClass="col-lg-3 control-label" for='transport' __text='Mail transport' mandatorysym=true}
             <div class="col-lg-9">
-                {formdropdownlist cssClass="form-control" id='mailertype' mandatory=true}
+                {formdropdownlist cssClass="form-control" id='transport' mandatory=true}
             </div>
         </div>
         <div class="form-group">
@@ -44,34 +27,28 @@
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='50'}</p>
             </div>
         </div>
-        <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='msmailheaders' __text='Use Microsoft mail client headers'}
-            <div class="col-lg-9">
-                {formcheckbox id='msmailheaders'}
-            </div>
-        </div>
     </fieldset>
 
-    <fieldset data-switch="mailertype[]" data-switch-value="smtp">
+    <fieldset data-switch="transport[]" data-switch-value="smtp">
         <legend>{gt text="SMTP settings"}</legend>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='smtpserver' __text='SMTP server'}
+            {formlabel cssClass="col-lg-3 control-label" for='host' __text='SMTP host server'}
             <div class="col-lg-9">
-                {formtextinput cssClass="form-control" id='smtpserver' size=30 maxLength=255}
+                {formtextinput cssClass="form-control" id='host' size=30 maxLength=255}
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='localhost'}</p>
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='smtpport' __text='SMTP port'}
+            {formlabel cssClass="col-lg-3 control-label" for='port' __text='SMTP port'}
             <div class="col-lg-9">
-                {formtextinput cssClass="form-control" id='smtpport' size=5 maxLength=5}
+                {formtextinput cssClass="form-control" id='port' size=5 maxLength=5}
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='25'}</p>
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='smtpsecuremethod' __text='SMTP Security Method'}
+            {formlabel cssClass="col-lg-3 control-label" for='encryption' __text='SMTP Encryption Method'}
             <div class="col-lg-9">
-                {formdropdownlist cssClass="form-control" id='smtpsecuremethod'}
+                {formdropdownlist cssClass="form-control" id='encryption'}
             </div>
         </div>
         <div class="form-group">
@@ -82,22 +59,22 @@
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='smtpauth' __text='Enable SMTP authentication'}
+            {formlabel cssClass="col-lg-3 control-label" for='auth_mode' __text='Enable SMTP authentication'}
             <div class="col-lg-9">
-                {formdropdownlist cssClass="form-control" id='smtpAuth'}
+                {formdropdownlist cssClass="form-control" id='auth_mode'}
             </div>
         </div>
-        <div data-switch="smtpAuth[]" data-switch-value="login">
+        <div data-switch="auth_mode[]" data-switch-value="login">
             <div class="form-group">
-                {formlabel cssClass="col-lg-3 control-label" for='smtpusername' __text='SMTP user name'}
+                {formlabel cssClass="col-lg-3 control-label" for='username' __text='SMTP user name'}
                 <div class="col-lg-9">
-                    {formtextinput cssClass="form-control" id='smtpusername' size=30 maxLength=50}
+                    {formtextinput cssClass="form-control" id='username' size=30 maxLength=50}
                 </div>
             </div>
             <div class="form-group">
-                {formlabel cssClass="col-lg-3 control-label" for='smtppassword' __text='SMTP password'}
+                {formlabel cssClass="col-lg-3 control-label" for='password' __text='SMTP password'}
                 <div class="col-lg-9">
-                    {formtextinput cssClass="form-control" id='smtppassword' textMode='password' size=30 maxLength=50}
+                    {formtextinput cssClass="form-control" id='password' textMode='password' size=30 maxLength=50}
                 </div>
             </div>
         </div>

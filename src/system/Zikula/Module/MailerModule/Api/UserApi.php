@@ -18,6 +18,7 @@ use Zikula;
 use PHPMailer;
 use System;
 use SecurityUtil;
+use Swift_Message;
 
 /**
  * API functions used by user controllers
@@ -63,7 +64,7 @@ class UserApi extends \Zikula_AbstractApi
     public function sendmessage($args)
     {
         // Development mailer mode
-        if ($this->getVar('mailertype') == 5) {
+        if ($this->getVar('mailertype') == 'test') {
             $output = '';
             foreach ($args as $key => $value) {
                 $output .= '<b>'.$key.'</b>: '.$value.'<br />';
@@ -101,13 +102,13 @@ class UserApi extends \Zikula_AbstractApi
         $mail->SetLanguage('en', $mail->PluginDir . 'language/');
 
         // get MTA configuration
-        if ($this->getVar('mailertype') == 4) {
+        if ($this->getVar('mailertype') == 'smtp') {
             $mail->IsSMTP();  // set mailer to use SMTP
             $mail->Host = $this->getVar('smtpserver');  // specify server
             $mail->Port = $this->getVar('smtpport');    // specify port
-        } elseif ($this->getVar('mailertype') == 3) {
+        } elseif ($this->getVar('mailertype') == 'gmail') {
             $mail->IsQMail();  // set mailer to use QMail
-        } elseif ($this->getVar('mailertype') == 2) {
+        } elseif ($this->getVar('mailertype') == 'sendmail') {
             ini_set("sendmail_from", $args['fromaddress']);
             $mail->IsSendMail();  // set mailer to use SendMail
             $mail->Sendmail = $this->getVar('sendmailpath'); // specify Sendmail path
@@ -115,7 +116,7 @@ class UserApi extends \Zikula_AbstractApi
             $mail->IsMail();  // set mailer to use php mail
         }
 
-        // set authentication paramters if required
+        // set authentication parameters if required
         if ($this->getVar('smtpauth') == 1) {
             $mail->SMTPAuth = true; // turn on SMTP authentication
             $mail->SMTPSecure =  $this->getVar('smtpsecuremethod'); // SSL or TLS
@@ -249,6 +250,14 @@ class UserApi extends \Zikula_AbstractApi
                 throw new \RuntimeException(__('Error! A problem occurred while sending the e-mail message.'));
             }
         }
+
+        // send message using Swiftmailer
+        $message = Swift_Message::newInstance()
+            ->setSubject($args['subject'])
+            ->setFrom(System::getVar('adminmail'))
+            ->setTo($args['toaddress'], $args['toname'])
+            ->setBody($args['body']);
+        \ServiceUtil::get('mailer')->send($message);
 
         return true; // message sent
     }

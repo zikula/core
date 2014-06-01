@@ -22,6 +22,7 @@ use ModUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\ModUrl;
+
 /**
  * Form handler for the mailer modules modifyconfig form
  */
@@ -47,8 +48,8 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
             throw new AccessDeniedException();
         }
 
-        // assign the module mail agent types
-        $view->assign('mailertypeItems', array(
+        // assign the mail transport types
+        $view->assign('transportItems', array(
             array('value' => 'mail', 'text' => DataUtil::formatForDisplay($this->__("Internal PHP `mail()` function"))),
             array('value' => 'sendmail', 'text' => DataUtil::formatForDisplay($this->__('Sendmail message transfer agent'))),
             array('value' => 'gmail', 'text' => DataUtil::formatForDisplay($this->__('Google gmail'))),
@@ -56,25 +57,25 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
             array('value' => 'null', 'text' => DataUtil::formatForDisplay($this->__('Development/debug mode (Redirect e-mails to LogUtil)')))
         ));
 
-        $view->assign('smtpsecuremethodItems', array(
+        $view->assign('encryptionItems', array(
             array('value' => 'null', 'text' => 'None'),
             array('value' => 'ssl', 'text' => 'SSL'),
             array('value' => 'tls', 'text' => 'TLS')
         ));
 
-        $view->assign('smtpAuthItems', array(
+        $view->assign('auth_modeItems', array(
             array('value' => 'null', 'text' => 'None'),
             array('value' => 'plain', 'text' => 'Plain'),
             array('value' => 'login', 'text' => 'Login'),
             array('value' => 'cram-md5', 'text' => 'Cram-MD5'),
         ));
 
-        // assign all module vars
-        $this->view->assign($this->getVars());
-
         $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
         $params =  $dumper->getConfiguration('swiftmailer');
         $view->assign('swiftmailer_params', $params);
+
+        // assign all config vars
+        $this->view->assign($params);
 
         return true;
     }
@@ -100,30 +101,27 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
 
                 // set our new module variable values
                 $vars = array();
-                $vars['mailertype'] = (string)$this->getFormValue('mailertype', 'mail');
+                $vars['transport'] = (string)$this->getFormValue('transport', 'mail');
                 $vars['html'] = (bool)$this->getFormValue('html', false);
                 $vars['wordwrap'] = (int)$this->getFormValue('wordwrap', 50);
-                $vars['msmailheaders'] = (bool)$this->getFormValue('msmailheaders', false);
-                $vars['smtpauth'] = $this->getFormValue('smtpauth', null);
-                $vars['smtpserver'] = (string)$this->getFormValue('smtpserver', 'localhost');
-                $vars['smtpport'] = (int)$this->getFormValue('smtpport', 25);
+                $vars['auth_mode'] = $this->getFormValue('auth_mode', null);
+                $vars['host'] = (string)$this->getFormValue('host', 'localhost');
+                $vars['port'] = (int)$this->getFormValue('port', 25);
                 $vars['smtptimeout'] = (int)$this->getFormValue('smtptimeout', 10);
-                $vars['smtpusername'] = (string)$this->getFormValue('smtpusername', null);
-                $vars['smtppassword'] = (string)$this->getFormValue('smtppassword', null);
-                $vars['smtpsecuremethod'] = (string)$this->getFormValue('smtpsecuremethod', null);
-
-                $this->setVars($vars);
+                $vars['username'] = (string)$this->getFormValue('username', null);
+                $vars['password'] = (string)$this->getFormValue('password', null);
+                $vars['encryption'] = (string)$this->getFormValue('encryption', null);
 
                 // write the config file
                 // http://symfony.com/doc/current/reference/configuration/swiftmailer.html
                 $config = array(
-                    'transport' => $vars['mailertype'],
-                    'username' => $vars['smtpusername'],
-                    'password' => $vars['smtppassword'],
-                    'host' => $vars['smtpserver'],
-                    'port' => $vars['smtpport'],
-                    'encryption' => $vars['smtpsecuremethod'],
-                    'auth_mode' => $vars['smtpauth'],
+                    'transport' => $vars['transport'],
+                    'username' => $vars['username'],
+                    'password' => $vars['password'],
+                    'host' => $vars['host'],
+                    'port' => $vars['port'],
+                    'encryption' => $vars['encryption'],
+                    'auth_mode' => $vars['auth_mode'],
                     'spool' => array('type' => 'memory'),
                     'delivery_address' => null,
                     'disable_delivery' => false,
