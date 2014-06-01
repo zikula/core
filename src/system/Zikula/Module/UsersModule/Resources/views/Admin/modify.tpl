@@ -1,7 +1,6 @@
+{pageaddvar name="javascript" value="system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Admin.Modify.js"}
 {strip}
     {gt text='Edit user account of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
-    {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
-    {ajaxheader modname=$modinfo.name filename='Zikula.Users.Admin.NewUser.js' noscriptaculous=true effects=true}
     {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
@@ -23,37 +22,6 @@
     {else}
         {assign var='editingSelf' value=false}
     {/if}
-    {pageaddvarblock}
-        <script type="text/javascript">
-            Zikula.Users.NewUser.setup = function() {
-                Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
-
-                Zikula.Users.NewUser.fieldId = {
-                    submit:         '{{$formData->getFormId()}}_submit',
-                    checkUser:      '{{$formData->getFormId()}}_checkuserajax',
-                    checkMessage:   '{{$formData->getFormId()}}_checkmessage',
-                    validMessage:   '{{$formData->getFormId()}}_validmessage',
-
-                    userName:       '{{$formData->getFieldId('uname')}}',
-                    email:          '{{$formData->getFieldId('email')}}',
-                };
-            }
-
-            Zikula.Users.Admin.NewUser.setup = function() {
-                Zikula.Users.Admin.NewUser.fieldId = {
-                    passwordIsSetWrap:  '{{$formData->getFormId()}}_password_is_set_wrap',
-                    passwordNotSetWrap: '{{$formData->getFormId()}}_password_not_set_wrap',
-
-                    setPass:            '{{$formData->getFieldId('setpass')}}',
-                    setPassYes:         '{{$formData->getFieldId('setpass')}}_yes',
-                    setPassNo:          '{{$formData->getFieldId('setpass')}}_no',
-                    setPassWrap:        '{{$formData->getFieldId('setpass')}}_wrap',
-                    passWrap:           '{{$formData->getFieldId('pass')}}_wrap',
-                    email:              '{{$formData->getFieldId('email')}}',
-                };
-            }
-        </script>
-    {/pageaddvarblock}
 {/strip}
 
 <div id="{$formData->getFormId()}_errormsgs" class="alert alert-danger{if empty($errorMessages)} hide{/if}">
@@ -88,7 +56,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User name'}<span class="required"></span></label>
             {assign var='fieldName' value='uname'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}"  class="form-control{if isset($errorFields.$fieldName)}form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}"  class="form-control{if isset($errorFields.$fieldName)}form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" required="required"/>
                 <em class="help-block sub">{gt text='User names can contain letters, numbers, underscores, periods, or dashes.'}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
@@ -98,7 +66,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='E-mail address'}<span class="required"></span></label>
             {assign var='fieldName' value='email'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="email" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" data-match="{gt text="Email addresses must match!"}" required="required"/>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
@@ -107,7 +75,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat e-mail address for verification'}<span class="required"></span></label>
             {assign var='fieldName' value='emailagain'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="email" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required"/>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
@@ -195,7 +163,7 @@
                     <span class="required"></span>
                 </label>
                 <div class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" data-match="{gt text="Passwords must match"}"/>
                     <em class="sub help-block">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.ZikulaUsersModule.minpass}</em>
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">
                         {if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}
@@ -262,25 +230,15 @@
 
     {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=$formData->getFieldData('uid')}
 
-    <fieldset>
-        <legend>{gt text="Check your entries and save your updates"}</legend>
-        <p id="{$formData->getFormId()}_checkmessage" class="sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Save' to continue."}</p>
-        <p id="{$formData->getFormId()}_validmessage" class="hide sub">{gt text="Your entries seem to be OK. Please click on 'Save' when you are ready to continue."}</p>
-        <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
-                <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
-                <button id="{$formData->getFormId()|cat:'_submit'}" class="btn btn-success" type="submit" title="{gt text='Save'}">
-                    {gt text='Save'}
-                </button>
-                <button id="{$formData->getFormId()|cat:'_checkuserajax'}" class="btn btn-success hide" title="{gt text='Check your entries'}">
-                    {gt text='Check your entries'}
-                </button>
-                <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}">
-                    {gt text='Cancel'}
-                </a>
-            </div>
+    <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-9">
+            <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
+            <button id="{$formData->getFormId()|cat:'_submit'}" class="btn btn-success" type="submit" title="{gt text='Save'}">
+                {gt text='Save'}
+            </button>
+            <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}">{gt text='Cancel'}</a>
         </div>
-    </fieldset>
+    </div>
 </form>
 
 <h3>
