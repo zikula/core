@@ -27,20 +27,10 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        $this->setVar('mailertype', 1);
         $this->setVar('charset', ZLanguage::getEncoding());
         $this->setVar('encoding', '8bit');
         $this->setVar('html', false);
         $this->setVar('wordwrap', 50);
-        $this->setVar('msmailheaders', false);
-        $this->setVar('sendmailpath', '/usr/sbin/sendmail');
-        $this->setVar('smtpauth', false);
-        $this->setVar('smtpserver', 'localhost');
-        $this->setVar('smtpport', 25);
-        $this->setVar('smtptimeout', 10);
-        $this->setVar('smtpusername', '');
-        $this->setVar('smtppassword', '');
-        $this->setVar('smtpsecuremethod', 'ssl');
 
         // Initialisation successful
         return true;
@@ -60,7 +50,39 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
             case '1.3.1':
                 $this->setVar('smtpsecuremethod', 'ssl');
             case '1.3.2':
-                // future upgrade routines
+                // clear old modvars
+                $modVars = $this->getVars();
+                $this->delVars();
+                $this->setVar('charset', $modVars['charset']);
+                $this->setVar('encoding', $modVars['encoding']);
+                $this->setVar('html', $modVars['html']);
+                $this->setVar('wordwrap', $modVars['wordwrap']);
+
+                // write the config file
+                $mailerTypeConversion = array(
+                    1 => 'mail',
+                    2 => 'semdmail',
+                    3 => 'mail',
+                    4 => 'smtp',
+                    5 => 'test',
+                );
+                $config = array(
+                    'transport' => $mailerTypeConversion[$modVars['mailertype']],
+                    'username' => $modVars['smtpusername'],
+                    'password' => $modVars['smtppassword'],
+                    'host' => $modVars['smtpserver'],
+                    'port' => $modVars['smtpport'],
+                    'encryption' => $modVars['smtpsecuremethod'],
+                    'auth_mode' => $modVars['auth'] ? 'login' : null,
+                    'spool' => array('type' => 'memory'),
+                    'delivery_address' => null,
+                    'disable_delivery' => false,
+                );
+                $configDumper = $this->getContainer()->get('zikula.dynamic_config_dumper');
+                $configDumper->setConfiguration('swiftmailer', $config);
+
+            case '1.4.0':
+            // future upgrade routines
         }
 
         // Update successful
