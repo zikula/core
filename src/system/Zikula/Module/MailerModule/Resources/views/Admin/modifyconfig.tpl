@@ -11,6 +11,9 @@
         <p>{gt text='The PHP functions, %s, that support SMPT and SENDMAIL do not appear to be functioning on this PHP installation. Please compile them and restart your server.', tag1='<code>proc_*</code>'}</p>
     </div>
 {/if}
+<div class="alert alert-info">
+    <p>{gt text='Mailer relies on %s' tag1='<a href="http://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fa fa-external-link"></i> SwiftMailer configuration</a>'}</p>
+</div>
 
 {form cssClass='form-horizontal'}
     {formvalidationsummary}
