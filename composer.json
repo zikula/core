@@ -13,6 +13,9 @@
             "DoctrineExtensions\\StandardFields\\": "src/lib/legacy",
             "CustomBundle\\": "src/app/custom"
         },
+        "psr-4": {
+            "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule"
+        },
         "classmap": [
             "src/lib/util/",
             "src/lib/i18n/",
