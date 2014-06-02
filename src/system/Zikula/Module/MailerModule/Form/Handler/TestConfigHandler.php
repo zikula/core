@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -28,11 +28,6 @@ use ZLanguage;
 class TestConfigHandler extends \Zikula_Form_AbstractHandler
 {
     /**
-     * @var array values for this form
-     */
-    private $formValues;
-
-    /**
      * initialise the form
      *
      * @param \Zikula_Form_view $view view object
@@ -47,11 +42,15 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
             throw new AccessDeniedException();
         }
 
+        $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
+        $params = $dumper->getConfiguration('swiftmailer');
+        $view->assign('swiftmailer_params', $params);
+
         $msgtype = $this->getVar('html') ? 'html' : 'text';
         $view->assign('msgtype', $msgtype);
 
         // assign all module vars
-        $this->view->assign($this->getVars());
+        $this->view->assign($params);
 
         return true;
     }
@@ -92,7 +91,29 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                     $altBody = '';
                 }
 
-                // set the email
+                // add swiftmailer config to message for testing
+                $swift = "\n------\n";
+                $swift .= "Swiftmailer Config:\n";
+                $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
+                $params =  $dumper->getConfiguration('swiftmailer');
+                foreach ($params as $k => $v) {
+                    if (!is_array($v)) {
+                        $swift .= "$k: $v\n";
+                    } else {
+                        $swift .= "$k:\n";
+                        foreach ($v as $k2 => $v2) {
+                            $swift .= "  $k2: $v2\n";
+                        }
+                    }
+                }
+                if ($html) {
+                    $msgBody .= nl2br($swift);
+                    $altBody .= !empty($altBody) ? $swift : '';
+                } else {
+                    $msgBody .= $swift;
+                }
+
+                // send the email
                 $result = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', array(
                     'toname' => $toname,
                     'toaddress' => $toaddress,
@@ -106,12 +127,6 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 if ($result === true) {
                     // Success
                     LogUtil::registerStatus($this->__('Done! Message sent.'));
-                } elseif ($result === false) {
-                    // Failiure
-                    LogUtil::registerError($this->__f('Error! Could not send message. %s', ''));
-                } else {
-                    // Failiure with error
-                    LogUtil::registerError($this->__f('Error! Could not send message. %s', $result));
                 }
 
                 break;

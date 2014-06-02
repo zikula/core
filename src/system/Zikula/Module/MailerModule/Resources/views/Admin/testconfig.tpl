@@ -4,6 +4,23 @@
     {gt text="Test current settings"}
 </h3>
 
+<div class="alert alert-info">
+    <h4>Current Settings from <code>dynamic_config.yml</code>:</h4>
+    <ul>
+        {foreach from=$swiftmailer_params key='key' item='value'}
+            {if !is_array($value)}
+                <li>{$key}: {$value}</li>
+            {else}
+                <li>{$key}:
+                    <ul>
+                        {foreach from=$value key='k2' item='v2'}
+                            <li>{$k2}: {$v2}</li>
+                        {/foreach}
+                    </ul></li>
+            {/if}
+        {/foreach}
+    </ul>
+</div>
 {form cssClass='form-horizontal'}
 {formvalidationsummary}
     <fieldset>
@@ -72,7 +89,7 @@
 
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
-            {formbutton class='btn btn-success' commandName='save' __text='Test settings now'}
+            {formbutton class='btn btn-success' commandName='save' __text='Send test email now'}
             {formbutton class='btn btn-danger' commandName='cancel' __text='Cancel'}
         </div>
     </div>

@@ -122,14 +122,6 @@ stof_doctrine_extensions:
             uploadable: false
             reference_integrity: false
 
-# Swiftmailer Configuration
-swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    spool:     { type: memory }
-
 cmf_routing:
     dynamic:
         enabled: true

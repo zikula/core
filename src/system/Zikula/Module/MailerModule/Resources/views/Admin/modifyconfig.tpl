@@ -3,15 +3,26 @@
     <span class="fa fa-wrench"></span>
     {gt text="Settings"}
 </h3>
+{* http://swiftmailer.org/docs/sending.html *}
+{php}$works = function_exists('proc_open');$this->assign('works',$works);{/php}
+{if !$works}
+    <div class='alert alert-danger'>
+        <h3>{gt text='WARNING'}</h3>
+        <p>{gt text='The PHP functions, %s, that support SMPT and SENDMAIL do not appear to be functioning on this PHP installation. Please compile them and restart your server.', tag1='<code>proc_*</code>'}</p>
+    </div>
+{/if}
+<div class="alert alert-info">
+    <p>{gt text='Mailer relies on %s' tag1='<a href="http://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fa fa-external-link"></i> SwiftMailer configuration</a>'}</p>
+</div>
 
 {form cssClass='form-horizontal'}
     {formvalidationsummary}
     <fieldset>
         <legend>{gt text="General settings"}</legend>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='mailertype' __text='Mail transport' mandatorysym=true}
+            {formlabel cssClass="col-lg-3 control-label" for='transport' __text='Mail transport' mandatorysym=true}
             <div class="col-lg-9">
-                {formdropdownlist cssClass="form-control" id='mailertype' mandatory=true}
+                {formdropdownlist cssClass="form-control" id='transport' mandatory=true}
             </div>
         </div>
         <div class="form-group">
@@ -42,72 +53,64 @@
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='50'}</p>
             </div>
         </div>
-        <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='msmailheaders' __text='Use Microsoft mail client headers'}
-            <div class="col-lg-9">
-                {formcheckbox id='msmailheaders'}
-            </div>
-        </div>
     </fieldset>
 
-    <fieldset data-switch="mailertype[]" data-switch-value="2">
-        <legend>{gt text="'Sendmail' settings"}</legend>
-        <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='sendmailpath' __text="Path to 'Sendmail'"}
-            <div class="col-lg-9">
-                {formtextinput cssClass="form-control" id='sendmailpath' size=50 maxLength=255}
-                <p class="help-block sub">{gt text="Default: '%s'" tag1='/usr/sbin/sendmail'}</p>
-            </div>
-        </div>
-    </fieldset>
-
-    <fieldset data-switch="mailertype[]" data-switch-value="4">
+    <fieldset data-switch="transport[]" data-switch-value="smtp">
         <legend>{gt text="SMTP settings"}</legend>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='smtpserver' __text='SMTP server'}
+            {formlabel cssClass="col-lg-3 control-label" for='host' __text='SMTP host server'}
             <div class="col-lg-9">
-                {formtextinput cssClass="form-control" id='smtpserver' size=30 maxLength=255}
+                {formtextinput cssClass="form-control" id='host' size=30 maxLength=255}
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='localhost'}</p>
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='smtpport' __text='SMTP port'}
+            {formlabel cssClass="col-lg-3 control-label" for='port' __text='SMTP port'}
             <div class="col-lg-9">
-                {formtextinput cssClass="form-control" id='smtpport' size=5 maxLength=5}
+                {formtextinput cssClass="form-control" id='port' size=5 maxLength=5}
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='25'}</p>
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='smtpsecuremethod' __text='SMTP Security Method'}
+            {formlabel cssClass="col-lg-3 control-label" for='encryption' __text='SMTP encryption method'}
             <div class="col-lg-9">
-                {formdropdownlist cssClass="form-control" id='smtpsecuremethod'}
+                {formdropdownlist cssClass="form-control" id='encryption'}
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='smtptimeout' __text='SMTP time-out'}
+            {formlabel cssClass="col-lg-3 control-label" for='auth_mode' __text='SMTP authentication type'}
             <div class="col-lg-9">
-                {formtextinput cssClass="form-control" id='smtptimeout' size=5 maxLength=5}
-                <p class="help-block sub">{gt text="Default: '%s'" tag1='10 seconds'}</p>
+                {formdropdownlist cssClass="form-control" id='auth_mode'}
+            </div>
+        </div>
+        <div data-switch="auth_mode[]" data-switch-value="login">
+            <div class="form-group">
+                {formlabel cssClass="col-lg-3 control-label" for='username' __text='SMTP user name'}
+                <div class="col-lg-9">
+                    {formtextinput cssClass="form-control" id='username' size=30 maxLength=50}
+                </div>
+            </div>
+            <div class="form-group">
+                {formlabel cssClass="col-lg-3 control-label" for='password' __text='SMTP password'}
+                <div class="col-lg-9">
+                    {formtextinput cssClass="form-control" id='password' textMode='password' size=30 maxLength=50}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset data-switch="transport[]" data-switch-value="gmail">
+        <legend>{gt text="Gmail settings"}</legend>
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3 control-label" for='username' __text='Gmail user name'}
+            <div class="col-lg-9">
+                {formtextinput cssClass="form-control" id='username' size=30 maxLength=50}
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='smtpauth' __text='Enable SMTP authentication'}
+            {formlabel cssClass="col-lg-3 control-label" for='password' __text='Gmail password'}
             <div class="col-lg-9">
-                {formcheckbox id='smtpauth'}
-            </div>
-        </div>
-        <div data-switch="smtpauth" data-switch-value="1">
-            <div class="form-group">
-                {formlabel cssClass="col-lg-3 control-label" for='smtpusername' __text='SMTP user name'}
-                <div class="col-lg-9">
-                    {formtextinput cssClass="form-control" id='smtpusername' size=30 maxLength=50}
-                </div>
-            </div>
-            <div class="form-group">
-                {formlabel cssClass="col-lg-3 control-label" for='smtppassword' __text='SMTP password'}
-                <div class="col-lg-9">
-                    {formtextinput cssClass="form-control" id='smtppassword' textMode='password' size=30 maxLength=50}
-                </div>
+                {formtextinput cssClass="form-control" id='password' textMode='password' size=30 maxLength=50}
             </div>
         </div>
     </fieldset>

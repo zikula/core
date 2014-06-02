@@ -18,7 +18,6 @@ use SecurityUtil;
 use LogUtil;
 use DataUtil;
 use ZLanguage;
-use ModUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\ModUrl;
@@ -38,7 +37,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
      *
      * @param \Zikula_Form_view $view view object
      *
-     * @return bool true if succcessful
+     * @return bool true if successful
      (
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
@@ -48,13 +47,13 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
             throw new AccessDeniedException();
         }
 
-        // assign the module mail agent types
-        $view->assign('mailertypeItems', array(
-            array('value' => 1, 'text' => DataUtil::formatForDisplay($this->__("Internal PHP `mail()` function"))),
-            array('value' => 2, 'text' => DataUtil::formatForDisplay($this->__('Sendmail message transfer agent'))),
-            array('value' => 3, 'text' => DataUtil::formatForDisplay($this->__('QMail message transfer agent'))),
-            array('value' => 4, 'text' => DataUtil::formatForDisplay($this->__('SMTP mail transfer protocol'))),
-            array('value' => 5, 'text' => DataUtil::formatForDisplay($this->__('Development/debug mode (Redirect e-mails to LogUtil)')))
+        // assign the mail transport types
+        $view->assign('transportItems', array(
+            array('value' => 'mail', 'text' => DataUtil::formatForDisplay($this->__("Internal PHP `mail()` function"))),
+            array('value' => 'sendmail', 'text' => DataUtil::formatForDisplay($this->__('Sendmail message transfer agent'))),
+            array('value' => 'gmail', 'text' => DataUtil::formatForDisplay($this->__('Google gmail'))),
+            array('value' => 'smtp', 'text' => DataUtil::formatForDisplay($this->__('SMTP mail transfer protocol'))),
+            array('value' => 'null', 'text' => DataUtil::formatForDisplay($this->__('Development/debug mode (Redirect e-mails to LogUtil)')))
         ));
 
         $view->assign('encodingItems', array(
@@ -65,13 +64,24 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
             array('value' => 'quoted-printable', 'text' => 'quoted-printable')
         ));
 
-        $view->assign('smtpsecuremethodItems', array(
-            array('value' => '', 'text' => 'None'),
+        $view->assign('encryptionItems', array(
+            array('value' => null, 'text' => 'None'),
             array('value' => 'ssl', 'text' => 'SSL'),
             array('value' => 'tls', 'text' => 'TLS')
         ));
 
-        // assign all module vars
+        $view->assign('auth_modeItems', array(
+            array('value' => null, 'text' => 'None'),
+            array('value' => 'plain', 'text' => 'Plain'),
+            array('value' => 'login', 'text' => 'Login'),
+            array('value' => 'cram-md5', 'text' => 'Cram-MD5'),
+        ));
+
+        $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
+        $params = $dumper->getConfiguration('swiftmailer');
+
+        // assign all config vars
+        $this->view->assign($params);
         $this->view->assign($this->getVars());
 
         return true;
@@ -96,39 +106,34 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                 }
                 $this->formValues = $view->getValues();
 
-                // set our new module variable values
+                // set new module variable values
                 $vars = array();
-                $vars['mailertype'] = (int)$this->getFormValue('mailertype', 1);
-
                 $vars['charset'] = (string)$this->getFormValue('charset', ZLanguage::getEncoding());
-
                 $vars['encoding'] = (string)$this->getFormValue('encoding', '8bit');
-
                 $vars['html'] = (bool)$this->getFormValue('html', false);
-
                 $vars['wordwrap'] = (int)$this->getFormValue('wordwrap', 50);
-
-                $vars['msmailheaders'] = (bool)$this->getFormValue('msmailheaders', false);
-
-                $vars['sendmailpath'] = (string)$this->getFormValue('sendmailpath', '/usr/sbin/sendmail');
-
-                $vars['smtpauth'] = (bool)$this->getFormValue('smtpauth', false);
-
-                $vars['smtpserver'] = (string)$this->getFormValue('smtpserver', 'localhost');
-
-                $vars['smtpport'] = (int)$this->getFormValue('smtpport', 25);
-
-                $vars['smtptimeout'] = (int)$this->getFormValue('smtptimeout', 10);
-
-                $vars['smtpusername'] = (string)$this->getFormValue('smtpusername', '');
-
-                $vars['smtppassword'] = (string)$this->getFormValue('smtppassword', '');
-
-                $vars['smtpsecuremethod'] = (string)$this->getFormValue('smtpsecuremethod', '');
-
                 $this->setVars($vars);
 
-                // the module configuration has been updated successfuly
+                // write the config file
+                // http://symfony.com/doc/current/reference/configuration/swiftmailer.html
+                $configDumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
+                $currentConfig = $configDumper->getConfiguration('swiftmailer');
+                $config = array(
+                    'transport' => (string)$this->getFormValue('transport', 'mail'),
+                    'username' => (string)$this->getFormValue('username', null),
+                    'password' => (string)$this->getFormValue('password', null),
+                    'host' => (string)$this->getFormValue('host', 'localhost'),
+                    'port' => (int)$this->getFormValue('port', 25),
+                    'encryption' => (string)$this->getFormValue('encryption', null),
+                    'auth_mode' => $this->getFormValue('auth_mode', null),
+                    // the items below can be configured by modifying the app/config/dynamic_config.yml file
+                    'spool' => !empty($currentConfig['spool']) ? $currentConfig['spool'] : array('type' => 'memory'),
+                    'delivery_address' => !empty($currentConfig['delivery_address']) ? $currentConfig['delivery_address'] : null,
+                    'disable_delivery' => !empty($currentConfig['disable_delivery']) ? $currentConfig['disable_delivery'] : false,
+                );
+                $configDumper->setConfiguration('swiftmailer', $config);
+
+                // the module configuration has been updated successfully
                 LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
                 break;
         }
