@@ -1,0 +1,10 @@
+{
+    "name": "zikula",
+    "authors": [
+        "Zikula"
+    ],
+    "private": true,
+    "dependencies": {
+        "select2": "latest"
+    }
+}
