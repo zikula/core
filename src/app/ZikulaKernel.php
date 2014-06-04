@@ -1,5 +1,6 @@
 <?php
 
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -45,8 +46,13 @@ class ZikulaKernel extends Kernel
         if (is_readable($this->rootDir.'/config/custom_parameters.yml')) {
             $loader->load($this->rootDir.'/config/custom_parameters.yml');
         }
-        if (is_readable($this->rootDir.'/config/dynamic_config.yml')) {
-            $loader->load($this->rootDir.'/config/dynamic_config.yml');
+
+        if (!is_readable($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_GENERATED)) {
+            // There is no generated configuration (yet), load default values.
+            // This only happens at the very first time Symfony is started.
+            $loader->load($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_DEFAULT);
+        } else {
+            $loader->load($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_GENERATED);
         }
     }
 
