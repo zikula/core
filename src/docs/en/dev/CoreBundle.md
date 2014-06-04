@@ -2,6 +2,7 @@ Documentation of the CoreBundle
 ===============================
   1. [Introduction](#introduction)
   2. [Dynamic configuration dumper](#dynamicconfigdumper)
+  3. [Cache clearer](#cacheclearer)
 
 <a name="introduction" />
 Introduction
@@ -42,3 +43,21 @@ Use `setParameter()` to set a parameter.
 The configuration is written into the `app/config/dynamic/generated.yml` file. Core bundles might specify a default
 configuration in the `app/config/dynamic/default.yml` file, which will be used until there is a generated configuration
 available.
+
+<a name="cacheclearer" />
+The cache clearer
+--------------------------------
+The cache clearer is intended to be used for clearing (parts of) the Symfony cache. The cache clearer is registered as
+`zikula.cache_clearer` service. It provides one method: `clear($type)`. `$type` determines what part of the cache
+shall be deleted. Currently, three types are supported:
+
+1. `symfony.routing.generator`: Deletes the url generator files.
+2. `symfony.routing.matcher`:   Deletes the url matcher files.
+3. `symfony.config`: Deletes the container configuration cache files.
+
+**Note:** You can also specify `symfony.routing` to delete the url generator AND matcher files.
+Usage example:
+```php
+$cacheClearer = $this->get('zikula.cache_clearer');
+$cacheClearer->clear('symfony.config');
+```

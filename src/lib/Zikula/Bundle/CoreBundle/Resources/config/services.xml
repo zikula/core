@@ -8,6 +8,7 @@
         <parameter key="event_dispatcher.class">Zikula_EventManager</parameter>
         <!-- Make controller resolving working with Zikula base classes. -->
         <parameter key="controller_resolver.class">Zikula\Bundle\CoreBundle\Controller\ControllerResolver</parameter>
+        <parameter key="zikula.cache_clearer.class">Zikula\Bundle\CoreBundle\CacheClearer</parameter>
     </parameters>
 
     <services>
@@ -16,6 +17,11 @@
         </service>
         <service id="zikula.dynamic_config_dumper" class="Zikula\Bundle\CoreBundle\DynamicConfigDumper">
             <argument type="expression">service('kernel').getRootDir() ~ "/config"</argument>
+        </service>
+        <service id="zikula.cache_clearer" class="%zikula.cache_clearer.class%">
+            <argument>%kernel.cache_dir%</argument>
+            <argument>%router.cache_class_prefix%</argument>
+            <argument>%kernel.container_class%</argument>
         </service>
     </services>
 </container>

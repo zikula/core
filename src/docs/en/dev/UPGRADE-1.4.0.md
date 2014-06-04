@@ -435,7 +435,7 @@ Annotation example:
 ### ZikulaRoutesModule
 The new ZikulaRoutesModule takes care of loading the routes from all Zikula modules. It is saving all the routes of the
 modules in a database table and provides them to Symfony using the `RouteLoader.php` file.
-The action mainly happens in the `Routing` folder of the module. You'll find the following files: `CacheClearer.php`,
+The action mainly happens in the `Routing` folder of the module. You'll find the following files:
 `InstallerListener.php`, `RouteFinder.php` and `RouteLoader.php`.
 
 1. `InstallerListener.php`:
@@ -457,16 +457,12 @@ to the route: **_zkModule**, **_zkType** and **_zkFunc**, which are used in `Sys
 later on. In development mode, this procedure *might* happen on every page load, but it *won't* in production mode.
 The RouteLoader is activated in `app/config/routing.yml`:
 
-    ```yaml
-    Routing:
-        resource: .
-        type: zikularoutesmodule
-    ```
-    That way you *could* also specify your own custom module to take care of routing.
-
-4. `CacheClearer.php`:
-The CacheClearer is responsible for clearing the Symfony routing cache. It deletes all the files matching
-`app{dev|prod}Url*` in `app/cache`. It is called when a new route is added to the database.
+```yaml
+Routing:
+    resource: .
+    type: zikularoutesmodule
+```
+That way you *could* also specify your own custom module to take care of routing.
 
 The module also takes care of configuring the [JMSI18nRoutingBundle](http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration),
 depending on the installed languages and language options. **This has to be moved to the ZikulaSettingsModule**.
