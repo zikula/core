@@ -340,20 +340,11 @@ Additionally, Zikula uses the [JMSI18nRoutingBundle](http://jmsyst.com/bundles/J
 multilingual and translated routes.
 
 By default Zikula will look for routing in the module's `Resources/config/routing.yml` file.
-However you can configure the routes as stated in the Symfony docs in YAML, PHP or XML and addtionally, due to our use
+You can configure the routes as stated in the Symfony docs in YAML, PHP or XML and addtionally, due to our use
 of the [*SensioFrameworkExtraBundle*](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html),
 in [annotations](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/routing.html#frameworkextra-annotations-routing-activation).
-Depending on how you want to define the module's routes, you have to override the
-[`getRoutingConfig`](https://github.com/zikula/core/blob/1.3/src/lib/Zikula/Core/AbstractBundle.php#L58) method in your
-module's bundle configuration file (see below, i.e. `SettingsModule/ZikulaSettingsModule.php`).
-The simplest configuration looks like so:
-```yml
-acmeexamplemodule:
-    resource: "@AcmeExampleModule/Controller"
-    type:     annotation
-```
 
-The file location can be customized or disabled by overriding `getRoutingConfig()` in
+The file location of the routing configuration file can be customized or disabled by overriding `getRoutingConfig()` in
 the module bundle class (`AcmeExampleModule`).
 
 ```php
@@ -362,11 +353,18 @@ public function getRoutingConfig()
     return "@AcmeExampleModule/Resources/config/routing.yml";
 }
 ```
+The simplest configuration looks like so:
+```yml
+acmeexamplemodule:
+    resource: "@AcmeExampleModule/Controller"
+    type:     annotation
+```
 
 However, there are some points you need to take care of when implementing routing in your module:
 
 1. Every module MUST make sure it isn't overriding routes of other modules. This currently is achieved by prefixing
-all routes* with the url prefix specified in XYZVersion.php:
+all routes (see *Special Zikula route options* below on how to disable this behaviour) with the url prefix specified
+in XYZVersion.php:
    ```php
    public function getMetaData()
    {
@@ -465,41 +463,11 @@ Routing:
 That way you *could* also specify your own custom module to take care of routing.
 
 The module also takes care of configuring the [JMSI18nRoutingBundle](http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration),
-depending on the installed languages and language options. **This has to be moved to the ZikulaSettingsModule**.
-It is setting those dynamically in `ZikulaRoutesModule/DependencyInjection/ZikulaRoutesExtension.php`:
+depending on the installed languages and language options. It provides an api function for reading the current language
+settings:
 ```php
-/**
- * Allow an extension to prepend the extension configurations.
- *
- * @param ContainerBuilder $container
- */
-public function prepend(ContainerBuilder $container)
-{
-    // See http://symfony.com/doc/current/cookbook/bundles/prepend_extension.html
-
-    // get all Bundles
-    $bundles = $container->getParameter('kernel.bundles');
-    // determine if JMSI18nRoutingBundle is registered
-    if (isset($bundles['JMSI18nRoutingBundle'])) {
-        $defaultLocale = $container->getParameter('locale');
-        if (\System::isInstalling()) {
-            $installedLanguages = array($defaultLocale);
-            $isRequiredLangParameter = false;
-        } else {
-            $installedLanguages = \ZLanguage::getInstalledLanguages();
-            $isRequiredLangParameter = \System::getVar('languageurl', 0);
-        }
-        $container->prependExtensionConfig('jms_i18n_routing',
-            array(
-                'default_locale' => $defaultLocale,
-                'locales'        => $installedLanguages,
-                'strategy'       => $isRequiredLangParameter ? 'prefix' : 'prefix_except_default'
-            )
-        );
-    }
-}
+ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
 ```
-Note that you **currently have to manually clear the cache after changing any languages settings to become active.**
 
 
 ### General notes
