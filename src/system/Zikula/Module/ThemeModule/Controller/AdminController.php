@@ -308,10 +308,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-
-        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            throw new \InvalidArgumentException();
-        }
+        $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::variables", ACCESS_EDIT)) {
@@ -440,7 +437,6 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function palettesAction(array $args = array())
@@ -454,9 +450,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            throw new \InvalidArgumentException();
-        }
+        $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::colors", ACCESS_EDIT)) {
@@ -577,7 +571,6 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function pageconfigurationsAction(array $args = array())
@@ -591,9 +584,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-         if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            throw new \InvalidArgumentException();
-        }
+        $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
@@ -898,8 +889,6 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist or
-     *                                          if the page configuration doesn't exit
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
     public function modifypageconfigurationassignmentAction(array $args = array())
@@ -1699,4 +1688,21 @@ class AdminController extends \Zikula_AbstractController
         $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Cleared all cache and compile directories.'));
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
+
+    /**
+     * Check if theme name isn't provided or doesn't exist
+     *
+     * @param $themeinfo
+     *
+     * @throws \InvalidArgumentException Thrown if theme name isn't provided or doesn't exist
+     */
+    private function checkIfMainThemeFileExists($themeinfo)
+    {
+        $mainThemeFile = 'themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php';
+        $mainThemeFileLegacy = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php';
+        if (!file_exists($mainThemeFile) && !file_exists($mainThemeFileLegacy)) {
+            throw new \InvalidArgumentException();
+        }
+    }
+
 }
