@@ -308,25 +308,34 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
     {
         $idHtml = $this->getIdHtml();
         $nameHtml = " name=\"{$this->inputName}\"";
-        $titleHtml = ($this->toolTip != null ? ' title="' . $view->translateForDisplay($this->toolTip) . '"' : '');
-        $readOnlyHtml = ($this->readOnly ? ' readonly="readonly" tabindex="-1"' : '');
-        $sizeHtml = ($this->size > 0 ? " size=\"{$this->size}\"" : '');
-        $maxLengthHtml = ($this->maxLength > 0 ? " maxlength=\"{$this->maxLength}\"" : '');
         $text = DataUtil::formatForDisplay($this->text);
         $class = $this->getStyleClass();
+
+        if (isset($this->toolTip)) {
+            $this->attributes['title'] = $view->translateForDisplay($this->toolTip);
+        }
+        if (isset($this->readOnly)) {
+            $this->attributes['readonly'] = 'readonly';
+            $this->attributes['tabindex'] = '-1';
+        }
+        if ($this->size > 0 ) {
+            $this->attributes['size'] = $this->size;
+        }
+        if ($this->maxLength > 0 ) {
+            $this->attributes['maxlength'] = $this->maxLength;
+        }
 
         $attributes = $this->renderAttributes($view);
 
         switch (strtolower($this->textMode)) {
             case 'singleline':
-                $result = "<input type=\"text\"{$idHtml}{$nameHtml}{$titleHtml}{$sizeHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
-                if ($this->mandatory && $this->mandatorysym) {
-                    $result .= '<span class="z-form-mandatory-flag">*</span>';
-                }
-                break;
-
+                $this->textMode = 'text';
+            case 'text':
+            case 'url':
             case 'password':
-                $result = "<input type=\"password\"{$idHtml}{$nameHtml}{$titleHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
+            case 'number':
+            case 'email':
+                $result = "<input type=\"{$this->textMode}\"{$idHtml}{$nameHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
                 if ($this->mandatory && $this->mandatorysym) {
                     $result .= '<span class="z-form-mandatory-flag">*</span>';
                 }
@@ -342,7 +351,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
                     $colsrowsHtml .= " rows=\"{$this->rows}\"";
                 }
 
-                $result = "<textarea{$idHtml}{$nameHtml}{$titleHtml}{$readOnlyHtml}{$colsrowsHtml} class=\"{$class}\"{$attributes}>{$text}</textarea>";
+                $result = "<textarea{$idHtml}{$nameHtml}{$colsrowsHtml} class=\"{$class}\"{$attributes}>{$text}</textarea>";
                 if ($this->mandatory && $this->mandatorysym) {
                     $result .= '<span class="z-form-mandatory-flag">*</span>';
                 }
