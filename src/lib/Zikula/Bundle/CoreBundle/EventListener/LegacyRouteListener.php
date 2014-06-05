@@ -223,30 +223,6 @@ class LegacyRouteListener implements EventSubscriberInterface
         }
     }
 
-    public function onKernelRequestSiteOff(GetResponseEvent $event)
-    {
-        $request = $event->getRequest();
-        // Get variables
-        $module = $request->attributes->get('_module');
-        $type = $request->attributes->get('_type');
-        $func = $request->attributes->get('_func');
-
-        // Check for site closed
-        if (\System::getVar('siteoff')
-            && !\SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN)
-            && !($module == 'Users' && $type == 'user' && $func == 'siteOffLogin')
-            || (\Zikula_Core::VERSION_NUM != \System::getVar('Version_Num'))
-        ) {
-            if (\SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW) && \UserUtil::isLoggedIn()
-            ) {
-                \UserUtil::logout();
-            }
-            header('HTTP/1.1 503 Service Unavailable');
-            require_once \System::getSystemErrorTemplate('siteoff.tpl');
-            exit;
-        }
-    }
-
     public function onKernelRequestSessionExpire(GetResponseEvent $event)
     {
         if (\SessionUtil::hasExpired()) {
@@ -261,7 +237,6 @@ class LegacyRouteListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => array(
-                array('onKernelRequestSiteOff', 31),
                 array('onKernelRequestSessionExpire', 31),
                 array('onKernelRequest', 31),
             )
