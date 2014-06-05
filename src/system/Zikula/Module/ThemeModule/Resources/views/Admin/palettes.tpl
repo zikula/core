@@ -3,8 +3,8 @@
 
 <h4>{gt text="Colour palettes"}</h4>
 
-{pageaddvar name="javascript" value="javascript/bootstrap-extensions/minicolors/jquery.minicolors.min.js"}
-{pageaddvar name="stylesheet" value="javascript/bootstrap-extensions/minicolors/jquery.minicolors.css"}
+{pageaddvar name="javascript" value="web/jquery-minicolors/jquery.minicolors.min.js"}
+{pageaddvar name="stylesheet" value="web/jquery-minicolors/jquery.minicolors.css"}
 
 <form class="form-horizontal" role="form" id="theme_modify_palette" action="{modurl modname="Theme" type="admin" func="updatepalettes"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
