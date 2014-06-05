@@ -37,13 +37,18 @@ class BlameListener implements EventSubscriberInterface
 
     public function onPostInit(GenericEvent $event)
     {
-        if (\System::isInstalling()) {
-            return;
-        }
-
         $em = ServiceUtil::get('doctrine.entitymanager');
-        $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => UserUtil::getVar('uid')));
-        $this->blameableListener->setUserValue($user);
+        try {
+            if (\System::isInstalling()) {
+                $uid = 2;
+            } else {
+                $uid = UserUtil::getVar('uid');
+            }
+            $user = $em->getReference('ZikulaUsersModule:UserEntity', $uid);
+            $this->blameableListener->setUserValue($user);
+        } catch (\Exception $e) {
+            // silently fail - likely installing and tables not available
+        }
     }
 
     /**
