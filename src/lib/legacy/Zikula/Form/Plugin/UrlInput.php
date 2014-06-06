@@ -56,6 +56,7 @@ class Zikula_Form_Plugin_UrlInput extends Zikula_Form_Plugin_TextInput
         if (!empty($this->defaultText) && ($this->text == null || empty($this->text))) {
             $this->text = $this->defaultText;
         }
+        $params['textMode'] = 'url';
 
         return parent::render($view);
     }
