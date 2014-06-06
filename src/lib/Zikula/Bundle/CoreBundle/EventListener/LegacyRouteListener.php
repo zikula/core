@@ -223,21 +223,10 @@ class LegacyRouteListener implements EventSubscriberInterface
         }
     }
 
-    public function onKernelRequestSessionExpire(GetResponseEvent $event)
-    {
-        if (\SessionUtil::hasExpired()) {
-            // Session has expired, display warning
-            $response = new Response(\ModUtil::apiFunc('ZikulaUsersModule', 'user', 'expiredsession', 403));
-            //$response = \Zikula_View_Theme::getInstance()->themefooter($response);
-            $this->setResponse($event, $response);
-        }
-    }
-
     public static function getSubscribedEvents()
     {
         return array(
             KernelEvents::REQUEST => array(
-                array('onKernelRequestSessionExpire', 31),
                 array('onKernelRequest', 31),
             )
         );
