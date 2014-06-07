@@ -6,8 +6,8 @@
 
     <parameters>
         <parameter key="zikula.theme_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
-        <parameter key="zikula.themeinit_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeInitListener</parameter>
-        <parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>
+        <!--<parameter key="zikula.themeinit_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeInitListener</parameter>-->
+        <!--<parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>-->
         <parameter key="zikula.template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\TemplateOverrideYamlListener</parameter>
 
         <parameter key="zikula.doctrine1_connector.class">Zikula\Bundle\CoreBundle\EventListener\Doctrine1ConnectorListener</parameter>
@@ -26,8 +26,8 @@
         <parameter key="markdown.class">Michelf\Markdown</parameter>
         <parameter key="markdown_extra.class">Michelf\MarkdownExtra</parameter>
 
-        <parameter key="zikula_core.class">Zikula\Core\Core</parameter>
-        <parameter key="zikula.core_init_listener.class">Zikula\Bundle\CoreBundle\EventListener\InitListener</parameter>
+        <!--<parameter key="zikula_core.class">Zikula\Core\Core</parameter>-->
+        <!--<parameter key="zikula.core_init_listener.class">Zikula\Bundle\CoreBundle\EventListener\InitListener</parameter>-->
 
         <parameter key="zikula.site_off_listener.class">Zikula\Bundle\CoreBundle\EventListener\SiteOffListener</parameter>
         <parameter key="zikula.session_expire_listener.class">Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener</parameter>
@@ -107,6 +107,10 @@
         </service>
 
         <service id="zikula.site_off_listener" class="%zikula.site_off_listener.class%">
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="zikula.session_expire_listener" class="%zikula.session_expire_listener.class%">
             <tag name="kernel.event_subscriber" />
         </service>
 
