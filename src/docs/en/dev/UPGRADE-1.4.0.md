@@ -33,7 +33,7 @@ without risking any compatibility problems. The reason for these changes
 are to allow rapid adoption of various Symfony Components and rapidly
 modernize the Core.
 
-There is a refactor tool `zikula-tools` which is referred to in this
+There is a refactor tool, [`zikula-tools`](https://github.com/zikula/Tools) which is referred to in this
 document for the purposes of refactoring modules to the new standards
 below with very little effort.
 
