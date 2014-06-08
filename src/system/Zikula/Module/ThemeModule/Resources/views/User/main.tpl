@@ -1,4 +1,5 @@
-{ajaxheader imageviewer="true" ui=true}
+{pageaddvar name="javascript" value="web/bootstrap-media-lightbox/bootstrap-media-lightbox.min.js"}
+{pageaddvar name="stylesheet" value="web/bootstrap-media-lightbox/bootstrap-media-lightbox.css"}
 {gt text="Theme switcher" assign=title}
 {pagesetvar name=title value=$title}
 <h2>{$title}</h2>
@@ -6,8 +7,8 @@
 <p class="alert alert-info">
     {gt text="Themes enable you to change the visual presentation of the site when you are logged-in."} {gt text="The current theme is '%s'." tag1=$currenttheme.displayname}
     {if $currenttheme.name neq $defaulttheme.name}
-    {modurl modname='ZikulaThemeModule' type='user' func='resettodefault' assign='resetdefaulturl'}
-    {gt text='Your chosen theme is not the current site default. You can <a href="%1$s">reset</a> your chosen theme to site default of <a href="?theme=%2$s">%3$s</a>.' tag1=$resetdefaulturl|safetext tag2=$defaulttheme.name|safetext tag3=$defaulttheme.displayname|safetext}
+        {modurl modname='ZikulaThemeModule' type='user' func='resettodefault' assign='resetdefaulturl'}
+        {gt text='Your chosen theme is not the current site default. You can <a href="%1$s">reset</a> your chosen theme to site default of <a href="?theme=%2$s">%3$s</a>.' tag1=$resetdefaulturl|safetext tag2=$defaulttheme.name|safetext tag3=$defaulttheme.displayname|safetext}
     {/if}
 </p>
 <div class="text-center">
@@ -21,7 +22,7 @@
 <dl class="img-thumbnail themes-list">
     <dt><strong>{$theme.displayname}</strong></dt>
     <dt>
-        <a href="{$theme.largeImage}" title="{$theme.description|default:$theme.displayname}" rel="lightbox[themes]" >
+        <a href="{$theme.largeImage}" title="{$theme.description|default:$theme.displayname}" class="lightbox" >
             <img  src="{$theme.previewImage}" alt="{$theme.displayname}" title="{$theme.description|default:$theme.displayname}" />
         </a>
     </dt>
@@ -40,4 +41,6 @@
 
 <br />{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 
-
+<script type="text/javascript">
+    jQuery('.lightbox').lightbox();
+</script>
