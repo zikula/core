@@ -63,7 +63,7 @@ The examples below will use PSR-4.
 In order to be PSR-0/4 compliant, module the PHP assets in `lib/Modname/*`
 need to moved into the module root (see below).
 
-`Foo` is the vendor and 'MyModule' is the module name (`Module` suffic required).
+`Foo` is the vendor and 'MyModule' is the module name (`Module` suffix required).
 Here are a a few examples of how module classes should look like:
 
 Controllers:
@@ -123,12 +123,8 @@ class AdminController
 }
 ```
 
-There is a script to do some of the refactoring for you:
-
-    zikula-tools module:ns --dir=module/MyModule --vendor=Foo --module=MyModule
-
-Module code must be PSR-1 and PSR-2 compliant. You can fix formatting
-with PHP-CS-Fixer: https://github.com/fabpot/PHP-CS-Fixer
+There is a script (`zikula-tools module:ns`) to do much of the major refactoring for you.
+Please see https://github.com/zikula/Tools for more information.
 
 PSR-1: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
 PSR-2: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
@@ -212,9 +208,8 @@ class FooMyModule extends AbstractModule
   `Zikula\Module\AdminModule` would result in a class
   called `Zikula\Module\AdminModule\ZikulaAdminModule`
 
-There is a script to restructure the module for you:
-
-    zikula-tools module:restructure --dir=module/MyModule --vendor=Foo --module=MyModule
+There is a script (`zikula-tools module:restructure`) to do much of the major refactoring for you.
+Please see https://github.com/zikula/Tools for more information.
 
 You should commit these changes immediately. Your module will continue to work
 with the interrim structure created, and you can begin refactoring to namespaces.
@@ -275,16 +270,15 @@ Modules must have a `composer.json` manifest which looks like the following:
 PhpStorm 7 and MOST 0.6.1 have create tools for this.
 
 
-<a name="conrollermethods" />
+<a name="controllermethods" />
 Controller Methods
 ------------------
 
 All public controller methods meant to be accessible from the browser request should now be
 suffixed with `Action`, so `public function view()` should now read `public function viewAction()`
 
-There is a script to automate this change:
-
-    zikula-tools module:controller_actions --dir=module/MyModule/Controller
+There is a script (`zikula-tools module:controller_actions`) to do much of the major refactoring for you.
+Please see https://github.com/zikula/Tools for more information.
 
 Old method names will continue to work for the time being.
 
