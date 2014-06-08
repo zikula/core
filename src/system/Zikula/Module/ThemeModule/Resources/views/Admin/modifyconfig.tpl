@@ -1,5 +1,5 @@
 {adminheader}
-{pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/theme_admin_modifyconfig.js'}
+{pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.ModifyConfig.js'}
 
 <h3>
     <span class="fa fa-wrench"></span>
