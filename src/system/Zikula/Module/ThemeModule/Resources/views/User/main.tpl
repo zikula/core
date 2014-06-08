@@ -1,4 +1,6 @@
-{ajaxheader imageviewer="true" ui=true}
+{pageaddvar name="javascript" value="javascript/helpers/bootstrap-lightbox/bootstrap-lightbox.js"}
+{pageaddvar name="stylesheet" value="javascript/helpers/bootstrap-lightbox/bootstrap-lightbox.css"}
+
 {gt text="Theme switcher" assign=title}
 {pagesetvar name=title value=$title}
 <h2>{$title}</h2>
@@ -16,12 +18,11 @@
 
 <h3>{gt text="Themes list"}</h3>
 
-
 {foreach from=$themes item=theme}
 <dl class="img-thumbnail themes-list">
     <dt><strong>{$theme.displayname}</strong></dt>
     <dt>
-        <a href="{$theme.largeImage}" title="{$theme.description|default:$theme.displayname}" rel="lightbox[themes]" >
+        <a href="{$theme.largeImage}" title="{$theme.description|default:$theme.displayname}" class="lightbox" >
             <img  src="{$theme.previewImage}" alt="{$theme.displayname}" title="{$theme.description|default:$theme.displayname}" />
         </a>
     </dt>
@@ -40,4 +41,6 @@
 
 <br />{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 
-
+<script type="text/javascript">
+    jQuery('.lightbox').lightbox();
+</script>
