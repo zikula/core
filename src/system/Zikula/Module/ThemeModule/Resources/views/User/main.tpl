@@ -40,7 +40,3 @@
 {/foreach}
 
 <br />{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
-
-<script type="text/javascript">
-    jQuery('.lightbox').lightbox();
-</script>
