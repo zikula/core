@@ -73,7 +73,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                     'host' => $modVars['smtpserver'],
                     'port' => $modVars['smtpport'],
                     'encryption' => $modVars['smtpsecuremethod'],
-                    'auth_mode' => $modVars['auth'] ? 'login' : null,
+                    'auth_mode' => (!empty($modVars['auth'])) ? 'login' : null,
                     'spool' => array('type' => 'memory'),
                     'delivery_address' => null,
                     'disable_delivery' => false,
