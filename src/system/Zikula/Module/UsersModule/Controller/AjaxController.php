@@ -45,6 +45,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         $view = Zikula_View::getInstance($this->name);
 
+        $results = array();
         if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
 
@@ -56,9 +57,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                  ->getQuery();
 
             $results = $query->getArrayResult();
-            $view->assign('results', $results);
         }
 
+        $dataType = $this->request->query->get('dataType', '');
+        if ($dataType == 'json') {
+            return new PlainResponse(json_encode($results));
+        }
+
+        $view->assign('results', $results);
         $output = $view->fetch('Ajax/getusers.tpl');
 
         return new PlainResponse($output);

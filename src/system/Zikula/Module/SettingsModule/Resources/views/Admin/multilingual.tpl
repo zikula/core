@@ -61,7 +61,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="mlsettings_timezone_offset">{gt text="Time zone for anonymous guests"}</label>
                 <div class="col-lg-9">
-                    <select class="form-control" id="mlsettings_timezone_offset" size="1" name="mlsettings_timezone_offset">
+                    <select id="mlsettings_timezone_offset" size="1" name="mlsettings_timezone_offset" style="width:100%">
                         {timezoneselect selected=$modvars.ZConfig.timezone_offset class="form-control"}
                     </select>
                 </div>
@@ -100,3 +100,9 @@
     </div>
 </form>
 {adminfooter}
+
+{pageaddvar name="javascript" value="javascript/select2/select2.min.js"}
+{pageaddvar name="stylesheet" value="javascript/select2/select2.css"}
+<script type="text/javascript">
+    jQuery('#mlsettings_timezone_offset').select2();
+</script>

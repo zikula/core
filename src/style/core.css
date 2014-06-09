@@ -228,3 +228,12 @@ input:invalid, select:invalid, textarea:invalid, .form-error {
     content: "\002A";
     color: red;
 }
+
+/******************************************************************************
+* select2 fixes
+******************************************************************************/
+
+.select2-results li {
+    margin: 0px !important;
+    text-align: left;
+}
