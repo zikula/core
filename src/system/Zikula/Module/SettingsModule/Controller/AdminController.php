@@ -232,7 +232,6 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Write the vars
-        $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
         foreach ($settings as $formname => $varname) {
             $newvalue = $this->request->request->get($formname, null);
             $oldvalue = System::getVar($varname);
@@ -240,6 +239,9 @@ class AdminController extends \Zikula_AbstractController
                 System::setVar($varname, $newvalue);
             }
         }
+
+        // Reload multilingual routing settings.
+        ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
 
         // clear all cache and compile directories
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');

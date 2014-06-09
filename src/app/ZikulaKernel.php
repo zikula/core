@@ -1,5 +1,6 @@
 <?php
 
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -17,10 +18,11 @@ class ZikulaKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
             new Zikula\Bundle\CoreBundle\CoreBundle(),
             new Zikula\Bundle\JQueryBundle\ZikulaJQueryBundle(),
             new Zikula\Bundle\JQueryUIBundle\ZikulaJQueryUIBundle(),
+            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
+            new JMS\TranslationBundle\JMSTranslationBundle(),
         );
 
         $this->registerCoreModules($bundles);
@@ -44,8 +46,13 @@ class ZikulaKernel extends Kernel
         if (is_readable($this->rootDir.'/config/custom_parameters.yml')) {
             $loader->load($this->rootDir.'/config/custom_parameters.yml');
         }
-        if (is_readable($this->rootDir.'/config/dynamic_config.yml')) {
-            $loader->load($this->rootDir.'/config/dynamic_config.yml');
+
+        if (!is_readable($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_GENERATED)) {
+            // There is no generated configuration (yet), load default values.
+            // This only happens at the very first time Symfony is started.
+            $loader->load($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_DEFAULT);
+        } else {
+            $loader->load($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_GENERATED);
         }
     }
 
@@ -64,6 +71,7 @@ class ZikulaKernel extends Kernel
         $bundles[] = new Zikula\Module\SettingsModule\ZikulaSettingsModule();
         $bundles[] = new Zikula\Module\ThemeModule\ZikulaThemeModule();
         $bundles[] = new Zikula\Module\UsersModule\ZikulaUsersModule();
+        $bundles[] = new Zikula\RoutesModule\ZikulaRoutesModule();
 //        $bundles[] = new Zikula\Theme\Andreas08Theme\ZikulaAndreas08Theme();
 //        $bundles[] = new Zikula\Theme\AtomTheme\ZikulaAtomTheme();
 //        $bundles[] = new Zikula\Theme\RssTheme\ZikulaRssTheme();

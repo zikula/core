@@ -78,18 +78,24 @@ class LegacyRouteListener implements EventSubscriberInterface
             return $this->ajax($event);
         }
 
-        $module = $request->attributes->get('_module');
-        $type = $request->attributes->get('_type');
-        $func = $request->attributes->get('_func');
-
-        // check requested module
-        $arguments = $request->attributes->get('_args');
+        $module = $request->attributes->get('_zkModule');
+        $type = $request->attributes->get('_zkType');
+        $func = $request->attributes->get('_zkFunc');
+        $arguments = $request->attributes->get('_zkArgs');
 
         // get module information
         $modinfo = ModUtil::getInfoFromName($module);
         if (!$module) {
-            // we have a static homepage
-            $response = new Response('');
+            // module could not be filtered from url.
+            $path = $event->getRequest()->getPathInfo();
+            if ($path == "" || $path == "/") {
+                // we have a static homepage
+                $response = new Response('');
+            } else {
+                $response = new Response(__('Page not found.'), 404);
+            }
+
+            return $this->setResponse($event, $response);
         } else {
             try {
                 if (!$modinfo) {
@@ -161,9 +167,9 @@ class LegacyRouteListener implements EventSubscriberInterface
         // Get variables
         $request = $event->getRequest();
         $response = null;
-        $module = $request->attributes->get('_module');
-        $type = $request->attributes->get('_type', 'ajax');
-        $func = $request->attributes->get('_func');
+        $module = $request->attributes->get('_zkModule');
+        $type = $request->attributes->get('_zkType', 'ajax');
+        $func = $request->attributes->get('_zkFunc');
 
         // get module information
         $modinfo = ModUtil::getInfoFromName($module);

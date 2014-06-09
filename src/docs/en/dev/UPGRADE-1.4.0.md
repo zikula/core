@@ -336,16 +336,15 @@ Routing follows standard Symfony routing specifications:
   - http://symfony.com/doc/current/cookbook/routing/index.html
   - http://symfony.com/doc/current/components/routing/hostname_pattern.html
 
+Additionally, Zikula uses the [JMSI18nRoutingBundle](http://jmsyst.com/bundles/JMSI18nRoutingBundle) to have
+multilingual and translated routes.
+
 By default Zikula will look for routing in the module's `Resources/config/routing.yml` file.
+You can configure the routes as stated in the Symfony docs in YAML, PHP or XML and addtionally, due to our use
+of the [*SensioFrameworkExtraBundle*](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html),
+in [annotations](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/routing.html#frameworkextra-annotations-routing-activation).
 
-```yml
-acmeexamplemodule:
-    resource: "@AcmeExampleModule/Controller"
-    prefix:   /acmeexample
-    type:     annotation
-```
-
-The file location can be customized or disabled by overriding `getRoutingConfig()` in
+The file location of the routing configuration file can be customized or disabled by overriding `getRoutingConfig()` in
 the module bundle class (`AcmeExampleModule`).
 
 ```php
@@ -354,7 +353,167 @@ public function getRoutingConfig()
     return "@AcmeExampleModule/Resources/config/routing.yml";
 }
 ```
+The simplest configuration looks like so:
+```yml
+acmeexamplemodule:
+    resource: "@AcmeExampleModule/Controller"
+    type:     annotation
+```
 
+However, there are some points you need to take care of when implementing routing in your module:
+
+1. Every module MUST make sure it isn't overriding routes of other modules. This currently is achieved by prefixing
+all routes (see *Special Zikula route options* below on how to disable this behaviour) with the url prefix specified
+in XYZVersion.php:
+   ```php
+   public function getMetaData()
+   {
+       $meta = array();
+       ...
+       $meta['url'] = $this->__('acmeexample');
+       ...
+
+       return $meta;
+   }
+   ```
+2. `ModUtil::url()` will try to generate a new-styled Symfony url if possible. However, This function is deprecated,
+for url generation in PHP and Twig take a look at [the Symfony docs](http://symfony.com/doc/current/book/routing.html#generating-urls).
+There is no way to generate new-styled urls in Smarty other than using the deprecated `{modurl}`.
+
+### The url styles
+As of Zikula 1.4, there are three kinds of url matching / routing styles in Zikula. First, the old ones:
+- `index.php?module=bla&type=taa&func=laa&arg1=foo&arg2&bar`: The oldest and ugliest way of urls.
+- The current **short urls** known from ZK 1.3.6 and below.
+
+These url styles will be entirely *replaced* by **Symfony Routes**. However a BC layer will keep them working for now.
+If you ask "why?", here are some of the advantages of Symfony routing:
+- URLs look beautiful (like *yourdomain.com/login* for Login, etc.)
+- The current **short urls** are problematic, as it is not possible to determine if the url really exists and it's
+  hard to extract the controller from it, etc.
+- It's Symfony. This means less Zikula code, more well maintained code.
+
+### Special Zikula route options
+These options can be set for any route, see below for an example.
+- `zkDescription`, *optional*, default: `""`: You can add a description to every route, explaining the reason for it.
+  This description is only shown in the ZikulaRoutesModule admin interface and has no further impact.
+- `zkPosition`, *optional*, default: `null`, can be `"top"`, `"bottom"`, `ǹull`: There are currently three "areas" in
+  the routes database: top, middle, bottom. Routes added to the top part are parsed before the ones in the middle part,
+  which are parsed before the ones in the bottom part. That way, modules get more control over the *weight* of a route.
+  For example, the ZikulaRoutesModule adds a route removing trailing slashes. This route is added to the bottom part,
+  because it shall do it's work as the very last, to avoid overriding routes of other modules actually requiring a
+  trailing slash.
+- `zkNoBundlePrefix`, *optional*, default: `false`: If you set this option to true, the bundle prefix will **not** be
+  prepended to the route's path. For example, the login route of the ZikulaUsersModule is using this feature to get a
+  route like `example.com/login` instead of `example.com/users/login`. **However this feature should only rarely
+  be used, as it might collide with other routes.**
+- Also notice the options of the [JMSI18nRoutingBundle](http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/usage#leaving-routes-untranslated)
+  the core is using.
+
+Yaml example:
+```yaml
+zikularoutesmodule_redirectingcontroller_removetrailingslash:
+    path: /{url}
+    defaults: { _controller: ZikulaRoutesModule:Redirecting:removeTrailingSlash }
+    requirements:
+        url: .*/$
+        _method: GET
+    options:
+        zkDescription: "The goal of this route is to redirect URLs with a trailing slash to the same URL without a trailing slash (for example /en/blog/ to /en/blog)."
+        zkNoBundlePrefix: true
+        zkPosition: "bottom"
+        i18n: false
+```
+Annotation example:
+```php
+/*
+ * @Route("/test", options = {"zkDescription" = "My description"})
+ */
+```
+
+### ZikulaRoutesModule
+The new ZikulaRoutesModule takes care of loading the routes from all Zikula modules. It is saving all the routes of the
+modules in a database table and provides them to Symfony using the `RouteLoader.php` file.
+The action mainly happens in the `Routing` folder of the module. You'll find the following files:
+`InstallerListener.php`, `RouteFinder.php` and `RouteLoader.php`.
+
+1. `InstallerListener.php`:
+The installer listener listens to `CoreEvents::MODULE_INSTALL`, `CoreEvents::MODULE_UPGRADE` and
+`CoreEvents::MODULE_REMOVE`. On installation, it searches for any routes in the newly installed module using the
+`RouteFinder`. On upgrade, it first deletes all routes of the upgraded module and then re-reads the routes. That way
+updated routes are properly added to the database. On uninstall, all routes of the uninstalled module are removed from
+database. **Note:** Routes added using the webinterface aren't touched.
+2. `RouteFinder.php`:
+This class takes care of finding all the routes specified in a module and returning them as a
+[RouteCollection](http://api.symfony.com/2.4/Symfony/Component/Routing/RouteCollection.html). If the file specified
+in `getRoutingConfig()` (see above) is not present, an empty collection is returned.
+3. `RouteLoader.php`:
+This service takes care of actually giving Symfony all the routes saved in the ZikulaRoutesModule database.
+It is a so-called [custom route loader](http://symfony.com/doc/current/cookbook/routing/custom_route_loader.html).
+It's simply loading all the routes from the database and adds them to a new RouteCollection. Additionally, there is
+one important task the RouteLoader takes care of: When reading the routes, it also parses adds the following defaults
+to the route: **_zkModule**, **_zkType** and **_zkFunc**, which are used in `System::queryStringDecode` (see below)
+later on. In development mode, this procedure *might* happen on every page load, but it *won't* in production mode.
+The RouteLoader is activated in `app/config/routing.yml`:
+
+```yaml
+Routing:
+    resource: .
+    type: zikularoutesmodule
+```
+That way you *could* also specify your own custom module to take care of routing.
+
+The module also takes care of configuring the [JMSI18nRoutingBundle](http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration),
+depending on the installed languages and language options. It provides an api function for reading the current language
+settings:
+```php
+ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
+```
+
+
+### General notes
+- You must not add any `default` to your route starting with `_zk`.
+- Other than the specified ones, you must not add any `option` to your route starting with `zk`.
+- The route names **SHOULD be in format `modname_controllertype_functionname`**, e.g. `acmeexamplemodule_user_index`.
+  If you need multiple routes per action, you *might* add a suffix, e.g. `acmeexamplemodule_user_index_1`,
+  `acmeexamplemodule_user_index_2`, etc. **It is also possible to use route names like `acme_example_module_user_index`,
+  however all route names MUST end with `controllertype_functionname{_suffix}`. **Note:** When you use annotations
+  to define your routes, you don't have to specify the route's name, as it is auto-calculated.
+
+### Expansion of `System::queryStringDecode`
+As you probably know, this function tries calculate the module, type, func parameters from an url. On top of it,
+a new section is added trying to match the current url with a Symfony route. If it succeeds, the Symfony route
+will take precedence over the old system.
+```php
+// Try to match a route first.
+/** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
+$router = ServiceUtil::get('router');
+try {
+    $parameters = $router->matchRequest($request);
+
+    if (!isset($parameters['_zkModule']) || !isset($parameters['_zkType']) || !isset($parameters['_zkFunc'])) {
+        // This might be the web profiler or another native bundle.
+        return;
+    } else {
+        $request->attributes->set('_zkModule', strtolower($parameters['_zkModule']));
+        $request->attributes->set('_zkType', strtolower($parameters['_zkType']));
+        $request->attributes->set('_zkFunc', strtolower($parameters['_zkFunc']));
+        $request->query->set('module', strtolower($parameters['_zkModule']));
+        $request->query->set('type', strtolower($parameters['_zkType']));
+        $request->query->set('func', strtolower($parameters['_zkFunc']));
+        $request->overrideGlobals();
+
+        return;
+    }
+
+} catch (ResourceNotFoundException $e) {
+    // This is an old style url.
+} catch (RouteNotFoundException $e) {
+    // This is an old style url.
+}
+```
+As you see, it fails silently if no route is found, and will calculate the parameters the old way.
+**Note:** You MUST NOT use  any of the `$request->attributes` set here. They are for core internals only and can
+be changed or removed at any time.
 
 <a name="servicemanager" />
 Service Manager

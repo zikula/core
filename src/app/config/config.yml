@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+    translator:      { fallback: %locale% }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -117,23 +117,10 @@ stof_doctrine_extensions:
             sluggable: true
             tree: true
             loggable: true
-            sortable: false
+            sortable: true
             softdeleteable: false
             uploadable: false
             reference_integrity: false
-
-cmf_routing:
-    dynamic:
-        enabled: true
-        route_provider_service_id: corebundle.route_provider
-    chain:
-        routers_by_id:
-            # enable the symfony default router with a higher priority.
-            router.default: 100
-
-            # enable the DynamicRouter with a low priority
-            # this way the non dynamic routes take precedence.
-            cmf_routing.dynamic_router: 20
 
 parameters:
     # Append the 'web/' folder to any asset path, because the application kernel of Zikula is not located in

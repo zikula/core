@@ -13,6 +13,9 @@
             "DoctrineExtensions\\StandardFields\\": "src/lib/legacy",
             "CustomBundle\\": "src/app/custom"
         },
+        "psr-4": {
+            "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule"
+        },
         "classmap": [
             "src/lib/util/",
             "src/lib/i18n/",
@@ -49,7 +52,7 @@
         "symfony/assetic-bundle": "~2.3",
         "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.4",
-        "symfony-cmf/routing-bundle": "dev-master",
+        "jms/i18n-routing-bundle": "dev-master",
         "twig/extensions": "~1.0",
         "zikula/generator-bundle": "dev-master",
         "zikula/filesystem": "dev-master",

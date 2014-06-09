@@ -1231,7 +1231,7 @@ class ModUtil
 
     private static function symfonyRoute($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang)
     {
-        /** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
+        /** @var \Symfony\Component\Routing\RouterInterface|\JMS\I18nRoutingBundle\Router\I18nRouter $router */
         $router = ServiceUtil::get('router');
 
         if (isset($args['lang'])) {
@@ -1249,7 +1249,8 @@ class ModUtil
 
         $foundRoute = false;
         foreach ($routeNames as $routeName) {
-            if ($router->getRouteCollection()->get($routeName) !== null) {
+            $routeCollection = ($router instanceof \JMS\I18nRoutingBundle\Router\I18nRouter) ? $router->getOriginalRouteCollection() : $router->getRouteCollection();
+            if ($routeCollection->get($routeName) !== null) {
                 $foundRoute = $routeName;
             }
         }
@@ -1340,7 +1341,8 @@ class ModUtil
         }
         
         $request = \ServiceUtil::get('request');
-        if ($request->attributes->has('_symfonyRouteMatched') && $request->attributes->get('_symfonyRouteMatched')) {
+        if ($request->attributes->has('_route_params')) {
+        	// If this attribute is set, a Symfony route has been matched. We need to generate full urls in that case.
             $fqurl = true;
         }
 
@@ -1847,7 +1849,7 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), array('zikulaadminmodule', 'zikulablocksmodule', 'zikulacategoriesmodule', 'zikulaerrorsmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule'))) {
+        if (in_array(strtolower($moduleName), array('zikulaadminmodule', 'zikulablocksmodule', 'zikulacategoriesmodule', 'zikularoutesmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule'))) {
             $directory = 'system';
         } else {
             $directory = 'modules';

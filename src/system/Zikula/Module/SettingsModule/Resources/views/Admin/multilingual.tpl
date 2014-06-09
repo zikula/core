@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text="Add language to URL"}</label>
+                <label class="col-lg-3 control-label">{gt text="Prepend language to URL"}</label>
                 <div class="col-lg-9">
                     <span id="mlsettings_languageurl">
                         <input id="languageurl0" type="radio" name="mlsettings_languageurl" value="1"{if $modvars.ZConfig.languageurl eq 1} checked="checked"{/if} />

@@ -1,0 +1,8 @@
+# The configuration specified in here might be overwritten by the dynamically generated configuration in
+# generated.yml
+# It's here to give an initial configuration (until Zikula is installed).
+
+jms_i18n_routing:
+    default_locale: en
+    locales: [en]
+    strategy: prefix_except_default
