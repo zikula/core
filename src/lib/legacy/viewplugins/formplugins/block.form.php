@@ -49,7 +49,7 @@ function smarty_block_form($params, $content, $view)
         }
         $encodingHtml = !is_null($enctype) ? " enctype=\"{$enctype}\"" : '';
         
-        $onSubmit = !is_null($params['onsubmit']) ? " onSubmit=\"{$params['onsubmit']}\"" : '';
+        $onSubmit = isset($params['onsubmit']) ? " onSubmit=\"{$params['onsubmit']}\"" : '';
 
         $view->postRender();
 
