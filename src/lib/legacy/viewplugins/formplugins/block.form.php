@@ -48,12 +48,14 @@ function smarty_block_form($params, $content, $view)
             }
         }
         $encodingHtml = !is_null($enctype) ? " enctype=\"{$enctype}\"" : '';
+        
+        $onSubmit = !is_null($params['onsubmit']) ? " onSubmit=\"{$params['onsubmit']}\"" : '';
 
         $view->postRender();
 
         $formId = $view->getFormId();
         $out = "
-<form id=\"{$formId}\" {$roleString}{$classString}action=\"$action\" method=\"post\"{$encodingHtml}>
+<form id=\"{$formId}\" {$roleString}{$classString}action=\"$action\" method=\"post\"{$encodingHtml}{$onSubmit}>
     $content
     <div>
         {$view->getStateHTML()}
