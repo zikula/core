@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="zikularoutesmodule.routing_installer_listener.class">Zikula\RoutesModule\Routing\InstallerListener</parameter>
+    </parameters>
+    <services>
+        <service id="zikularoutesmodule.routing_installer_listener" class="%zikularoutesmodule.routing_installer_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="zikularoutesmodule.routing_finder" />
+            <argument type="service" id="zikula.cache_clearer" />
+        </service>
+
+        <service id="zikularoutesmodule.routing_finder" class="Zikula\RoutesModule\Routing\RouteFinder">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="routing.loader" />
+            <argument type="service" id="logger" />
+        </service>
+
+        <service id="zikularoutesmodule.routing_loader" class="Zikula\RoutesModule\Routing\RouteLoader">
+            <tag name="routing.loader" />
+            <argument type="service" id="doctrine.orm.entity_manager">em</argument>
+        </service>
+    </services>
+</container>
