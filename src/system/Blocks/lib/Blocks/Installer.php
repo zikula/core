@@ -84,6 +84,9 @@ class Blocks_Installer extends Zikula_AbstractInstaller
                 $query->getResult();
 
             case '3.8.1':
+                // register ui_hooks for HTML block editing
+                HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+            case '3.8.2':
                 // future upgrade routines
         }
 
