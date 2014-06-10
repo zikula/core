@@ -550,7 +550,6 @@ class AdminApi extends \Zikula_AbstractApi
 
                     // loads the gettext domain for 3rd party modules
                     if (is_dir("modules/$dir/locale"))  {
-                        // psr-4 evaluates to true here
                         ZLanguage::bindModuleDomain($dir);
                     }
 
