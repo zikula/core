@@ -69,6 +69,7 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 
             case '3.8.2':
+            case '3.9.0':
                 // future upgrade routines
         }
 
