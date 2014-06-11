@@ -481,6 +481,7 @@ class AdminApi extends \Zikula_AbstractApi
         $scanner->scan(array('system', 'modules'), 5);
         $newModules = $scanner->getModulesMetaData();
 
+        // scan for all bundle-type modules (psr-0 & psr-4) in either /system or /modules
         foreach ($newModules as $name => $module) {
             foreach ($module->getPsr0() as $ns => $path) {
                 ZLoader::addPrefix($ns, $path);
@@ -516,6 +517,11 @@ class AdminApi extends \Zikula_AbstractApi
                 $array['capabilities'] = $caps;
             }
 
+            // loads the gettext domain for 3rd party modules
+            if(!strpos($bundle->getPath(), 'modules') === false) {
+                ZLanguage::bindModuleDomain($bundle->getName());
+            }
+
             $array['capabilities'] = serialize($array['capabilities']);
             $array['securityschema'] = serialize($array['securityschema']);
             $array['dependencies'] = serialize($array['dependencies']);
@@ -525,8 +531,10 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // set the paths to search
-        $rootdirs = array('system' => ModUtil::TYPE_SYSTEM, 'modules' => ModUtil::TYPE_MODULE);
+        $rootdirs = array('modules' => ModUtil::TYPE_MODULE); // do not scan `/system` since all are accounted for above
 
+        // scan for legacy modules
+        // NOTE: the scan below does rescan all psr-0 & psr-4 type modules and intentionally fails.
         foreach ($rootdirs as $rootdir => $moduletype) {
             if (is_dir($rootdir)) {
                 $dirs = FileUtil::getFiles($rootdir, false, true, null, 'd');
@@ -534,14 +542,14 @@ class AdminApi extends \Zikula_AbstractApi
                 foreach ($dirs as $dir) {
                     $oomod = false;
                     // register autoloader
-                    if (file_exists("$rootdir/$dir/{$dir}Version.php") || file_exists("$rootdir/$dir/Version.php") || is_dir("$rootdir/$dir/lib")) {
+                    if (file_exists("$rootdir/$dir/Version.php") || is_dir("$rootdir/$dir/lib")) {
                         ZLoader::addAutoloader($dir, array($rootdir, "$rootdir/$dir/lib"));
                         ZLoader::addPrefix($dir, $rootdir);
                         $oomod = true;
                     }
 
                     // loads the gettext domain for 3rd party modules
-                    if ($rootdir == 'modules' && (is_dir("modules/$dir/Resources/locale") || is_dir("modules/$dir/locale"))) {
+                    if (is_dir("modules/$dir/locale"))  {
                         ZLanguage::bindModuleDomain($dir);
                     }
 
@@ -572,14 +580,14 @@ class AdminApi extends \Zikula_AbstractApi
                         }
                     } elseif ($oomod) {
                         // Work out if admin-capable
-                        if (file_exists("$rootdir/$dir/Controller/AdminController.php") || file_exists("$rootdir/$dir/Controller/Admin.php") || file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
+                        if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
                             $caps = $modversion['capabilities'];
                             $caps['admin'] = array('version' => '1.0');
                             $modversion['capabilities'] = $caps;
                         }
 
                         // Work out if user-capable
-                        if (file_exists("$rootdir/$dir/Controller/UserController.php") || file_exists("$rootdir/$dir/Controller/User.php") || file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
+                        if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
                             $caps = $modversion['capabilities'];
                             $caps['user'] = array('version' => '1.0');
                             $modversion['capabilities'] = $caps;
