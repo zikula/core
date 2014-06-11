@@ -44,7 +44,8 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
 
         $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
         $params = $dumper->getConfiguration('swiftmailer');
-        $view->assign('swiftmailer_params', $params);
+        $paramHtml = $dumper->getConfigurationForHtml('swiftmailer');
+        $view->assign('swiftmailerHtml', $paramHtml);
 
         $msgtype = $this->getVar('html') ? 'html' : 'text';
         $view->assign('msgtype', $msgtype);
@@ -92,25 +93,15 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 }
 
                 // add swiftmailer config to message for testing
-                $swift = "\n------\n";
-                $swift .= "Swiftmailer Config:\n";
                 $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
-                $params =  $dumper->getConfiguration('swiftmailer');
-                foreach ($params as $k => $v) {
-                    if (!is_array($v)) {
-                        $swift .= "$k: $v\n";
-                    } else {
-                        $swift .= "$k:\n";
-                        foreach ($v as $k2 => $v2) {
-                            $swift .= "  $k2: $v2\n";
-                        }
-                    }
-                }
+                $swiftConfigHtml = "<h4>Swiftmailer Config:</h4>\n";
+                $swiftConfigHtml .= $dumper->getConfigurationForHtml('swiftmailer');
+
                 if ($html) {
-                    $msgBody .= nl2br($swift);
-                    $altBody .= !empty($altBody) ? $swift : '';
+                    $msgBody .= $swiftConfigHtml;
+                    $altBody .= !empty($altBody) ? strip_tags($swiftConfigHtml) : '';
                 } else {
-                    $msgBody .= $swift;
+                    $msgBody .= strip_tags($swiftConfigHtml);
                 }
 
                 // send the email
