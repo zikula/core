@@ -164,16 +164,17 @@ class DynamicConfigDumper
 
         $html = "";
 
-        foreach ($value as $key => $value) {
-            $html .= "<dt>" . \DataUtil::formatForDisplay($key) . ":";
-            if (is_array($value)) {
-                $html .= "</dt><dd>" . $this->formatValue($value) . "</dd>";
+        foreach ($value as $key => $val) {
+            $html .= "<li><strong>" . \DataUtil::formatForDisplay($key) . ":</strong>";
+            if (is_array($val)) {
+                $html .= $this->formatValue($val) . "</li>\n";
             } else {
-                $html .= " " . \DataUtil::formatForDisplay($value) . "</dt><dd></dd>";
+                $val = !empty($val) ? \DataUtil::formatForDisplay($val) : "<em>null</em>";
+                $html .= " " . $val . "</li>\n";
             }
         }
 
-        return "<dl>$html</dl>";
+        return "<ul>\n$html</ul>\n";
     }
 
     /**
