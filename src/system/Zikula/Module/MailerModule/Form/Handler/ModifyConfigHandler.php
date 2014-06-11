@@ -120,13 +120,13 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                 $currentConfig = $configDumper->getConfiguration('swiftmailer');
                 $config = array(
                     'transport' => (string)$this->getFormValue('transport', 'mail'),
-                    'username' => (string)$this->getFormValue('username', null),
-                    'password' => (string)$this->getFormValue('password', null),
+                    'username' => $this->getFormValue('username', null),
+                    'password' => $this->getFormValue('password', null),
                     'host' => (string)$this->getFormValue('host', 'localhost'),
                     'port' => (int)$this->getFormValue('port', 25),
-                    'encryption' => (string)$this->getFormValue('encryption', null),
+                    'encryption' => $this->getFormValue('encryption', null),
                     'auth_mode' => $this->getFormValue('auth_mode', null),
-                    // the items below can be configured by modifying the app/config/dynamic_config.yml file
+                    // the items below can be configured by modifying the app/config/dynamic/generated.yml file
                     'spool' => !empty($currentConfig['spool']) ? $currentConfig['spool'] : array('type' => 'memory'),
                     'delivery_address' => !empty($currentConfig['delivery_address']) ? $currentConfig['delivery_address'] : null,
                     'disable_delivery' => !empty($currentConfig['disable_delivery']) ? $currentConfig['disable_delivery'] : false,

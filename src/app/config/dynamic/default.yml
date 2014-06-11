@@ -6,3 +6,14 @@ jms_i18n_routing:
     default_locale: en
     locales: [en]
     strategy: prefix_except_default
+swiftmailer:
+    transport: mail
+    username: ''
+    password: ''
+    host: ''
+    port: 0
+    encryption: null
+    auth_mode: null
+    spool: { type: memory }
+    delivery_address: null
+    disable_delivery: false
