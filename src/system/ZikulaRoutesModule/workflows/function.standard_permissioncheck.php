@@ -24,6 +24,9 @@
  */
 function ZikulaRoutesModule_workflow_standard_permissioncheck($obj, $permLevel, $currentUser, $actionId)
 {
+    if (\System::isInstalling()) {
+        return true;
+    }
 
     // calculate the permission component
     $objectType = $obj['_objectType'];

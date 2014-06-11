@@ -13,10 +13,12 @@
  */
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\Core\Event\ModuleStateEvent;
 
 ini_set('memory_limit', '84M');
 ini_set('max_execution_time', 300);
@@ -293,6 +295,10 @@ function install(Zikula_Core $core, Request $request)
                         PluginUtil::install($plugin);
                     }
 
+                    // fire MODULE_INSTALL event to reload all routes
+                    $event = new ModuleStateEvent($kernel->getModule('ZikulaRoutesModule'));
+                    $kernel->getContainer()->get('event_dispatcher')->dispatch(CoreEvents::MODULE_INSTALL, $event);
+
                     LogUtil::registerStatus(__('Congratulations! Zikula has been successfully installed.'));
                     System::setInstalling(false);
                     $response = new RedirectResponse(ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'));
@@ -403,6 +409,7 @@ function installmodules($lang = 'en')
         'ZikulaCategoriesModule',
         'ZikulaMailerModule',
         'ZikulaSearchModule',
+        'ZikulaRoutesModule',
     );
 
     // manually install the modules module
@@ -447,7 +454,8 @@ function installmodules($lang = 'en')
             'ZikulaMailerModule' => __('System'),
             'ZikulaSearchModule' => __('Content'),
             'ZikulaAdminModule' => __('System'),
-            'ZikulaSettingsModule' => __('System'));
+            'ZikulaSettingsModule' => __('System'),
+            'ZikulaRoutesModule' => __('System'),);
 
     $categories = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
     $modscat = array();
