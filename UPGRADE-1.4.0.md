@@ -61,9 +61,10 @@ The following process should be followed for all upgrades even smaller point rel
   - Copy your new`config/config.php` and `config/personal_config.php` and update
     `config/personal_config.php` with your database settings.
   - Copy `app/config/parameters.yml` to `app/config/custom_parameters.yml` and update
-    values with your database settings.
+    values with your database settings. Also set `installed` to `true`.
   - Make `app/cache` and `app/logs` writable.
   - Run `http://yoursiteurl/upgrade.php` and follow any on-screen prompts.
+  - Go to the ExtensionsModule and install the ZikulaRoutesModule.
 
 <a name="notes" />
 Notes

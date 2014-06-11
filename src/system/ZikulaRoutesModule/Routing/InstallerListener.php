@@ -2,6 +2,7 @@
 
 namespace Zikula\RoutesModule\Routing;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
@@ -76,7 +77,16 @@ class InstallerListener implements EventSubscriberInterface
             return;
         }
 
-        $this->removeRoutesFromCache($module);
+        try {
+            $this->removeRoutesFromCache($module);
+        } catch (DBALException $e) {
+            if (\System::isUpgrading()) {
+                // This happens when the RoutesModule isn't installed.
+                return;
+            } else {
+                throw $e;
+            }
+        }
         $this->addRoutesToCache($module);
 
         $this->cacheClearer->clear('symfony.routing');
