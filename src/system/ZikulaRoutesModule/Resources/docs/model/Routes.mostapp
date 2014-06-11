@@ -40,7 +40,8 @@ application Routes {
 			Resources/views/Route/view.tpl,
 			Resources/views/Route/display.tpl,
 			Resources/views/Route/edit.tpl,
-			Util/ControllerUtil.php
+			Util/ControllerUtil.php,
+			workflows/function.standard_permissioncheck.php
 		"
 	}
 	modelLayer {

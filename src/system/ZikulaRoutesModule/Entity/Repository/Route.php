@@ -62,7 +62,12 @@ class Route extends BaseRoute
                 try {
                     $routeCollection = $sm->get('zikularoutesmodule.routing_finder')->find($bundle);
                 } catch (\Exception $e) {
-                    $request->getSession()->getFlashBag()->add('error', __f('Error! Routes for %s bundle could not be loaded: %s', array($bundle->getName(), $e->getMessage()), $dom));
+                    $message = __f('Error! Routes for %s bundle could not be loaded: %s', array($bundle->getName(), $e->getMessage()), $dom);
+                    if (\System::isInstalling()) {
+                        \LogUtil::registerError($message);
+                    } else {
+                        $request->getSession()->getFlashBag()->add('error', $message);
+                    }
                     continue;
                 }
                 $this->addRouteCollection($bundle, $routeCollection);
@@ -75,7 +80,9 @@ class Route extends BaseRoute
             throw $e;
         }
 
-        $request->getSession()->getFlashBag()->add('status', __('Done! Routes reloaded.', $dom));
+        if (!\System::isInstalling()) {
+            $request->getSession()->getFlashBag()->add('status', __('Done! Routes reloaded.', $dom));
+        }
     }
 
     public function addRouteCollection(AbstractModule $module, RouteCollection $routeCollection)
