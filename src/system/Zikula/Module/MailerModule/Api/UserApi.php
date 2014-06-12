@@ -105,11 +105,11 @@ class UserApi extends \Zikula_AbstractApi
         if (is_array($args['toaddress'])) {
             $toAdds = array();
             foreach ($args['toaddress'] as $key => $address) {
-                $toAdds[] = array($address => $args['toname'][$key]);
+                $toAdds[] = array($address => isset($args['toname'][$key]) ? $args['toname'][$key] : $address);
             }
             $message->setTo($toAdds);
         } else {
-            $message->setTo($args['toaddress'], $args['toname']);
+            $message->setTo($args['toaddress'], isset($args['toname']) ? $args['toname'] : $args['toaddress']);
         }
 
         // if replytoname and replytoaddress have been provided us them else use the fromname and fromaddress we built earlier
