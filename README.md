@@ -42,6 +42,8 @@ work for you:
   - PHP 5.3.16 has a major bug in the Reflection subsystem and is not 
     suitable to run Zikula (https://bugs.php.net/bug.php?id=62715)
 
+Zikula requires more memory than typical to install. You should set your memory limit in `php.ini` to 128 MB for the
+installation process.
 
 <a name="beforeinstalling" />
 Before installing
