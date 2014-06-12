@@ -140,6 +140,18 @@ Generally classes should be suffixed with whatever they are and kept in a
 folder. So listeners would be stored in `Listener/` and called `FooListener`.
 You can see concrete examples in the module structure section next.
 
+To ensure unique script names, all javascript files should be named in the following manner:
+
+    <vendor>.<module>.<controller>.<method>.js
+
+for example:
+
+    Zikula.Dizkus.Admin.Config.js
+
+ - "Short" names of the vendor, bundle, controller and method should be used.
+ - Common js libs can be called something like `Zikula.Dizkus.Tools.js` or `Zikula.Dizkus.Common.js`
+ - All js code should be placed in `<BundleRoot>/Resources/public/js`
+
 
 <a name="modulestructure" />
 Module Structure
