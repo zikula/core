@@ -30,6 +30,9 @@ function install(Zikula_Core $core, Request $request)
     $container = $core->getContainer();
     $dispatcher = $core->getDispatcher();
 
+    $sm = ServiceUtil::getManager();
+    $kernel = $sm->get('kernel');
+    
     /** @var $connection Connection */
     $connection = $container->get('doctrine.dbal.default_connection');
 
