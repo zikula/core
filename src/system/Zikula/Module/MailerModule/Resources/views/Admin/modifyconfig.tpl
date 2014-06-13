@@ -43,7 +43,9 @@
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='html' __text='HTML-formatted messages'}
             <div class="col-lg-9">
-                {formcheckbox id='html'}
+                <div class="checkbox">
+                    {formcheckbox id='html'}
+                </div>
             </div>
         </div>
         <div class="form-group">
@@ -51,6 +53,14 @@
             <div class="col-lg-9">
                 {formtextinput cssClass="form-control" id='wordwrap' size=3 maxLength=3 mandatory=true}
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='50'}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            {formlabel cssClass="col-lg-3 control-label" for='enableLogging' __text='Enable logging of sent mail'}
+            <div class="col-lg-9">
+                <div class="checkbox">
+                    {formcheckbox id='enableLogging'}
+                </div>
             </div>
         </div>
     </fieldset>

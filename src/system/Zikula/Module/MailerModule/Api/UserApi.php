@@ -18,6 +18,8 @@ use Zikula;
 use System;
 use SecurityUtil;
 use Swift_Message;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 /**
  * API functions used by user controllers
@@ -203,15 +205,31 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // send message
-        if (!\ServiceUtil::get('mailer')->send($message)) {
+        /** @var $mailer \Swift_Mailer */
+        $mailer = $this->get('mailer');
+        if (!$mailer->send($message, $failedEmails)) {
             // message not send
-            $args['errorinfo'] = ($mail->IsError()) ? $mail->ErrorInfo : $this->__('Error! An unidentified problem occurred while sending the e-mail message.');
+            $emailList = implode(', ', $failedEmails);
+            $args['errorinfo'] = $this->__f('Error! Could not send mail to: %s.', $emailList);
+            if ($this->getVar('enableLogging')) {
+                // access the logging channel
+                $logger = new Logger('mailer');
+                $logger->pushHandler(new StreamHandler('app/logs/mailer.log', Logger::INFO));
+                $logger->addError("Could not send message to: $emailList :: " . $message->toString());
+            }
             LogUtil::log(__f('Error! A problem occurred while sending an e-mail message from \'%1$s\' (%2$s) to (%3$s) (%4$s) with the subject line \'%5$s\': %6$s', $args));
             if (SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
                 throw new \RuntimeException($args['errorinfo']);
             } else {
                 throw new \RuntimeException($this->__('Error! A problem occurred while sending the e-mail message.'));
             }
+        }
+
+        if ($this->getVar('enableLogging')) {
+            // access the logging channel
+            $logger = new Logger('mailer');
+            $logger->pushHandler(new StreamHandler('app/logs/mailer.log', Logger::INFO));
+            $logger->addInfo('Message Sent: ' . $message->toString());
         }
 
         return true; // message sent
