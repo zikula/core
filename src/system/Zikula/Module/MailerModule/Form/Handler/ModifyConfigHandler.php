@@ -112,6 +112,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                 $vars['encoding'] = (string)$this->getFormValue('encoding', '8bit');
                 $vars['html'] = (bool)$this->getFormValue('html', false);
                 $vars['wordwrap'] = (int)$this->getFormValue('wordwrap', 50);
+                $vars['enableLogging'] = (bool)$this->getFormValue('enableLogging', false);
                 $this->setVars($vars);
 
                 // write the config file

@@ -31,6 +31,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
         $this->setVar('encoding', '8bit');
         $this->setVar('html', false);
         $this->setVar('wordwrap', 50);
+        $this->setVar('enableLogging', false);
 
         // Initialisation successful
         return true;
@@ -57,6 +58,8 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                 $this->setVar('encoding', $modVars['encoding']);
                 $this->setVar('html', $modVars['html']);
                 $this->setVar('wordwrap', $modVars['wordwrap']);
+                // new modvar for 1.4.0
+                $this->setVar('enableLogging', false);
 
                 // write the config file
                 $mailerTypeConversion = array(
