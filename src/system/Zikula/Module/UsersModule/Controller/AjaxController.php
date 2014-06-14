@@ -25,6 +25,7 @@ use Zikula;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Response;
+use DataUtil;
 
 /**
  * Access to actions initiated through AJAX for the Users module.
@@ -63,6 +64,75 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         return new PlainResponse($output);
     }
+
+
+    /**
+     * Performs a user search based on the user name fragment entered so far.
+     *
+     * Parameters passed via POST:
+     * ---------------------------
+     * string fragment A partial user name entered by the user.
+     *
+     * @return string PlainResponse response object with list of users matching the criteria.
+     */
+    public function getUsersAsTableAction()
+    {
+        $this->checkAjaxToken();
+
+        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
+            return new PlainResponse('');
+        }
+
+        $view = Zikula_View::getInstance($this->name);
+
+        $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
+
+        $qb = $this->entityManager->createQueryBuilder();
+        $query = $qb->select('u')
+            ->from('ZikulaUsersModule:UserEntity', 'u')
+            ->where($qb->expr()->like('u.uname', ':fragment'))
+            ->setParameter('fragment', '%' . $fragment . '%')
+            ->getQuery();
+
+        $userList = $query->getArrayResult();
+
+
+        // Get all groups
+        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
+
+        // check what groups can access the user
+        $userGroupsAccess = array();
+        $canSeeGroups = !empty($groups);
+
+        foreach ($groups as $group) {
+            // rewrite the groups array with the group id as key and the group name as value
+            $groupsArray[$group['gid']] = array('name' => DataUtil::formatForDisplayHTML($group['name']));
+        }
+
+        // Determine the available options
+        $currentUserHasModerateAccess = SecurityUtil::checkPermission($this->name . '::', 'ANY', ACCESS_MODERATE);
+        $currentUserHasEditAccess = SecurityUtil::checkPermission($this->name . '::', 'ANY', ACCESS_EDIT);
+        $currentUserHasDeleteAccess = SecurityUtil::checkPermission($this->name . '::', 'ANY', ACCESS_DELETE);
+        $availableOptions = array(
+            'lostUsername' => $currentUserHasModerateAccess,
+            'lostPassword' => $currentUserHasModerateAccess,
+            'toggleForcedPasswordChange' => $currentUserHasEditAccess,
+            'modify' => $currentUserHasEditAccess,
+            'deleteUsers' => $currentUserHasDeleteAccess,
+        );
+
+        $userList = ModUtil::apiFunc('ZikulaUsersModule', 'admin', 'extendUserList', array('userList' => $userList, 'groups' => $groups));
+
+        // Assign the items to the template & return output
+        $output = $view->assign('usersitems', $userList)
+            ->assign('allGroups', $groupsArray)
+            ->assign('canSeeGroups', $canSeeGroups)
+            ->assign('available_options', $availableOptions)
+            ->fetch('Admin/userlist.tpl');
+
+        return new PlainResponse($output);
+    }
+
 
     /**
      * Validate new user information entered by the user.
