@@ -18,6 +18,7 @@ use SecurityUtil;
 use System;
 use ModUtil;
 use DataUtil;
+use DateUtil;
 use UserUtil;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula;
@@ -563,5 +564,94 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         return true;
+    }
+
+    /**
+     * Extend a given user list with additional data
+     *
+     * @param array[] $args {
+     *      @type array $groups Zikula user groups
+     *            array $userList user list to extend
+     *                }
+     * @param array $args All parameters passed to this function.
+     *
+     * @return array Extended user list
+
+     */
+    public function extendUserList($args)
+    {
+        if (!isset($args['userList'])) {
+            $args['userList'] = array();
+        }
+
+        if (!isset($args['groups'])) {
+            $args['groups'] = $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
+        }
+
+        $userList = $args['userList'];
+        $userGroupsAccess = array();
+        foreach ($args['groups'] as $group) {
+            $userGroupsAccess[$group['gid']] = array('gid' => $group['gid']);
+        }
+
+
+        // Get the current user's uid
+        $currentUid = UserUtil::getVar('uid');
+
+        // Loop through each returned item adding in the options that the user has over
+        // each item based on the permissions the user has.
+        foreach ($userList as $key => $userObj) {
+            $isCurrentUser = ($userObj['uid'] == $currentUid);
+            $isGuestAccount = ($userObj['uid'] == 1);
+            $isAdminAccount = ($userObj['uid'] == 2);
+            $hasUsersPassword = (!empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION));
+            $currentUserHasModerateAccess = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_MODERATE);
+            $currentUserHasEditAccess = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_EDIT);
+            $currentUserHasDeleteAccess = !$isGuestAccount && !$isAdminAccount && !$isCurrentUser && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE);
+
+            $userList[$key]['options'] = array(
+                'lostUsername' => $currentUserHasModerateAccess,
+                'lostPassword' => $hasUsersPassword && $currentUserHasModerateAccess,
+                'toggleForcedPasswordChange'=> $hasUsersPassword && $currentUserHasEditAccess,
+                'modify' => $currentUserHasEditAccess,
+                'deleteUsers' => $currentUserHasDeleteAccess,
+            );
+
+            if ($isGuestAccount) {
+                $userList[$key]['userGroupsView'] = array();
+            } else {
+                // get user groups
+
+                $userGroups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getusergroups', array(
+                    'uid' => $userObj['uid'],
+                    'clean' => 1
+                ));
+
+                // we need an associative array by the key to compare with the groups that the user can see
+                $userGroupsByKey = array();
+                foreach ($userGroups as $gid) {
+                    $userGroupsByKey[$gid] = array('gid' => $gid);
+                }
+
+                $userList[$key]['userGroupsView'] = array_intersect_key($userGroupsAccess, $userGroupsByKey);
+            }
+
+            // format the dates
+            if (!empty($userObj['user_regdate']) && ($userObj['user_regdate'] != '0000-00-00 00:00:00') && ($userObj['user_regdate'] != '1970-01-01 00:00:00')) {
+                $userList[$key]['user_regdate'] = DateUtil::formatDatetime($userObj['user_regdate'], $this->__('%m-%d-%Y'));
+            } else {
+                $userList[$key]['user_regdate'] = '---';
+            }
+
+            if (!empty($userObj['lastlogin']) && ($userObj['lastlogin'] != '0000-00-00 00:00:00') && ($userObj['lastlogin'] != '1970-01-01 00:00:00')) {
+                $userList[$key]['lastlogin'] = DateUtil::formatDatetime($userObj['lastlogin'], $this->__('%m-%d-%Y'));
+            } else {
+                $userList[$key]['lastlogin'] = '---';
+            }
+
+            $userList[$key]['_Users_mustChangePassword'] = (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword']) && $userObj['__ATTRIBUTES__']['_Users_mustChangePassword']);
+        }
+
+        return $userList;
     }
 }
