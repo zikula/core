@@ -94,8 +94,9 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
             $panelSet->registerTabbedPanel($view, $this, $this->title);
         }
 
-        $class = ($this->selected ? '' : 'class="tabsToHide"');
-        $html = "<div id=\"{$this->panelSetId}_{$this->index}\"{$class}>\n";
+        $active = ($this->selected ? ' active' : '');
+
+        $html = "<div id=\"{$this->panelSetId}-tab{$this->index}\" class=\"tab-pane$active\">\n";
 
         return $html;
     }

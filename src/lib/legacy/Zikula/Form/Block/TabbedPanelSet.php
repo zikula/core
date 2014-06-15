@@ -46,7 +46,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
      *
      * @var string
      */
-    public $cssClass = 'linktabs';
+    public $cssClass = '';
 
     /**
      * Currently selected tab.
@@ -90,43 +90,29 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
      */
     public function renderContent(Zikula_Form_View $view, $content)
     {
-        // Beware - working on 1-based offset!
-
-
-        static $firstTime = true;
-        if ($firstTime) {
-            PageUtil::addVar('javascript', 'javascript/ajax/prototype.js');
-            PageUtil::AddVar('javascript', 'system/Zikula/Module/ThemeModule/Resources/public/js/form/form_tabbedpanelset.js');
-            PageUtil::addVar('footer', "<script type=\"text/javascript\">$$('.tabsToHide').invoke('hide')</script>");
-        }
-        $firstTime = false;
-
-        $idHtml = $this->getIdHtml();
-
-        $html = "<div class=\"{$this->cssClass}\"{$idHtml}><ul><li>&nbsp;</li>\n";
+        $html = "<ul id=\"{$this->id}\" class=\"nav nav-tabs formtabbedpanelset {$this->cssClass}\">\n";
 
         for ($i = 1, $titleCount = count($this->titles); $i <= $titleCount; ++$i) {
             $title = $this->titles[$i - 1];
 
-            $cssClass = 'linktab';
-            $selected = ($i == $this->selectedIndex);
-
             $title = $view->translateForDisplay($title);
 
-            if ($selected) {
-                $cssClass .= ' selected';
+            if ($this->selectedIndex == $i) {
+                $cssClass = 'class="active"';
+            } else {
+                $cssClass = '';
             }
 
-            $link = "<a href=\"#\" onclick=\"return FormTabbedPanelSet.handleTabClick({$i},{$titleCount},'{$this->id}')\">{$title}</a>";
+            $link = "<a href=\"#{$this->id}-tab{$i}\" data-toggle=\"tab\" onclick=\"jQuery('#{$this->id}SelectedIndex').val({$i})\">{$title}</a>";
 
-            $html .= "<li id=\"{$this->id}Tab_{$i}\" class=\"{$cssClass}\">{$link}</li><li>&nbsp;</li>\n";
+            $html .= "<li $cssClass>{$link}</li>\n";
         }
 
-        $html .= "</ul></div><div style=\"clear: both\"></div>\n";
+        $html .= "</ul>\n";
 
         $html .= "<input type=\"hidden\" name=\"{$this->id}SelectedIndex\" id=\"{$this->id}SelectedIndex\" value=\"{$this->selectedIndex}\" />\n";
 
-        return $html . $content;
+        return $html .'<div class="tab-content">'.$content.'</div>';
     }
 
     /**
