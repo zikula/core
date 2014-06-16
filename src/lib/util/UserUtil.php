@@ -1826,7 +1826,7 @@ class UserUtil
         $request = \ServiceUtil::get('request');
 
         $theme = FormUtil::getPassedValue('theme', null, 'GETPOST');
-        if (!empty($theme)) {
+        if (!empty($theme) && SecurityUtil::checkPermission('ZikulaThemeModule::ThemeChange', '::', ACCESS_COMMENT)) {
             // theme passed as parameter takes priority, can be RSS, Atom, Printer or other
             $pagetheme = $theme;
         } else {
