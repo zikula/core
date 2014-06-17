@@ -472,6 +472,7 @@ class AdminApi extends \Zikula_AbstractApi
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
         $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
 
+        // sync the filesystem and the bundles table
         $helper->load();
 
         // Get all modules on filesystem
@@ -682,6 +683,7 @@ class AdminApi extends \Zikula_AbstractApi
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
         $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
 
+        // sync the filesystem and the bundles table
         $helper->load();
 
         // Argument check
