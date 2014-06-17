@@ -608,6 +608,10 @@ class AdminController extends \Zikula_AbstractController
                                            'state' => ModUtil::STATE_ACTIVE))) {
                     // Success
                     $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Activated module.'));
+                    // clear app/cache/<environ>
+                    /** @var $clearer \Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer */
+                    $clearer = $this->get('cache_clearer');
+                    $clearer->clear($this->getContainer()->getParameter('kernel.cache_dir'));
                 }
             }
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view',
@@ -739,6 +743,11 @@ class AdminController extends \Zikula_AbstractController
 
             $this->view->clear_compiled();
             $this->view->clear_all_cache();
+
+            // clear app/cache/<environ>
+            /** @var $clearer \Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer */
+            $clearer = $this->get('cache_clearer');
+            $clearer->clear($this->getContainer()->getParameter('kernel.cache_dir'));
 
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view', array(
                     'startnum' => $startnum,
@@ -928,6 +937,12 @@ class AdminController extends \Zikula_AbstractController
             SessionUtil::delVar('modules_state');
             SessionUtil::delVar('interactive_remove');
             $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Uninstalled module.'));
+
+            // clear app/cache/<environ>
+            /** @var $clearer \Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer */
+            $clearer = $this->get('cache_clearer');
+            $clearer->clear($this->getContainer()->getParameter('kernel.cache_dir'));
+
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
