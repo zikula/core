@@ -22,21 +22,15 @@
                 Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
 
                 Zikula.Users.NewUser.fieldId = {
-                    // Commented out line below, in favor of HTML5 form validation.
-                    //submit:         '{{$formData->getFormId()}}_submitnewuser',
-                    checkUser:      '{{$formData->getFormId()}}_checkuserajax',
-                    checkMessage:   '{{$formData->getFormId()}}_checkmessage',
-                    validMessage:   '{{$formData->getFormId()}}_validmessage',
-
-                    userName:       '{{$formData->getFieldId('uname')}}',
-                    email:          '{{$formData->getFieldId('email')}}',
+                    userName: '{{$formData->getFieldId('uname')}}',
+                    email: '{{$formData->getFieldId('email')}}',
                 };
             }
         </script>
     {/pageaddvarblock}
 {/strip}
 
-{include file="User/menu.tpl"}
+{include file='User/menu.tpl'}
 
 <p id="users_formtop">
     {gt text='Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.'}
@@ -162,7 +156,6 @@
         </div>
     </fieldset>
 {/capture}
-
     {* Order the fieldsets based on whether e-mail is the exclusive log-in id or not. *}
     {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
         {$smarty.capture.email}
@@ -173,12 +166,10 @@
         {$smarty.capture.pass}
         {$smarty.capture.email}
     {/if}
-
     {notifyevent eventname='module.users.ui.form_edit.new_registration' eventsubject=null id=null assign='eventData'}
     {foreach item='eventDisplay' from=$eventData}
         {$eventDisplay}
     {/foreach}
-
     {notifydisplayhooks eventname='users.ui_hooks.registration.form_edit' id=null assign='hooks'}
     {if is_array($hooks) && count($hooks)}
     <fieldset>
@@ -189,7 +180,6 @@
             {/foreach}
     </fieldset>
     {/if}
-
     {if !empty($modvars.ZikulaUsersModule.reg_question)}
     <fieldset>
         <legend>{gt text="Answer the security question"}</legend>
@@ -205,19 +195,11 @@
         </div>
     </fieldset>
     {/if}
-
-    <fieldset>
-        <legend>{gt text="Check your entries and submit your registration"}</legend>
-        <p id="{$formData->getFormId()}_checkmessage" class="sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit registration' to continue."}</p>
-        <p id="{$formData->getFormId()}_validmessage" class="hide">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
-        <div class="text-center">
-            <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
-            <button id="{$formData->getFormId()|cat:'_submitnewuser'}" class="btn btn-success" type="submit" title="{gt text='Submit registration'}">
-                {gt text='Submit registration'}
-            </button>
-            <button id="{$formData->getFormId()|cat:'_checkuserajax'}" type="button" class="btn btn-primary hide" title="{gt text='Check your entries'}">
-                {gt text='Check your entries'}
-            </button>
+    <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-9">
+            <input class="btn btn-success" type="submit" value="{gt text='Submit'}" />
+            <a class="btn btn-danger" href="{modurl modname=$module type=$type func='main'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+            <input class="btn btn-default" type="reset" value="{gt text='Reset'}" />
         </div>
-    </fieldset>
+    </div>
 </form>
