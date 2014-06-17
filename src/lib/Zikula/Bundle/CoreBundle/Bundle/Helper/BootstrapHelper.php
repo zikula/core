@@ -32,9 +32,20 @@ class BootstrapHelper
         $this->sync($array);
     }
 
+    /**
+     * Sync the filesystem scan and the Bundles table
+     * This is a 'dumb' scan - there is no state management here
+     *      state management occurs in the module and theme management
+     *      and is checked in Bundle/Bootstrap
+     *
+     * @param $array array of extensions
+     *          obtained from filesystem scan
+     *          key is bundle name and value an instance of \Zikula\Bundle\CoreBundle\Bundle\MetaData
+     */
     private function sync($array)
     {
         // add what is in array but missing from db
+        /** @var $metadata MetaData */
         foreach ($array as $name => $metadata) {
             $qb = $this->conn->createQueryBuilder();
             $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype', 'b.bundlestate')
@@ -44,24 +55,30 @@ class BootstrapHelper
             $result = $qb->execute();
             $row = $result->fetch();
             if (!$row) {
+                // bundle doesn't exist
                 $this->insert($metadata);
-            } elseif ($row['bundlestate'] === AbstractBundle::STATE_MISSING) {
-                $this->updateState($row['id'], AbstractBundle::STATE_DISABLED);
+            } elseif (($metadata->getClass() != $row['bundleclass']) || (serialize($metadata->getAutoload()) != $row['autoload'])) {
+                // bundle json has been updated
+                $updatedMeta = array("bundleclass" => $metadata->getClass(), "autoload" => serialize($metadata->getAutoload()));
+                $this->conn->update('bundles', $updatedMeta, array('id' => $row['id']));
             }
         }
 
-        // remove/mark what is in db by missing from array
-        // not sure if a MISSING state is valid here - and if files were restored, what state do we restore them to?
+        // remove what is in db but missing from array
         $qb = $this->conn->createQueryBuilder();
         $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype', 'b.bundlestate')
             ->from('bundles', 'b');
         $res = $qb->execute();
         foreach ($res->fetchAll() as $row) {
-            if (!in_array($row['bundlename'], array_keys($array))
-                && (int)$row['bundlestate'] !== AbstractBundle::STATE_MISSING ) {
-                $this->updateState($row['id'], AbstractBundle::STATE_MISSING);
+            if (!in_array($row['bundlename'], array_keys($array))) {
+                    $this->removeById($row['id']);
             }
         }
+
+        // clear app/cache/<environ>
+        /** @var $clearer \Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer */
+        $clearer = \ServiceUtil::getManager()->get('cache_clearer');
+        $clearer->clear(\ServiceUtil::getManager()->getParameter('kernel.cache_dir'));
     }
 
     private function updateState($id, $state = AbstractBundle::STATE_DISABLED)
