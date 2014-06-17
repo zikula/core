@@ -403,8 +403,8 @@ class UserApi extends \Zikula_AbstractApi
 
                 if ($codeSaved) {
                     $urlArgs = array();
-                    $urlArgs['code'] = urlencode($confirmationCode);
-                    $urlArgs[$args['idfield']] = urlencode($args['id']);
+                    $urlArgs['code'] = $confirmationCode;
+                    $urlArgs[$args['idfield']] = $args['id'];
 
                     $view = Zikula_View::getInstance($this->name, false);
                     $viewArgs=array(
@@ -465,7 +465,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $user = UserUtil::getVars($args['id'], true, $args['idfield']);
+        $user = UserUtil::getVars(urldecode($args['id']), true, $args['idfield']);
 
         if (!$user) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
