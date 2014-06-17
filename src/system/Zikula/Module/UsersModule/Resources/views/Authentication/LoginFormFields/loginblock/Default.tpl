@@ -13,5 +13,5 @@
 
 <div class="form-group">
     <label class="control-label sr-only" for="users_loginblock_pass">{gt text="Password"}</label>
-    <input id="users_loginblock_pass" class="form-control input-sm" type="password" name="authentication_info[pass]" maxlength="25" placeholder="{gt text="Password"}" />
+    <input id="users_loginblock_pass" class="form-control input-sm" type="password" name="authentication_info[pass]" size="25" maxlength="60" placeholder="{gt text="Password"}" />
 </div>
