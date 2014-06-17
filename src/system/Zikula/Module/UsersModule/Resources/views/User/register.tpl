@@ -137,7 +137,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="required"></span></label>
             {assign var='fieldName' value='email'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" title="{gt text='&quot;Email Address&quot; is required.'}" x-moz-errormessage="{gt text='&quot;User Name&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" title="{gt text='&quot;Email Address&quot; is required.'}" x-moz-errormessage="{gt text='&quot;Email Address&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
 
                 {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
                 <em class="help-block sub">{gt text='You will use your e-mail address to identify yourself when you log in.'}</em>
@@ -150,7 +150,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your E-mail address for verification"}<span class="required"></span></label>
             {assign var='fieldName' value='emailagain'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" title="{gt text='&quot;Email Address&quot; is required.'}" x-moz-errormessage="{gt text='&quot;User Name&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" title="{gt text='&quot;Email Address&quot; is required.'}" x-moz-errormessage="{gt text='&quot;Email Address&quot; is required.'}" oninvalid="this.setCustomValidity('{gt text='Please fill out this field.'}');" oninput="this.setCustomValidity('');" onblur="this.checkValidity();" />
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
