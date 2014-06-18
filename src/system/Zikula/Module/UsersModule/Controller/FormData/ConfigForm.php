@@ -340,10 +340,11 @@ class ConfigForm extends AbstractFormData
             ->addValidator(new Validator\StringType(
                 $this->serviceManager,
                 $this->__('The value must be a string.')))
-            ->addValidator(new Validator\StringRegularExpression(
+            ->addValidator(new Validator\FilterVar(
                 $this->serviceManager,
-                '/^(?:'.UsersConstant::EMAIL_VALIDATION_PATTERN.')?$/Ui',
-                $this->__('The value does not appear to be a properly formatted e-mail address.')));
+                FILTER_VALIDATE_EMAIL,
+                null,
+                $this->__('The value entered does not appear to be a valid email address.')));
 
         $this->addField(new Field(
                 $this,
