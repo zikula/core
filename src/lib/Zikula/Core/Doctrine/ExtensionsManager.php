@@ -36,35 +36,26 @@ class ExtensionsManager
         if (isset($this->listeners[$type])) {
             return $this->listeners[$type];
         }
-        
-        $id = 'doctrine_extensions.listener.' . $type;
-        if (!$this->serviceManager->has($id)) {
+
+        $service = '';
+        $deListenerTypes = array('blameable', 'loggable', 'sluggable', 'softdeleteable', 'sortable', 'timestampable', 'translatable', 'tree', 'uploadable');
+        if (in_array($type, $deListenerTypes)) {
+            $service = 'stof_doctrine_extensions.listener.' . $type;
+            $this->listeners[$type] = $this->serviceManager->get($service);
+
+            return $this->listeners[$type];
+        }
+
+        if ($type == 'standardfields') {
+            $service = 'doctrine_extensions.listener.' . $type;
+        }
+
+        if (empty($service) || !$this->serviceManager->has($service)) {
             throw new \InvalidArgumentException(sprintf('No such behaviour %s', $type));
         }
 
-        $annotationReader = $this->serviceManager->get('doctrine.annotation_reader');
-        $annotationDriver = $this->serviceManager->get('doctrine.annotation_driver');
-
-
-        $chain = $this->serviceManager->get('doctrine.driver_chain');
-        
-        // specific behaviour required for certain drivers.
-        $entityName = null;
-        switch ($type) {
-            case 'translatable':
-                $entityName = 'Gedmo\\Translatable\\Entity\\Translation';
-                break;
-            case 'loggable':
-                $entityName = 'Loggable\\Entity\\LogEntry';
-                break;
-        }
-        
-        if ($entityName) {
-            $chain->addDriver($annotationDriver, $entityName);
-        }
-
-        $this->listeners[$type] = $this->serviceManager->get($id);
-        $this->listeners[$type]->setAnnotationReader($annotationReader);
+        $this->listeners[$type] = $this->serviceManager->get($service);
+        $this->listeners[$type]->setAnnotationReader($this->serviceManager->get('doctrine.annotation_reader'));
         $this->eventManager->addEventSubscriber($this->listeners[$type]);
                 
         return $this->listeners[$type];
