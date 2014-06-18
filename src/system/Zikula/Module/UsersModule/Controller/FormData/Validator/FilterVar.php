@@ -14,6 +14,8 @@
 
 namespace Zikula\Module\UsersModule\Controller\FormData\Validator;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
  * Validates a field's value, by filtering with a specified filter.
  */
@@ -42,14 +44,14 @@ class FilterVar extends AbstractValidator
     /**
      * Constructs the validator, initializing the filter.
      *
-     * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param ContainerInterface $serviceManager The current service manager instance.
      * @param const $filter The ID of the filter to apply.
      * @param const|array $options Associative array of options or bitwise disjunction of flags. If filter accepts options, flags can be provided in "flags" field of array. For the "callback" filter, callable type should be passed. The callback must accept one argument, the value to be filtered, and return the value after filtering/sanitizing it.
      * @param string $errorMessage The error message to return if the data does not match the expression.
      *
      * @throws \InvalidArgumentException Thrown if the filter is not valid.
      */
-    public function __construct(\Zikula_ServiceManager $serviceManager, $filter = FILTER_DEFAULT, $options = null, $errorMessage = null)
+    public function __construct(ContainerInterface $serviceManager, $filter = FILTER_DEFAULT, $options = null, $errorMessage = null)
     {
 
         parent::__construct($serviceManager, $errorMessage);
