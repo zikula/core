@@ -554,7 +554,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
         //
         // Note: the following is a bad example for custom modules because there no mapping table for the Users module.
         // A custom authentication module would look up a uid using its own mapping tables, not the users table or UserUtil.
-        if ($authenticationMethod['method'] == 'email' || ($authenticationMethod['method'] == 'unameoremail' && preg_match('/^'. UsersConstant::EMAIL_VALIDATION_PATTERN .'$/Di', $loginID))) {
+        if ($authenticationMethod['method'] == 'email' || ($authenticationMethod['method'] == 'unameoremail' && filter_var($loginID, FILTER_VALIDATE_EMAIL))) {
             $authenticatedUid = UserUtil::getIdFromEmail($loginID);
             if (!$authenticatedUid) {
                 // Might be a registration. Acting as an authenticationModule, we should not care at this point about the user's

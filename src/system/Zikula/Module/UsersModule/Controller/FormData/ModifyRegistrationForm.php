@@ -85,10 +85,11 @@ class ModifyRegistrationForm extends AbstractFormData
                 $this->serviceManager,
                 1,
                 $this->__('An e-mail address is required, and cannot be left blank.')))
-            ->addValidator(new Validator\StringRegularExpression(
+            ->addValidator(new Validator\FilterVar(
                 $this->serviceManager,
-                '/^'. UsersConstant::EMAIL_VALIDATION_PATTERN .'$/Di',
-                $this->__('The value entered does not appear to be a valid e-mail address.')));
+                FILTER_VALIDATE_EMAIL,
+                null,
+                $this->__('The value entered does not appear to be a valid email address.')));
 
         $this->addField(new Field(
                 $this,
