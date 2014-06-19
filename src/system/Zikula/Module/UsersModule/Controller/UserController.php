@@ -432,6 +432,7 @@ class UserController extends \Zikula_AbstractController
                     // Get the form data
                     $formData->getField('uname')->setData(mb_strtolower($formData->getField('uname')->getData()));
                     $formData->getField('email')->setData(mb_strtolower($formData->getField('email')->getData()));
+                    $formData->getField('emailagain')->setData(mb_strtolower($formData->getField('emailagain')->getData()));
 
                     // Set up the parameters for a call to Users_Api_Registration#getRegistrationErrors()
                     $antispamAnswer = $formData->getFieldData('antispamanswer');
