@@ -1,5 +1,6 @@
 <?php
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Composer\Autoload\ClassLoader;
 
@@ -14,5 +15,6 @@ if (!function_exists('intl_get_error_code')) {
 }
 
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+AnnotationReader::addGlobalIgnoredName('type');
 
 return $loader;
