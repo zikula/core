@@ -71,10 +71,22 @@ class RouteEntity extends BaseAbstractRouteEntity
         }
     }
 
-    public function getPathWithBundlePrefix()
+    /**
+     * Returns the route's path prepended with the bundle prefix.
+     *
+     * @param null $container Can be used to set the container for \ServiceUtil in case it is not already set.
+     *
+     * @return string
+     */
+    public function getPathWithBundlePrefix($container = null)
     {
         if (!isset($this->options['zkNoBundlePrefix']) || !$this->options['zkNoBundlePrefix']) {
             $bundle = $this->getBundle();
+
+            if (!\ServiceUtil::hasContainer()) {
+                \ServiceUtil::setContainer($container);
+            }
+
             $modinfo = \ModUtil::getInfoFromName($bundle);
 
             return "/" . $modinfo["url"] . $this->path;
