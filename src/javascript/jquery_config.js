@@ -15,3 +15,7 @@ jQuery.noConflict();
     }
     $.ajaxSetup(defaultOptions);
 })(jQuery);
+
+// use bootstrap noConflict. See http://getbootstrap.com/javascript/#js-noconflict
+var bootstrapButton = jQuery.fn.button.noConflict()
+jQuery.fn.bootstrapBtn = bootstrapButton
