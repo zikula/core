@@ -41,7 +41,7 @@ class DoctrineListener implements EventSubscriberInterface
 
     public function initDoctrine(GenericEvent $event)
     {
-        if ($this->container->has('doctrine.entitymanager')) {
+        if ($this->container->has('doctrine.event_manager')) {
             return;
         }
 
@@ -74,7 +74,6 @@ class DoctrineListener implements EventSubscriberInterface
             $mysqlStorageEvent = new MySqlGenerateSchemaListener($eventManager);
         }
 
-        $this->container->setAlias('doctrine.entitymanager', 'doctrine.orm.default_entity_manager');
         $this->container->setAlias('doctrine.eventmanager', 'doctrine.event_manager');
     }
 
