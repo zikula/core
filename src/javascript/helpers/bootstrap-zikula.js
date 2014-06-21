@@ -11,6 +11,10 @@
  */
 ( function($) {
 
+    // use bootstrap noConflict. See http://getbootstrap.com/javascript/#js-noconflict
+    var bootstrapButton = $.fn.button.noConflict()
+    $.fn.bootstrapBtn = bootstrapButton
+
     /**
      * Confirmation modal
      * 
