@@ -1,6 +1,5 @@
 {strip}
     {gt text='New account registration' assign='templatetitle'}
-    {ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.NewUser.js'}
     {if $modvars.ZikulaUsersModule.use_password_strength_meter && ($authentication_method.modname == 'ZikulaUsersModule')}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
@@ -16,18 +15,6 @@
             </script>
         {/pageaddvarblock}
     {/if}
-    {pageaddvarblock}
-        <script type="text/javascript">
-            Zikula.Users.NewUser.setup = function() {
-                Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
-
-                Zikula.Users.NewUser.fieldId = {
-                    userName: '{{$formData->getFieldId('uname')}}',
-                    email: '{{$formData->getFieldId('email')}}',
-                };
-            }
-        </script>
-    {/pageaddvarblock}
 {/strip}
 
 {include file='User/menu.tpl'}
