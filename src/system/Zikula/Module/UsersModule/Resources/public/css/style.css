@@ -1,3 +1,15 @@
+#users_register_email {
+    text-transform: lowercase; 
+}
+
+#users_register_emailagain {
+    text-transform: lowercase;    
+}
+
+#users_register_uname {
+    text-transform: lowercase;      
+}
+
 #liveusersearch {
     margin: 1em 0 1em 0;
 }
