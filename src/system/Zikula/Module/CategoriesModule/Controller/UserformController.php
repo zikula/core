@@ -61,7 +61,7 @@ class UserformController extends \Zikula_AbstractController
 
         if ($category['is_locked']) {
             //! %1$s is the id, %2$s is the name
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $category['name'])), null, $url);
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $category['name'])), null, $url);
             return new RedirectResponse(System::normalizeUrl($url));
         }
 
@@ -122,7 +122,7 @@ class UserformController extends \Zikula_AbstractController
         }
 
         if ($category['is_locked']) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($data['id'], $category['name'])));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($data['id'], $category['name'])));
             return new RedirectResponse(System::normalizeUrl($url));
         }
 
@@ -150,7 +150,7 @@ class UserformController extends \Zikula_AbstractController
         }
 
         $msg = $this->__f('Done! Saved the %s category.', $category_old_name);
-        $this->request->getSession()->getFlashbag()->add('status', $msg);
+        $this->request->getSession()->getFlashBag()->add('status', $msg);
 
         return new RedirectResponse(System::normalizeUrl($url));
     }
@@ -287,7 +287,7 @@ class UserformController extends \Zikula_AbstractController
         $this->entityManager->flush();
 
         $msg = $this->__f('Done! Inserted the %s category.', $data['name']);
-        $this->request->getSession()->getFlashbag()->add('status', $msg);
+        $this->request->getSession()->getFlashBag()->add('status', $msg);
         return new RedirectResponse(System::normalizeUrl($url));
     }
 

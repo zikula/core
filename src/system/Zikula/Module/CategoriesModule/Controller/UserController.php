@@ -57,7 +57,7 @@ class UserController extends \Zikula_AbstractController
         if ($allowed) {
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'edituser')));
         } else {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__("Sorry! User-owned category editing has not been enabled. This feature can be enabled by the site administrator."));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__("Sorry! User-owned category editing has not been enabled. This feature can be enabled by the site administrator."));
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
     }
@@ -90,11 +90,11 @@ class UserController extends \Zikula_AbstractController
         $editCat = array();
 
         if (!$docroot) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! The URL contains an invalid 'document root' parameter."));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! The URL contains an invalid 'document root' parameter."));
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
         if ($docroot == 1) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! The root directory cannot be modified in 'user' mode"));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! The root directory cannot be modified in 'user' mode"));
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
@@ -120,7 +120,7 @@ class UserController extends \Zikula_AbstractController
                         $rootCatPath = $rootCat['path'];
                         if (strpos($rootCatPath, $userRootCatPath) === false) {
                             //! %s represents the root path (id), passed in the url
-                            $this->request->getSession()->getFlashbag()->add('error', $this->__f("Error! It looks like you are trying to edit another user's categories. Only site administrators can do that (%s).", $docroot));
+                            $this->request->getSession()->getFlashBag()->add('error', $this->__f("Error! It looks like you are trying to edit another user's categories. Only site administrators can do that (%s).", $docroot));
                             return $this->response($this->view->fetch('User/editcategories.tpl'));
                         }
                     }
@@ -132,21 +132,21 @@ class UserController extends \Zikula_AbstractController
             $editCat = CategoryUtil::getCategoryByID($cid);
             if ($editCat['is_locked']) {
                 //! %1$s is the id, %2$s is the name
-                $this->request->getSession()->getFlashbag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $editCat['name'])), null, $url);
+                $this->request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $editCat['name'])), null, $url);
                 return $this->response($this->view->fetch('User/editcategories.tpl'));
             }
         }
 
         if (!$rootCat) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f("Error! Cannot access root directory (%s).", $docroot), null, $url);
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f("Error! Cannot access root directory (%s).", $docroot), null, $url);
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
         if ($editCat && !$editCat['is_leaf']) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! The specified category is not a leaf-level category (%s).', $cid), null, $url);
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! The specified category is not a leaf-level category (%s).', $cid), null, $url);
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
         if ($editCat && !CategoryUtil::isDirectSubCategory($rootCat, $editCat)) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! The specified category is not a child of the document root (%1$s; %2$s).', array($docroot, $cid)), null, $url);
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! The specified category is not a child of the document root (%1$s; %2$s).', array($docroot, $cid)), null, $url);
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
@@ -189,30 +189,30 @@ class UserController extends \Zikula_AbstractController
 
         $allowUserEdit = $this->getVar('allowusercatedit', 0);
         if (!$allowUserEdit) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! User-owned category editing has not been enabled. This feature can be enabled by the site administrator.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! User-owned category editing has not been enabled. This feature can be enabled by the site administrator.'));
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
         $userRoot = $this->getVar('userrootcat', 0);
         if (!$userRoot) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Could not determine the user root node.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not determine the user root node.'));
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
         $userRootCat = CategoryUtil::getCategoryByPath($userRoot);
         if (!$userRoot) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
         if ($userRootCat == 1) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! The root directory cannot be modified in 'user' mode"));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! The root directory cannot be modified in 'user' mode"));
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
         $userCatName = $this->getusercategorynameAction();
         if (!$userCatName) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Cannot determine user category root node name.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Cannot determine user category root node name.'));
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
@@ -223,7 +223,7 @@ class UserController extends \Zikula_AbstractController
         if (!$thisUserRootCat) {
             $autoCreate = $this->getVar('autocreateusercat', 0);
             if (!$autoCreate) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! The user root category node for this user does not exist, and the automatic creation flag (autocreate) has not been set."));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! The user root category node for this user does not exist, and the automatic creation flag (autocreate) has not been set."));
                 return $this->response($this->view->fetch('User/editcategories.tpl'));
             }
 

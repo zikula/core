@@ -256,7 +256,7 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'inc', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Incremented permission rule.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Incremented permission rule.'));
         }
 
         // Redirect
@@ -295,7 +295,7 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'dec', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Decremented permission rule.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Decremented permission rule.'));
         }
 
         // Redirect
@@ -329,7 +329,7 @@ class AdminController extends \Zikula_AbstractController
         // get all permissions
         $allperms = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
         if (!$allperms && $action != 'add') {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! No permission rules of this kind were found. Please add some first.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! No permission rules of this kind were found. Please add some first.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'listedit',
                 array('action' => 'add'))));
         }
@@ -452,9 +452,9 @@ class AdminController extends \Zikula_AbstractController
                               'level' => $level))) {
             // Success
             if ($warnmsg == '') {
-                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved permission rule.'));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved permission rule.'));
             } else {
-                $this->request->getSession()->getFlashbag()->add('error', $warnmsg);
+                $this->request->getSession()->getFlashBag()->add('error', $warnmsg);
             }
         }
 
@@ -513,9 +513,9 @@ class AdminController extends \Zikula_AbstractController
                               'insseq' => $insseq))) {
             // Success
             if ($warnmsg == '') {
-                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Created permission rule.'));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Created permission rule.'));
             } else {
-                $this->request->getSession()->getFlashbag()->add('error', $warnmsg);
+                $this->request->getSession()->getFlashBag()->add('error', $warnmsg);
             }
         }
 
@@ -563,7 +563,7 @@ class AdminController extends \Zikula_AbstractController
         if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete',
                         array('pid' => $pid))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted permission rule.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted permission rule.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view',
@@ -678,9 +678,9 @@ class AdminController extends \Zikula_AbstractController
 
         // the module configuration has been updated successfuly
         if ($error == true) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Could not save configuration: unknown permission rule ID.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not save configuration: unknown permission rule ID.'));
         } else {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
         }
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }

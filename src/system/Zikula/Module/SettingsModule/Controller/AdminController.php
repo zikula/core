@@ -104,7 +104,7 @@ class AdminController extends \Zikula_AbstractController
         $entryPointExt = pathinfo($settings['entrypoint'], PATHINFO_EXTENSION);
 
         if (in_array($settings['entrypoint'], $falseEntryPoints) || !file_exists($settings['entrypoint']) || strtolower($entryPointExt) != 'php') {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Either you entered an invalid entry point, or else the file specified as being the entry point was not found in the Zikula root directory.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Either you entered an invalid entry point, or else the file specified as being the entry point was not found in the Zikula root directory.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
         }
 
@@ -112,7 +112,7 @@ class AdminController extends \Zikula_AbstractController
         $settings['permasearch'] = mb_ereg_replace(' ', '', $settings['permasearch']);
         $settings['permareplace'] = mb_ereg_replace(' ', '', $settings['permareplace']);
         if (mb_ereg(',$', $settings['permasearch'])) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
         }
 
@@ -129,13 +129,13 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if ($permareplaceCount !== $permasearchCount) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
         }
 
         if ($settings['startpage']) {
             if (empty($settings['starttype']) || empty($settings['startfunc'])) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! When setting a startpage, starttype and startfunc are required fields.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! When setting a startpage, starttype and startfunc are required fields.'));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
             }
         }
@@ -162,7 +162,7 @@ class AdminController extends \Zikula_AbstractController
         // clear all cache and compile directories
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
 
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
     }
@@ -219,7 +219,7 @@ class AdminController extends \Zikula_AbstractController
             if (System::getVar('language_detect')) {
                 System::setVar('language_detect', 0);
                 unset($settings['mlsettings_language_detect']);
-                $this->request->getSession()->getFlashbag()->add('status', $this->__('Notice: Language detection is automatically disabled when multi-lingual features are disabled.'));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Notice: Language detection is automatically disabled when multi-lingual features are disabled.'));
             }
 
             $deleteLangUrl = true;
@@ -247,7 +247,7 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
 
         // all done successfully
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved localisation settings.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved localisation settings.'));
 
         return new RedirectResponse(System::normalizeUrl($url));
     }

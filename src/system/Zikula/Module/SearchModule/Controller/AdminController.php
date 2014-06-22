@@ -144,7 +144,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // the module configuration has been updated successfuly
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
