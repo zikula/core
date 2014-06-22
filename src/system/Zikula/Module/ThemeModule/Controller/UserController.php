@@ -42,7 +42,7 @@ class UserController extends \Zikula_AbstractController
     {
         // check if theme switching is allowed
         if (!System::getVar('theme_change')) {
-            $this->request->getSession()->getFlashbag()->add('warning', $this->__('Notice: Theme switching is currently disabled.'));
+            $this->request->getSession()->getFlashBag()->add('warning', $this->__('Notice: Theme switching is currently disabled.'));
             $response = new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
             return $response;
         }
@@ -107,7 +107,7 @@ class UserController extends \Zikula_AbstractController
     public function resettodefaultAction()
     {
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'resettodefault');
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Theme has been reset to the default site theme.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Theme has been reset to the default site theme.'));
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'index')));
     }

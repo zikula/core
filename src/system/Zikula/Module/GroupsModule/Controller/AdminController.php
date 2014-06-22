@@ -240,7 +240,7 @@ class AdminController extends \Zikula_AbstractController
 
         if ($check != false) {
             // Group already exists
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! There is already a group with that name.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! There is already a group with that name.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
         } else {
             $gid = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'create',
@@ -253,7 +253,7 @@ class AdminController extends \Zikula_AbstractController
             // The return value of the function is checked here
             if ($gid != false) {
                 // Success
-                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Created the group.'));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Created the group.'));
             }
         }
 
@@ -337,7 +337,7 @@ class AdminController extends \Zikula_AbstractController
                       'nbumax'      => $nbumax,
                       'description' => $description))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved group changes.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved group changes.'));
         }
 
         // This function generated no output
@@ -378,7 +378,7 @@ class AdminController extends \Zikula_AbstractController
         // get the user default group - we do not allow its deletion
         $defaultgroup = $this->getVar('defaultgroup');
         if ($item['gid'] == $defaultgroup) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! You cannot delete the default user group.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! You cannot delete the default user group.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
         }
 
@@ -402,7 +402,7 @@ class AdminController extends \Zikula_AbstractController
         // The API function is called.
         if (ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'delete', array('gid' => $gid))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted the group.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted the group.'));
         }
 
         // This function generated no output
@@ -574,19 +574,19 @@ class AdminController extends \Zikula_AbstractController
             }
 
             if ($total_users_added > 0) {
-                $this->request->getSession()->getFlashbag()->add('status', $this->_fn('Done! %s user was added to the group.', 'Done! %s users were added to the group.', $total_users_added, $total_users_added));
+                $this->request->getSession()->getFlashBag()->add('status', $this->_fn('Done! %s user was added to the group.', 'Done! %s users were added to the group.', $total_users_added, $total_users_added));
             }
             if ($total_users_notadded > 0) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->_fn('Error! %s user was not added to the group.', 'Error! %s users were not added to the group.', $total_users_notadded, $total_users_notadded));
+                $this->request->getSession()->getFlashBag()->add('error', $this->_fn('Error! %s user was not added to the group.', 'Error! %s users were not added to the group.', $total_users_notadded, $total_users_notadded));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'groupmembership', array('gid' => $gid))));
             }
         } else {
             if (!ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'adduser', array('gid' => $gid, 'uid' => $uid))) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! A problem occurred and the user was not added to the group.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! A problem occurred and the user was not added to the group.'));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'groupmembership', array('gid' => $gid))));
             } else {
 
-                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! The user was added to the group.'));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! The user was added to the group.'));
             }
         }
 
@@ -638,9 +638,9 @@ class AdminController extends \Zikula_AbstractController
         // The API function is called.
         if (ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! The user was removed from the group.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! The user was removed from the group.'));
         } else {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'groupmembership', array('gid' => $gid))));
         }
 
@@ -747,17 +747,17 @@ class AdminController extends \Zikula_AbstractController
 
         if (!$result) {
             if ($action == 'deny') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! Could not execute 'Reject' action."));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! Could not execute 'Reject' action."));
             } else {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! Could not execute 'Accept' action."));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! Could not execute 'Accept' action."));
             }
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
         }
 
         if ($action == 'accept') {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! The user was added to the group.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! The user was added to the group.'));
         } else {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__("Done! The user's application for group membership has been rejected."));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__("Done! The user's application for group membership has been rejected."));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
@@ -821,7 +821,7 @@ class AdminController extends \Zikula_AbstractController
         $this->setVar('hideclosed', $hideclosed);
 
         // the module configuration has been updated successfuly
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
         // This function generated no output
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));

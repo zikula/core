@@ -205,7 +205,7 @@ class UserController extends \Zikula_AbstractController
         $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar'));
 
         if (empty($vars['q'])) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! You did not enter any keywords to search for.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! You did not enter any keywords to search for.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
         }
 

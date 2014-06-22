@@ -154,23 +154,23 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
             if (!empty($authenticationInfo['pass'])) {
                 $validates = true;
             } else {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a password.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide a password.'));
             }
         } elseif (empty($authenticationInfo['pass'])) {
             if ($authenticationMethod['method'] == 'uname') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name and password.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide a user name and password.'));
             } elseif ($authenticationMethod['method'] == 'email') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide an e-mail address and password.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide an e-mail address and password.'));
             } elseif ($authenticationMethod['method'] == 'unameoremail') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name / e-mail address and password.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide a user name / e-mail address and password.'));
             }
         } else {
             if ($authenticationMethod['method'] == 'uname') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide a user name.'));
             } elseif ($authenticationMethod['method'] == 'email') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide an e-mail address.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide an e-mail address.'));
             } elseif ($authenticationMethod['method'] == 'unameoremail') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name / e-mail address.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide a user name / e-mail address.'));
             }
         }
 

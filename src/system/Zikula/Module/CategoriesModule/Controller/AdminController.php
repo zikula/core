@@ -124,13 +124,13 @@ class AdminController extends \Zikula_AbstractController
             }
 
             if (!$cid) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
             }
 
             $editCat = CategoryUtil::getCategoryByID($cid);
             if (!$editCat) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! No such item found.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! No such item found.'));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
             }
         } else {

@@ -147,7 +147,7 @@ class AdminController extends \Zikula_AbstractController
                           'description' => $category['description']));
 
         if (is_numeric($cid)) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Created new category.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Created new category.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
@@ -227,7 +227,7 @@ class AdminController extends \Zikula_AbstractController
 
         if ($update) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved category.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved category.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
@@ -295,7 +295,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Success
         if ($delete) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Category deleted.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Category deleted.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
@@ -491,11 +491,11 @@ class AdminController extends \Zikula_AbstractController
         // check module vars
         $modvars['modulesperrow'] = isset($modvars['modulesperrow']) ? $modvars['modulesperrow'] : 5;
         if (!is_numeric($modvars['modulesperrow'])) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! You must enter a number for the 'Modules per row' setting."));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! You must enter a number for the 'Modules per row' setting."));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
         }
         if (!is_numeric($modvars['itemsperpage'])) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! You must enter a number for the 'Modules per page' setting."));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! You must enter a number for the 'Modules per page' setting."));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
         }
 
@@ -527,13 +527,13 @@ class AdminController extends \Zikula_AbstractController
                 if ($result == false) {
                     /** @var $cat \Zikula\Module\AdminModule\Entity\AdminCategoryEntity */
                     $cat = ModUtil::apiFunc($this->name, 'admin', 'get', array('cid' => $category));
-                    $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! Could not add module %1$s to module category %2$s.', array($adminmodule['name'], $cat->getName())));
+                    $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! Could not add module %1$s to module category %2$s.', array($adminmodule['name'], $cat->getName())));
                 }
             }
         }
 
         // the module configuration has been updated successfuly
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work

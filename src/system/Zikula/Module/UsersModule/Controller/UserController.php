@@ -82,7 +82,7 @@ class UserController extends \Zikula_AbstractController
         $accountLinks = ModUtil::apiFunc($this->name, 'user', 'accountLinks');
 
         if ($accountLinks == false) {
-            $this->request->getSession()->getFlashbag()->add('warning', $this->__('Error! No account links available.'));
+            $this->request->getSession()->getFlashBag()->add('warning', $this->__('Error! No account links available.'));
         }
 
         return $this->response($this->view->assign('accountLinks', $accountLinks)
@@ -407,13 +407,13 @@ class UserController extends \Zikula_AbstractController
 
                             $state = 'display_registration';
                         } else {
-                            $this->request->getSession()->getFlashbag()->add('error', $this->__('The credentials you provided are already associated with an existing user account or registration request.'));
+                            $this->request->getSession()->getFlashBag()->add('error', $this->__('The credentials you provided are already associated with an existing user account or registration request.'));
                             $state = 'display_method_selector';
                         }
 
                     } else {
                         if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
-                            $this->request->getSession()->getFlashbag()->add('error', $this->__('We were unable to confirm your credentials with the selected service.'));
+                            $this->request->getSession()->getFlashBag()->add('error', $this->__('We were unable to confirm your credentials with the selected service.'));
                         }
                         $state = 'display_method_selector';
                     }
@@ -492,7 +492,7 @@ class UserController extends \Zikula_AbstractController
                             );
                             $authenticationRegistered = ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'register', $arguments, 'Zikula_Api_AbstractAuthentication');
                             if (!$authenticationRegistered) {
-                                $this->request->getSession()->getFlashbag()->add('warning', $this->__('There was a problem associating your log-in information with your account. Please contact the site administrator.'));
+                                $this->request->getSession()->getFlashBag()->add('warning', $this->__('There was a problem associating your log-in information with your account. Please contact the site administrator.'));
                                 $response = new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
                                 return $response;
                             }
@@ -539,46 +539,46 @@ class UserController extends \Zikula_AbstractController
 
                             if (!empty($registeredObj['regErrors'])) {
                                 // There were errors. This message takes precedence.
-                                $this->request->getSession()->getFlashbag()->add('error', $this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
+                                $this->request->getSession()->getFlashBag()->add('error', $this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
                             } elseif ($moderation && ($verifyEmail != UsersConstant::VERIFY_NO)) {
                                 // Pending both moderator approval, and e-mail verification. Set the appropriate message
                                 // based on the order of approval/verification set.
                                 if ($moderationOrder == UsersConstant::APPROVAL_AFTER) {
                                     // Verification then approval.
-                                    $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message. Your account will not be approved until after the verification process is completed.'));
+                                    $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message. Your account will not be approved until after the verification process is completed.'));
                                 } elseif ($moderationOrder == UsersConstant::APPROVAL_BEFORE) {
                                     // Approval then verification.
-                                    $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your registration request has been saved. Remember that your request must be approved and your e-mail address must be verified before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
+                                    $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your registration request has been saved. Remember that your request must be approved and your e-mail address must be verified before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
                                 } else {
                                     // Approval and verification in any order.
-                                    $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
+                                    $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
                                 }
                             } elseif ($moderation) {
                                 // Pending moderator approval only.
-                                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your registration request has been saved. Remember that your request must be approved before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
+                                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your registration request has been saved. Remember that your request must be approved before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
                             } elseif ($verifyEmail != UsersConstant::VERIFY_NO) {
                                 // Pending e-mail address verification only.
-                                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
+                                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
                             } else {
                                 // Some unknown state! Should never get here, but just in case...
-                                $this->request->getSession()->getFlashbag()->add('error', $this->__('Your registration request has been saved, however your current registration status could not be determined. Please contact the site administrator regarding the status of your request.'));
+                                $this->request->getSession()->getFlashBag()->add('error', $this->__('Your registration request has been saved, however your current registration status could not be determined. Please contact the site administrator regarding the status of your request.'));
                             }
                         } elseif ($registeredObj['activated'] == UsersConstant::ACTIVATED_ACTIVE) {
                             // The account is saved, and is active (no moderator approval, no e-mail verification, and the user can log in now).
                             if (!empty($registeredObj['regErrors'])) {
                                 // Errors. This message takes precedence.
-                                $this->request->getSession()->getFlashbag()->add('error', $this->__('Your account has been created and you may now log in, however the problems listed below were detected during the registration process. Please contact the site administrator for more information.'));
+                                $this->request->getSession()->getFlashBag()->add('error', $this->__('Your account has been created and you may now log in, however the problems listed below were detected during the registration process. Please contact the site administrator for more information.'));
                             } elseif ($this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
                                 // No errors and auto-login is turned on. A simple post-log-in message.
-                                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your account has been created.'));
+                                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your account has been created.'));
                             } else {
                                 // No errors, and no auto-login. A simple message telling the user he may log in.
-                                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your account has been created and you may now log in.'));
+                                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your account has been created and you may now log in.'));
                             }
                             $canLogIn = true;
                         } else {
                             // Shouldn't really get here out of the registration process, but cover all the bases.
-                            $this->request->getSession()->getFlashbag()->add('error', $this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
+                            $this->request->getSession()->getFlashBag()->add('error', $this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
                             $registeredObj['regErrors'] = $this->__('Your account status will not permit you to log in at this time. Please contact the site administrator for more information.');
                         }
 
@@ -612,7 +612,7 @@ class UserController extends \Zikula_AbstractController
                         }
                     } else {
                         // The main registration process failed.
-                        $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
+                        $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
 
                         // Notify that we are completing a registration session.
                         $arguments = array(
@@ -728,7 +728,7 @@ class UserController extends \Zikula_AbstractController
             $email = $this->request->request->get('email', null);
 
             if (empty($email)) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! E-mail address field is empty.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! E-mail address field is empty.'));
             } else {
                 // save username and password for redisplay
                 $emailMessageSent = ModUtil::apiFunc($this->name, 'user', 'mailUname', array(
@@ -737,10 +737,10 @@ class UserController extends \Zikula_AbstractController
                 ));
 
                 if ($emailMessageSent) {
-                    $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The account information for %s has been sent via e-mail.', $email));
+                    $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! The account information for %s has been sent via e-mail.', $email));
                     $proceedToForm = false;
                 } else {
-                    $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! We are unable to send the account information for that e-mail address. Please reenter your information, or contact an administrator.'));
+                    $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! We are unable to send the account information for that e-mail address. Please reenter your information, or contact an administrator.'));
                 }
             }
         } elseif ($this->request->isMethod('GET')) {
@@ -798,9 +798,9 @@ class UserController extends \Zikula_AbstractController
             $email = $this->request->request->get('email', '');
 
             if (empty($uname) && empty($email)) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! User name and e-mail address fields are empty.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! User name and e-mail address fields are empty.'));
             } elseif (!empty($email) && !empty($uname)) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
             } else {
                 if (!empty($uname)) {
                     $idfield = 'uname';
@@ -821,22 +821,22 @@ class UserController extends \Zikula_AbstractController
                             ));
 
                             if ($emailMessageSent) {
-                                $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The confirmation code for %s has been sent via e-mail.', $idvalue));
+                                $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! The confirmation code for %s has been sent via e-mail.', $idvalue));
                                 $formStage = 'code';
                             } elseif ($idfield == 'email') {
-                                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! We are unable to send a password recovery code for that e-mail address. Please try your user name, or contact an administrator.'));
+                                $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! We are unable to send a password recovery code for that e-mail address. Please try your user name, or contact an administrator.'));
                             } else {
-                                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! We are unable to send a password recovery code for that user name. Please try your e-mail address, contact an administrator.'));
+                                $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! We are unable to send a password recovery code for that user name. Please try your e-mail address, contact an administrator.'));
                             }
                         } else {
-                            $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! Your account is not set up to use a password to log into this site. Please recover your account information to determine your available log-in options.'));
+                            $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! Your account is not set up to use a password to log into this site. Please recover your account information to determine your available log-in options.'));
                             $formStage = 'lostPwdUname';
                         }
                     } elseif (($userObj['activated'] == UsersConstant::ACTIVATED_INACTIVE) && ($this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS))) {
-                        $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! Your account is marked as inactive. Please contact a site administrator for more information.'));
+                        $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! Your account is marked as inactive. Please contact a site administrator for more information.'));
                         $formStage = 'lostPwdUname';
                     } elseif (($userObj['activated'] == UsersConstant::ACTIVATED_PENDING_DELETE) && ($this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS))) {
-                        $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! Your account is marked for removal. Please contact a site administrator for more information.'));
+                        $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! Your account is marked for removal. Please contact a site administrator for more information.'));
                         $formStage = 'lostPwdUname';
                     } else {
                         throw new NotFoundHttpException($this->__('Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
@@ -878,7 +878,7 @@ class UserController extends \Zikula_AbstractController
                         $message = $this->__('Sorry! An account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.');
                     }
 
-                    $this->request->getSession()->getFlashbag()->add('error', $message);
+                    $this->request->getSession()->getFlashBag()->add('error', $message);
                 }
             }
         } elseif ($this->request->isMethod('GET')) {
@@ -989,13 +989,13 @@ class UserController extends \Zikula_AbstractController
         if (($formStage == 'code') && ($this->request->isMethod('POST') || !empty($uname) || !empty($email) || !empty($code))) {
             // Got something to process from either GET or POST
             if (empty($uname) && empty($email)) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! User name and e-mail address fields are empty.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! User name and e-mail address fields are empty.'));
                 $formStage = 'code';
             } elseif (!empty($email) && !empty($uname)) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
                 $formStage = 'code';
             } elseif (empty($code)) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Please enter the confirmation code you received in the e-mail message.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Please enter the confirmation code you received in the e-mail message.'));
                 $formStage = 'code';
             } else {
                 if (!empty($uname)) {
@@ -1018,11 +1018,11 @@ class UserController extends \Zikula_AbstractController
                         $passreminder = isset($userObj['passreminder']) ? $userObj['passreminder'] : '';
                         $formStage = 'setpass';
                     } else {
-                        $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! Could not load that user account.'));
+                        $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! Could not load that user account.'));
                         $formStage = 'error';
                     }
                 } else {
-                    $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! The code that you have entered is invalid."));
+                    $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! The code that you have entered is invalid."));
                 }
             }
         } elseif ($formStage == 'setpass') {
@@ -1045,20 +1045,20 @@ class UserController extends \Zikula_AbstractController
                         $reminderSet = UserUtil::setVar('passreminder', $newpassreminder, $userObj['uid']);
 
                         if (!$reminderSet) {
-                            $this->request->getSession()->getFlashbag()->add('warning', $this->__('Warning! Your new password has been saved, but there was an error while trying to save your new password reminder.'));
+                            $this->request->getSession()->getFlashBag()->add('warning', $this->__('Warning! Your new password has been saved, but there was an error while trying to save your new password reminder.'));
                         } else {
-                            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your password has been reset, and you may now log in. Please keep your password in a safe place!'));
+                            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your password has been reset, and you may now log in. Please keep your password in a safe place!'));
                         }
                         $formStage = 'login';
                     } else {
-                        $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Your new password could not be saved.'));
+                        $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Your new password could not be saved.'));
                         $formStage = 'error';
                     }
                 } else {
                     $errorInfo = ModUtil::apiFunc($this->name, 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $passwordErrors));
                 }
             } else {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! Could not load that user account.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! Could not load that user account.'));
                 $formStage = 'error';
             }
         }
@@ -1330,7 +1330,7 @@ class UserController extends \Zikula_AbstractController
                                     // Because the user was preauthentication, this should never happen, but just in case...
 
                                     if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
-                                        $this->request->getSession()->getFlashbag()->add('error', $this->__('Your log-in request was not completed.'));
+                                        $this->request->getSession()->getFlashBag()->add('error', $this->__('Your log-in request was not completed.'));
                                     }
 
                                     $eventArgs = array(
@@ -1348,7 +1348,7 @@ class UserController extends \Zikula_AbstractController
                                 }
                             } else {
                                 if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
-                                    $this->request->getSession()->getFlashbag()->add('error', $this->__('Your log-in request was not completed.'));
+                                    $this->request->getSession()->getFlashBag()->add('error', $this->__('Your log-in request was not completed.'));
                                 }
 
                                 $eventArgs = array(
@@ -1413,9 +1413,9 @@ class UserController extends \Zikula_AbstractController
                     }
                 } else {
                     if ($authenticationMethodList->countEnabledForAuthentication() <= 1) {
-                        $this->request->getSession()->getFlashbag()->add('error', $this->__('The selected log-in method is not currently available. Please contact the site administrator for assistance.'));
+                        $this->request->getSession()->getFlashBag()->add('error', $this->__('The selected log-in method is not currently available. Please contact the site administrator for assistance.'));
                     } else {
-                        $this->request->getSession()->getFlashbag()->add('error', $this->__('The selected log-in method is not currently available. Please choose another or contact the site administrator for assistance.'));
+                        $this->request->getSession()->getFlashBag()->add('error', $this->__('The selected log-in method is not currently available. Please choose another or contact the site administrator for assistance.'));
                     }
                 }
             } elseif (isset($authenticationInfo) && (!is_array($authenticationInfo))) {
@@ -1527,7 +1527,7 @@ class UserController extends \Zikula_AbstractController
                 $this->printRedirectPage($this->__('Done! You have been logged out.'), $returnpage);
             }
         } else {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! You have not been logged out.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! You have not been logged out.'));
         }
 
         return new PlainResponse();
@@ -1571,7 +1571,7 @@ class UserController extends \Zikula_AbstractController
     public function verifyRegistrationAction()
     {
         if (UserUtil::isLoggedIn()) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! An account cannot be verified while you are logged in.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! An account cannot be verified while you are logged in.'));
         }
 
         if ($this->request->isMethod('GET')) {
@@ -1614,14 +1614,14 @@ class UserController extends \Zikula_AbstractController
                             $newpassHash = UserUtil::getHashedPassword($newpass);;
                             $passSaved = UserUtil::setVar('pass', $newpassHash, $reginfo['uid']);
                             if (!$passSaved) {
-                                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! There was an error while trying to save your new password and reminder.'));
+                                $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! There was an error while trying to save your new password and reminder.'));
                             } else {
                                 $reginfo['pass'] = $newpassHash;
                             }
 
                             $passReminderSaved = UserUtil::setVar('passreminder', $newpassreminder, $reginfo['uid']);
                             if (!$passReminderSaved) {
-                                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! There was an error while trying to save your new password and reminder.'));
+                                $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! There was an error while trying to save your new password and reminder.'));
                             } else {
                                 $reginfo['passreminder'] = $newpassreminder;
                             }
@@ -1656,59 +1656,59 @@ class UserController extends \Zikula_AbstractController
                                         } else {
                                             $message = $this->__('Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.');
                                         }
-                                        $this->request->getSession()->getFlashbag()->add('status', $message);
+                                        $this->request->getSession()->getFlashBag()->add('status', $message);
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
-                                            $this->request->getSession()->getFlashbag()->add('status', $regErrorsMessage);
+                                            $this->request->getSession()->getFlashBag()->add('status', $regErrorsMessage);
                                         }
                                         return $this->response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         break;
                                     case UsersConstant::ACTIVATED_ACTIVE:
                                         if (!$extAuthModuleUsed) {
                                             // The users module was used to register that account.
-                                            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
+                                            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
                                         } else {
                                             // A third party module was used to register that account.
-                                            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your account has been verified. You may now log in.'));
+                                            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your account has been verified. You may now log in.'));
                                         }
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
-                                            $this->request->getSession()->getFlashbag()->add('status', $regErrorsMessage);
+                                            $this->request->getSession()->getFlashBag()->add('status', $regErrorsMessage);
                                             return $this->response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         } else {
                                             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'login')));
                                         }
                                         break;
                                     default:
-                                        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Your account has been verified.'));
-                                        $this->request->getSession()->getFlashbag()->add('status', $this->__('Your new account is not active yet. Please contact the site administrator for more information.'));
+                                        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Your account has been verified.'));
+                                        $this->request->getSession()->getFlashBag()->add('status', $this->__('Your new account is not active yet. Please contact the site administrator for more information.'));
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
-                                            $this->request->getSession()->getFlashbag()->add('status', $regErrorsMessage);
+                                            $this->request->getSession()->getFlashBag()->add('status', $regErrorsMessage);
                                         }
                                         return $this->response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         break;
                                 }
                             } else {
                                 if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
-                                    $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! There was an error while marking your registration as verifed. Please contact an administrator.'));
+                                    $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! There was an error while marking your registration as verifed. Please contact an administrator.'));
                                 } else {
                                     return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'index')));
                                 }
                             }
                         } else {
-                            $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! The verification code you provided does not match our records. Please check the code, and also check your e-mail for a newer verification code that might have been sent.'));
+                            $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! The verification code you provided does not match our records. Please check the code, and also check your e-mail for a newer verification code that might have been sent.'));
                         }
                     } elseif ($verifyChg === false) {
-                        $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! There was a problem retrieving the verification code for comparison.'));
+                        $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! There was a problem retrieving the verification code for comparison.'));
 
                         return false;
                     } else {
-                        $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! There is no pending verification code for \'%1$s\'. Please contact the site administrator.', array($reginfo['uname'])));
+                        $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! There is no pending verification code for \'%1$s\'. Please contact the site administrator.', array($reginfo['uname'])));
 
                         return false;
                     }
                 }
                 // No code, or no password. Pass down through to the template rendering.
             } else {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! A registration does not exist for the user name you provided. Maybe your request has expired? Please check the user name, or contact an administrator.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! A registration does not exist for the user name you provided. Maybe your request has expired? Please check the user name, or contact an administrator.'));
             }
         }
 
@@ -1766,7 +1766,7 @@ class UserController extends \Zikula_AbstractController
         $code = explode('#', $code);
 
         if (!isset($code[0]) || !isset($code[1])) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Could not activate your account. Please contact the site administrator.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not activate your account. Please contact the site administrator.'));
         }
         $uid = $code[0];
         $code = $code[1];
@@ -1787,12 +1787,12 @@ class UserController extends \Zikula_AbstractController
                                              'regdate' => $regdate));
 
             if (!$returncode) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Could not activate your account. Please contact the site administrator.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not activate your account. Please contact the site administrator.'));
             }
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Account activated.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Account activated.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'login')));
         } else {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! You entered an invalid confirmation code. Please correct your entry and try again.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Sorry! You entered an invalid confirmation code. Please correct your entry and try again.'));
         }
     }
 
@@ -1995,7 +1995,7 @@ class UserController extends \Zikula_AbstractController
         UserUtil::setVar('ublockon', $ublockon);
         UserUtil::setVar('ublock', $ublock);
 
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved custom block.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved custom block.'));
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'index')));
     }
 
@@ -2196,9 +2196,9 @@ class UserController extends \Zikula_AbstractController
                 UserUtil::delVar('_Users_mustChangePassword', $uid);
 
                 if (!UserUtil::setVar('passreminder', $newPasswordReminder, $uid)) {
-                    $this->request->getSession()->getFlashbag()->add('error', $this->__('Warning! Your new password was saved, however there was a problem saving your new password reminder.'));
+                    $this->request->getSession()->getFlashBag()->add('error', $this->__('Warning! Your new password was saved, however there was a problem saving your new password reminder.'));
                 } else {
-                    $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved your new password.'));
+                    $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved your new password.'));
                 }
 
                 $userObj = UserUtil::getVars($uid, true);
@@ -2307,11 +2307,11 @@ class UserController extends \Zikula_AbstractController
                 if (is_array($errorList)) {
                     // More than one error.
                     foreach ($errorList as $errorMessage) {
-                        $this->request->getSession()->getFlashbag()->add('error', $errorMessage);
+                        $this->request->getSession()->getFlashBag()->add('error', $errorMessage);
                     }
                 } else {
                     // Only one error.
-                    $this->request->getSession()->getFlashbag()->add('error', $errorList);
+                    $this->request->getSession()->getFlashBag()->add('error', $errorList);
                 }
 
             }
@@ -2322,10 +2322,10 @@ class UserController extends \Zikula_AbstractController
         $verificationSent = ModUtil::apiFunc($this->name, 'user', 'savePreEmail', array('newemail' => $newemail));
 
         if (!$verificationSent) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! There was a problem saving your new e-mail address or sending you a verification message.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! There was a problem saving your new e-mail address or sending you a verification message.'));
         }
 
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.'));
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'index')));
     }
 
@@ -2386,7 +2386,7 @@ class UserController extends \Zikula_AbstractController
         $confirmcode = $this->request->query->get('confirmcode', isset($args['confirmcode']) ? $args['confirmcode'] : null);
 
         if (!UserUtil::isLoggedIn()) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Please log into your account in order to confirm your change of e-mail address.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Please log into your account in order to confirm your change of e-mail address.'));
         }
 
         // get user new email that is waiting for confirmation
@@ -2395,7 +2395,7 @@ class UserController extends \Zikula_AbstractController
         $validCode = UserUtil::passwordsMatch($confirmcode, $preemail['verifycode']);
 
         if (!$preemail || !$validCode) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Your e-mail has not been found. After your request you have five days to confirm the new e-mail address.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Your e-mail has not been found. After your request you have five days to confirm the new e-mail address.'));
         }
 
         // user and confirmation code are correct. set the new email
@@ -2407,7 +2407,7 @@ class UserController extends \Zikula_AbstractController
             'changetype'=> UsersConstant::VERIFYCHGTYPE_EMAIL,
         ));
 
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Changed your e-mail address.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Changed your e-mail address.'));
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'index')));
     }
 
