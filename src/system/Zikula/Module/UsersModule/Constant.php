@@ -197,7 +197,7 @@ namespace Zikula\Module\UsersModule
         /**
          * Default value for the file name containing the generic gravatar image.
          */
-        const DEFAULT_GRAVATAR_IMAGE = 'gravatar.gif';
+        const DEFAULT_GRAVATAR_IMAGE = 'gravatar.jpg';
         /**
          * Module variable key for the hash method used for hashing passwords.
          */
