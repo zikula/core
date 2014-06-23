@@ -46,7 +46,7 @@ the Profile module, not in the Users module. This setting may be removed from
 the Users module prior to the final release of Zikula version 1.3.0.
 
 ### _Default gravatar image_
-Default: gravatar.gif
+Default: gravatar.jpg
 
 When the '_Allow globally recognized avatars_' setting is set to 'yes', this 
 setting provides the name of the image file to display if the user's gravatar is 
