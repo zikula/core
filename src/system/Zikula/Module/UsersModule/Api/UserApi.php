@@ -738,32 +738,46 @@ class UserApi extends \Zikula_AbstractApi
     public function getLinks()
     {
 
-        $allowregistration = $this->getVar('reg_allowreg');
-
         $links = array();
 
-        if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        if ((!UserUtil::isLoggedIn()) && (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))) {
             $links[] = array(
-                'url'   => ModUtil::url($this->name, 'user', 'login'),
-                'text'  => $this->__('Log in'),
                 'icon' => 'sign-in',
+                'text'  => $this->__('Log in'),
+                'url'   => ModUtil::url($this->name, 'user', 'login')            
             );
+
             $links[] = array(
-                'url'   => ModUtil::url($this->name, 'user', 'lostPwdUname'),
-                'text'  => $this->__('Recover account information or password'),
                 'icon' => 'key',
+                'links' => array(
+                    array(
+                        'text' => $this->__('Recover Lost User Name'),
+                        'url' => ModUtil::url($this->name, 'user', 'lostuname')
+                    ),
+                    array(
+                        'text' => $this->__('Recover Lost Password'),
+                        'url' => ModUtil::url($this->name, 'user', 'lostpassword')
+                    ),
+                    array(
+                        'text' => $this->__('Enter Password Recovery Code'),
+                        'url' => ModUtil::url($this->name, 'user', 'lostpasswordcode')
+                    )
+                ),
+                'text'  => $this->__('Recover account information or password'),
+                'url'   => ModUtil::url($this->name, 'user', 'lostPwdUname'),
             );
         }
 
-        if ($allowregistration) {
+        if ((!UserUtil::isLoggedIn()) && ($this->getVar('reg_allowreg'))) {
             $links[] = array(
-                'url'   => ModUtil::url($this->name, 'user', 'register'),
-                'text'  => $this->__('New account'),
                 'icon' => 'plus',
+                'text'  => $this->__('New account'),
+                'url'   => ModUtil::url($this->name, 'user', 'register')
             );
         }
 
         return $links;
+
     }
 
     /**
