@@ -1,11 +1,10 @@
 {gt text='E-mail address manager' assign='templatetitle'}
-{include file='User/menu.tpl'}
 
+{include file='User/menu.tpl'}
 <p class="alert alert-info">
     {gt text="Notice: Please enter your new e-mail address, the same address again for verification, and then click 'Save'. The site uses this address to send you mail (when you request a new password, for instance). Your currently-recorded e-mail address is <strong>'%s'</strong>." tag1=$coredata.user.email}
     {gt text="You will receive an e-mail to your new e-mail address to confirm the change."}
 </p>
-
 <form id="changeemail" class="form-horizontal" role="form" action="{modurl modname="Users" type="user" func="updateemail"}" method="post">
     <fieldset>
         <legend>{gt text="Update e-mail address"}</legend>

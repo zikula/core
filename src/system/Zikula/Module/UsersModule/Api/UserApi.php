@@ -738,13 +738,16 @@ class UserApi extends \Zikula_AbstractApi
     public function getLinks()
     {
 
+        $message_module = System::getVar('messagemodule');
+        $profile_module = System::getVar('profilemodule');
+
         $links = array();
 
-        if ((!UserUtil::isLoggedIn()) && (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))) {
+        if ((!UserUtil::isLoggedIn()) && (SecurityUtil::checkPermission($this->name.'::', '::', ACCESS_READ))) {
             $links[] = array(
                 'icon' => 'sign-in',
-                'text'  => $this->__('Log in'),
-                'url'   => ModUtil::url($this->name, 'user', 'login')            
+                'text' => $this->__('Log in'),
+                'url' => ModUtil::url($this->name, 'user', 'login')            
             );
 
             $links[] = array(
@@ -763,17 +766,90 @@ class UserApi extends \Zikula_AbstractApi
                         'url' => ModUtil::url($this->name, 'user', 'lostpasswordcode')
                     )
                 ),
-                'text'  => $this->__('Recover account information or password'),
-                'url'   => ModUtil::url($this->name, 'user', 'lostPwdUname'),
+                'text' => $this->__('Recover account information or password'),
+                'url' => ModUtil::url($this->name, 'user', 'lostPwdUname'),
+            );
+
+            if ($this->getVar('reg_allowreg')) {
+                $links[] = array(
+                    'icon' => 'plus',
+                    'text'  => $this->__('New account'),
+                    'url'   => ModUtil::url($this->name, 'user', 'register')
+                );
+            }
+        }
+
+        if ((UserUtil::isLoggedIn()) && (SecurityUtil::checkPermission($this->name.'::', '::', ACCESS_READ))) {
+            $links[] = array(
+                'icon' => 'wrench',
+                'text' => $this->__('Account Settings'),
+                'url' => ModUtil::url($this->name, 'user', 'main')
             );
         }
 
-        if ((!UserUtil::isLoggedIn()) && ($this->getVar('reg_allowreg'))) {
+        if ((UserUtil::isLoggedIn()) && (ModUtil::available($profile_module)) && (SecurityUtil::checkPermission($profile_module.'::', '::', ACCESS_READ))) {
             $links[] = array(
-                'icon' => 'plus',
-                'text'  => $this->__('New account'),
-                'url'   => ModUtil::url($this->name, 'user', 'register')
+                'icon' => 'user',
+                'links' => array(
+                    array(
+                        'text' => $this->__('Edit Profile'),
+                        'url' => ModUtil::url($profile_module, 'user', 'modify')
+                    ),
+                    array(
+                        'text' => $this->__('Change Email Address'),
+                        'url' => ModUtil::url($this->name, 'user', 'changeEmail')
+                    ),
+                    array(
+                        'text' => $this->__('Change Password'),
+                        'url' => ModUtil::url($this->name, 'user', 'changePassword')
+                    )
+                ),
+                'text' => $this->__('Profile'),
+                'url' => ModUtil::url($profile_module, 'user', 'view')
             );
+        }
+
+        if ((UserUtil::isLoggedIn()) && (ModUtil::available($message_module)) && (SecurityUtil::checkPermission($message_module.'::', '::', ACCESS_READ))) {
+            $links[] = array(
+                'icon' => 'envelope',
+                'text' => $this->__('Messages'),
+                'url' => ModUtil::url($message_module, 'user', 'main') 
+            );  
+        }
+
+        if ((ModUtil::available($profile_module)) && (SecurityUtil::checkPermission($profile_module.':Members:', '::', ACCESS_READ))) {
+            $links[] = array(
+                'icon' => 'list',
+                'links' => array(
+                    array(
+                        'url' => ModUtil::url($profile_module, 'user', 'recentmembers'),
+                        'text' => $this->__f('Last %s Registered Users', ModUtil::getVar($profile_module, 'recentmembersitemsperpage'))),
+                    array(
+                        'url' => ModUtil::url($profile_module, 'user', 'onlinemembers'),
+                        'text' => $this->__('Users Online')
+                    )
+                ),
+                'text' => $this->__('Registered Users'),
+                'url' => ModUtil::url($profile_module, 'user', 'viewmembers')                
+            );
+            
+            if (SecurityUtil::checkPermission($profile_module.':Members:recent', '::', ACCESS_READ)) {
+                $key = key($links);
+            
+                $links[$key]['links'][] = array(
+                    'text' => $this->__f('Last %s Registered Users', ModUtil::getVar($profile_module, 'recentmembersitemsperpage')),
+                    'url' => ModUtil::url($profile_module, 'user', 'recentmembers')      
+                );
+            }
+
+            if (SecurityUtil::checkPermission($profile_module.':Members:online', '::', ACCESS_READ)) {
+                $key = key($links);
+            
+                $links[$key]['links'][] = array(
+                    'text' => $this->__('Users Online'),
+                    'url' => ModUtil::url($profile_module, 'user', 'online')       
+                );
+            }
         }
 
         return $links;
