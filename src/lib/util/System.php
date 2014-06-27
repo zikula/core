@@ -197,7 +197,7 @@ class System
         // 'func'   => '/[^0-9a-zA-Z_]/',
         // 'api'    => '/[^0-9a-zA-Z_]/',
         // 'theme'  => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
-        'email' => '/^(?:[^\s\000-\037\177\(\)<>@,;:\\"\[\]]\.?)+@(?:[^\s\000-\037\177\(\)<>@,;:\\\"\[\]]\.?)+\.[a-z]{2,6}$/Ui',
+        // 'email' => '/^(?:[^\s\000-\037\177\(\)<>@,;:\\"\[\]]\.?)+@(?:[^\s\000-\037\177\(\)<>@,;:\\\"\[\]]\.?)+\.[a-z]{2,6}$/Ui',
         'url' => '/^([!#\$\046-\073=\077-\132_\141-\172~]|(?:%[a-f0-9]{2}))+$/i');
 
         // special cases
@@ -210,11 +210,11 @@ class System
             return false;
         }
 
-        if ($type == 'email' && !filter_var($var, FILTER_VALIDATE_EMAIL)) {
+        if (($type == 'email') && (!filter_var($var, FILTER_VALIDATE_EMAIL))) {
             return false;
         }
 
-        if ($type == 'url' && !filter_var($var, FILTER_VALIDATE_URL)) {
+        if (($type == 'url') && (!filter_var($var, FILTER_VALIDATE_URL))) {
             return false;
         }
 
