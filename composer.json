@@ -61,7 +61,8 @@
         "zikula/bootstrap-bundle": "dev-master",
         "zikula/fontawesome-bundle": "dev-master",
         "zikula/jquery-minicolors-bundle": "dev-master",
-        "phaidon/bootstrap-media-lightbox": "dev-master"
+        "phaidon/bootstrap-media-lightbox": "dev-master",
+        "bootstrap-plus/bootstrap-jqueryui": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
