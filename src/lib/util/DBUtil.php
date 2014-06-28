@@ -1314,6 +1314,10 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
+       if (strpos($orderby, 'GROUP BY') === 0) {
+           return $orderby;
+        }
+
         $orderby      = str_ireplace('ORDER BY ', '', $orderby); // remove "ORDER BY" for easier parsing
         $orderby      = trim(str_replace(array("\t", "\n", '  ', ' +0', '+ 0'), array(' ', ' ', ' ', '+0', '+0'), $orderby));
         $tables       = self::getTables();
