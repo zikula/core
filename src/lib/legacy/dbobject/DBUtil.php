@@ -1312,6 +1312,10 @@ class DBUtil
         if (!strlen($orderby)) {
             return $orderby;
         }
+        
+       if (strpos($orderby, 'GROUP BY') === 0) {
+           return $orderby;
+        }
 
         if (!$table) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
