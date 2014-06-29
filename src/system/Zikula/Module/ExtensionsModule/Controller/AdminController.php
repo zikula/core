@@ -608,10 +608,6 @@ class AdminController extends \Zikula_AbstractController
                                            'state' => ModUtil::STATE_ACTIVE))) {
                     // Success
                     $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Activated module.'));
-                    // clear app/cache/<environ>
-                    /** @var $clearer \Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer */
-                    $clearer = $this->get('cache_clearer');
-                    $clearer->clear($this->getContainer()->getParameter('kernel.cache_dir'));
                 }
             }
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view',
