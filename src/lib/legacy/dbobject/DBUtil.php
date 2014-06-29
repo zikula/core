@@ -1313,8 +1313,8 @@ class DBUtil
             return $orderby;
         }
         
-       if (strpos($orderby, 'GROUP BY') === 0) {
-           return $orderby;
+        if (strpos($orderby, 'GROUP BY') === 0) {
+            return $orderby;
         }
 
         if (!$table) {
