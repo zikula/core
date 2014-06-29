@@ -12,7 +12,7 @@ class Bootstrap
     /**
      * @var array the active/inactive state of each extension
      */
-    private $extensionState = array();
+    private $extensionStateMap = array();
 
     public function getConnection($kernel)
     {
@@ -43,28 +43,11 @@ class Bootstrap
         $res = $conn->executeQuery('SELECT bundlename, bundleclass, autoload, bundlestate, bundletype FROM bundles');
         foreach ($res->fetchAll(\PDO::FETCH_NUM) as $row) {
             list($name, $class, $autoload, $state, $type) = $row;
-            $extensionIsInactive = $this->extensionIsInactive($conn, $class, $type);
-            if (!$extensionIsInactive) {
+            $extensionIsActive = $this->extensionIsActive($conn, $class, $type);
+            if ($extensionIsActive) {
                 try {
                     $autoload = unserialize($autoload);
-                    if (isset($autoload['psr-0'])) {
-                        foreach($autoload['psr-0'] as $prefix => $path) {
-                            $kernel->getAutoloader()->add($prefix, $path);
-                        }
-                    }
-                    if (isset($autoload['psr-4'])) {
-                        foreach($autoload['psr-4'] as $prefix => $path) {
-                            $kernel->getAutoloader()->addPsr4($prefix, $path);
-                        }
-                    }
-                    if (isset($autoload['classmap'])) {
-                        $kernel->getAutoloader()->addClassMap($autoload['classmaps']);
-                    }
-                    if (isset($autoload['files'])) {
-                        foreach($autoload['files'] as $path) {
-                            include $path;
-                        }
-                    }
+                    $this->addAutoloaders($kernel, $autoload);
 
                     if (class_exists($class)) {
                         $bundle = new $class;
@@ -86,7 +69,7 @@ class Bootstrap
     }
 
     /**
-     * determine if the extension is inactive
+     * determine if the extension is active
      *
      * @param \Doctrine\DBAL\Connection $conn
      * @param string $class
@@ -94,34 +77,60 @@ class Bootstrap
      *
      * @return bool
      */
-    private function extensionIsInactive($conn, $class, $type) {
+    private function extensionIsActive($conn, $class, $type) {
         $extensionNameArray = explode('\\', $class);
         $extensionName = array_pop($extensionNameArray);
-        if (isset($this->extensionState[$extensionName])) {
+        if (isset($this->extensionStateMap[$extensionName])) {
             // used cached value
-            $state = $this->extensionState[$extensionName];
+            $state = $this->extensionStateMap[$extensionName];
         } else {
             // load all values into class var for lookup
             $sql = "SELECT m.name, m.state FROM modules as m";
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
-                $this->extensionState[$row['name']] = (int)$row['state'];
+                $this->extensionStateMap[$row['name']] = (int)$row['state'];
             }
             $sql = "SELECT t.name, t.state FROM themes as t";
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
-                $this->extensionState[$row['name']] = (int)$row['state'];
+                $this->extensionStateMap[$row['name']] = (int)$row['state'];
             }
-            $state = $this->extensionState[$extensionName];
+            $state = isset($this->extensionStateMap[$extensionName]) ? $this->extensionStateMap[$extensionName] : ($type == 'T') ?  \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED;
         }
         switch($type) {
             case 'T':
-                // themes in an inactive state should not be autoloaded
-                return ($state == \ThemeUtil::STATE_INACTIVE);
+                return ($state == \ThemeUtil::STATE_ACTIVE);
                 break;
             default:
-                // modules in any state other than ACTIVE or UNINITIALIZED are inactive and should not be autoloaded
-                return (($state !== \ModUtil::STATE_ACTIVE) && ($state !== \ModUtil::STATE_UNINITIALISED));
+                return ($state == \ModUtil::STATE_ACTIVE);
+        }
+    }
+
+    /**
+     * Add autoloaders to kernel or include files from json
+     *
+     * @param ZikulaKernel $kernel
+     * @param array $autoload
+     */
+    public function addAutoloaders(ZikulaKernel $kernel, array $autoload)
+    {
+        if (isset($autoload['psr-0'])) {
+            foreach($autoload['psr-0'] as $prefix => $path) {
+                $kernel->getAutoloader()->add($prefix, $path);
+            }
+        }
+        if (isset($autoload['psr-4'])) {
+            foreach($autoload['psr-4'] as $prefix => $path) {
+                $kernel->getAutoloader()->addPsr4($prefix, $path);
+            }
+        }
+        if (isset($autoload['classmap'])) {
+            $kernel->getAutoloader()->addClassMap($autoload['classmaps']);
+        }
+        if (isset($autoload['files'])) {
+            foreach($autoload['files'] as $path) {
+                include $path;
+            }
         }
     }
 }
