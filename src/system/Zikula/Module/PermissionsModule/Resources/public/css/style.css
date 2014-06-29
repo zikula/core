@@ -1,27 +1,5 @@
 /* style.css */
-.z-permissioninfo {
-    text-align: center;
-    font-weight: bold;
-    color: red;
-}
-#permissions-header {
-    margin:1em 0;
-    width:100%;
-}
-ol#permissionlist .adminpermission {
-    border:1px solid red;
-    padding-left: 30px !important;
-}
-ol#permissionlist .permlocked {
-    background-image:url(../../../../../../../images/icons/extrasmall/locked.png);
-    background-position:5px 50%;
-    background-repeat:no-repeat;
-}
-select#permissions_rowview,
-select#permissions_roweditheight {
-    width: 50px;
-}
-#permissiontestinfo {
+#permission-test-info {
     font-weight: bold;
 }
 #permissiontestinfored {
@@ -29,4 +7,8 @@ select#permissions_roweditheight {
 }
 #permissiontestinfogreen {
     color: green;
+}
+
+#permission-list > tbody > tr:not(.warning) {
+    cursor: move;
 }

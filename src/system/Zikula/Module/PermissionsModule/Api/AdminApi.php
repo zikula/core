@@ -564,16 +564,17 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit', array('action' => 'add')), 'text' => $this->__('Create new permission rule'), 'id' => 'permissions_new', 'icon' => 'plus');
+            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit', array('action' => 'add')), 'text' => $this->__('Create new permission rule'), 'icon' => 'plus', 'id' => 'new-permission');
+        }
+
+        if (ModUtil::getName() == 'ZikulaPermissionsModule') {
+            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'icon' => 'info', 'id' => 'view-instance-info');
         }
 
         if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'permissions_modifyconfig', 'icon' => 'wrench');
         }
 
-        if (ModUtil::getName() == 'ZikulaPermissionsModule') {
-            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'icon' => 'info', 'class' => 'showinstanceinformation');
-        }
 
         return $links;
     }
