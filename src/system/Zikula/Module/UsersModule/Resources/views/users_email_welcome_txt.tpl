@@ -12,7 +12,7 @@
 
 {if !empty($createdpassword)}{gt text="(This is the only time you will receive your password. Please keep it in a safe place.)"}{/if}
 
-{if !$reginfo.isapproved}{gt text="Thank you for your application for a new account.  Your application has been forwarded to the site administrator for review. Please expect a message once the review process is complete."}
+{if !$reginfo.isapproved}{gt text="Thank you for your application for a new account. Your application has been forwarded to the site administrator for review. Please expect a message once the review process is complete."}
 {elseif !$admincreated}{gt text="Your account application has been approved. Thank you for your patience during the new account application review process."}
 {elseif $admincreated}{gt text="The web site administrator has created this new account for you."}{/if}
 
