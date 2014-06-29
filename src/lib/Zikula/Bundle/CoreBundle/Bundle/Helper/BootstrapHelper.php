@@ -75,10 +75,10 @@ class BootstrapHelper
             }
         }
 
-        // clear app/cache/<environ>
-        /** @var $clearer \Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer */
-        $clearer = \ServiceUtil::getManager()->get('cache_clearer');
-        $clearer->clear(\ServiceUtil::getManager()->getParameter('kernel.cache_dir'));
+        // clear the cache
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = \ServiceUtil::getManager()->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
     }
 
     private function updateState($id, $state = AbstractBundle::STATE_DISABLED)
