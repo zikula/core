@@ -139,9 +139,9 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     /**
      * theme
      * string
-     * (optional) which jquery theme to use for this plugin. Uses JQueryUtil::loadTheme() (default: 'base')
+     * (optional) which jquery theme to use for this plugin. Uses JQueryUtil::loadTheme() (default: 'smoothness')
      */
-    $jQueryTheme = (isset($params['theme'])) ? $params['theme'] : 'base';
+    $jQueryTheme = (isset($params['theme'])) ? $params['theme'] : 'smoothness';
     unset($params['theme']);
     /**
      * lang
@@ -163,7 +163,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     if (!empty($lang) && ($lang <> 'en')) {
         PageUtil::addVar("javascript", "javascript/jquery-ui/i18n/jquery.ui.datepicker-$lang.js");
     }
-    $jQueryTheme = is_dir("javascript/jquery-ui/themes/$jQueryTheme") ? $jQueryTheme : 'base';
+    $jQueryTheme = is_dir("javascript/jquery-ui/themes/$jQueryTheme") ? $jQueryTheme : 'smoothness';
     PageUtil::addVar("stylesheet", "javascript/jquery-ui/themes/$jQueryTheme/jquery-ui.css");
 
     // build the datepicker
