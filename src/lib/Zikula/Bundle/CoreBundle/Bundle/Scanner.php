@@ -80,19 +80,19 @@ class Scanner
         return file_get_contents($file);
     }
 
-    public function getModulesMetaData()
+    public function getModulesMetaData($indexByShortName = false)
     {
-        return $this->getMetaData('zikula-module');
+        return $this->getMetaData('zikula-module', $indexByShortName);
     }
 
-    public function getThemesMetaData()
+    public function getThemesMetaData($indexByShortName = false)
     {
-        return $this->getMetaData('zikula-theme');
+        return $this->getMetaData('zikula-theme', $indexByShortName);
     }
 
-    public function getPluginsMetaData()
+    public function getPluginsMetaData($indexByShortName = false)
     {
-        return $this->getMetaData('zikula-plugin');
+        return $this->getMetaData('zikula-plugin', $indexByShortName);
     }
 
     private function validateBasic($json)
@@ -121,12 +121,12 @@ class Scanner
         return true;
     }
 
-    private function getMetaData($type)
+    private function getMetaData($type, $indexByShortName)
     {
         $array = array();
         foreach ($this->jsons as $json) {
             if ($json['type'] === $type && true) {
-                $array[$json['name']] = new MetaData($json);
+                $array[$indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name']] = new MetaData($json);
             }
         }
 
