@@ -103,6 +103,7 @@ class FixAutoloaderCommand extends \Symfony\Component\Console\Command\Command
             'autoload_namespaces.php', 
             'autoload_real.php',
             'autoload_files.php',
+            'autoload_psr4.php'
         );
         foreach ($composerFiles as $file) {
             $file = "$dir/composer/$file";
