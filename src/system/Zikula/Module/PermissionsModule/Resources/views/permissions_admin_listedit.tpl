@@ -1,5 +1,4 @@
 {adminheader}
-{include file="permissions_admin_header.tpl"}
 
 {if $action eq "add"}
 <h3>
@@ -98,8 +97,8 @@
                             {html_options options=$idvalues}
                         </select>
                     </td>
-                    <td><textarea class="form-control" name="component" rows="2" cols="20">.*</textarea></td>
-                    <td><textarea class="form-control" name="instance"  rows="2" cols="20">.*</textarea></td>
+                    <td><textarea class="form-control no-editor" name="component" rows="2" cols="20">.*</textarea></td>
+                    <td><textarea class="form-control no-editor" name="instance"  rows="2" cols="20">.*</textarea></td>
                     <td>
                         <select class="form-control" name="level">
                             {html_options options=$permissionlevels}

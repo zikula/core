@@ -1,7 +1,7 @@
 {gt text="Settings" assign=templatetitle}
+{pageaddvar name="javascript" value="system/Zikula/Module/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.ModifyConfig.js"}
 
 {adminheader}
-{include file="permissions_admin_header.tpl"}
 <h3>
     <span class="fa fa-wrench"></span>
     {$templatetitle}
