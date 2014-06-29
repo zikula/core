@@ -732,7 +732,7 @@ class AdminController extends \Zikula_AbstractController
             }
 
             // Clear the Zikula_View cached/compiled files and Themes cached/compiled/cssjs combination files
-            $theme = Zikula_View_Theme::getInstance('ZikulaThemeModule');
+            $theme = Zikula_View_Theme::getInstance();
             $theme->clear_compiled();
             $theme->clear_all_cache();
             $theme->clear_cssjscombinecache();
