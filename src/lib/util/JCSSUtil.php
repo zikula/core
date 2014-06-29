@@ -484,7 +484,7 @@ class JCSSUtil
             );
             $jQueryUiUncompressed = array(
                 'jquery-ui' => array(
-                    'path'    => 'web/jquery-ui/ui/jquery-ui.js',
+                    'path'    => 'web/jquery-ui/jquery-ui.js',
                     'require' => array('jquery'),
                 ),
             );
