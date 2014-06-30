@@ -146,7 +146,7 @@ class JCSSUtil
     }
 
     /**
-     * Procedure for managinig javascript files.
+     * Procedure for managing javascript files.
      *
      * Verify demanded files, translate script aliases to real paths, resolve dependencies.
      * Check if gettext is needed and if so add to list file with translations.
@@ -159,6 +159,8 @@ class JCSSUtil
     {
         array_unshift($javascripts, 'jquery', 'javascript/helpers/bootstrap-zikula.js');
         array_unshift($javascripts, 'jquery', ServiceUtil::getManager()->getParameter('zikula.javascript.bootstrap.min.path'));
+        $routeScript = \ServiceUtil::get('router')->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData'));
+        array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', $routeScript);
         // first resolve any dependencies
         $javascripts = self::resolveDependencies($javascripts);
         // set proper file paths for aliased scripts

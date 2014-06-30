@@ -23,6 +23,7 @@ class ZikulaKernel extends Kernel
             new Zikula\Bundle\JQueryUIBundle\ZikulaJQueryUIBundle(),
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         );
 
         $this->registerCoreModules($bundles);
