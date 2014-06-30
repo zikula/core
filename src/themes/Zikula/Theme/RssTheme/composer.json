@@ -17,7 +17,7 @@
     },
     "extra": {
         "zikula" : {
-            "class": "Zikula\\Theme\\RssTheme\\ZikulaRssTheme"
+            "class": "Zikula\\Theme\\RssTheme\\ZikulaRSSTheme"
         }
     }
 }

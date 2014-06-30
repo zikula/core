@@ -928,6 +928,7 @@ class AdminController extends \Zikula_AbstractController
             SessionUtil::delVar('modules_state');
             SessionUtil::delVar('interactive_remove');
             $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Uninstalled module.'));
+
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,

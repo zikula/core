@@ -37,6 +37,7 @@ class Util
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
         $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection(ServiceUtil::getManager()->get('kernel')));
 
+        // sync the filesystem and the bundles table
         $helper->load();
 
         // Get all themes on filesystem
