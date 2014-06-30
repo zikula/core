@@ -109,9 +109,12 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
                 }
             case '2.2.3':
                 // Nothing to do.
-                // Update successful.
-            return true;
         }
+        
+        /**
+         * Update successful.
+         */
+        return true;
 
     }
 
