@@ -21,6 +21,9 @@ class Scanner
         $finder = null === $finder ? new Finder() : $finder;
         $finder->files()
             ->in($paths)
+            ->notPath('docs')
+            ->notPath('vendor')
+            ->notPath('Resources')
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
             ->depth('<'.$depth)
