@@ -51,18 +51,19 @@ class FilterVar extends AbstractValidator
      *
      * @throws \InvalidArgumentException Thrown if the filter is not valid.
      */
-    public function __construct(ContainerInterface $serviceManager, $filter = FILTER_DEFAULT, $options = null, $errorMessage = null)
+    public function __construct(ContainerInterface $serviceManager, $filter = FILTER_DEFAULT, $options = null, $allow_empty_value = false, $errorMessage = null)
     {
 
         parent::__construct($serviceManager, $errorMessage);
 
         if ((!isset($filter)) || (!is_int($filter)) || (empty($filter))) {
-            throw new \InvalidArgumentException($this->__('An invalid filter was received.'));
+            throw new \InvalidArgumentException($this->__('Error! An invalid filter was received.'));
         }
 
         $this->filter = $filter;
         $this->options = $options;
-    
+        $this->allow_empty_value = (bool)$allow_empty_value;
+
     }
 
     /**
@@ -74,17 +75,21 @@ class FilterVar extends AbstractValidator
     public function isValid($data)
     {
         
-        $valid = false;
+        if (($this->allow_empty_value) && (empty($data))) {
+            $valid = true; 
+        } else { 
+            $valid = false;
 
-        if (isset($data)) {
-            if (is_string($data)) {
-                if (!is_null($this->options)) {
-                    if (filter_var($data, $this->filter, $this->options)) {
-                        $valid = true;
-                    }
-                } else {
-                    if (filter_var($data, $this->filter)) {
-                        $valid = true;
+            if (isset($data)) {
+                if (is_string($data)) {
+                    if (!is_null($this->options)) {
+                        if (filter_var($data, $this->filter, $this->options)) {
+                            $valid = true;
+                        }
+                    } else {
+                        if (filter_var($data, $this->filter)) {
+                            $valid = true;
+                        }
                     }
                 }
             }

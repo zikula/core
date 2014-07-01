@@ -344,6 +344,7 @@ class ConfigForm extends AbstractFormData
                 $this->serviceManager,
                 FILTER_VALIDATE_EMAIL,
                 null,
+                true,
                 $this->__('The value entered does not appear to be a valid email address.')));
 
         $this->addField(new Field(

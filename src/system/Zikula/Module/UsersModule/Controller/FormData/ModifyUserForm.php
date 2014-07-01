@@ -88,6 +88,7 @@ class ModifyUserForm extends AbstractFormData
                 $this->serviceManager,
                 FILTER_VALIDATE_EMAIL,
                 null,
+                false,
                 $this->__('The value entered does not appear to be a valid email address.')));
 
         $this->addField(new Field(
