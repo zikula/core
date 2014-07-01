@@ -43,7 +43,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type bool   $ignoreEmptyLock  Ignore an empty lock name (optional) (default: false)
      *                      }
      *
-     * @returns bool true
+     * @return bool true
      */
     public function pageLock($args)
     {
@@ -114,7 +114,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
      *      @type string $sessionId  The ID of the session owning the lock (optional) (default: current session ID
      *                       }
      *
-     * @returns array('haslock' => true if this user has a lock, false otherwise,
+     * @return array('haslock' => true if this user has a lock, false otherwise,
      *                'lockedBy' => if 'haslock' is false then the user who has the lock, null otherwise)
      */
     public function requireLock($args)

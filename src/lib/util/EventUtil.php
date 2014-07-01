@@ -150,7 +150,7 @@ class EventUtil
      *
      * @return void
      *
-     * @note If the exact same handler is already registered, this function does nothing.
+     * Note: If the exact same handler is already registered, this function does nothing.
      */
     public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight=10)
     {
@@ -224,7 +224,7 @@ class EventUtil
      *
      * @return void
      *
-     * @note If the exact same handler is already registered, this function does nothing.
+     * Note: If the exact same handler is already registered, this function does nothing.
      */
     public static function registerPersistentEventHandlerClass($moduleName, $className)
     {
