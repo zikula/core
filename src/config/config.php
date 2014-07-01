@@ -24,9 +24,9 @@ $ZConfig['DBInfo']['databases']['default']['user'] = 'root';
 $ZConfig['DBInfo']['databases']['default']['password'] = '';
 $ZConfig['DBInfo']['databases']['default']['dbname'] = 'test';
 $ZConfig['DBInfo']['databases']['default']['dbdriver'] = 'mysql';
-$ZConfig['DBInfo']['databases']['default']['dbtabletype'] = 'myisam';
+$ZConfig['DBInfo']['databases']['default']['dbtabletype'] = 'innodb';
 $ZConfig['DBInfo']['databases']['default']['charset'] = 'utf8';
-$ZConfig['DBInfo']['databases']['default']['collate'] = 'utf8_general_ci';
+$ZConfig['DBInfo']['databases']['default']['collate'] = 'utf8_unicode_ci';
 // additional DB can be configured here as above external2, external3 etc...
 
 // ----------------------------------------------------------------------
