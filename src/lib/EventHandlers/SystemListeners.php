@@ -238,7 +238,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function addHooksLink(Zikula_Event $event)
     {
         // check if this is for this handler
-        if (!($event['modfunc'][1] == 'getlinks' && $event['type'] == 'admin' && $event['api'] == true)) {
+        if (!($event['modfunc'][1] == 'getLinks' && $event['type'] == 'admin' && $event['api'] == true)) {
             return;
         }
 
@@ -270,7 +270,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function addServiceLink(Zikula_Event $event)
     {
         // check if this is for this handler
-        if (!($event['modfunc'][1] == 'getlinks' && $event['type'] == 'admin' && $event['api'] == true)) {
+        if (!($event['modfunc'][1] == 'getLinks' && $event['type'] == 'admin' && $event['api'] == true)) {
             return;
         }
 

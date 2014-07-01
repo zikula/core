@@ -536,7 +536,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return array array of menu links.
      */
-    public function getlinks($args)
+    public function getLinks($args)
     {
         $links = array();
         $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');

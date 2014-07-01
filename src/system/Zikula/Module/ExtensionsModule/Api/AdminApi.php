@@ -1318,7 +1318,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array An array of admin links.
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
 
