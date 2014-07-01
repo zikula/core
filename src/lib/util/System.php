@@ -664,6 +664,9 @@ class System
         }
 
         // Try to match a route first.
+        // Make sure we have the correct request context.
+        $requestContext = ServiceUtil::get('router.request_context');
+        $requestContext->fromRequest($request);
         /** @var \Symfony\Component\Routing\Matcher\RequestMatcherInterface $router */
         $router = ServiceUtil::get('router');
         try {
