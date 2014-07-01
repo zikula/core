@@ -22,6 +22,8 @@
             <argument>%kernel.cache_dir%</argument>
             <argument>%router.cache_class_prefix%</argument>
             <argument>%kernel.container_class%</argument>
+            <argument type="service" id="fos_js_routing.extractor" />
+            <argument>%jms_i18n_routing.locales%</argument>
         </service>
     </services>
 </container>
