@@ -14,6 +14,7 @@
 
 namespace Zikula\Bundle\CoreBundle;
 
+use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -27,13 +28,25 @@ class CacheClearer
 
     private $fs;
 
-    public function __construct($cacheDir, $cachePrefix, $kernelContainerClass)
+    /**
+     * @param string $cacheDir
+     * @param string $cachePrefix
+     * @param string $kernelContainerClass
+     * @param ExposedRoutesExtractorInterface $fosJsRoutesExtractor
+     * @param array $routingLocales
+     */
+    public function __construct($cacheDir, $cachePrefix, $kernelContainerClass, $fosJsRoutesExtractor, $routingLocales)
     {
         $this->cacheDir = $cacheDir;
         $this->cachePrefix = $cachePrefix;
         $this->fs = new Filesystem();
 
         $cacheFolder = $cacheDir . DIRECTORY_SEPARATOR;
+
+        $fosJsRoutingFiles = array();
+        foreach ($routingLocales as $locale) {
+            $fosJsRoutingFiles[] = $fosJsRoutesExtractor->getCachePath($locale);
+        }
         
         $this->cacheTypes = array(
             "symfony.routing.generator" => array(
@@ -44,6 +57,7 @@ class CacheClearer
                 "$cacheFolder{$cachePrefix}UrlMatcher.php",
                 "$cacheFolder{$cachePrefix}UrlMatcher.php.meta"
             ),
+            "symfony.routing.fosjs" => $fosJsRoutingFiles,
             "symfony.config" => array(
                 "$cacheFolder$kernelContainerClass.php",
                 "$cacheFolder$kernelContainerClass.php.meta",
@@ -58,6 +72,7 @@ class CacheClearer
     {
         foreach ($this->cacheTypes as $cacheType => $files) {
             if (substr($cacheType, 0, strlen($type)) === $type) {
+                // This silently ignores non existing files.
                 $this->fs->remove($files);
             }
         }

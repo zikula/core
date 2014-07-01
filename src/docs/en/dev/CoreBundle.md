@@ -53,7 +53,8 @@ shall be deleted. Currently, three types are supported:
 
 1. `symfony.routing.generator`: Deletes the url generator files.
 2. `symfony.routing.matcher`:   Deletes the url matcher files.
-3. `symfony.config`: Deletes the container configuration cache files.
+3. `symfony.routing.fosjs`:     Deletes the cache files for route generation in javascript (using the FOSJsRoutingBundle)
+4. `symfony.config`: Deletes the container configuration cache files.
 
 **Note:** You can also specify `symfony.routing` to delete the url generator AND matcher files.
 Usage example:
