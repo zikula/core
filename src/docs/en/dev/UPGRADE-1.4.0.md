@@ -433,7 +433,8 @@ Routing follows standard Symfony routing specifications:
   - http://symfony.com/doc/current/components/routing/hostname_pattern.html
 
 Additionally, Zikula uses the [JMSI18nRoutingBundle](http://jmsyst.com/bundles/JMSI18nRoutingBundle) to have
-multilingual and translated routes.
+multilingual and translated routes. Zikula also uses the [FOSJsRoutingBundle](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle)
+to expose routes in javascript files for ajax.
 
 By default Zikula will look for routing in the module's `Resources/config/routing.yml` file.
 You can configure the routes as stated in the Symfony docs in YAML, PHP or XML and addtionally, due to our use
@@ -573,7 +574,17 @@ ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettin
   If you need multiple routes per action, you *might* add a suffix, e.g. `acmeexamplemodule_user_index_1`,
   `acmeexamplemodule_user_index_2`, etc. **It is also possible to use route names like `acme_example_module_user_index`,
   however all route names MUST end with `controllertype_functionname{_suffix}`. **Note:** When you use annotations
-  to define your routes, you don't have to specify the route's name, as it is auto-calculated.
+  to define your routes, you don't have to specify the route's name, as it is auto-calculated.**
+
+### Routes in Javascript
+- In your ajax controller, you must set the option `"expose"=true` e.g.
+```
+     * @Route("/thisIsMyRoute", options={"expose"=true})
+```
+- In your `jQuery.ajax()` call, set the url parameter like so:
+```
+   url: Routing.generate('acmemigethmakermodule_ajax_methodname'),
+```
 
 ### Expansion of `System::queryStringDecode`
 As you probably know, this function tries calculate the module, type, func parameters from an url. On top of it,
