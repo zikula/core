@@ -39,12 +39,12 @@ class EntityAccess implements \ArrayAccess
 
     public function offsetExists($key)
     {
-        return method_exists($this, "get" . ucfirst($key));
+        return $this->getGetterForProperty($key) !== false;
     }
 
     public function offsetGet($key)
     {
-        $method = "get" . ucfirst($key);
+        $method = $this->getGetterForProperty($key);
 
         return $this->$method();
     }
@@ -83,7 +83,7 @@ class EntityAccess implements \ArrayAccess
                     continue;
                 }
 
-                $method = "get" . ucfirst($property->name);
+                $method = $this->getGetterForProperty($property->name);
                 $array[$property->name] = $this->$method();
             }
         }
@@ -97,5 +97,20 @@ class EntityAccess implements \ArrayAccess
             $method = "set" . ucfirst($key);
             $this->$method($value);
         }
+    }
+
+    private function getGetterForProperty($name)
+    {
+        $getMethod = "get" . ucfirst($name);
+        if (method_exists($this, $getMethod)) {
+            return $getMethod;
+        }
+
+        $isMethod  = "is" . ucfirst($name);
+        if (method_exists($this, $isMethod)) {
+            return $isMethod;
+        }
+
+        return false;
     }
 }

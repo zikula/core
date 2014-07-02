@@ -98,7 +98,7 @@ Features:
 - Added functionality for authentication modules to redirect the user to the registration screen if the given login
   information does not match an existing user account.
 - Increased SearchResultEntity:extra field from 100 to 1000 chars #834.
-
+- Zikula_EntityAccess now also finds getter methods named `isField()` and not only `getField()`.
 
 CHANGELOG - ZIKULA 1.3.6
 ------------------------
