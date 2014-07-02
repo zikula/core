@@ -48,24 +48,24 @@
 <table id="permission-list" class="table table-striped">
     <thead>
         <tr>
-            <td></td>
-            <td>{gt text="ID"}</td>
-            <td>
+            <th></th>
+            <th>{gt text="ID"}</th>
+            <th>
                 {gt text="Group"}
                 <em id="filter-warning-group" style="{if $filterGroup eq -1}display: none;{/if} color: red; vertical-align: top;"> (filtered)</em>
-            </td>
-            <td>
+            </th>
+            <th>
                 {gt text="Component"}
-                <em id="filter-warning-component" style="{if $filterComponent eq -1}display: none;{/if} color: red; vertical-align: top;"> (filtered)</em></td>
-            <td>
+                <em id="filter-warning-component" style="{if $filterComponent eq -1}display: none;{/if} color: red; vertical-align: top;"> (filtered)</em></th>
+            <th>
                 {gt text="Instance"}
-            </td>
-            <td>
+            </th>
+            <th>
                 {gt text="Permission level"}
-            </td>
-            <td>
+            </th>
+            <th>
                 {gt text="Actions"}
-            </td>
+            </th>
         </tr>
     </thead>
     <tbody>
