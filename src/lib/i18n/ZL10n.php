@@ -127,10 +127,26 @@ class ZL10n implements Zikula_TranslatableInterface
      * @param string|array $param Format parameters.
      *
      * @return string
+     *
+     * @deprecated Use _fn instead!
      */
     public function __fn($m1, $m2, $n, $param)
     {
-        return _fn($m1, $m2, $n, $param, $this->domain);
+        return $this->_fn($m1, $m2, $n, $param);
     }
 
+    /**
+     * Format pural translations for modules.
+     *
+     * @param string       $m1    Singular.
+     * @param string       $m2    Plural.
+     * @param integer      $n     Count.
+     * @param string|array $param Format parameters.
+     *
+     * @return string
+     */
+    public function _fn($m1, $m2, $n, $param)
+    {
+        return _fn($m1, $m2, $n, $param, $this->domain);
+    }
 }

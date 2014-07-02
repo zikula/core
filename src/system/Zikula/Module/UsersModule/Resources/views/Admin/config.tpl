@@ -550,7 +550,7 @@
                 <button class="btn btn-success" title="{gt text="Save"}">
                     {gt text="Save"}
                 </button>
-                {helplink filename='Help/Admin/config.txt' popup=1 __title='Help' icon_type='help' icon_size='extrasmall' __icon_alt='Help' __icon_title='Help'}
+                {helplink filename='Help/Admin/config.txt' class="btn btn-info" popup=1 __title='Help' icon_type='help' icon_size='extrasmall' __icon_alt='Help' __icon_title='Help'}
                 <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>
     </div>

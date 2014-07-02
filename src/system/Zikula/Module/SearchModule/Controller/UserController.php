@@ -176,7 +176,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object templated
      *
-     * @thrown \InvalidArgumentException Thrown if no search query parameters were provided
+     * @throws \InvalidArgumentException Thrown if no search query parameters were provided
      * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
      */
     public function searchAction()
