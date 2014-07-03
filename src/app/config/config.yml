@@ -111,16 +111,16 @@ stof_doctrine_extensions:
     orm:
         default:
             # if removed these values default to false
-            translatable: false
+            translatable: true
             timestampable: true
             blameable: true
             sluggable: true
             tree: true
             loggable: true
             sortable: true
-            softdeleteable: false
-            uploadable: false
-            reference_integrity: false
+            softdeleteable: true
+            uploadable: true
+            reference_integrity: true
     class:
         translatable:         Gedmo\Translatable\TranslatableListener
         timestampable:        Gedmo\Timestampable\TimestampableListener
