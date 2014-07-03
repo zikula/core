@@ -39,7 +39,12 @@ class EntityAccess implements \ArrayAccess
 
     public function offsetExists($key)
     {
-        return $this->getGetterForProperty($key) !== false;
+        try {
+            $this->getGetterForProperty($key);
+            return true;
+        } catch (\RuntimeException $e) {
+            return false;
+        }
     }
 
     public function offsetGet($key)
@@ -51,7 +56,7 @@ class EntityAccess implements \ArrayAccess
 
     public function offsetSet($key, $value)
     {
-        $method = "set" . ucfirst($key);
+        $method = $this->getSetterForProperty($key);
         $this->$method($value);
     }
 
@@ -94,7 +99,7 @@ class EntityAccess implements \ArrayAccess
     public function merge(array $array)
     {
         foreach ($array as $key => $value) {
-            $method = "set" . ucfirst($key);
+            $method = $this->getSetterForProperty($key);
             $this->$method($value);
         }
     }
@@ -111,6 +116,18 @@ class EntityAccess implements \ArrayAccess
             return $isMethod;
         }
 
-        return false;
+        $class = get_class($this);
+        throw new \RuntimeException("Entity \"$class\" does not have a getter for property \"$name\". Please either add $getMethod() or $isMethod().");
+    }
+
+    private function getSetterForProperty($name)
+    {
+        $setMethod = "set" . ucfirst($name);
+        if (method_exists($this, $setMethod)) {
+            return $setMethod;
+        }
+
+        $class = get_class($this);
+        throw new \RuntimeException("Entity \"$class\" does not have a setter for property \"$name\". Please add $setMethod().");
     }
 }
