@@ -13,6 +13,7 @@ BC breaks have still occurred:
   2. [$this->request->files](#requestfiles)
   3. [$this->request->filter](#requestfilter)
   4. [Paginate (Doctrine Extensions)](#paginate)
+  5. [Event removal](#eventremoval)
 
 
 <a name="gedmo" />
@@ -86,6 +87,21 @@ Paginate (Doctrine Extensions)
 The Doctrine Extension Paginate is deprecated. If you are using it, you should refactor it to `Doctrine\ORM\Tools\Pagination\Paginator`.
 
 *note: is this a true BC-break?*
+
+<a name="eventremoval" />
+Event Removal
+-------------
+
+The following events have been removed:
+
+  - `boostrap.getconfig` - there is no replacement
+  - `bootstrap.custom` - there is no replacement
+  - `frontcontroller.predispatch` - there is no replacement
+  - `frontcontroller.exception` - Subscribe to KernelEvents::EXCEPTION instead
+  - `setup.errorreporting` - there is no replacement
+  - `systemerror` - there is no replacement
+
+see [new events](#eventnames) for potential replacements
 
 
 Forward Compatibility Layer
@@ -689,15 +705,6 @@ There are lots of new events you can see them here:
 
 http://symfony.com/doc/current/book/internals.html#events
 http://symfony.com/doc/current/components/http_kernel/introduction.html#component-http-kernel-event-table
-
-The following list of event names have been removed:
-
-  - `boostrap.getconfig` - there is no replacement
-  - `bootstrap.custom` - there is no replacement
-  - `frontcontroller.predispatch` - there is no replacement
-  - `frontcontroller.exception` - Subscribe to Kernel::EXCEPTION instead
-  - `setup.errorreporting` - there is no replacement
-  - `systemerror` - there is no replacement
 
 
 <a name="hooks" />
