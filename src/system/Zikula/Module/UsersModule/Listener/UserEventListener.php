@@ -18,6 +18,7 @@ use SecurityUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class UserEventListener implements EventSubscriberInterface
 {
@@ -27,7 +28,7 @@ class UserEventListener implements EventSubscriberInterface
     {
         return array(
             'user.logout.succeeded' => array('clearUsersNamespace'),
-            'frontcontroller.exception' => array('clearUsersNamespace'),
+            KernelEvents::EXCEPTION => array('clearUsersNamespace'),
             'user.login.veto' => array('forcedPasswordChange'),
         );
     }
@@ -39,7 +40,7 @@ class UserEventListener implements EventSubscriberInterface
 
     /**
      * Clears the session variable namespace used by the Users module.
-     * Triggered by the 'user.logout.succeeded' and 'frontcontroller.exception' events.
+     * Triggered by the 'user.logout.succeeded' and Kernel::EXCEPTION events.
      * This is to ensure no leakage of authentication information across sessions or between critical
      * errors. This prevents, for example, the login process from becoming confused about its state
      * if it detects session variables containing authentication information which might make it think
@@ -54,7 +55,7 @@ class UserEventListener implements EventSubscriberInterface
         $eventName = $event->getName();
         $modinfo = $event->hasArgument('modinfo') ? $event->getArgument('modinfo') : array();
 
-        $doClear = ($eventName == 'user.logout.succeeded') || (($eventName == 'frontcontroller.exception')
+        $doClear = ($eventName == 'user.logout.succeeded') || (($eventName == KernelEvents::EXCEPTION)
                 && isset($modinfo) && is_array($modinfo) && !empty($modinfo) && !isset($modinfo['name']) && ($modinfo['name'] == UsersConstant::MODNAME));
 
         if ($doClear) {
