@@ -573,8 +573,8 @@ ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettin
 - The route names **SHOULD be in format `modname_controllertype_functionname`**, e.g. `acmeexamplemodule_user_index`.
   If you need multiple routes per action, you *might* add a suffix, e.g. `acmeexamplemodule_user_index_1`,
   `acmeexamplemodule_user_index_2`, etc. **It is also possible to use route names like `acme_example_module_user_index`,
-  however all route names MUST end with `controllertype_functionname{_suffix}`. **Note:** When you use annotations
-  to define your routes, you don't have to specify the route's name, as it is auto-calculated.**
+  however all route names MUST end with `controllertype_functionname{_suffix}`. Note:** When you use annotations
+  to define your routes, you don't have to specify the route's name, as it is auto-calculated.
 
 ### Routes in Javascript
 - In your ajax controller, you must set the option `"expose"=true` e.g.
