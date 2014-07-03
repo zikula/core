@@ -45,24 +45,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
     }
 
     /**
-     * Event: 'frontcontroller.predispatch'.
-     *
-     * @param Zikula_Event $event
-     *
-     * @return void
-     */
-    public function sessionExpired(Zikula_Event $event)
-    {
-        if (SessionUtil::hasExpired()) {
-            // Session has expired, display warning
-            $response = new Response(ModUtil::apiFunc('ZikulaUsersModule', 'user', 'expiredsession', 403));
-            $response = Zikula_View_Theme::getInstance()->themefooter($response);
-            $response->send();
-            System::shutdown();
-        }
-    }
-
-    /**
      * Listen on 'core.init' module.
      *
      * @param Zikula_Event $event Event.
