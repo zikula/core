@@ -353,8 +353,12 @@ class AdminApi extends \Zikula_AbstractApi
         if ($oomod && false === strpos($osdir, '/')) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
+            $scanDir = "modules/$osdir";
+            if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
+                $scanDir = "system/$osdir";
+            }
             $scanner = new Scanner();
-            $scanner->scan(array("modules/$osdir"), 1);
+            $scanner->scan(array($scanDir), 1);
             $modules = $scanner->getModulesMetaData(true);
             /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
             $moduleMetaData = $modules[$modinfo['name']];
@@ -988,8 +992,12 @@ class AdminApi extends \Zikula_AbstractApi
         if (false === strpos($osdir, '/')) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
+            $scanDir = "modules/$osdir";
+            if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
+                $scanDir = "system/$osdir";
+            }
             $scanner = new Scanner();
-            $scanner->scan(array("modules/$osdir"), 1);
+            $scanner->scan(array($scanDir), 1);
             $modules = $scanner->getModulesMetaData(true);
             /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
             $moduleMetaData = $modules[$modinfo['name']];
@@ -1115,8 +1123,12 @@ class AdminApi extends \Zikula_AbstractApi
         if (false === strpos($osdir, '/')) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
+            $scanDir = "modules/$osdir";
+            if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
+                $scanDir = "system/$osdir";
+            }
             $scanner = new Scanner();
-            $scanner->scan(array("modules/$osdir"), 1);
+            $scanner->scan(array($scanDir), 1);
             $modules = $scanner->getModulesMetaData(true);
             /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
             $moduleMetaData = $modules[$modinfo['name']];
