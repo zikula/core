@@ -16,10 +16,10 @@ namespace Zikula\Module\SearchModule\Listener;
 use ModUtil;
 use PageUtil;
 use DataUtil;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use System;
 use SecurityUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class FrontControllerListener implements EventSubscriberInterface
@@ -34,11 +34,11 @@ class FrontControllerListener implements EventSubscriberInterface
     /**
      * Handle page load event KernelEvents::REQUEST.
      *
-     * @param GenericEvent $event
+     * @param GetResponseEvent $event
      *
      * @return void
      */
-    public function pageload(GenericEvent $event)
+    public function pageload(GetResponseEvent $event)
     {
         $openSearchEnabled = ModUtil::getVar('ZikulaSearchModule', 'opensearch_enable');
         if ($openSearchEnabled && SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
