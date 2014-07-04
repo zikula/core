@@ -1043,12 +1043,6 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \RuntimeException($this->__('Error! Could not change module state.'));
         }
 
-        if (!System::isInstalling()) {
-            // This should become an event handler - drak
-            $category = ModUtil::getVar('ZikulaAdminModule', 'defaultcategory');
-            ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
-        }
-
         // clear the cache before calling events
         /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
         $cacheClearer = $this->get('zikula.cache_clearer');
