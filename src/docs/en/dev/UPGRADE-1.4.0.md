@@ -1,41 +1,141 @@
+Module Compatibility
+====================
+
+Maintaining module and theme backward compatibility (BC) with Core-1.3.x is a very high priority for Core-1.4.0.
+A very strong effort has been made to keep to the standards of [Semantic Versioning](http://semver.org) which dictate
+that BC must be maintained within each major version (1.0.0 until 2.0.0). Therefore, all Core-1.3.x modules and themes
+*should* continue to work as expected in Core-1.4.0.
+
+However, because of a necessary upgrade of the Symfony library and despite the development team's best efforts, a few
+BC breaks have still occurred:
+
+  1. [Gedmo (Doctrine Extensions)](#gedmo)
+  2. [$this->request->files](#requestfiles)
+  3. [$this->request->filter](#requestfilter)
+  4. [Paginate (Doctrine Extensions)](#paginate)
+  5. [Event removal](#eventremoval)
+
+
+<a name="gedmo" />
+Gedmo (Doctrine Extensions)
+---------------------------
+If you use `Sluggable`, you must change the annotation in your Doctrine entities from:
+
+from:
+
+```php
+    /**
+     * @ORM\Column(name="tag", type="string", length=36)
+     * @Gedmo\Sluggable(slugField="slug")
+     */
+    private $tag;
+
+    /**
+     * @ORM\Column(name="slug", type="string", length=128)
+     * @Gedmo\Slug
+     */
+    private $slug;
+```
+
+to:
+```php
+    /**
+     * @ORM\Column(name="tag", type="string", length=36)
+     */
+    private $tag;
+
+    /**
+     * @ORM\Column(name="slug", type="string", length=128)
+     * @Gedmo\Slug(fields={"tag"})
+     */
+    private $slug;
+```
+
+<a name="requestfiles" />
+$this->request->files
+---------------------
+The format for this method is changed.
+
+`$this->request->files->get()` returns instances of `Symfony\Component\HttpFoundation\File\UploadedFile` now,
+before it returned plain arrays out of `$_FILES`.
+
+*note: there is still some question as to whether the old `->getFiles()` method might be able to maintain BC or
+to find another method of providing for BC in this case. (refs #1002, #1261)
+"one could replace the ParameterBag with a proxy class and magic methods for example.
+The request object is supposed to be created only once in the front controller btw"*
+
+<a name="requestfilter" />
+$this->request->filter
+----------------------
+The format for this method is changed.
+
+```
+$this->request->request/query->filter($key, $default=null, $filter=FILTER_DEFAULT, array $options=array())
+```
+has changed to
+```
+$this->request->request/query->filter(string $key, mixed $default = null, boolean $deep = false, integer $filter = FILTER_DEFAULT, mixed $options = array())
+```
+(note additional $deep parameter)
+
+*note: There may still be some effort to provide a BC layer here. (refs #1261)
+"if someone cares enough it might be possible to handle with a proxy"*
+
+<a name="paginate" />
+Paginate (Doctrine Extensions)
+-----------------------------
+The Doctrine Extension Paginate is deprecated. If you are using it, you should refactor it to `Doctrine\ORM\Tools\Pagination\Paginator`.
+
+*note: is this a true BC-break?*
+
+<a name="eventremoval" />
+Event Removal
+-------------
+
+The following events have been removed:
+
+  - `boostrap.getconfig` - there is no replacement
+  - `bootstrap.custom` - there is no replacement
+  - `frontcontroller.predispatch` - there is no replacement
+  - `frontcontroller.exception` - Subscribe to KernelEvents::EXCEPTION instead
+  - `setup.errorreporting` - there is no replacement
+  - `systemerror` - there is no replacement
+
+see [new events](#eventnames) for potential replacements
+
+
+Forward Compatibility Layer
+===========================
+All of the following changes are optional and forward compatible with Zikula Core 1.4.0. Module developers can begin
+adopting these immediately without risking any compatibility problems. The reason for these changes are to allow
+rapid adoption of various Symfony Components and rapidly modernize the Core.
+
+There is a refactor tool, [`zikula-tools`](https://github.com/zikula/Tools) which is referred to in this
+document for the purposes of refactoring modules to the new standards below with very little effort.
+
 Module Specification from Zikula Core 1.4.0
 ===========================================
 
-  1. [Introduction](#introduction)
-  2. [Bootstrap and jQuery](#bootstrapjquery)
-  3. [Namespaces](#namespaces)
-  4. [Naming conventions](#namingconventions)
-  5. [Module Structure](#modulestructure)
-  6. [Module composer.json](#modulecomposer)
-  7. [Controller Methods](#controllermethods)
-  8. [Controller Method Parameters](#controllermethodparameters)
-  9. [Controller Response](#controllerresponse)
-  10. [Routing](#routing)
-  11. [Service Manager](#servicemanager)
-  12. [Events](#events)
-  13. [Event Names](#eventnames)
-  14. [Hooks](#hooks)
-  15. [Request](#request)
-  16. [Search](#search)
-  17. [Gedmo (Doctrine Extensions)](#gedmo)
-  18. [Paginate (Doctrine Extensions)](#paginate)
-  19. [Version File](#versionfile)
-  20. [Persistent Event Listeners](#eventlisteners)
-  21. [Theme Standard](#themes)
-  22. [Theme composer.json](#themecomposer)
+  1. [Bootstrap and jQuery](#bootstrapjquery)
+  2. [Namespaces](#namespaces)
+  3. [Naming conventions](#namingconventions)
+  4. [Module Structure](#modulestructure)
+  5. [Module composer.json](#modulecomposer)
+  6. [Controller Methods](#controllermethods)
+  7. [Controller Method Parameters](#controllermethodparameters)
+  8. [Controller Response](#controllerresponse)
+  9. [Routing](#routing)
+  10. [Service Manager](#servicemanager)
+  11. [Events](#events)
+  12. [Event Names](#eventnames)
+  13. [Hooks](#hooks)
+  14. [Request](#request)
+  15. [Search](#search)
+  16. [Version File](#versionfile)
+  17. [Persistent Event Listeners](#eventlisteners)
+  18. [Theme Standard](#themes)
+  19. [Theme composer.json](#themecomposer)
   
-<a name="installing" />
-Introduction
-------------
-All of the following changes are optional and forward compatible with
-Zikula Core 1.4. Module developers can begin adopting these immediately
-without risking any compatibility problems. The reason for these changes
-are to allow rapid adoption of various Symfony Components and rapidly
-modernize the Core.
-
-There is a refactor tool, [`zikula-tools`](https://github.com/zikula/Tools) which is referred to in this
-document for the purposes of refactoring modules to the new standards
-below with very little effort.
 
 <a name="bootstrapjquery" />
 Bootstrap and jQuery
@@ -349,7 +449,8 @@ Routing follows standard Symfony routing specifications:
   - http://symfony.com/doc/current/components/routing/hostname_pattern.html
 
 Additionally, Zikula uses the [JMSI18nRoutingBundle](http://jmsyst.com/bundles/JMSI18nRoutingBundle) to have
-multilingual and translated routes.
+multilingual and translated routes. Zikula also uses the [FOSJsRoutingBundle](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle)
+to expose routes in javascript files for ajax.
 
 By default Zikula will look for routing in the module's `Resources/config/routing.yml` file.
 You can configure the routes as stated in the Symfony docs in YAML, PHP or XML and addtionally, due to our use
@@ -390,7 +491,7 @@ in XYZVersion.php:
    ```
 2. `ModUtil::url()` will try to generate a new-styled Symfony url if possible. However, This function is deprecated,
 for url generation in PHP and Twig take a look at [the Symfony docs](http://symfony.com/doc/current/book/routing.html#generating-urls).
-There is no way to generate new-styled urls in Smarty other than using the deprecated `{modurl}`.
+In Smarty the plugin `{modurl}` is deprecated (but functional) and you can now use the `{route}` plugin instead.
 
 ### The url styles
 As of Zikula 1.4, there are three kinds of url matching / routing styles in Zikula. First, the old ones:
@@ -488,8 +589,18 @@ ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettin
 - The route names **SHOULD be in format `modname_controllertype_functionname`**, e.g. `acmeexamplemodule_user_index`.
   If you need multiple routes per action, you *might* add a suffix, e.g. `acmeexamplemodule_user_index_1`,
   `acmeexamplemodule_user_index_2`, etc. **It is also possible to use route names like `acme_example_module_user_index`,
-  however all route names MUST end with `controllertype_functionname{_suffix}`. **Note:** When you use annotations
+  however all route names MUST end with `controllertype_functionname{_suffix}`. Note:** When you use annotations
   to define your routes, you don't have to specify the route's name, as it is auto-calculated.
+
+### Routes in Javascript
+- In your ajax controller, you must set the option `"expose"=true` e.g.
+```
+     * @Route("/thisIsMyRoute", options={"expose"=true})
+```
+- In your `jQuery.ajax()` call, set the url parameter like so:
+```
+   url: Routing.generate('acmemigethmakermodule_ajax_methodname'),
+```
 
 ### Expansion of `System::queryStringDecode`
 As you probably know, this function tries calculate the module, type, func parameters from an url. On top of it,
@@ -595,15 +706,6 @@ There are lots of new events you can see them here:
 http://symfony.com/doc/current/book/internals.html#events
 http://symfony.com/doc/current/components/http_kernel/introduction.html#component-http-kernel-event-table
 
-The following list of even names have been removed:
-
-  - `boostrap.getconfig` - there is no replacement
-  - `bootstrap.custom` - there is no replacement
-  - `frontcontroller.predispatch` - there is no replacement
-  - `frontcontroller.exception` - Subscribe to Kernel::EXCEPTION instead
-  - `setup.errorreporting` - there is no replacement
-  - `systemerror` - there is no replacement
-
 
 <a name="hooks" />
 Hooks
@@ -697,47 +799,6 @@ your module's search. Also, a helper method, `addError()` is available to provid
 is invalid for your module.
 
 The **UsersModule** has implemented the new Search method and can be used as a reference.
-
-
-<a name="gedmo" />
-Gedmo (Doctrine Extensions)
----------------------------
-If you use `Sluggable`, you must change the annotation in your Doctrine entities from:
-
-from:
-
-```php
-    /**
-     * @ORM\Column(name="tag", type="string", length=36)
-     * @Gedmo\Sluggable(slugField="slug")
-     */
-    private $tag;
-
-    /**
-     * @ORM\Column(name="slug", type="string", length=128)
-     * @Gedmo\Slug
-     */
-    private $slug;
-```
-
-to:
-```php
-    /**
-     * @ORM\Column(name="tag", type="string", length=36)
-     */
-    private $tag;
-
-    /**
-     * @ORM\Column(name="slug", type="string", length=128)
-     * @Gedmo\Slug(fields={"tag"})
-     */
-    private $slug;
-```
-
-<a name="paginate" />
-Paginate (Doctrine Extensions)
------------------------------
-The Doctrine Extension Paginate is deprecated. If you are using it, you should refactor it to `Doctrine\ORM\Tools\Pagination\Paginator`.
 
 
 <a name="versionfile" />
