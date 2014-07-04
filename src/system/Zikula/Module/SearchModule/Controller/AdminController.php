@@ -115,13 +115,6 @@ class AdminController extends \Zikula_AbstractController
         $opensearchAdultContent = $this->request->request->filter('opensearch_adult_content', false, false, FILTER_VALIDATE_BOOLEAN);
         $this->setVar('opensearch_adult_content', $opensearchAdultContent);
         $opensearchEnable = $this->request->request->filter('opensearch_enable', false, false, FILTER_VALIDATE_BOOLEAN);
-
-        if ($opensearchEnable && !$this->getVar('opensearch_enable')) {
-            EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\FrontControllerListener', 'pageload'));
-        } elseif (!$opensearchEnable && $this->getVar('opensearch_enable')) {
-            EventUtil::unregisterPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\FrontControllerListener', 'pageload'));
-        }
-
         $this->setVar('opensearch_enable', $opensearchEnable);
 
         $disable = $this->request->request->get('disable', null);

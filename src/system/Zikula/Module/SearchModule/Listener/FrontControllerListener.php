@@ -20,18 +20,19 @@ use System;
 use SecurityUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class FrontControllerListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
         return array(
-            'frontcontroller.predispatch' => array('pageload'),
+            KernelEvents::REQUEST => array('pageload'),
         );
     }
 
     /**
-     * Handle page load event "frontcontroller.predispatch".
+     * Handle page load event KernelEvents::REQUEST.
      *
      * @param GenericEvent $event
      *
@@ -39,7 +40,8 @@ class FrontControllerListener implements EventSubscriberInterface
      */
     public function pageload(GenericEvent $event)
     {
-        if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
+        $openSearchEnabled = ModUtil::getVar('ZikulaSearchModule', 'opensearch_enable');
+        if ($openSearchEnabled && SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             // The current user has the rights to search the page.
             PageUtil::addVar('header', '<link rel="search" type="application/opensearchdescription+xml" title="' . DataUtil::formatForDisplay(System::getVar('sitename')) . '" href="/' . DataUtil::formatForDisplay(ModUtil::url('ZikulaSearchModule', 'user', 'opensearch')) . '" />');
         }

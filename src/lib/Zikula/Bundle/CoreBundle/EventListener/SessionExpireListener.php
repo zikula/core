@@ -24,7 +24,7 @@ class SessionExpireListener implements EventSubscriberInterface
     {
         if (\SessionUtil::hasExpired()) {
             // Session has expired, display warning
-            $response = new Response(\ModUtil::apiFunc('ZikulaUsersModule', 'user', 'expiredsession', 403));
+            $response = new Response(\ModUtil::apiFunc('ZikulaUsersModule', 'user', 'expiredsession'), 403);
             $this->setResponse($event, $response);
         }
     }
