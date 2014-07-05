@@ -13,6 +13,7 @@
         <service id="zikulausersmodule.user_listener" class="%zikulausersmodule.user_listener.class%">
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="session" />
+            <argument type="service" id="request_stack" />
         </service>
         <service id="zikulausersmodule.pending_content_listener" class="%zikulausersmodule.pending_content_listener.class%">
             <tag name="kernel.event_subscriber" />

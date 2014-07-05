@@ -13,6 +13,7 @@
 
 namespace Zikula\Module\UsersModule\Listener;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use UserUtil;
 use SecurityUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,18 +25,24 @@ class UserEventListener implements EventSubscriberInterface
 {
     private $session;
 
+    /**
+     * @var \Symfony\Component\HttpFoundation\RequestStack
+     */
+    private $requestStack;
+
     public static function getSubscribedEvents()
     {
         return array(
-            'user.logout.succeeded' => array('clearUsersNamespace'),
+            'module.users.ui.logout.succeeded' => array('clearUsersNamespace'),
             KernelEvents::EXCEPTION => array('clearUsersNamespace'),
             'user.login.veto' => array('forcedPasswordChange'),
         );
     }
 
-    public function __construct(\Zikula_Session $session)
+    public function __construct(\Zikula_Session $session, RequestStack $requestStack)
     {
         $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -50,17 +57,21 @@ class UserEventListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function clearUsersNamespace(GenericEvent $event)
+    public function clearUsersNamespace($event, $eventName)
     {
-        $eventName = $event->getName();
-        $modinfo = $event->hasArgument('modinfo') ? $event->getArgument('modinfo') : array();
-
-        $doClear = ($eventName == 'user.logout.succeeded') || (($eventName == KernelEvents::EXCEPTION)
-                && isset($modinfo) && is_array($modinfo) && !empty($modinfo) && !isset($modinfo['name']) && ($modinfo['name'] == UsersConstant::MODNAME));
+        $doClear = false;
+        if ($eventName == KernelEvents::EXCEPTION) {
+            $request = $this->requestStack->getCurrentRequest();
+            if (!is_null($request)) {
+                $doClear = $request->attributes->has('_zkModule') && $request->attributes->get('_zkModule') == UsersConstant::MODNAME;
+            }
+        } else {
+            // Logout
+            $doClear = true;
+        }
 
         if ($doClear) {
             $this->session->clearNamespace(UsersConstant::SESSION_VAR_NAMESPACE);
-            //Do not setNotified. Not handling the exception, just reacting to it.
         }
     }
 
@@ -79,7 +90,7 @@ class UserEventListener implements EventSubscriberInterface
      *
      * @throws \RuntimeException Thrown if the user hasn't changed the account password
      */
-    public static function forcedPasswordChange(GenericEvent $event)
+    public function forcedPasswordChange(GenericEvent $event)
     {
         $userObj = $event->getSubject();
 
@@ -102,7 +113,7 @@ class UserEventListener implements EventSubscriberInterface
                 ),
             ));
 
-            throw new \RuntimeException(__("Your log-in request was not completed. You must change your web site account's password first."));
+            $this->requestStack->getCurrentRequest()->getSession()->getFlashBag()->add('error', __("Your log-in request was not completed. You must change your web site account's password first."));
         }
     }
 
