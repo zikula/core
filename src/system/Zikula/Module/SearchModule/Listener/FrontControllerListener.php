@@ -27,7 +27,8 @@ class FrontControllerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST => array('pageload'),
+            // Make sure to load the handler *every time* and *before* the routing listeners are running (32).
+            KernelEvents::REQUEST => array(array('pageload', 40)),
         );
     }
 
@@ -40,11 +41,10 @@ class FrontControllerListener implements EventSubscriberInterface
      */
     public function pageload(GetResponseEvent $event)
     {
-        $openSearchEnabled = ModUtil::getVar('ZikulaSearchModule', 'opensearch_enable');
+        $openSearchEnabled = ModUtil::getVar('ZikulaSearchModule', 'opensearch_enabled');
         if ($openSearchEnabled && SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             // The current user has the rights to search the page.
-            PageUtil::addVar('header', '<link rel="search" type="application/opensearchdescription+xml" title="' . DataUtil::formatForDisplay(System::getVar('sitename')) . '" href="/' . DataUtil::formatForDisplay(ModUtil::url('ZikulaSearchModule', 'user', 'opensearch')) . '" />');
+            PageUtil::addVar('header', '<link rel="search" type="application/opensearchdescription+xml" title="' . DataUtil::formatForDisplay(System::getVar('sitename')) . '" href="' . DataUtil::formatForDisplay(ModUtil::url('ZikulaSearchModule', 'user', 'opensearch')) . '" />');
         }
     }
-
 }

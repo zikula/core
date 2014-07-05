@@ -114,8 +114,8 @@ class AdminController extends \Zikula_AbstractController
         $this->setVar('limitsummary', $limitsummary);
         $opensearchAdultContent = $this->request->request->filter('opensearch_adult_content', false, false, FILTER_VALIDATE_BOOLEAN);
         $this->setVar('opensearch_adult_content', $opensearchAdultContent);
-        $opensearchEnable = $this->request->request->filter('opensearch_enable', false, false, FILTER_VALIDATE_BOOLEAN);
-        $this->setVar('opensearch_enable', $opensearchEnable);
+        $opensearchEnabled = $this->request->request->filter('opensearch_enabled', false, false, FILTER_VALIDATE_BOOLEAN);
+        $this->setVar('opensearch_enabled', $opensearchEnabled);
 
         $disable = $this->request->request->get('disable', null);
         // get all the LEGACY (<1.4.0) search plugins
