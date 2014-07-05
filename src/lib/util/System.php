@@ -887,12 +887,6 @@ class System
             $request->query->replace($_GET);
         }
 
-        foreach ($arguments as $key => $value) {
-            $request->attributes->set($key, $value);
-        }
-        //foreach ($_POST as $key => $value) {
-        //    $request->attributes->set($key, $value);
-        //}
         $request->attributes->set('_zkModule', strtolower($module)); // legacy - this is how they are received originally
         $request->attributes->set('_zkType', strtolower($type)); // legacy - this is how they are received originally
         $request->attributes->set('_zkFunc', strtolower($func)); // legacy - this is how they are received originally
