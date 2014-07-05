@@ -434,7 +434,7 @@ class UserApi extends \Zikula_AbstractApi
         if ($this->request->query->get('func') == 'search' && isset($args['vars'][$nextvar]) && !empty($args['vars'][$nextvar])) {
             System::queryStringSetVar('q', $args['vars'][$nextvar]);
             $nextvar++;
-            if (isset($args['vars'][$nextvar]) && $args['vars'][$nextvar] == 'page') {
+            if (isset($args['vars'][$nextvar]) && $args['vars'][$nextvar] == 'page' && isset($args['vars'][$nextvar + 1])) {
                 System::queryStringSetVar('page', (int)$args['vars'][$nextvar + 1]);
             }
         }
