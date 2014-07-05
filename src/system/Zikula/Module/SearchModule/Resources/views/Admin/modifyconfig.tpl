@@ -42,9 +42,9 @@
                 {gt text='%1$s OpenSearch %2$s makes it possible for your site\'s users to use your site\'s search function as a search engine.' tag1='<a href="http://en.wikipedia.org/wiki/OpenSearch">' tag2='</a>'}
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="search_opensearch_enable">{gt text='Enable OpenSearch'}</label>
+                <label class="col-lg-3 control-label" for="search_opensearch_enabled">{gt text='Enable OpenSearch'}</label>
                 <div class="col-lg-9">
-                    <input id="search_opensearch_enable" type="checkbox" name="opensearch_enable" {if $opensearch_enable|default:true}checked="checked" {/if}/>
+                    <input id="search_opensearch_enabled" type="checkbox" name="opensearch_enabled" {if $opensearch_enabled|default:false}checked="checked" {/if}/>
                 </div>
             </div>
             <div class="form-group">

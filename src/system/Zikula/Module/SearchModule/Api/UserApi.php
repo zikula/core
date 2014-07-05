@@ -410,7 +410,7 @@ class UserApi extends \Zikula_AbstractApi
         System::queryStringSetVar('type', 'user');
 
         // define the available user functions
-        $funcs = array('index', 'form', 'search', 'process', 'recent');
+        $funcs = array('index', 'form', 'search', 'process', 'recent', 'opensearch');
         // set the correct function name based on our input
         if (empty($args['vars'][2])) {
             // Retain this for BC for older URLs that might be stored
