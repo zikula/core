@@ -523,6 +523,7 @@ function _check_requirements(Zikula_Core $core)
         'app/cache/',
         'app/config/parameters.yml',
         "$datadir/",
+        'app/config/dynamic'
     );
     $results['files'] = array();
     foreach ($files as $file) {
