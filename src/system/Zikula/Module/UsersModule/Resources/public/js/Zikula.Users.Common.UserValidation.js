@@ -26,6 +26,7 @@
             };
             e1.addEventListener('change', checkMatch, false);
             e2.addEventListener('keyup', checkMatch, false);
+            e2.addEventListener('paste', checkMatch, false);
         });
 
 
