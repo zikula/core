@@ -168,7 +168,7 @@ class UserApi extends \Zikula_AbstractApi
             $bodyFormat = 'text/plain';
         }
         $message->setBody($args['body']);
-        $message->setFormat($bodyFormat);
+        $message->setContentType($bodyFormat);
         if (!empty($args['altbody'])) {
             $message->addPart($args['altbody'], 'text/plain');
         }
