@@ -24,11 +24,6 @@ use Zikula\RoutesModule\Routing\Util as RoutingUtil;
  */
 class EditHandler extends BaseEditHandler
 {
-    protected function getDefaultReturnUrl($args)
-    {
-        return parent::getDefaultReturnUrl($args) . "?lct=admin";
-    }
-    
     public function initialize(Zikula_Form_View $view)
     {
         $items = array();
