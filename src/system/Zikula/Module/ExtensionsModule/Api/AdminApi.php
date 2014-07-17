@@ -284,6 +284,11 @@ class AdminApi extends \Zikula_AbstractApi
         $module['state'] = $args['state'];
         $this->entityManager->flush();
 
+        // clear the cache before calling events
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = $this->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
+
         // state changed, so update the ModUtil::available-info for this module.
         $modinfo = ModUtil::getInfo($args['id']);
         ModUtil::available($modinfo['name'], true);
@@ -350,7 +355,7 @@ class AdminApi extends \Zikula_AbstractApi
         $oomod = ModUtil::isOO($modinfo['name']);
 
         // add autoloaders for module
-        if ($oomod && false === strpos($osdir, '/')) {
+        if ($oomod && (false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
             $scanDir = "modules/$osdir";
@@ -989,7 +994,7 @@ class AdminApi extends \Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // add autoloaders for module
-        if (false === strpos($osdir, '/')) {
+        if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
             $scanDir = "modules/$osdir";
@@ -1114,7 +1119,7 @@ class AdminApi extends \Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // add autoloaders for module
-        if (false === strpos($osdir, '/')) {
+        if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
             $scanDir = "modules/$osdir";
