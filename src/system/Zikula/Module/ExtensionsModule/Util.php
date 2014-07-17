@@ -30,6 +30,7 @@ class Util
      *
      * @param string $moduleName Module Name.
      * @param string $rootdir    Root directory of the module (default: modules).
+     * @param \Zikula\Core\AbstractModule|null $module injected bundle
      *
      * @throws \InvalidArgumentException Thrown if the version information cannot be obtained for the requested module or
      *                                          if the version class isn't of the correct type or
@@ -37,12 +38,14 @@ class Util
      *
      * @return Zikula_AbstractVersion|array
      */
-    public static function getVersionMeta($moduleName, $rootdir = 'modules')
+    public static function getVersionMeta($moduleName, $rootdir = 'modules', $module = null)
     {
         $modversion = array();
-        $module = ModUtil::getModule($moduleName);
-
+        if (null === $module) {
+            $module = ModUtil::getModule($moduleName);
+        }
         $class = null === $module ? "{$moduleName}_Version" : $module->getVersionClass();
+
         if (class_exists($class)) {
             try {
                 $modversion = new $class($module);
