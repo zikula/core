@@ -64,7 +64,8 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need.
-        $permgrp = $this->request->get('permgrp', -1);
+        $filterGroup = $this->request->get('filter-group', -1);
+        $filterComponent = $this->request->get('filter-component', -1);
         $testuser = $this->request->request->get('test_user', null);
         $testcomponent = $this->request->request->get('test_component', null);
         $testinstance = $this->request->request->get('test_instance', null);
@@ -101,35 +102,20 @@ class AdminController extends \Zikula_AbstractController
 
         $enableFilter = $this->getVar('filter', 1);
         if ($enableFilter == 1) {
-            $permgrpparts = explode('+', $permgrp);
-            if ($permgrpparts[0] == 'g') {
-                if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
-                    $qb->where('(p.gid = :permsall OR p.gid = :permgrpparts)')
-                       ->setParameter('permsall', SecurityUtil::PERMS_ALL)
-                       ->setParameter('permgrpparts', $permgrpparts[1]);
-                    $permgrp = $permgrpparts[1];
-                    $this->view->assign('filtertype', 'group');
-                } else {
-                    $permgrp = SecurityUtil::PERMS_ALL;
-                }
-            } elseif ($permgrpparts[0] == 'c') {
-                if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
-                    $qb->where('(p.component = .* OR p.component LIKE :permgrpparts%)')
-                       ->setParameter('permgrpparts', $permgrpparts[1]);
-                    $permgrp = $permgrpparts[1];
-                    $this->view->assign('filtertype', 'component');
-                } else {
-                    $permgrp = SecurityUtil::PERMS_ALL;
-                }
-            } else {
-                $this->view->assign('filtertype', '');
+            if ($filterGroup != -1) {
+                    $qb->where('(p.gid = :gid)')
+                       ->setParameter('gid', $filterGroup);
+            }
+            if ($filterComponent != -1) {
+                $qb->where("(p.component = '.*' OR p.component LIKE :permgrpparts)")
+                       ->setParameter('permgrpparts', $filterComponent.'%');
             }
             $this->view->assign('permgrps', $ids);
-            $this->view->assign('permgrp', $permgrp);
+            $this->view->assign('filterGroup', $filterGroup);
+            $this->view->assign('filterComponent', $filterComponent);
             $this->view->assign('enablefilter', true);
         } else {
             $this->view->assign('enablefilter', false);
-            $this->view->assign('filtertype', '');
             $this->view->assign('permgrp', SecurityUtil::PERMS_ALL);
         }
 
@@ -148,12 +134,12 @@ class AdminController extends \Zikula_AbstractController
                 $id = $obj['gid'];
                 $up = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'inc',
                                 array('pid' => $obj['pid'],
-                                      'permgrp' => $permgrp,
+                                      'permgrp' => $filterGroup,
                                       'csrftoken' => $csrftoken)),
                             'title' => $this->__('Up'));
                 $down = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'dec',
                                 array('pid' => $obj['pid'],
-                                       'permgrp' => $permgrp,
+                                       'permgrp' => $filterGroup,
                                        'csrftoken' => $csrftoken)),
                               'title' => $this->__('Down'));
                 switch ($rownum) {
@@ -171,16 +157,16 @@ class AdminController extends \Zikula_AbstractController
 
                 $options = array();
                 $inserturl = ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit',
-                                array('permgrp' => $permgrp,
+                                array('permgrp' => $filterGroup,
                                       'action' => 'insert',
                                       'insseq' => $obj['sequence']));
                 $editurl = ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit',
                                 array('chgpid' => $obj['pid'],
-                                      'permgrp' => $permgrp,
+                                      'permgrp' => $filterGroup,
                                       'action' => 'modify'));
                 $deleteurl = ModUtil::url('ZikulaPermissionsModule', 'admin', 'delete',
                                 array('pid' => $obj['pid'],
-                                      'permgrp' => $permgrp));
+                                      'permgrp' => $filterGroup));
 
                 $permissions[] = array(
                     'sequence' => $obj['sequence'],
@@ -221,6 +207,8 @@ class AdminController extends \Zikula_AbstractController
         // Assign the permission levels
         $this->view->assign('permissionlevels', SecurityUtil::accesslevelnames());
 
+        $this->view->assign('schemas', ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'getallschemas'));
+
         return $this->view->fetch('permissions_admin_view.tpl');
     }
 
@@ -256,7 +244,7 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'inc', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Incremented permission rule.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Incremented permission rule.'));
         }
 
         // Redirect
@@ -295,7 +283,7 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'dec', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Decremented permission rule.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Decremented permission rule.'));
         }
 
         // Redirect
@@ -329,7 +317,7 @@ class AdminController extends \Zikula_AbstractController
         // get all permissions
         $allperms = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
         if (!$allperms && $action != 'add') {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! No permission rules of this kind were found. Please add some first.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! No permission rules of this kind were found. Please add some first.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'listedit',
                 array('action' => 'add'))));
         }
@@ -452,9 +440,9 @@ class AdminController extends \Zikula_AbstractController
                               'level' => $level))) {
             // Success
             if ($warnmsg == '') {
-                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved permission rule.'));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved permission rule.'));
             } else {
-                $this->request->getSession()->getFlashbag()->add('error', $warnmsg);
+                $this->request->getSession()->getFlashBag()->add('error', $warnmsg);
             }
         }
 
@@ -513,9 +501,9 @@ class AdminController extends \Zikula_AbstractController
                               'insseq' => $insseq))) {
             // Success
             if ($warnmsg == '') {
-                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Created permission rule.'));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Created permission rule.'));
             } else {
-                $this->request->getSession()->getFlashbag()->add('error', $warnmsg);
+                $this->request->getSession()->getFlashBag()->add('error', $warnmsg);
             }
         }
 
@@ -563,7 +551,7 @@ class AdminController extends \Zikula_AbstractController
         if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete',
                         array('pid' => $pid))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deleted permission rule.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted permission rule.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view',
@@ -611,9 +599,7 @@ class AdminController extends \Zikula_AbstractController
 
         // we don't return the output back to the core here since this template is a full page
         // template i.e. we don't want this output wrapped in the theme.
-        $this->view->display('permissions_admin_viewinstanceinfo.tpl');
-
-        return true;
+        return $this->view->fetch('permissions_admin_viewinstanceinfo.tpl');
     }
 
     /**
@@ -678,9 +664,9 @@ class AdminController extends \Zikula_AbstractController
 
         // the module configuration has been updated successfuly
         if ($error == true) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Could not save configuration: unknown permission rule ID.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not save configuration: unknown permission rule ID.'));
         } else {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
         }
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }

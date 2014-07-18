@@ -284,6 +284,11 @@ class AdminApi extends \Zikula_AbstractApi
         $module['state'] = $args['state'];
         $this->entityManager->flush();
 
+        // clear the cache before calling events
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = $this->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
+
         // state changed, so update the ModUtil::available-info for this module.
         $modinfo = ModUtil::getInfo($args['id']);
         ModUtil::available($modinfo['name'], true);
@@ -303,7 +308,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @param mixed[] $args {
      *      @type int     $id                 The id of the module
-     *      @type boolean $removedependents   Remove any modules dependent on this module (default: false)
+     *      @type boolean $removedependents   Remove any modules dependent on this module (default: false) (not used!)
      *      @type boolean $interactive_remove Whether to operat in interactive mode or not
      *                       }
      *
@@ -349,11 +354,22 @@ class AdminApi extends \Zikula_AbstractApi
 
         $oomod = ModUtil::isOO($modinfo['name']);
 
-        if ($oomod && false === strpos($osdir, '/')) {
+        // add autoloaders for module
+        if ($oomod && (false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
+        } else {
+            $scanDir = "modules/$osdir";
+            if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
+                $scanDir = "system/$osdir";
+            }
+            $scanner = new Scanner();
+            $scanner->scan(array($scanDir), 1);
+            $modules = $scanner->getModulesMetaData(true);
+            /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
+            $moduleMetaData = $modules[$modinfo['name']];
+            $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+            $boot->addAutoloaders($this->getContainer()->get('kernel'), $moduleMetaData->getAutoload());
         }
-
-        $version = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath);
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -369,7 +385,15 @@ class AdminApi extends \Zikula_AbstractApi
         // Get module database info
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
 
-        $module = ModUtil::getModule($modinfo['name']);
+        if (isset($moduleMetaData)) {
+            $moduleClass = $moduleMetaData->getClass();
+            /** @var $module Zikula\Core\AbstractModule */
+            $module = new $moduleClass;
+        } else {
+            $module = ModUtil::getModule($modinfo['name']);
+        }
+
+        $version = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath, $module);
 
         // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
@@ -425,7 +449,7 @@ class AdminApi extends \Zikula_AbstractApi
                                              ->getQuery();
                 $query->getResult();
             } else {
-                //set state as uninnitialised
+                //set state as uninitialised
                 ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $args['id'], 'state' => ModUtil::STATE_UNINITIALISED));
             }
         } else {
@@ -438,6 +462,11 @@ class AdminApi extends \Zikula_AbstractApi
                                          ->getQuery();
             $query->getResult();
         }
+
+        // clear the cache before calling events
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = $this->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
 
         // remove in 1.5.0
         $event = new GenericEvent(null, $modinfo);
@@ -472,6 +501,7 @@ class AdminApi extends \Zikula_AbstractApi
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
         $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
 
+        // sync the filesystem and the bundles table
         $helper->load();
 
         // Get all modules on filesystem
@@ -682,6 +712,7 @@ class AdminApi extends \Zikula_AbstractApi
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
         $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
 
+        // sync the filesystem and the bundles table
         $helper->load();
 
         // Argument check
@@ -898,7 +929,7 @@ class AdminApi extends \Zikula_AbstractApi
         $platform = $connection->getDatabasePlatform();
         $connection->executeUpdate($platform->getTruncateTableSQL('module_deps', true));
 
-        // loop round dependences adding the module id - we do this now rather than
+        // loop round dependencies adding the module id - we do this now rather than
         // earlier since we won't have the id's for new modules at that stage
         ModUtil::flushCache();
         foreach ($moddependencies as $modname => $moddependency) {
@@ -962,9 +993,21 @@ class AdminApi extends \Zikula_AbstractApi
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        // load module maintainence functions
-        if (false === strpos($osdir, '/')) {
+        // add autoloaders for module
+        if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
+        } else {
+            $scanDir = "modules/$osdir";
+            if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
+                $scanDir = "system/$osdir";
+            }
+            $scanner = new Scanner();
+            $scanner->scan(array($scanDir), 1);
+            $modules = $scanner->getModulesMetaData(true);
+            /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
+            $moduleMetaData = $modules[$modinfo['name']];
+            $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+            $boot->addAutoloaders($this->getContainer()->get('kernel'), $moduleMetaData->getAutoload());
         }
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -978,7 +1021,14 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
-        $module = ModUtil::getModule($modinfo['name']);
+        if (isset($moduleMetaData)) {
+            $moduleClass = $moduleMetaData->getClass();
+            /** @var $module Zikula\Core\AbstractModule */
+            $module = new $moduleClass;
+        } else {
+            $module = ModUtil::getModule($modinfo['name']);
+        }
+
         if (null === $module) {
             $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
             $classNameOld = ucwords($modinfo['name']) . '_Installer';
@@ -1006,11 +1056,10 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \RuntimeException($this->__('Error! Could not change module state.'));
         }
 
-        if (!System::isInstalling()) {
-            // This should become an event handler - drak
-            $category = ModUtil::getVar('ZikulaAdminModule', 'defaultcategory');
-            ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
-        }
+        // clear the cache before calling events
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = $this->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
 
         // All went ok so issue installed event
         // remove this legacy in 1.5.0
@@ -1069,10 +1118,23 @@ class AdminApi extends \Zikula_AbstractApi
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        // load module maintainence functions
-        if (false === strpos($osdir, '/')) {
+        // add autoloaders for module
+        if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
+        } else {
+            $scanDir = "modules/$osdir";
+            if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
+                $scanDir = "system/$osdir";
+            }
+            $scanner = new Scanner();
+            $scanner->scan(array($scanDir), 1);
+            $modules = $scanner->getModulesMetaData(true);
+            /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
+            $moduleMetaData = $modules[$modinfo['name']];
+            $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+            $boot->addAutoloaders($this->getContainer()->get('kernel'), $moduleMetaData->getAutoload());
         }
+
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -1085,7 +1147,14 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
-        $module = ModUtil::getModule($modinfo['name']);
+        if (isset($moduleMetaData)) {
+            $moduleClass = $moduleMetaData->getClass();
+            /** @var $module Zikula\Core\AbstractModule */
+            $module = new $moduleClass;
+        } else {
+            $module = ModUtil::getModule($modinfo['name']);
+        }
+
         if (null === $module) {
             $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
             $classNameOld = ucwords($modinfo['name']) . '_Installer';
@@ -1097,7 +1166,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
             throw new \RuntimeException($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
-        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module ));
+        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
 
         // perform the actual upgrade of the module
         $func = array($installer, 'upgrade');
@@ -1119,7 +1188,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
         $modversion['version'] = '0';
 
-        $modversion = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath);
+        $modversion = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath, $module);
         $version = $modversion['version'];
 
         // Update state of module
@@ -1134,6 +1203,11 @@ class AdminApi extends \Zikula_AbstractApi
         $item = $this->entityManager->getRepository($entity)->find($args['id']);
         $item['version'] = $version;
         $this->entityManager->flush();
+
+        // clear the cache before calling events
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = $this->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
 
         // Upgrade succeeded, issue event.
         // remove this legacy in 1.5.0
@@ -1255,7 +1329,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array An array of admin links.
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
 

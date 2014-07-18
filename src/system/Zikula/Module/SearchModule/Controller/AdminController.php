@@ -114,15 +114,8 @@ class AdminController extends \Zikula_AbstractController
         $this->setVar('limitsummary', $limitsummary);
         $opensearchAdultContent = $this->request->request->filter('opensearch_adult_content', false, false, FILTER_VALIDATE_BOOLEAN);
         $this->setVar('opensearch_adult_content', $opensearchAdultContent);
-        $opensearchEnable = $this->request->request->filter('opensearch_enable', false, false, FILTER_VALIDATE_BOOLEAN);
-
-        if ($opensearchEnable && !$this->getVar('opensearch_enable')) {
-            EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\FrontControllerListener', 'pageload'));
-        } elseif (!$opensearchEnable && $this->getVar('opensearch_enable')) {
-            EventUtil::unregisterPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\FrontControllerListener', 'pageload'));
-        }
-
-        $this->setVar('opensearch_enable', $opensearchEnable);
+        $opensearchEnabled = $this->request->request->filter('opensearch_enabled', false, false, FILTER_VALIDATE_BOOLEAN);
+        $this->setVar('opensearch_enabled', $opensearchEnabled);
 
         $disable = $this->request->request->get('disable', null);
         // get all the LEGACY (<1.4.0) search plugins
@@ -144,7 +137,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // the module configuration has been updated successfuly
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work

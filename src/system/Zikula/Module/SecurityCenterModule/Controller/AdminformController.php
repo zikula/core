@@ -65,7 +65,7 @@ class AdminformController extends \Zikula_AbstractController
 
         // check for valid object
         if (!$intrusion) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! Invalid %s received.', "object ID [$id]"));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! Invalid %s received.', "object ID [$id]"));
         } else {
             // delete object
             $this->entityManager->remove($intrusion);

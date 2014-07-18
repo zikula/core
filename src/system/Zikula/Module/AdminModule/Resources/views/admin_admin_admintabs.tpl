@@ -1,5 +1,5 @@
 {pageaddvar name='javascript' value='system/Zikula/Module/AdminModule/Resources/public/js/admin_admin_admintabs.js'}
-{pageaddvar name='javascript' value='jquery-ui'}
+{pageaddvar name='javascript' value='web/bootstrap-jqueryui/bootstrap-jqueryui.min.js'}
 
 
 <div class="admintabs-container" id="admintabs-container">

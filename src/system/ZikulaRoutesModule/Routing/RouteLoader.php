@@ -6,6 +6,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Zikula\RoutesModule\Routing\Util as RoutingUtil;
@@ -21,9 +22,12 @@ class RouteLoader implements LoaderInterface
 
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
+    private $container;
+
+    public function __construct(EntityManagerInterface $em, ContainerInterface $container)
     {
         $this->em = $em;
+        $this->container = $container;
     }
 
     public function load($resource, $type = null)
@@ -34,6 +38,7 @@ class RouteLoader implements LoaderInterface
         unset($type);
 
         $routeCollection = new RouteCollection();
+
         try {
             $routes = $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->findBy(array('workflowState' => 'approved'), array('group' => 'ASC', 'sort' => 'ASC'));
         } catch (DBALException $e) {
@@ -56,7 +61,7 @@ class RouteLoader implements LoaderInterface
                 $defaults['_zkFunc'] = $func;
 
                 $route = new Route(
-                    $dbRoute->getPathWithBundlePrefix(),
+                    !isset($GLOBALS['translation_extract_routes']) ? $dbRoute->getPathWithBundlePrefix($this->container) : $dbRoute->getPath(),
                     $defaults,
                     $dbRoute->getRequirements(),
                     $dbRoute->getOptions(),

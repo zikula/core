@@ -25,7 +25,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * refresh a page lock
      *
-     * @returns AjaxResponse containing { hasLock: bool, message: string, lockedBy: string, message:string|null }
+     * @return AjaxResponse containing { hasLock: bool, message: string, lockedBy: string, message:string|null }
      */
     public function refreshpagelockAction()
     {
@@ -52,7 +52,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * change a page lock
      *
-     * @returns AjaxResponse containing { hasLock: bool, message: string, lockedBy: string, message:string|null }
+     * @return AjaxResponse containing { hasLock: bool, message: string, lockedBy: string, message:string|null }
      */
     public function checkpagelockAction()
     {

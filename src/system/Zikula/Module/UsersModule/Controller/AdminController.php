@@ -208,7 +208,7 @@ class AdminController extends \Zikula_AbstractController
         // When new user registration is disabled, the user must have ADMIN access instead of ADD access.
         if (!$this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, false) && !SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $registrationUnavailableReason = $this->getVar(UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON, $this->__('Sorry! New user registration is currently disabled.'));
-            $this->request->getSession()->getFlashbag()->add('error', $registrationUnavailableReason);
+            $this->request->getSession()->getFlashBag()->add('error', $registrationUnavailableReason);
         }
 
         $proceedToForm = true;
@@ -275,16 +275,16 @@ class AdminController extends \Zikula_AbstractController
                     $this->dispatchHooks('users.ui_hooks.user.process_edit', $hook);
 
                     if ($registeredObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) {
-                        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Created new registration application.'));
+                        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Created new registration application.'));
                     } elseif (isset($registeredObj['activated'])) {
-                        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Created new user account.'));
+                        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Created new user account.'));
                     } else {
-                        $this->request->getSession()->getFlashbag()->add('error', $this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
+                        $this->request->getSession()->getFlashBag()->add('error', $this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
                     }
 
                     $proceedToForm = false;
                 } else {
-                    $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Could not create the new user account or registration application.'));
+                    $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not create the new user account or registration application.'));
                 }
             }
         } elseif (!$this->request->isMethod('GET')) {
@@ -660,7 +660,7 @@ class AdminController extends \Zikula_AbstractController
                 $hook = new ProcessHook($user['uid']);
                 $this->dispatchHooks('users.ui_hooks.user.process_edit', $hook);
 
-                $this->request->getSession()->getFlashbag()->add('status', $this->__("Done! Saved user's account information."));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__("Done! Saved user's account information."));
                 $proceedToForm = false;
             }
         } elseif ($this->request->getMethod() == 'GET') {
@@ -802,9 +802,9 @@ class AdminController extends \Zikula_AbstractController
         ));
 
         if ($userNameSent) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The user name for \'%s\' has been sent via e-mail.', $user['uname']));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! The user name for \'%s\' has been sent via e-mail.', $user['uname']));
         } elseif (!$this->request->getSession()->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR)) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Sorry! There was an unknown error while trying to send the user name for \'%s\'.', $user['uname']));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry! There was an unknown error while trying to send the user name for \'%s\'.', $user['uname']));
         }
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }
@@ -865,7 +865,7 @@ class AdminController extends \Zikula_AbstractController
         ));
 
         if ($confirmationCodeSent) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', $user['uname']));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', $user['uname']));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
@@ -934,15 +934,15 @@ class AdminController extends \Zikula_AbstractController
         $users = array();
         foreach ($userid as $key => $uid) {
             if ($uid == 1) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! You can't delete the guest account."));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! You can't delete the guest account."));
                 $proceedToForm = false;
                 $processDelete = false;
             } elseif ($uid == 2) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! You can't delete the primary administrator account."));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! You can't delete the primary administrator account."));
                 $proceedToForm = false;
                 $processDelete = false;
             } elseif ($uid == $currentUser) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__("Error! You can't delete the account you are currently logged into."));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__("Error! You can't delete the account you are currently logged into."));
                 $proceedToForm = false;
                 $processDelete = false;
             }
@@ -984,7 +984,7 @@ class AdminController extends \Zikula_AbstractController
                         $this->dispatchHooks('users.ui_hooks.user.process_delete', $hook);
                     }
                     $count = count($userid);
-                    $this->request->getSession()->getFlashbag()->add('status', $this->_fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', $count, array($count)));
+                    $this->request->getSession()->getFlashBag()->add('status', $this->_fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', $count, array($count)));
                 }
             }
         }
@@ -1189,7 +1189,7 @@ class AdminController extends \Zikula_AbstractController
 
         if (($reglist === false) || !is_array($reglist)) {
             if (!$this->request->getSession()->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR)) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('An error occurred while trying to retrieve the registration records.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('An error occurred while trying to retrieve the registration records.'));
             }
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')), 500);
         }
@@ -1259,7 +1259,7 @@ class AdminController extends \Zikula_AbstractController
         if (!$reginfo) {
             // get application could fail (return false) because of a nonexistant
             // record, no permission to read an existing record, or a database error
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Unable to retrieve registration record. '
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Unable to retrieve registration record. '
                 . 'The record with the specified id might not exist, or you might not have permission to access that record.'));
 
             return false;
@@ -1407,7 +1407,7 @@ class AdminController extends \Zikula_AbstractController
                 $hook = new ProcessHook($registration['uid']);
                 $this->dispatchHooks('users.ui_hooks.registration.process_edit', $hook);
 
-                $this->request->getSession()->getFlashbag()->add('status', $this->__("Done! Saved user's account information."));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__("Done! Saved user's account information."));
                 $proceedToForm = false;
             }
 
@@ -1533,9 +1533,9 @@ class AdminController extends \Zikula_AbstractController
         $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
 
         if ($reginfo['isverified']) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
         } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_BEFORE) && !$reginfo['isapproved']) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
         }
 
         if (!$confirmed) {
@@ -1565,9 +1565,9 @@ class AdminController extends \Zikula_AbstractController
             ));
 
             if (!$verificationSent) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__f('Sorry! There was a problem sending a verification code to \'%1$s\'.', $reginfo['uname']));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry! There was a problem sending a verification code to \'%1$s\'.', $reginfo['uname']));
             } else {
-                $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! Verification code sent to \'%1$s\'.', $reginfo['uname']));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! Verification code sent to \'%1$s\'.', $reginfo['uname']));
             }
             return new RedirectResponse(System::normalizeUrl($cancelUrl));
         }
@@ -1642,12 +1642,12 @@ class AdminController extends \Zikula_AbstractController
         $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
 
         if ($reginfo['isapproved'] && !$forceVerification) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Warning! Nothing to do! The registration record with uid \'%1$s\' is already approved.', $reginfo['uid']));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Warning! Nothing to do! The registration record with uid \'%1$s\' is already approved.', $reginfo['uid']));
         } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_AFTER) && !$reginfo['isapproved']
                 && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! The registration record with uid \'%1$s\' cannot be approved. The registration\'s e-mail address must first be verified.', $reginfo['uid']));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! The registration record with uid \'%1$s\' cannot be approved. The registration\'s e-mail address must first be verified.', $reginfo['uid']));
         } elseif ($forceVerification && (!isset($reginfo['pass']) || empty($reginfo['pass']))) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! E-mail verification cannot be skipped for \'%1$s\'. The user must establish a password as part of the verification process.', $reginfo['uname']));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! E-mail verification cannot be skipped for \'%1$s\'. The user must establish a password as part of the verification process.', $reginfo['uname']));
         }
 
 
@@ -1683,13 +1683,13 @@ class AdminController extends \Zikula_AbstractController
             ));
 
             if (!$approved) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__f('Sorry! There was a problem approving the registration for \'%1$s\'.', $reginfo['uname']));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry! There was a problem approving the registration for \'%1$s\'.', $reginfo['uname']));
             } else {
                 if (isset($approved['uid'])) {
-                    $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The registration for \'%1$s\' has been approved and a new user account has been created.', $reginfo['uname']));
+                    $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! The registration for \'%1$s\' has been approved and a new user account has been created.', $reginfo['uname']));
                     return new RedirectResponse(System::normalizeUrl($cancelUrl));
                 } else {
-                    $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The registration for \'%1$s\' has been approved and is awaiting e-mail verification.', $reginfo['uname']));
+                    $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! The registration for \'%1$s\' has been approved and is awaiting e-mail verification.', $reginfo['uname']));
                     return new RedirectResponse(System::normalizeUrl($cancelUrl));
                 }
             }
@@ -1791,7 +1791,7 @@ class AdminController extends \Zikula_AbstractController
             ));
 
             if (!$denied) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']));
             } else {
                 if ($sendNotification) {
                     $siteurl   = System::getBaseUrl();
@@ -1808,7 +1808,7 @@ class AdminController extends \Zikula_AbstractController
                         'templateArgs'      => $rendererArgs
                     ));
                 }
-                $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! The registration for \'%1$s\' has been denied and deleted.', $reginfo['uname']));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! The registration for \'%1$s\' has been denied and deleted.', $reginfo['uname']));
                 return new RedirectResponse(System::normalizeUrl($cancelUrl));
             }
         }
@@ -1853,13 +1853,13 @@ class AdminController extends \Zikula_AbstractController
             if ($configData->isValid()) {
                 $modVars = $configData->toArray();
                 $this->setVars($modVars);
-                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Users module settings have been saved.'));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Users module settings have been saved.'));
                 $event = new GenericEvent(null, array(), $modVars);
                 $this->getDispatcher()->dispatch('module.users.config.updated', $event);
             } else {
                 $errorFields = $configData->getErrorMessages();
                 $errorCount = count($errorFields);
-                $this->request->getSession()->getFlashbag()->add('error', $this->_fn('There was a problem with one of the module settings. Please review the message below, correct the error, and resubmit your changes.',
+                $this->request->getSession()->getFlashBag()->add('error', $this->_fn('There was a problem with one of the module settings. Please review the message below, correct the error, and resubmit your changes.',
                         'There were problems with %1$d module settings. Please review the messages below, correct the errors, and resubmit your changes.',
                         $errorCount, array($errorCount)));
             }
@@ -1936,7 +1936,7 @@ class AdminController extends \Zikula_AbstractController
             $importResults = $this->uploadImport($importFile, $delimiter);
             if ($importResults == '') {
                 // the users have been imported successfully
-                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Users imported successfully.'));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Users imported successfully.'));
                 return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
             }
         }
@@ -2483,7 +2483,7 @@ class AdminController extends \Zikula_AbstractController
 
             if ($userMustChangePassword) {
                 if (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword'])) {
-                    $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! A password change will be required the next time %1$s logs in.', array($userObj['uname'])));
+                    $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! A password change will be required the next time %1$s logs in.', array($userObj['uname'])));
                 } else {
                     throw new \InvalidArgumentException();
                 }
@@ -2491,7 +2491,7 @@ class AdminController extends \Zikula_AbstractController
                 if (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword'])) {
                     throw new \InvalidArgumentException();
                 } else {
-                    $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! A password change will no longer be required for %1$s.', array($userObj['uname'])));
+                    $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! A password change will no longer be required for %1$s.', array($userObj['uname'])));
                 }
             }
 

@@ -410,7 +410,7 @@ class UserApi extends \Zikula_AbstractApi
         System::queryStringSetVar('type', 'user');
 
         // define the available user functions
-        $funcs = array('index', 'form', 'search', 'process', 'recent');
+        $funcs = array('index', 'form', 'search', 'process', 'recent', 'opensearch');
         // set the correct function name based on our input
         if (empty($args['vars'][2])) {
             // Retain this for BC for older URLs that might be stored
@@ -434,7 +434,7 @@ class UserApi extends \Zikula_AbstractApi
         if ($this->request->query->get('func') == 'search' && isset($args['vars'][$nextvar]) && !empty($args['vars'][$nextvar])) {
             System::queryStringSetVar('q', $args['vars'][$nextvar]);
             $nextvar++;
-            if (isset($args['vars'][$nextvar]) && $args['vars'][$nextvar] == 'page') {
+            if (isset($args['vars'][$nextvar]) && $args['vars'][$nextvar] == 'page' && isset($args['vars'][$nextvar + 1])) {
                 System::queryStringSetVar('page', (int)$args['vars'][$nextvar + 1]);
             }
         }
@@ -536,7 +536,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return array array of menu links.
      */
-    public function getlinks($args)
+    public function getLinks($args)
     {
         $links = array();
         $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');

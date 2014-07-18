@@ -20,6 +20,7 @@ use DoctrineHelper;
  */
 class PageLockModuleInstaller extends \Zikula_AbstractInstaller
 {
+
     /**
      * initialize the module
      *
@@ -57,14 +58,25 @@ class PageLockModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function uninstall()
     {
+    
         try {
-            DoctrineHelper::createSchema($this->dropManager, array(
-                'Zikula\Module\PageLockModule\Entity\PageLockEntity',
-            ));
-        } catch (\Exception $e) {
-             return false;
+            DoctrineHelper::dropSchema($this->entityManager, array('Zikula\Module\PageLockModule\Entity\PageLockEntity'));
+        } catch (\PDOException $e) {
+            $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            
+            return false;
         }
-
+        
+        /**
+         * Delete any module variables.
+         */
+        $this->delVars();
+        
+        /**
+         * Deletion successful.
+         */
         return true;
+
     }
+
 }

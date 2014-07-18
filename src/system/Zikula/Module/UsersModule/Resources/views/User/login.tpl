@@ -1,4 +1,4 @@
-{* TODO - handle re-display of display hooks when AJAX changes log-in method. For now, disable AJAX switching of login method and use URL fallback. *}
+{* @todo - handle re-display of display hooks when AJAX changes log-in method. For now, disable AJAX switching of login method and use URL fallback. *}
 {* ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.Login.js' *}
 {ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.Util.CapsLock.js'}
 {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
@@ -7,7 +7,6 @@
 {/if}
 {/foreach}
 {gt text='User log-in' assign='templatetitle'}
-{modulelinks modname='ZikulaUsersModule' type='user'}
 {include file='User/menu.tpl'}
 {if (count($authentication_method_display_order) > 1)}
     <div>

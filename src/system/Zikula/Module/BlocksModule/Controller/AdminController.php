@@ -163,7 +163,7 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'deactivate', array('bid' => $bid))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Block now inactive.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Block now inactive.'));
         }
 
         // Redirect
@@ -187,7 +187,7 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'activate', array('bid' => $bid))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Block now active.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Block now active.'));
         }
 
         // Redirect
@@ -411,7 +411,7 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'update', $blockinfo)) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Block saved.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Block saved.'));
         }
 
         if (isset($redirect) && !empty($redirect)) {
@@ -505,7 +505,7 @@ class AdminController extends \Zikula_AbstractController
         if ($block['blockid'] == '') {
             $block['blockid'] = 'error';
             $url = ModUtil::url('ZikulaBlocksModule', 'admin', 'newblock', array('block' => $block));
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('You must choose a block.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('You must choose a block.'));
             $response = new RedirectResponse(System::normalizeUrl($url));
             return $response;
         }
@@ -527,7 +527,7 @@ class AdminController extends \Zikula_AbstractController
         $bid = ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'create', $block);
 
         if ($bid != false) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Block created.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Block created.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modify', array('bid' => $bid))));
         }
 
@@ -590,7 +590,7 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'delete', array('bid' => $bid))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Block deleted.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Block deleted.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
@@ -640,12 +640,12 @@ class AdminController extends \Zikula_AbstractController
 
         // check our vars
         if (!isset($position['name']) || empty($position['name']) || !preg_match('/^[a-z0-9_-]*$/i', $position['name'])) {
-            $this->request->getSession()->getFlashbag()->add('error', __('Invalid value received for the "name" field'));
+            $this->request->getSession()->getFlashBag()->add('error', __('Invalid value received for the "name" field'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'newposition')));
         }
         // check our vars
         if (!isset($position['description'])) {
-            $this->request->getSession()->getFlashbag()->add('error', __('Invalid value received for the "description" field'));
+            $this->request->getSession()->getFlashBag()->add('error', __('Invalid value received for the "description" field'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'newposition')));
         }
 
@@ -653,7 +653,7 @@ class AdminController extends \Zikula_AbstractController
         $pid = ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'createposition', array('name' => $position['name'], 'description' => $position['description']));
 
         if ($pid) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Block position created.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Block position created.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyposition', array('pid' => $pid), null, 'blockpositionform')));
         }
 
@@ -742,7 +742,7 @@ class AdminController extends \Zikula_AbstractController
         if (ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'updateposition',
                         array('pid' => $position['pid'], 'name' => $position['name'], 'description' => $position['description']))) {
             // all done
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Block position saved.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Block position saved.'));
 
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
         }
@@ -807,7 +807,7 @@ class AdminController extends \Zikula_AbstractController
 
         if (ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'deleteposition', array('pid' => $pid))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Block position deleted.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Block position deleted.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
@@ -859,7 +859,7 @@ class AdminController extends \Zikula_AbstractController
         $this->setVar('collapseable', $collapseable);
 
         // the module configuration has been updated successfuly
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
     }

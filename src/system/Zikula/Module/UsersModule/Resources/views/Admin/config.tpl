@@ -303,7 +303,7 @@
                 <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="E-mail address to notify of registrations"}</label>
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL'|const}
                 <div class="col-lg-9">
-                    <input id="{$configData->getFieldId($fieldName)}" type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safetext}" size="50" maxlength="255" />
+                    <input id="{$configData->getFieldId($fieldName)}" type="email" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safetext}" size="50" maxlength="255" />
                     <em class="help-block sub">{gt text="A notification is sent to this e-mail address for each registration. Leave blank for no notifications."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
@@ -550,7 +550,7 @@
                 <button class="btn btn-success" title="{gt text="Save"}">
                     {gt text="Save"}
                 </button>
-                {helplink filename='Help/Admin/config.txt' popup=1 __title='Help' icon_type='help' icon_size='extrasmall' __icon_alt='Help' __icon_title='Help'}
+                {helplink filename='Help/Admin/config.txt' class="btn btn-info" popup=1 __title='Help' icon_type='help' icon_size='extrasmall' __icon_alt='Help' __icon_title='Help'}
                 <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>
     </div>

@@ -142,10 +142,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // add a blank permission
         $dummyperm = array(
             'realm'     => 0,
-            'id'        => 0,
-            'component' => '.*',
-            'instance'  => '.*',
-            'level'     => ACCESS_NONE,
+            'id'        => $this->request->request->get('group', 0),
+            'component' => $this->request->request->get('component', '.*'),
+            'instance'  => $this->request->request->get('instance', '.*'),
+            'level'     => $this->request->request->get('level', ACCESS_NONE),
             'insseq'    => -1
         );
 

@@ -176,7 +176,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object templated
      *
-     * @thrown \InvalidArgumentException Thrown if no search query parameters were provided
+     * @throws \InvalidArgumentException Thrown if no search query parameters were provided
      * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
      */
     public function searchAction()
@@ -188,11 +188,11 @@ class UserController extends \Zikula_AbstractController
 
         // get parameter from HTTP input
         $vars = array();
-        $vars['q'] = strip_tags($this->request->request->get('q', ''));
+        $vars['q'] = strip_tags($this->request->request->get('q', $this->request->query->get('q', '')));
         $vars['searchtype'] = $this->request->request->get('searchtype', SessionUtil::getVar('searchtype'));
         $vars['searchorder'] = $this->request->request->get('searchorder', SessionUtil::getVar('searchorder'));
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
-        $vars['page'] = (int)$this->request->request->get('page', 1);
+        $vars['page'] = (int)$this->request->request->get('page', $this->request->query->get('page', 1));
 
         // $firstpage is used to identify the very first result page
         // - and to disable calls to plugins on the following pages
@@ -205,7 +205,7 @@ class UserController extends \Zikula_AbstractController
         $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar'));
 
         if (empty($vars['q'])) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! You did not enter any keywords to search for.'));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! You did not enter any keywords to search for.'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
         }
 

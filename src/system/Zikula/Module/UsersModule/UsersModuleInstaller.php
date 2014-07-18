@@ -20,7 +20,6 @@ use System;
 use DateTime;
 use DateTimeZone;
 use ServiceUtil;
-
 use DBUtil;
 use EventUtil;
 use HookUtil;
@@ -78,6 +77,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function upgrade($oldVersion)
     {
+    
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '2.2.0': // version shipped with Core 1.3.5 -> current 1.3.x
@@ -103,13 +103,19 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
                         $this->setVar($modVar, $defaultValue);
                     }
                 }
-
             case '2.2.2':
-                // nothing to do
-
-            // Update successful
-            return true;
+                if ($this->getVar('gravatarimage', null) == 'gravatar.gif') {
+                    $this->setVar('gravatarimage', 'gravatar.jpg');
+                }
+            case '2.2.3':
+                // Nothing to do.
         }
+        
+        /**
+         * Update successful.
+         */
+        return true;
+
     }
 
     /**

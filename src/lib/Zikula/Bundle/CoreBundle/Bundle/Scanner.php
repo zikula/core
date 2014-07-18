@@ -21,6 +21,9 @@ class Scanner
         $finder = null === $finder ? new Finder() : $finder;
         $finder->files()
             ->in($paths)
+            ->notPath('docs')
+            ->notPath('vendor')
+            ->notPath('Resources')
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
             ->depth('<'.$depth)
@@ -80,19 +83,19 @@ class Scanner
         return file_get_contents($file);
     }
 
-    public function getModulesMetaData()
+    public function getModulesMetaData($indexByShortName = false)
     {
-        return $this->getMetaData('zikula-module');
+        return $this->getMetaData('zikula-module', $indexByShortName);
     }
 
-    public function getThemesMetaData()
+    public function getThemesMetaData($indexByShortName = false)
     {
-        return $this->getMetaData('zikula-theme');
+        return $this->getMetaData('zikula-theme', $indexByShortName);
     }
 
-    public function getPluginsMetaData()
+    public function getPluginsMetaData($indexByShortName = false)
     {
-        return $this->getMetaData('zikula-plugin');
+        return $this->getMetaData('zikula-plugin', $indexByShortName);
     }
 
     private function validateBasic($json)
@@ -121,12 +124,13 @@ class Scanner
         return true;
     }
 
-    private function getMetaData($type)
+    private function getMetaData($type, $indexByShortName)
     {
         $array = array();
         foreach ($this->jsons as $json) {
             if ($json['type'] === $type && true) {
-                $array[$json['name']] = new MetaData($json);
+                $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];
+                $array[$indexField] = new MetaData($json);
             }
         }
 

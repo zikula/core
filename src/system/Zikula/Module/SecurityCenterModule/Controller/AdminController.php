@@ -176,7 +176,7 @@ class AdminController extends \Zikula_AbstractController
 
             if ($cause_logout == false) {
                 // an error occured - we do not change the way of storing session data
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Session path not writeable!'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Session path not writeable!'));
             }
         }
         if ($storeTypeCanBeWritten == true) {
@@ -257,7 +257,7 @@ class AdminController extends \Zikula_AbstractController
         if (is_readable($idsrulepath)) {
             System::setVar('idsrulepath', $idsrulepath);
         } else {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! PHPIDS rule file %s does not exist or is not readable.', $idsrulepath));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! PHPIDS rule file %s does not exist or is not readable.', $idsrulepath));
             $validates = false;
         }
 
@@ -314,13 +314,13 @@ class AdminController extends \Zikula_AbstractController
 
         // the module configuration has been updated successfuly
         if ($validates) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
         }
 
         // we need to auto logout the user if they changed from DB to FILE
         if ($cause_logout == true) {
             UserUtil::logout();
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Session handling variables have changed. You must log in again.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Session handling variables have changed. You must log in again.'));
             $returnPage = urlencode(ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'modifyconfig'));
             return new RedirectResponse(System::normalizeUrl(ModUtil::url('ZikulaUsersModule', 'user', 'login', array('returnpage' => $returnPage))));
         }
@@ -350,7 +350,7 @@ class AdminController extends \Zikula_AbstractController
 
         if ($reset) {
             $purifierconfig = SecurityCenterUtil::getPurifierConfig(true);
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
             $purifierconfig = SecurityCenterUtil::getPurifierConfig(false);
         }
@@ -564,7 +564,7 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
 
         // the module configuration has been updated successfuly
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved HTMLPurifier configuration.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved HTMLPurifier configuration.'));
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
@@ -798,7 +798,7 @@ class AdminController extends \Zikula_AbstractController
 
         // delete all entries
         if (ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'purgeidslog')) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Purged IDS Log.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Purged IDS Log.'));
         }
 
         return new RedirectResponse(System::normalizeUrl($redirect_url));
@@ -868,7 +868,7 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
 
         // all done successfully
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'allowedhtml')));
     }

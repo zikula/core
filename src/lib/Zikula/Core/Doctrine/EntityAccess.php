@@ -39,19 +39,24 @@ class EntityAccess implements \ArrayAccess
 
     public function offsetExists($key)
     {
-        return method_exists($this, "get" . ucfirst($key));
+        try {
+            $this->getGetterForProperty($key);
+            return true;
+        } catch (\RuntimeException $e) {
+            return false;
+        }
     }
 
     public function offsetGet($key)
     {
-        $method = "get" . ucfirst($key);
+        $method = $this->getGetterForProperty($key);
 
         return $this->$method();
     }
 
     public function offsetSet($key, $value)
     {
-        $method = "set" . ucfirst($key);
+        $method = $this->getSetterForProperty($key);
         $this->$method($value);
     }
 
@@ -83,7 +88,7 @@ class EntityAccess implements \ArrayAccess
                     continue;
                 }
 
-                $method = "get" . ucfirst($property->name);
+                $method = $this->getGetterForProperty($property->name);
                 $array[$property->name] = $this->$method();
             }
         }
@@ -94,8 +99,35 @@ class EntityAccess implements \ArrayAccess
     public function merge(array $array)
     {
         foreach ($array as $key => $value) {
-            $method = "set" . ucfirst($key);
+            $method = $this->getSetterForProperty($key);
             $this->$method($value);
         }
+    }
+
+    private function getGetterForProperty($name)
+    {
+        $getMethod = "get" . ucfirst($name);
+        if (method_exists($this, $getMethod)) {
+            return $getMethod;
+        }
+
+        $isMethod  = "is" . ucfirst($name);
+        if (method_exists($this, $isMethod)) {
+            return $isMethod;
+        }
+
+        $class = get_class($this);
+        throw new \RuntimeException("Entity \"$class\" does not have a getter for property \"$name\". Please either add $getMethod() or $isMethod().");
+    }
+
+    private function getSetterForProperty($name)
+    {
+        $setMethod = "set" . ucfirst($name);
+        if (method_exists($this, $setMethod)) {
+            return $setMethod;
+        }
+
+        $class = get_class($this);
+        throw new \RuntimeException("Entity \"$class\" does not have a setter for property \"$name\". Please add $setMethod().");
     }
 }

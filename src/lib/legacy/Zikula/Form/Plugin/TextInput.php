@@ -314,7 +314,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
         if (isset($this->toolTip)) {
             $this->attributes['title'] = $view->translateForDisplay($this->toolTip);
         }
-        if (isset($this->readOnly)) {
+        if (isset($this->readOnly) && $this->readOnly) {
             $this->attributes['readonly'] = 'readonly';
             $this->attributes['tabindex'] = '-1';
         }

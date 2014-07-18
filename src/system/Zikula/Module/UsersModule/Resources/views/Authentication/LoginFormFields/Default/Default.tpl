@@ -57,7 +57,7 @@
     <div class="col-lg-9">
         <div class="input-group">
             <i class="fa fa-fw fa-asterisk input-group-addon"></i>
-            <input id="users_login_pass" class="form-control" type="password" name="authentication_info[pass]" maxlength="25" placeholder="{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}" />
+            <input id="users_login_pass" class="form-control" type="password" name="authentication_info[pass]" size="25" maxlength="60" placeholder="{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}" />
             <i id="capsLok" class="fa fa-fw fa-arrow-circle-up input-group-addon hide"> {gt text='Caps Lock is on!'}</i>
         </div>
     </div>

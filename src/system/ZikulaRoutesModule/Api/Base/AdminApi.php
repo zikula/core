@@ -26,13 +26,13 @@ class AdminApi extends Zikula_AbstractApi
      *
      * @return array Array of admin links.
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
 
 
         $controllerHelper = $this->serviceManager->get('zikularoutesmodule.controller_helper');
-        $utilArgs = array('api' => 'admin', 'action' => 'getlinks');
+        $utilArgs = array('api' => 'admin', 'action' => 'getLinks');
         $allowedObjectTypes = $controllerHelper->getObjectTypes('api', $utilArgs);
 
         if (in_array('route', $allowedObjectTypes)

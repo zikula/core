@@ -58,6 +58,13 @@ class UserUtil
     {
         // first check for string based parameters and use dbutil if found
         if (System::isLegacyMode() && (is_string($where) || is_string($orderBy))) {
+            if ($where == array()) {
+                $where = '';
+            }
+            if ($orderBy == array()) {
+                $orderBy = '';
+            }
+
             return DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
         }
 
@@ -1826,7 +1833,7 @@ class UserUtil
         $request = \ServiceUtil::get('request');
 
         $theme = FormUtil::getPassedValue('theme', null, 'GETPOST');
-        if (!empty($theme)) {
+        if (!empty($theme) && SecurityUtil::checkPermission('ZikulaThemeModule::ThemeChange', '::', ACCESS_COMMENT)) {
             // theme passed as parameter takes priority, can be RSS, Atom, Printer or other
             $pagetheme = $theme;
         } else {

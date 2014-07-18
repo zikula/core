@@ -1,9 +1,7 @@
 {gt text='Enter confirmation code' assign='templatetitle'}
-{modulelinks modname='ZikulaUsersModule' type='user'}
+
 {include file='User/menu.tpl'}
-
 <p class="alert alert-info">{gt text="Please enter EITHER your user name OR your e-mail address, and also enter the confirmation code you received. Once you enter this information and click the 'Submit' button you will receive a new password via e-mail."}</p>
-
 <form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='lostPasswordCode'}" method="post">
     <div>
         <input type="hidden" id="lostpasswordcsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />

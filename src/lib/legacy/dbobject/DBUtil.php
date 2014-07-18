@@ -1312,6 +1312,10 @@ class DBUtil
         if (!strlen($orderby)) {
             return $orderby;
         }
+        
+        if (strpos($orderby, 'GROUP BY') === 0) {
+            return $orderby;
+        }
 
         if (!$table) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
@@ -1867,9 +1871,7 @@ class DBUtil
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
-        $fieldName = $columns[$field];
-
-        $field = isset($fieldName) ? $fieldName : $field;
+        $field = isset($columns[$field]) ? $columns[$field] : $field;
 
         $sql = "SELECT $option($field) FROM $tableName AS tbl";
         $where = self::_checkWhereClause($where);

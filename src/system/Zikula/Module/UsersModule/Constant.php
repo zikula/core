@@ -197,7 +197,7 @@ namespace Zikula\Module\UsersModule
         /**
          * Default value for the file name containing the generic gravatar image.
          */
-        const DEFAULT_GRAVATAR_IMAGE = 'gravatar.gif';
+        const DEFAULT_GRAVATAR_IMAGE = 'gravatar.jpg';
         /**
          * Module variable key for the hash method used for hashing passwords.
          */
@@ -395,10 +395,6 @@ namespace Zikula\Module\UsersModule
          * The maximum length of a user name, used for validation.
          */
         const UNAME_VALIDATION_MAX_LENGTH = 25;
-        /**
-         * The PCRE regular expression fragment used to validate e-mail addresses.
-         */
-        const EMAIL_VALIDATION_PATTERN = '(?:[^\\s\\000-\\037\\177\\(\\)<>@,;:\\"\\[\\]]\\.?)+@(?:[^\\s\\000-\\037\\177\\(\\)<>@,;:\\\\"\\[\\]]\\.?)+\\.[a-z]{2,6}';
         /**
          * The PCRE regular expression fragment used to validate e-mail address domains.
          */

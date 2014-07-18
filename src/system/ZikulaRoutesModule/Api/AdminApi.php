@@ -21,9 +21,9 @@ use Zikula\RoutesModule\Api\Base\AdminApi as BaseAdminApi;
  */
 class AdminApi extends BaseAdminApi
 {
-    public function getlinks()
+    public function getLinks()
     {
-        $links = parent::getlinks();
+        $links = parent::getLinks();
 
         if (SecurityUtil::checkPermission($this->name . ':Route:', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => $this->serviceManager->get('router')->generate('zikularoutesmodule_route_reload', array('lct' => 'admin')),

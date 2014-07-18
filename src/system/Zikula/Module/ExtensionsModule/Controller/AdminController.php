@@ -159,7 +159,7 @@ class AdminController extends \Zikula_AbstractController
                 'description' => $newdescription,
                 'url' => $newurl))) {
             // Success
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module information.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module information.'));
         } else {
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modify', array('id' => $id))));
         }
@@ -600,14 +600,14 @@ class AdminController extends \Zikula_AbstractController
             SessionUtil::delVar('modules_letter');
             SessionUtil::delVar('modules_state');
             SessionUtil::delVar('interactive_init');
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Installed module.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Installed module.'));
 
             if ($activate == true) {
                 if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
                                      array('id' => $id,
                                            'state' => ModUtil::STATE_ACTIVE))) {
                     // Success
-                    $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Activated module.'));
+                    $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Activated module.'));
                 }
             }
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view',
@@ -651,7 +651,7 @@ class AdminController extends \Zikula_AbstractController
 
         $moduleinfo = ModUtil::getInfo($id);
         if ($moduleinfo['state'] == ModUtil::STATE_NOTALLOWED) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! Activation of module %s not allowed.', $moduleinfo['name']));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! Activation of module %s not allowed.', $moduleinfo['name']));
         } else {
             // Update state
             $setstate = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $id, 'state' => ModUtil::STATE_ACTIVE));
@@ -659,7 +659,7 @@ class AdminController extends \Zikula_AbstractController
                 // Success
                 $event = new GenericEvent(null, $moduleinfo);
                 $this->getDispatcher()->dispatch('installer.module.activated', $event);
-                $this->request->getSession()->getFlashbag()->add('status', $this->__f('Done! Activated %s module.', $moduleinfo['name']));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__f('Done! Activated %s module.', $moduleinfo['name']));
             }
         }
 
@@ -721,18 +721,18 @@ class AdminController extends \Zikula_AbstractController
             SessionUtil::delVar('modules_letter');
             SessionUtil::delVar('modules_state');
             SessionUtil::setVar('interactive_upgrade', false);
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('New version'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('New version'));
             if ($activate == true) {
                 if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
                                      array('id' => $id,
                                            'state' => ModUtil::STATE_ACTIVE))) {
                     // Success
-                    $this->request->getSession()->getFlashbag()->add('status', $this->__('Activated'));
+                    $this->request->getSession()->getFlashBag()->add('status', $this->__('Activated'));
                 }
             }
 
             // Clear the Zikula_View cached/compiled files and Themes cached/compiled/cssjs combination files
-            $theme = Zikula_View_Theme::getInstance('ZikulaThemeModule');
+            $theme = Zikula_View_Theme::getInstance();
             $theme->clear_compiled();
             $theme->clear_all_cache();
             $theme->clear_cssjscombinecache();
@@ -788,7 +788,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'iscoremodule',array('modulename' => $modinfo['name']))) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! You cannot deactivate this module [%s]. It is a mandatory core module, and is needed by the system.', $modinfo['name']));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! You cannot deactivate this module [%s]. It is a mandatory core module, and is needed by the system.', $modinfo['name']));
         } else {
             // Update state
             $setstate = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $id, 'state' => ModUtil::STATE_INACTIVE));
@@ -796,7 +796,7 @@ class AdminController extends \Zikula_AbstractController
                 // Success
                 $event = new GenericEvent(null, $modinfo);
                 $this->getDispatcher()->dispatch('installer.module.deactivated', $event);
-                $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deactivated module.'));
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Deactivated module.'));
             }
         }
 
@@ -912,7 +912,7 @@ class AdminController extends \Zikula_AbstractController
         foreach ($blocks as $block) {
             if (!ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'delete', array(
             'bid' => $block['bid']))) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__f('Error! Could not delete the block %s .', $block['title']));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! Could not delete the block %s .', $block['title']));
             }
         }
 
@@ -927,7 +927,8 @@ class AdminController extends \Zikula_AbstractController
             SessionUtil::delVar('modules_letter');
             SessionUtil::delVar('modules_state');
             SessionUtil::delVar('interactive_remove');
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Uninstalled module.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Uninstalled module.'));
+
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
@@ -983,13 +984,13 @@ class AdminController extends \Zikula_AbstractController
         $itemsperpage = (int) $this->request->request->get('itemsperpage', 25);
         if (!is_integer($itemsperpage) || $itemsperpage < 1) {
             $itemsperpage = abs($itemsperpage);
-            $this->request->getSession()->getFlashbag()->add('warning', $this->__("Warning! The 'Items per page' setting must be a positive integer. The value you entered was corrected."));
+            $this->request->getSession()->getFlashBag()->add('warning', $this->__("Warning! The 'Items per page' setting must be a positive integer. The value you entered was corrected."));
         }
 
         $this->setVar('itemsperpage', $itemsperpage);
 
         // the module configuration has been updated successfuly
-        $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
@@ -1285,7 +1286,7 @@ class AdminController extends \Zikula_AbstractController
 
         PluginUtil::loadAllPlugins();
         if (PluginUtil::install($plugin)) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Installed plugin.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Installed plugin.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'viewPlugins', array('state' => $state,
@@ -1330,7 +1331,7 @@ class AdminController extends \Zikula_AbstractController
 
         PluginUtil::loadAllPlugins();
         if (PluginUtil::disable($plugin)) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Deactivated plugin.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Deactivated plugin.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'viewPlugins', array('state' => $state,
@@ -1375,7 +1376,7 @@ class AdminController extends \Zikula_AbstractController
 
         PluginUtil::loadAllPlugins();
         if (PluginUtil::enable($plugin)) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Activated plugin.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Activated plugin.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'viewPlugins', array('state' => $state,
@@ -1420,7 +1421,7 @@ class AdminController extends \Zikula_AbstractController
 
         PluginUtil::loadAllPlugins();
         if (PluginUtil::uninstall($plugin)) {
-           $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! De-installed plugin.'));
+           $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! De-installed plugin.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'viewPlugins', array('state' => $state,
@@ -1465,7 +1466,7 @@ class AdminController extends \Zikula_AbstractController
 
         PluginUtil::loadAllPlugins();
         if (PluginUtil::upgrade($plugin)) {
-            $this->request->getSession()->getFlashbag()->add('status', $this->__('Done! Upgraded plugin.'));
+            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Upgraded plugin.'));
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'viewPlugins', array('state' => $state,
