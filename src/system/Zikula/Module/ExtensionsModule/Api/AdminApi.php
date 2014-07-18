@@ -371,8 +371,6 @@ class AdminApi extends \Zikula_AbstractApi
             $boot->addAutoloaders($this->getContainer()->get('kernel'), $moduleMetaData->getAutoload());
         }
 
-        $version = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath);
-
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
@@ -394,6 +392,8 @@ class AdminApi extends \Zikula_AbstractApi
         } else {
             $module = ModUtil::getModule($modinfo['name']);
         }
+
+        $version = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath, $module);
 
         // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
@@ -1166,7 +1166,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
             throw new \RuntimeException($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
-        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module ));
+        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
 
         // perform the actual upgrade of the module
         $func = array($installer, 'upgrade');
@@ -1188,7 +1188,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
         $modversion['version'] = '0';
 
-        $modversion = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath);
+        $modversion = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath, $module);
         $version = $modversion['version'];
 
         // Update state of module
