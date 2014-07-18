@@ -4,6 +4,10 @@
 use Zikula\Bundle\CoreBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 
+include_once 'lib/StreamReader/Abstract.php';
+include_once 'lib/StreamReader/String.php';
+include_once 'lib/StreamReader/CachedFile.php';
+
 set_time_limit(0);
 
 $loader = require __DIR__.'/autoload.php';
