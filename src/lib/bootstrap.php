@@ -27,7 +27,7 @@ if ($kernelConfig['env'] !== 'prod') {
     Debug::enable();
 }
 
-require __DIR__.'/../app/ZikulaKernel.php';
+require_once __DIR__.'/../app/ZikulaKernel.php';
 
 $kernel = new ZikulaKernel($kernelConfig['env'], $kernelConfig['debug']);
 $kernel->boot();
