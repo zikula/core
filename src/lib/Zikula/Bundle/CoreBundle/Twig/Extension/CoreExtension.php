@@ -74,9 +74,11 @@ class CoreExtension extends \Twig_Extension
      * @todo
      * @return string
      */
-    public function lang()
+    public function lang($fs = false)
     {
-        return 'en';
+        $result = ($fs ? \ZLanguage::transformFS(\ZLanguage::getLanguageCode()) : \ZLanguage::getLanguageCode());
+
+        return $result;
     }
 
     /**
@@ -85,7 +87,7 @@ class CoreExtension extends \Twig_Extension
      */
     public function langDirection()
     {
-        return 'ltr';
+        return \ZLanguage::getDirection();
     }
 
     public function button()
