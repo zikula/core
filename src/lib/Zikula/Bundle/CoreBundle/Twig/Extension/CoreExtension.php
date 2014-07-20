@@ -71,21 +71,27 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * @todo
-     * @return string
+     * Function to get the site's language.
+     * 
+     * Available parameters:
+     *     - fs:  safe for filesystem.
+     * @return string The language
      */
-    public function lang()
+    public function lang($fs = false)
     {
-        return 'en';
+        $result = ($fs ? \ZLanguage::transformFS(\ZLanguage::getLanguageCode()) : \ZLanguage::getLanguageCode());
+
+        return $result;
     }
 
     /**
-     * @todo
-     * @return string
+     * Function to get the language direction
+     * 
+     * @return string   the language direction
      */
     public function langDirection()
     {
-        return 'ltr';
+        return \ZLanguage::getDirection();
     }
 
     public function button()
