@@ -32,18 +32,17 @@ define('_Z_MINUPGVER', '1.3.5');
 
 // Signal that upgrade is running.
 $GLOBALS['_ZikulaUpgrader'] = array();
-$dbname = $container['databases']['default']['dbname'];
 
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
-$upgradeFeedback = upgrade_140($dbname, $connection);
+$upgradeFeedback = upgrade_140($connection);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
 $core->init(Zikula_Core::STAGE_ALL, $request);
 
-$action = FormUtil::getPassedValue('action', false, 'GETPOST');
+$action = $request->get('action', false);
 
 // login to supplied admin credentials for action the following actions
 if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sanitycheck') {
@@ -57,18 +56,23 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
 //        throw new \RuntimeException("Fatal Error: Could not upgrade the Users module [id: $usersModuleID].");
 //    }
 
-    $username = FormUtil::getPassedValue('username', null, 'POST');
-    $password = FormUtil::getPassedValue('password', null, 'POST');
+    $username = $request->request->get('username', null);
+    $password = $request->request->get('password', null);
 
-    $authenticationInfo = array(
-        'login_id' => $username,
-        'pass'     => $password
-    );
-    $authenticationMethod = array(
-        'modname' => 'ZikulaUsersModule',
-        'method'  => 'uname',
-    );
-    if (!UserUtil::loginUsing($authenticationMethod, $authenticationInfo)) {
+    if (!empty($username) && !empty($password)) {
+        $authenticationInfo = array(
+            'login_id' => $username,
+            'pass'     => $password
+        );
+        $authenticationMethod = array(
+            'modname' => 'ZikulaUsersModule',
+            'method'  => 'uname',
+        );
+        $loginResult = UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
+    } else {
+        $loginResult = false;
+    }
+    if (!$loginResult) {
         // force action to login
         $action = 'login';
     } else {
@@ -87,7 +91,7 @@ switch ($action) {
         _upg_sanity_check($username, $password);
         break;
     case 'upgrademodules': // step four
-        _upg_upgrademodules($username, $password, $container);
+        _upg_upgrademodules($username, $password, $request);
         break;
     default: // step one
         _upg_selectlanguage($upgradeFeedback);
@@ -171,15 +175,15 @@ function _upg_footer($echo = true)
  */
 function _upg_selectlanguage($upgradeFeedback)
 {
-    _upg_header();
+    $content = _upg_header(false);
     if (!empty($upgradeFeedback)) {
-        echo "<p class='alert alert-success'>$upgradeFeedback</p>";
+        $content .= "<p class='alert alert-success'>$upgradeFeedback</p>";
     }
     $validupgrade = true;
     if (!ServiceUtil::getManager()->getParameter('installed')) {
         $validupgrade = false;
-        echo '<h1 class="text-center">'.__('FATAL ERROR!')."</h1>\n";
-        echo '<div class="animate shake"><p class="alert alert-danger text-center">'.__("Zikula does not appear to be installed.")."</p></div>\n";
+        $content .= '<h1 class="text-center">'.__('FATAL ERROR!')."</h1>\n";
+        $content .= '<div class="animate shake"><p class="alert alert-danger text-center">'.__("Zikula does not appear to be installed.")."</p></div>\n";
     }
 
     if (!$validupgrade) {
@@ -188,23 +192,31 @@ function _upg_selectlanguage($upgradeFeedback)
     }
 
     $curlang = ZLanguage::getLanguageCode();
-    echo '<p class="alert alert-info text-center">'.__f('This script will upgrade any Zikula v%1$s+ installation. Upgrades from less than Zikula v%1$s are not supported by this script.', array(_Z_MINUPGVER))."</p>\n";
-    echo '<br />'."\n";
-    echo '<form class="form-horizontal" role="form" action="upgrade.php" method="get" enctype="application/x-www-form-urlencoded">'."\n";
-    echo '<fieldset><legend>'.__('Please select your language').'</legend>'."\n";
-    echo '<input type="hidden" name="action" value="upgradeinit" />'."\n";
-    echo '<div class="form-group"><label class="col-lg-3 control-label" for="lang">'.__('Choose a language').'</label><div class="col-lg-9">'."\n";
-    echo '<select class="form-control" id="lang" name="lang">'."\n";
+    $content .= '<p class="alert alert-info text-center">'.__f('This script will upgrade any Zikula v%1$s+ installation. Upgrades from less than Zikula v%1$s are not supported by this script.', array(_Z_MINUPGVER))."</p>\n";
+    $content .= '<br />'."\n";
+    $content .= '<form class="form-horizontal" role="form" action="upgrade.php" method="get" enctype="application/x-www-form-urlencoded">'."\n";
+    $content .= '<fieldset><legend>'.__('Please select your language').'</legend>'."\n";
+    $content .= '<input type="hidden" name="action" value="upgradeinit" />'."\n";
+    $content .= '<div class="form-group"><label class="col-lg-3 control-label" for="lang">'.__('Choose a language').'</label><div class="col-lg-9">'."\n";
+    $content .= '<select class="form-control" id="lang" name="lang">'."\n";
     $langs = ZLanguage::getInstalledLanguageNames();
+    if (count($langs) == 1) {
+        // if only one choice, then just redirect to next step
+        $redirecturl = System::normalizeUrl("upgrade.php?action=upgradeinit&lang=".key($langs));
+        $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl);
+        $response->send();
+        exit;
+    }
     foreach ($langs as $lang => $name) {
         $selected = ($lang == $curlang ? ' selected="selected"' : '');
-        echo '<option value="'.$lang.'" label="'.$name.'"'.$selected.'>'.$name."</option>\n";
+        $content .= '<option value="'.$lang.'" label="'.$name.'"'.$selected.'>'.$name."</option>\n";
     }
-    echo '</select></div></fieldset>'."\n";
-    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="fa fa-angle-double-right"></span> '.__('Next').'</button></div>'."\n";
+    $content .= '</select></div></fieldset>'."\n";
+    $content .= '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="fa fa-angle-double-right"></span> '.__('Next').'</button></div>'."\n";
 
-    echo '</form>'."\n";
-    _upg_footer();
+    $content .= '</form>'."\n";
+    $content .= _upg_footer(false);
+    echo $content;
 }
 
 /**
@@ -264,11 +276,11 @@ function _upg_login($showheader = true)
  *
  * @param string $username Username of the admin user.
  * @param string $password Password of the admin user.
- * @param $container
+ * @param \Symfony\Component\HttpFoundation\Request $request
  *
  * @return void
  */
-function _upg_upgrademodules($username, $password, $container)
+function _upg_upgrademodules($username, $password, \Symfony\Component\HttpFoundation\Request $request)
 {
     $content = _upg_header(false);
 
@@ -310,7 +322,7 @@ function _upg_upgrademodules($username, $password, $container)
     $content .= '<p class="alert alert-success text-center">'.__('Finished upgrade')." - \n";
 
     // Relogin the admin user to give a proper admin link
-    $container->get('session')->start();
+    SessionUtil::requireSession();
 
     $authenticationInfo = array(
         'login_id' => $username,
@@ -323,7 +335,7 @@ function _upg_upgrademodules($username, $password, $container)
 
     UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
 
-    if (!UserUtil::isLoggedIn() || !SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+    if (!UserUtil::isLoggedIn() || !SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
         $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(System::getBaseUrl()), DataUtil::formatForDisplay(System::getVar('sitename')));
         $content .= __f('Go to the startpage for %s', $url);
     } else {
@@ -440,13 +452,13 @@ function upgrade_clear_caches()
 {
     Zikula_View_Theme::getInstance()->clear_all_cache();
     Zikula_View_Theme::getInstance()->clear_compiled();
-    Zikula_View_Theme::getInstance()->clear_cssjscombinecache();
-    Zikula_View::getInstance()->clear_all_cache();
-    Zikula_View::getInstance()->clear_compiled();
+//    Zikula_View_Theme::getInstance()->clear_cssjscombinecache();
+//    Zikula_View::getInstance()->clear_all_cache();
+//    Zikula_View::getInstance()->clear_compiled();
 }
 
 /**
- * Get current intalled version number
+ * Get current installed version number
  *
  * @param \Doctrine\DBAL\Connection $connection PDO connection.
  *
@@ -466,12 +478,11 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
 /**
  * Upgrade tables from 1.3.5+
  *
- * @param $dbname
  * @param Connection $conn
  *
  * @return string
  */
-function upgrade_140($dbname, Connection $conn)
+function upgrade_140(Connection $conn)
 {
     $feedback = '';
     $res = $conn->executeQuery("SELECT name FROM modules WHERE name = 'ZikulaExtensionsModule'");
