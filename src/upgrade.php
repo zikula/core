@@ -87,7 +87,7 @@ switch ($action) {
         _upg_sanity_check($username, $password);
         break;
     case 'upgrademodules': // step four
-        _upg_upgrademodules($username, $password);
+        _upg_upgrademodules($username, $password, $container);
         break;
     default: // step one
         _upg_selectlanguage($upgradeFeedback);
@@ -248,10 +248,11 @@ function _upg_login($showheader = true)
  *
  * @param string $username Username of the admin user.
  * @param string $password Password of the admin user.
+ * @param $container
  *
  * @return void
  */
-function _upg_upgrademodules($username, $password)
+function _upg_upgrademodules($username, $password, $container)
 {
     _upg_header();
 
@@ -290,10 +291,11 @@ function _upg_upgrademodules($username, $password)
     System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
     System::setVar('language_i18n', ZLanguage::getLanguageCode());
 
-    // Relogin the admin user to give a proper admin link
-    SessionUtil::requireSession();
-
     echo '<p class="alert alert-success text-center">'.__('Finished upgrade')." - \n";
+
+    // Relogin the admin user to give a proper admin link
+//    SessionUtil::requireSession();
+    $container->get('session')->start();
 
     $authenticationInfo = array(
         'login_id' => $username,
