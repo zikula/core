@@ -98,51 +98,67 @@ switch ($action) {
  * Generate the header of upgrade page.
  * This function generate the header of upgrade page.
  *
- * @return void
+ * @param boolean $echo echo contents to browser?
+ *
+ * @return void|string
  */
-function _upg_header()
+function _upg_header($echo = true)
 {
     $lang = ZLanguage::getLanguageCode();
     $charset = ZLanguage::getEncoding();
-    echo '<!DOCTYPE html>'."\n";
-    echo '<html lang="'.$lang.'" xml:lang="'.$lang.'">'."\n";
-    echo '<head>'."\n";
-    echo '<meta http-equiv="Content-Type" content="text/html; charset='.$charset.'" />'."\n";
-    echo '<title>'.__('Zikula Upgrade script')."</title>\n";
-    echo '<link rel="stylesheet" href="install/style/installer.css" type="text/css" />'."\n";
-    echo '<link rel="stylesheet" href="web/bootstrap/css/bootstrap.min.css" type="text/css" />'."\n";
-    echo '<link rel="stylesheet" href="web/bootstrap/css/bootstrap-theme.min.css" type="text/css" />'."\n";
-    echo '<link rel="stylesheet" href="style/core.css" type="text/css" />'."\n";
-    echo '<link rel="stylesheet" href="web/font-awesome/css/font-awesome.min.css" type="text/css" />'."\n";
-    echo '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->'."\n";
-    echo '<script type="text/javascript" src="web/jquery/jquery.min.js"></script>'."\n";
-    echo '<script src="install/javascript/install.js" type="text/javascript"></script>'."\n";
-    echo '</head>'."\n";
-    echo '<body>'."\n";
-    echo '<div class="container"><div id="content">'."\n";
-    echo '<div id="header">'."\n";
-    echo '<h1>'.__('Zikula Application Framework').'</h1>'."\n";
-    echo '<h2>'.__('Upgrade script').'</h2></div>'."\n";
-    echo '<div id="maincontent">';    
+    $content = '';
+    $content .= '<!DOCTYPE html>'."\n";
+    $content .= '<html lang="'.$lang.'" xml:lang="'.$lang.'">'."\n";
+    $content .= '<head>'."\n";
+    $content .= '<meta http-equiv="Content-Type" content="text/html; charset='.$charset.'" />'."\n";
+    $content .= '<title>'.__('Zikula Upgrade script')."</title>\n";
+    $content .= '<link rel="stylesheet" href="install/style/installer.css" type="text/css" />'."\n";
+    $content .= '<link rel="stylesheet" href="web/bootstrap/css/bootstrap.min.css" type="text/css" />'."\n";
+    $content .= '<link rel="stylesheet" href="web/bootstrap/css/bootstrap-theme.min.css" type="text/css" />'."\n";
+    $content .= '<link rel="stylesheet" href="style/core.css" type="text/css" />'."\n";
+    $content .= '<link rel="stylesheet" href="web/font-awesome/css/font-awesome.min.css" type="text/css" />'."\n";
+    $content .= '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->'."\n";
+    $content .= '<script type="text/javascript" src="web/jquery/jquery.min.js"></script>'."\n";
+    $content .= '<script src="install/javascript/install.js" type="text/javascript"></script>'."\n";
+    $content .= '</head>'."\n";
+    $content .= '<body>'."\n";
+    $content .= '<div class="container"><div id="content">'."\n";
+    $content .= '<div id="header">'."\n";
+    $content .= '<h1>'.__('Zikula Application Framework').'</h1>'."\n";
+    $content .= '<h2>'.__('Upgrade script').'</h2></div>'."\n";
+    $content .= '<div id="maincontent">';
+    if ($echo) {
+        echo $content;
+    } else {
+        return $content;
+    }
 }
 
 /**
  * Generate the footer of upgrade page.
  * This function generate the footer of upgrade page.
  *
- * @return void
+ * @param boolean $echo echo contents to browser?
+ *
+ * @return void|string
  */
-function _upg_footer()
+function _upg_footer($echo = true)
 {
     $lang = ZLanguage::getLanguageCode();
-    echo '</div></div>'."\n";
-    echo '<div id="footer">'."\n";
-    echo '<br />'."\n";
-    echo '<div class="alert alert-info text-center">'.__f('For more information about the upgrade process, please read the <a href="docs/%1$s/UPGRADING.md">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.', $lang).'</div>';
-    echo '</div>'."\n";
-    echo '</div></body>'."\n";
-    echo '</html>';
-    exit();
+    $content = '';
+    $content .= '</div></div>'."\n";
+    $content .= '<div id="footer">'."\n";
+    $content .= '<br />'."\n";
+    $content .= '<div class="alert alert-info text-center">'.__f('For more information about the upgrade process, please read the <a href="docs/%1$s/UPGRADING.md">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.', $lang).'</div>';
+    $content .= '</div>'."\n";
+    $content .= '</div></body>'."\n";
+    $content .= '</html>';
+    if ($echo) {
+        echo $content;
+        exit();
+    } else {
+        return $content;
+    }
 }
 
 /**
@@ -173,7 +189,7 @@ function _upg_selectlanguage($upgradeFeedback)
 
     $curlang = ZLanguage::getLanguageCode();
     echo '<p class="alert alert-info text-center">'.__f('This script will upgrade any Zikula v%1$s+ installation. Upgrades from less than Zikula v%1$s are not supported by this script.', array(_Z_MINUPGVER))."</p>\n";
-    echo '<br />'."\n";        
+    echo '<br />'."\n";
     echo '<form class="form-horizontal" role="form" action="upgrade.php" method="get" enctype="application/x-www-form-urlencoded">'."\n";
     echo '<fieldset><legend>'.__('Please select your language').'</legend>'."\n";
     echo '<input type="hidden" name="action" value="upgradeinit" />'."\n";
@@ -186,7 +202,7 @@ function _upg_selectlanguage($upgradeFeedback)
     }
     echo '</select></div></fieldset>'."\n";
     echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="fa fa-angle-double-right"></span> '.__('Next').'</button></div>'."\n";
-    
+
     echo '</form>'."\n";
     _upg_footer();
 }
@@ -254,7 +270,7 @@ function _upg_login($showheader = true)
  */
 function _upg_upgrademodules($username, $password, $container)
 {
-    _upg_header();
+    $content = _upg_header(false);
 
     // Set the System Identifier as a unique string.
     if (!System::getVar('system_identifier')) {
@@ -264,24 +280,24 @@ function _upg_upgrademodules($username, $password, $container)
     // force load the modules admin API
     ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
 
-    echo '<h2>'.__('Upgrade Results:').'</h2>'."\n";
-    echo '<ul id="upgradelist" class="check">'."\n";
+    $content .= '<h2>'.__('Upgrade Results:').'</h2>'."\n";
+    $content .= '<ul id="upgradelist" class="check">'."\n";
 
     $results = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgradeall');
     if ($results) {
         foreach ($results as $modname => $result) {
             if ($result) {
-                echo '<li class="passed">'.DataUtil::formatForDisplay($modname).' '.__('upgraded').'</li>'."\n";
+                $content .= '<li class="passed">'.DataUtil::formatForDisplay($modname).' '.__('upgraded').'</li>'."\n";
             } else {
-                echo '<li class="failed">'.DataUtil::formatForDisplay($modname).' '.__('not upgraded').'</li>'."\n";
+                $content .= '<li class="failed">'.DataUtil::formatForDisplay($modname).' '.__('not upgraded').'</li>'."\n";
             }
         }
     }
-    echo '</ul>'."\n";
+    $content .= '</ul>'."\n";
     if (!$results) {
-        echo '<br />'."\n";
-        echo '<ul class="check"><li class="passed"><strong>'.__('No modules required upgrading').'</strong></li></ul>';
-        echo '<br />'."\n";
+        $content .= '<br />'."\n";
+        $content .= '<ul class="check"><li class="passed"><strong>'.__('No modules required upgrading').'</strong></li></ul>';
+        $content .= '<br />'."\n";
     }
 
     // regenerate the themes list
@@ -291,10 +307,9 @@ function _upg_upgrademodules($username, $password, $container)
     System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
     System::setVar('language_i18n', ZLanguage::getLanguageCode());
 
-    echo '<p class="alert alert-success text-center">'.__('Finished upgrade')." - \n";
+    $content .= '<p class="alert alert-success text-center">'.__('Finished upgrade')." - \n";
 
     // Relogin the admin user to give a proper admin link
-//    SessionUtil::requireSession();
     $container->get('session')->start();
 
     $authenticationInfo = array(
@@ -306,17 +321,22 @@ function _upg_upgrademodules($username, $password, $container)
         'method'  => 'uname',
     );
 
-    if (!UserUtil::loginUsing($authenticationMethod, $authenticationInfo)) {
+    UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
+
+    if (!UserUtil::isLoggedIn() || !SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
         $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(System::getBaseUrl()), DataUtil::formatForDisplay(System::getVar('sitename')));
-        echo __f('Go to the startpage for %s', $url);
+        $content .= __f('Go to the startpage for %s', $url);
     } else {
         upgrade_clear_caches();
         $url = sprintf('<a href="%s">%s</a>', ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'), DataUtil::formatForDisplay(System::getVar('sitename')));
-        echo __f('Go to the admin panel for %s', $url);
+        $content .= __f('Go to the admin panel for %s', $url);
     }
-    echo "</p>\n";
+    $content .= "</p>\n";
 
-    _upg_footer();
+    $content .= _upg_footer(false);
+
+    echo $content;
+    exit();
 }
 
 /**
