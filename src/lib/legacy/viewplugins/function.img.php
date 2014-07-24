@@ -88,7 +88,6 @@ function smarty_function_img($params, Zikula_View $view)
 
     // process the image location
     $modname   = isset($params['modname']) ? $params['modname'] : $view->toplevelmodule;
-    $modname   = $modname == 'core' ? 'zikula' : $modname; // change modname to 'zikula' for core 1.4.0
     $modplugin = isset($params['modplugin']) ? $params['modplugin'] : null;
     $sysplugin = isset($params['sysplugin']) ? $params['sysplugin'] : null;
 
