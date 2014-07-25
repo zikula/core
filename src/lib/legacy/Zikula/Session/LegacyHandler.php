@@ -111,7 +111,9 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
     public function destroy($sessionId)
     {
         // expire the cookie
-        setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
+        if (php_sapi_name() != 'cli') {
+            setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
+        }
 
         $this->conn->executeUpdate('DELETE FROM session_info WHERE sessid=:id', array('id' => $sessionId));
     }
