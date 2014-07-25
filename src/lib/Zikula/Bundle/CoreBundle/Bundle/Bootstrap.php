@@ -2,10 +2,10 @@
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
+use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
-use Zikula\Core\AbstractBundle;
   
 class Bootstrap
 {
@@ -43,7 +43,7 @@ class Bootstrap
         $res = $conn->executeQuery('SELECT bundlename, bundleclass, autoload, bundlestate, bundletype FROM bundles');
         foreach ($res->fetchAll(\PDO::FETCH_NUM) as $row) {
             list($name, $class, $autoload, $state, $type) = $row;
-            $extensionIsActive = $this->extensionIsActive($conn, $class, $type);
+            $extensionIsActive = $this->extensionIsActive($kernel, $conn, $class, $type);
             if ($extensionIsActive) {
                 try {
                     $autoload = unserialize($autoload);
@@ -77,7 +77,7 @@ class Bootstrap
      *
      * @return bool
      */
-    private function extensionIsActive($conn, $class, $type) {
+    private function extensionIsActive(ZikulaKernel $kernel, $conn, $class, $type) {
         $extensionNameArray = explode('\\', $class);
         $extensionName = array_pop($extensionNameArray);
         if (isset($this->extensionStateMap[$extensionName])) {
@@ -85,24 +85,50 @@ class Bootstrap
             $state = $this->extensionStateMap[$extensionName];
         } else {
             // load all values into class var for lookup
-            $sql = "SELECT m.name, m.state FROM modules as m";
+            $sql = "SELECT m.name, m.state, m.id FROM modules as m";
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
-                $this->extensionStateMap[$row['name']] = (int)$row['state'];
+                $this->extensionStateMap[$row['name']] = array(
+                    'state' =>(int)$row['state'],
+                    'id'    => (int)$row['id'],
+                );
             }
-            $sql = "SELECT t.name, t.state FROM themes as t";
+            $sql = "SELECT t.name, t.state, t.id FROM themes as t";
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
-                $this->extensionStateMap[$row['name']] = (int)$row['state'];
+                $this->extensionStateMap[$row['name']] = array(
+                    'state' =>(int)$row['state'],
+                    'id'    => (int)$row['id'],
+                );
             }
-            $state = isset($this->extensionStateMap[$extensionName]) ? $this->extensionStateMap[$extensionName] : ($type == 'T') ?  \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED;
+            if (isset($this->extensionStateMap[$extensionName])) {
+                $state = $this->extensionStateMap[$extensionName];
+            } else {
+                $state =  array('state' => ($type == 'T') ?  \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED);
+            }
         }
         switch($type) {
             case 'T':
-                return ($state == \ThemeUtil::STATE_ACTIVE);
+                return ($state['state'] == \ThemeUtil::STATE_ACTIVE);
                 break;
             default:
-                return ($state == \ModUtil::STATE_ACTIVE);
+                if ($state['state'] == \ModUtil::STATE_ACTIVE) {
+                    return true;
+                } else if ($state['state'] == \ModUtil::STATE_UPGRADED && isset($_GET['id']) &&$state['id'] == $_GET['id'] && isset($_GET['secret'])) {
+                    $secret = $_GET['secret'];
+                    $rootDir = $kernel->getRootDir() . "/config";
+                    $path = $rootDir . "/custom_parameters.yml";
+                    if (!is_readable($path)) {
+                        $path = $rootDir . "/parameters.yml";
+                    }
+                    $parameters = Yaml::parse(file_get_contents($path));
+                    $urlSecret = $parameters['parameters']['url_secret'];
+
+                    // Only set module to active if the secret matches.
+                    return ($secret === $urlSecret);
+                } else {
+                    return false;
+                }
         }
     }
 

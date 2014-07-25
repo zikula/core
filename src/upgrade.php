@@ -10,6 +10,7 @@
  *          information regarding copyright and licensing.
  */
 
+use Symfony\Component\Yaml\Yaml;
 use Zikula_Request_Http as Request;
 use Zikula\Core\Event\GenericEvent;
 use Doctrine\DBAL\Connection;
@@ -36,7 +37,7 @@ $GLOBALS['_ZikulaUpgrader'] = array();
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
-$upgradeFeedback = upgrade_140($connection);
+$upgradeFeedback = upgrade_140($connection, $core->getContainer()->getService('kernel'));
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
@@ -482,7 +483,7 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
  *
  * @return string
  */
-function upgrade_140(Connection $conn)
+function upgrade_140(Connection $conn, ZikulaKernel $kernel)
 {
     $feedback = '';
     $res = $conn->executeQuery("SELECT name FROM modules WHERE name = 'ZikulaExtensionsModule'");
@@ -536,6 +537,15 @@ function upgrade_140(Connection $conn)
     // install Bundles table
     installBundlesTable();
     $feedback .= "Bundles Table installed.<br />\n";
+
+    $rootDir = $kernel->getRootDir() . "/config";
+    $path = $rootDir . "/custom_parameters.yml";
+    if (!is_readable($path)) {
+        $path = $rootDir . "/parameters.yml";
+    }
+    $parameters = Yaml::parse(file_get_contents($path));
+    $parameters['parameters']['url_secret'] = RandomUtil::getRandomString(10);
+    file_put_contents($path, Yaml::dump($parameters));
 
     return $feedback;
 }

@@ -303,6 +303,7 @@ class AdminController extends \Zikula_AbstractController
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
                                     'csrftoken' => $csrftoken,
+                                    'secret' => $this->getContainer()->getParameter('url_secret'),
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => 'refresh',
