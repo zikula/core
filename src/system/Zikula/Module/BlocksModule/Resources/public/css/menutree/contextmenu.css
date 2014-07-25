@@ -91,7 +91,7 @@ div.ContextMenu li.separator {
     background: #9D9DA1 none repeat scroll 0%;
     border-bottom: 1px solid #FFFFFF;
     margin: 4px 1px 0px;
-    *margin-top: 0px;
+    margin-top: 0px;
     cursor: auto;
     height: 1px;
     padding: 0;

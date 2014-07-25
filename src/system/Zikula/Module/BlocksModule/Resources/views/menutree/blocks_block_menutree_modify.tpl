@@ -1,4 +1,4 @@
-{ajaxheader modname="blocks" ui=true}
+{ajaxheader modname=$module ui=true}
 {pageaddvar name="javascript" value="system/Zikula/Module/BlocksModule/Resources/public/js/functions.js"}
 {pageaddvar name="javascript" value="system/Zikula/Module/BlocksModule/Resources/public/js/contextmenu.js"}
 {pageaddvar name="stylesheet" value="system/Zikula/Module/BlocksModule/Resources/public/css/menutree/adminstyle.css"}
