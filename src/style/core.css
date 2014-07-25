@@ -141,6 +141,10 @@ td.actions {
     width: 1px;
 }
 
+td.actions .tooltip {
+    white-space: normal !important;
+}
+
 td.actions .fa {
     font-size: 1.3em;
     padding-left: 4px;
