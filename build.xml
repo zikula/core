@@ -115,6 +115,8 @@
         <!-- Clear cache and log directories filled by the console command above -->
         <delete includeEmptyDirs="true">
             <fileset dir="${packagepath}/app/cache" includes="**/*"/>
+        </delete>
+        <delete includeEmptyDirs="true">
             <fileset dir="${packagepath}/app/logs" includes="**/*"/>
         </delete>
 
