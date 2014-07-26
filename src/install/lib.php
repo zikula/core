@@ -558,6 +558,7 @@ function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver
     $array['parameters']['database_name'] = $dbname;
     $array['parameters']['database_user'] = $dbusername;
     $array['parameters']['database_password'] = $dbpassword;
+    $array['parameters']['url_secret'] = RandomUtil::getRandomString(10);
     file_put_contents(__DIR__.'/../app/config/parameters.yml', Yaml::dump($array));
 }
 
