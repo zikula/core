@@ -117,13 +117,13 @@
             <fileset dir="${packagepath}/app/cache" defaultexcludes="false">
                 <exclude name=".htaccess" />
                 <include name="**/*" />
-            </filseset>
+            </fileset>
         </delete>
         <delete includeEmptyDirs="true">
             <fileset dir="${packagepath}/app/logs" defaultexcludes="false">
                 <exclude name=".htaccess" />
                 <include name="**/*" />
-            </filseset>
+            </fileset>
         </delete>
 
         <!-- compress JS -->
