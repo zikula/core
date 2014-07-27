@@ -114,10 +114,16 @@
 
         <!-- Clear cache and log directories filled by the console command above -->
         <delete includeEmptyDirs="true">
-            <fileset dir="${packagepath}/app/cache" includes="**/*"/>
+            <fileset dir="${packagepath}/app/cache" defaultexcludes="false">
+                <exclude name=".htaccess" />
+                <include name="**/*" />
+            </filseset>
         </delete>
         <delete includeEmptyDirs="true">
-            <fileset dir="${packagepath}/app/logs" includes="**/*"/>
+            <fileset dir="${packagepath}/app/logs" defaultexcludes="false">
+                <exclude name=".htaccess" />
+                <include name="**/*" />
+            </filseset>
         </delete>
 
         <!-- compress JS -->
