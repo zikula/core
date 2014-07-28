@@ -292,7 +292,12 @@ class UserApi extends \Zikula_AbstractApi
         if (!preg_match('#\{(.*)\}#', $url, $matches)) {
             return $url;
         }
-
+        
+        // allow empty url
+        if (empty($url)) {
+            return $url;
+        }
+        
         // filter out links that begin with `ext` (Menutree)
         // send original string back for later processing
         if (strpos($url,'{ext:') === 0) {
