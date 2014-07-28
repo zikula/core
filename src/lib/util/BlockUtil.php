@@ -270,6 +270,9 @@ class BlockUtil
     {
         $sm = ServiceUtil::getManager();
         $modinfo = ModUtil::getInfoFromName($modname);
+        if ($modinfo['state'] != \ModUtil::STATE_ACTIVE) {
+            return false;
+        }
         $serviceId = strtolower('block.'.$modinfo['name'].'_'.'Block_'.$block);
         if ($sm->has($serviceId)) {
             return $sm->get($serviceId);

@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
-  *
+ *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -85,7 +85,7 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         //! this is a comma-separated list of special characters to replace in permalinks
         System::setVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
 
-        System::setVar('language',ZLanguage::getLanguageCodeLegacy());
+        System::setVar('language', ZLanguage::getLanguageCodeLegacy());
         System::setVar('locale', ZLanguage::getLocale());
         System::setVar('language_i18n', ZLanguage::getlanguageCode());
 
@@ -136,6 +136,19 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\Module\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
             // future upgrade routines
             case '2.9.8':
+                $permasearch = System::getVar('permasearch');
+                if (empty($permasearch)) {
+                    System::setVar('permasearch',  $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+                }
+                $permareplace = System::getVar('permareplace');
+                if (empty($permareplace)) {
+                    System::setVar('permareplace',  $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+                }
+                $locale = System::getVar('locale');
+                if (empty($locale)) {
+                    System::setVar('locale',  ZLanguage::getLocale());
+                }
+            case '2.9.9':
                 // current version
         }
 

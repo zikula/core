@@ -239,25 +239,26 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
     }
 
     /**
-     * Migrate attributes to user entity
-     *
-     * @return void
+     * migrate all data from the objectdata_attributes table to the users_attributes
+     * where object_type = 'users'
      */
     private function migrateAttributes()
     {
-        $dataset = DBUtil::selectObjectArray('users');
-        $em = $this->getEntityManager();
-        foreach ($dataset as $data) {
-            if (!isset($data['__ATTRIBUTES__'])) {
-                continue;
-            }
-
-            $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => $data['uid']));
-            foreach ($data['__ATTRIBUTES__'] as $name => $value) {
-                $user->setAttribute($name ,$value);
-            }
-
-            $em->flush();
+        $connection = $this->entityManager->getConnection();
+        $sqls = array();
+        // copy data from objectdata_attributes to users_attributes
+        $sqls[] = 'INSERT INTO users_attributes
+                    (user_id, name, value)
+                    SELECT object_id, attribute_name, value
+                    FROM objectdata_attributes
+                    WHERE object_type = \'users\'
+                    ORDER BY object_id, attribute_name';
+        // remove old data
+        $sqls[] = 'DELETE FROM objectdata_attributes
+                    WHERE object_type = \'users\'';
+        foreach ($sqls as $sql) {
+            $stmt = $connection->prepare($sql);
+            $stmt->execute();
         }
     }
 }
