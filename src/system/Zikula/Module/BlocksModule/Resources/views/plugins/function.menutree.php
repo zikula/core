@@ -170,12 +170,12 @@ function _htmlListExt($tree, $treeNodePrefix, $treeClassPrefix, $ext, $depth, $t
         $attr  = !empty($tab['item']['title']) ? ' title="'.$tab['item']['title'].'"' : '';
         $attr .= !empty($tab['item']['class']) ? ' class="'.$tab['item']['class'].'"' : '';
         if (!empty($tab['item']['href'])) {
-                $html .= '<a href="'.DataUtil::formatForDisplay($tab['item']['href']).'"'.$attr.'>'.$tab['item']['name'].'</a>';
+            $html .= '<a href="'.DataUtil::formatForDisplay($tab['item']['href']).'"'.$attr.'>'.$tab['item']['name'].'</a>';
         } else {
-                $drop = strpos($tab['item']['class'], 'dropdown');
-                if ($bootstrap && $drop =! false ) {
+            $drop = strpos($tab['item']['class'], 'dropdown');
+            if ($bootstrap && $drop != false ) {
                 $html .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$tab['item']['name'].' <b class="caret"></b></a>';
-                } else {
+            } else {
                 $html .= '<span'.$attr.'>'.$tab['item']['name'].'</span>';
             }
         }
