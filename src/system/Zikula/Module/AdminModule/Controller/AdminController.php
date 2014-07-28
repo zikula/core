@@ -290,12 +290,15 @@ class AdminController extends \Zikula_AbstractController
 
         $this->checkCsrfToken();
 
-        // delete category
-        $delete = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'delete', array('cid' => $cid));
-
-        // Success
-        if ($delete) {
-            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Category deleted.'));
+        try {
+            // delete category
+            $delete = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'delete', array('cid' => $cid));
+            // Success
+            if ($delete) {
+                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Category deleted.'));
+            }
+        } catch (\RuntimeException $e) {
+            $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
 
         return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
