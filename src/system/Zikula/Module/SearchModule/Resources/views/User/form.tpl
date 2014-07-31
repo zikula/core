@@ -2,7 +2,7 @@
 {gt text='Site search' assign='templatetitle' domain='zikula'}
 {include file='User/menu.tpl'}
 
-<form class="form-horizontal" role="form" id="search_form" method="post" action="{modurl modname='ZikulaSearchModule' type='user' func='search'}">
+<form class="form-horizontal" role="form" id="search_form" method="post" action="{route name='zikulasearchmodule_user_search'}">
     <fieldset>
         <div class="form-group">
             <label class="col-lg-3 control-label" for="search_q" id="search_q_label">{gt text='Search keywords' domain='zikula'}</label>
@@ -24,9 +24,9 @@
             <label class="col-lg-3 control-label" for="searchorder">{gt text='Order of results' domain='zikula'}</label>
             <div class="col-lg-9">
                 <select class="form-control" name="searchorder" id="searchorder" size="1">
-                    <option value="newest"{if $searchtype eq 'newest'} selected="selected"{/if}>{gt text="Newest first" domain='zikula'}</option>
-                    <option value="oldest"{if $searchtype eq 'oldest'} selected="selected"{/if}>{gt text="Oldest first" domain='zikula'}</option>
-                    <option value="alphabetical"{if $searchtype eq 'alphabetical'} selected="selected"{/if}>{gt text="Alphabetical" domain='zikula'}</option>
+                    <option value="newest"{if $searchorder eq 'newest'} selected="selected"{/if}>{gt text="Newest first" domain='zikula'}</option>
+                    <option value="oldest"{if $searchorder eq 'oldest'} selected="selected"{/if}>{gt text="Oldest first" domain='zikula'}</option>
+                    <option value="alphabetical"{if $searchorder eq 'alphabetical'} selected="selected"{/if}>{gt text="Alphabetical" domain='zikula'}</option>
                 </select>
             </div>
         </div>

@@ -14,13 +14,14 @@
 namespace Zikula\Module\SearchModule\Controller;
 
 use ModUtil;
-use LogUtil;
 use SecurityUtil;
-use SessionUtil;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Routing\RouterInterface;
 use UserUtil;
-use System;
-use DataUtil;
-use ZLanguage;
+use Zikula\Core\Response\PlainResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,8 +39,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function mainAction()
     {
-        // Security check will be done in form()
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
+        return $this->indexAction();
     }
 
     /**
@@ -50,10 +50,13 @@ class UserController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in form()
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
+        return new RedirectResponse($this->get('router')->generate('zikulasearchmodule_user_form', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
+     * @Route("")
+     * @Method("GET")
+     *
      * Generate complete search form
      *
      * Generate the whole search form, including the various plugins options.
@@ -63,7 +66,6 @@ class UserController extends \Zikula_AbstractController
      *      @type string $q           search query
      *      @type string $searchtype  type of search being requested
      *      @type string $searchorder order to sort the results in
-     *      @type int    $numlimit    number of search results to return
      *      @type array  $active      array of search plugins to search (if empty all plugins are used)
      *      @type array  $modvar      array with extrainfo for search plugins
      *                      }
@@ -72,43 +74,30 @@ class UserController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
      */
-    public function formAction($vars = array())
+    public function formAction(Request $request)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
-        // get parameter from input
-        $vars['q'] = strip_tags($this->request->request->get('q', ''));
-        $vars['searchtype'] = $this->request->request->get('searchtype', SessionUtil::getVar('searchtype'));
-        $vars['searchorder'] = $this->request->request->get('searchorder', SessionUtil::getVar('searchorder'));
+        $vars['q'] = $request->query->get('q', '');
+        $vars['searchtype'] = $request->query->get('searchtype', 'AND');
+        $vars['searchorder'] = $request->query->get('searchorder', 'newest');
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
-        $vars['active'] = $this->request->request->get('active', SessionUtil::getVar('searchactive'));
-        $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar', array()));
-
-        // this var allows the headers to not be displayed
-        if (!isset($vars['titles']))
-            $vars['titles'] = true;
+        $vars['active'] = $request->query->get('active');
+        $vars['modvar'] = $request->query->get('modvar', array());
 
         // set some defaults
-        if (!isset($vars['searchtype']) || empty($vars['searchtype'])) {
-            $vars['searchtype'] = 'AND';
-        }
-        if (!isset($vars['searchorder']) || empty($vars['searchorder'])) {
-            $vars['searchorder'] = 'newest';
-        }
         $setActiveDefaults = false;
         if (!isset($vars['active']) || !is_array($vars['active'])) {
             $setActiveDefaults = true;
             $vars['active'] = array();
         }
 
-        // reset the session vars for a new search
-        SessionUtil::delVar('searchtype');
-        SessionUtil::delVar('searchorder');
-        SessionUtil::delVar('searchactive');
-        SessionUtil::delVar('searchmodvar');
+        if (!empty($vars['q']) && !$request->request->get('no-result', false)) {
+            return $this->forward($request, 'search', array(), $vars);
+        }
 
         // get all the LEGACY (<1.4.0) search plugins
         $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
@@ -117,58 +106,59 @@ class UserController extends \Zikula_AbstractController
         // get 1.4.0+ type searchable modules
         $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
 
-        if (count($search_modules) > 0 || count($searchableModules) > 0) {
-            $plugin_options = array();
-            // LEGACY handling (<1.4.0)
-            foreach ($search_modules as $mods) {
-                // if active array is empty, we need to set defaults
-                if ($setActiveDefaults) {
-                    $vars['active'][$mods['name']] = '1';
-                }
-
-                // as every search plugins return a formatted html string
-                // we assign it to a generic holder named 'plugin_options'
-                // maybe in future this will change
-                // we should retrieve from the plugins an array of values
-                // and formatting it here according with the module's template
-                // we have also to provide some trick to assure the 'backward compatibility'
-
-                if (isset($mods['title'])) {
-                    $plugin_options[$mods['title']] = ModUtil::apiFunc($mods['title'], 'search', 'options', $vars);
-                }
-            }
-            // 1.4.0+ type handling
-            foreach ($searchableModules as $searchableModule) {
-                if ($setActiveDefaults) {
-                    $vars['active'][$searchableModule['name']] = '1';
-                }
-                $moduleBundle = ModUtil::getModule($searchableModule['name']);
-                /** @var $searchableInstance AbstractSearchable */
-                $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->entityManager, $moduleBundle);
-
-                if ($searchableInstance instanceof AbstractSearchable) {
-                    if ((!$this->getVar("disable_{$searchableModule['name']}") && SecurityUtil::checkPermission('ZikulaSearchModule::Item', "{$searchableModule['name']}::", ACCESS_READ))) {
-                        $active = !isset($vars['active']) || (isset($vars['active'][$searchableModule['name']]) && ($vars['active'][$searchableModule['name']] == '1'));
-                        $plugin_options[$searchableModule['name']] = $searchableInstance->getOptions($active, $vars['modvar']);
-                    }
-                }
-            }
-
-            // Create output object
-            // add content to template
-            $this->view->assign($vars)
-                       ->assign('plugin_options', $plugin_options);
-
-            // Return the output that has been generated by this function
-            return $this->view->fetch('User/form.tpl');
-        } else {
-            // Create output object
-            // Return the output that has been generated by this function
-            return $this->view->fetch('User/noplugins.tpl');
+        if (count($search_modules) == 0 && count($searchableModules) == 0) {
+            return $this->response($this->view->fetch('User/noplugins.tpl'));
         }
+
+        $plugin_options = array();
+        // LEGACY handling (<1.4.0)
+        foreach ($search_modules as $mods) {
+            // if active array is empty, we need to set defaults
+            if ($setActiveDefaults) {
+                $vars['active'][$mods['name']] = '1';
+            }
+
+            // as every search plugins return a formatted html string
+            // we assign it to a generic holder named 'plugin_options'
+            // maybe in future this will change
+            // we should retrieve from the plugins an array of values
+            // and formatting it here according with the module's template
+            // we have also to provide some trick to assure the 'backward compatibility'
+
+            if (isset($mods['title'])) {
+                $plugin_options[$mods['title']] = ModUtil::apiFunc($mods['title'], 'search', 'options', $vars);
+            }
+        }
+        // 1.4.0+ type handling
+        foreach ($searchableModules as $searchableModule) {
+            if ($setActiveDefaults) {
+                $vars['active'][$searchableModule['name']] = '1';
+            }
+            $moduleBundle = ModUtil::getModule($searchableModule['name']);
+            /** @var $searchableInstance AbstractSearchable */
+            $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->entityManager, $moduleBundle);
+
+            if ($searchableInstance instanceof AbstractSearchable) {
+                if ((!$this->getVar("disable_{$searchableModule['name']}") && SecurityUtil::checkPermission('ZikulaSearchModule::Item', "{$searchableModule['name']}::", ACCESS_READ))) {
+                    $active = !isset($vars['active']) || (isset($vars['active'][$searchableModule['name']]) && ($vars['active'][$searchableModule['name']] == '1'));
+                    $plugin_options[$searchableModule['name']] = $searchableInstance->getOptions($active, $vars['modvar']);
+                }
+            }
+        }
+
+        // Create output object
+        // add content to template
+        $this->view->assign($vars)
+                   ->assign('plugin_options', $plugin_options);
+
+        // Return the output that has been generated by this function
+        return $this->response($this->view->fetch('User/form.tpl'));
+
     }
 
     /**
+     * @Route("/results/{page}", requirements={"page"="\d+"})
+     *
      * Perform the search then show the results
      *
      * This function includes all the search plugins, then call every one passing
@@ -179,7 +169,7 @@ class UserController extends \Zikula_AbstractController
      * @throws \InvalidArgumentException Thrown if no search query parameters were provided
      * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
      */
-    public function searchAction()
+    public function searchAction(Request $request, $page = -1)
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
@@ -188,48 +178,34 @@ class UserController extends \Zikula_AbstractController
 
         // get parameter from HTTP input
         $vars = array();
-        $vars['q'] = strip_tags($this->request->request->get('q', $this->request->query->get('q', '')));
-        $vars['searchtype'] = $this->request->request->get('searchtype', SessionUtil::getVar('searchtype'));
-        $vars['searchorder'] = $this->request->request->get('searchorder', SessionUtil::getVar('searchorder'));
+        $vars['q'] = $request->request->get('q');
+        $vars['searchtype'] = $request->request->get('searchtype', 'AND');
+        $vars['searchorder'] = $request->request->get('searchorder', 'newest');
         $vars['numlimit'] = $this->getVar('itemsperpage', 25);
-        $vars['page'] = (int)$this->request->request->get('page', $this->request->query->get('page', 1));
 
         // $firstpage is used to identify the very first result page
         // - and to disable calls to plugins on the following pages
-        $vars['firstPage'] = empty($_REQUEST['page']);
+        $vars['firstPage'] = $page < 1;
+        $vars['page'] = $page < 1 ? 1 : $page;
 
         // The modulename exists in this array as key, if the checkbox was filled
-        $vars['active'] = $this->request->request->get('active', SessionUtil::getVar('searchactive'));
-
-        // All formular data from the modules search plugins is contained in:
-        $vars['modvar'] = $this->request->request->get('modvar', SessionUtil::getVar('searchmodvar'));
-
-        if (empty($vars['q'])) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! You did not enter any keywords to search for.'));
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'form')));
-        }
-
-        // set some defaults
-        if (!isset($vars['searchtype']) || empty($vars['searchtype'])) {
-            $vars['searchtype'] = 'AND';
-        } else {
-            SessionUtil::setVar('searchtype', $vars['searchtype']);
-        }
-        if (!isset($vars['searchorder']) || empty($vars['searchorder'])) {
-            $vars['searchorder'] = 'newest';
-        } else {
-            SessionUtil::setVar('searchorder', $vars['searchorder']);
-        }
+        $vars['active'] = $request->request->get('active');
         if (!isset($vars['active']) || !is_array($vars['active']) || empty($vars['active'])) {
             $vars['active'] = array();
-        } else {
-            SessionUtil::setVar('searchactive', $vars['active']);
         }
+
+        // All formular data from the modules search plugins is contained in:
+        $vars['modvar'] = $request->request->get('modvar');
         if (!isset($vars['modvar']) || !is_array($vars['modvar']) || empty($vars['modvar'])) {
             $vars['modvar'] = array();
-        } else {
-            SessionUtil::setVar('searchmodvar', $vars['modvar']);
         }
+
+        if (empty($vars['q']) && $vars['firstPage']) {
+            $request->getSession()->getFlashBag()->add('error', $this->__('Error! You did not enter any keywords to search for.'));
+
+            return new RedirectResponse($this->get('router')->generate('zikulasearchmodule_user_form'));
+        }
+
 
         /*
         // FIXME: Cannot cache correctly while do not know
@@ -255,6 +231,20 @@ class UserController extends \Zikula_AbstractController
 
         $result = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'search', $vars);
 
+        if ($result['resultCount'] == 0) {
+            $request->getSession()->getFlashBag()->add('error', "
+{$this->__('No search results found. You can try the following:')}
+<ul>
+    <li>{$this->__('Check that you spelled all words correctly.')}</li>
+    <li>{$this->__('Use different keywords.')}</li>
+    <li>{$this->__('Use keywords that are more general.')}</li>
+    <li>{$this->__('Use fewer words.')}</li>
+</ul>"
+            );
+
+            return $this->forward($request, 'form', $vars, array('no-result' => true));
+        }
+
         // Get number of chars to display in search summaries
         $limitsummary = $this->getVar('limitsummary');
         if (empty($limitsummary)) {
@@ -263,7 +253,6 @@ class UserController extends \Zikula_AbstractController
 
         $this->view->assign('resultcount', $result['resultCount'])
                    ->assign('results', $result['sqlResult'])
-                   ->assign($this->getVars())
                    ->assign($vars)
                    ->assign('limitsummary', $limitsummary);
         if (isset($result['errors'])) {
@@ -276,17 +265,19 @@ class UserController extends \Zikula_AbstractController
         }
 
         // Return the output that has been generated by this function
-        return $this->view->fetch('User/results.tpl');
+        return $this->response($this->view->fetch('User/results.tpl'));
     }
 
     /**
-     * display a list of recent searches
+     * @Route("/recent-searches")
+     *
+     * Display a list of recent searches
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have read access to the module or no user is logged in
      */
-    public function recentAction()
+    public function recentAction(Request $request)
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ) || !UserUtil::isLoggedIn()) {
@@ -294,12 +285,12 @@ class UserController extends \Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need.
-        $startnum = $this->request->query->filter('startnum', 1, false, FILTER_VALIDATE_INT);
+        $startnum = $request->query->filter('startnum', 1, false, FILTER_VALIDATE_INT);
 
         // we need this value multiple times, so we keep it
-        $itemsperpage = $this->getVar('itemsperpage');
+        // Fix it to 20 as long as there isn't a pager built in.
+        $itemsperpage = 20; //$this->getVar('itemsperpage');
 
-        // get the
         $items = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getall', array('startnum' => $startnum, 'numitems' => $itemsperpage, 'sortorder' => 'date'));
 
         // assign the results to the template
@@ -311,13 +302,13 @@ class UserController extends \Zikula_AbstractController
                                            'itemsperpage' => $itemsperpage));
 
         // Return the output that has been generated by this function
-        return $this->view->fetch('User/recent.tpl');
+        return $this->response($this->view->fetch('User/recent.tpl'));
     }
 
     /**
-     * Generate xml for opensearch syndication
+     * @Route("/opensearch", options={"i18n"=false})
      *
-     * @return void
+     * Generate xml for opensearch syndication
      *
      * @throws AccessDeniedException Thrown if the user doesn't have read access to the module
      */
@@ -327,25 +318,24 @@ class UserController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-        $sitename = DataUtil::formatForDisplay(System::getVar('sitename'));
+        return new PlainResponse($this->view->fetch('User/opensearch.xml'), Response::HTTP_OK, array("Content-Type" => "text/xml"));
+    }
 
-        header("Content-Type:text/xml");
-        echo
-            '<?xml version="1.0" encoding="UTF-8"?>
-            <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-                <ShortName>' . $sitename . '</ShortName>
-                <Description>' . DataUtil::formatForDisplay(System::getVar('slogan')) . '</Description>
-                <Tags>' . DataUtil::formatForDisplay(System::getVar('metakeywords')) . '</Tags>
-                <Contact>' . DataUtil::formatForDisplay(System::getVar('adminmail')) . '</Contact>
-                <Url type="text/html" template="' . DataUtil::formatForDisplay(ModUtil::url($this->name, 'user', 'search', array('q' => '{searchTerms}', 'page' => '{startPage?}'), null, null, true)) . '"/>
-                <LongName>' . $sitename . ' ' . $this->__('Search') . '</LongName>
-                <Attribution>Search data Copyright ' . date('Y') . ', ' . $sitename . DataUtil::formatForDisplay($this->__(', All Rights Reserved')) .'</Attribution>
-                <SyndicationRight>open</SyndicationRight>
-                <AdultContent>' . (int)$this->getVar('opensearch_adult_content') . '</AdultContent>
-                <Language>' . ZLanguage::getLanguageCode() . '</Language>
-                <OutputEncoding>UTF-8</OutputEncoding>
-                <InputEncoding>UTF-8</InputEncoding>
-            </OpenSearchDescription>';
-        exit;
+    /**
+     * Forwards the request to another action of this controller.
+     *
+     * @param Request $request
+     * @param         $action  The action to forwards to.
+     * @param array   $get     Array of GET parameters.
+     * @param array   $post    Array of POST parameters.
+     *
+     * @return mixed
+     */
+    private function forward(Request $request, $action, $get = array(), $post = array())
+    {
+        $path = array('_controller' => 'ZikulaSearchModule:User:' . $action);
+        $subRequest = $request->duplicate($get, $post, $path);
+
+        return $this->get('http_kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }
 }

@@ -254,7 +254,7 @@ function smarty_function_pager($params, Zikula_View $view)
     
     $pagerUrl = function ($pager) use ($view) {
         if (!$pager['route']) {
-            return $pagerUrl($pager);
+            return ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']);
         }
         return $view->getContainer()->get('router')->generate($pager['route'], $pager['args']);
     };

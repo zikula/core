@@ -11,9 +11,9 @@
         </tr>
     </thead>
     <tbody>
-        {foreach from=$recentsearches item=recentsearch}
+        {foreach from=$recentsearches item='recentsearch'}
         <tr>
-            <td><a href="{modurl modname='ZikulaSearchModule' type='user' func='search' q=$recentsearch.search|urlencode}">{$recentsearch.search|replace:' ':', '|safetext}</a></td>
+            <td><a href="{route name='zikulasearchmodule_user_search' q=$recentsearch.search}">{$recentsearch.search|replace:' ':', '|safetext}</a></td>
             <td>{$recentsearch.count|safetext}</td>
             <td>{$recentsearch.date->getTimestamp()|date_format}</td>
         </tr>
