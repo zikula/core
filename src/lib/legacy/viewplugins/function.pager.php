@@ -101,7 +101,17 @@ function smarty_function_pager($params, Zikula_View $view)
 
     // current position
     $pager['posvar'] = (isset($params['posvar']) ? $params['posvar'] : 'pos');
-    $pager['pos'] = (int)$view->getRequest()->query->get($pager['posvar'], '');
+
+    if ($view->getRequest()->attributes->has('_route_params')) {
+        $routeParams = $view->getRequest()->attributes->get('_route_params');
+        if (isset($routeParams[$pager['posvar']])) {
+            $pager['pos'] = (int)($routeParams[$pager['posvar']]);
+        } else {
+            $pager['pos'] = (int)$view->getRequest()->query->get($pager['posvar'], '');
+        }
+    } else {
+        $pager['pos'] = (int)$view->getRequest()->query->get($pager['posvar'], '');
+    }
     if ($params['display'] == 'page') {
         $pager['pos'] = $pager['pos'] * $pager['perpage'];
         $pager['increment'] = 1;
