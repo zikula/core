@@ -16,7 +16,7 @@
 </h3>
 
 {if $enablefilter eq true}
-<form class="form-inline" role="form" action="{modurl modname=Permissions type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-inline" role="form" action="{route name='zikulapermissionsmodule_admin_view'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <legend>{gt text="Filter permission rules list"}</legend>
@@ -42,9 +42,6 @@
 </form>
 {/if}
 
-
-
-
 <table id="permission-list" class="table table-striped">
     <thead>
         <tr>
@@ -69,7 +66,7 @@
         </tr>
     </thead>
     <tbody>
-        {foreach item=permission from=$permissions}
+        {foreach item='permission' from=$permissions}
         <tr{if $lockadmin && $adminid == $permission.permid} class="warning"{/if} data-id="{$permission.permid}">
 
             <td style="width:1px;white-space:nowrap;">
@@ -86,7 +83,7 @@
                 {/if}
                 {/strip}
 
-                <i class="fa fa-arrows ajax hide"></i>
+                <i class="fa fa-arrows ajax hidden"></i>
                 {/if}
 
             </td>
@@ -110,7 +107,7 @@
     </tbody>
 </table>
 
-<form id="testpermform" class="form-horizontal" role="form" action="{modurl modname=permissions type=admin func=view}" method="post">
+<form id="testpermform" class="form-horizontal" role="form" action="{route name='zikulapermissionsmodule_admin_view'}" method="post">
     <fieldset>
         <legend>{gt text="User permission check"}</legend>
         <div class="form-group">

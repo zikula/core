@@ -7,7 +7,7 @@
     {$templatetitle}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Permissions" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulapermissionsmodule_admin_updateconfig'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
         <fieldset>
@@ -66,7 +66,7 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                <a class="btn btn-danger" href="{modurl modname=Permissions type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulapermissionsmodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
 
