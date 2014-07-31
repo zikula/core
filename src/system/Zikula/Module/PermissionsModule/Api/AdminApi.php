@@ -50,7 +50,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Argument check
-        if (!isset($args['pid']) || is_numeric($args['pid'])) {
+        if (!isset($args['pid']) || !is_numeric($args['pid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -99,10 +99,10 @@ class AdminApi extends \Zikula_AbstractApi
             $altpid = $d_permission['pid'];
 
             // swap sequence numbers
-            $perm1 = $this->entityManager->find('ZikulaPermissionsModule:Permission', $altpid);
+            $perm1 = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $altpid);
             $perm1['sequence'] = $sequence;
 
-            $perm2 = $this->entityManager->find('ZikulaPermissionsModule:Permission', $args['pid']);
+            $perm2 = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $args['pid']);
             $perm2['sequence'] = $altsequence;
 
             $this->entityManager->flush();
@@ -133,7 +133,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Argument check
-        if (!isset($args['pid']) || is_numeric($args['pid'])) {
+        if (!isset($args['pid']) || !is_numeric($args['pid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -295,7 +295,7 @@ class AdminApi extends \Zikula_AbstractApi
             // Increase sequence numbers
             $query = $this->entityManager->createQueryBuilder()
                                          ->update('ZikulaPermissionsModule:PermissionEntity', 'p')
-                                         ->set('p.sequence = p.sequence + 1')
+                                         ->set('p.sequence', 'p.sequence + 1')
                                          ->where('p.sequence >= :insseq')
                                          ->setParameter('insseq', $args['insseq'])
                                          ->getQuery();
@@ -567,9 +567,7 @@ class AdminApi extends \Zikula_AbstractApi
             $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit', array('action' => 'add')), 'text' => $this->__('Create new permission rule'), 'icon' => 'plus', 'id' => 'new-permission');
         }
 
-        if (ModUtil::getName() == 'ZikulaPermissionsModule') {
-            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'icon' => 'info', 'id' => 'view-instance-info');
-        }
+        $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'icon' => 'info', 'id' => 'view-instance-info');
 
         if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'permissions_modifyconfig', 'icon' => 'wrench');

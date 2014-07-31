@@ -4,11 +4,20 @@ $(document).ready(function() {
 
 /* --- init --------------------------------------------------------------------------------------------------------- */
 /* hide no ajax fallback - show ajax */
-$('.ajax').removeClass('hide');
-$('.no-script').addClass('hide');
+$('.ajax').removeClass('hidden');
+$('.no-script').addClass('hidden');
 
 var $sortable = $('#permission-list > tbody');
+
+// Return a helper with preserved width of cells
+var fixHelper = function(e, ui) {
+    ui.children().each(function() {
+        jQuery(this).css({width: jQuery(this).width()});
+    });
+    return ui;
+};
 $sortable.sortable({
+    helper: fixHelper,
     items: "tr:not(.warning)",
     update: function( event, ui ) {
         var parameters = [];
@@ -19,7 +28,7 @@ $sortable.sortable({
         });
 
         $.ajax({
-            url: Zikula.Config.baseURL + 'index.php?module=Permissions&type=ajax&func=changeorder',
+            url: Routing.generate("zikulapermissionsmodule_ajax_changeorder"),
             dataType: "json",
             type: 'POST',
             data: {
@@ -54,13 +63,13 @@ $('#test-permission').click( function(event) {
     var $permissionTestInfo = $('#permission-test-info');
     $permissionTestInfo.text($permissionTestInfo.data('testing'));
     var vars = {
-        test_user: $('#test_iser').val(),
+        test_user: $('#test_user').val(),
         test_component: $('#test_component').val(),
         test_instance: $('#test_instance').val(),
         test_level: $('#test_level').val()
     };
     $.ajax({
-        url: Zikula.Config.baseURL + 'index.php?module=Permissions&type=ajax&func=testpermission',
+        url: Routing.generate("zikulapermissionsmodule_ajax_test"),
         dataType: "json",
         type: 'POST',
         data: vars,
@@ -101,7 +110,7 @@ $('#save-permission-changes').click( function() {
     };
 
     $.ajax({
-        url: Zikula.Config.baseURL + 'index.php?module=Permissions&type=ajax&func=updatepermission',
+        url: Routing.generate("zikulapermissionsmodule_ajax_update"),
         dataType: "html",
         type: 'POST',
         data: vars,
@@ -128,7 +137,7 @@ $(document).on('click', '.delete-permission', function(event) {
 /* Delete a permission */
 $('#confirm-delete-permission').click( function() {
     $.ajax({
-        url: Zikula.Config.baseURL + 'index.php?module=Permissions&type=ajax&func=deletepermission',
+        url: Routing.generate("zikulapermissionsmodule_ajax_delete"),
         type: 'POST',
         data: {pid: currentDelete.data('id')},
         success: function() {
@@ -169,7 +178,7 @@ $('#save-new-permission').click( function() {
     };
 
     $.ajax({
-        url: Zikula.Config.baseURL + 'index.php?module=Permissions&type=ajax&func=createpermission',
+        url: Routing.generate("zikulapermissionsmodule_ajax_create"),
         dataType: "json",
         type: 'POST',
         data: vars,
