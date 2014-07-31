@@ -53,7 +53,7 @@ class UserApi extends \Zikula_AbstractApi
     public function search($args)
     {
         // query string and firstPage params are required
-        if (!isset($args['q']) || empty($args['q']) || !isset($args['firstPage'])) {
+        if (!isset($args['firstPage']) || ($args['firstPage'] && (!isset($args['q']) || empty($args['q'])))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
         $vars = array();
@@ -71,7 +71,6 @@ class UserApi extends \Zikula_AbstractApi
         // work out row index from page number
         $vars['startnum'] = $vars['numlimit'] > 0 ? (($vars['page'] - 1) * $vars['numlimit']) + 1 : 1;
 
-        $userId = (int)UserUtil::getVar('uid');
         $sessionId = session_id();
 
         // Do all the heavy database stuff on the first page only
@@ -150,18 +149,18 @@ class UserApi extends \Zikula_AbstractApi
 
         // Fetch search result - do sorting and paging in database
         // Figure out what to sort by
+        $sort = 'title';
+        $dir = 'ASC';
         switch ($args['searchorder']) {
             case 'alphabetical':
-                $sort = 'title';
+            default:
                 break;
             case 'oldest':
                 $sort = 'created';
                 break;
             case 'newest':
-                $sort = 'created DESC';
-                break;
-            default:
-                $sort = 'title';
+                $sort = 'created';
+                $dir = 'DESC';
                 break;
         }
 
@@ -176,7 +175,7 @@ class UserApi extends \Zikula_AbstractApi
                                      ->from('ZikulaSearchModule:SearchResultEntity', 's')
                                      ->where('s.sesid = :sid')
                                      ->setParameter('sid', $sessionId)
-                                     ->orderBy('s.created', 'ASC')
+                                     ->orderBy("s.$sort", $dir)
                                      ->setMaxResults($vars['numlimit'])
                                      ->setFirstResult($vars['startnum'] - 1)
                                      ->getQuery();
@@ -333,116 +332,6 @@ class UserApi extends \Zikula_AbstractApi
     }
 
     /**
-     * Form custom url string.
-     *
-     * @param mixed[] $args {
-     *      @type string $modname name of the module
-     *      @type string $type    type of the function
-     *      @type string $func    name of the function
-     *      @type array  $args    additional arguments for the function
-     *                      }
-     *
-     * @return string custom url string
-     *
-     * @throws \InvalidArgumentException Thrown if either modname, func or args isn't provided or if
-     *                                          type isn't provided or isn't 'user'
-     */
-    public function encodeurl($args)
-    {
-        // check we have the required input
-        if (!isset($args['modname']) || !isset($args['func']) || !isset($args['args'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        }
-
-        if (!isset($args['type']) || empty($args['type'])) {
-            $args['type'] = 'user';
-        } elseif (!is_string($args['type']) || ($args['type'] != 'user')) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        }
-
-        if (empty($args['func'])) {
-            $args['func'] = 'index';
-        }
-
-        // rename the search function to avoid conflicts
-        // with the module name and default shortURL module
-        if ($args['func'] == 'search') {
-            $args['func'] = 'process';
-        }
-
-        // create an empty string ready for population
-        $vars = '';
-
-        // for the display function use either the title (if present) or the page id
-        if ($args['func'] == 'process' && isset($args['args']['q']) && !empty($args['args']['q'])) {
-            $vars = '/' . $args['args']['q'];
-            if (isset($args['args']['page']) && $args['args']['page'] != 1) {
-                $vars .= '/page/' . $args['args']['page'];
-            }
-        }
-
-        // construct the custom url part
-        if (empty($vars) && isset($args['args']['startnum']) && !empty($args['args']['startnum'])) {
-            return $args['modname'] . '/' . $args['func'] . '/' . $args['args']['startnum'];
-        } else {
-            return $args['modname'] . (!empty($vars) || $args['func'] != 'index' ? '/' . $args['func'] . $vars : '');
-        }
-    }
-
-    /**
-     * Decode the custom url string.
-     *
-     * @param mixed[] $args {
-     *      @type array $vars url variables
-     *                      }
-     *
-     * @return bool true if successful
-     *
-     * @throws \InvalidArgumentException Thrown if the vars parameter isn't provided
-     */
-    public function decodeurl($args)
-    {
-        // check we actually have some vars to work with...
-        if (!isset($args['vars'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        }
-
-        System::queryStringSetVar('type', 'user');
-
-        // define the available user functions
-        $funcs = array('index', 'form', 'search', 'process', 'recent', 'opensearch');
-        // set the correct function name based on our input
-        if (empty($args['vars'][2])) {
-            // Retain this for BC for older URLs that might be stored
-            System::queryStringSetVar('func', 'index');
-        } elseif (!in_array($args['vars'][2], $funcs)) {
-            System::queryStringSetVar('func', 'index');
-            $nextvar = 2;
-        } else {
-            if ($args['vars'][2] == 'process') {
-                $args['vars'][2] = 'search';
-            }
-            System::queryStringSetVar('func', $args['vars'][2]);
-            $nextvar = 3;
-        }
-
-        if ($this->request->query->get('func') == 'recent' && isset($args['vars'][$nextvar])) {
-            System::queryStringSetVar('startnum', $args['vars'][$nextvar]);
-        }
-
-        // identify the correct parameter to identify the page
-        if ($this->request->query->get('func') == 'search' && isset($args['vars'][$nextvar]) && !empty($args['vars'][$nextvar])) {
-            System::queryStringSetVar('q', $args['vars'][$nextvar]);
-            $nextvar++;
-            if (isset($args['vars'][$nextvar]) && $args['vars'][$nextvar] == 'page' && isset($args['vars'][$nextvar + 1])) {
-                System::queryStringSetVar('page', (int)$args['vars'][$nextvar + 1]);
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Splits the query string into words suitable for a SQL query.
      *
      * This function is ported 'as is' from the old, nonAPI, module
@@ -542,13 +431,13 @@ class UserApi extends \Zikula_AbstractApi
         $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
 
         if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'admin', 'index'), 'text' => $this->__('Backend'), 'icon' => 'wrench');
+            $links[] = array('url' => $this->get('router')->generate('zikulasearchmodule_admin_index'), 'text' => $this->__('Backend'), 'icon' => 'wrench');
         }
 
         if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'index', array()), 'text' => $this->__('New search'), 'icon' => 'search');
+            $links[] = array('url' => $this->get('router')->generate('zikulasearchmodule_user_form'), 'text' => $this->__('New search'), 'icon' => 'search');
             if ((count($search_modules) > 0) && UserUtil::isLoggedIn()) {
-                $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'recent', array()), 'text' => $this->__('Recent searches list'), 'icon' => 'list');
+                $links[] = array('url' => $this->get('router')->generate('zikulasearchmodule_user_recent'), 'text' => $this->__('Recent searches list'), 'icon' => 'list');
             }
         }
 

@@ -1,0 +1,3 @@
+zikulasearchmodule:
+    resource: "@ZikulaSearchModule/Controller"
+    type:     annotation

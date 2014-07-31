@@ -12,6 +12,7 @@
     <services>
         <service id="zikulasearchmodule.front_controller_listener" class="%zikulasearchmodule.front_controller_listener.class%">
             <tag name="kernel.event_subscriber" />
+            <argument type="service" id="router" />
         </service>
         <service id="zikulasearchmodule.module_event_listener" class="%zikulasearchmodule.module_event_listener.class%">
             <tag name="kernel.event_subscriber" />
