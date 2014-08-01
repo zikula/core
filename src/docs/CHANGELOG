@@ -2,6 +2,7 @@ CHANGELOG - ZIKULA 1.3.8
 ------------------------
 
 - Updated Smarty to v2.6.28
+- Added output sanitizing for authentication module/method in login form
 
 CHANGELOG - ZIKULA 1.3.7
 ------------------------
