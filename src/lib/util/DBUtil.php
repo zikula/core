@@ -1399,6 +1399,8 @@ class DBUtil
                             $hasMath = (bool)(strcmp($fullColumnName, str_replace($search, $replace, $fullColumnName)));
                             if ($hasMath) {
                                 $fullColumnName = "'$left'";
+                            } elseif (!$hasTablePrefix) {
+                                $fullColumnName = "tbl.$fullColumnName";
                             }
                         } else {
                             if (!$hasTablePrefix) {
