@@ -34,6 +34,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
+        "rhumsaa/array_column": "~1.1",
         "beberlei/DoctrineExtensions": "dev-master",
         "doctrine/doctrine-bundle": "~1.2",
         "doctrine/orm": ">=2.2.3,<2.5-dev",
