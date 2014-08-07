@@ -834,7 +834,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             if (strpos($auto_source, 'file:') === 0) {
                 // This is an absolute path needing special handling.
                 $auto_source = substr($auto_source, 5);
-                $cwd = DataUtil::formatForOS(getcwd());
+                $cwd = DataUtil::formatForOS(getcwd(), true);
                 if (strpos($auto_source, $cwd) !== 0) {
                     throw new \RuntimeException('The template path cannot be outside the Zikula root.');
                 }
