@@ -42,7 +42,7 @@
  *  includeStylesheet  Use predefined stylesheet file? Default is yes.
  *  anchorText         Optional text for hyperlink anchor (e.g. 'comments' for the anchor #comments) (default: '')
  *  maxpages           Optional maximum number of displayed pages, others will be hidden / suppressed
- *                       (default: 0 = show all pages)
+ *                       (default: 15 = show only 15 pages)
  *  display            Optional choice between 'page' or 'startnum'. Show links using page number or starting item number (default is startnum)
  *  class              Optional class to apply to the pager container (default : z-pager)
  *  processDetailLinks Should the single page links be processed? (default: false if using pagerimage.tpl, otherwise true)
@@ -90,11 +90,11 @@ function smarty_function_pager($params, Zikula_View $view)
     if (!isset($params['owner'])) {
         $params['owner'] = false;
     }
-    
+
     if (!isset($params['includePostVars'])) {
         $params['includePostVars'] = true;
     }
-    
+
     if (!isset($params['route'])) {
         $params['route'] = false;
     }
@@ -152,7 +152,7 @@ function smarty_function_pager($params, Zikula_View $view)
     $template = (isset($params['template'])) ? $params['template'] : 'pagercss.tpl';
     $pager['includeStylesheet'] = isset($params['includeStylesheet']) ? $params['includeStylesheet'] : true;
     $anchorText = (isset($params['anchorText']) ? '#' . $params['anchorText'] : '');
-    $pager['maxPages'] = (isset($params['maxpages']) ? $params['maxpages'] : 0);
+    $pager['maxPages'] = (isset($params['maxpages']) ? $params['maxpages'] : 15);
     unset($params['template']);
     unset($params['anchorText']);
     unset($params['maxpages']);
@@ -167,7 +167,7 @@ function smarty_function_pager($params, Zikula_View $view)
 
     $pager['func'] = isset($params['func']) ? $params['func'] : FormUtil::getPassedValue('func', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
     $pager['type'] = isset($params['type']) ? $params['type'] : FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
-    
+
     $pager['route'] = $params['route'];
 
     $pager['args'] = array();
@@ -251,7 +251,7 @@ function smarty_function_pager($params, Zikula_View $view)
     unset($params['type']);
     unset($params['func']);
     unset($params['route']);
-    
+
     $pagerUrl = function ($pager) use ($view) {
         if (!$pager['route']) {
             return ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']);
@@ -323,9 +323,9 @@ function smarty_function_pager($params, Zikula_View $view)
     }
 
     if ($params['display'] == 'page') {
-         $pager['prev'] = ($pager['currentPage'] - 1);
+        $pager['prev'] = ($pager['currentPage'] - 1);
     } else {
-         $pager['prev'] = ($pager['currentPage'] - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
+        $pager['prev'] = ($leftMargin - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
     }
     $pager['args'][$pager['posvar']] = $pager['prev'];
     if ($params['processUrls']) {
@@ -336,9 +336,9 @@ function smarty_function_pager($params, Zikula_View $view)
 
     // link to next & last page
     if ($params['display'] == 'page') {
-         $pager['next'] = $pager['currentPage'] + 1;
+        $pager['next'] = $pager['currentPage'] + 1;
     } else {
-         $pager['next'] = $pager['currentPage'] * $pager['perpage'] + 1;
+        $pager['next'] = $rightMargin * $pager['perpage'] + 1;
     }
     $pager['args'][$pager['posvar']] = $pager['next'];
     if ($params['processUrls']) {
