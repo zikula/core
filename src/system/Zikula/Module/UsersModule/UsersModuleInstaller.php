@@ -109,6 +109,13 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
                 }
             case '2.2.3':
                 // Nothing to do.
+            case '2.2.4':
+                $connection = $this->entityManager->getConnection();
+                $sql ="UPDATE users_attributes SET value='gravatar.jpg' WHERE value='gravatar.gif'";
+                $stmt = $connection->prepare($sql);
+                $stmt->execute();
+            case '2.2.5':
+                // current version
         }
         
         /**
