@@ -1291,7 +1291,11 @@ class UserController extends \Zikula_AbstractController
                         //
                         // The chosen authentication method might be reentrant, and this is the point were the user might be directed
                         // outside the Zikula system for external authentication.
-                        $user = UserUtil::authenticateUserUsing($selectedAuthenticationMethod, $authenticationInfo, $reentrantUrl, true);
+                        try {
+                            $user = UserUtil::authenticateUserUsing($selectedAuthenticationMethod, $authenticationInfo, $reentrantUrl, true);
+                        } catch (AccessDeniedException $e) {
+                            $this->request->getSession()->getFlashBag()->set('error', $e->getMessage());
+                        }
 
                         // Did we get a good user? If so, then we can proceed to hook validation.
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
