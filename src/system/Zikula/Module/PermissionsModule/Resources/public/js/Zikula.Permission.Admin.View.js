@@ -199,9 +199,10 @@ var currentDelete, currentInsertBefore;
                         '<td id="permission-instance-' + data.pid + '">' + data.instance + '</td>' +
                         '<td id="permission-level-' + data.pid + '" data-id="' + data.level + '">' + data.levelname + '</td>' +
                         '<td class="actions">' +
-                        '<i class="fa fa-pencil  edit-permission   pointer" title="' + $('.edit-permission').first().attr('title') + '"></i> ' +
-                        '<i class="fa fa-trash-o delete-permission pointer" title="' + $('.delete-permission').first().attr('title') + '"></i> ' +
-                        '<i class="fa fa-key test-permission pointer" title="' + $('.test-permission').first().attr('title') + '"></i>' +
+                        '<a class="fa fa-plus pointer insertBefore create-new-permission tooltips" href="#" title="' + $('.create-new-permission').first().attr('title') + '"></a> ' +
+                        '<a class="fa fa-pencil pointer edit-permission tooltips" href="#" title="' + $('.edit-permission').first().attr('title') + '"></a> ' +
+                        '<a class="fa fa-trash-o delete-permission tooltips" href="#" title="' + $('.delete-permission').first().attr('title') + '"></a> ' +
+                        '<i class="fa fa-key test-permission pointer ajax tooltips" title="' + $('.test-permission').first().attr('title') + '"></i>' +
                         '</td>' +
                         '</tr>';
 
