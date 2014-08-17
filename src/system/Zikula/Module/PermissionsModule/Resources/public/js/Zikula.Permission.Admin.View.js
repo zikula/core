@@ -83,6 +83,7 @@ var currentDelete, currentInsertBefore;
         /* Open modal to edit permission */
         $(document).on('click', '.edit-permission', function (event) {
             event.preventDefault();
+            $(this).addClass('fa-spin');
             var id = $(this).parent().parent().data('id');
             $('#permission-id').val(id);
             $('#permission-component').val($('#permission-component-' + id).text());
@@ -93,7 +94,7 @@ var currentDelete, currentInsertBefore;
             $('#save-permission-changes').show();
             $('#save-new-permission').hide();
 
-            $('#editModal').modal()
+            $('#editModal').modal();
         });
 
         /* Save permission changes */
@@ -131,6 +132,7 @@ var currentDelete, currentInsertBefore;
         /* Open modal  */
         $(document).on('click', '.delete-permission', function (event) {
             event.preventDefault();
+            $(this).addClass('fa-spin');
             currentDelete = $(this).parent().parent();
             $('#deleteModal').modal();
         });
@@ -151,13 +153,14 @@ var currentDelete, currentInsertBefore;
         /* Open modal */
         $('#view-instance-info').click(function (event) {
             event.preventDefault();
-            $('#instanceInfoModal').modal()
+            $('#instanceInfoModal').modal();
         });
 
         /* --- Add new permission ------------------------------------------------------------------------------------------- */
         /* Open modal */
         $('.create-new-permission').click(function (event) {
             event.preventDefault();
+            $(this).addClass('fa-spin');
             currentInsertBefore = $(this).hasClass('insertBefore') ? $(this).parent().parent() : null;
             $('#save-permission-changes').hide();
             $('#save-new-permission').show();
@@ -167,7 +170,7 @@ var currentDelete, currentInsertBefore;
             $('#permission-group').val(-1);
             $('#permission-level').val(0);
 
-            $('#editModal').modal()
+            $('#editModal').modal();
         });
 
         /* Save new permission */
@@ -255,7 +258,12 @@ var currentDelete, currentInsertBefore;
         $('#reset-filter').click(function () {
             $('#filter-component').val(-1);
             $('#filter-group').val(-1).trigger("change");
-        })
+        });
+
+        // on modal close, stop all spinning icons
+        $('.modal').on('hidden.bs.modal', function (e) {
+            $('.fa').removeClass('fa-spin');
+        });
 
     });
 })(jQuery);
