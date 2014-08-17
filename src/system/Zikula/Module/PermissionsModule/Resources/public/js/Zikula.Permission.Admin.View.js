@@ -1,4 +1,4 @@
-var currentDelete;
+var currentDelete, currentInsertBefore;
 ( function($) {
 $(document).ready(function() {
 
@@ -156,8 +156,9 @@ $('#view-instance-info').click( function(event) {
 
 /* --- Add new permission ------------------------------------------------------------------------------------------- */
 /* Open modal */
-$('#new-permission').click( function(event) {
+$('.create-new-permission').click( function(event) {
     event.preventDefault();
+    currentInsertBefore = $(this).hasClass('insertBefore') ? $(this).parent().parent() : null;
     $('#save-permission-changes').hide();
     $('#save-new-permission').show();
 
@@ -175,7 +176,8 @@ $('#save-new-permission').click( function() {
         group: $('#permission-group').val(),
         component: $('#permission-component').val(),
         level: $('#permission-level').val(),
-        instance: $('#permission-instance').val()
+        instance: $('#permission-instance').val(),
+        insseq: (currentInsertBefore) ? currentInsertBefore.data('id') : -1
     };
 
     $.ajax({
@@ -186,9 +188,7 @@ $('#save-new-permission').click( function() {
         success: function(result) {
 
             var data = result.data;
-
-            $('#permission-list').append(
-                '<tr data-id="'+data.pid+'">'+
+            var row = '<tr data-id="'+data.pid+'">'+
                 '<td><i class="fa fa-arrows"></i></td>'+
                 '<td>'+data.pid+'</td>'+
                 '<td id="permission-group-'+data.pid+'" data-id="'+data.gid+'">'+data.groupname+'</td>'+
@@ -200,12 +200,19 @@ $('#save-new-permission').click( function() {
                 '<i class="fa fa-trash-o delete-permission pointer" title="'+$('.delete-permission').first().attr('title')+'"></i> '+
                 '<i class="fa fa-key test-permission pointer" title="'+$('.test-permission').first().attr('title')+'"></i>'+
                 '</td>'+
-                '</tr>'
-            );
+                '</tr>';
 
-            $('html, body').animate({
-                scrollTop: $('#permission-group-'+data.pid).offset().top
-            }, 500);
+            // insert the new row either before selected row or at the end of the list
+            if (currentInsertBefore) {
+                currentInsertBefore.before(row);
+                currentInsertBefore = null;
+            } else {
+                $('#permission-list').append(row);
+                $('html, body').animate({
+                    scrollTop: $('#permission-group-'+data.pid).offset().top
+                }, 500);
+            }
+
         }
     });
 });
