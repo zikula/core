@@ -97,7 +97,7 @@
                 <a class="no-script fa fa-plus" href="{$permission.inserturl|safetext}" title="{gt text="Insert permission rule before"}"></a>
                 {if !$lockadmin || $adminid != $permission.permid}
                 <a class="no-script fa fa-pencil" href="{$permission.editurl|safetext}" title="{gt text="Edit"}"></a>
-                <i class="fa fa-pencil edit-permission pointer ajax hide" title="{gt text="Edit permission"}"></i>
+                <i class="fa fa-pencil edit-permission pointer ajax hidden" title="{gt text="Edit permission"}"></i>
                 <a class="fa fa-trash-o delete-permission" href="{$permission.deleteurl|safetext}" title="{gt text="Delete"}"></a>
                 {/if}
                 <i class="fa fa-key test-permission pointer ajax hide" title="{gt text="Check a users permission"}"></i>
