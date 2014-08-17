@@ -81,7 +81,8 @@ $('#test-permission').click( function(event) {
 
 /* --- edit permission ---------------------------------------------------------------------------------------------- */
 /* Open modal to edit permission */
-$(document).on('click', '.edit-permission', function() {
+$(document).on('click', '.edit-permission', function(event) {
+    event.preventDefault();
     var id = $(this).parent().parent().data('id');
     $('#permission-id').val(id);
     $('#permission-component').val($('#permission-component-'+id).text());
