@@ -170,15 +170,15 @@ function _htmlListExt($tree, $treeNodePrefix, $treeClassPrefix, $ext, $depth, $t
         $attr  = !empty($tab['item']['title']) ? ' title="'.$tab['item']['title'].'"' : '';
         $attr .= !empty($tab['item']['class']) ? ' class="'.$tab['item']['class'].'"' : '';
         if (!empty($tab['item']['href'])) {
-            $html .= '<a href="' . DataUtil::formatForDisplay($tab['item']['href']) . '"' . $attr . '>' . $tab['item']['name'] . '</a>';
-        } else {
-            if ($bootstrap && strpos($tab['item']['class'], 'dropdown') !== false) {
-                $html .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $tab['item']['name'] . ' <b class="caret"></b></a>';
+            if ($bootstrap && in_array('dropdown', $classes)) {
+                $html .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$tab['item']['name'].' <b class="caret"></b></a>';
             } else {
-                $html .= '<span' . $attr . '>' . $tab['item']['name'] . '</span>';
+                $html .= '<a href="'.DataUtil::formatForDisplay($tab['item']['href']).'"'.$attr.'>'.$tab['item']['name'].'</a>';
             }
+        } else {
+            $html .= '<span'.$attr.'>'.$tab['item']['name'].'</span>';
         }
-        $html .=!empty($tab['nodes']) ? _htmlListExt($tab['nodes'], $treeNodePrefix, $treeClassPrefix, $ext, $depth + 1, '', '', $bootstrap) : '';
+        $html .= !empty($tab['nodes']) ? _htmlListExt($tab['nodes'],$treeNodePrefix,$treeClassPrefix,$ext,$depth+1,'','',$bootstrap) : '';
         $html .= '</li>';
     }
 

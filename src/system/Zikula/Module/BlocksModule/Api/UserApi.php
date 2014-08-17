@@ -285,15 +285,10 @@ class UserApi extends \Zikula_AbstractApi
     public function encodebracketurl($url)
     {
         // allow a simple portable way to link to the home page of the site
-        if ($url == '{homepage}') {
+        if (empty($url) || $url == '{homepage}') {
             return htmlspecialchars(System::getHomepageUrl());
         }
-        
-        // allow empty url
-        if (empty($url)) {
-            return $url;
-        }
-        
+
         if (!preg_match('#\{(.*)\}#', $url, $matches)) {
             return $url;
         }
