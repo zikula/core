@@ -209,38 +209,12 @@ function smarty_function_pager($params, Zikula_View $view)
                         }
                         break;
                     case 'lang':
-                        $addcurrentlang2url = System::getVar('languageurl');
-                        if ($addcurrentlang2url == 0) {
+                        if (System::getVar('languageurl') == 0) {
                             $pager['args'][$k] =  $v;
                         }
                         break;
                     default:
-                        if (is_array($v)) {
-                            foreach ($v as $kk => $vv) {
-                                if (is_array($vv)) {
-                                    foreach ($vv as $kkk => $vvv) {
-                                        if (is_array($vvv)) {
-                                            foreach ($vvv as $kkkk => $vvvv) {
-                                                if (strlen($vvvv)) {
-                                                    $tkey = $k . '[' . $kk . '][' . $kkk . '][' . $kkkk . ']';
-                                                    $pager['args'][$tkey] = $vvvv;
-                                                }
-                                            }
-                                        } elseif (strlen($vvv)) {
-                                            $tkey = $k . '[' . $kk . '][' . $kkk . ']';
-                                            $pager['args'][$tkey] = $vvv;
-                                        }
-                                    }
-                                } elseif (strlen($vv)) {
-                                    $tkey = $k . '[' . $kk . ']';
-                                    $pager['args'][$tkey] =  $vv;
-                                }
-                            }
-                        } else {
-                            if (strlen($v)) {
-                                $pager['args'][$k] =  $v;
-                            }
-                        }
+                        $pager['args'][$k] =  $v;
                 }
             }
         }
