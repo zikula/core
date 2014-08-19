@@ -94,13 +94,12 @@
             <td id="permission-level-{$permission.permid}" data-id="{$permission.accesslevelid}">{$permission.accesslevel|safetext}</td>
 
             <td class="actions">
-                <a class="no-script fa fa-plus" href="{$permission.inserturl|safetext}" title="{gt text="Insert permission rule before"}"></a>
+                <a class="fa fa-plus pointer insertBefore create-new-permission tooltips" href="{$permission.inserturl|safetext}" title="{gt text="Insert permission rule before %s" tag1=$permission.permid}"></a>
                 {if !$lockadmin || $adminid != $permission.permid}
-                <a class="no-script fa fa-pencil" href="{$permission.editurl|safetext}" title="{gt text="Edit"}"></a>
-                <i class="fa fa-pencil edit-permission pointer ajax hidden" title="{gt text="Edit permission"}"></i>
-                <a class="fa fa-trash-o delete-permission" href="{$permission.deleteurl|safetext}" title="{gt text="Delete"}"></a>
+                <a class="fa fa-pencil pointer edit-permission tooltips" href="{$permission.editurl|safetext}" title="{gt text="Edit permission %s" tag1=$permission.permid}"></a>
+                <a class="fa fa-trash-o delete-permission tooltips" href="{$permission.deleteurl|safetext}" title="{gt text="Delete permission %s" tag1=$permission.permid}"></a>
                 {/if}
-                <i class="fa fa-key test-permission pointer ajax hide" title="{gt text="Check a users permission"}"></i>
+                <i class="fa fa-key test-permission pointer ajax hidden tooltips" title="{gt text="Check a users permission"}"></i>
             </td>
         </tr>
         {/foreach}
@@ -138,7 +137,7 @@
         </div>
         <div class="form-group">
             <div class="help-block col-lg-offset-3 col-lg-9" id="permission-test-info" data-testing="{gt text="Testing permission..."}">
-                {if $testresult <> ''}
+                {if $testresult != ''}
                 {gt text="Permission check result:"} {$testresult}
                 {else}
                 &nbsp;
@@ -197,9 +196,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{gt text="Close"}</button>
-                <button id="save-permission-changes" type="button" class="btn btn-primary" data-dismiss="modal">{gt text="Save changes"}</button>
-                <button id="save-new-permission" type="button" class="btn btn-primary" data-dismiss="modal">{gt text="Create"}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class='fa fa-times'></i> {gt text="Close"}</button>
+                <button id="save-permission-changes" type="button" class="btn btn-success" data-dismiss="modal"><i class='fa fa-check'></i> {gt text="Save changes"}</button>
+                <button id="save-new-permission" type="button" class="btn btn-success" data-dismiss="modal"><i class='fa fa-plus-square'></i> {gt text="Create new"}</button>
             </div>
         </div>
     </div>
