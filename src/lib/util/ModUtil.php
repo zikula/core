@@ -1368,28 +1368,12 @@ class ModUtil
         $shorturlsdefaultmodule = System::getVar('shorturlsdefaultmodule');
 
         // Don't encode URLs with escaped characters, like return urls.
-        foreach ($args as $v) {
-            if (!is_array($v)) {
-                if (strpos($v, '%') !== false) {
-                    $shorturls = false;
-                    break;
-                }
-            } else {
-                foreach ($v as $vv) {
-                    if (is_array($vv)) {
-                        foreach ($vv as $vvv) {
-                            if (!is_array($vvv) && strpos($vvv, '%') !== false) {
-                                $shorturls = false;
-                                break;
-                            }
-                        }
-                    } elseif (strpos($vv, '%') !== false) {
-                        $shorturls = false;
-                        break;
-                    }
-                }
-                break;
-            }
+        $containsEscapedChar = false;
+        array_walk_recursive($args, function ($key, $index) use (&$containsEscapedChar) {
+            $containsEscapedChar = $containsEscapedChar ? true : strpos($key, '%') !== false;
+        });
+        if ($containsEscapedChar) {
+           $shorturls = false;
         }
 
         // Setup the language code to use
@@ -1473,29 +1457,12 @@ class ModUtil
             if (!is_array($args)) {
                 return false;
             } else {
-                foreach ($args as $key => $value) {
-                    if (is_array($value)) {
-                        foreach ($value as $l => $w) {
-                            if (is_numeric($w) || !empty($w)) {
-                                // we suppress '', but allow 0 as value (see #193)
-                                if (is_array($w)) {
-                                    foreach ($w as $m => $n) {
-                                        if (is_numeric($n) || !empty($n)) {
-                                            $n    = strpos($n, '%') !== false ? $n : urlencode($n);
-                                            $url .= "&$key" . "[$l][$m]=$n";
-                                        }
-                                    }
-                                } else {
-                                    $w    = strpos($w, '%') !== false ? $w : urlencode($w);
-                                    $url .= "&$key" . "[$l]=$w";
-                                }
-                            }
-                        }
-                    } elseif (is_numeric($value) || !empty($value)) {
-                        // we suppress '', but allow 0 as value (see #193)
-                        $w    = strpos($value, '%') !== false ? $value : urlencode($value);
-                        $url .= "&$key=$value";
-                    }
+                $args = array_filter($args, function ($arg) {
+                    return is_numeric($arg) || !empty($arg);
+                });
+                $query = http_build_query($args);
+                if (!empty($query)) {
+                    $url .= "&$query";
                 }
             }
         }
