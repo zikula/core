@@ -2,6 +2,7 @@
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Doctrine\DBAL\Configuration;
@@ -125,7 +126,14 @@ class Bootstrap
                     $urlSecret = $parameters['parameters']['url_secret'];
 
                     // Only set module to active if the secret matches.
-                    return ($secret === $urlSecret);
+                    $turnActive = ($secret === $urlSecret);
+                    if ($turnActive) {
+                        // Make sure to clear the cache here, as the module becomes active which it wasn't before.
+                        $fs = new Filesystem();
+                        $fs->remove($kernel->getCacheDir());
+                    }
+
+                    return $turnActive;
                 } else {
                     return false;
                 }
