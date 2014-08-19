@@ -112,6 +112,7 @@ function smarty_function_pager($params, Zikula_View $view)
     // current position
     $pager['posvar'] = (isset($params['posvar']) ? $params['posvar'] : 'pos');
 
+    $routeParams = array();
     if ($view->getRequest()->attributes->has('_route_params')) {
         $routeParams = $view->getRequest()->attributes->get('_route_params');
         if (isset($routeParams[$pager['posvar']])) {
@@ -119,6 +120,7 @@ function smarty_function_pager($params, Zikula_View $view)
         } else {
             $pager['pos'] = (int)$view->getRequest()->query->get($pager['posvar'], '');
         }
+        unset($routeParams['_zkModule'], $routeParams['_zkType'], $routeParams['_zkFunc']);
     } else {
         $pager['pos'] = (int)$view->getRequest()->query->get($pager['posvar'], '');
     }
@@ -188,60 +190,58 @@ function smarty_function_pager($params, Zikula_View $view)
     }
 
     //also $_POST vars have to be considered, i.e. for search results
-    if ($params['includePostVars']) {
-        $allVars = array_merge($_POST, $_GET);
-        foreach ($allVars as $k => $v) {
-            if ($k != $pager['posvar'] && !is_null($v)) {
-                switch ($k) {
-                    case 'module':
-                        if (!isset($params['modname'])) {
-                            $pager['module'] = $v;
+    $allVars = ($params['includePostVars']) ? array_merge($_POST, $_GET, $routeParams) : array_merge($_GET, $routeParams);
+    foreach ($allVars as $k => $v) {
+        if ($k != $pager['posvar'] && !is_null($v)) {
+            switch ($k) {
+                case 'module':
+                    if (!isset($params['modname'])) {
+                        $pager['module'] = $v;
+                    }
+                    break;
+                case 'func':
+                    if (!isset($params['func'])) {
+                        $pager['func'] = $v;
+                    }
+                    break;
+                case 'type':
+                    if (!isset($params['type'])) {
+                        $pager['type'] = $v;
+                    }
+                    break;
+                case 'lang':
+                    $addcurrentlang2url = System::getVar('languageurl');
+                    if ($addcurrentlang2url == 0) {
+                        $pager['args'][$k] =  $v;
+                    }
+                    break;
+                default:
+                    if (is_array($v)) {
+                        foreach ($v as $kk => $vv) {
+                            if (is_array($vv)) {
+                                foreach ($vv as $kkk => $vvv) {
+                                    if (is_array($vvv)) {
+                                        foreach ($vvv as $kkkk => $vvvv) {
+                                            if (strlen($vvvv)) {
+                                                $tkey = $k . '[' . $kk . '][' . $kkk . '][' . $kkkk . ']';
+                                                $pager['args'][$tkey] = $vvvv;
+                                            }
+                                        }
+                                    } elseif (strlen($vvv)) {
+                                        $tkey = $k . '[' . $kk . '][' . $kkk . ']';
+                                        $pager['args'][$tkey] = $vvv;
+                                    }
+                                }
+                            } elseif (strlen($vv)) {
+                                $tkey = $k . '[' . $kk . ']';
+                                $pager['args'][$tkey] =  $vv;
+                            }
                         }
-                        break;
-                    case 'func':
-                        if (!isset($params['func'])) {
-                            $pager['func'] = $v;
-                        }
-                        break;
-                    case 'type':
-                        if (!isset($params['type'])) {
-                            $pager['type'] = $v;
-                        }
-                        break;
-                    case 'lang':
-                        $addcurrentlang2url = System::getVar('languageurl');
-                        if ($addcurrentlang2url == 0) {
+                    } else {
+                        if (strlen($v)) {
                             $pager['args'][$k] =  $v;
                         }
-                        break;
-                    default:
-                        if (is_array($v)) {
-                            foreach ($v as $kk => $vv) {
-                                if (is_array($vv)) {
-                                    foreach ($vv as $kkk => $vvv) {
-                                        if (is_array($vvv)) {
-                                            foreach ($vvv as $kkkk => $vvvv) {
-                                                if (strlen($vvvv)) {
-                                                    $tkey = $k . '[' . $kk . '][' . $kkk . '][' . $kkkk . ']';
-                                                    $pager['args'][$tkey] = $vvvv;
-                                                }
-                                            }
-                                        } elseif (strlen($vvv)) {
-                                            $tkey = $k . '[' . $kk . '][' . $kkk . ']';
-                                            $pager['args'][$tkey] = $vvv;
-                                        }
-                                    }
-                                } elseif (strlen($vv)) {
-                                    $tkey = $k . '[' . $kk . ']';
-                                    $pager['args'][$tkey] =  $vv;
-                                }
-                            }
-                        } else {
-                            if (strlen($v)) {
-                                $pager['args'][$k] =  $v;
-                            }
-                        }
-                }
+                    }
             }
         }
     }
@@ -327,7 +327,7 @@ function smarty_function_pager($params, Zikula_View $view)
     } else {
         $pager['prev'] = ($leftMargin - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
     }
-    $pager['args'][$pager['posvar']] = $pager['prev'];
+    $pager['args'][$pager['posvar']] = ($pager['prev'] > 1) ? $pager['prev'] : 1;
     if ($params['processUrls']) {
         $pager['prevUrl'] = DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
     } else {
@@ -340,7 +340,7 @@ function smarty_function_pager($params, Zikula_View $view)
     } else {
         $pager['next'] = $rightMargin * $pager['perpage'] + 1;
     }
-    $pager['args'][$pager['posvar']] = $pager['next'];
+    $pager['args'][$pager['posvar']] = ($pager['next'] < $pager['total']) ? $pager['next'] : $pager['next'] - $pager['perpage'];
     if ($params['processUrls']) {
         $pager['nextUrl'] = DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
     } else {

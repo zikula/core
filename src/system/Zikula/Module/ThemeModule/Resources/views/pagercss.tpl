@@ -20,7 +20,7 @@
         <li><a href="{$pagerPluginArray.nextUrl}" title="{gt text="Next page"}">&rsaquo;</a></li>
         <li><a href="{$pagerPluginArray.lastUrl}" title="{gt text="Last page"}">&raquo;</a></li>
         {else}
-        <li class="disabled"><span  title="{gt text="Next page"}">&rsaquo;</span></li>
+        <li class="disabled"><span title="{gt text="Next page"}">&rsaquo;</span></li>
         <li class="disabled"><span title="{gt text="Last page"}">&raquo;</span></li>
         {/if}
     </ul>
