@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package XXXX
- * @subpackage XXXX
+ * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,13 +16,15 @@ namespace Zikula\Core;
 
 /**
  * Url class.
+ *
+ * @deprecated as of Core 1.4.0 to be removed in Core 2.0.0
+ * instead, utilize `UrlInterface` for all typehints and use RouteUrl where possible
  */
-class ModUrl
+class ModUrl implements UrlInterface
 {
     private $application;
     private $controller;
     private $action;
-//    private $route;
     private $args;
     private $language;
     private $fragment;
@@ -68,15 +69,6 @@ class ModUrl
         return \ModUtil::url($this->application, $this->controller, $this->action, $this->args, $ssl, $this->fragment, $fqurl, $forcelongurl, $forcelang);
     }
 
-//    public function getRoute()
-//    {
-//        return $this->route;
-//    }
-//    public function setRoute($route, $args)
-//    {
-//        $this->route = $route;
-//        $this->args = $args;
-//    }
 
     public function getArgs()
     {
@@ -90,6 +82,12 @@ class ModUrl
 
     public function toArray()
     {
-        return array('application' => $this->application, 'controller' => $this->controller, 'action' => $this->action, 'args' => $this->args, 'language' => $this->language, 'fragment' => $this->fragment);
+        return array(
+            'application' => $this->application,
+            'controller' => $this->controller,
+            'action' => $this->action,
+            'args' => $this->args,
+            'language' => $this->language,
+            'fragment' => $this->fragment);
     }
 }
