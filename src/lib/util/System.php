@@ -1064,6 +1064,6 @@ class System
      */
     public static function dump($var, $maxDepth = 2, $stripTags = true)
     {
-        echo "<pre style='text-align:left'>"; Doctrine\Common\Util\Debug::dump($var, $maxDepth = 2, $stripTags = true); echo "</pre>";
+        echo "<pre style='text-align:left'>"; Doctrine\Common\Util\Debug::dump($var, $maxDepth, $stripTags); echo "</pre>";
     }
 }
