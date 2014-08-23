@@ -6,8 +6,8 @@
     <Contact>{$modvars.ZConfig.adminmail|safetext}</Contact>
     {capture assign='q'}{literal}{searchTerms}{/literal}{/capture}
     {capture assign='page'}{literal}{startPage?}{/literal}{/capture}
-    {route name='zikulasearchmodule_user_form' q='QUERY' page='PAGE' absolute=true assign='url'}
-    <Url type="text/html" template="{$url|safetext|replace:'QUERY':"`$q`"|replace:'PAGE':"`$page`"}"/>
+    {route name='zikulasearchmodule_user_form' q='QUERY' page='999' absolute=true assign='url'}
+    <Url type="text/html" template="{$url|safetext|replace:'QUERY':"`$q`"|replace:'999':"`$page`"}"/>
     <LongName>{$modvars.ZConfig.sitename|safetext} {gt text='Search' domain='zikula'}</LongName>
     <Attribution>{gt text='Search data copyright %s, all rights reserved.' tag1=$modvars.ZConfig.sitename}</Attribution>
     <SyndicationRight>open</SyndicationRight>
