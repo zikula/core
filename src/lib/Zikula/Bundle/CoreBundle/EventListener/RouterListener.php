@@ -117,8 +117,6 @@ class RouterListener implements EventSubscriberInterface
             return;
         }
 
-        $request->getBasePath();
-
         // add attributes based on the request (routing)
         try {
             // matching a request is more powerful than matching a URL path + context, so try that first
