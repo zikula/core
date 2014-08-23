@@ -101,6 +101,27 @@ class ModUrl
         return $this->args;
     }
 
+    /**
+     * Factory method to create instance and set Route simultaneously
+     *
+     * @param $route
+     * @param array $args
+     *
+     * @return ModUrl
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function fromRoute($route, $args = array())
+    {
+        if (empty($route)) {
+            throw new \InvalidArgumentException();
+        }
+        $modUrl = new self();
+        $modUrl->setRoute($route, $args);
+
+        return $modUrl;
+    }
+
     public function serialize()
     {
         return serialize($this->toArray());
