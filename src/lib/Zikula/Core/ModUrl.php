@@ -65,6 +65,15 @@ class ModUrl
         }
     }
 
+    public function setLanguage($lang)
+    {
+        if (isset($this->route)) {
+            $this->args['_locale'] = $lang;
+        } else {
+            $this->language = $lang;
+        }
+    }
+
     public function getFragment()
     {
         return $this->fragment;
