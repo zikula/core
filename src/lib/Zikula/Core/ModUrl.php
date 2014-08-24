@@ -37,7 +37,6 @@ class ModUrl
         $this->controller = $controller;
         $this->action = $action;
         $this->args = $args;
-        $language = (empty($language)) ? ZLanguage::getLanguageCode() : $language;
         $this->language = $language;
         $this->fragment = $fragment;
     }
@@ -59,12 +58,11 @@ class ModUrl
 
     public function getLanguage()
     {
-        if (!empty($this->language)) {
+        if (isset($this->route)) {
+            return isset($this->args['_locale']) ? $this->args['_locale'] : null;
+        } else {
             return $this->language;
-        } else if (!empty($this->args['_locale'])) {
-            return $this->args['_locale'];
         }
-        return null;
     }
 
     public function getFragment()
@@ -121,7 +119,7 @@ class ModUrl
      *
      * @throws \InvalidArgumentException
      */
-    public static function fromRoute($route, $args = array())
+    public static function createFromRoute($route, $args = array())
     {
         if (empty($route)) {
             throw new \InvalidArgumentException();
@@ -144,7 +142,7 @@ class ModUrl
             'controller' => $this->controller,
             'action' => $this->action,
             'args' => $this->args,
-            'language' => $this->language,
+            'language' => $this->getLanguage(),
             'fragment' => $this->fragment,
             'route' => $this->route,
         );
