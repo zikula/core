@@ -75,10 +75,20 @@ class ModUrl
     public function getUrl($ssl = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
     {
         if (!empty($this->route)) {
+            $router = \ServiceUtil::get('router');
             $fqurl = (is_bool($fqurl) && $fqurl) ? RouterInterface::ABSOLUTE_URL : RouterInterface::ABSOLUTE_PATH;
             $fragment =  (!empty($this->fragment)) ? '#' . $this->fragment : '';
 
-            return \ServiceUtil::get('router')->generate($this->route, $this->args, $fqurl) . $fragment;
+            $oldScheme = $router->getContext()->getScheme();
+            if ($ssl) {
+                $router->getContext()->setScheme('https');
+            }
+            $url = $router->generate($this->route, $this->args, $fqurl) . $fragment;
+            if ($ssl) {
+                $router->getContext()->setScheme($oldScheme);
+            }
+
+            return $url;
         } else {
 
             return \ModUtil::url($this->application, $this->controller, $this->action, $this->args, $ssl, $this->fragment, $fqurl, $forcelongurl, $forcelang);
