@@ -16,7 +16,6 @@
 namespace Zikula\Core;
 
 use Symfony\Component\Routing\RouterInterface;
-use ZLanguage;
 
 /**
  * Url class.
