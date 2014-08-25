@@ -15,6 +15,8 @@
 
 namespace Zikula\Core;
 
+use Symfony\Component\Routing\RouterInterface;
+
 /**
  * Url class.
  */
@@ -23,12 +25,12 @@ class ModUrl
     private $application;
     private $controller;
     private $action;
-//    private $route;
+    private $route;
     private $args;
     private $language;
     private $fragment;
 
-    public function __construct($application, $controller, $action, $language, array $args=array(), $fragment=null)
+    public function __construct($application = null, $controller = null, $action = null, $language = null, array $args=array(), $fragment=null)
     {
         $this->application = $application;
         $this->controller = $controller;
@@ -55,7 +57,20 @@ class ModUrl
 
     public function getLanguage()
     {
-        return $this->language;
+        if (isset($this->route)) {
+            return isset($this->args['_locale']) ? $this->args['_locale'] : null;
+        } else {
+            return $this->language;
+        }
+    }
+
+    public function setLanguage($lang)
+    {
+        if (isset($this->route)) {
+            $this->args['_locale'] = $lang;
+        } else {
+            $this->language = $lang;
+        }
     }
 
     public function getFragment()
@@ -65,22 +80,62 @@ class ModUrl
 
     public function getUrl($ssl = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
     {
-        return \ModUtil::url($this->application, $this->controller, $this->action, $this->args, $ssl, $this->fragment, $fqurl, $forcelongurl, $forcelang);
+        if (!empty($this->route)) {
+            $router = \ServiceUtil::get('router');
+            $fqurl = (is_bool($fqurl) && $fqurl) ? RouterInterface::ABSOLUTE_URL : RouterInterface::ABSOLUTE_PATH;
+            $fragment =  (!empty($this->fragment)) ? '#' . $this->fragment : '';
+
+            $oldScheme = $router->getContext()->getScheme();
+            if ($ssl) {
+                $router->getContext()->setScheme('https');
+            }
+            $url = $router->generate($this->route, $this->args, $fqurl) . $fragment;
+            if ($ssl) {
+                $router->getContext()->setScheme($oldScheme);
+            }
+
+            return $url;
+        } else {
+
+            return \ModUtil::url($this->application, $this->controller, $this->action, $this->args, $ssl, $this->fragment, $fqurl, $forcelongurl, $forcelang);
+        }
     }
 
-//    public function getRoute()
-//    {
-//        return $this->route;
-//    }
-//    public function setRoute($route, $args)
-//    {
-//        $this->route = $route;
-//        $this->args = $args;
-//    }
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    public function setRoute($route, $args = array())
+    {
+        $this->route = $route;
+        $this->args = $args;
+    }
 
     public function getArgs()
     {
         return $this->args;
+    }
+
+    /**
+     * Factory method to create instance and set Route simultaneously
+     *
+     * @param $route
+     * @param array $args
+     *
+     * @return ModUrl
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function createFromRoute($route, $args = array())
+    {
+        if (empty($route)) {
+            throw new \InvalidArgumentException();
+        }
+        $modUrl = new self();
+        $modUrl->setRoute($route, $args);
+
+        return $modUrl;
     }
 
     public function serialize()
@@ -90,6 +145,14 @@ class ModUrl
 
     public function toArray()
     {
-        return array('application' => $this->application, 'controller' => $this->controller, 'action' => $this->action, 'args' => $this->args, 'language' => $this->language, 'fragment' => $this->fragment);
+        return array(
+            'application' => $this->application,
+            'controller' => $this->controller,
+            'action' => $this->action,
+            'args' => $this->args,
+            'language' => $this->getLanguage(),
+            'fragment' => $this->fragment,
+            'route' => $this->route,
+        );
     }
 }
