@@ -129,12 +129,13 @@ Module Specification from Zikula Core 1.4.0
   11. [Events](#events)
   12. [Event Names](#eventnames)
   13. [Hooks](#hooks)
-  14. [Request](#request)
-  15. [Search](#search)
-  16. [Version File](#versionfile)
-  17. [Persistent Event Listeners](#eventlisteners)
-  18. [Theme Standard](#themes)
-  19. [Theme composer.json](#themecomposer)
+  14. [ModUrl Deprecated](#modurl)
+  15. [Request](#request)
+  16. [Search](#search)
+  17. [Version File](#versionfile)
+  18. [Persistent Event Listeners](#eventlisteners)
+  19. [Theme Standard](#themes)
+  20. [Theme composer.json](#themecomposer)
   
 
 <a name="bootstrapjquery" />
@@ -744,6 +745,16 @@ New class list:
   - `Zikula\Core\Hook\AbstractHookListener` (was `Zikula_Hook_AbstractHandler`).
   - `Zikula\Component\HookDispatcher\SubscriberBundle` (was `Zikula_HookManager_SubscriberBundle`).
   - `Zikula\Component\HookDispatcher\ProviderBundle` (was `Zikula_HookManager_ProviderBundle`).
+
+
+<a name="modurl" />
+ModUrl Deprecated
+-----------------
+
+The `ModUrl` class has been deprecated but remains fully functional. Core typehinting for `ModUrl` has been replaced
+with `UrlInterface` and a new class, `RouteUrl` has been added (see `\lib\Zikula\Core\`). RouteUrl currently extends
+`ModUrl` in order to maintain backward-compatibility, but `RouteUrl` will change in the future to only implement
+`UrlInterface`. All usage of typehints for `ModUrl` should be changed to `UrlInterface`.
 
 
 <a name="request" />
