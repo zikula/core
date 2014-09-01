@@ -74,7 +74,7 @@ class RouteUrl extends ModUrl implements UrlInterface
      * @param array $args
      * @param string $fragment
      *
-     * @return ModUrl
+     * @return RouteUrl
      *
      * @throws \InvalidArgumentException
      */
