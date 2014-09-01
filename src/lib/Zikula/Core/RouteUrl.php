@@ -36,7 +36,7 @@ class RouteUrl extends ModUrl implements UrlInterface
 
     public function getLanguage()
     {
-        return $this->args['_locale'];
+        return isset($this->args['_locale']) ? $this->args['_locale'] : null;
     }
 
     public function setLanguage($lang)

@@ -69,7 +69,6 @@ class ModUrl implements UrlInterface
         return \ModUtil::url($this->application, $this->controller, $this->action, $this->args, $ssl, $this->fragment, $fqurl, $forcelongurl, $forcelang);
     }
 
-
     public function getArgs()
     {
         return $this->args;
