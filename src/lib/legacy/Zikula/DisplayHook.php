@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\ModUrl;
+use Zikula\Core\UrlInterface;
 
 /**
  * DisplayHook class.
@@ -23,7 +23,7 @@ use Zikula\Core\ModUrl;
  */
 class Zikula_DisplayHook extends Zikula\Core\Hook\DisplayHook
 {
-    function __construct($name, $id, ModUrl $url = null)
+    function __construct($name, $id, UrlInterface $url = null)
     {
         LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         $this->setName($name);

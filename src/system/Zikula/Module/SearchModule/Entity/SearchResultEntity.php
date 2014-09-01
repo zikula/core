@@ -14,7 +14,7 @@
 namespace Zikula\Module\SearchModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Core\ModUrl;
+use Zikula\Core\UrlInterface;
 
 /**
  * SearchResult
@@ -101,7 +101,7 @@ class SearchResultEntity
     /**
      * Url for found item
      *
-     * @var ModUrl
+     * @var UrlInterface
      *
      * @ORM\Column(type="object", nullable=true)
      */
@@ -279,15 +279,15 @@ class SearchResultEntity
     }
 
     /**
-     * @param ModUrl $url
+     * @param UrlInterface $url
      */
-    public function setUrl(ModUrl $url)
+    public function setUrl(UrlInterface $url)
     {
         $this->url = $url;
     }
 
     /**
-     * @return ModUrl
+     * @return UrlInterface
      */
     public function getUrl()
     {
@@ -302,6 +302,6 @@ class SearchResultEntity
         $this->module = isset($result['module']) ? $result['module'] : null;
         $this->created = (isset($result['created']) && ($result['created'] instanceof \DateTime)) ? $result['created'] : new \DateTime('now', new \DateTimeZone('UTC'));
         $this->sesid = isset($result['sesid']) ? $result['sesid'] : null;
-        $this->url = (isset($result['url']) && ($result['url'] instanceof ModUrl)) ? $result['url'] : null;
+        $this->url = (isset($result['url']) && ($result['url'] instanceof UrlInterface)) ? $result['url'] : null;
     }
 }
