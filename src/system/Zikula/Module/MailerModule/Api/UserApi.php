@@ -88,19 +88,20 @@ class UserApi extends \Zikula_AbstractApi
         $message = Swift_Message::newInstance();
         $message->setCharset($this->getVar('charset'));
         $message->setMaxLineLength($this->getVar('wordwrap'));
-        $encodingClasses = array(
-            '8bit' => 'get8BitEncoding',
-            '7bit' => 'get7BitEncoding',
-            'binary' => 'get8BitEncoding', // no comparable encoding in SwiftMailer AFAICS
-            'base64' => 'getBase64Encoding',
-            'quoted-printable' => 'getQpEncoding',
+        $encoderKeys = array(
+            '8bit' => '8bitcontentencoder',
+            '7bit' => '7bitcontentencoder',
+            'binary' => '8bitcontentencoder', // no comparable encoding in SwiftMailer AFAICS
+            'base64' => 'base64contentencoder',
+            'quoted-printable' => 'qpcontentencoder'
         );
-        $encodingClass = $encodingClasses[$this->getVar('encoding')];
-        $message->setEncoder(\Swift_Encoding::$encodingClass());
+        $encoderKey = $encoderKeys[$this->getVar('encoding')];
+        $encoder = \Swift_DependencyContainer::getInstance()->lookup('mime.' . $encoderKey);
+        $message->setEncoder($encoder);
 
         // set fromname and fromaddress, default to 'sitename' and 'adminmail' config vars
         $fromname = (isset($args['fromname']) && $args['fromname']) ? $args['fromname'] : System::getVar('sitename');
-        $fromaddress = (isset($args['fromaddress'])) ? $args['fromaddress'] : \System::getVar('adminmail');
+        $fromaddress = (isset($args['fromaddress'])) ? $args['fromaddress'] : System::getVar('adminmail');
         $message->setFrom($fromaddress, $fromname);
 
         // add any to addresses
@@ -208,7 +209,7 @@ class UserApi extends \Zikula_AbstractApi
         /** @var $mailer \Swift_Mailer */
         $mailer = $this->get('mailer');
         if (!$mailer->send($message, $failedEmails)) {
-            // message not send
+            // message was not sent successfully
             $emailList = implode(', ', $failedEmails);
             $args['errorinfo'] = $this->__f('Error! Could not send mail to: %s.', $emailList);
             if ($this->getVar('enableLogging')) {
@@ -232,6 +233,6 @@ class UserApi extends \Zikula_AbstractApi
             $logger->addInfo('Message Sent: ' . $message->toString());
         }
 
-        return true; // message sent
+        return true; // message has been sent
     }
 }
