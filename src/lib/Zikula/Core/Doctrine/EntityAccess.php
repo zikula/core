@@ -65,7 +65,15 @@ class EntityAccess implements \ArrayAccess
         $this->offsetSet($key, null);
     }
 
-    public function toArray()
+    /**
+     * Returns an array representation of this entity.
+     *
+     * @param boolean $ignoreMissingAccessors If true then properties without an accessor are ignored
+     * (simulating old 1.3.x behaviour). If false then an exception is thrown instead (default behaviour).
+     *
+     * @return array An array containing properties of this entity.
+     */
+    public function toArray($ignoreMissingAccessors=false)
     {
         $r = $this->getReflection();
         $array = array();
@@ -79,7 +87,7 @@ class EntityAccess implements \ArrayAccess
             'lazyPropertiesDefaults'
         );
 
-        while($r !== false) {
+        while ($r !== false) {
             $properties = $r->getProperties();
             $r = $r->getParentClass();
 
@@ -88,8 +96,10 @@ class EntityAccess implements \ArrayAccess
                     continue;
                 }
 
-                $method = $this->getGetterForProperty($property->name);
-                $array[$property->name] = $this->$method();
+                $method = $this->getGetterForProperty($property->name, $ignoreMissingAccessors);
+                if (!empty($method)) {
+                    $array[$property->name] = $this->$method();
+                }
             }
         }
 
@@ -104,16 +114,29 @@ class EntityAccess implements \ArrayAccess
         }
     }
 
-    private function getGetterForProperty($name)
+    /**
+     * Returns the accessor's method name for retrieving a certain property.
+     *
+     * @param string  $name                   Name of property to be retrieved.
+     * @param boolean $ignoreMissingAccessors If true then properties without an accessor are ignored
+     * (simulating old 1.3.x behaviour). If false then an exception is thrown instead (default behaviour).
+     *
+     * @return string Name of method to be used as accessor for the given property.
+     */
+    private function getGetterForProperty($name, $ignoreMissingAccessors=false)
     {
-        $getMethod = "get" . ucfirst($name);
+        $getMethod = 'get' . ucfirst($name);
         if (method_exists($this, $getMethod)) {
             return $getMethod;
         }
 
-        $isMethod  = "is" . ucfirst($name);
+        $isMethod  = 'is' . ucfirst($name);
         if (method_exists($this, $isMethod)) {
             return $isMethod;
+        }
+
+        if ($ignoreMissingAccessors === true) {
+            return '';
         }
 
         $class = get_class($this);
@@ -122,7 +145,7 @@ class EntityAccess implements \ArrayAccess
 
     private function getSetterForProperty($name)
     {
-        $setMethod = "set" . ucfirst($name);
+        $setMethod = 'set' . ucfirst($name);
         if (method_exists($this, $setMethod)) {
             return $setMethod;
         }
