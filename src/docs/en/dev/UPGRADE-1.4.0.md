@@ -94,7 +94,7 @@ Event Removal
 
 The following events have been removed:
 
-  - `boostrap.getconfig` - there is no replacement
+  - `bootstrap.getconfig` - there is no replacement
   - `bootstrap.custom` - there is no replacement
   - `frontcontroller.predispatch` - there is no replacement
   - `frontcontroller.exception` - Subscribe to KernelEvents::EXCEPTION instead
@@ -706,6 +706,15 @@ There are lots of new events you can see them here:
 
 http://symfony.com/doc/current/book/internals.html#events
 http://symfony.com/doc/current/components/http_kernel/introduction.html#component-http-kernel-event-table
+
+Inside the Zikula core there has been a new event class introduced (Zikula\Core\CoreEvents) which is used
+specifically for events which change the state of a module.
+
+    - `module.install` - occurs when a module has been installed.
+    - `module.upgrade` - occurs when a module has been upgraded to a newer version.
+    - `module.enable` - occurs when a module has been enabled after it has been disabled before.
+    - `module.disable` - occurs when a module has been disabled.
+    - `module.remove` - occurs when a module has been removed entirely.
 
 
 <a name="hooks" />
