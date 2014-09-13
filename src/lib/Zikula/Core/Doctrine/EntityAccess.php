@@ -68,12 +68,9 @@ class EntityAccess implements \ArrayAccess
     /**
      * Returns an array representation of this entity.
      *
-     * @param boolean $ignoreMissingAccessors If true then properties without an accessor are ignored
-     * (simulating old 1.3.x behaviour). If false then an exception is thrown instead (default behaviour).
-     *
      * @return array An array containing properties of this entity.
      */
-    public function toArray($ignoreMissingAccessors=false)
+    public function toArray()
     {
         $r = $this->getReflection();
         $array = array();
@@ -96,7 +93,7 @@ class EntityAccess implements \ArrayAccess
                     continue;
                 }
 
-                $method = $this->getGetterForProperty($property->name, $ignoreMissingAccessors);
+                $method = $this->getGetterForProperty($property->name);
                 if (!empty($method)) {
                     $array[$property->name] = $this->$method();
                 }
@@ -117,13 +114,11 @@ class EntityAccess implements \ArrayAccess
     /**
      * Returns the accessor's method name for retrieving a certain property.
      *
-     * @param string  $name                   Name of property to be retrieved.
-     * @param boolean $ignoreMissingAccessors If true then properties without an accessor are ignored
-     * (simulating old 1.3.x behaviour). If false then an exception is thrown instead (default behaviour).
+     * @param string $name Name of property to be retrieved.
      *
      * @return string Name of method to be used as accessor for the given property.
      */
-    private function getGetterForProperty($name, $ignoreMissingAccessors=false)
+    private function getGetterForProperty($name)
     {
         $getMethod = 'get' . ucfirst($name);
         if (method_exists($this, $getMethod)) {
@@ -133,10 +128,6 @@ class EntityAccess implements \ArrayAccess
         $isMethod  = 'is' . ucfirst($name);
         if (method_exists($this, $isMethod)) {
             return $isMethod;
-        }
-
-        if ($ignoreMissingAccessors === true) {
-            return '';
         }
 
         $class = get_class($this);
