@@ -67,11 +67,11 @@
                 text-align: center;
                 color: #444;
             }
-			.login-button {
+            .login-button {
                 display: inline-block;
                 padding: 7px 10px;
                 color: #fff;
-                font-size: 14px;				
+                font-size: 14px;
                 text-decoration: none;
                 margin: 1em 0;
                 border: 1px solid #A4C3EF;
@@ -88,14 +88,15 @@
                 -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
                 box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
             }
-			.login-button:hover{
-				text-decoration: none;
-				font-weight:bold;
+            .login-button:hover {
+                text-decoration: none;
+                font-weight:bold;
                 background: #3764DF;
                 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#8FBAFF', endColorstr='#3764DF');
                 background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#8FBAFF), to(#3764DF) );
                 background: -moz-linear-gradient(-90deg, #8FBAFF, #3764DF);
-                background: linear-gradient(-90deg, #8FBAFF, #3764DF);}
+                background: linear-gradient(-90deg, #8FBAFF, #3764DF);
+            }
             .showloginbutton {
                 display: inline-block;
                 padding: 15px 20px;
@@ -223,7 +224,7 @@
                     </form>
                     <?php } ?>
                     <p>
-                        <a href="http://zikula.org"><img src="images/zk-power.png" alt="<?php echo __('Proudly powered by Zikula'); ?>" title="<?php echo __('Proudly powered by Zikula'); ?>"width="96" height="30" /></a>
+                        <a href="http://zikula.org"><img src="images/zk-power.png" alt="<?php echo __('Proudly powered by Zikula'); ?>" title="<?php echo __('Proudly powered by Zikula'); ?>" width="96" height="30" /></a>
                     </p>
                 </div>
             </div>
