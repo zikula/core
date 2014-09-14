@@ -65,7 +65,8 @@
         "zikula/jquery-minicolors-bundle": "dev-master",
         "bootstrap-plus/bootstrap-media-lightbox": "dev-master",
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
-        "vakata/jstree": "dev-master"
+        "vakata/jstree": "dev-master",
+        "afarkas/html5shiv": "*"
     },
     "scripts": {
         "post-install-cmd": [
