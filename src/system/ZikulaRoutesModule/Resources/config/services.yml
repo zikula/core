@@ -43,7 +43,6 @@ services:
         arguments:
             objectManager: "@doctrine.orm.entity_manager"
             className: Zikula\RoutesModule\Entity\RouteEntity
-    
 
     zikularoutesmodule.core_listener:
         class: "%zikularoutesmodule.core_listener.class%"
@@ -59,7 +58,11 @@ services:
         class: "%zikularoutesmodule.installer_listener.class%"
         tags:
             - { name: kernel.event_subscriber }
-    
+        arguments:
+            objectManager: "@doctrine.orm.entity_manager"
+            routeFinder: "@zikularoutesmodule.routing_finder"
+            cacheClearer: "@zikula.cache_clearer"
+
     zikularoutesmodule.moduledispatch_listener:
         class: "%zikularoutesmodule.moduledispatch_listener.class%"
         tags:
