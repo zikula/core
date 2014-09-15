@@ -2059,7 +2059,7 @@ class UserUtil
         // no change in uid or uname allowed, empty label is not an alias
         if (($label != 'uid') && ($label != 'uname') && !empty($label)) {
             $userObj = new \Zikula\Module\UsersModule\Entity\UserEntity;
-            $isFieldAlias = isset($userObj[$label]) ? true : false;
+            $isFieldAlias = property_exists($userObj, $label);
         }
 
         return $isFieldAlias;
