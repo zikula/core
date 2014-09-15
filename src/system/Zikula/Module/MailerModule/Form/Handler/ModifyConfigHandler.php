@@ -20,7 +20,7 @@ use DataUtil;
 use ZLanguage;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\ModUrl;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Form handler for the mailer modules modifyconfig form
@@ -139,7 +139,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                 break;
         }
 
-        return $view->redirect(new ModUrl($this->name, 'admin', 'modifyconfig', ZLanguage::getLanguageCode()));
+        return $view->redirect($view->getContainer()->get('router')->generate('zikulamailermodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**

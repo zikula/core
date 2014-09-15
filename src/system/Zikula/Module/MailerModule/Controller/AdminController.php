@@ -15,16 +15,16 @@ namespace Zikula\Module\MailerModule\Controller;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula_View;
-use ModUtil;
 use SecurityUtil;
 use FormUtil;
 use System;
 use Zikula\Module\MailerModule\Form\Handler\ModifyConfigHandler;
 use Zikula\Module\MailerModule\Form\Handler\TestConfigHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Administrative controllers for the mailer module
+ * @Route("/admin")
  */
 class AdminController extends \Zikula_AbstractController
 {
@@ -40,6 +40,8 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("")
+     *
      * the main administration function
      *
      * @return RedirectResponse
@@ -47,10 +49,12 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in modifyconfig()
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'modifyconfig')));
+        return new RedirectResponse($this->get('router')->generate('zikulamailermodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
+     * @Route("/config")
+     *
      * This is a standard function to modify the configuration parameters of the
      * module
      *
@@ -71,6 +75,8 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/test")
+     *
      * This function displays a form to sent a test mail
      *
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
