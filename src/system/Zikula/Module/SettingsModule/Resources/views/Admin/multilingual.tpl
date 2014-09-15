@@ -4,7 +4,7 @@
     {gt text="Localisation settings"}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="ZikulaSettingsModule" type="admin" func="updatemultilingual"}" method="post">
+<form class="form-horizontal" role="form" action="{route name="zikulasettingsmodule_admin_updatemultilingual"}" method="post">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="mlsettings_timezone_server" type="hidden" name="mlsettings_timezone_server" value="{$timezone_server}" />
@@ -94,7 +94,7 @@
                 <button class="btn btn-success" title="{gt text="Save"}">
                     {gt text="Save"}
                 </button>
-                <a class="btn btn-danger" href="{modurl modname="ZikulaSettingsModule" type="admin" func="main"}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name="zikulasettingsmodule_admin_index"}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>
