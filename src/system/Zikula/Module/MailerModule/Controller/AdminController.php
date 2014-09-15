@@ -22,6 +22,7 @@ use Zikula\Module\MailerModule\Form\Handler\ModifyConfigHandler;
 use Zikula\Module\MailerModule\Form\Handler\TestConfigHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * @Route("/admin")
