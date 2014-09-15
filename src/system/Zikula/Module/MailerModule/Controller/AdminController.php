@@ -20,6 +20,7 @@ use FormUtil;
 use System;
 use Zikula\Module\MailerModule\Form\Handler\ModifyConfigHandler;
 use Zikula\Module\MailerModule\Form\Handler\TestConfigHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -72,7 +73,7 @@ class AdminController extends \Zikula_AbstractController
 
         $form = FormUtil::newForm('ZikulaMailerModule', $this);
 
-        return $form->execute('Admin/modifyconfig.tpl', new ModifyConfigHandler());
+        return new Response($form->execute('Admin/modifyconfig.tpl', new ModifyConfigHandler()));
     }
 
     /**
@@ -92,6 +93,6 @@ class AdminController extends \Zikula_AbstractController
 
         $form = FormUtil::newForm('ZikulaMailerModule', $this);
 
-        return $form->execute('Admin/testconfig.tpl', new TestConfigHandler());
+        return new Response($form->execute('Admin/testconfig.tpl', new TestConfigHandler()));
     }
 }
