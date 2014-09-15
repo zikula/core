@@ -179,7 +179,13 @@ abstract class ZikulaKernel extends Kernel
         if (null === $this->autoloader) {
             $loaders = spl_autoload_functions();
             if ($loaders[0][0] instanceof DebugClassLoader) {
-                $this->autoloader = $loaders[0][0]->getClassLoader();
+                $foo = $loaders[0][0];
+                $classLoader = $foo->getClassLoader();
+                if (is_callable($classLoader) && is_object($classLoader[0])) {
+                    $this->autoloader = $classLoader[0];
+                } elseif (is_object($classLoader)) {
+                    $this->autoloader = $classLoader;
+                }
             } else {
                 $this->autoloader = $loaders[0][0];
             }
