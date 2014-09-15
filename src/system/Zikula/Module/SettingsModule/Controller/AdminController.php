@@ -20,6 +20,7 @@ use SecurityUtil;
 use System;
 use DateUtil;
 use SessionUtil;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
@@ -89,11 +90,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * update main site settings
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function updateconfigAction()
+    public function updateconfigAction(Request $request)
     {
         $this->checkCsrfToken();
 
@@ -103,7 +106,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get settings from form
-        $settings = $this->request->request->get('settings', null);
+        $settings = $request->request->get('settings', null);
 
         // if this form wasn't posted to redirect back
         if ($settings === null) {
@@ -115,7 +118,7 @@ class AdminController extends \Zikula_AbstractController
         $entryPointExt = pathinfo($settings['entrypoint'], PATHINFO_EXTENSION);
 
         if (in_array($settings['entrypoint'], $falseEntryPoints) || !file_exists($settings['entrypoint']) || strtolower($entryPointExt) != 'php') {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Either you entered an invalid entry point, or else the file specified as being the entry point was not found in the Zikula root directory.'));
+            $request->getSession()->getFlashBag()->add('error', $this->__('Error! Either you entered an invalid entry point, or else the file specified as being the entry point was not found in the Zikula root directory.'));
             return new RedirectResponse($this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -123,7 +126,7 @@ class AdminController extends \Zikula_AbstractController
         $settings['permasearch'] = mb_ereg_replace(' ', '', $settings['permasearch']);
         $settings['permareplace'] = mb_ereg_replace(' ', '', $settings['permareplace']);
         if (mb_ereg(',$', $settings['permasearch'])) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
+            $request->getSession()->getFlashBag()->add('error', $this->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
             return new RedirectResponse($this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -140,13 +143,13 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if ($permareplaceCount !== $permasearchCount) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
+            $request->getSession()->getFlashBag()->add('error', $this->__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
             return new RedirectResponse($this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         if ($settings['startpage']) {
             if (empty($settings['starttype']) || empty($settings['startfunc'])) {
-                $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! When setting a startpage, starttype and startfunc are required fields.'));
+                $request->getSession()->getFlashBag()->add('error', $this->__('Error! When setting a startpage, starttype and startfunc are required fields.'));
                 return new RedirectResponse($this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
             }
         }
@@ -173,7 +176,7 @@ class AdminController extends \Zikula_AbstractController
         // clear all cache and compile directories
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
 
-        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
+        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
         return new RedirectResponse($this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
     }
@@ -208,11 +211,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * update ML settings
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function updatemultilingualAction()
+    public function updatemultilingualAction(Request $request)
     {
         $this->checkCsrfToken();
 
@@ -232,11 +237,11 @@ class AdminController extends \Zikula_AbstractController
                 'mlsettings_timezone_adjust' => 'tzadjust');
 
         // we can't detect language if multilingual feature is off so reset this to false
-        if ($this->request->request->get('mlsettings_multilingual', null) == 0) {
+        if ($request->request->get('mlsettings_multilingual', null) == 0) {
             if (System::getVar('language_detect')) {
                 System::setVar('language_detect', 0);
                 unset($settings['mlsettings_language_detect']);
-                $this->request->getSession()->getFlashBag()->add('status', $this->__('Notice: Language detection is automatically disabled when multi-lingual features are disabled.'));
+                $request->getSession()->getFlashBag()->add('status', $this->__('Notice: Language detection is automatically disabled when multi-lingual features are disabled.'));
             }
 
             $deleteLangUrl = true;
@@ -250,7 +255,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Write the vars
         foreach ($settings as $formname => $varname) {
-            $newvalue = $this->request->request->get($formname, null);
+            $newvalue = $request->request->get($formname, null);
             $oldvalue = System::getVar($varname);
             if ($newvalue != $oldvalue) {
                 System::setVar($varname, $newvalue);
@@ -264,7 +269,7 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
 
         // all done successfully
-        $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved localisation settings.'));
+        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved localisation settings.'));
 
         return new RedirectResponse($url);
     }
