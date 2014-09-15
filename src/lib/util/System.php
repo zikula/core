@@ -887,12 +887,6 @@ class System
             $request->query->replace($_GET);
         }
 
-        foreach ($arguments as $key => $value) {
-            $request->attributes->set($key, $value);
-        }
-        //foreach ($_POST as $key => $value) {
-        //    $request->attributes->set($key, $value);
-        //}
         $request->attributes->set('_zkModule', strtolower($module)); // legacy - this is how they are received originally
         $request->attributes->set('_zkType', strtolower($type)); // legacy - this is how they are received originally
         $request->attributes->set('_zkFunc', strtolower($func)); // legacy - this is how they are received originally
@@ -1070,6 +1064,6 @@ class System
      */
     public static function dump($var, $maxDepth = 2, $stripTags = true)
     {
-        echo "<pre style='text-align:left'>"; Doctrine\Common\Util\Debug::dump($var, $maxDepth = 2, $stripTags = true); echo "</pre>";
+        echo "<pre style='text-align:left'>"; Doctrine\Common\Util\Debug::dump($var, $maxDepth, $stripTags); echo "</pre>";
     }
 }

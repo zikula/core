@@ -19,8 +19,7 @@ use LogUtil;
 use ModUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\ModUrl;
-use ZLanguage;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Form handler for the mailer modules testconfig form
@@ -123,6 +122,6 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 break;
         }
 
-        return $view->redirect(new ModUrl($this->name, 'admin', 'testconfig', ZLanguage::getLanguageCode()));
+        return $view->redirect($view->getContainer()->get('router')->generate('zikulamailermodule_admin_testconfig', array(), RouterInterface::ABSOLUTE_URL));
     }
 }

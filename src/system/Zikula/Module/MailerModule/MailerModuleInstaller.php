@@ -64,7 +64,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                 // write the config file
                 $mailerTypeConversion = array(
                     1 => 'mail',
-                    2 => 'semdmail',
+                    2 => 'sendmail',
                     3 => 'mail',
                     4 => 'smtp',
                     5 => 'test',

@@ -12,15 +12,36 @@
 
 namespace Zikula\RoutesModule\Listener;
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\RouteCollection;
 use Zikula\RoutesModule\Listener\Base\InstallerListener as BaseInstallerListener;
+use Zikula\RoutesModule\Routing\RouteFinder;
+use Zikula\Core\AbstractModule;
+use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 
 /**
  * Event handler implementation class for module installer events.
  */
 class InstallerListener extends BaseInstallerListener
 {
+    private $em;
+
+    private $routeFinder;
+
+    private $cacheClearer;
+
+    function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer)
+    {
+        $this->em = $em;
+        $this->routeFinder = $routeFinder;
+        $this->cacheClearer = $cacheClearer;
+    }
+
     /**
      * Makes our handlers known to the event system.
      */
@@ -40,25 +61,22 @@ class InstallerListener extends BaseInstallerListener
     public function moduleInstalled(ModuleStateEvent $event)
     {
         parent::moduleInstalled($event);
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
+
+        $module = $event->getModule();
+        if ($module === null) {
+            return;
+        }
+
+        if ($module->getName() === 'ZikulaRoutesModule') {
+            // The module itself just got installed, reload all routes.
+            $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->reloadAllRoutes();
+            // Reload multilingual routing settings.
+            \ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
+        } else {
+            $this->addRoutesToCache($module);
+        }
+
+        $this->cacheClearer->clear('symfony.routing');
     }
     
     /**
@@ -72,25 +90,25 @@ class InstallerListener extends BaseInstallerListener
     public function moduleUpgraded(ModuleStateEvent $event)
     {
         parent::moduleUpgraded($event);
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
+
+        $module = $event->getModule();
+        if ($module === null) {
+            return;
+        }
+
+        try {
+            $this->removeRoutesFromCache($module);
+        } catch (DBALException $e) {
+            if (\System::isUpgrading()) {
+                // This happens when the RoutesModule isn't installed.
+                return;
+            } else {
+                throw $e;
+            }
+        }
+        $this->addRoutesToCache($module);
+
+        $this->cacheClearer->clear('symfony.routing');
     }
     
     /**
@@ -98,29 +116,12 @@ class InstallerListener extends BaseInstallerListener
      *
      * Called after a module has been successfully enabled.
      * Receives `$modinfo` as args.
+     *
+     * @param ModuleStateEvent $event The event instance.
      */
     public function moduleEnabled(ModuleStateEvent $event)
     {
         parent::moduleEnabled($event);
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
     }
     
     /**
@@ -128,29 +129,12 @@ class InstallerListener extends BaseInstallerListener
      *
      * Called after a module has been successfully disabled.
      * Receives `$modinfo` as args.
+     *
+     * @param ModuleStateEvent $event The event instance.
      */
     public function moduleDisabled(ModuleStateEvent $event)
     {
         parent::moduleDisabled($event);
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
     }
     
     /**
@@ -159,30 +143,20 @@ class InstallerListener extends BaseInstallerListener
      * Called after a module has been successfully removed.
      * Receives `$modinfo` as args.
      *
-     * @param GenericEvent $event The event instance.
+     * @param ModuleStateEvent $event The event instance.
      */
     public function moduleRemoved(ModuleStateEvent $event)
     {
         parent::moduleRemoved($event);
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
+
+        $module = $event->getModule();
+        if ($module === null || $module->getName() == 'ZikulaRoutesModule') {
+            return;
+        }
+
+        $this->removeRoutesFromCache($module);
+
+        $this->cacheClearer->clear('symfony.routing');
     }
     
     /**
@@ -196,24 +170,29 @@ class InstallerListener extends BaseInstallerListener
     public function subscriberAreaUninstalled(GenericEvent $event)
     {
         parent::subscriberAreaUninstalled($event);
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
+    }
+
+    /**
+     * Add the specified routes to the cache.
+     *
+     * @param AbstractModule $module
+     */
+    private function addRoutesToCache(AbstractModule $module)
+    {
+        $routeCollection = $this->routeFinder->find($module);
+
+        if ($routeCollection->count() > 0) {
+            $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->addRouteCollection($module, $routeCollection);
+        }
+    }
+
+    /**
+     * Remove all routes of the specified module from cache.
+     *
+     * @param AbstractModule $module
+     */
+    private function removeRoutesFromCache(AbstractModule $module)
+    {
+        $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->removeAllOfModule($module);
     }
 }

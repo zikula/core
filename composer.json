@@ -34,6 +34,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
+        "rhumsaa/array_column": "~1.1",
         "beberlei/DoctrineExtensions": "dev-master",
         "doctrine/doctrine-bundle": "~1.2",
         "doctrine/orm": ">=2.2.3,<2.5-dev",
@@ -44,7 +45,7 @@
         "gedmo/doctrine-extensions": "dev-master",
         "imagine/Imagine": "dev-master",
         "matthiasnoback/symfony-service-definition-validator": "dev-master",
-        "michelf/php-markdown": "1.3.*@dev",
+        "michelf/php-markdown": "1.4.*@dev",
         "phpids/phpids": "dev-master",
         "sensio/distribution-bundle": "~2.3",
         "sensio/framework-extra-bundle": "~3.0",
@@ -64,7 +65,8 @@
         "zikula/jquery-minicolors-bundle": "dev-master",
         "bootstrap-plus/bootstrap-media-lightbox": "dev-master",
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
-        "vakata/jstree": "dev-master"
+        "vakata/jstree": "dev-master",
+        "afarkas/html5shiv": "*"
     },
     "scripts": {
         "post-install-cmd": [

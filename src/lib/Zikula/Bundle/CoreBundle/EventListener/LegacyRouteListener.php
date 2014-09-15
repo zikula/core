@@ -192,6 +192,11 @@ class LegacyRouteListener implements EventSubscriberInterface
                         array($modinfo['name'], $type, $func)
                     ));
                 }
+                // BC
+                if ($response === true) {
+                    // Do not return an ajax response but a normal, empty response for BC here.
+                    $response = new Response();
+                }
             }
         } catch (NotFoundHttpException $e) {
             $response = new NotFoundResponse($e->getMessage());

@@ -32,6 +32,7 @@
  *  modname            Fixed name of the module to page (optional)
  *  type               Fixed value of the type url parameter (optional)
  *  func               Fixed value of the function url parameter (optional)
+ *  route              Name of a fixed route to use (optional, replaces modname / type / func)
  *  rowcount           Total number of items to page in between
  *                       (if an array is assigned, it's count will be used)
  *  limit              Number of items on a page (if <0 unlimited)
@@ -41,12 +42,13 @@
  *  includeStylesheet  Use predefined stylesheet file? Default is yes.
  *  anchorText         Optional text for hyperlink anchor (e.g. 'comments' for the anchor #comments) (default: '')
  *  maxpages           Optional maximum number of displayed pages, others will be hidden / suppressed
- *                       (default: 0 = show all pages)
+ *                       (default: 15 = show only 15 pages)
  *  display            Optional choice between 'page' or 'startnum'. Show links using page number or starting item number (default is startnum)
  *  class              Optional class to apply to the pager container (default : z-pager)
  *  processDetailLinks Should the single page links be processed? (default: false if using pagerimage.tpl, otherwise true)
  *  processUrls        Should urls be processed or assign the arguments? (default: true)
  *  optimize           Only deliver page links which are actually displayed to the template (default: true)
+ *  includePostVars    Whether or not to include the POST variables as GET variables in the pager URLs (default: true)
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -89,6 +91,14 @@ function smarty_function_pager($params, Zikula_View $view)
         $params['owner'] = false;
     }
 
+    if (!isset($params['includePostVars'])) {
+        $params['includePostVars'] = true;
+    }
+
+    if (!isset($params['route'])) {
+        $params['route'] = false;
+    }
+
     $pager = array();
     $pager['total']    = $params['rowcount'];
     $pager['perpage']  = $params['limit'];
@@ -101,7 +111,18 @@ function smarty_function_pager($params, Zikula_View $view)
 
     // current position
     $pager['posvar'] = (isset($params['posvar']) ? $params['posvar'] : 'pos');
-    $pager['pos'] = (int)$view->getRequest()->query->get($pager['posvar'], '');
+
+    $routeParams = array();
+    if ($view->getRequest()->attributes->has('_route_params')) {
+        $routeParams = $view->getRequest()->attributes->get('_route_params');
+        if (isset($routeParams[$pager['posvar']])) {
+            $pager['pos'] = (int)($routeParams[$pager['posvar']]);
+        } else {
+            $pager['pos'] = (int)$view->getRequest()->query->get($pager['posvar'], '');
+        }
+    } else {
+        $pager['pos'] = (int)$view->getRequest()->query->get($pager['posvar'], '');
+    }
     if ($params['display'] == 'page') {
         $pager['pos'] = $pager['pos'] * $pager['perpage'];
         $pager['increment'] = 1;
@@ -132,7 +153,7 @@ function smarty_function_pager($params, Zikula_View $view)
     $template = (isset($params['template'])) ? $params['template'] : 'pagercss.tpl';
     $pager['includeStylesheet'] = isset($params['includeStylesheet']) ? $params['includeStylesheet'] : true;
     $anchorText = (isset($params['anchorText']) ? '#' . $params['anchorText'] : '');
-    $pager['maxPages'] = (isset($params['maxpages']) ? $params['maxpages'] : 0);
+    $pager['maxPages'] = (isset($params['maxpages']) ? $params['maxpages'] : 15);
     unset($params['template']);
     unset($params['anchorText']);
     unset($params['maxpages']);
@@ -147,6 +168,8 @@ function smarty_function_pager($params, Zikula_View $view)
 
     $pager['func'] = isset($params['func']) ? $params['func'] : FormUtil::getPassedValue('func', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
     $pager['type'] = isset($params['type']) ? $params['type'] : FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
+
+    $pager['route'] = $params['route'];
 
     $pager['args'] = array();
     if (empty($pager['module'])) {
@@ -166,7 +189,7 @@ function smarty_function_pager($params, Zikula_View $view)
     }
 
     //also $_POST vars have to be considered, i.e. for search results
-    $allVars = array_merge($_POST, $_GET);
+    $allVars = ($params['includePostVars']) ? array_merge($_POST, $_GET, $routeParams) : array_merge($_GET, $routeParams);
     foreach ($allVars as $k => $v) {
         if ($k != $pager['posvar'] && !is_null($v)) {
             switch ($k) {
@@ -222,9 +245,18 @@ function smarty_function_pager($params, Zikula_View $view)
         }
     }
 
+
     unset($params['modname']);
     unset($params['type']);
     unset($params['func']);
+    unset($params['route']);
+
+    $pagerUrl = function ($pager) use ($view) {
+        if (!$pager['route']) {
+            return ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']);
+        }
+        return $view->getContainer()->get('router')->generate($pager['route'], $pager['args']);
+    };
 
     // build links to items / pages
     // entries are marked as current or displayed / hidden
@@ -273,7 +305,7 @@ function smarty_function_pager($params, Zikula_View $view)
             $pager['pages'][$currItem]['isVisible'] = $currItemVisible;
 
             if ($params['processUrls']) {
-                $pager['pages'][$currItem]['url'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
+                $pager['pages'][$currItem]['url'] = DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
             } else {
                 $pager['pages'][$currItem]['url'] = array('module' => $pager['module'], 'type' => $pager['type'], 'func' => $pager['func'], 'args' => $pager['args'], 'fragment' => $anchorText);
             }
@@ -284,32 +316,32 @@ function smarty_function_pager($params, Zikula_View $view)
     // link to first & prev page
     $pager['args'][$pager['posvar']] = $pager['first'] = '1';
     if ($params['processUrls']) {
-        $pager['firstUrl'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
+        $pager['firstUrl'] = DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
     } else {
         $pager['firstUrl'] = array('module' => $pager['module'], 'type' => $pager['type'], 'func' => $pager['func'], 'args' => $pager['args'], 'fragment' => $anchorText);
     }
 
     if ($params['display'] == 'page') {
-         $pager['prev'] = ($pager['currentPage'] - 1);
+        $pager['prev'] = ($pager['currentPage'] - 1);
     } else {
-         $pager['prev'] = ($pager['currentPage'] - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
+        $pager['prev'] = ($leftMargin - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
     }
-    $pager['args'][$pager['posvar']] = $pager['prev'];
+    $pager['args'][$pager['posvar']] = ($pager['prev'] > 1) ? $pager['prev'] : 1;
     if ($params['processUrls']) {
-        $pager['prevUrl'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
+        $pager['prevUrl'] = DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
     } else {
         $pager['prevUrl'] = array('module' => $pager['module'], 'type' => $pager['type'], 'func' => $pager['func'], 'args' => $pager['args'], 'fragment' => $anchorText);
     }
 
     // link to next & last page
     if ($params['display'] == 'page') {
-         $pager['next'] = $pager['currentPage'] + 1;
+        $pager['next'] = $pager['currentPage'] + 1;
     } else {
-         $pager['next'] = $pager['currentPage'] * $pager['perpage'] + 1;
+        $pager['next'] = $rightMargin * $pager['perpage'] + 1;
     }
-    $pager['args'][$pager['posvar']] = $pager['next'];
+    $pager['args'][$pager['posvar']] = ($pager['next'] < $pager['total']) ? $pager['next'] : $pager['next'] - $pager['perpage'];
     if ($params['processUrls']) {
-        $pager['nextUrl'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
+        $pager['nextUrl'] = DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
     } else {
         $pager['nextUrl'] = array('module' => $pager['module'], 'type' => $pager['type'], 'func' => $pager['func'], 'args' => $pager['args'], 'fragment' => $anchorText);
     }
@@ -321,7 +353,7 @@ function smarty_function_pager($params, Zikula_View $view)
     }
     $pager['args'][$pager['posvar']] = $pager['last'];
     if ($params['processUrls']) {
-        $pager['lastUrl'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
+        $pager['lastUrl'] = DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
     } else {
         $pager['lastUrl'] = array('module' => $pager['module'], 'type' => $pager['type'], 'func' => $pager['func'], 'args' => $pager['args'], 'fragment' => $anchorText);
     }

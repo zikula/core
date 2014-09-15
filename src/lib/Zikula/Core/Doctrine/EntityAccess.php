@@ -65,6 +65,11 @@ class EntityAccess implements \ArrayAccess
         $this->offsetSet($key, null);
     }
 
+    /**
+     * Returns an array representation of this entity.
+     *
+     * @return array An array containing properties of this entity.
+     */
     public function toArray()
     {
         $r = $this->getReflection();
@@ -79,7 +84,7 @@ class EntityAccess implements \ArrayAccess
             'lazyPropertiesDefaults'
         );
 
-        while($r !== false) {
+        while ($r !== false) {
             $properties = $r->getProperties();
             $r = $r->getParentClass();
 
@@ -89,7 +94,9 @@ class EntityAccess implements \ArrayAccess
                 }
 
                 $method = $this->getGetterForProperty($property->name);
-                $array[$property->name] = $this->$method();
+                if (!empty($method)) {
+                    $array[$property->name] = $this->$method();
+                }
             }
         }
 
@@ -104,17 +111,27 @@ class EntityAccess implements \ArrayAccess
         }
     }
 
+    /**
+     * Returns the accessor's method name for retrieving a certain property.
+     *
+     * @param string $name Name of property to be retrieved.
+     *
+     * @return string Name of method to be used as accessor for the given property.
+     */
     private function getGetterForProperty($name)
     {
-        $getMethod = "get" . ucfirst($name);
+        $getMethod = 'get' . ucfirst($name);
         if (method_exists($this, $getMethod)) {
             return $getMethod;
         }
 
-        $isMethod  = "is" . ucfirst($name);
+        $isMethod  = 'is' . ucfirst($name);
         if (method_exists($this, $isMethod)) {
             return $isMethod;
         }
+
+        // see #1863
+        return '';
 
         $class = get_class($this);
         throw new \RuntimeException("Entity \"$class\" does not have a getter for property \"$name\". Please either add $getMethod() or $isMethod().");
@@ -122,7 +139,7 @@ class EntityAccess implements \ArrayAccess
 
     private function getSetterForProperty($name)
     {
-        $setMethod = "set" . ucfirst($name);
+        $setMethod = 'set' . ucfirst($name);
         if (method_exists($this, $setMethod)) {
             return $setMethod;
         }

@@ -94,7 +94,7 @@ Event Removal
 
 The following events have been removed:
 
-  - `boostrap.getconfig` - there is no replacement
+  - `bootstrap.getconfig` - there is no replacement
   - `bootstrap.custom` - there is no replacement
   - `frontcontroller.predispatch` - there is no replacement
   - `frontcontroller.exception` - Subscribe to KernelEvents::EXCEPTION instead
@@ -129,12 +129,13 @@ Module Specification from Zikula Core 1.4.0
   11. [Events](#events)
   12. [Event Names](#eventnames)
   13. [Hooks](#hooks)
-  14. [Request](#request)
-  15. [Search](#search)
-  16. [Version File](#versionfile)
-  17. [Persistent Event Listeners](#eventlisteners)
-  18. [Theme Standard](#themes)
-  19. [Theme composer.json](#themecomposer)
+  14. [ModUrl Deprecated](#modurl)
+  15. [Request](#request)
+  16. [Search](#search)
+  17. [Version File](#versionfile)
+  18. [Persistent Event Listeners](#eventlisteners)
+  19. [Theme Standard](#themes)
+  20. [Theme composer.json](#themecomposer)
   
 
 <a name="bootstrapjquery" />
@@ -706,6 +707,15 @@ There are lots of new events you can see them here:
 http://symfony.com/doc/current/book/internals.html#events
 http://symfony.com/doc/current/components/http_kernel/introduction.html#component-http-kernel-event-table
 
+Inside the Zikula core there has been a new event class introduced (Zikula\Core\CoreEvents) which is used
+specifically for events which change the state of a module.
+
+    - `module.install` - occurs when a module has been installed.
+    - `module.upgrade` - occurs when a module has been upgraded to a newer version.
+    - `module.enable` - occurs when a module has been enabled after it has been disabled before.
+    - `module.disable` - occurs when a module has been disabled.
+    - `module.remove` - occurs when a module has been removed entirely.
+
 
 <a name="hooks" />
 Hooks
@@ -744,6 +754,16 @@ New class list:
   - `Zikula\Core\Hook\AbstractHookListener` (was `Zikula_Hook_AbstractHandler`).
   - `Zikula\Component\HookDispatcher\SubscriberBundle` (was `Zikula_HookManager_SubscriberBundle`).
   - `Zikula\Component\HookDispatcher\ProviderBundle` (was `Zikula_HookManager_ProviderBundle`).
+
+
+<a name="modurl" />
+ModUrl Deprecated
+-----------------
+
+The `ModUrl` class has been deprecated but remains fully functional. Core typehinting for `ModUrl` has been replaced
+with `UrlInterface` and a new class, `RouteUrl` has been added (see `\lib\Zikula\Core\`). RouteUrl currently extends
+`ModUrl` in order to maintain backward-compatibility, but `RouteUrl` will change in the future to only implement
+`UrlInterface`. All usage of typehints for `ModUrl` should be changed to `UrlInterface`.
 
 
 <a name="request" />

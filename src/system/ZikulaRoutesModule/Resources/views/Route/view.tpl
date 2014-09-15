@@ -176,7 +176,7 @@
                     <td headers="hWorkflowState" class="z-left nowrap">
                         {$route.workflowState|zikularoutesmoduleObjectState}
                     </td>
-                    <td headers="hPath" class="z-left">
+                    <td headers="hPath" class="z-left" title="{$route.name}">
                         {$route.path|zikularoutesmodulePathToString:$route}
                     </td>
                     <td headers="hHost" class="z-left">

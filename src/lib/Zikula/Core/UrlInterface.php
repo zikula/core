@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright 2014 Zikula Foundation
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -12,10 +12,22 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula_Request_Http as Request;
+namespace Zikula\Core;
 
-include 'lib/bootstrap.php';
-$request = Request::createFromGlobals();
-$core->getContainer()->set('request', $request);
-$core->init(Zikula_Core::STAGE_ALL, $request);
-System::redirect(ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'));
+/**
+ * UrlInterface class.
+ */
+interface UrlInterface
+{
+    public function getLanguage();
+
+    public function getFragment();
+
+    public function getUrl();
+
+    public function getArgs();
+
+    public function serialize();
+
+    public function toArray();
+}

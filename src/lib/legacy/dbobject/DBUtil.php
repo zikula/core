@@ -1402,6 +1402,8 @@ class DBUtil
                             $hasMath = (bool)(strcmp($fullColumnName, str_replace($search, $replace, $fullColumnName)));
                             if ($hasMath) {
                                 $fullColumnName = "'$left'";
+                            } elseif (!$hasTablePrefix) {
+                                $fullColumnName = "tbl.$fullColumnName";
                             }
                         } else {
                             if (!$hasTablePrefix) {
@@ -1871,9 +1873,7 @@ class DBUtil
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
-        $fieldName = $columns[$field];
-
-        $field = isset($fieldName) ? $fieldName : $field;
+        $field = isset($columns[$field]) ? $columns[$field] : $field;
 
         $sql = "SELECT $option($field) FROM $tableName AS tbl";
         $where = self::_checkWhereClause($where);

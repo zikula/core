@@ -117,8 +117,6 @@ class RouterListener implements EventSubscriberInterface
             return;
         }
 
-        $request->getBasePath();
-
         // add attributes based on the request (routing)
         try {
             // matching a request is more powerful than matching a URL path + context, so try that first
@@ -135,6 +133,9 @@ class RouterListener implements EventSubscriberInterface
             $request->attributes->add($parameters);
             unset($parameters['_route']);
             unset($parameters['_controller']);
+            unset($parameters['_zkModule']);
+            unset($parameters['_zkType']);
+            unset($parameters['_zkFunc']);
             $request->attributes->set('_route_params', $parameters);
         } catch (ResourceNotFoundException $e) {
             $message = sprintf('No route found for "%s %s"', $request->getMethod(), $request->getPathInfo());

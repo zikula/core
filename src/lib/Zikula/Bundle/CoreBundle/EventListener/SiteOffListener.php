@@ -38,6 +38,11 @@ class SiteOffListener implements EventSubscriberInterface
             if ($hasOnlyOverviewAccess && \UserUtil::isLoggedIn()) {
                 \UserUtil::logout();
             }
+
+            // initialise the language system to enable translations (#1764)
+            $lang = \ZLanguage::getInstance();
+            $lang->setup($request);
+
             header('HTTP/1.1 503 Service Unavailable');
             require_once \System::getSystemErrorTemplate('siteoff.tpl');
             exit;

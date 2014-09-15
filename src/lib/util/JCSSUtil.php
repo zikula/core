@@ -67,6 +67,10 @@ class JCSSUtil
         // get page vars
         $javascripts = PageUtil::getVar('javascript');
         $stylesheets = PageUtil::getVar('stylesheet');
+
+        // add html5shiv centrally
+        $javascripts[] = 'web/html5shiv/dist/html5shiv.js';
+
         if (System::isLegacyMode()) {
             $replaceLightbox = false;
             // check if we need to perform ligthbox replacement -- javascript

@@ -13,7 +13,6 @@
 
 <p>{gt text="Number of hits: %s" tag1=$resultcount domain='zikula'}</p>
 
-{if $resultcount gt 0}
 <dl class="search_results">
     {foreach from=$results item=result}
     <dt class="search_hit">
@@ -34,16 +33,4 @@
     </dd>
     {/foreach}
 </dl>
-{pager rowcount=$resultcount limit=$numlimit posvar='page' display='page'}<br/>
-
-{else}
-
-<p>{gt text="No search results found. You can try the following:" domain='zikula'}</p>
-<ul>
-    <li>{gt text="Check that you spelled all words correctly." domain='zikula'}</li>
-    <li>{gt text="Use different keywords." domain='zikula'}</li>
-    <li>{gt text="Use keywords that are more general." domain='zikula'}</li>
-    <li>{gt text="Use fewer words." domain='zikula'}</li>
-</ul>
-{modfunc modname='ZikulaSearchModule' func='form' titles=false}
-{/if}
+{pager rowcount=$resultcount limit=$numlimit posvar='page' display='page' includePostVars=false route='zikulasearchmodule_user_search'}<br/>

@@ -19,6 +19,7 @@ Fixes:
 - Do not show multi-lingual user settings if multi-lingual is disabled, #1050.
 - Fixed Admin breadcrumbs does not work with system plugins, #1056.
 - Fixed wrong handling of MinDate in function.jquery_datepicker.php, #1361
+- Added output sanitizing for authentication module/method in login form
 
 Features:
 - Show an error message if version number of a module is incorrect.

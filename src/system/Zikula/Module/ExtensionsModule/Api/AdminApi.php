@@ -284,6 +284,11 @@ class AdminApi extends \Zikula_AbstractApi
         $module['state'] = $args['state'];
         $this->entityManager->flush();
 
+        // clear the cache before calling events
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = $this->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
+
         // state changed, so update the ModUtil::available-info for this module.
         $modinfo = ModUtil::getInfo($args['id']);
         ModUtil::available($modinfo['name'], true);
@@ -350,7 +355,7 @@ class AdminApi extends \Zikula_AbstractApi
         $oomod = ModUtil::isOO($modinfo['name']);
 
         // add autoloaders for module
-        if ($oomod && false === strpos($osdir, '/')) {
+        if ($oomod && (false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
             $scanDir = "modules/$osdir";
@@ -365,8 +370,6 @@ class AdminApi extends \Zikula_AbstractApi
             $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
             $boot->addAutoloaders($this->getContainer()->get('kernel'), $moduleMetaData->getAutoload());
         }
-
-        $version = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath);
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -389,6 +392,8 @@ class AdminApi extends \Zikula_AbstractApi
         } else {
             $module = ModUtil::getModule($modinfo['name']);
         }
+
+        $version = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath, $module);
 
         // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
@@ -989,7 +994,7 @@ class AdminApi extends \Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // add autoloaders for module
-        if (false === strpos($osdir, '/')) {
+        if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
             $scanDir = "modules/$osdir";
@@ -1114,7 +1119,7 @@ class AdminApi extends \Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // add autoloaders for module
-        if (false === strpos($osdir, '/')) {
+        if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
             $scanDir = "modules/$osdir";
@@ -1161,7 +1166,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
             throw new \RuntimeException($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
-        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module ));
+        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
 
         // perform the actual upgrade of the module
         $func = array($installer, 'upgrade');
@@ -1183,7 +1188,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
         $modversion['version'] = '0';
 
-        $modversion = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath);
+        $modversion = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath, $module);
         $version = $modversion['version'];
 
         // Update state of module

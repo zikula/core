@@ -4,9 +4,9 @@ function smarty_modifier_zikularoutesmodulePathToString($path, \Zikula\RoutesMod
 {
     $options = $route->getOptions();
 
-    $prefix = "";
+    $prefix = '';
     if (isset($options['i18n_prefix'])) {
-        $prefix = "/" . $options['i18n_prefix'];
+        $prefix = '/' . $options['i18n_prefix'];
     }
     if (!isset($options['i18n']) || $options['i18n']) {
         $languages = ZLanguage::getInstalledLanguages();
@@ -28,5 +28,5 @@ function smarty_modifier_zikularoutesmodulePathToString($path, \Zikula\RoutesMod
         return "<abbr title=\"" . \DataUtil::formatForDisplay($matches[0]) . "\">" . \DataUtil::formatForDisplay($container->getParameter($matches[1])) . "</abbr>";
     }, $path);
 
-    return "$prefix<b>$path</b>";
+    return "$prefix<strong>$path</strong>";
 }
