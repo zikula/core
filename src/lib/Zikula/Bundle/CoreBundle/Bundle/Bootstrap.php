@@ -115,7 +115,9 @@ class Bootstrap
             default:
                 if ($state['state'] == \ModUtil::STATE_ACTIVE) {
                     return true;
-                } else if ($state['state'] == \ModUtil::STATE_UPGRADED && isset($_GET['id']) &&$state['id'] == $_GET['id'] && isset($_GET['secret'])) {
+                }
+
+                if ($state['state'] == \ModUtil::STATE_UPGRADED && isset($_GET['id']) &&$state['id'] == $_GET['id'] && isset($_GET['secret'])) {
                     $secret = $_GET['secret'];
                     $rootDir = $kernel->getRootDir() . "/config";
                     $path = $rootDir . "/custom_parameters.yml";
@@ -134,9 +136,9 @@ class Bootstrap
                     }
 
                     return $turnActive;
-                } else {
-                    return false;
                 }
+
+                return false;
         }
     }
 
@@ -149,12 +151,12 @@ class Bootstrap
     public function addAutoloaders(ZikulaKernel $kernel, array $autoload)
     {
         if (isset($autoload['psr-0'])) {
-            foreach($autoload['psr-0'] as $prefix => $path) {
+            foreach ($autoload['psr-0'] as $prefix => $path) {
                 $kernel->getAutoloader()->add($prefix, $path);
             }
         }
         if (isset($autoload['psr-4'])) {
-            foreach($autoload['psr-4'] as $prefix => $path) {
+            foreach ($autoload['psr-4'] as $prefix => $path) {
                 $kernel->getAutoloader()->addPsr4($prefix, $path);
             }
         }
@@ -162,7 +164,7 @@ class Bootstrap
             $kernel->getAutoloader()->addClassMap($autoload['classmaps']);
         }
         if (isset($autoload['files'])) {
-            foreach($autoload['files'] as $path) {
+            foreach ($autoload['files'] as $path) {
                 include $path;
             }
         }
