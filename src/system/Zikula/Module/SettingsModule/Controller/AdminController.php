@@ -250,7 +250,7 @@ class AdminController extends \Zikula_AbstractController
         if (isset($deleteLangUrl)) {
             // reset language settings
             SessionUtil::delVar('language');
-            $url = preg_replace('#(.*)(&lang=[a-z-]{2,5})(.*)#i', '$1$3', $url);
+            $url = $this->get('router')->generate('zikulasettingsmodule_admin_multilingual', array('_locale' => \System::getVar('language_i18n')), RouterInterface::ABSOLUTE_URL);
         }
 
         // Write the vars
