@@ -264,8 +264,21 @@ class Zikula_View_Theme extends Zikula_View
         $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('theme.init', $event);
 
-        // Start the output buffering to capture module output
-        ob_start();
+        $this->startOutputBuffering();
+    }
+
+    /**
+     * Starts the output buffering to capture module output.
+     */
+    protected function startOutputBuffering()
+    {
+        global $_pageVars;
+
+        // Start output buffer only if the theme is not already loaded
+        // (which happens after processing extensions); related to issue #1921
+        if (!isset($_pageVars) || !is_array($_pageVars) || !isset($_pageVars['title'])) {
+            ob_start();
+        }
     }
 
     /**
