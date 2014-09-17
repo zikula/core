@@ -117,7 +117,7 @@ class AdminnavBlock extends \Zikula_Controller_AbstractBlock
                                               'menutexttitle' => $menutexttitle);
                     }
                 }
-                $admincategories[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel', array('cid' => $item['cid'])),
+                $admincategories[] = array('url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', array('cid' => $item['cid'])),
                                            'title' => DataUtil::formatForDisplay($item['name']),
                                            'modules' => $adminlinks);
             }

@@ -4,7 +4,7 @@
     {gt text="Edit module category"}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="ZikulaAdminModule" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulaadminmodule_admin_update'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="Module category"}</legend>
 
@@ -28,8 +28,8 @@
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
             <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-            <a class="btn btn-danger" href="{modurl modname=ZikulaAdminModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
-            <a class="btn btn-info" href="{modurl modname=ZikulaAdminModule type=admin func=help fragment=modify}" title="{gt text="Help"}">{gt text="Help"}</a>
+            <a class="btn btn-danger" href="{route name='zikulaadminmodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-info" href="{route name='zikulaadminmodule_admin_help'}#modify" title="{gt text="Help"}">{gt text="Help"}</a>
         </div>
     </div>
 </form>

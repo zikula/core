@@ -41,7 +41,7 @@
             <a href="#" title="{gt text='Lock/Unlock editing'}" data-placement="top" class="tooltips tooltips-bottom"><span class="fa fa-lock fa-fw"></span></a>
         </li>
         <li class="admintabs-add admintabs-lock">
-            <a href="{modurl modname=ZikulaAdminModule type=admin func=new}" title="{gt text='New module category'}" class="tooltips tooltips-bottom" data-placement="top"><span class="fa fa-plus"></span></a>
+            <a href="{route name='zikulaadminmodule_admin_new'}" title="{gt text='New module category'}" class="tooltips tooltips-bottom" data-placement="top"><span class="fa fa-plus"></span></a>
             <div id="admintabs-add-popover" class="hide">
                 <div class="input-group">
                     <input type="text" class="form-control" name="name" id="admintabs-add-name" />

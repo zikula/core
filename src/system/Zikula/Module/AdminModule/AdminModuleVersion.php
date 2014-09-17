@@ -29,7 +29,7 @@ class AdminModuleVersion extends \Zikula_AbstractVersion
         $meta['displayname']    = $this->__('Administration panel');
         $meta['description']    = $this->__('Backend administration interface.');
         $meta['url']            = $this->__('adminpanel');
-        $meta['version']        = '1.9.1';
+        $meta['version']        = '1.9.2';
         $meta['core_min']       = '1.4.0';
         $meta['securityschema'] = array('ZikulaAdminModule::' => 'Admin Category name::Admin Category ID');
 

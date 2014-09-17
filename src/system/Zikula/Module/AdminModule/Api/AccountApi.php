@@ -31,10 +31,11 @@ class AccountApi extends \Zikula_AbstractApi
         $items = array();
 
         if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
-            $items['0'] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'),
-                    'module' => 'ZikulaAdminModule',
-                    'title' => $this->__('Administration panel'),
-                    'icon' => 'admin.png');
+            $items['0'] = array(
+                'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel'),
+                'module' => 'ZikulaAdminModule',
+                'title' => $this->__('Administration panel'),
+                'icon' => 'admin.png');
         }
 
         // Return the items

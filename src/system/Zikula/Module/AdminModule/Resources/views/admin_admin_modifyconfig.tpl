@@ -4,7 +4,7 @@
     {gt text="Settings"}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="ZikulaAdminModule" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulaadminmodule_admin_updateconfig'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -120,8 +120,8 @@
                 <button class="btn btn-success" title="{gt text="Save"}">
                     {gt text="Save"}
                 </button>
-                <a class="btn btn-danger" href="{modurl modname=ZikulaAdminModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
-                <a class="btn btn-info" href="{modurl modname=ZikulaAdminModule type=admin func=help fragment=modifyconfig}" title="{gt text="Help"}">{gt text="Help"}</a>
+                <a class="btn btn-danger" href="{route name='zikulaadminmodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-info" href="{route name='zikulaadminmodule_admin_help'}#modifyconfig" title="{gt text="Help"}">{gt text="Help"}</a>
             </div>
         </div>
     </div>

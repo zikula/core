@@ -18,13 +18,13 @@
         {checkpermission component="`$module`::" instance="`$category_name`:`$category_id`" level="ACCESS_EDIT" assign="access_edit"}
         {checkpermission component="`$module`::" instance="`$category_name`:`$category_id`" level="ACCESS_DELETE" assign="access_delete"}
         <tr>
-            <td><a href="{modurl modname=ZikulaAdminModule type=admin func=adminpanel acid=$category_id}">{$category_name}</a></td>
+            <td><a href="{route name='zikulaadminmodule_admin_adminpanel' acid=$category_id}">{$category_name}</a></td>
             <td class="actions">
                 {if $access_edit}
-                    <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}" title="{gt text="Edit"}" class="tooltips fa fa-wrench"></a>
+                    <a href="{route name='zikulaadminmodule_admin_modify' cid=$category_id}" title="{gt text="Edit"}" class="tooltips fa fa-wrench"></a>
                 {/if}
                 {if $access_delete}
-                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}" title="{gt text="Delete"}" class="tooltips fa fa-trash-o"></a>
+                <a href="{route name='zikulaadminmodule_admin_delete' cid=$category_id}" title="{gt text="Delete"}" class="tooltips fa fa-trash-o"></a>
                 {/if}
             </td>
         </tr>
@@ -33,5 +33,5 @@
         {/section}
     </tbody>
 </table>
-{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulaadminmodule_admin_view'}
 {adminfooter}
