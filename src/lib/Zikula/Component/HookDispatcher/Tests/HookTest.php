@@ -91,4 +91,3 @@ class HookTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
-

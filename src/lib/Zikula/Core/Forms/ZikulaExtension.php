@@ -16,4 +16,3 @@ class ZikulaExtension extends AbstractExtension
         );
     }
 }
-

@@ -305,9 +305,9 @@ class PageUtil
                 $return[$key] = self::fixJQueryThemesPath($value);
             }
             return $return;
-        } else {
-            return str_replace('javascript/jquery-ui/themes/', 'web/jquery-ui/themes/', $path);
         }
+
+        return str_replace('javascript/jquery-ui/themes/', 'web/jquery-ui/themes/', $path);
     }
 
     /**
@@ -375,16 +375,12 @@ class PageUtil
     /**
      * Check if the current page is the homepage.
      *
-     * @return boolean true If it is the homepage, false if it is not the homepage.
+     * @return boolean true if it is the homepage, false if it is not the homepage.
      */
     public static function isHomepage()
     {
         $moduleGetName = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        if (empty($moduleGetName)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
+        return empty($moduleGetName) ? true : false;
+    }
 }

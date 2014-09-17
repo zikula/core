@@ -1342,7 +1342,7 @@ class ModUtil
         
         $request = \ServiceUtil::get('request');
         if ($request->attributes->has('_route_params')) {
-        	// If this attribute is set, a Symfony route has been matched. We need to generate full urls in that case.
+            // If this attribute is set, a Symfony route has been matched. We need to generate full urls in that case.
             $fqurl = true;
         }
 
@@ -1769,7 +1769,7 @@ class ModUtil
         }
 
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-        $osdir   = DataUtil::formatForOS($modinfo['directory']);
+        $osdir = DataUtil::formatForOS($modinfo['directory']);
         if (false === strpos($modinfo['directory'], '/')) {
             ZLoader::addAutoloader($moduleName, array(
                                    realpath("$modpath"),
@@ -1870,7 +1870,7 @@ class ModUtil
      */
     public static function getModuleImagePath($moduleName)
     {
-        if($moduleName == '') {
+        if ($moduleName == '') {
             return false;
         }
 
@@ -1919,7 +1919,7 @@ class ModUtil
             'PageLock', 'Search', 'SecurityCenter', 'Settings', 'Theme', 'Users',
             'Categories', 'Admin'
         ))) {
-            $name = 'Zikula'.$name.'Module';
+            $name = 'Zikula' . $name . 'Module';
         }
 
         return $name;
@@ -1974,5 +1974,4 @@ class ModUtil
     {
         return ('system' === self::getModuleBaseDir($module)) ? true : false;
     }
-
 }

@@ -184,7 +184,7 @@ class UserUtil
     }
 
     /**
-     * Return an array group-ids for the specified user.
+     * Return an array of group-ids for the specified user.
      *
      * @param integer $uid The user ID for which we want the groups.
      *
@@ -445,6 +445,9 @@ class UserUtil
      * @param string  $userEnteredPassword The Password.
      * @param boolean $rememberme          Whether or not to remember login.
      * @param boolean $checkPassword       Whether or not to check the password.
+     *
+     * @deprecated since 1.3.0
+     * @see        UserUtil::loginUsing()
      *
      * @return boolean
      */

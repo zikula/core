@@ -45,4 +45,3 @@ class CategoriesType extends AbstractType
                      'entityCategoryClass' => $options['entityCategoryClass']);
     }
 }
-

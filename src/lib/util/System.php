@@ -212,11 +212,11 @@ class System
             return false;
         }
 
-        if (($type == 'email') && (!filter_var($var, FILTER_VALIDATE_EMAIL))) {
+        if ($type == 'email' && !filter_var($var, FILTER_VALIDATE_EMAIL)) {
             return false;
         }
 
-        if (($type == 'url') && (!filter_var($var, FILTER_VALIDATE_URL))) {
+        if ($type == 'url' && !filter_var($var, FILTER_VALIDATE_URL)) {
             return false;
         }
 
@@ -224,11 +224,11 @@ class System
             // check for invalid characters
             if (!preg_match('/^[\p{L}\p{N}_\.\-]+$/uD', $var)) {
                 return false;
-            } else {
-                $lowerUname = mb_strtolower($var);
-                if ($lowerUname != $var) {
-                    return false;
-                }
+            }
+
+            $lowerUname = mb_strtolower($var);
+            if ($lowerUname != $var) {
+                return false;
             }
         }
 
@@ -301,7 +301,7 @@ class System
 
         $path = self::getBaseUri();
 
-        return "$proto$server$path/";
+        return $proto . $server . $path . '/';
     }
 
     /**
@@ -357,7 +357,7 @@ class System
                         '%0a'), '', $redirecturl);
 
         // check if the headers have already been sent
-        if (headers_sent ()) {
+        if (headers_sent()) {
             return false;
         }
 
@@ -511,7 +511,7 @@ class System
             $server = self::serverGetVar('SERVER_NAME');
             $port = self::serverGetVar('SERVER_PORT');
             if ($port != '80') {
-                $server .= ":$port";
+                $server .= ':' . $port;
             }
         }
 
@@ -624,7 +624,7 @@ class System
     {
         $server = self::getHost();
         $protocol = self::serverGetProtocol();
-        $baseurl = "$protocol://$server";
+        $baseurl = $protocol . '://' . $server;
         $request = self::getCurrentUri($args);
 
         if (empty($request)) {
@@ -675,23 +675,23 @@ class System
             if (!isset($parameters['_zkModule']) || !isset($parameters['_zkType']) || !isset($parameters['_zkFunc'])) {
                 // This might be the web profiler or another native bundle.
                 return;
-            } else {
-                $modname = strtolower($parameters['_zkModule']);
-                $type = strtolower($parameters['_zkType']);
-                $func = strtolower($parameters['_zkFunc']);
-
-                $request->attributes->set('_zkModule', $modname);
-                $request->attributes->set('_zkType', $type);
-                $request->attributes->set('_zkFunc', $func);
-                $request->query->set('module', $modname);
-                $request->query->set('type', $type);
-                $request->query->set('func', $func);
-                self::queryStringSetVar('module', $modname);
-                self::queryStringSetVar('type', $type);
-                self::queryStringSetVar('func', $func);
-
-                return;
             }
+
+            $modname = strtolower($parameters['_zkModule']);
+            $type = strtolower($parameters['_zkType']);
+            $func = strtolower($parameters['_zkFunc']);
+
+            $request->attributes->set('_zkModule', $modname);
+            $request->attributes->set('_zkType', $type);
+            $request->attributes->set('_zkFunc', $func);
+            $request->query->set('module', $modname);
+            $request->query->set('type', $type);
+            $request->query->set('func', $func);
+            self::queryStringSetVar('module', $modname);
+            self::queryStringSetVar('type', $type);
+            self::queryStringSetVar('func', $func);
+
+            return;
 
         } catch (ResourceNotFoundException $e) {
             // This is an old style url.
@@ -705,7 +705,8 @@ class System
         $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
         // check if we need to decode the url
-        if (($shorturls = self::getVar('shorturls') && (empty($module) && empty($type) && empty($func)))) {
+        $shorturls = self::getVar('shorturls');
+        if ($shorturls && empty($module) && empty($type) && empty($func)) {
             // user language is not set at this stage
             $lang = self::getVar('language_i18n', '');
             $customentrypoint = self::getVar('entrypoint');
@@ -715,14 +716,14 @@ class System
             // check if we hit baseurl, e.g. domain.com/ and if we require the language URL
             // then we should redirect to the language URL.
             if (ZLanguage::isRequiredLangParam() && self::getCurrentUrl() == self::getBaseUrl()) {
-                $uri = $expectEntrypoint ? "$root/$lang" : "$lang";
+                $uri = $expectEntrypoint ? "$root/$lang" : $lang;
                 self::redirect(self::getBaseUrl() . $uri);
                 self::shutDown();
             }
 
             // check if entry point is part of the URL expectation.  If so throw error if it's not present
             // since this URL is technically invalid.
-            if (self::getCurrentUrl() != self::getBaseUrl() && $expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
+            if ($expectEntrypoint && self::getCurrentUrl() != self::getBaseUrl() && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
                 $protocol = self::serverGetVar('SERVER_PROTOCOL');
                 header("{$protocol} 404 Not Found");
                 echo __('The requested URL cannot be found');
@@ -1048,11 +1049,13 @@ class System
         $override = Zikula_View::getTemplateOverride($templatePath);
         if ($override !== false) {
             return $override;
-        } elseif (self::isLegacyMode() && file_exists("config/templates/$templateFile")) {
-            return "config/templates/$templateFile";
-        } else {
-            return $templatePath;
         }
+
+        if (self::isLegacyMode() && file_exists("config/templates/$templateFile")) {
+            return "config/templates/$templateFile";
+        }
+
+        return $templatePath;
     }
 
     /**

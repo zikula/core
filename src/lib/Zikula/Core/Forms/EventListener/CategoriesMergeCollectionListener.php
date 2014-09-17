@@ -22,10 +22,10 @@ class CategoriesMergeCollectionListener implements EventSubscriberInterface
         if (!$collection) {
             $collection = $data;
             
-            foreach($data as $key => $value) {
+            foreach ($data as $key => $value) {
                 $value->setEntity($rootEntity);
             }
-        } else if (count($data) === 0) {
+        } elseif (count($data) === 0) {
             $collection->clear();
         } else {
             // merge $data into $collection

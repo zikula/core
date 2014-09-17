@@ -225,6 +225,7 @@ class DoctrineStorage implements StorageInterface
         foreach ($results as $k => $result) {
             $resultArray[$k] = $result['areaname'];
         }
+
         return $resultArray;
     }
 
@@ -235,6 +236,7 @@ class DoctrineStorage implements StorageInterface
                     ->where('t.areaname = ?1')
                     ->getQuery()->setParameter(1, $areaName)
                     ->getSingleResult();
+
         return $hookarea->getOwner();
     }
 
