@@ -356,5 +356,4 @@ class HookDispatcher
             $this->dispatcher->removeListener($eventName, $listener);
         }
     }
-
 }

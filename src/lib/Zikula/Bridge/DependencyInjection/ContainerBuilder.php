@@ -96,14 +96,16 @@ class ContainerBuilder extends BaseContainerBuilder implements \ArrayAccess
      */
     public function offsetUnset($id)
     {
-        if ($this->hasParameter($id)) {
-            if (method_exists($this->parameterBag, 'remove')) {
-                $this->parameterBag->remove($id);
-            } else {
-                throw new \BadMethodCallException(
-                    sprintf('No remove method in %s, unable to unset %s', get_class($this->parameterBag), $id)
-                );
-            }
+        if (!$this->hasParameter($id)) {
+            return;
+        }
+
+        if (method_exists($this->parameterBag, 'remove')) {
+            $this->parameterBag->remove($id);
+        } else {
+            throw new \BadMethodCallException(
+                sprintf('No remove method in %s, unable to unset %s', get_class($this->parameterBag), $id)
+            );
         }
     }
 

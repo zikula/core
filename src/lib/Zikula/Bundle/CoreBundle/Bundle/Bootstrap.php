@@ -102,12 +102,14 @@ class Bootstrap
                     'id'    => (int)$row['id'],
                 );
             }
+
             if (isset($this->extensionStateMap[$extensionName])) {
                 $state = $this->extensionStateMap[$extensionName];
             } else {
                 $state =  array('state' => ($type == 'T') ?  \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED);
             }
         }
+
         switch($type) {
             case 'T':
                 return ($state['state'] == \ThemeUtil::STATE_ACTIVE);
@@ -117,7 +119,7 @@ class Bootstrap
                     return true;
                 }
 
-                if ($state['state'] == \ModUtil::STATE_UPGRADED && isset($_GET['id']) &&$state['id'] == $_GET['id'] && isset($_GET['secret'])) {
+                if ($state['state'] == \ModUtil::STATE_UPGRADED && isset($_GET['id']) && $state['id'] == $_GET['id'] && isset($_GET['secret'])) {
                     $secret = $_GET['secret'];
                     $rootDir = $kernel->getRootDir() . "/config";
                     $path = $rootDir . "/custom_parameters.yml";
@@ -146,7 +148,7 @@ class Bootstrap
      * Add autoloaders to kernel or include files from json
      *
      * @param ZikulaKernel $kernel
-     * @param array $autoload
+     * @param array        $autoload
      */
     public function addAutoloaders(ZikulaKernel $kernel, array $autoload)
     {

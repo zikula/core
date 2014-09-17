@@ -151,5 +151,4 @@ abstract class AbstractBaseResponse extends PlainResponse
     {
         $this->options[$key] = $value;
     }
-
 }

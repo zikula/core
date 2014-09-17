@@ -230,8 +230,8 @@ class FormRenderer
 
         if (isset($renderer[$name])) {
             return $renderer[$name];
-        } else {
-            throw new FormException('Unknown renderer: '.$name);
         }
+
+        throw new FormException('Unknown renderer: '.$name);
     }
 }

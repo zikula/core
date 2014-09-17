@@ -74,5 +74,4 @@ class ServiceFactory
 
         return array($id, $method);
     }
-
 }

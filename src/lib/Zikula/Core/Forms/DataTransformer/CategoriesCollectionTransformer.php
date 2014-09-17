@@ -23,7 +23,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         $collection = new ArrayCollection();
         $class = $this->cls;
         
-        foreach($value as $regId => $category) {
+        foreach ($value as $regId => $category) {
             $regId = (int) substr($regId, strpos($regId, '_') + 1);
             $collection->set($regId, new $class($regId, $category, null));
         }
@@ -33,13 +33,13 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
     
     public function transform($value)
     {
-        if(!$value instanceof Collection) {
+        if (!$value instanceof Collection) {
             return null;
         }
         
         $data = array();
         
-        foreach($value as $key => $entityCategory) {
+        foreach ($value as $key => $entityCategory) {
             $data['registry_' . $key] = $entityCategory->getCategory();
         }
         
