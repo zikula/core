@@ -121,6 +121,17 @@ stof_doctrine_extensions:
             softdeleteable: false
             uploadable: false
             reference_integrity: false
+    class:
+        translatable:         Gedmo\Translatable\TranslatableListener
+        timestampable:        Gedmo\Timestampable\TimestampableListener
+        blameable:            Gedmo\Blameable\BlameableListener
+        sluggable:            Gedmo\Sluggable\SluggableListener
+        tree:                 Gedmo\Tree\TreeListener
+        loggable:             Gedmo\Loggable\LoggableListener
+        sortable:             Gedmo\Sortable\SortableListener
+        softdeleteable:       Gedmo\SoftDeleteable\SoftDeleteableListener
+        uploadable:           Gedmo\Uploadable\UploadableListener
+        reference_integrity:  Gedmo\ReferenceIntegrity\ReferenceIntegrityListener
 
 parameters:
     # Append the 'web/' folder to any asset path, because the application kernel of Zikula is not located in
