@@ -70,7 +70,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $output = array(
             'id' => $moduleID,
             'name' => $displayname,
-            'url' => $this->get('router')->generate('zikulaadminmodule_admin_index'),
+            'url' => ModUtil::url($module, 'admin', 'index'),
             'parentCategory' => $newParentCat,
             'oldCategory' => $oldcid,
         );
