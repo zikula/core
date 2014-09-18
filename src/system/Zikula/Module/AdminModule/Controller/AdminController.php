@@ -296,13 +296,13 @@ class AdminController extends \Zikula_AbstractController
      *
      * Display main admin panel for a category
      *
-     * $param integer $acid
+     * @param integer $acid
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      */
-    public function adminpanelAction($acid)
+    public function adminpanelAction($acid = null)
     {
         if (!SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
             // suppress admin display - return to index.
@@ -543,7 +543,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      */
-    public function categorymenuAction($acid)
+    public function categorymenuAction($acid = null)
     {
         $acid = empty($acid) ? $this->getVar('startcategory') : $acid;
 
