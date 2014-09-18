@@ -173,7 +173,7 @@ Zikula.Users.NewUser = {
     {
         Zikula.Users.NewUser.showAjaxInProgress();
 
-        var getParams, languageCode;
+        var getParams, languageCode, requestUrl, pars;
 
         getParams = location.search.substr(1);
         if (getParams != '') {
@@ -191,9 +191,14 @@ Zikula.Users.NewUser = {
             }
         }
 
-        var pars = $(Zikula.Users.NewUser.formId).serialize(true);
+        requestUrl = Zikula.Config.baseURL + 'ajax.php?module=Users&func=getRegistrationErrors';
+        if (typeof languageCode != 'undefined') {
+            requestUrl += '&lang=' + languageCode;
+        }
+
+        pars = $(Zikula.Users.NewUser.formId).serialize(true);
         new Zikula.Ajax.Request(
-            Zikula.Config.baseURL + "ajax.php?module=Users&func=getRegistrationErrors&lang=" + languageCode,
+            requestUrl,
             {
                 parameters: pars,
                 onComplete: Zikula.Users.NewUser.getRegistrationErrorsResponse
