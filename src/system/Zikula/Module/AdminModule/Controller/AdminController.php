@@ -68,21 +68,23 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/categories")
+     * @Route("/categories/{startnum}, requirements={"startnum" = "^[1-9]\d*$")
+     * @Method("GET")
      *
      * View all admin categories
+     *
+     * @param integer $startnum
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission to the module
      */
-    public function viewAction()
+    public function viewAction($startnum = 0)
     {
         if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
-        $startnum = (int)$this->request->query->get('startnum', 0);
         $itemsperpage = $this->getVar('itemsperpage');
 
         $categories = array();
@@ -134,15 +136,17 @@ class AdminController extends \Zikula_AbstractController
      *
      * This function processes the user input from the form in @see this::newcatAction()
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to add the category
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
         $this->checkCsrfToken();
 
-        $category = $this->request->request->get('category', null);
+        $category = $request->request->get('category', null);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$category[name]::", ACCESS_ADD)) {
@@ -154,34 +158,29 @@ class AdminController extends \Zikula_AbstractController
                           'description' => $category['description']));
 
         if (is_numeric($cid)) {
-            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Created new category.'));
+            $request->getSession()->getFlashBag()->add('status', $this->__('Done! Created new category.'));
         }
 
         return new RedirectResponse($this->get('router')->generate('zikulaadminmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
-     * @Route("/modifycategory")
+     * @Route("/modifycategory/{cid}", requirements={"cid" = "^[1-9]\d*$")
      * @Method("GET")
      *
      * Displays a modify category form
      *
      * Displays a form for the user to edit the details of a category. Data is supplied to @see this::updateAction()
      *
+     * @param integer $cid
+     *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to edit the category
      * @throws NotFoundHttpException Thrown if the requested category cannot be found
      */
-    public function modifyAction()
+    public function modifyAction($cid)
     {
-        $cid = (int)$this->request->query->get('cid', null);
-        $objectid = (int)$this->request->query->get('objectid', null);
-
-        if (!empty($objectid)) {
-            $cid = $objectid;
-        }
-
         $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $cid));
         if (empty($category)) {
             throw new NotFoundHttpException($this->__('Error! No such category found.'));
@@ -204,18 +203,17 @@ class AdminController extends \Zikula_AbstractController
      *
      * This function processes the user input from the form in @see this::modifyAction()
      *
+     * @param Request $request
+     *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission over the category
      */
-    public function updateAction()
+    public function updateAction(Request $request)
     {
         $this->checkCsrfToken();
 
-        $category = $this->request->request->get('category', null);
-        if (!empty($category['objectid'])) {
-            $category['cid'] = $category['objectid'];
-        }
+        $category = $request->request->get('category', null);
 
         if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$category[name]:$category[cid]", ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -228,7 +226,7 @@ class AdminController extends \Zikula_AbstractController
 
         if ($update) {
             // Success
-            $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved category.'));
+            $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved category.'));
         }
 
         return new RedirectResponse($this->get('router')->generate('zikulaadminmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
@@ -247,26 +245,17 @@ class AdminController extends \Zikula_AbstractController
      * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the category
      * @throws NotFoundHttpException Thrown if the category cannot be found
      */
-    public function deleteAction()
+    public function deleteAction(Request $request)
     {
         // check where to get the parameters from for this dual purpose controller
-        if ($this->request->isMethod('GET')) {
-            $cid = (int)$this->request->query->get('cid', null);
-        } elseif ($this->request->isMethod('POST')) {
-            $cid = (int)$this->request->request->get('cid', null);
-        }
-        if ($this->request->isMethod('GET')) {
-            $objectid = (int)$this->request->query->get('objectid', null);
-        } elseif ($this->request->isMethod('POST')) {
-            $objectid = (int)$this->request->request->get('objectid', null);
-        }
-        // map the generic object id onto the category id onto the object id
-        if (!empty($objectid)) {
-            $cid = $objectid;
+        if ($request->isMethod('GET')) {
+            $cid = (int)$request->query->get('cid', null);
+        } elseif ($request->isMethod('POST')) {
+            $cid = (int)$request->request->get('cid', null);
         }
 
         // confirmation can only come from a form so use post only here
-        $confirmation = $this->request->request->get('confirmation', null);
+        $confirmation = $request->request->get('confirmation', null);
 
         $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $cid));
         if (empty($category)) {
@@ -292,26 +281,28 @@ class AdminController extends \Zikula_AbstractController
             $delete = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'delete', array('cid' => $cid));
             // Success
             if ($delete) {
-                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Category deleted.'));
+                $request->getSession()->getFlashBag()->add('status', $this->__('Done! Category deleted.'));
             }
         } catch (\RuntimeException $e) {
-            $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
 
         return new RedirectResponse($this->get('router')->generate('zikulaadminmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
-     * @Route("/panel")
+     * @Route("/panel/{acid}", requirements={"acid" = "^[1-9]\d*$")
      * @Method("GET")
      *
      * Display main admin panel for a category
+     *
+     * $param integer $acid
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      */
-    public function adminpanelAction()
+    public function adminpanelAction($acid)
     {
         if (!SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
             // suppress admin display - return to index.
@@ -332,9 +323,6 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Now prepare the display of the admin panel by getting the relevant info.
-
-        // Get parameters from whatever input we need.
-        $acid = $this->request->query->get('acid', null);
 
         // cid isn't set, so go to the default category
         if (empty($acid)) {
@@ -546,16 +534,18 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/categorymenu")
+     * @Route("/categorymenu/{acid}", requirements={"acid" = "^[1-9]\d*$")
+     * @Method("GET")
      *
      * Main category menu.
      *
+     * @param integer $acid
+     *
      * @return Response symfony response object
      */
-    public function categorymenuAction()
+    public function categorymenuAction($acid)
     {
-        // get the current category
-        $acid = (int)$this->request->query->get('acid', $this->getVar('startcategory'));
+        $acid = empty($acid) ? $this->getVar('startcategory') : $acid;
 
         // Get all categories
         $categories = array();
