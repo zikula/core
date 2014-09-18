@@ -68,7 +68,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/categories/{startnum}", requirements={"startnum" = "^[1-9]\d*$")
+     * @Route("/categories/{startnum}", requirements={"startnum" = "^[1-9]\d*$"})
      * @Method("GET")
      *
      * View all admin categories
@@ -165,7 +165,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/modifycategory/{cid}", requirements={"cid" = "^[1-9]\d*$")
+     * @Route("/modifycategory/{cid}", requirements={"cid" = "^[1-9]\d*$"})
      * @Method("GET")
      *
      * Displays a modify category form
@@ -291,7 +291,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/panel/{acid}", requirements={"acid" = "^[1-9]\d*$")
+     * @Route("/panel/{acid}", requirements={"acid" = "^[1-9]\d*$"})
      * @Method("GET")
      *
      * Display main admin panel for a category
@@ -534,7 +534,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/categorymenu/{acid}", requirements={"acid" = "^[1-9]\d*$")
+     * @Route("/categorymenu/{acid}", requirements={"acid" = "^[1-9]\d*$"})
      * @Method("GET")
      *
      * Main category menu.
