@@ -21,6 +21,7 @@ use Zikula\Core\Response\Ajax\NotFoundResponse;
 use Zikula\Core\Response\Ajax\FatalResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\Core\Response\Ajax\BadDataResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 
 /**
  * @Route("/ajax")
