@@ -197,7 +197,7 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/modifycategory")
-     * @Route("POST")
+     * @Method("POST")
      *
      * Update an admin category
      *
