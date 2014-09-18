@@ -73,8 +73,6 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '1.9.1':
-                // reload routes automatically on module update
-            case '1.9.2':
             // future upgrade routines
         }
 
