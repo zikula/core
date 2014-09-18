@@ -68,7 +68,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/categories/{startnum}, requirements={"startnum" = "^[1-9]\d*$")
+     * @Route("/categories/{startnum}", requirements={"startnum" = "^[1-9]\d*$")
      * @Method("GET")
      *
      * View all admin categories
