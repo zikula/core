@@ -1,13 +1,13 @@
 {assign var="step" value=2}
-<h2>{gt text="Enter database information"}</h2>
+<h2>{gt text='Enter database information'}</h2>
 {if $dbconnectfailed or $dbconnectmissing or $dbinvalidprefix or $dbinvalidname or $dbdumpfailed or $dbexists}
 <div class="alert alert-danger">
-    {if $dbconnectmissing}{gt text="Error! Some of the required information was not entered. Please check your entries and try again."}<br />{$reason}
-    {elseif $dbinvalidprefix}{gt text="Error! Invalid table prefix. Please use only letters or numbers."}<br />{$reason}
-    {elseif $dbinvalidname}{gt text="Error! Invalid database name. Please use only letters, numbers, '-' or '_' with a maximum of 64 characters."}<br />{$reason}
-    {elseif $dbconnectfailed}{gt text="Error! Could not connect to the database. Please check that you have entered the correct database information and try again."}<br />{$reason}
-    {elseif $dbdumpfailed}{gt text="Error! Could not dump the database. Please check that the file zikulacms.sql is located within the folder install/sql and it is readable."}<br />{$reason}
-    {elseif $dbexists}{gt text="Error! The database exists and contain tables. Please delete all tables before to proceed."}<br />{$reason}
+    {if $dbconnectmissing}{gt text='Error! Some of the required information was not entered. Please check your entries and try again.'}<br />{$reason}
+    {elseif $dbinvalidprefix}{gt text='Error! Invalid table prefix. Please use only letters or numbers.'}<br />{$reason}
+    {elseif $dbinvalidname}{gt text='Error! Invalid database name. Please use only letters, numbers, '-' or '_' with a maximum of 64 characters.'}<br />{$reason}
+    {elseif $dbconnectfailed}{gt text='Error! Could not connect to the database. Please check that you have entered the correct database information and try again.'}<br />{$reason}
+    {elseif $dbdumpfailed}{gt text='Error! Could not dump the database. Please check that the file zikulacms.sql is located within the folder install/sql and it is readable.'}<br />{$reason}
+    {elseif $dbexists}{gt text='Error! The database exists and contain tables. Please delete all tables before to proceed.'}<br />{$reason}
     {/if}
 </div>
 {/if}
@@ -16,46 +16,46 @@
         <input type="hidden" name="action" value="processBDInfo" />
         <input type="hidden" name="locale" value="{$locale}" />
         <fieldset>
-            <legend>{gt text="Database information"}</legend>
+            <legend>{gt text='Database information'}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="dbdriver">{gt text="Database type"}</label>
+                <label class="col-lg-3 control-label" for="dbdriver">{gt text='Database type'}</label>
                 <div class="col-lg-9">
-                {dbtypes name=dbdriver selectedValue=$dbdriver id=dbdriver}
+                {dbtypes name='dbdriver' selectedValue=$dbdriver id='dbdriver'}
             </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="dbtabletype">{gt text="Database table type (MySQL only)"}</label>
+                <label class="col-lg-3 control-label" for="dbtabletype">{gt text='Database table type (MySQL only)'}</label>
                 <div class="col-lg-9">
                 <select name="dbtabletype" id="dbtabletype" class="form-control">
-                    <option value="myisam"{if $dbtabletype eq myisam} selected="selected"{/if}>MyISAM</option>
-                    <option value="innodb"{if $dbtabletype eq innodb} selected="selected"{/if}>InnoDB</option>
+                    <option value="innodb"{if $dbtabletype eq innodb} selected="selected"{/if}>{gt text='InnoDB'}</option>
+                    <option value="myisam"{if $dbtabletype eq myisam} selected="selected"{/if}>{gt text='MyISAM'}</option>
                 </select>
             </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="dbhost">{gt text="Host"}</label>
+                <label class="col-lg-3 control-label" for="dbhost">{gt text='Host'}</label>
                 <div class="col-lg-9">
                 <input type="text" name="dbhost" id="dbhost" class="form-control" maxlength="80" value="{$dbhost|default:'localhost'}" />
             </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="dbusername">{gt text="User name"}</label>
+                <label class="col-lg-3 control-label" for="dbusername">{gt text='User name'}</label>
                 <div class="col-lg-9">
                 <input type="text" name="dbusername" id="dbusername" class="form-control" maxlength="80" value="{$dbusername}" />
             </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="dbpassword">{gt text="Password"}</label>
+                <label class="col-lg-3 control-label" for="dbpassword">{gt text='Password'}</label>
                 <div class="col-lg-9">
                 <input type="password" name="dbpassword" id="dbpassword" class="form-control" maxlength="80" value="{$dbpassword}" />
             </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="dbname">{gt text="Database name"}</label>
+                <label class="col-lg-3 control-label" for="dbname">{gt text='Database name'}</label>
                 <div class="col-lg-9">
                 <input type="text" name="dbname" id="dbname" class="form-control" maxlength="80" value="{$dbname}" />
                 <p class="help-block alert alert-info">
-                    <strong>{gt text="Please ensure the database is in UTF8 format."}</strong>
+                    <strong>{gt text='Please ensure the database is in UTF8 format.'}</strong>
                 </p>
             </div>
 
@@ -63,7 +63,7 @@
         <div class="form-group"> 
             <div class="col-lg-offset-3 col-lg-9">
                 <button type="submit" id="submit" class="btn btn-primary">
-                    <span class="fa fa-angle-double-right"></span> {gt text="Next"}
+                    <span class="fa fa-angle-double-right"></span> {gt text='Next'}
                 </button>
 			</div>
         </div>
