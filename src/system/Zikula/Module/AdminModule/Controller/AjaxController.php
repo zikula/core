@@ -159,7 +159,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         //find the category corresponding to the cid.
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $cid));
+        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $cid));
         if (empty($item)) {
             return new NotFoundResponse($this->__('Error! No such category found.'));
         }
@@ -237,7 +237,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         //get the category from the database
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $cid));
+        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $cid));
         if (empty($item)) {
             return new NotFoundResponse($this->__('Error! No such category found.'));
         }
@@ -280,7 +280,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $cid = trim($this->request->request->get('cid'));
 
         //find the category corresponding to the cid.
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $cid));
+        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $cid));
         if ($item == false) {
             return new NotFoundResponse($this->__('Error! No such category found.'));
         }

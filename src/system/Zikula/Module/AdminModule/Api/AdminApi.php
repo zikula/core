@@ -82,7 +82,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Get the existing item
         /** @var AdminCategoryEntity $item */
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $args['cid']));
+        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $args['cid']));
 
         if (empty($item)) {
             return false;
@@ -119,7 +119,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $args['cid']));
+        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $args['cid']));
         if (empty($item)) {
             return false;
         }
@@ -214,7 +214,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
-    public function get($args)
+    public function getCategory($args)
     {
         // Argument check
         if (!isset($args['cid']) ||!is_numeric($args['cid'])) {

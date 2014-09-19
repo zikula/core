@@ -68,7 +68,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/categories/{startnum}", requirements={"startnum" = "^[1-9]\d*$"})
+     * @Route("/categories/{startnum}", requirements={"startnum" = "\d+"})
      * @Method("GET")
      *
      * View all admin categories
@@ -181,7 +181,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function modifyAction($cid)
     {
-        $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $cid));
+        $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $cid));
         if (empty($category)) {
             throw new NotFoundHttpException($this->__('Error! No such category found.'));
         }
@@ -257,7 +257,7 @@ class AdminController extends \Zikula_AbstractController
         // confirmation can only come from a form so use post only here
         $confirmation = $request->request->get('confirmation', null);
 
-        $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $cid));
+        $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $cid));
         if (empty($category)) {
             throw new NotFoundHttpException($this->__('Error! No such category found.'));
         }
@@ -339,7 +339,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Get Details on the selected category
         if ($acid > 0) {
-            $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $acid));
+            $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $acid));
         } else {
             $category = null;
         }
@@ -353,7 +353,7 @@ class AdminController extends \Zikula_AbstractController
                 throw new AccessDeniedException();
             }
 
-            $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $acid));
+            $category = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $acid));
         }
 
         // assign the category
@@ -519,7 +519,7 @@ class AdminController extends \Zikula_AbstractController
 
                 if ($result == false) {
                     /** @var $cat \Zikula\Module\AdminModule\Entity\AdminCategoryEntity */
-                    $cat = ModUtil::apiFunc($this->name, 'admin', 'get', array('cid' => $category));
+                    $cat = ModUtil::apiFunc($this->name, 'admin', 'getCategory', array('cid' => $category));
                     $request->getSession()->getFlashBag()->add('error', $this->__f('Error! Could not add module %1$s to module category %2$s.', array($adminmodule['name'], $cat->getName())));
                 }
             }
