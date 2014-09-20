@@ -19,10 +19,15 @@
  *
  * @see          function.adminheader.php::smarty_function_adminheader()
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      $view        Reference to the Zikula_View object
+ * @param        \Zikula_View $view        Reference to the Zikula_View object
  * @return       string      the results of the module function
  */
 function smarty_function_adminheader($params, $view)
 {
-    return ModUtil::func('ZikulaAdminModule', 'admin', 'adminheader');
+    $path = array('_controller' => 'ZikulaAdminModule:Admin:adminheader');
+    $subRequest = $view->getRequest()->duplicate(array(), null, $path);
+    return $view->getContainer()
+        ->get('http_kernel')
+        ->handle($subRequest, \Symfony\Component\HttpKernel\HttpKernelInterface::SUB_REQUEST)
+        ->getContent();
 }
