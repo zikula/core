@@ -23,14 +23,14 @@
                     </li>
                     <li class="divider admintabs-lock"></li>
                     <li>
-                        <a href="{$menuoption.url|safehtml}"><span class="fa fa-th-large fa-bluelight fa-fw" ></span> {gt text="Overview"}</a>
+                        <a href="{$menuoption.url|safetext}"><span class="fa fa-th-large fa-bluelight fa-fw" ></span> {gt text="Overview"}</a>
                     </li>
                     {if count($menuoption.items) > 0}
                     <li class="divider"></li>
                     {foreach from=$menuoption.items item="item"}
                     {assign var="modname" value=$item.modname}
                     <li>
-                        <a href="{$item.menutexturl|safehtml}"><img src="{$item.icon}" width=15 height=15 style="margin-right:6px" alt="{$item.menutext|safetext}">{$item.menutext|safetext}</a>
+                        <a href="{$item.menutexturl|safetext}"><img src="{$item.icon}" width=15 height=15 style="margin-right:6px" alt="{$item.menutext|safetext}">{$item.menutext|safetext}</a>
                     </li>
                     {/foreach}
                     {/if}

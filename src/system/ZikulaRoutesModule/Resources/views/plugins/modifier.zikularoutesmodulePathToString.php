@@ -16,7 +16,7 @@ function smarty_modifier_zikularoutesmodulePathToString($path, \Zikula\RoutesMod
             unset($languages[array_search($defaultLanguage, $languages)]);
         }
         if (count($languages) > 0) {
-            $prefix = ($isRequiredLangParam ? "/{" : "{/") . implode('|', $languages) . "}";
+            $prefix = ($isRequiredLangParam ? "/" : "{/") . implode('|', $languages) . ($isRequiredLangParam ? "" : "}");
         }
     }
 
