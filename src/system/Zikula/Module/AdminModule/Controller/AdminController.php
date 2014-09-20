@@ -316,9 +316,9 @@ class AdminController extends \Zikula_AbstractController
             $zrcexists = file_exists('zrc.php');
             // check if upgrade scripts exist
             if ($zrcexists == true) {
-                return $this->view->assign('zrcexists', $zrcexists)
+                return new Response($this->view->assign('zrcexists', $zrcexists)
                                   ->assign('adminpanellink', $this->get('router')->generate('zikulaadminmodule_admin_adminpanel'))
-                                  ->fetch('admin_admin_warning.tpl');
+                                  ->fetch('admin_admin_warning.tpl'));
             }
         }
 
