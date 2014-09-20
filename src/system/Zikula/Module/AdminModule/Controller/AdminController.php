@@ -270,8 +270,8 @@ class AdminController extends \Zikula_AbstractController
         if (empty($confirmation)) {
             // No confirmation yet - display a suitable form to obtain confirmation
             // of this action from the user
-            return $this->view->assign('category', $category)
-                              ->fetch('admin_admin_delete.tpl');
+            return new Response($this->view->assign('category', $category)
+                              ->fetch('admin_admin_delete.tpl'));
         }
 
         $this->checkCsrfToken();
