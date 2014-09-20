@@ -5,7 +5,7 @@
 
         {if !empty($adminlinks)}
         <ul id="modulelist">
-            {foreach from=$adminlinks name=adminlink item=adminlink}
+            {foreach from=$adminlinks name='adminlink' item='adminlink'}
             <li data-modid="{$adminlink.id}" class="draggable">
                 {* module icon *}
                 {if $modvars.ZikulaAdminModule.admingraphic eq 1}
