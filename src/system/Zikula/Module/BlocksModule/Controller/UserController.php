@@ -42,26 +42,25 @@ class UserController extends \Zikula_AbstractController
     /**
      * Display a block if is active
      *
-     * @param mixed[] $args {
-     *      @type int  $bid          The id of the block
-     *      @type bool $showinactive Override active status of block
+     *      int  $bid          The id of the block
+     *      bool $showinactive Override active status of block
      *                       }
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Throw if the user doesn't have edit permissions to the module
      */
-    public function displayAction($args)
+    public function displayAction()
     {
         // Block Id - if passed - display the block
         // check both post and get
         $bid = (int)$this->request->query->get('bid', null);
         if (!$bid) {
-            $bid = (int)$this->request->request->get('bid', isset($args['bid']) ? $args['bid'] : null);
+            $bid = (int)$this->request->request->get('bid', null);
         }
         $showinactive = (int)$this->request->query->get('showinactive', null);
         if (!$showinactive) {
-            $showinactive = (int)$this->request->request->get('showinactive', isset($args['showinactive']) ? $args['showinactive'] : null);
+            $showinactive = (int)$this->request->request->get('showinactive', null);
         }
 
         // Security check for $showinactive only
@@ -73,7 +72,6 @@ class UserController extends \Zikula_AbstractController
             // {block} function in template is not checking for active status, so let's check here
             $blockinfo = BlockUtil::getBlockInfo($bid);
             if ($blockinfo['active'] || $showinactive) {
-                $this->view->assign('args', $args);
                 $this->view->assign('bid', $bid);
 
                 return $this->view->fetch('blocks_user_display.tpl');

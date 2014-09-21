@@ -753,33 +753,22 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Delete a block position.
      *
-     * @param mixed[] $args {
-     *      @type int  $pid          the id of the position to be deleted
-     *      @type int  $objectid     generic object id maps to pid if present
-     *      @type bool $confirmation confirmation that this item can be deleted
-     *                       }
+     *      int  $pid          the id of the position to be deleted
+     *      int  $objectid     generic object id maps to pid if present
+     *      bool $confirmation confirmation that this item can be deleted
      *
      * @return Response symfony response if confirmation is null, RedirectResponse otherwise.
      *
      * @throws NotFoundHttpException Thrown if the position doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the position
      */
-    public function deletepositionAction($args)
+    public function deletepositionAction()
     {
         // check where to get the parameters from for this dual purpose controller
         if ($this->request->isMethod('GET')) {
             $pid = (int)$this->request->query->get('pid', null);
         } elseif ($this->request->isMethod('POST')) {
-            $pid = (int)$this->request->request->get('pid', isset($args['pid']) ? $args['pid'] : null);
-        }
-        if ($this->request->isMethod('GET')) {
-            $objectid = (int)$this->request->query->get('objectid', null);
-        } elseif ($this->request->isMethod('POST')) {
-            $objectid = (int)$this->request->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
-        }
-        // map the generic object id onto the category id onto the object id
-        if (!empty($objectid)) {
-            $pid = $objectid;
+            $pid = (int)$this->request->request->get('pid', null);
         }
 
         // confirmation can only come from a form so use post only here
