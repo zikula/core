@@ -33,7 +33,7 @@ class UserController extends \Zikula_AbstractController
     /**
      * Groups Module main user function
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function mainAction()
     {
@@ -199,9 +199,9 @@ class UserController extends \Zikula_AbstractController
     /**
      * update a users group applications
      *
-     * @return void
+     * @return RedirectResponse
      *
-     * @throws \InvalidArgumentsException Thrown if the group id isn't set or isn't numeric or
+     * @throws \InvalidArgumentException Thrown if the group id isn't set or isn't numeric or
      *                                           if no action is requested
      */
     public function userupdateAction()
