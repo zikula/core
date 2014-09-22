@@ -27,11 +27,11 @@ class AdminApi extends BaseAdminApi
 
         if (SecurityUtil::checkPermission($this->name . ':Route:', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => $this->serviceManager->get('router')->generate('zikularoutesmodule_route_reload', array('lct' => 'admin')),
-                'text' => $this->__('Reload all routes'),
-                'title' => $this->__('Reload all routes'));
+                'text' => $this->__('Reload routes'),
+                'title' => $this->__('Reload routes'));
             $links[] = array('url' => $this->serviceManager->get('router')->generate('zikularoutesmodule_route_renew', array('lct' => 'admin')),
                 'text' => $this->__('Reload multilingual routing settings'),
-                'title' => $this->__('Reload multilingual settings'));
+                'title' => $this->__('Reload multilingual routing settings'));
         }
 
         return $links;
