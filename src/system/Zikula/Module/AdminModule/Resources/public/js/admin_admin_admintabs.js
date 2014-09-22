@@ -19,7 +19,7 @@ $('#admintabs').sortable({
       });
 
       $.ajax({
-            url: 'index.php?module=adminpanel&type=ajax&func=sortCategories',
+            url: Routing.generate('zikulaadminmodule_ajax_sortcategories'),
             data: {admintabs: tab},
             error: function (response) {
                 alert($.parseJSON(response.responseText).core.statusmsg);
@@ -54,7 +54,7 @@ $(document).on('click', '.admintabs-add .fa-check', function (e) {
         alert(('You must enter a name for the new category'));
     }
     $.ajax({
-        url: 'index.php?module=ZikulaAdminModule&type=ajax&func=addCategory',
+        url: Routing.generate('zikulaadminmodule_ajax_addcategory'),
         data: {
             name: name
         },
@@ -114,7 +114,7 @@ $('.droppable').droppable({
         }
 
         $.ajax({
-            url: 'index.php?module=adminpanel&type=ajax&func=changeModuleCategory',
+            url: Routing.generate('zikulaadminmodule_ajax_changemodulecategory'),
             data: {
                 modid: ui.draggable.data('modid'),
                 cat: categoryId
@@ -144,7 +144,7 @@ $('#modulelist').sortable({
             }
         });
         $.ajax({
-            url: 'index.php?module=adminpanel&type=ajax&func=sortModules',
+            url: Routing.generate('zikulaadminmodule_ajax_sortmodules'),
             data: {modules: modules},
             error: function (response) {
                 alert($.parseJSON(response.responseText).core.statusmsg);
@@ -225,7 +225,7 @@ $(document).on('click', '.admintabs-makedefault', function (e) {
     var catid = $(this).parent().parent().data('catid');
     var e = $(this);
     $.ajax({
-        url: 'index.php?module=adminpanel&type=ajax&func=defaultCategory',
+        url: Routing.generate('zikulaadminmodule_ajax_defaultcategory'),
         data: {cid: catid},
         success: function() {
             $('.admintabs-makedefault').removeClass('hide');
@@ -246,7 +246,7 @@ $(document).on('click', '.admintabs-delete', function (e) {
     var li = $(this).parent().parent();
     var catid = li.data('catid');
     $.ajax({
-        url: 'index.php?module=adminpanel&type=ajax&func=deleteCategory',
+        url: Routing.generate('zikulaadminmodule_ajax_deletecategory'),
         data: {cid: catid},
         success: function () {
             li.remove();
@@ -276,7 +276,7 @@ $('#admintabs-rename-category-modal .btn-primary').click(
     function() {
         var name = $('#admintabs-rename-category-modal input').val();
         $.ajax({
-            url: 'index.php?module=adminpanel&type=ajax&func=editCategory',
+            url: Routing.generate('zikulaadminmodule_ajax_editcategory'),
             data: {
                 cid: renameCategoryId,
                 name: name

@@ -1,4 +1,4 @@
-{modurl modname='ZikulaAdminModule' type='admin' func='help' assign='adminhelpurl'}
+{route name='zikulaadminmodule_admin_help' assign='adminhelpurl'}
 {checkpermissionblock component='ZikulaAdminModule::' instance='::' level=ACCESS_ADMIN}
 {if $notices.security.magic_quotes_gpc or $notices.security.register_globals or $notices.security.config_php or !$notices.security.app_htaccess or !$notices.security.scactive}
 <div id="z-securityanalyzer" class="alert alert-warning">

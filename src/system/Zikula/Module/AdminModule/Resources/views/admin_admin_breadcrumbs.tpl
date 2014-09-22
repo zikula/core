@@ -1,8 +1,8 @@
 <ol class="breadcrumb">
-    <li>{gt text='You are in:'} <a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel'}">{gt text='Administration'}</a></li>
+    <li>{gt text='You are in:'} <a href="{route name='zikulaadminmodule_admin_adminpanel'}">{gt text='Administration'}</a></li>
 
     {if $func neq 'adminpanel'}
-        <li><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel' acid=$currentcat}">{$menuoptions.$currentcat.title|safetext}</a></li>
+        <li><a href="{route name='zikulaadminmodule_admin_adminpanel' acid=$currentcat}">{$menuoptions.$currentcat.title|safetext}</a></li>
     {else}
         <li>{$menuoptions.$currentcat.title|safetext}</li>
     {/if}

@@ -1,5 +1,5 @@
 {checkpermissionblock component='ZikulaAdminModule::' instance='::' level=ACCESS_ADMIN}
-{modurl modname=Theme type=admin func=modifyconfig assign=themeurl}
+{modurl modname='Theme' type='admin' func='modifyconfig' assign='themeurl'}
 {if $notices.developer.devmode}
 <div id="z-developernotices" class="alert alert-info">
     <i class="close" data-dismiss="alert">&times;</i>
@@ -28,7 +28,7 @@
         <li>{gt text="CSS/JS combination is enabled" domain="zikula"}</li>
         {/if}
         <li>
-            <a href="{modurl modname=Theme type=admin func=clearallcompiledcaches}">{gt text="Clear all cache and compile directories"}</a>
+            <a href="{modurl modname='Theme' type='admin' func='clearallcompiledcaches'}">{gt text="Clear all cache and compile directories"}</a>
         </li>
     </ul>
 </div>

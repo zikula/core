@@ -20,10 +20,10 @@
  *
  * @see          function.admincategorymenu.php::smarty_function_admincategorymenu()
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      $view        Reference to the Zikula_View object
+ * @param        \Zikula_View $view        Reference to the Zikula_View object
  * @return       string      the results of the module function
  */
-function smarty_function_admincategorymenu($params, $view)
+function smarty_function_admincategorymenu($params, \Zikula_View $view)
 {
     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('ZikulaAdminModule'));
 
@@ -31,5 +31,10 @@ function smarty_function_admincategorymenu($params, $view)
 
     $acid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', array('mid' => $modinfo['id']));
 
-    return ModUtil::func('ZikulaAdminModule', 'admin', 'categorymenu', array('acid' => $acid));
+    $path = array('_controller' => 'ZikulaAdminModule:Admin:categorymenu', 'acid' => $acid);
+    $subRequest = $view->getRequest()->duplicate(array(), null, $path);
+    return $view->getContainer()
+        ->get('http_kernel')
+        ->handle($subRequest, \Symfony\Component\HttpKernel\HttpKernelInterface::SUB_REQUEST)
+        ->getContent();
 }
