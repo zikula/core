@@ -77,16 +77,15 @@ class AdminController extends \Zikula_AbstractController
     /**
      * view all themes
      *
-     * @param mixed[] $args {
-     *      @type int    $startnum item number to start the pager from
-     *      @type string $startlet starting letter for the alpha pager
+     *      int    $startnum item number to start the pager from
+     *      string $startlet starting letter for the alpha pager
      *                      }
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      */
-    public function viewAction($args = array())
+    public function viewAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
@@ -104,8 +103,8 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get our input
-        $startnum = $this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : 1);
-        $startlet = $this->request->query->get('startlet', isset($args['startlet']) ? $args['startlet'] : null);
+        $startnum = $this->request->query->get('startnum', 1);
+        $startlet = $this->request->query->get('startlet', null);
 
         // we need this value multiple times, so we keep it
         $itemsperpage = $this->getVar('itemsperpage');
@@ -194,19 +193,17 @@ class AdminController extends \Zikula_AbstractController
     /**
      * modify a theme
      *
-     * @param string[] $args {
-     *      @type string $themename name of the theme
-     *                       }
+     *      string $themename name of the theme
      *
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function modifyAction(array $args = array())
+    public function modifyAction()
     {
         // get our input
-        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $themename = $this->request->query->get('themename', null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -234,23 +231,21 @@ class AdminController extends \Zikula_AbstractController
     /**
      * update the theme variables
      *
-     * @param mixed[] $args {
-     *      @type string $themename name of the theme
-     *      @type array  $themeinfo updated theme information
-     *                       }
+     *      string $themename name of the theme
+     *      array  $themeinfo updated theme information
      *
      * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function updatesettingsAction(array $args = array())
+    public function updatesettingsAction()
     {
         $this->checkCsrfToken();
 
         // get our input
-        $themeinfo = $this->request->request->get('themeinfo', isset($args['themeinfo']) ? $args['themeinfo'] : null);
-        $themename = $this->request->request->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $themeinfo = $this->request->request->get('themeinfo', null);
+        $themename = $this->request->request->get('themename', null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -286,21 +281,19 @@ class AdminController extends \Zikula_AbstractController
     /**
      * display the theme variables
      *
-     * @param string[] $args {
-     *      @type string $themename name of the theme
-     *      @type string $filename  name of the file to edit
-     *                       }
+     *      string $themename name of the theme
+     *      string $filename  name of the file to edit
      *
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exit
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function variablesAction(array $args = array())
+    public function variablesAction()
     {
         // get our input
-        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
-        $filename = $this->request->query->get('filename', isset($args['filename']) ? $args['filename'] : null);
+        $themename = $this->request->query->get('themename', null);
+        $filename = $this->request->query->get('filename', null);
 
         // check our input
         if (empty($themename)) {
@@ -339,32 +332,30 @@ class AdminController extends \Zikula_AbstractController
     /**
      * update the theme variables
      *
-     * @param mixed[] $args {
-     *      @type string $themename        name of the theme
-     *      @type string $filename         name of the file to update
-     *      @type array  $variablenames    names of existing variables
-     *      @type array  $variablevalues   values for existing variables
-     *      @type string $newvariablename  name of the new variable
-     *      @type string $newvariablevalue value for the new variable
-     *                       }
+     *      string $themename        name of the theme
+     *      string $filename         name of the file to update
+     *      array  $variablenames    names of existing variables
+     *      array  $variablevalues   values for existing variables
+     *      string $newvariablename  name of the new variable
+     *      string $newvariablevalue value for the new variable
      *
      * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function updatevariablesAction(array $args = array())
+    public function updatevariablesAction()
     {
         $this->checkCsrfToken();
 
         // get our input
-        $variablesnames = $this->request->request->get('variablesnames', isset($args['variablesnames']) ? $args['variablesnames'] : null);
-        $variablesvalues = $this->request->request->get('variablesvalues', isset($args['variablesvalues']) ? $args['variablesvalues'] : null);
-        $newvariablename = $this->request->request->get('newvariablename', isset($args['newvariablename']) ? $args['newvariablename'] : null);
-        $newvariablevalue = $this->request->request->get('newvariablevalue', isset($args['newvariablevalue']) ? $args['newvariablevalue'] : null);
+        $variablesnames = $this->request->request->get('variablesnames', null);
+        $variablesvalues = $this->request->request->get('variablesvalues', null);
+        $newvariablename = $this->request->request->get('newvariablename', null);
+        $newvariablevalue = $this->request->request->get('newvariablevalue', null);
 
-        $themename = $this->request->request->get('themename', isset($args['themename']) ? $args['themename'] : null);
-        $filename = $this->request->request->get('filename', isset($args['filename']) ? $args['filename'] : null);
+        $themename = $this->request->request->get('themename', null);
+        $filename = $this->request->request->get('filename', null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -431,18 +422,16 @@ class AdminController extends \Zikula_AbstractController
     /**
      * display the themes palettes
      *
-     * @param string[] $args {
-     *      @type string $themename name of the theme
-     *                       }
+     *      string $themename name of the theme
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function palettesAction(array $args = array())
+    public function palettesAction()
     {
         // get our input
-        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $themename = $this->request->query->get('themename', null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -471,22 +460,20 @@ class AdminController extends \Zikula_AbstractController
     /**
      * update the theme palettes
      *
-     * @param string[] $args {
-     *      @type string $themename name of the theme
-     *      @type string $bgcolor   backgroud colour
-     *      @type string $color1    colour 1
-     *      @type string $color1    colour 2
-     *      @type string $color1    colour 3
-     *      @type string $color1    colour 4
-     *      @type string $color1    colour 5
-     *      @type string $color1    colour 6
-     *      @type string $color1    colour 7
-     *      @type string $color1    colour 8
-     *      @type string $sepcolor  seperator colour
-     *      @type string $link      link colour
-     *      @type string $vlink     visited link colour
-     *      @type string $hover     link hover colour
-     *                       }
+     *      string $themename name of the theme
+     *      string $bgcolor   backgroud colour
+     *      string $color1    colour 1
+     *      string $color1    colour 2
+     *      string $color1    colour 3
+     *      string $color1    colour 4
+     *      string $color1    colour 5
+     *      string $color1    colour 6
+     *      string $color1    colour 7
+     *      string $color1    colour 8
+     *      string $sepcolor  seperator colour
+     *      string $link      link colour
+     *      string $vlink     visited link colour
+     *      string $hover     link hover colour
      *
      * @return RedirectResponse
      *
@@ -494,27 +481,27 @@ class AdminController extends \Zikula_AbstractController
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      * @throws \RuntimeException Thrown if the palette colours are incomplete
      */
-    public function updatepalettesAction(array $args = array())
+    public function updatepalettesAction()
     {
         $this->checkCsrfToken();
 
         // get our input
-        $palettes = $this->request->request->get('palettes', isset($args['palettes']) ? $args['palettes'] : null);
-        $palettename = $this->request->request->get('palettename', isset($args['palettename']) ? $args['palettename'] : null);
-        $bgcolor = $this->request->request->get('bgcolor', isset($args['bgcolor']) ? $args['bgcolor'] : null);
-        $color1 = $this->request->request->get('color1', isset($args['color1']) ? $args['color1'] : null);
-        $color2 = $this->request->request->get('color2', isset($args['color2']) ? $args['color2'] : null);
-        $color3 = $this->request->request->get('color3', isset($args['color3']) ? $args['color3'] : null);
-        $color4 = $this->request->request->get('color4', isset($args['color4']) ? $args['color4'] : null);
-        $color5 = $this->request->request->get('color5', isset($args['color5']) ? $args['color5'] : null);
-        $color6 = $this->request->request->get('color6', isset($args['color6']) ? $args['color6'] : null);
-        $color7 = $this->request->request->get('color7', isset($args['color7']) ? $args['color7'] : null);
-        $color8 = $this->request->request->get('color8', isset($args['color8']) ? $args['color8'] : null);
-        $sepcolor = $this->request->request->get('sepcolor', isset($args['sepcolor']) ? $args['sepcolor'] : null);
-        $link = $this->request->request->get('link', isset($args['link']) ? $args['link'] : null);
-        $vlink = $this->request->request->get('vlink', isset($args['vlink']) ? $args['vlink'] : null);
-        $hover = $this->request->request->get('hover', isset($args['hover']) ? $args['hover'] : null);
-        $themename = $this->request->request->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $palettes = $this->request->request->get('palettes', null);
+        $palettename = $this->request->request->get('palettename', null);
+        $bgcolor = $this->request->request->get('bgcolor', null);
+        $color1 = $this->request->request->get('color1', null);
+        $color2 = $this->request->request->get('color2', null);
+        $color3 = $this->request->request->get('color3', null);
+        $color4 = $this->request->request->get('color4', null);
+        $color5 = $this->request->request->get('color5', null);
+        $color6 = $this->request->request->get('color6', null);
+        $color7 = $this->request->request->get('color7', null);
+        $color8 = $this->request->request->get('color8', null);
+        $sepcolor = $this->request->request->get('sepcolor', null);
+        $link = $this->request->request->get('link', null);
+        $vlink = $this->request->request->get('vlink', null);
+        $hover = $this->request->request->get('hover', null);
+        $themename = $this->request->request->get('themename', null);
 
         // check if this is a valid theme
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
@@ -565,18 +552,16 @@ class AdminController extends \Zikula_AbstractController
     /**
      * display the content wrappers for the theme
      *
-     * @param string[] $args {
-     *      @type string $themename name of the theme
-     *                       }
+     *      string $themename name of the theme
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function pageconfigurationsAction(array $args = array())
+    public function pageconfigurationsAction()
     {
         // get our input
-        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $themename = $this->request->query->get('themename', null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -647,21 +632,19 @@ class AdminController extends \Zikula_AbstractController
     /**
      * modify a theme page configuration
      *
-     * @param string[] $args {
-     *      @type string $themename name of the theme
-     *      @type string $filename  name of the file to edit
-     *                       }
+     *      string $themename name of the theme
+     *      string $filename  name of the file to edit
      *
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function modifypageconfigtemplatesAction(array $args = array())
+    public function modifypageconfigtemplatesAction()
     {
         // get our input
-        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
-        $filename = $this->request->query->get('filename', isset($args['filename']) ? $args['filename'] : null);
+        $themename = $this->request->query->get('themename', null);
+        $filename = $this->request->query->get('filename', null);
 
         // check our input
         if (empty($themename)) {
@@ -755,18 +738,16 @@ class AdminController extends \Zikula_AbstractController
     /**
      * modify a theme page configuration
      *
-     * @param string[] $args {
-     *      @type string $themename              name of the theme
-     *      @type string $filename               name of the file to update
-     *      @type string $pagetemplate           file for the page template
-     *      @type string $blocktemplate          file for the block template
-     *      @type string $pagepalette            palette to apply to the page
-     *      @type string $modulewrapper          wrapper to apply to modules
-     *      @type string $blockwrapper           wrapper to apply to blocks
-     *      @type array  $blockinstancetemplates templates for specific block instances
-     *      @type array  $blocktypetemplates     templates for specific block types
-     *      @type array  $blockpositiontemplates templates for specific block postions
-     *                       }
+     *      string $themename              name of the theme
+     *      string $filename               name of the file to update
+     *      string $pagetemplate           file for the page template
+     *      string $blocktemplate          file for the block template
+     *      string $pagepalette            palette to apply to the page
+     *      string $modulewrapper          wrapper to apply to modules
+     *      string $blockwrapper           wrapper to apply to blocks
+     *      array  $blockinstancetemplates templates for specific block instances
+     *      array  $blocktypetemplates     templates for specific block types
+     *      array  $blockpositiontemplates templates for specific block postions
      *
      * @return RedirectResponse
      *
@@ -775,24 +756,24 @@ class AdminController extends \Zikula_AbstractController
      *                                          if the requested page configuration doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function updatepageconfigtemplatesAction(array $args = array())
+    public function updatepageconfigtemplatesAction()
     {
         $this->checkCsrfToken();
 
         // get our input
-        $themename = $this->request->request->get('themename', isset($args['themename']) ? $args['themename'] : null);
-        $filename = $this->request->request->get('filename', isset($args['filename']) ? $args['filename'] : null);
-        $pagetemplate = $this->request->request->get('pagetemplate', isset($args['pagetemplate']) ? $args['pagetemplate'] : '');
-        $blocktemplate = $this->request->request->get('blocktemplate', isset($args['blocktemplate']) ? $args['blocktemplate'] : '');
-        $pagepalette = $this->request->request->get('pagepalette', isset($args['pagepalette']) ? $args['pagepalette'] : '');
-        $modulewrapper = $this->request->request->get('modulewrapper', isset($args['modulewrapper']) ? $args['modulewrapper'] : 1);
-        $blockwrapper = $this->request->request->get('blockwrapper', isset($args['blockwrapper']) ? $args['blockwrapper'] : 1);
+        $themename = $this->request->request->get('themename', null);
+        $filename = $this->request->request->get('filename', null);
+        $pagetemplate = $this->request->request->get('pagetemplate', '');
+        $blocktemplate = $this->request->request->get('blocktemplate', '');
+        $pagepalette = $this->request->request->get('pagepalette', '');
+        $modulewrapper = $this->request->request->get('modulewrapper', 1);
+        $blockwrapper = $this->request->request->get('blockwrapper', 1);
 
-        $blockinstancetemplates = $this->request->request->get('blockinstancetemplates', isset($args['blockinstancetemplates']) ? $args['blockinstancetemplates'] : null);
-        $blocktypetemplates = $this->request->request->get('blocktypetemplates', isset($args['blocktypetemplates']) ? $args['blocktypetemplates'] : null);
-        $blockpositiontemplates = $this->request->request->get('blockpositiontemplates', isset($args['blockpositiontemplates']) ? $args['blockpositiontemplates'] : null);
+        $blockinstancetemplates = $this->request->request->get('blockinstancetemplates', null);
+        $blocktypetemplates = $this->request->request->get('blocktypetemplates', null);
+        $blockpositiontemplates = $this->request->request->get('blockpositiontemplates', null);
 
-        $filters = $this->request->request->get('filters', isset($args['filters']) ? $args['filters'] : null);
+        $filters = $this->request->request->get('filters', null);
 
         // check our input
         if (empty($themename) || empty($pagetemplate)) {
@@ -882,20 +863,18 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Modify a theme page configuration
      *
-     * @param string[] $args {
-     *      @type string $themename name of the theme
-     *      @type string $pcname    name of the page configuration to edit
-     *                       }
+     *      string $themename name of the theme
+     *      string $pcname    name of the page configuration to edit
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function modifypageconfigurationassignmentAction(array $args = array())
+    public function modifypageconfigurationassignmentAction()
     {
         // get our input
-        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
-        $pcname = $this->request->query->get('pcname', isset($args['pcname']) ? $args['pcname'] : null);
+        $themename = $this->request->query->get('themename', null);
+        $pcname = $this->request->query->get('pcname', null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -980,34 +959,32 @@ class AdminController extends \Zikula_AbstractController
     /**
      * modify a theme page configuration
      *
-     * @param string[] $args {
-     *      @type string $themename      name of the theme
-     *      @type string $pcname         name of the page configuration to update
-     *      @type string $pagemodule     module to identify the page
-     *      @type string $pagetype       type to identify the page
-     *      @type string $pagefunc       function to identify the page
-     *      @type string $pagecustomargs custom arugments to identify the page
-     *      @type bool   $pageimportat   flag to override other matches
-     *                       }
+     *      string $themename      name of the theme
+     *      string $pcname         name of the page configuration to update
+     *      string $pagemodule     module to identify the page
+     *      string $pagetype       type to identify the page
+     *      string $pagefunc       function to identify the page
+     *      string $pagecustomargs custom arugments to identify the page
+     *      bool   $pageimportat   flag to override other matches
      *
      * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function updatepageconfigurationassignmentAction(array $args = array())
+    public function updatepageconfigurationassignmentAction()
     {
         $this->checkCsrfToken();
 
         // get our input
-        $themename = $this->request->request->get('themename', isset($args['themename']) ? $args['themename'] : null);
-        $pcname = $this->request->request->get('pcname', isset($args['pcname']) ? $args['pcname'] : null);
-        $pagemodule = $this->request->request->get('pagemodule', isset($args['pagemodule']) ? $args['pagemodule'] : null);
-        $pagetype = $this->request->request->get('pagetype', isset($args['pagetype']) ? $args['pagetype'] : 'user');
-        $pagefunc = $this->request->request->get('pagefunc', isset($args['pagefunc']) ? $args['pagefunc'] : null);
-        $pagecustomargs = $this->request->request->get('pagecustomargs', isset($args['pagecustomargs']) ? $args['pagecustomargs'] : null);
-        $pageimportant = $this->request->request->get('pageimportant', isset($args['pageimportant']) ? $args['pageimportant'] : null);
-        $filename = $this->request->request->get('filename', isset($args['filename']) ? $args['filename'] : null);
+        $themename = $this->request->request->get('themename', null);
+        $pcname = $this->request->request->get('pcname', null);
+        $pagemodule = $this->request->request->get('pagemodule', null);
+        $pagetype = $this->request->request->get('pagetype', 'user');
+        $pagefunc = $this->request->request->get('pagefunc', null);
+        $pagecustomargs = $this->request->request->get('pagecustomargs', null);
+        $pageimportant = $this->request->request->get('pageimportant', null);
+        $filename = $this->request->request->get('filename', null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -1075,21 +1052,19 @@ class AdminController extends \Zikula_AbstractController
     /**
      * delete a theme page configuration assignment
      *
-     * @param mixed[] $args {
-     *      @type string $themename    name of the theme
-     *      @type string $pcname       name of the page configuration to edit
-     *      @type bool   $confirmation conformation to delete the page configuration
-     *                      }
+     *      string $themename    name of the theme
+     *      string $pcname       name of the page configuration to edit
+     *      bool   $confirmation conformation to delete the page configuration
      *
      * @return Response symfony response object if confirmation isn't provided
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the theme
      */
-    public function deletepageconfigurationassignmentAction(array $args = array())
+    public function deletepageconfigurationassignmentAction()
     {
-        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
-        $pcname = $this->request->query->get('pcname', isset($args['pcname']) ? $args['pcname'] : null);
+        $themename = $this->request->query->get('themename', null);
+        $pcname = $this->request->query->get('pcname', null);
         $confirmation = $this->request->request->get('confirmation', null);
 
         // Get the theme info
@@ -1134,19 +1109,17 @@ class AdminController extends \Zikula_AbstractController
     /**
      * display the theme credits
      *
-     * @param string[] $args {
-     *      @type string $themename name of the theme
-     *                       }
+     *      string $themename name of the theme
      *
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function creditsAction(array $args = array())
+    public function creditsAction()
     {
         // get our input
-        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $themename = $this->request->query->get('themename', null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -1166,23 +1139,21 @@ class AdminController extends \Zikula_AbstractController
     /**
      * set theme as default for site
      *
-     * @param string[] $args {
-     *      @type string $themename         name of the theme
-     *      @type string $confirmation      confirmation to set theme as default
-     *      @type bool   $resetuserselected reset any user chosen themes back to site default
-     *                       }
+     *      string $themename         name of the theme
+     *      string $confirmation      confirmation to set theme as default
+     *      bool   $resetuserselected reset any user chosen themes back to site default
      *
      * @return Response symfony response object if confirmation isn't provided
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public function setasdefaultAction(array $args = array())
+    public function setasdefaultAction()
     {
         // get our input
-        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $themename = $this->request->query->get('themename', null);
         $confirmation = (boolean)$this->request->request->get('confirmation', false);
-        $resetuserselected = $this->request->request->get('resetuserselected', isset($args['resetuserselected']) ? $args['resetuserselected'] : null);
+        $resetuserselected = $this->request->request->get('resetuserselected', null);
 
         // check our input
         if (!isset($themename) || empty($themename)) {
@@ -1222,19 +1193,17 @@ class AdminController extends \Zikula_AbstractController
     /**
      * delete a theme
      *
-     * @param string[] $args {
-     *      @type string $themename         name of the theme
-     *      @type string $confirmation      confirmation to set theme as default
-     *                       }
+     *      string $themename         name of the theme
+     *      string $confirmation      confirmation to set theme as default
      *
      * @return Response symfony response object if confirmation isn't provided
      *
      * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the module
      */
-    public function deleteAction(array $args = array())
+    public function deleteAction()
     {
-        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $themename = $this->request->query->get('themename', null);
         $confirmation = $this->request->request->get('confirmation', null);
 
         // Get the theme info
@@ -1325,36 +1294,34 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Update configuration
      *
-     * @param mixed[] $args {
-     *      @type bool   $enablecache            name of the theme
-     *      @type string $modulesnocache         confirmation to set theme as default
-     *      @type bool   $compile_check          reset any user chosen themes back to site default
-     *      @type int    $cache_lifetime         time to cache theme elements
-     *      @type string $cache_lifetime_mods    modules to override caching for
-     *      @type bool   $force_compile          force compilation of theme templates
-     *      @type bool   $trimwhitespace         trimwhitespace from templates
-     *      @type int    $maxsizeforlinks        maxmimum size for link text
-     *      @type bool   $theme_change           allow users to change themes
-     *      @type string $admintheme             admin theme for site
-     *      @type string $alt_theme_name         name of alternate theme
-     *      @type string $alt_theme_domain       domain to use when forcing alternate themes
-     *      @type int    $itemsperpage           items per page in admin view
-     *      @type bool   $cssjsscombine          enable combination of all css and js files
-     *      @type bool   $cssjssminify           minify css files
-     *      @type bool   $cssjsscompress         compress combined files
-     *      @type int    $cssjsscombine_lifetime lifetime to cache combined files
-     *      @type bool   $render_compile_check   check for new render templates
-     *      @type bool   $render_force_compile   force compile render templates
-     *      @type bool   $render_cache           enable render caching
-     *      @type int    $render_lifetime        lifetime to cache render templates
-     *      @type bool   $render_expose_template expose template filenames in source
-     *                       }
+     *      bool   $enablecache            name of the theme
+     *      string $modulesnocache         confirmation to set theme as default
+     *      bool   $compile_check          reset any user chosen themes back to site default
+     *      int    $cache_lifetime         time to cache theme elements
+     *      string $cache_lifetime_mods    modules to override caching for
+     *      bool   $force_compile          force compilation of theme templates
+     *      bool   $trimwhitespace         trimwhitespace from templates
+     *      int    $maxsizeforlinks        maxmimum size for link text
+     *      bool   $theme_change           allow users to change themes
+     *      string $admintheme             admin theme for site
+     *      string $alt_theme_name         name of alternate theme
+     *      string $alt_theme_domain       domain to use when forcing alternate themes
+     *      int    $itemsperpage           items per page in admin view
+     *      bool   $cssjsscombine          enable combination of all css and js files
+     *      bool   $cssjssminify           minify css files
+     *      bool   $cssjsscompress         compress combined files
+     *      int    $cssjsscombine_lifetime lifetime to cache combined files
+     *      bool   $render_compile_check   check for new render templates
+     *      bool   $render_force_compile   force compile render templates
+     *      bool   $render_cache           enable render caching
+     *      int    $render_lifetime        lifetime to cache render templates
+     *      bool   $render_expose_template expose template filenames in source
      *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public function updateconfigAction(array $args = array())
+    public function updateconfigAction()
     {
         $this->checkCsrfToken();
 
@@ -1364,7 +1331,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // check if the theme cache was disabled and clean it if so
-        $enablecache = (bool)$this->request->request->get('enablecache', isset($args['enablecache']) ? $args['enablecache'] : false);
+        $enablecache = (bool)$this->request->request->get('enablecache', false);
 
         if ($this->getVar('enablecache') && !$enablecache) {
             $theme = Zikula_View_Theme::getInstance();
@@ -1374,60 +1341,60 @@ class AdminController extends \Zikula_AbstractController
         // set our module variables
         $this->setVar('enablecache', $enablecache);
 
-        $modulesnocache = $this->request->request->get('modulesnocache', isset($args['modulesnocache']) ? $args['modulesnocache'] : array());
+        $modulesnocache = $this->request->request->get('modulesnocache', array());
         $modulesnocache = implode(',', $modulesnocache);
         $this->setVar('modulesnocache', $modulesnocache);
 
-        $compile_check = (bool)$this->request->request->get('compile_check', isset($args['compile_check']) ? $args['compile_check'] : false);
+        $compile_check = (bool)$this->request->request->get('compile_check', false);
         $this->setVar('compile_check', $compile_check);
 
-        $cache_lifetime = (int)$this->request->request->get('cache_lifetime', isset($args['cache_lifetime']) ? $args['cache_lifetime'] : 3600);
+        $cache_lifetime = (int)$this->request->request->get('cache_lifetime', 3600);
         if ($cache_lifetime < -1) {
             $cache_lifetime = 3600;
         }
         $this->setVar('cache_lifetime', $cache_lifetime);
 
-        $cache_lifetime_mods = (int)$this->request->request->get('cache_lifetime_mods', isset($args['cache_lifetime_mods']) ? $args['cache_lifetime_mods'] : 3600);
+        $cache_lifetime_mods = (int)$this->request->request->get('cache_lifetime_mods', 3600);
         if ($cache_lifetime_mods < -1) $cache_lifetime_mods = 3600;
         $this->setVar('cache_lifetime_mods', $cache_lifetime_mods);
 
-        $force_compile = (bool)$this->request->request->get('force_compile', isset($args['force_compile']) ? $args['force_compile'] : false);
+        $force_compile = (bool)$this->request->request->get('force_compile', false);
         $this->setVar('force_compile', $force_compile);
 
-        $trimwhitespace = (bool)$this->request->request->get('trimwhitespace', isset($args['trimwhitespace']) ? $args['trimwhitespace'] : false);
+        $trimwhitespace = (bool)$this->request->request->get('trimwhitespace', false);
         $this->setVar('trimwhitespace', $trimwhitespace);
 
-        $maxsizeforlinks = (int)$this->request->request->get('maxsizeforlinks', isset($args['maxsizeforlinks']) ? $args['maxsizeforlinks'] : 30);
+        $maxsizeforlinks = (int)$this->request->request->get('maxsizeforlinks', 30);
         $this->setVar('maxsizeforlinks', $maxsizeforlinks);
 
-        $theme_change = (bool)$this->request->request->get('theme_change', isset($args['theme_change']) ? $args['theme_change'] : false);
+        $theme_change = (bool)$this->request->request->get('theme_change', false);
         System::setVar('theme_change', $theme_change);
 
-        $admintheme = (string)$this->request->request->get('admintheme', isset($args['admintheme']) ? $args['admintheme'] : '');
+        $admintheme = (string)$this->request->request->get('admintheme', '');
         ModUtil::setVar('Admin', 'admintheme', $admintheme);
 
-        $alt_theme_name = (string)$this->request->request->get('alt_theme_name', isset($args['alt_theme_name']) ? $args['alt_theme_name'] : '');
+        $alt_theme_name = (string)$this->request->request->get('alt_theme_name', '');
         $this->setVar('alt_theme_name', $alt_theme_name);
 
-        $alt_theme_domain = (string)$this->request->request->get('alt_theme_domain', isset($args['alt_theme_domain']) ? $args['alt_theme_domain'] : '');
+        $alt_theme_domain = (string)$this->request->request->get('alt_theme_domain', '');
         $this->setVar('alt_theme_domain', $alt_theme_domain);
 
-        $itemsperpage = (int)$this->request->request->get('itemsperpage', isset($args['itemsperpage']) ? $args['itemsperpage'] : 25);
+        $itemsperpage = (int)$this->request->request->get('itemsperpage', 25);
         if ($itemsperpage < 1) {
             $itemsperpage = 25;
         }
         $this->setVar('itemsperpage', $itemsperpage);
 
-        $cssjscombine = (bool)$this->request->request->get('cssjscombine', isset($args['cssjscombine']) ? $args['cssjscombine'] : false);
+        $cssjscombine = (bool)$this->request->request->get('cssjscombine', false);
         $this->setVar('cssjscombine', $cssjscombine);
 
-        $cssjsminify = (bool)$this->request->request->get('cssjsminify', isset($args['cssjsminify']) ? $args['cssjsminify'] : false);
+        $cssjsminify = (bool)$this->request->request->get('cssjsminify', false);
         $this->setVar('cssjsminify', $cssjsminify);
 
-        $cssjscompress = (bool)$this->request->request->get('cssjscompress', isset($args['cssjscompress']) ? $args['cssjscompress'] : false);
+        $cssjscompress = (bool)$this->request->request->get('cssjscompress', false);
         $this->setVar('cssjscompress', $cssjscompress);
 
-        $cssjscombine_lifetime = (int)$this->request->request->get('cssjscombine_lifetime', isset($args['cssjscombine_lifetime']) ? $args['cssjscombine_lifetime'] : 3600);
+        $cssjscombine_lifetime = (int)$this->request->request->get('cssjscombine_lifetime', 3600);
         if ($cssjscombine_lifetime < -1) {
             $cssjscombine_lifetime = 3600;
         }
@@ -1435,22 +1402,22 @@ class AdminController extends \Zikula_AbstractController
 
 
         // render
-        $render_compile_check = (bool)$this->request->request->get('render_compile_check', isset($args['render_compile_check']) ? $args['render_compile_check'] : false);
+        $render_compile_check = (bool)$this->request->request->get('render_compile_check', false);
         $this->setVar('render_compile_check', $render_compile_check);
 
-        $render_force_compile = (bool)$this->request->request->get('render_force_compile', isset($args['render_force_compile']) ? $args['render_force_compile'] : false);
+        $render_force_compile = (bool)$this->request->request->get('render_force_compile', false);
         $this->setVar('render_force_compile', $render_force_compile);
 
-        $render_cache = (int)$this->request->request->get('render_cache', isset($args['render_cache']) ? $args['render_cache'] : false);
+        $render_cache = (int)$this->request->request->get('render_cache', false);
         $this->setVar('render_cache', $render_cache);
 
-        $render_lifetime = (int)$this->request->request->get('render_lifetime', isset($args['render_lifetime']) ? $args['render_lifetime'] : 3600);
+        $render_lifetime = (int)$this->request->request->get('render_lifetime', 3600);
         if ($render_lifetime < -1) {
             $render_lifetime = 3600;
         }
         $this->setVar('render_lifetime', $render_lifetime);
 
-        $render_expose_template = (bool)$this->request->request->get('render_expose_template', isset($args['render_expose_template']) ? $args['render_expose_template'] : false);
+        $render_expose_template = (bool)$this->request->request->get('render_expose_template', false);
         $this->setVar('render_expose_template', $render_expose_template);
 
         // The configuration has been changed, so we clear all caches for this module.

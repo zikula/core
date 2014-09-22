@@ -102,7 +102,7 @@ class UserController extends \Zikula_AbstractController
     /**
      * reset the current users theme to the site default
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function resettodefaultAction()
     {
