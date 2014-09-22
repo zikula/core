@@ -191,11 +191,39 @@ class RouteController extends BaseRouteController
 
             $this->view->setCacheId($objectType . '|reload');
 
+            $kernel = $this->get('kernel');
+            $modules = $kernel->getModules();
+            $options = array(array(
+                'text' => $this->__('All'),
+                'value' => -1
+            ));
+            foreach ($modules as $module) {
+                $options[] = array('text' => $module->getName(), 'value' => $module->getName());
+            }
+            $this->view->assign('options', $options);
+
             // fetch and return the appropriate template
             return $viewHelper->processTemplate($this->view, $objectType, 'reload', $request, $templateFile);
         }
 
-        $this->entityManager->getRepository('ZikulaRoutesModule:RouteEntity')->reloadAllRoutes($this->getContainer());
+        $routeRepository = $this->entityManager->getRepository('ZikulaRoutesModule:RouteEntity');
+        $module = $this->request->request->get('reload-module', -1);
+        if ($module == -1) {
+            $routeRepository->reloadAllRoutes($this->getContainer());
+        } else {
+            $module = ModUtil::getModule($module);
+            if ($module === null) {
+                throw new NotFoundHttpException();
+            }
+            $routeFinder = $this->get('zikularoutesmodule.routing_finder');
+            $routeCollection = $routeFinder->find($module);
+
+            if ($routeCollection->count() > 0) {
+                $routeRepository->addRouteCollection($module, $routeCollection);
+            }
+            $routeRepository->removeAllOfModule($module);
+        }
+
 
         $cacheClearer = $this->get('zikula.cache_clearer');
         $cacheClearer->clear("symfony.routing");
