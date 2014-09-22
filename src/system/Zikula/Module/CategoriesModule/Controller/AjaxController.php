@@ -23,7 +23,7 @@ use ZLanguage;
 use DBObject;
 use Zikula\Core\Response\Ajax\BadDataResponse;
 use Zikula_View;
-use Zikula\Module\CategoriesModuleGenericUtil;
+use Zikula\Module\CategoriesModule\GenericUtil;
 
 /**
  * Ajax controllers for the categories module
@@ -67,10 +67,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Edit a category
      *
-     * @param mixed[] $args {
-     *      @type string $mode   the mode of operation (new or edit)
-     *      @type int    $cid    the category id
-     *      @type int    $parent the parent category id
+     *      string $mode   the mode of operation (new or edit)
+     *      int    $cid    the category id
+     *      int    $parent the parent category id
      *                       }
      *
      * @return AjaxResponse ajax response object
@@ -78,18 +77,18 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @throws AccessDeniedException Thrown if the user doesn't have edit or add (depending mode) access to the module
      * @throws NotFoundHttpException Thrown if category cannot be found
      */
-    public function editAction($args = array())
+    public function editAction()
     {
         $this->checkAjaxToken();
 
-        $mode = isset($args['mode']) ? $args['mode'] : $this->request->request->get('mode', 'new');
+        $mode = $this->request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
             throw new AccessDeniedException();
         }
 
-        $cid = isset($args['cid']) ? $args['cid'] : $this->request->request->get('cid', 0);
-        $parent = isset($args['parent']) ? $args['parent'] : $this->request->request->get('parent', 1);
+        $cid = $this->request->request->get('cid', 0);
+        $parent = $this->request->request->get('parent', 1);
         $validationErrors = FormUtil::getValidationErrors();
         $editCat = '';
 

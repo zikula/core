@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Adminstrative controllers for the groups module
+ * Administrative controllers for the groups module
  */
 class AdminController extends \Zikula_AbstractController
 {
@@ -214,26 +214,25 @@ class AdminController extends \Zikula_AbstractController
      *
      * This function takes input from newgroupAction().
      *
-     * @param mixed[] $args {
-     *       @type string $name        the name of the group to be created
-     *       @type int    $gtype       the group type
-     *       @type bool   $state       the group state
-     *       @type int    $nbumax      the maximum of users
-     *       @type string $description the group description
+     *       string $name        the name of the group to be created
+     *       int    $gtype       the group type
+     *       bool   $state       the group state
+     *       int    $nbumax      the maximum of users
+     *       string $description the group description
      *                      }
      *
      * @return RedirectResponse
      */
-    public function createAction(array $args = array())
+    public function createAction()
     {
         $this->checkCsrfToken();
 
         // Get parameters from whatever input we need.
-        $name = $this->request->request->get('name', isset($args['name']) ? $args['name'] : null);
-        $gtype = $this->request->request->get('gtype', isset($args['gtype']) ? $args['gtype'] : null);
-        $state = $this->request->request->get('state', isset($args['state']) ? $args['state'] : null);
-        $nbumax = $this->request->request->get('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null);
-        $description = $this->request->request->get('description', isset($args['description']) ? $args['description'] : null);
+        $name = $this->request->request->get('name', null);
+        $gtype = $this->request->request->get('gtype', null);
+        $state = $this->request->request->get('state', null);
+        $nbumax = $this->request->request->get('nbumax', null);
+        $description = $this->request->request->get('description', null);
 
         // The API function is called.
         $check = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getgidbyname', array('name' => $name));
@@ -264,25 +263,23 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Modify a group.
      *
-     * @param int[] $args (
-     *       @type int $gid      the id of the group to be modified
-     *       @type int $objectid generic object id mapped onto gid if present
+     *       int $gid      the id of the group to be modified
      *
      * @return Response symfony response object.
      *
-     * @throws \NotFoundHttpException Thrown if the requested group isn't found
+     * @throws NotFoundHttpException Thrown if the requested group isn't found
      * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
      */
-    public function modifyAction(array $args = array())
+    public function modifyAction()
     {
         // Get parameters from whatever input we need.
-        $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
+        $gid = (int)$this->request->query->get('gid', null);
 
         // get group
         $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
 
         if (!$item) {
-            throw new \NotFoundHttpException($this->__('Sorry! No such group found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such group found.'));
         }
 
         // Security check
@@ -308,25 +305,24 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Update a group
      *
-     * @param mixed $args {
-     *       @param int    $gid      the id of the group to be modified.
-     *       @param int    $objectid generic object id mapped onto gid if present.
-     *       @param string $name     the name of the group to be updated.
+     *       int    $gid      the id of the group to be modified.
+     *       int    $objectid generic object id mapped onto gid if present.
+     *       string $name     the name of the group to be updated.
      *                    }
      *
      * @return RedirectResponse
      */
-    public function updateAction(array $args = array())
+    public function updateAction()
     {
         $this->checkCsrfToken();
 
         // Get parameters from whatever input we need.
-        $gid = (int)$this->request->request->get('gid', isset($args['gid']) ? $args['gid'] : null);
-        $name = $this->request->request->get('name', isset($args['name']) ? $args['name'] : null);
-        $gtype = $this->request->request->get('gtype', isset($args['gtype']) ? $args['gtype'] : null);
-        $state = $this->request->request->get('state', isset($args['state']) ? $args['state'] : null);
-        $nbumax = $this->request->request->get('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null);
-        $description = $this->request->request->get('description', isset($args['description']) ? $args['description'] : null);
+        $gid = (int)$this->request->request->get('gid', null);
+        $name = $this->request->request->get('name', null);
+        $gtype = $this->request->request->get('gtype', null);
+        $state = $this->request->request->get('state', null);
+        $nbumax = $this->request->request->get('nbumax', null);
+        $description = $this->request->request->get('description', null);
 
         // The API function is called.
         if (ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'update',
@@ -347,9 +343,8 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Delete group.
      *
-     * @param mixed[] $args {
-     *       @param int  $gid          the id of the item to be deleted
-     *       @param bool $confirmation confirmation that this item can be deleted
+     *       int  $gid          the id of the item to be deleted
+     *       bool $confirmation confirmation that this item can be deleted
      *                      }
      *
      * @return Response|void response object if no confirmation, void otherwise
@@ -357,11 +352,11 @@ class AdminController extends \Zikula_AbstractController
      * @throws NotFoundHttpException Thrown if the requested group is not found
      * @throws AccessDeniedException Thrown if the user doesn't have delete access to the group
      */
-    public function deleteAction(array $args = array())
+    public function deleteAction()
     {
         // Get parameters from whatever input we need.
-        $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
-        $confirmation = (bool)$this->request->request->get('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null);
+        $gid = (int)$this->request->query->get('gid', null);
+        $confirmation = (bool)$this->request->request->get('confirmation', null);
 
         // The user API function is called.
         $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
@@ -412,22 +407,21 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display all members of a group.
      *
-     * @param mixed[] $args {
-     *       @type int    $gid      the id of the group to list membership for
-     *       @type int    $startnum the start item number for the pager
-     *       @type string $letter   the letter from the alpha filter
+     *       int    $gid      the id of the group to list membership for
+     *       int    $startnum the start item number for the pager
+     *       string $letter   the letter from the alpha filter
      *                      }
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
      */
-    public function groupmembershipAction(array $args = array())
+    public function groupmembershipAction()
     {
         // Get parameters from whatever input we need.
-        $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
-        $startnum = (int)$this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : null);
-        $letter = $this->request->query->get('letter', isset($args['letter']) ? $args['letter'] : null);
+        $gid = (int)$this->request->query->get('gid', null);
+        $startnum = (int)$this->request->query->get('startnum', null);
+        $letter = $this->request->query->get('letter', null);
 
         // The user API function is called.
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get',
@@ -545,20 +539,19 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Add user(s) to a group.
      *
-     * @param mixed $args {
-     *       @type int   $gid The id of the group
-     *       @type mixed $uid The id of the user (int) or an array of userids
+     *       int   $gid The id of the group
+     *       mixed $uid The id of the user (int) or an array of userids
      *                    }
      *
      * @return RedirectResponse
      */
-    public function adduserAction(array $args = array())
+    public function adduserAction()
     {
         $this->checkCsrfToken();
 
         // Get parameters from whatever input we need.
-        $gid = (int)$this->request->request->get('gid', isset($args['gid']) ? $args['gid'] : null);
-        $uid = $this->request->request->get('uid', isset($args['uid']) ? $args['uid'] : null);
+        $gid = (int)$this->request->request->get('gid', null);
+        $uid = $this->request->request->get('uid', null);
 
         // The API function is called.
         if (is_array($uid)) {
@@ -597,21 +590,20 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Remove a user from a group.
      *
-     * @param int $args {
-     *       @type int $gid The id of the group
-     *       @type int $uid The id of the user
+     *       int $gid The id of the group
+     *       int $uid The id of the user
      *                  }
      *
      * @return mixed Response|void symfony repsonse object if confirmation isn't provided, void otherwise
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit access to the group
      */
-    public function removeuserAction(array $args = array())
+    public function removeuserAction()
     {
         // Get parameters from whatever input we need.
-        $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
-        $uid = (int)$this->request->query->get('uid', isset($args['uid']) ? $args['uid'] : null);
-        $confirmation = (bool)$this->request->request->get('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null);
+        $gid = (int)$this->request->query->get('gid', null);
+        $uid = (int)$this->request->query->get('uid', null);
+        $confirmation = (bool)$this->request->request->get('confirmation', null);
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid.'::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -689,7 +681,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * update group applications
      *
-     * @return void
+     * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if any of the tag, gid or userid parameters aren't provided or
      *                                          if the requested action isn't one of 'deny' or 'accept'
@@ -796,7 +788,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Update the module configuration
      *
-     * @return void
+     * @return RedirectResponse
      */
     public function updateconfigAction()
     {

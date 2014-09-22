@@ -811,7 +811,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function allowedhtmlAction(array $args = array())
+    public function allowedhtmlAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
@@ -838,7 +838,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function updateallowedhtmlAction(array $args = array())
+    public function updateallowedhtmlAction()
     {
         $this->checkCsrfToken();
 
