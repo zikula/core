@@ -33,7 +33,7 @@ use Symfony\Component\Routing\RouterInterface;
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
-     * @Route("/update")
+     * @Route("/update", options={"expose"=true})
      * @Method("POST")
      *
      * Updates a group in the database
@@ -113,7 +113,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     }
 
     /**
-     * @Route("/create")
+     * @Route("/create", options={"expose"=true})
      * @Method("POST")
      *
      * Create a blank group and return it.
@@ -165,7 +165,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     }
 
     /**
-     * @Route("/delete")
+     * @Route("/delete", options={"expose"=true})
      * @Method("POST")
      *
      * Delete a group.
@@ -205,7 +205,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     }
 
     /**
-     * @Route("/removeuser")
+     * @Route("/removeuser", options={"expose"=true})
      * @Method("POST")
      *
      * Remove a user from a group

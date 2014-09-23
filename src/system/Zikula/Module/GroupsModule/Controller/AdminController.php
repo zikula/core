@@ -607,7 +607,6 @@ class AdminController extends \Zikula_AbstractController
                 $request->getSession()->getFlashBag()->add('error', $this->_fn('Error! %s user was not added to the group.', 'Error! %s users were not added to the group.', $total_users_notadded, $total_users_notadded));
 
                 return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_admin_groupmembership', array('gid' => $gid), RouterInterface::ABSOLUTE_URL));
-
             }
         } else {
             if (!ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'adduser', array('gid' => $gid, 'uid' => $uid))) {

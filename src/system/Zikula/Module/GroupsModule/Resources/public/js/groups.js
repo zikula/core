@@ -9,7 +9,7 @@ $('.fa-trash-o').click( function(e) {
     var a = $(this);
     if (confirm(a.data('confirm'))) {
         $.ajax({
-            url: Router.generate('zikulagroupsmodule_ajax_deletegroup'),
+            url: Routing.generate('zikulagroupsmodule_ajax_deletegroup'),
             data: {
                 gid: a.data('gid')
             },
