@@ -1,14 +1,15 @@
 {adminheader}
 <h3>
     <span class="fa fa-archive"></span>
-    {gt text="View IDS Log"}
+    {gt text='View IDS Log'}
 </h3>
 
 <ul class="navbar navbar-default navbar-modulelinks">
-    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="fa fa-arrow-circle-o-down"> {gt text="Export IDS Log"}</a></li>
-    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="fa fa-trash-o"> {gt text="Purge IDS Log"}</a></li>
+    <li><a href="{modurl modname='SecurityCenter' type='admin' func="exportidslog"}" title="{gt text='Download the entire log to a CSV file.'}" class="fa fa-arrow-circle-o-down"> {gt text="Export IDS Log"}</a></li>
+    <li><a href="{modurl modname='SecurityCenter' type='admin' func="purgeidslog"}" title="{gt text='Delete the entire log.'}" class="fa fa-trash-o"> {gt text="Purge IDS Log"}</a></li>
 </ul>
 
+{if (!empty($objectArray))}
 {gt text="All" assign='lblAll'}
 <form id="securitycenter_logfilter" class="form-horizontal" role="form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
@@ -53,7 +54,7 @@
         </tr>
     </thead>
     <tbody>
-        {foreach from=$objectArray item=event}
+        {foreach from=$objectArray item='event'}
         <tr>
             <td>{$event.name|safetext}</td>
             <td>{$event.tag|safetext}</td>
@@ -75,10 +76,11 @@
             <td>{$event.date|dateformat|safetext}</td>
             <td class="text-right"><a href="{modurl modname=$module type="adminform" func="deleteidsentry" id=$event.id csrftoken=$csrftoken}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
         </tr>
-        {foreachelse}
-        <tr class="table table-borderedempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>
         {/foreach}
     </tbody>
 </table>
+{else}
+    <p>{gt text='No logged intrusions found.'}</p>
+{/if}
 {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 {adminfooter}
