@@ -4,7 +4,7 @@
     {gt text="Create new block"}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Blocks" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name="zikulablocksmodule_admin_create"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -84,7 +84,7 @@
                 <button class="btn btn-success" title="{gt text="Save"}">
                     {gt text="Save"}
                 </button>
-                <a class="btn btn-danger" href="{modurl modname='ZikulaBlocksModule' type='admin' func='view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name="zikulablocksmodule_admin_view"}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

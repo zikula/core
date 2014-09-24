@@ -7,7 +7,7 @@
     {gt text="Edit block position"}
 </h3>
 
-<form id="blockpositionform" class="form-horizontal" role="form" action="{modurl modname="Blocks" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
+<form id="blockpositionform" class="form-horizontal" role="form" action="{route name="zikulablocksmodule_admin_updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="Block position"}</legend>
         
@@ -32,7 +32,7 @@
                 <button class="btn btn-success" title="{gt text="Save"}">
                     {gt text="Save"}
                 </button>
-                <a class="btn btn-danger" href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name="zikulablocksmodule_admin_view"}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </fieldset>
@@ -47,7 +47,7 @@
                 <th width="20px"></th>
                 <th>{gt text="Block ID"}</th>
                 <th>{gt text="Title, Description"}</th>
-                <th>{gt text="Module"}</span>
+                <th>{gt text="Module"}</th>
                 <th>{gt text="Name"}</th>
                 <th>{gt text="Language"}</th>
                 <th>{gt text="State"}</th>

@@ -6,7 +6,7 @@
     {gt text="Edit block"}
 </h3>
 
-<form id="blockupdateform" class="form-horizontal" role="form" action="{modurl modname="Blocks" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
+<form id="blockupdateform" class="form-horizontal" role="form" action="{route name="zikulablocksmodule_admin_update"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="bid" value="{$bid|safetext}" />
@@ -176,7 +176,7 @@
         {if isset($redirect) && $redirect neq ''}
         {assign var="cancelurl" value=$redirect|urldecode}
         {else}
-        {modurl modname="Blocks" type="admin" func="view" assign="cancelurl"}
+        {route name="zikulablocksmodule_admin_view" assign="cancelurl"}
         {/if}
 
         <div class="form-group">

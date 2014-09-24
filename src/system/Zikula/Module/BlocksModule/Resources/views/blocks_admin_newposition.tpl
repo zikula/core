@@ -6,7 +6,7 @@
 
 <p class="alert alert-info">{gt text="After create this block position, you will be able to assign some blocks for it, and adjust the order you want them to be displayed."}</p>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Blocks" type="admin" func="createposition"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name="zikulablocksmodule_admin_createposition"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -28,7 +28,7 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                <a class="btn btn-danger" href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name="zikulablocksmodule_admin_view"}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

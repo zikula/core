@@ -34,7 +34,7 @@
             });
 
             $.ajax({
-                url: 'index.php?module=ZikulaBlocksModule&type=ajax&func=changeblockorder',
+                url: Routing.generate('zikulablocksmodule_ajax_changeblockorder'),
                 data: {
                     position: $('#position').val(),
                     blockorder: blockorder
