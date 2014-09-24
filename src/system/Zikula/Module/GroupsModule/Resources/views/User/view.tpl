@@ -27,5 +27,5 @@
     </tbody>
     {/if}
 </table>
-{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulagroupsmodule_user_view'}
 {/if}

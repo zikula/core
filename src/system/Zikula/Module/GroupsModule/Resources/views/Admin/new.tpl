@@ -4,7 +4,7 @@
     {gt text="Create new group"}
 </h3>
 
-<form id="gg" class="form-horizontal" role="form" action="{modurl modname="Groups" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
+<form id="gg" class="form-horizontal" role="form" action="{route name='zikulagroupsmodule_admin_create'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
         <div class="form-group">
@@ -53,7 +53,7 @@
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
             <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-            <a class="btn btn-danger" href="{modurl modname='ZikulaGroupsModule' type='admin' func='view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulagroupsmodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
     

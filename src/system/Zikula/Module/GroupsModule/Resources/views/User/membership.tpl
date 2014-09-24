@@ -8,7 +8,7 @@
 
 {include file="User/menu.tpl"}
 
-<form class="form-horizontal" role="form" action="{modurl modname="Groups" type="user" func="userupdate" action=$action}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulagroupsmodule_user_userupdate' action=$action}" method="post" enctype="application/x-www-form-urlencoded">
     
     <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
     <input type="hidden" name="gid" value="{$gid|safetext}" />
@@ -48,7 +48,7 @@
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
             {button class="btn btn-success" value="Apply" __alt="Apply" __title="Apply" __text="Apply"}
-            <a class="btn btn-danger" href="{modurl modname='ZikulaGroupsModule' type='user' func='view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulagroupsmodule_user_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
 </form>

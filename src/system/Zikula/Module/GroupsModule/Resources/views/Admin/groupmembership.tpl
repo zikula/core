@@ -35,16 +35,16 @@
         {/section}
     </tbody>
 </table>
-{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulagroupsmodule_admin_groupmembership'}
 
 {if $uids}
 <h3>{gt text="Add users to group"}</h3>
-    {pagerabc posvar="letter" forwardvars="module,type,func,gid" printempty=true}
+    {pagerabc posvar="letter" forwardvars="module,type,func,gid" printempty=true route='zikulagroupsmodule_admin_groupmembership'}
 <br />
 
 <p class="alert alert-info">{gt text="Notice: Please select one or more users to add to the group. To select multiple users, use 'Shift-Click' or 'Control-Click'."}</p>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Groups" type="admin" func="adduser"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulagroupsmodule_admin_adduser'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
         <input type="hidden" name="gid" value="{$group.gid|safetext}" />

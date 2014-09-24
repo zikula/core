@@ -9,7 +9,7 @@
     
 {checkpermissionblock component='ZikulaGroupsModule::' instance='::' level=ACCESS_ADD}
 <br />
-<a id="appendajax" {*onclick="groupappend();"*} title="{gt text="Create new group"}" href="{modurl modname='ZikulaGroupsModule' type='admin' func='newgroup'}"><span class="fa fa-plus-circle"></span> {gt text="Create new group"}</a>
+<a id="appendajax" {*onclick="groupappend();"*} title="{gt text="Create new group"}" href="{route name='zikulagroupsmodule_admin_newgroup'}"><span class="fa fa-plus-circle"></span> {gt text="Create new group"}</a>
 <br /><br />
 {/checkpermissionblock}
 
@@ -73,7 +73,7 @@
                 <a id="modify_{$group.gid}" class="tooltips fa fa-pencil" href="{$group.editurl|safetext}" title="{$strEditGroup}"></a>
                 <a href="{$group.membersurl|safetext}" class="fa fa-users tooltips" title="{gt text="Group membership"}"></a>
                 {if $group.gid neq $defaultgroup && $group.gid neq $primaryadmingroup}
-                <a href="{modurl modname='ZikulaGroupsModule' type='admin' func='delete' gid=$group.gid}" class="fa fa-trash-o con-fixed-width tooltips" data-gid="{$group.gid}" title="{$strDeleteGroup}" data-confirm="{gt text="Do you really want to delete this group?"}"></a>
+                <a href="{route name='zikulagroupsmodule_admin_delete' gid=$group.gid}" class="fa fa-trash-o con-fixed-width tooltips" data-gid="{$group.gid}" title="{$strDeleteGroup}" data-confirm="{gt text="Do you really want to delete this group?"}"></a>
                 {else}
                 <span class="fa-fw"></span>
                 {/if}
@@ -107,8 +107,8 @@
             <td>{$useritem.gname}</td>
             <td>{$useritem.apptrcation|safehtml}</td>
             <td>
-                <a href="{modurl modname='ZikulaGroupsModule' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='accept'}" title="{gt text="Accept"} {$useritem.username}">{img src=add_user.png modname=core set=icons/extrasmall __alt="Accept" __title="Accept" class='tooltips'}</a>&nbsp;
-                <a href="{modurl modname='ZikulaGroupsModule' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='deny'}" title="{gt text="Deny"} {$useritem.username}">{img src=delete_user.png modname=core set=icons/extrasmall __alt="Deny" __title="Accept" class='tooltips'}</a>
+                <a href="{route name='zikulagroupsmodule_admin_userpending' gid=$useritem.appgid userid=$useritem.userid action='accept'}" title="{gt text="Accept"} {$useritem.username}">{img src=add_user.png modname=core set=icons/extrasmall __alt="Accept" __title="Accept" class='tooltips'}</a>&nbsp;
+                <a href="{route name='zikulagroupsmodule_admin_userpending' gid=$useritem.appgid userid=$useritem.userid action='deny'}" title="{gt text="Deny"} {$useritem.username}">{img src=delete_user.png modname=core set=icons/extrasmall __alt="Deny" __title="Accept" class='tooltips'}</a>
             </td>
         </tr>
         {foreachelse}
@@ -118,5 +118,5 @@
 </table>
 {/if}
 
-{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulagroupsmodule_admin_view'}
 {adminfooter}

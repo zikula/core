@@ -1,7 +1,7 @@
 ( function($) {$(document).ready(function() {
         
 /*******************************************************************************
- * Delete groupe
+ * Delete group
 *******************************************************************************/
 
 $('.fa-trash-o').click( function(e) {
@@ -9,7 +9,7 @@ $('.fa-trash-o').click( function(e) {
     var a = $(this);
     if (confirm(a.data('confirm'))) {
         $.ajax({
-            url: 'index.php?module=Groups&type=ajax&func=deletegroup',
+            url: Routing.generate('zikulagroupsmodule_ajax_deletegroup'),
             data: {
                 gid: a.data('gid')
             },
