@@ -23,7 +23,7 @@
 {/if}
 
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="users_login_login_id">{strip}
+    <label class="col-lg-3 control-label required" for="users_login_login_id">{strip}
         {if $authentication_method == 'email'}
             {gt text='Email address'}
         {elseif $authentication_method == 'uname'}
@@ -53,7 +53,7 @@
 </script>
 
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="users_login_pass">{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}</label>
+    <label class="col-lg-3 control-label required" for="users_login_pass">{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}</label>
     <div class="col-lg-9">
         <div class="input-group">
             <i class="fa fa-fw fa-asterisk input-group-addon"></i>
