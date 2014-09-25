@@ -45,7 +45,7 @@ class UserController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("display")
+     * @Route("/display")
      *
      * Display a block if is active
      *
