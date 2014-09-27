@@ -20,7 +20,7 @@
                         <input type="hidden" name="systemplugins" value="{$systemplugins|safetext}" />
                         <div>
                             <label for="bymodule">
-                                <a href="{route name='zikulaextensionsmodule_admin_viewPlugins' sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Module"}</a>
+                                <a href="{route name='zikulaextensionsmodule_admin_viewplugins' sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Module"}</a>
                             </label><br />
                             {selector_module name="bymodule" selectedValue=$module allValue="0" __allText="All" submit=true}
                         </div>
@@ -29,8 +29,8 @@
             </th>
             {/if}
 
-            <th><a class="{if empty($sort) || $sort eq 'module'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulaextensionsmodule_admin_viewPlugins' sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Internal Plugin name"}</a></th>
-            <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulaextensionsmodule_admin_viewPlugins' sort="name" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Plugin display name"}</a></th>
+            <th><a class="{if empty($sort) || $sort eq 'module'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulaextensionsmodule_admin_viewplugins' sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Internal Plugin name"}</a></th>
+            <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulaextensionsmodule_admin_viewplugins' sort="name" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Plugin display name"}</a></th>
             <th>{gt text="Description"}</th>
             <th>{gt text="Version"}</th>
             <th class="nowrap">
