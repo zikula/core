@@ -23,6 +23,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotatio
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 
 /**
+ * @Route("/ajax")
+ *
  * Ajax controllers for the extensions module
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax

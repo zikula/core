@@ -821,7 +821,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/modules/remove)
+     * @Route("/modules/remove")
      *
      * Remove a module
      *
@@ -1146,7 +1146,7 @@ class AdminController extends \Zikula_AbstractController
                     $pluginLink['_action'] = 'configure';
 
                     if ($instance instanceof Zikula_Plugin_ConfigurableInterface) {
-                        $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_dispatch', $pluginLink),
+                        $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_adminplugin_dispatch', $pluginLink),
                                            'image' => 'wrench fa-lg',
                                            'color' => '#111',
                                            'title' => $this->__('Configure plugin'));

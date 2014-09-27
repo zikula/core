@@ -13,7 +13,7 @@
         <tr>
             {if !$systemplugins}
             <th>
-                <form action="{route name='zikulaextensionsmodule_admin_viewPlugins'}" method="post" enctype="application/x-www-form-urlencoded">
+                <form action="{route name='zikulaextensionsmodule_admin_viewplugins'}" method="post" enctype="application/x-www-form-urlencoded">
                     <div>
                         <input type="hidden" name="sort" value="{$sort|safetext}" />
                         <input type="hidden" name="state" value="{$state|safetext}" />
@@ -34,7 +34,7 @@
             <th>{gt text="Description"}</th>
             <th>{gt text="Version"}</th>
             <th class="nowrap">
-                <form action="{route name='zikulaextensionsmodule_admin_viewPlugins'}" method="post" enctype="application/x-www-form-urlencoded">
+                <form action="{route name='zikulaextensionsmodule_admin_viewplugins'}" method="post" enctype="application/x-www-form-urlencoded">
                     <div>
                         <input type="hidden" name="sort" value="{$sort|safetext}" />
                         <input type="hidden" name="bymodule" value="{$module|safetext}" />
@@ -62,9 +62,9 @@
             {/if}
             <td>
                 {if $plugin.instance instanceof Zikula_Plugin_ConfigurableInterface and $plugin.instance->isInstalled() and $_type eq 'system'}
-                <a href="{route name='zikulaextensionsmodule_admin_dispatch' _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
+                <a href="{route name='zikulaextensionsmodule_adminplugin_dispatch' _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
                 {elseif $plugin.instance instanceof Zikula_Plugin_ConfigurableInterface and $plugin.instance->isInstalled() and $_type eq 'module'}
-                <a href="{route name='zikulaextensionsmodule_admin_dispatch' _module=$plugin.instance->getModuleName() _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
+                <a href="{route name='zikulaextensionsmodule_adminplugin_dispatch' _module=$plugin.instance->getModuleName() _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
                 {else}
                 {$plugin.instance->getPluginName()|safetext}
                 {/if}
