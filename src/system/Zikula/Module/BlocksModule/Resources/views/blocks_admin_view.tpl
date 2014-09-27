@@ -102,7 +102,7 @@
                 <a class="label label-danger tooltips{if $block.active} hide{/if}" href="{route name="zikulablocksmodule_admin_activate" bid=$block.bid|safetext csrftoken=$csrftoken}" title="{$lbl_activate_block}" data-bid="{$block.bid}">{gt text="Inactive"}</a>
             </td>
             <td class="actions">
-                <a class="fa fa-eye tooltips" href="{route name="zikulablocksmodule_admin_display" bid=$block.bid|safetext showinactive=true}" title="{$lbl_preview_block}"></a>
+                <a class="fa fa-eye tooltips" href="{route name="zikulablocksmodule_user_display" bid=$block.bid|safetext showinactive=true}" title="{$lbl_preview_block}"></a>
                 {if $access_edit}
                 <a class="fa fa-pencil tooltips" href="{route name="zikulablocksmodule_admin_modify" bid=$block.bid|safetext}" title="{$lbl_edit_block}"></a>
                 {/if}
