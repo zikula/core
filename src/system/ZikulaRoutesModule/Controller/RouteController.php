@@ -218,10 +218,10 @@ class RouteController extends BaseRouteController
             $routeFinder = $this->get('zikularoutesmodule.routing_finder');
             $routeCollection = $routeFinder->find($module);
 
+            $routeRepository->removeAllOfModule($module);
             if ($routeCollection->count() > 0) {
                 $routeRepository->addRouteCollection($module, $routeCollection);
             }
-            $routeRepository->removeAllOfModule($module);
         }
 
 
