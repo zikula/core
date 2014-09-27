@@ -4,7 +4,7 @@
     {gt text="Edit module"} - {modgetinfo modid=$id info=displayname}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulaextensionsmodule_admin_update'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="id" value="{$id|safetext}" />
@@ -31,7 +31,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label">{gt text="Defaults"}</label>
                 <div class="col-lg-9">
-                <span><a id="restore_defaults" href="{modurl modname="Extensions" type="admin" func="modify" id=$id restore=true}">{gt text="Restore now"}</a> ({gt text="This may break your existing indexed URLs"})</span>
+                <span><a id="restore_defaults" href="{route name='zikulaextensionsmodule_admin_modify' id=$id restore=true}">{gt text="Restore now"}</a> ({gt text="This may break your existing indexed URLs"})</span>
                 </div>
             </div>
         </fieldset>
@@ -39,7 +39,7 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                <a class="btn btn-danger" href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulaextensionsmodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

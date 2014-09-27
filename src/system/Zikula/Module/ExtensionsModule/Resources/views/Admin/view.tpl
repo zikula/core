@@ -9,7 +9,7 @@
 
 <p class="alert alert-info">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>
 
-{pagerabc posvar="letter" forwardvars="module,type,func" printempty=true}
+{pagerabc posvar="letter" forwardvars="module,type,func" printempty=true route='zikulaextensionsmodule_admin_view'}
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -24,7 +24,7 @@
             <th>{gt text="Description"}</th>
             <th>{gt text="Version"}</th>
             <th class="nowrap">
-                <form action="{modurl modname="Extensions" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
+                <form action="{route name='zikulaextensionsmodule_admin_view'}" method="post" enctype="application/x-www-form-urlencoded">
                     <div>
                         <label for="modules_state">{gt text="State"}</label><br />
                         <select id="modules_state" name="state" onchange="submit()">
@@ -51,7 +51,7 @@
         <tr>
             <td>
                 {if isset($modules[modules].modinfo.capabilities.admin) and $modules[modules].modinfo.state eq 3}
-                <a title="{gt text="Go to the module's administration panel"}" href="{modurl modname=$modules[modules].modinfo.url type=admin func=index}">{$modules[modules].modinfo.name|safetext}</a>
+                <a title="{gt text="Go to the module's administration panel"}" href="{modurl modname=$modules[modules].modinfo.url type='admin' func='index'}">{$modules[modules].modinfo.name|safetext}</a>
                 {else}
                 {$modules[modules].modinfo.name|safetext}
                 {/if}
@@ -82,5 +82,5 @@
         {/section}
     </tbody>
 </table>
-{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulaextensionsmodule_admin_view'}
 {adminfooter}

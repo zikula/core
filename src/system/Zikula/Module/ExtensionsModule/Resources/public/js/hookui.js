@@ -46,7 +46,7 @@ function subscriberAreaToggle(sarea, parea)
     };
 
     new Zikula.Ajax.Request(
-        "index.php?module=Extensions&type=ajax&func=togglesubscriberareastatus",
+        Routing.generate('zikulaextensionsmodule_ajax_togglesubscriberareastatus'),
         {
             parameters: pars,
             onComplete: togglesubscriberareastatus_response
@@ -228,7 +228,7 @@ function changeAttachedAreaOrder()
                providers_areas;
 
     new Zikula.Ajax.Request(
-        'index.php?module=Extensions&type=ajax&func=changeproviderareaorder',
+        Routing.generate('zikulaextensionsmodule_ajax_changeproviderareaorder'),
         {
             parameters: pars,
             onComplete: changeproviderareaorder_response
