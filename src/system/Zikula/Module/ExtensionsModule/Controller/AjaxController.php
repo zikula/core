@@ -14,11 +14,13 @@
 namespace Zikula\Module\ExtensionsModule\Controller;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula_Exception_Fatal;
 use HookUtil;
 use ModUtil;
 use SecurityUtil;
+use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Response\Ajax\AjaxResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 
 /**
  * Ajax controllers for the extensions module
@@ -26,18 +28,23 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
+     * @Route("/togglestatus", options={"expose"=true})
+     * @Method("POST")
+     * 
      * Attach/detach a subscriber area to a provider area
      *
-     * @param subscriberarea string area to be attached/detached
-     * @param providerarea   string area to attach/detach
+     * @param Request $request
+     * 
+     *  subscriberarea string area to be attached/detached
+     *  providerarea   string area to attach/detach
      *
      * @return AjaxResponse
      *
-     * @throws \InvalidArgumentException Thrown if either the subsriber, provider or subsriberArea parameters are empty
+     * @throws \InvalidArgumentException Thrown if either the subscriber, provider or subscriberArea parameters are empty
      * @throws \RuntimeException Thrown if either the subscriber or provider module isn't available
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to either the subscriber or provider modules
      */
-    public function togglesubscriberareastatusAction()
+    public function togglesubscriberareastatusAction(Request $request)
     {
         // get hookmanager
         /** @var $hookManager \Zikula\Component\HookDispatcher\StorageInterface */
@@ -46,7 +53,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         
         // get subscriberarea from POST
-        $subscriberArea = $this->request->request->get('subscriberarea','');
+        $subscriberArea = $request->request->get('subscriberarea','');
         if (empty($subscriberArea)) {
             throw new \InvalidArgumentException($this->__('No subscriber area passed.'));
         }
@@ -64,7 +71,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // get providerarea from POST
-        $providerArea = $this->request->request->get('providerarea','');
+        $providerArea = $request->request->get('providerarea','');
         if (empty($providerArea)) {
             throw new \InvalidArgumentException($this->__('No provider area passed.'));
         }
@@ -105,11 +112,16 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     }
 
     /**
+     * @Route("/changeorder", options={"expose"=true})
+     * @Method("POST")
+     *
      * changeproviderareaorder
      * This function changes the order of the providers' areas that are attached to a subscriber
      *
-     * @param subscriber    string     name of the subscriber
-     * @param providerorder array      array of sorted provider ids
+     * @param Request $request
+     *
+     *  subscriber    string     name of the subscriber
+     *  providerorder array      array of sorted provider ids
      *
      * @return AjaxResponse
      *
@@ -117,12 +129,12 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @throws \RuntimeException Thrown if the subscriber module isn't available
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the subscriber module
      */
-    public function changeproviderareaorderAction()
+    public function changeproviderareaorderAction(Request $request)
     {
         $this->checkAjaxToken();
 
         // get subscriberarea from POST
-        $subscriberarea = $this->request->request->get('subscriberarea','');
+        $subscriberarea = $request->request->get('subscriberarea','');
         if (empty($subscriberarea)) {
             throw new \InvalidArgumentException($this->__('No subscriber area passed.'));
         }
@@ -140,7 +152,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // get providers' areas from POST
-        $providerarea = $this->request->request->get('providerarea','');
+        $providerarea = $request->request->get('providerarea','');
         if (!(is_array($providerarea) && count($providerarea) > 0)) {
             throw new \InvalidArgumentException($this->__('Providers\' areas order is not an array.'));
         }
@@ -148,7 +160,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // set sorting
         HookUtil::setBindOrder($subscriberarea, $providerarea);
 
-        $ol_id = $this->request->request->get('ol_id','');
+        $ol_id = $request->request->get('ol_id','');
 
         return new AjaxResponse(array('result' => true, 'ol_id' => $ol_id));
     }
