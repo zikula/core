@@ -9,7 +9,7 @@
             e.preventDefault();
             var a = $(this)
             $.ajax({
-                url: 'index.php?module=ZikulaBlocksModule&type=ajax&func=toggleblock',
+                url: Routing.generate('zikulablocksmodule_ajax_toggleblock'),
                 data: {
                     bid: a.data('bid')
                 },

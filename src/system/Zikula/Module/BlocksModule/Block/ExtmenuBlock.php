@@ -175,7 +175,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
                 if (SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_ADMIN)) {
                     $menuitems[] = array('name'   => $this->__('--Installed modules--'),
-                                         'url'    => ModUtil::url('ZikulaBlocksModule', 'admin', 'modify', array('bid' => $blockinfo['bid'])),
+                                         'url'    => $this->get('router')->generate('zikulablocksmodule_admin_modify', array('bid' => $blockinfo['bid'])),
                                          'title'  => '',
                                          'level'  => 0,
                                          'parentid' => null,

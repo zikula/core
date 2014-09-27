@@ -14,7 +14,7 @@
     {gt text="This is the list of blocks present in your system, you can use the filter to display only certain blocks. The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}
 </p>
 
-<form class="form-inline" role="form" action="{modurl modname="Blocks" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-inline" role="form" action="{route name="zikulablocksmodule_admin_view"}" method="post" enctype="application/x-www-form-urlencoded">
     {gt text="All" assign="lblAll"}
     {gt text="Filter" assign="lblFilter"}
     <fieldset>
@@ -98,16 +98,16 @@
             <td>{$block.positions|safetext}</td>
             <td>{$block.language|safetext}</td>
             <td>
-                <a class="label label-success tooltips{if !$block.active} hide{/if}" href="{modurl modname=$module type='admin' func='deactivate' bid=$block.bid|safetext csrftoken=$csrftoken}" title="{$lbl_deactivate_block}" data-bid="{$block.bid}">{gt text="Active"}</a>
-                <a class="label label-danger tooltips{if $block.active} hide{/if}" href="{modurl modname=$module type='admin' func='activate' bid=$block.bid|safetext csrftoken=$csrftoken}" title="{$lbl_activate_block}" data-bid="{$block.bid}">{gt text="Inactive"}</a>
+                <a class="label label-success tooltips{if !$block.active} hide{/if}" href="{route name="zikulablocksmodule_admin_deactivate" bid=$block.bid|safetext csrftoken=$csrftoken}" title="{$lbl_deactivate_block}" data-bid="{$block.bid}">{gt text="Active"}</a>
+                <a class="label label-danger tooltips{if $block.active} hide{/if}" href="{route name="zikulablocksmodule_admin_activate" bid=$block.bid|safetext csrftoken=$csrftoken}" title="{$lbl_activate_block}" data-bid="{$block.bid}">{gt text="Inactive"}</a>
             </td>
             <td class="actions">
-                <a class="fa fa-eye tooltips" href="{modurl modname=$module type='user' func='display' bid=$block.bid|safetext showinactive=true}" title="{$lbl_preview_block}"></a>
+                <a class="fa fa-eye tooltips" href="{route name="zikulablocksmodule_user_display" bid=$block.bid|safetext showinactive=true}" title="{$lbl_preview_block}"></a>
                 {if $access_edit}
-                <a class="fa fa-pencil tooltips" href="{modurl modname=$module type='admin' func='modify' bid=$block.bid|safetext}" title="{$lbl_edit_block}"></a>
+                <a class="fa fa-pencil tooltips" href="{route name="zikulablocksmodule_admin_modify" bid=$block.bid|safetext}" title="{$lbl_edit_block}"></a>
                 {/if}
                 {if $access_delete}
-                <a class="fa fa-trash-o tooltips" href="{modurl modname=$module type='admin' func='delete' bid=$block.bid|safetext}" title="{$lbl_delete_block}"></a>
+                <a class="fa fa-trash-o tooltips" href="{route name="zikulablocksmodule_admin_delete" bid=$block.bid|safetext}" title="{$lbl_delete_block}"></a>
                 {/if}
             </td>
         </tr>
@@ -141,10 +141,10 @@
             <td><code>&#123;blockposition name='{$position.name|safehtml}'&#125;</code></td>
             <td class="actions">
                 {if $access_edit}
-                <a class="fa fa-pencil tooltips" href="{modurl modname=$module type='admin' func='modifyposition' pid=$position.pid|safetext}" title="{$lbl_edit_blockposition}"></a>
+                <a class="fa fa-pencil tooltips" href="{route name="zikulablocksmodule_admin_modifyposition" pid=$position.pid|safetext}" title="{$lbl_edit_blockposition}"></a>
                 {/if}
                 {if $access_delete}
-                <a class="fa fa-trash-o tooltips" href="{modurl modname=$module type='admin' func='deleteposition' pid=$position.pid|safetext}" title="{$lbl_delete_blockposition}"></a>
+                <a class="fa fa-trash-o tooltips" href="{route name="zikulablocksmodule_admin_deleteposition" pid=$position.pid|safetext}" title="{$lbl_delete_blockposition}"></a>
                 {/if}
             </td>
         </tr>

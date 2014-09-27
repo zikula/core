@@ -1,0 +1,3 @@
+zikulablocksmodule:
+    resource: "@ZikulaBlocksModule/Controller"
+    type:     annotation
