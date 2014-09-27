@@ -47,10 +47,10 @@ PageLock.RefreshLock = function()
 {
     var pars = {
         lockname: PageLock.LockName
-    }
+    };
 
     new Zikula.Ajax.Request(
-        Zikula.Config.baseURL + "index.php?module=PageLock&type=ajax&func=refreshpagelock",
+        Routing.generate('zikulapagelockmodule_ajax_refreshpagelock'),
         {
             parameters: pars,
             onComplete: PageLock.RefreshLockComplete
@@ -82,10 +82,10 @@ PageLock.CheckLock = function()
 
     var pars = {
         lockname: PageLock.LockName
-    }
+    };
 
     new Zikula.Ajax.Request(
-        Zikula.Config.baseURL + "index.php?module=PageLock&type=ajax&func=checkpagelock",
+        Routing.generate('zikulapagelockmodule_ajax_checkpagelock'),
         {
             parameters: pars,
             onComplete: PageLock.CheckLockComplete
@@ -129,7 +129,7 @@ PageLock.ShowOverlay = function()
         [
             {name: 'Cancel', value: 'Cancel', label: Zikula.__('Back')},//, action: PageLock.Cancel
             {name: 'CheckLock', value: 'CheckLock', label: Zikula.__('Check again'), close: false},
-            {name: 'BreakLock', value: 'BreakLock', label: Zikula.__('Ignore Lock'), close: false},
+            {name: 'BreakLock', value: 'BreakLock', label: Zikula.__('Ignore Lock'), close: false}
         ],
         {modal: true, callback: PageLock.DialogCallback}
     );
