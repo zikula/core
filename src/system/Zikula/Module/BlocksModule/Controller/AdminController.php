@@ -58,7 +58,7 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in view()
-        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -181,7 +181,7 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Block now inactive.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -208,7 +208,7 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Block now active.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -384,7 +384,7 @@ class AdminController extends \Zikula_AbstractController
                 return new RedirectResponse(urldecode($redirect));
             }
 
-            return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
         }
 
 
@@ -447,7 +447,7 @@ class AdminController extends \Zikula_AbstractController
             return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_modify', array('bid' => $returntoblock), RouterInterface::ABSOLUTE_URL));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -565,7 +565,7 @@ class AdminController extends \Zikula_AbstractController
             return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_modify', array('bid' => $bid), RouterInterface::ABSOLUTE_URL));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -627,7 +627,7 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Block deleted.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -701,7 +701,7 @@ class AdminController extends \Zikula_AbstractController
             return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_modifyposition', array('pid' => $pid), RouterInterface::ABSOLUTE_URL) . "#blockpositionform");
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -794,7 +794,7 @@ class AdminController extends \Zikula_AbstractController
             // all done
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Block position saved.'));
 
-            return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_modifyposition', array('pid' => $position['pid']), RouterInterface::ABSOLUTE_URL));
@@ -853,7 +853,7 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Block position deleted.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -911,6 +911,6 @@ class AdminController extends \Zikula_AbstractController
         // the module configuration has been updated successfuly
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 }
