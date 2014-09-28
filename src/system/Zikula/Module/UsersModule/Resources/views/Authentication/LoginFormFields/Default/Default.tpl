@@ -23,7 +23,7 @@
 {/if}
 
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="users_login_login_id">{strip}
+    <label class="col-lg-3 control-label required" for="users_login_login_id">{strip}
         {if $authentication_method == 'email'}
             {gt text='Email address'}
         {elseif $authentication_method == 'uname'}
@@ -39,7 +39,7 @@
             {elseif $authentication_method == 'uname' || $authentication_method == 'unameoremail'}
                 <i class="fa fa-fw fa-user input-group-addon"></i>
             {/if}
-            <input id="users_login_login_id" class="form-control"  type="text" name="authentication_info[login_id]" maxlength="64" value="{if isset($authentication_info.login_id)}{$authentication_info.login_id}{/if}" placeholder="{if $authentication_method == 'email'}{gt text='Email address'}{elseif $authentication_method == 'uname'}{gt text='User name'}{elseif $authentication_method == 'unameoremail'}{gt text='User name or e-mail address'}{/if}" />
+            <input id="users_login_login_id" class="form-control"  type="text" name="authentication_info[login_id]" maxlength="64" value="{if isset($authentication_info.login_id)}{$authentication_info.login_id}{/if}" placeholder="{if $authentication_method == 'email'}{gt text='Email address'}{elseif $authentication_method == 'uname'}{gt text='User name'}{elseif $authentication_method == 'unameoremail'}{gt text='User name or e-mail address'}{/if}" required="required" />
         </div>
     </div>
 </div>
@@ -53,11 +53,11 @@
 </script>
 
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="users_login_pass">{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}</label>
+    <label class="col-lg-3 control-label required" for="users_login_pass">{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}</label>
     <div class="col-lg-9">
         <div class="input-group">
             <i class="fa fa-fw fa-asterisk input-group-addon"></i>
-            <input id="users_login_pass" class="form-control" type="password" name="authentication_info[pass]" size="25" maxlength="60" placeholder="{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}" />
+            <input id="users_login_pass" class="form-control" type="password" name="authentication_info[pass]" size="25" maxlength="60" placeholder="{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}" required="required" />
             <i id="capsLok" class="fa fa-fw fa-arrow-circle-up input-group-addon hide"> {gt text='Caps Lock is on!'}</i>
         </div>
     </div>
