@@ -1,0 +1,3 @@
+zikulapagelockmodule:
+    resource: "@ZikulaPageLockModule/Controller"
+    type:     annotation
