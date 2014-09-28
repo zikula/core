@@ -48,7 +48,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             array('lockName' => $lockName,
                 'sessionId' => $request->getSession()->getId(),
                 'lockedByTitle' => $uname,
-                'lockedByIPNo' => $request->server->get('REMOTE_ADDR')));
+                'lockedByIPNo' => $request->getClientIp()));
 
         if (!$lockInfo['hasLock']) {
             $lockInfo['message'] = $this->__('Error! Lock broken!');
@@ -80,7 +80,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             array('lockName' => $lockName,
                 'sessionId' => $request->getSession()->getId(),
                 'lockedByTitle' => $uname,
-                'lockedByIPNo' => $request->server->get('REMOTE_ADDR')));
+                'lockedByIPNo' => $request->getClientIp()));
 
         if (!$lockInfo['hasLock']) {
             $lockInfo['message'] = $this->__('Error! Lock broken!');
