@@ -7,7 +7,7 @@
 </h3>
 
 <p class="alert alert-info">{gt text='Filtering of allowed HTML occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
-<form class="form-horizontal" role="form" action="{modurl modname="SecurityCenter" type="admin" func="updateallowedhtml"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulasecuritycentermodule_admin_updateallowedhtml'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="HTML entities"}</legend>
         <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
@@ -64,7 +64,7 @@
             <button class="btn btn-success" title="{gt text="Save"}">
                 {gt text="Save"}
             </button>
-            <a class="btn btn-danger" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulasecuritycentermodule_admin_index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
 </form>

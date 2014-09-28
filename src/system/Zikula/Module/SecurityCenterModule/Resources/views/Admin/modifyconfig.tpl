@@ -4,7 +4,7 @@
     {gt text="Settings"}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="SecurityCenter" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulasecuritycentermodule_admin_updateconfig'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="Automatic update settings"}</legend>
 
@@ -343,7 +343,7 @@
             <button class="btn btn-success" title="{gt text="Save"}">
                 {gt text="Save"}
             </button>
-            <a class="btn btn-danger" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulasecuritycentermodule_admin_index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
 </form>

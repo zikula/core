@@ -12,10 +12,10 @@
 <div class="alert alert-warning">
     <h4>{gt text="Warning"}</h4>
     <p>{gt text="Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier."}</p>
-    <p><a href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='allowedhtml'}">{gt text="Allowed HTML settings"}</a> {gt text="will be applied after HTMLPurifier processing is completed."}</p>
+    <p><a href="{route name='zikulasecuritycentermodule_admin_allowedhtml'}">{gt text="Allowed HTML settings"}</a> {gt text="will be applied after HTMLPurifier processing is completed."}</p>
 </div>
 
-<form class="form-horizontal" action="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='updatepurifierconfig'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" action="{route name='zikulasecuritycentermodule_admin_updatepurifierconfig'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
     </div>
@@ -96,8 +96,8 @@
             <button class="btn btn-success" title="{gt text='Save'}">
                 {gt text='Save'}
             </button>
-            <a class="btn btn-danger" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func="main"}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
-            <a class="btn btn-danger" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='purifierconfig' reset='default'}" title="{gt text="Reset to Default Values"}">{gt text="Reset to Default Values"}</a>
+            <a class="btn btn-danger" href="{route name='zikulasecuritycentermodule_admin_index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulasecuritycentermodule_admin_purifierconfig' reset='default'}" title="{gt text="Reset to Default Values"}">{gt text="Reset to Default Values"}</a>
         </div>
     </div>
 </form>

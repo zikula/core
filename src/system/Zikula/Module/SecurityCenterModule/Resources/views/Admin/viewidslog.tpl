@@ -5,13 +5,13 @@
 </h3>
 
 <ul class="navbar navbar-default navbar-modulelinks">
-    <li><a href="{modurl modname='SecurityCenter' type='admin' func="exportidslog"}" title="{gt text='Download the entire log to a CSV file.'}" class="fa fa-arrow-circle-o-down"> {gt text="Export IDS Log"}</a></li>
-    <li><a href="{modurl modname='SecurityCenter' type='admin' func="purgeidslog"}" title="{gt text='Delete the entire log.'}" class="fa fa-trash-o"> {gt text="Purge IDS Log"}</a></li>
+    <li><a href="{route name='zikulasecuritycentermodule_admin_exportidslog'}" title="{gt text='Download the entire log to a CSV file.'}" class="fa fa-arrow-circle-o-down"> {gt text="Export IDS Log"}</a></li>
+    <li><a href="{route name='zikulasecuritycentermodule_admin_purgeidslog'}" title="{gt text='Delete the entire log.'}" class="fa fa-trash-o"> {gt text="Purge IDS Log"}</a></li>
 </ul>
 
 {if (!empty($objectArray))}
 {gt text="All" assign='lblAll'}
-<form id="securitycenter_logfilter" class="form-horizontal" role="form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
+<form id="securitycenter_logfilter" class="form-horizontal" role="form" action="{route name='zikulasecuritycentermodule_admin_viewidslog'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="Filter"}</legend>
         <label>{gt text="User Name"}</label>
@@ -29,7 +29,7 @@
         <label>{gt text="Impact"}</label>
         {selector_object_array entity=1 name="filter[impact]" modname="SecurityCenter" class="Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity" field="impact" displayField="impact" selectedValue=$filter.impact defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
         {if ($filter.uid || $filter.name || $filter.tag || $filter.value || $filter.page || $filter.ip || $filter.impact)}
-        <a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Clear filter" __title="Clear filter"}</a>
+        <a href="{route name='zikulasecuritycentermodule_admin_viewidslog'}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Clear filter" __title="Clear filter"}</a>
         {/if}
     </fieldset>
 </form>
@@ -41,15 +41,15 @@
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="name"}">{gt text="Name"}</a></th>
-            <th><a class="{if $sort eq 'tag'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="tag"}">{gt text="Tag"}</a></th>
-            <th><a class="{if $sort eq 'value'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="value"}">{gt text="Value"}</a></th>
-            <th><a class="{if $sort eq 'page'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="page"}">{gt text="Page"}</a></th>
-            <th><a class="{if $sort eq 'username'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="username"}">{gt text="User Name"}</a></th>
-            <th><a class="{if $sort eq 'ip'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="ip"}">{gt text="IP"}</a></th>
-            <th><a class="{if $sort eq 'impact'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="impact"}">{gt text="Impact"}</a></th>
+            <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulasecuritycentermodule_admin_viewidslog' sort="name"}">{gt text="Name"}</a></th>
+            <th><a class="{if $sort eq 'tag'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulasecuritycentermodule_admin_viewidslog' sort="tag"}">{gt text="Tag"}</a></th>
+            <th><a class="{if $sort eq 'value'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulasecuritycentermodule_admin_viewidslog' sort="value"}">{gt text="Value"}</a></th>
+            <th><a class="{if $sort eq 'page'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulasecuritycentermodule_admin_viewidslog' sort="page"}">{gt text="Page"}</a></th>
+            <th><a class="{if $sort eq 'username'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulasecuritycentermodule_admin_viewidslog' sort="username"}">{gt text="User Name"}</a></th>
+            <th><a class="{if $sort eq 'ip'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulasecuritycentermodule_admin_viewidslog' sort="ip"}">{gt text="IP"}</a></th>
+            <th><a class="{if $sort eq 'impact'}z-order-asc{else}z-order-unsorted{/if}" href="{route name='zikulasecuritycentermodule_admin_viewidslog' sort="impact"}">{gt text="Impact"}</a></th>
             <th>{gt text="PHPIDS filters used"}</th>
-            <th><a class="{if empty($sort) || $sort eq 'date DESC'}z-order-desc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="date+DESC"}">{gt text="Date"}</a></th>
+            <th><a class="{if empty($sort) || $sort eq 'date DESC'}z-order-desc{else}z-order-unsorted{/if}" href="{route name='zikulasecuritycentermodule_admin_viewidslog' sort="date+DESC"}">{gt text="Date"}</a></th>
             <th class="text-right">{gt text="Actions"}</th>
         </tr>
     </thead>
@@ -74,7 +74,7 @@
                 {/foreach}
             </td>
             <td>{$event.date|dateformat|safetext}</td>
-            <td class="text-right"><a href="{modurl modname=$module type="adminform" func="deleteidsentry" id=$event.id csrftoken=$csrftoken}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
+            <td class="text-right"><a href="{route name='zikulasecuritycentermodule_admin_deleteidsentry' id=$event.id csrftoken=$csrftoken}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
         </tr>
         {/foreach}
     </tbody>
@@ -82,5 +82,5 @@
 {else}
     <p>{gt text='No logged intrusions found.'}</p>
 {/if}
-{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulasecuritycentermodule_admin_viewidslog'}
 {adminfooter}

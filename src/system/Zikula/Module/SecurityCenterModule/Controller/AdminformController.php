@@ -17,10 +17,13 @@ use SecurityUtil;
 use ModUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 
 /**
+ * @Route("/adminform")
+ * 
  * form handler controllers for the security centre module
  */
 class AdminformController extends \Zikula_AbstractController
@@ -36,16 +39,20 @@ class AdminformController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/deleteidsentry")
+     * 
      * Delete an ids log entry
+     * 
+     * @param Request $request
      *
      * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if the object id is not numeric or if
      */
-    public function deleteidsentryAction()
+    public function deleteidsentryAction(Request $request)
     {
         // verify auth-key
-        $csrftoken = $this->request->get('csrftoken');
+        $csrftoken = $request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -54,7 +61,7 @@ class AdminformController extends \Zikula_AbstractController
         }
 
         // get parameters
-        $id = (int)$this->request->get('id', 0);
+        $id = (int)$request->get('id', 0);
 
         // sanity check
         if (!is_numeric($id)) {
@@ -65,14 +72,13 @@ class AdminformController extends \Zikula_AbstractController
 
         // check for valid object
         if (!$intrusion) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Error! Invalid %s received.', "object ID [$id]"));
+            $request->getSession()->getFlashBag()->add('error', $this->__f('Error! Invalid %s received.', "object ID [$id]"));
         } else {
             // delete object
             $this->entityManager->remove($intrusion);
             $this->entityManager->flush();
         }
 
-        // redirect back to view function
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'viewidslog')));
+        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog', array(), RouterInterface::ABSOLUTE_URL));
     }
 }
