@@ -5,7 +5,7 @@
     {gt text="Settings"}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulaextensionsmodule_admin_updateconfig'}" method="post" enctype="application/x-www-form-urlencoded">
     {insert name='csrftoken' assign='csrftoken'}
     <input type="hidden" name="csrftoken" value="{$csrftoken}" />
     <fieldset>
@@ -20,7 +20,7 @@
             <label class="col-lg-3 control-label">{gt text="Module defaults"}</label>
             <div class="col-lg-9">
                 <div class="form-control-static">
-                    <a id="restore_defaults" href="{modurl modname="Extensions" type="admin" func="view" defaults=true csrftoken=$csrftoken}">{gt text="Hard module regenerate to reset displayname, url and description to defaults"}</a>
+                    <a id="restore_defaults" href="{route name='zikulaextensionsmodule_admin_view' defaults=true csrftoken=$csrftoken}">{gt text="Hard module regenerate to reset displayname, url and description to defaults"}</a>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
             <button class="btn btn-success" title={gt text="Save"}>
                 {gt text="Save"}
             </button>
-            <a class="btn btn-danger" href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulaextensionsmodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
 </form>

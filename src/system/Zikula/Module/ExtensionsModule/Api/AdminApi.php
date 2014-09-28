@@ -1334,63 +1334,72 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'),
-                             'text' => $this->__('Modules list'),
-                             'icon' => 'list',
-                             'links' => array(
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'),
-                                                   'text' => $this->__('All')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view', array('state'=>ModUtil::STATE_UNINITIALISED)),
-                                                   'text' => $this->__('Not installed')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view', array('state'=>ModUtil::STATE_INACTIVE)),
-                                                   'text' => $this->__('Inactive')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view', array('state'=>ModUtil::STATE_ACTIVE)),
-                                                   'text' => $this->__('Active')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view', array('state'=>ModUtil::STATE_MISSING)),
-                                                   'text' => $this->__('Files missing')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view', array('state'=>ModUtil::STATE_UPGRADED)),
-                                                   'text' => $this->__('New version uploaded')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view', array('state'=>ModUtil::STATE_INVALID)),
-                                                   'text' => $this->__('Invalid structure'))
-                                               ));
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_view'),
+                'text' => $this->__('Modules list'),
+                'icon' => 'list',
+                'links' => array(
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_view'),
+                        'text' => $this->__('All')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_view', array('state' => ModUtil::STATE_UNINITIALISED)),
+                        'text' => $this->__('Not installed')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_view', array('state' => ModUtil::STATE_INACTIVE)),
+                        'text' => $this->__('Inactive')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_view', array('state' => ModUtil::STATE_ACTIVE)),
+                        'text' => $this->__('Active')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_view', array('state' => ModUtil::STATE_MISSING)),
+                        'text' => $this->__('Files missing')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_view', array('state' => ModUtil::STATE_UPGRADED)),
+                        'text' => $this->__('New version uploaded')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_view', array('state' => ModUtil::STATE_INVALID)),
+                        'text' => $this->__('Invalid structure'))
+                ));
 
-            $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins'),
-                             'text' => $this->__('Plugins list'),
-                             'icon' => 'table',
-                             'links' => array(
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins'),
-                                                   'text' => $this->__('All')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array('state'=>PluginUtil::NOTINSTALLED)),
-                                                   'text' => $this->__('Not installed')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array('state'=>PluginUtil::DISABLED)),
-                                                   'text' => $this->__('Inactive')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array('state'=>PluginUtil::ENABLED)),
-                                                   'text' => $this->__('Active'))
-                                               ));
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins'),
+                'text' => $this->__('Plugins list'),
+                'icon' => 'table',
+                'links' => array(
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins'),
+                        'text' => $this->__('All')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => PluginUtil::NOTINSTALLED)),
+                        'text' => $this->__('Not installed')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => PluginUtil::DISABLED)),
+                        'text' => $this->__('Inactive')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => PluginUtil::ENABLED)),
+                        'text' => $this->__('Active'))
+                ));
 
-            $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array('systemplugins' => true)),
-                             'text' => $this->__('System Plugins'),
-                             'icon' => 'table',
-                             'links' => array(
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array('systemplugins' => true)),
-                                                   'text' => $this->__('All')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::NOTINSTALLED)),
-                                                   'text' => $this->__('Not installed')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::DISABLED)),
-                                                   'text' => $this->__('Inactive')),
-                                             array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::ENABLED)),
-                                                   'text' => $this->__('Active'))
-                                               ));
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true)),
+                'text' => $this->__('System Plugins'),
+                'icon' => 'table',
+                'links' => array(
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true)),
+                        'text' => $this->__('All')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true, 'state' => PluginUtil::NOTINSTALLED)),
+                        'text' => $this->__('Not installed')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true, 'state' => PluginUtil::DISABLED)),
+                        'text' => $this->__('Inactive')),
+                    array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true, 'state' => PluginUtil::ENABLED)),
+                        'text' => $this->__('Active'))
+                ));
 
 
-            $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_modifyconfig'),
+                'text' => $this->__('Settings'),
+                'icon' => 'wrench');
             //$filemodules = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'getfilemodules');
             //ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $filemodules));
 
             // get a list of modules needing upgrading
             $newmods = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED));
             if ($newmods) {
-                $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'upgradeall'), 'text' => $this->__('Upgrade All'), 'icon' => 'wrench');
+                $links[] = array(
+                    'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_upgradeall'),
+                    'text' => $this->__('Upgrade All'),
+                    'icon' => 'wrench');
             }
         }
 

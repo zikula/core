@@ -6,7 +6,7 @@
 
 <p class="alert alert-danger">{gt text="Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>
 
-<form id="uninstall-module" class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="remove"}" method="post" enctype="application/x-www-form-urlencoded">
+<form id="uninstall-module" class="form-horizontal" role="form" action="{route name='zikulaextensionsmodule_admin_remove'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="Do you really want to uninstall this module?"}</legend>
 
@@ -64,7 +64,7 @@
                 <button class="btn btn-danger" title="{gt text='Uninstall'}">
                     {gt text='Uninstall'}
                 </button>
-                <a class="btn btn-default" href="{modurl modname='ZikulaExtensionsModule' type='admin' func='view'}">{gt text="Cancel"}</a>
+                <a class="btn btn-default" href="{route name='zikulaextensionsmodule_admin_view'}">{gt text="Cancel"}</a>
             </div>
         </div>
     </fieldset>

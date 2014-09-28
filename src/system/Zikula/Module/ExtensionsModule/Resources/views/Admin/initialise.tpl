@@ -4,7 +4,7 @@
     {gt text="Install"} - {modgetinfo modid=$id info=displayname}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="initialise"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulaextensionsmodule_admin_initialise'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmation" value="1" />
@@ -60,7 +60,7 @@
             {if !$fataldependency}
                 {button class="btn btn-success" __alt="Accept" __title="Accept" __text="Accept"}
             {/if}
-                <a class="btn btn-danger" href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulaextensionsmodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>
