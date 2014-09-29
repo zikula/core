@@ -21,8 +21,6 @@ use ModUtil;
 use CategoryUtil;
 use ZLanguage;
 use UserUtil;
-use ServiceUtil;
-use Zikula\Module\CategoriesModule\CategoriesModuleInstaller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -255,14 +253,12 @@ class UserController extends \Zikula_AbstractController
                 return $this->response($this->view->fetch('User/editcategories.tpl'));
             }
 
-            $installer = new CategoriesModuleInstaller($this->getContainer());
-
             $cat = array(
                 'id' => '',
                 'parent' => $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $userRootCat['id']),
                 'name' => $userCatName,
-                'display_name' => unserialize($installer->makeDisplayName($userCatName)),
-                'display_desc' => unserialize($installer->makeDisplayDesc()),
+                'display_name' => array(ZLanguage::getLanguageCode() => $userCatName),
+                'display_desc' => array(ZLanguage::getLanguageCode() => ''),
                 'path' => $thisUserRootCatPath,
                 'status' => 'A'
             );
@@ -288,8 +284,8 @@ class UserController extends \Zikula_AbstractController
                     'is_leaf' => 1,
                     'name' => $userdefaultcatname,
                     'sort_value' => 0,
-                    'display_name' => unserialize($installer->makeDisplayName($userdefaultcatname)),
-                    'display_desc' => unserialize($installer->makeDisplayDesc()),
+                    'display_name' => array(ZLanguage::getLanguageCode() => $userdefaultcatname),
+                    'display_desc' => array(ZLanguage::getLanguageCode() => ''),
                     'path' => $thisUserRootCatPath . '/' . $userdefaultcatname,
                     'status' => 'A'
                 );

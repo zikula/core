@@ -94,7 +94,7 @@
         <fieldset>
             <legend><a class="categories_collapse_control" href="#">{gt text="Attributes"}</a></legend>
             <div class="categories_collapse_details">
-                {include file=editattributes.tpl}
+                {include file='editattributes.tpl'}
             </div>
         </fieldset>
         {if $mode == "edit"}

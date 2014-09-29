@@ -316,7 +316,7 @@ class AdminformController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public function rebuild_pathsAction()
+    public function rebuildPathsAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();

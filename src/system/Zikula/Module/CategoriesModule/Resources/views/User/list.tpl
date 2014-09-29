@@ -34,7 +34,7 @@
             {/if}
             <td style="text-align:center">
                 {if ($cnt != $max)}
-                <a href="{route name="zikulacategoriesmodule_userform_moveField" dr=$dr cid=$cat.id direction="down" append="#top"}">
+                <a href="{route name="zikulacategoriesmodule_userform_movefield" dr=$dr cid=$cat.id direction="down" append="#top"}">
                     {img modname=core src=1downarrow.png set=icons/extrasmall __alt="Down" __title="Down"}
                 </a>
                 {else}
@@ -43,7 +43,7 @@
             </td>
             <td style="text-align:center">
                 {if ($cnt != 1)}
-                <a href="{route name="zikulacategoriesmodule_userform_moveField" dr=$dr cid=$cat.id direction="up" append="#top"}">
+                <a href="{route name="zikulacategoriesmodule_userform_movefield" dr=$dr cid=$cat.id direction="up" append="#top"}">
                     {img modname=core src=1uparrow.png set=icons/extrasmall __alt="Up" __title="Up"}
                 </a>
                 {else}

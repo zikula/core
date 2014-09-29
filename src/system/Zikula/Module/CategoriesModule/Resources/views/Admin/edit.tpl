@@ -99,7 +99,7 @@
     </fieldset>
     <fieldset>
         <legend>{gt text="Attributes"}</legend>
-        {include file=editattributes.tpl}
+        {include file='editattributes.tpl'}
     </fieldset>
     {if $mode == "edit"}
     <fieldset>
