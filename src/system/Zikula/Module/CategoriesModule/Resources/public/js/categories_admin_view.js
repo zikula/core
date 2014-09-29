@@ -117,7 +117,7 @@ Zikula.Categories.DeleteMenuAction = function(node){
                     if (!$('subcat_move')) {
                         $('dialogContent').addClassName('z-form');
                         Zikula.Categories.DeleteDialog.window.indicator.appear({to: 0.7, duration: 0.2});
-                        new Zikula.Ajax.Request('index.php?module=ZikulaCategoriesModule&type=ajax&func=deletedialog', {
+                        new Zikula.Ajax.Request(Routing.generate('zikulacategoriesmodule_ajax_deletedialog'), {
                             parameters: {cid: Zikula.TreeSortable.trees.categoriesTree.getNodeId(node.up('li'))},
                             onComplete: function(req) {
                                 var subcat_move = req.getData().result;
@@ -148,8 +148,7 @@ Zikula.Categories.MenuAction = function(node, action, extrainfo){
         return false;
     }
     node.insert({after: Zikula.Categories.Indicator()});
-    var url = "index.php?module=ZikulaCategoriesModule&type=ajax&func=",
-        pars = {
+    var pars = {
             cid: Zikula.TreeSortable.trees.categoriesTree.getNodeId(node.up('li'))
         };
     switch(action) {
@@ -173,10 +172,9 @@ Zikula.Categories.MenuAction = function(node, action, extrainfo){
             action = 'edit';
             break;
     }
-    url = url + action;
 
     new Zikula.Ajax.Request(
-        url, {
+        Routing.generate('zikulacategoriesmodule_ajax_' + action), {
             parameters: pars,
             onComplete: Zikula.Categories.MenuActionCallback
         });
@@ -272,7 +270,7 @@ Zikula.Categories.EditNode = function(res) {
     Zikula.Categories.Form.window.indicator.appear({to: 0.7, duration: 0.2});
     var pars = Zikula.Categories.Form.serialize(true);
     pars.mode = 'edit';
-    new Zikula.Ajax.Request('index.php?module=ZikulaCategoriesModule&type=ajax&func=save', {
+    new Zikula.Ajax.Request(Routing.generate('zikulacategoriesmodule_ajax_save'), {
         parameters: pars,
         onComplete: function(req) {
             var data = req.getData();
@@ -302,7 +300,7 @@ Zikula.Categories.AddNode = function(res) {
     Zikula.Categories.Form.window.indicator.appear({to: 0.7, duration: 0.2});
     var pars = Zikula.Categories.Form.serialize(true);
     pars.mode = 'new';
-    new Zikula.Ajax.Request('index.php?module=ZikulaCategoriesModule&type=ajax&func=save', {
+    new Zikula.Ajax.Request(Routing.generate('zikulacategoriesmodule_ajax_save'), {
         parameters: pars,
         onComplete: function(req) {
             var data = req.getData();
@@ -360,7 +358,7 @@ Zikula.Categories.Resequence = function(node, params, data) {
     node.insert({bottom: Zikula.Categories.Indicator()});
 
     var request = new Zikula.Ajax.Request(
-        "index.php?module=ZikulaCategoriesModule&type=ajax&func=resequence",
+        Routing.generate('zikulacategoriesmodule_ajax_resequence'),
         {
             parameters: pars,
             onComplete: Zikula.Categories.ResequenceCallback

@@ -39,10 +39,11 @@ class AccountApi extends \Zikula_AbstractApi
                 //$this->request->getSession()->set('categories_referer', $referer);
                 SessionUtil::setVar('categories_referer', $referer);
             }
-            $items['0'] = array('url'     => ModUtil::url('ZikulaCategoriesModule', 'user', 'edituser'),
-                    'module'  => 'ZikulaCategoriesModule',
-                    'title'   => $this->__('Categories manager'),
-                    'icon'    => 'admin.png');
+            $items['0'] = array(
+                'url' => $this->get('router')->generate('zikulacategoriesmodule_user_edituser'),
+                'module' => 'ZikulaCategoriesModule',
+                'title' => $this->__('Categories manager'),
+                'icon' => 'admin.png');
         }
 
         // Return the items

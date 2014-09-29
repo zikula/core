@@ -4,7 +4,7 @@
     {gt text="Move category"}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="move"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_adminform_move"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="cid" value="{$category.id}" />
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -32,7 +32,7 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 {button class="btn btn-success" __alt="Move" __title="Move" __text="Move"}
-                <a class="btn btn-danger" href="{modurl modname=ZikulaCategoriesModule type=admin func=index}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_admin_index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

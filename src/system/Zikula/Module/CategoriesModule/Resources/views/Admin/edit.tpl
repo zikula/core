@@ -5,13 +5,13 @@
         <span class="fa fa-pencil"></span>
         {gt text="Edit category"}
     </h3>
-    <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_adminform_edit"}" method="post" enctype="application/x-www-form-urlencoded">
 {else}
     <h3>
         <span class="fa fa-plus"></span>
         {gt text="Create new category"}
     </h3>
-    <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_adminform_newcat"}" method="post" enctype="application/x-www-form-urlencoded">
 {/if}
     <fieldset>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -146,12 +146,12 @@
                 {gt text="Edit"}
             </button>
         {/if}
-            <a class="btn btn-danger" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         {else}
             <button class="btn btn-success" name="category_submit" value="add" title="{gt text="Save"}">
                 {gt text="Save"}
             </button>
-            <a class="btn btn-danger" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         {/if}
         </div>
     </div>

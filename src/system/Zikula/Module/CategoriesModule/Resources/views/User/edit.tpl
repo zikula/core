@@ -8,11 +8,11 @@
 <h2 id="top">{$modinfo.displayname|safetext}</h2>
 
 {formutil_getpassedvalue key="dr" default="0" assign="dr"}
-{modurl modname="ZikulaCategoriesModule" type="userform" func="resequence" assign="resq" dr=$dr}
+{route name="zikulacategoriesmodule_userform_resequence" assign="resq" dr=$dr}
 
 <ul class="navbar navbar-default">
     {if ($referer)}
-    <li><a class="fa fa-eye" href="{modurl modname="ZikulaCategoriesModule" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
+    <li><a class="fa fa-eye" href="{route name='zikulacategoriesmodule_user_referBack'}">{gt text="Return to referring page"}</a></li>
     {/if}
     <li><a class="fa fa-refresh" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
 </ul>
@@ -23,9 +23,9 @@
 <h3>{$templatetitle}</h3>
 
 {if ($category)}
-<form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="userform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_userform_edit"}" method="post" enctype="application/x-www-form-urlencoded">
     {else}
-    <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="userform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_userform_newcat"}" method="post" enctype="application/x-www-form-urlencoded">
         {/if}
         <fieldset>
             <legend>{gt text="Category"}</legend>
@@ -126,7 +126,7 @@
             <div class="col-lg-offset-3 col-lg-9">
             {if ($category)}
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                <a class="btn btn-danger" href="{modurl modname=ZikulaCategoriesModule type=user func=edit dr=$rootCat.id}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_user_edit' dr=$rootCat.id}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             {else}
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
             {/if}

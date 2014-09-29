@@ -11,7 +11,7 @@
     {gt text='Property name'}: <strong>{$data.property}</strong>
 </p>
 
-<form class="form-horizontal" role="form" action="{modurl modname='ZikulaCategoriesModule' type='adminform' func='editregistry' mode='delete'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_adminform_editregistry" mode='delete'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="id" value="{$data.id}" />
         <input type="hidden" name="mode" value="delete" />
@@ -21,7 +21,7 @@
             <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                     {button class='btn btn-success' __alt='Delete' __title='Delete' __text='Delete'}
-                    <a class="btn btn-danger" href="{modurl modname='ZikulaCategoriesModule' type='admin' func='editregistry'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+                    <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_admin_editregistry'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
                 </div>
         </div>
         </div>
