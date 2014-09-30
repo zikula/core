@@ -8,13 +8,12 @@
 <h2 id="top">{$modinfo.displayname|safetext}</h2>
 
 {formutil_getpassedvalue key="dr" default="0" assign="dr"}
-{modurl modname="ZikulaCategoriesModule" type="userform" func="resequence" assign="resq" dr=$dr}
 
-<ul class="navbar navbar-default">
+<ul class="navbar navbar-default navbar-modulelinks navbar-modulelinks-main">
     {if ($referer)}
-    <li><a class="fa fa-eye" href="{modurl modname="ZikulaCategoriesModule" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
+    <li><a class="fa fa-eye" href="{route name='zikulacategoriesmodule_user_referback'}"> {gt text="Return to referring page"}</a></li>
     {/if}
-    <li><a class="fa fa-refresh" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
+    <li><a class="fa fa-refresh" href="{route name="zikulacategoriesmodule_userform_resequence" assign="resq" dr=$dr}"> {gt text="Resequence"}</a></li>
 </ul>
 
 {insert name="getstatusmsg"}
@@ -23,9 +22,9 @@
 <h3>{$templatetitle}</h3>
 
 {if ($category)}
-<form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="userform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_userform_edit"}" method="post" enctype="application/x-www-form-urlencoded">
     {else}
-    <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="userform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_userform_newcat"}" method="post" enctype="application/x-www-form-urlencoded">
         {/if}
         <fieldset>
             <legend>{gt text="Category"}</legend>
@@ -36,9 +35,9 @@
             <input type="hidden" name="category[is_leaf]" value="1" />
             {array_field assign='catID' array='category' field='id'}
             {if $catID}
-            <input type="hidden" name="category[id]"              value="{$category.id|safetext}" />
-            <input type="hidden" name="category[path]"            value="{$category.path|safetext}" />
-            <input type="hidden" name="category[ipath]"           value="{$category.ipath|safetext}" />
+            <input type="hidden" name="category[id]" value="{$category.id|safetext}" />
+            <input type="hidden" name="category[path]" value="{$category.path|safetext}" />
+            <input type="hidden" name="category[ipath]" value="{$category.ipath|safetext}" />
             {/if}
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="category_name">{gt text="Name"}<span class="required"></span></label>
@@ -97,7 +96,7 @@
         </fieldset>
         <fieldset>
             <legend>{gt text="Attributes"}</legend>
-            {include file=editattributes.tpl}
+            {include file='editattributes.tpl'}
         </fieldset>
         {if $catID}
         <fieldset>
@@ -126,7 +125,7 @@
             <div class="col-lg-offset-3 col-lg-9">
             {if ($category)}
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                <a class="btn btn-danger" href="{modurl modname=ZikulaCategoriesModule type=user func=edit dr=$rootCat.id}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_user_edit' dr=$rootCat.id}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             {else}
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
             {/if}

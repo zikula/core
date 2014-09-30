@@ -9,7 +9,7 @@
     {gt text="Category"}: <strong>{$category.name}</strong>
 </p>
 
-<form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_adminform_delete"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="cid" value="{$category.id}" />
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -37,7 +37,7 @@
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-9">
                     {button class="btn btn-success" __alt="Delete" __title="Delete" __text="Delete"}
-                    <a class="btn btn-danger" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                    <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
                 </div>
             </div>
         </fieldset>

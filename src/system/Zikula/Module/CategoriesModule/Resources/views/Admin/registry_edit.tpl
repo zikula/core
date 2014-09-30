@@ -7,7 +7,7 @@
 {gt text="Choose category" assign=chooseCategory}
 {gt text="Choose module" assign=chooseModule}
 {gt text="Choose entity" assign=chooseEntity}
-<form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="editregistry"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_adminform_editregistry"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <table class="table table-bordered table-striped">
@@ -47,8 +47,8 @@
                     <td>{$obj.property}</td>
                     <td>{category_path id=$obj.category_id html=true}</td>
                     <td class="actions">
-                        <a class="fa fa-pencil tooltips" href="{modurl modname='ZikulaCategoriesModule' type='admin' func='editregistry' id=$obj.id}" title="{gt text='Edit'}" ></a>
-                        <a class="fa fa-trash-o tooltips" href="{modurl modname='ZikulaCategoriesModule' type='admin' func='deleteregistry' id=$obj.id}" title="{gt text='Delete'}"></a>
+                        <a class="fa fa-pencil tooltips" href="{route name='zikulacategoriesmodule_admin_editregistry' id=$obj.id}" title="{gt text='Edit'}" ></a>
+                        <a class="fa fa-trash-o tooltips" href="{route name='zikulacategoriesmodule_admin_deleteregistry' id=$obj.id}" title="{gt text='Delete'}"></a>
                     </td>
                     {/if}
                 </tr>
@@ -81,7 +81,7 @@
                 <button id="category_submit" name="category_submit" value="1" class="btn btn-success" title="{gt text='Save'}">
                     {gt text="Save"}
                 </button>
-                <a class="btn btn-danger" href="{modurl modname="ZikulaCategoriesModule" type="admin" func="editregistry"}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_admin_editregistry'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>
