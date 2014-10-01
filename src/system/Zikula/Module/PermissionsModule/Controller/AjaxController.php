@@ -98,7 +98,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
             default:
                 $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-                    'gid' => $gid
+                    'gid' => $gid,
                     'group_membership' => false
                 ));
 
