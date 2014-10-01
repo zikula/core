@@ -245,15 +245,18 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
-
-        if (!$group) {
+        /**
+         * Get Group
+         */
+        if (!$group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
+            'gid' => $args['gid'],
+            'group_membership' => false
+        ))) {
             return false;
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'].'::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -292,10 +295,13 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
-
-        if (!$group) {
+        /**
+         * Get Group
+         */
+        if (!$group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
+            'gid' => $args['gid'],
+            'group_membership' => false
+        ))) {
             return false;
         }
 
@@ -429,7 +435,11 @@ class AdminApi extends \Zikula_AbstractApi
         $items = array();
 
         foreach ($objArray as $obj) {
-            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $obj['gid']));
+            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
+                'gid' => $obj['gid'],
+                'group_membership' => false
+            ));
+            
             if ($group) {
                 if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
                     $items[] = array(
