@@ -7,7 +7,7 @@
 <p class="alert alert-warning">
     {gt text="Do you really want to set '%s' as the active theme for all site users?" tag1=$themename|safetext}
 </p>
-<form class="form-horizontal" role="form" action="{modurl modname="Theme" type="admin" func="setasdefault" themename=$themename|safetext}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulathememodule_admin_setasdefault' themename=$themename|safetext}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="Confirmation prompt"}</legend>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -27,7 +27,7 @@
                 <button class="btn btn-success" title="{gt text='Accept'}">
                     {gt text="Accept"}
                 </button>
-                <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulathememodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </fieldset>

@@ -14,14 +14,20 @@
 namespace Zikula\Module\ThemeModule\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Event\GenericEvent;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 
 /**
+ * @Route("/ajax")
+ *
  * Ajax controllers for the theme module
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
+     * @Route("/dispatch", options={"expose"=true})
+     *
      * dispatch a theme.ajax_request event
      *
      * @return mixed results of the event request
@@ -35,6 +41,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             throw new NotFoundHttpException($this->__('No event handlers responded.'));
         }
 
-        return $event->getData();
+        return new AjaxResponse($event->getData());
     }
 }

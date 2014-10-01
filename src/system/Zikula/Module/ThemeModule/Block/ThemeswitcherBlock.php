@@ -46,7 +46,7 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
         $switchThemeEnable = System::getVar('theme_change');
 
         if (!$switchThemeEnable) {
-            $requirement_message = $this->__f('Notice: This theme switcher block will not be displayed until you allow users to change themes. You can enable/disable this from the <a href="%s">settings</a> of the Theme module.', DataUtil::formatForDisplayHTML(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig')));
+            $requirement_message = $this->__f('Notice: This theme switcher block will not be displayed until you allow users to change themes. You can enable/disable this from the <a href="%s">settings</a> of the Theme module.', DataUtil::formatForDisplayHTML($this->get('router')->generate('zikulathememodule_admin_modifyconfig')));
         } else {
             $requirement_message = '';
         }

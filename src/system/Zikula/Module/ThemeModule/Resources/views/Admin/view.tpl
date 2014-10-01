@@ -10,7 +10,7 @@
 
 <p class="alert alert-info">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
 
-{pagerabc posvar="startlet" forwardvars='' printempty=true}
+{pagerabc posvar="startlet" forwardvars='' printempty=true route='zikulathememodule_admin_view'}
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -56,16 +56,16 @@
                 {gt text='Set as default: %s' tag1=$theme.displayname assign=strSetDefaultTheme}
                 {gt text='Credits: %s' tag1=$theme.displayname assign=strCreditsTheme}
                 {if $theme.displayname neq $currenttheme and $theme.user and $theme.state neq 2 and $theme.structure}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="setasdefault" themename=$theme.name}"><span class="fa fa-check tooltips" title="{$strSetDefaultTheme}"></span></a>
+                <a href="{route name='zikulathememodule_admin_setasdefault' themename=$theme.name}"><span class="fa fa-check tooltips" title="{$strSetDefaultTheme}"></span></a>
                 {/if}
                 {if $theme.structure}
                 <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}"><span class="fa fa-eye tooltips" title="{$strPreviewTheme}"></span></a>
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="modify" themename=$theme.displayname}"><span class="fa fa-pencil tooltips" title="{$strEditTheme}"></span></a>
+                <a href="{route name='zikulathememodule_admin_modify' themename=$theme.displayname}"><span class="fa fa-pencil tooltips" title="{$strEditTheme}"></span></a>
                 {/if}
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="delete" themename=$theme.displayname}"><span class="fa fa-trash-o tooltips" title="{$strDeleteTheme}"></span></a>
+                <a href="{route name='zikulathememodule_admin_delete' themename=$theme.displayname}"><span class="fa fa-trash-o tooltips" title="{$strDeleteTheme}"></span></a>
                 {/if}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="credits" themename=$theme.displayname}"><span class="fa fa-info-circle tooltips" title="{$strCreditsTheme}"></span></a>
+                <a href="{route name='zikulathememodule_admin_credits' themename=$theme.displayname}"><span class="fa fa-info-circle tooltips" title="{$strCreditsTheme}"></span></a>
             </td>
         </tr>
         {foreachelse}
@@ -75,5 +75,5 @@
 </table>
 
 <em><span class="required"></span> = {gt text="Default theme"}</em>
-{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulathememodule_admin_view'}
 {adminfooter}

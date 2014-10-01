@@ -3,7 +3,7 @@
 
 <h4>{gt text="Settings for %s" tag1=$themename}</h4>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Theme" type="admin" func="updatesettings"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulathememodule_admin_updatesettings'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="themename" value="{$themename|safetext}" />
@@ -46,7 +46,7 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulathememodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>
