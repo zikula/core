@@ -6,7 +6,7 @@
 {pageaddvar name="javascript" value="web/jquery-minicolors/jquery.minicolors.min.js"}
 {pageaddvar name="stylesheet" value="web/jquery-minicolors/jquery.minicolors.css"}
 
-<form class="form-horizontal" role="form" id="theme_modify_palette" action="{modurl modname="Theme" type="admin" func="updatepalettes"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" id="theme_modify_palette" action="{route name='zikulathememodule_admin_updatepalettes'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="themename" value="{$themename|safetext}" />
@@ -131,7 +131,7 @@
     <div class="form-group">
         <div class="col-xs-offset-3 col-xs-9">
             <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-            <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulathememodule_admin_pageconfigurations' themename=$themename}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
 </form>

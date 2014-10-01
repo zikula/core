@@ -5,7 +5,7 @@
 </h3>
 
 <p class="alert alert-warning">{gt text="Do you really want to delete this theme?"}</p>
-<form class="form-horizontal" role="form" action="{modurl modname=Theme type=admin func=delete themename=$name|safetext}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulathememodule_admin_delete' themename=$name|safetext}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="Confirmation prompt"}</legend>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -21,7 +21,7 @@
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
             {button class="btn btn-success" __alt="Delete" __title="Delete" __text="Delete"}
-            <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulathememodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
 </form>

@@ -18,8 +18,8 @@
             <td>{$filesection.file|safetext}</td>
             <td>{$filesection.important|default:0|yesno}</td>
             <td class="actions">
-                <a class="fa fa-pencil" href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}" title="{gt text='Edit'}"></a>
-                <a class="fa fa-trash-o" href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}" title="{gt text='Delete'}"></a>
+                <a class="fa fa-pencil" href="{route name='zikulathememodule_admin_modifypageconfigurationassignment' themename=$themename pcname=$name|urlencode}" title="{gt text='Edit'}"></a>
+                <a class="fa fa-trash-o" href="{route name='zikulathememodule_admin_deletepageconfigurationassignment' themename=$themename pcname=$name|urlencode}" title="{gt text='Delete'}"></a>
             </td>
         </tr>
         {/foreach}
@@ -42,8 +42,8 @@
             <td>{$filename|safetext}</td>
             <td>{$fileexists|yesno}</td>
             <td class="actions">
-                <a class="fa fa-pencil" href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}" title="{gt text='Edit'}"></a>
-                <a class="ffa-trash-osh" href="{modurl modname=Theme type=admin func=variables themename=$themename filename=$filename}" title="{gt text='Variables'}"></a>
+                <a class="fa fa-pencil" href="{route name='zikulathememodule_admin_modifypageconfigtemplates' themename=$themename filename=$filename}" title="{gt text='Edit'}"></a>
+                <a class="ffa-trash-osh" href="{route name='zikulathememodule_admin_variables' themename=$themename filename=$filename}" title="{gt text='Variables'}"></a>
             </td>
         </tr>
         {/foreach}
@@ -54,7 +54,7 @@
 
 <h4>{gt text="Create new page configuration assignment"}</h4>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulathememodule_admin_updatepageconfigurationassignment'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="themename" value="{$themename|safetext}" />
@@ -107,7 +107,7 @@
             <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                     <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                    <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                    <a class="btn btn-danger" href="{route name='zikulathememodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
                 </div>
         </div>
         </div>
