@@ -662,7 +662,7 @@ class AdminController extends \Zikula_AbstractController
             // of this action from the user
 
             $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-                'gid' => $gid
+                'gid' => $gid,
                 'group_membership' => true,
                 'uid' => $uid
             ));
