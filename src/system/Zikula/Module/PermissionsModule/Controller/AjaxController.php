@@ -97,10 +97,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 break;
 
             default:
-                $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-                    'gid' => $gid,
-                    'group_membership' => false
-                ));
+                $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => false));
 
                 $permission['groupname'] = $group['name'];
         }

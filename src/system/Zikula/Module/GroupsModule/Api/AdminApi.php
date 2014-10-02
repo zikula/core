@@ -248,10 +248,9 @@ class AdminApi extends \Zikula_AbstractApi
         /**
          * Get Group
          */
-        if (!$group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-            'gid' => $args['gid'],
-            'group_membership' => false
-        ))) {
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
+        
+        if (!$group) {
             return false;
         }
 
@@ -298,10 +297,9 @@ class AdminApi extends \Zikula_AbstractApi
         /**
          * Get Group
          */
-        if (!$group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-            'gid' => $args['gid'],
-            'group_membership' => false
-        ))) {
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
+        
+        if (!$group) {
             return false;
         }
 
@@ -435,10 +433,7 @@ class AdminApi extends \Zikula_AbstractApi
         $items = array();
 
         foreach ($objArray as $obj) {
-            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-                'gid' => $obj['gid'],
-                'group_membership' => false
-            ));
+            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $obj['gid'], 'group_membership' => false));
             
             if ($group) {
                 if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {

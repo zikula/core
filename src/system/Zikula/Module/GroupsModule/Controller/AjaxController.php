@@ -101,10 +101,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $statelabel = $groupsCommon->stateLabels();
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-            'gid' => $gid,
-            'group_membership' => false
-        ));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => false));
 
         // get group member count
         $group['nbuser'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', array('gid' => $gid));
@@ -184,13 +181,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
 
         $gid = $request->request->get('gid');
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-            'gid' => $gid,
-            'group_membership' => false
-        ));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => false));
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)) {
-
             return new ForbiddenResponse($this->__('You do not have permission for this action.'));
         }
 

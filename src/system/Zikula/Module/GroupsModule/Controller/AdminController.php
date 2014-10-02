@@ -288,10 +288,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifyAction($gid = 0)
     {
         // get group
-        $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-            'gid' => $gid,
-            'group_membership' => false
-        ));
+        $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => false));
 
         if (!$item) {
             throw new NotFoundHttpException($this->__('Sorry! No such group found.'));
@@ -386,10 +383,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // The user API function is called.
-        $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-            'gid' => $gid,
-            'group_membership' => false
-        ));
+        $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => false));
 
         if (!$item) {
             throw new NotFoundHttpException($this->__('Sorry! No such group found.'));
@@ -661,11 +655,7 @@ class AdminController extends \Zikula_AbstractController
             // No confirmation yet - display a suitable form to obtain confirmation
             // of this action from the user
 
-            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-                'gid' => $gid,
-                'group_membership' => true,
-                'uid' => $uid
-            ));
+            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => true, 'uid' => $uid));
 
             // Add a hidden variable for the item id.
             $this->view->assign('gid', $gid)
@@ -757,11 +747,7 @@ class AdminController extends \Zikula_AbstractController
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array(
-            'gid' => $gid,
-            'group_membership' => true,
-            'uid' => $userid
-        ));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => true, 'uid' => $userid));
 
         if ($action == 'deny') {
             $reasontitle = $this->__f('Concerning your %s group membership application', $group['name']);
