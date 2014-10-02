@@ -39,7 +39,7 @@
             {elseif $authentication_method == 'uname' || $authentication_method == 'unameoremail'}
                 <i class="fa fa-fw fa-user input-group-addon"></i>
             {/if}
-            <input id="users_login_login_id" class="form-control"  type="text" name="authentication_info[login_id]" maxlength="64" value="{if isset($authentication_info.login_id)}{$authentication_info.login_id}{/if}" placeholder="{if $authentication_method == 'email'}{gt text='Email address'}{elseif $authentication_method == 'uname'}{gt text='User name'}{elseif $authentication_method == 'unameoremail'}{gt text='User name or e-mail address'}{/if}" required="required" />
+            <input id="users_login_login_id" class="form-control"  type="text" name="authentication_info[login_id]" maxlength="64" value="{if isset($authentication_info.login_id)}{$authentication_info.login_id}{/if}" placeholder="{if $authentication_method == 'email'}{gt text='user@example.com'}{elseif $authentication_method == 'uname'}{gt text='user'}{elseif $authentication_method == 'unameoremail'}{gt text='user or user@example.com'}{/if}" required="required" />
         </div>
     </div>
 </div>
