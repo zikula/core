@@ -16,7 +16,7 @@ namespace Zikula\Module\MailerModule;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
- * Base module definition for the module
+ * Base module definition for the Mailer module.
  */
 class ZikulaMailerModule extends AbstractCoreModule
 {

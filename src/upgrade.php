@@ -544,6 +544,7 @@ function upgrade_140(Connection $conn, ZikulaKernel $kernel)
         $path = $rootDir . "/parameters.yml";
     }
     $parameters = Yaml::parse(file_get_contents($path));
+    $parameters['parameters']['secret'] = RandomUtil::getRandomString(50);
     $parameters['parameters']['url_secret'] = RandomUtil::getRandomString(10);
     file_put_contents($path, Yaml::dump($parameters));
 
