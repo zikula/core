@@ -10,8 +10,8 @@ swiftmailer:
     transport: mail
     username: ''
     password: ''
-    host: ''
-    port: 0
+    host: 'localhost'
+    port: 25
     encryption: null
     auth_mode: null
     spool: { type: memory }
