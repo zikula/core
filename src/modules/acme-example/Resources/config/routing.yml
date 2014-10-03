@@ -1,3 +1,0 @@
-acmeexamplemodule:
-    resource: "@AcmeExampleModule/Controller"
-    type:     annotation
