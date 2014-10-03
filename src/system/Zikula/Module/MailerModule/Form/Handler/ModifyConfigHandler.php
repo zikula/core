@@ -115,14 +115,18 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                 $vars['enableLogging'] = (bool)$this->getFormValue('enableLogging', false);
                 $this->setVars($vars);
 
+                // fetch different username and password fields depending on the transport type
+                $transport = (string)$this->getFormValue('transport', 'mail');
+                $credentialsSuffix = $transport == 'gmail' ? 'Gmail' : '';
+
                 // write the config file
                 // http://symfony.com/doc/current/reference/configuration/swiftmailer.html
                 $configDumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
                 $currentConfig = $configDumper->getConfiguration('swiftmailer');
                 $config = array(
                     'transport' => (string)$this->getFormValue('transport', 'mail'),
-                    'username' => $this->getFormValue('username', null),
-                    'password' => $this->getFormValue('password', null),
+                    'username' => $this->getFormValue('username' . $credentialsSuffix, null),
+                    'password' => $this->getFormValue('password' . $credentialsSuffix, null),
                     'host' => (string)$this->getFormValue('host', 'localhost'),
                     'port' => (int)$this->getFormValue('port', 25),
                     'encryption' => $this->getFormValue('encryption', null),
