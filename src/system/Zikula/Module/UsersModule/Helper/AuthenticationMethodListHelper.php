@@ -17,10 +17,9 @@ namespace Zikula\Module\UsersModule\Helper;
 use Zikula_Api_AbstractAuthentication;
 use ModUtil;
 
-use Zikula_AbstractErrorHandler;
 use LogUtil;
 use Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 
 /**
  * A list of authentication methods advertised by modules that have the authentication capability.

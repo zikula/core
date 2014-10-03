@@ -14,7 +14,7 @@
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
