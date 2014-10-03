@@ -69,10 +69,11 @@ class UserApi extends \Zikula_AbstractApi
 
         // Development mailer mode
         if ($params['transport'] == 'test') {
-            $output = '';
+            $output = '<p>';
             foreach ($args as $key => $value) {
-                $output .= '<b>'.$key.'</b>: '.$value.'<br />';
+                $output .= '<strong>'.$key.'</strong>: '.$value.'<br />';
             }
+            $output .= '</p>';
             LogUtil::registerStatus($output);
             return true;
         }

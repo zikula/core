@@ -53,7 +53,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
             array('value' => 'sendmail', 'text' => DataUtil::formatForDisplay($this->__('Sendmail message transfer agent'))),
             array('value' => 'gmail', 'text' => DataUtil::formatForDisplay($this->__('Google gmail'))),
             array('value' => 'smtp', 'text' => DataUtil::formatForDisplay($this->__('SMTP mail transfer protocol'))),
-            array('value' => 'null', 'text' => DataUtil::formatForDisplay($this->__('Development/debug mode (Do not send any email)')))
+            array('value' => 'test'/*'null'*/, 'text' => DataUtil::formatForDisplay($this->__('Development/debug mode (Do not send any email)')))
         ));
 
         $view->assign('encodingItems', array(
