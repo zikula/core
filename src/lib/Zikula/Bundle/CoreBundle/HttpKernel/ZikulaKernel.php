@@ -195,9 +195,12 @@ abstract class ZikulaKernel extends Kernel
 
     public function getConnectionConfig()
     {
-        $dir = is_readable($dir = $this->rootDir.'/config/custom_parameters.yml') ? $dir : $this->rootDir.'/config/parameters.yml';
+        $config = Yaml::parse(file_get_contents($this->rootDir . '/config/parameters.yml'));
+        if (is_readable($file = $this->rootDir . '/config/custom_parameters.yml')) {
+            $config = array_merge($config, Yaml::parse(file_get_contents($file)));
+        }
 
-        return Yaml::parse(file_get_contents($dir));
+        return $config;
     }
 
     public function isClassInBundle($class)
