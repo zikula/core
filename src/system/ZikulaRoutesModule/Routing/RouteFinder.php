@@ -39,7 +39,7 @@ class RouteFinder
         try {
             $path = $this->kernel->locateResource($module->getRoutingConfig());
         } catch (\InvalidArgumentException $e) {
-            // Routing file does not exist.
+            // Routing file does not exist (e.g. because the bundle could not been located)
             return new RouteCollection();
         }
         $modname = $module->getName();
