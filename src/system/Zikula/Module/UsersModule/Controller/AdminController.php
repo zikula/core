@@ -389,7 +389,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedException Thrown if the current user does not have moderate access
      * @throws FatalErrorException if the method of accessing this function is improper.
-     * @throws \NotFoundHttpException Thrown if no users are found
+     * @throws NotFoundHttpException Thrown if no users are found
      */
     public function searchAction()
     {
