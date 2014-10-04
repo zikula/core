@@ -538,7 +538,7 @@ class AdminController extends \Zikula_AbstractController
         if ($block['blockid'] == '') {
             $block['blockid'] = 'error';
             $request->getSession()->getFlashBag()->add('error', $this->__('You must choose a block.'));
-            $response = new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_newblock', array('block' => $block), RouterInterface::ABSOLUTE_URL));
+            $response = new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_newblock', array('block' => $block), RouterInterface::ABSOLUTE_URL));
 
             return $response;
         }
@@ -683,13 +683,13 @@ class AdminController extends \Zikula_AbstractController
         if (!isset($position['name']) || empty($position['name']) || !preg_match('/^[a-z0-9_-]*$/i', $position['name'])) {
             $request->getSession()->getFlashBag()->add('error', __('Invalid value received for the "name" field'));
 
-            return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_newposition', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_newposition', array(), RouterInterface::ABSOLUTE_URL));
         }
         // check our vars
         if (!isset($position['description'])) {
             $request->getSession()->getFlashBag()->add('error', __('Invalid value received for the "description" field'));
 
-            return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_user_newposition', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulablocksmodule_admin_newposition', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         // add the new block position
