@@ -70,7 +70,7 @@ Contributing
 Contributions can be made to Zikula in a number of ways
 
   1. By using our software
-  2. Assisting other users at the [user community site](http://zikula.org/index.php/forum/)
+  2. Assisting other users at the [user community site](http://zikula.org/forum/)
   3. Creating themes for Zikula.
   4. Authoring additional modules for Zikula. Please see our [developer documentation](https://github.com/zikula/core/tree/1.4/src/docs/en/dev)
   5. Contributing bug fixes and patches to the Core. 
