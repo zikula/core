@@ -101,6 +101,51 @@ Features:
 - Increased SearchResultEntity:extra field from 100 to 1000 chars #834.
 - Zikula_EntityAccess now also finds getter methods named `isField()` and not only `getField()`.
 
+CHANGELOG - ZIKULA 1.3.9
+------------------------
+
+- Added output sanitizing for authentication method module in login form error message
+
+CHANGELOG - ZIKULA 1.3.8
+------------------------
+
+- Enabled transactions (#796, #1729)
+- Updated Smarty to v2.6.28 (#1613)
+- Accept "0" as a non-empty value in ValidationUtil (#1627)
+- Added csrf token to user export function (#1630)
+- Fixed php strict message in admin panel (#1632)
+- Fixed spelling error in Imagine plugin (#1646)
+- Fixed conflict between Bootstrap and Prototype (#1723)
+- Added display hook area for html blocks (required for using Scribite) (#1726, #1743)
+- Fixed invalid output of useravatar plugin (#1734)
+- Fixed DBUtil regression bug introduced in 1.3.7 (#1810, #1815)
+- Added output sanitizing for authentication module/method in login form
+
+CHANGELOG - ZIKULA 1.3.7
+------------------------
+
+- Fixed unsanitized inputs (Secunia Advisory SA56274)
+- Fixed deprecated /e modifier to preg_replace (PHP 5.5) #889
+- Fixed Workflow handling (needed for MOST-Modules) (issue #704)
+- Fixed dragging and dropping in extmenu (issue #924)
+- Fixed Zikula_Form_Plugin_PostBackFunction name capitalization (issue #916)
+- Fixed Block filtering (issues #516, #938)
+- Fixed CSS for displaying selection boxes (issue #775)
+- Fixed allowing jpeg files next to jpg in userdata (issue #783)
+- Fixed siteoff problems in 1.3.6 (issue #1486)
+- Fixed flush during category selection (issues #1561, #1566)
+- Fixed login block issue due to template comment inclusion with IE<10 (issue #666)
+- Fix for admin panel and extmenu #80, #665, #924
+- Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category #598
+- Smarty Error when no admin.png is available #593
+- Get modimage by ModUtil::getModuleImagePath() #607
+- Fix E_NOTICES in Extensions/templates/extensions_hookui_hooks.tpl
+- Fixed bugs in DBObject #616, #617, #618
+- Fixed Formutil z-formrow - label - input type file looks bad on Safari (webkit) #621
+- Added fileupload input styling Webkit #622 
+- Fix developer notices #564
+- Fixed decoding of Block content which made problems on some servers
+
 CHANGELOG - ZIKULA 1.3.6
 ------------------------
 
