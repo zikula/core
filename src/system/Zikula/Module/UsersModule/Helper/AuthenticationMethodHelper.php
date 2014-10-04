@@ -17,7 +17,7 @@ namespace Zikula\Module\UsersModule\Helper;
 use ModUtil;
 
 use System;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 
 /**
  * Defines one valid authentication method.

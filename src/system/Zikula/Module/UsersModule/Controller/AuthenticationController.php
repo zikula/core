@@ -15,7 +15,7 @@ namespace Zikula\Module\UsersModule\Controller;
 
 use Zikula_View;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 
 /**
  * Access to user-initiated authentication actions for the Users module.

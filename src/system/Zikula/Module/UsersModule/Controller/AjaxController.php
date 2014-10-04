@@ -23,7 +23,7 @@ use ModUtil;
 use SecurityUtil;
 use Zikula;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Response;
 use DataUtil;
 

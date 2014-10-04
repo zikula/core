@@ -14,7 +14,7 @@
 namespace Zikula\Module\UsersModule\Api;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper;
 use ModUtil;

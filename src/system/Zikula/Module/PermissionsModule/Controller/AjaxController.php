@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use DataUtil;
 use UserUtil;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 
 /**
  * @Route("/ajax")

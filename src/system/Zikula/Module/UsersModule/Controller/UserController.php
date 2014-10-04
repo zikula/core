@@ -21,7 +21,6 @@ use Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper;
 use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ProcessHook;
-use Zikula_Exception_Redirect;
 use UserUtil;
 use ModUtil;
 use SecurityUtil;
@@ -35,8 +34,9 @@ use ThemeUtil;
 use ZLanguage;
 use Zikula_Api_AbstractAuthentication;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
