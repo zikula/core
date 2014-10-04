@@ -517,7 +517,7 @@ class JCSSUtil
         $cachedFile = "{$cache_dir}/{$hash}_{$ext}.php";
         $cachedFileUri = "{$hash}_{$ext}.php";
         if (is_readable($cachedFile) && (filemtime($cachedFile) + $lifetime) > time()) {
-            return "jcss.php?f=$cachedFileUri";
+            return System::getBaseUri() . '/jcss.php?f=' . $cachedFileUri;
         }
         switch ($ext) {
             case 'css':
@@ -566,7 +566,7 @@ class JCSSUtil
         $data = array('contents' => $contents, 'ctype' => $ctype, 'lifetime' => $lifetime, 'gz' => $themevars['cssjscompress'], 'signature' => $signature);
         fwrite($dest, serialize($data));
         fclose($dest);
-        $combined = "jcss.php?f=$cachedFileUri";
+        $combined = System::getBaseUri() . '/jcss.php?f=' . $cachedFileUri;
         array_unshift($outputFiles, $combined);
 
         return $outputFiles;
