@@ -1963,7 +1963,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return RedirectResponse
      *
-     * @return AccessDeniedException Thrown if the user isn't logged in or
+     * @return AccessDeniedHttpException Thrown if the user isn't logged in or
      *                                          if there are no post parameters
      * @throws FatalExceptionError Thrown if the users block isn't found
      */
