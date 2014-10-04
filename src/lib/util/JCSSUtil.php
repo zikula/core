@@ -530,33 +530,36 @@ class JCSSUtil
                 $ctype = 'text/plain';
                 break;
         }
+        $includedFiles = array();
         $outputFiles = array();
         $contents = array();
         $dest = fopen($cachedFile, 'w');
-        $contents[] = "/* --- Combined file written: " . DateUtil::getDateTime() . " */\n\n";
-        $contents[] = "/* --- Combined files:\n" . implode("\n", $files) . "\n*/\n\n";
         foreach ($files as $file) {
             if (!empty($file)) {
                 // skip remote files from combining
                 if (is_file($file)) {
                     self::readfile($contents, $file, $ext);
+                    $includedFiles[] = $file;
                 } else {
                     $outputFiles[] = $file;
                 }
             }
         }
+
+        array_unshift($contents, "/* --- Combined file written: " . DateUtil::getDateTime() . " */\n\n");
+        array_unshift($contents, "/* --- Combined files:\n" . implode("\n", $includedFiles) . "\n*/\n\n");
+
         $contents = implode('', $contents);
         // optional minify
-        if ($themevars['cssjsminify']) {
-            if ($ext == 'css') {
-                // Remove comments.
-                $contents = trim(preg_replace('/\/\*.*?\*\//s', '', $contents));
-                // Compress whitespace.
-                $contents = preg_replace('/\s+/', ' ', $contents);
-                // Additional whitespace optimisation -- spaces around certain tokens is not required by CSS
-                $contents = preg_replace('/\s*(;|\{|\}|:|,)\s*/', '\1', $contents);
-            }
+        if ($themevars['cssjsminify'] && $ext == 'css') {
+            // Remove comments.
+            $contents = trim(preg_replace('/\/\*.*?\*\//s', '', $contents));
+            // Compress whitespace.
+            $contents = preg_replace('/\s+/', ' ', $contents);
+            // Additional whitespace optimisation -- spaces around certain tokens is not required by CSS
+            $contents = preg_replace('/\s*(;|\{|\}|:|,)\s*/', '\1', $contents);
         }
+
         global $ZConfig;
         $signingKey = md5(serialize($ZConfig['DBInfo']['databases']['default']));
         $signature = md5($contents . $ctype . $lifetime . $themevars['cssjscompress'] . $signingKey);
