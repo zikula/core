@@ -767,7 +767,7 @@ class UserApi extends \Zikula_AbstractApi
                     )
                 ),
                 'text' => $this->__('Recover account information or password'),
-                'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostPwdUname'),
+                'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpwduname'),
             );
 
             if ($this->getVar('reg_allowreg')) {
