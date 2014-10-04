@@ -43,11 +43,10 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      * - string $args['form_type'] An indicator of the type of form the form fields will appear on.
      * - string $args['method']    The authentication method for which a selector should be returned.
      *
-     * @param array $args The parameters for this function.
-     *
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if the $args array is invalid, or contains an invalid value.
+     * @throws FatalErrorException if template doesn't exist
      */
     public function getLoginFormFieldsAction(array $args)
     {
@@ -85,6 +84,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
             }
 
             $this->view->assign('authentication_method', $args['method']);
+
             return $this->response($this->view->fetch($templateName));
         }
     }
@@ -101,8 +101,6 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      * - array $args['authenticationInfo']   The user's credentials, as supplied by him on a log-in form on the log-in screen,
      *                                          log-in block, or some other equivalent control. For the Users module, it should
      *                                          contain the elements 'login_id' and 'pass'.
-     *
-     * @param array $args The parameters for this function.
      *
      * @return boolean True if the authentication information (the user's credentials) pass initial user-interface level validation;
      *                  otherwise false and an error status message is set.

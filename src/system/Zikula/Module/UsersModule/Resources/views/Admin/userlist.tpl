@@ -32,7 +32,7 @@
         <td class="actions">
             {if $usersitems[usersitems].options.lostUsername}
                 {gt text="Send user name to '%s'" tag1=$usersitems[usersitems].uname assign='title'}
-                <a class="fa fa-user tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='lostUsername' userid=$usersitems[usersitems].uid csrftoken=$csrftoken}"></a>
+                <a class="fa fa-user tooltips" href="{route name='zikulausersmodule_admin_lostusername' userid=$usersitems[usersitems].uid csrftoken=$csrftoken}" title="{$title}"></a>
             {else}
                 {img modname='core' set='icons/extrasmall' src='lostusername.png' class=" hidden "}
             {/if}
@@ -40,7 +40,7 @@
             {if $available_options.lostPassword}
                 {if $usersitems[usersitems].options.lostPassword}
                     {gt text="Send password recovery code to '%s'" tag1=$usersitems[usersitems].uname assign='title'}
-                    <a class="fa fa-key tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='lostPassword' userid=$usersitems[usersitems].uid csrftoken=$csrftoken}" title="{$title}"></a>
+                    <a class="fa fa-key tooltips" href="{route name='zikulausersmodule_admin_lostpassword' userid=$usersitems[usersitems].uid csrftoken=$csrftoken}" title="{$title}"></a>
                 {else}
                     <span class="fa-fw"></span>
                 {/if}
@@ -54,7 +54,7 @@
                         {gt text="Require '%s' to change password at next login" tag1=$usersitems[usersitems].uname assign='title'}
                         {assign var='image' value='password_expire.png'}
                     {/if}
-                    <a href="{modurl modname='ZikulaUsersModule' type='admin' func='toggleForcedPasswordChange' userid=$usersitems[usersitems].uid}">{img modname='core' set='icons/extrasmall' src=$image title=$title alt=$title class='tooltips'}</a>
+                    <a href="{route name='zikulausersmodule_admin_toggleforcedpasswordchange' userid=$usersitems[usersitems].uid}">{img modname='core' set='icons/extrasmall' src=$image title=$title alt=$title class='tooltips'}</a>
                 {else}
                     <span class="fa-fw"></span>
                 {/if}
@@ -62,19 +62,19 @@
             {if $available_options.modify}
                 {if $usersitems[usersitems].options.modify}
                     {gt text="Edit '%s'" tag1=$usersitems[usersitems].uname assign='title'}
-                    <a class="fa fa-pencil tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='modify' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
+                    <a class="fa fa-pencil tooltips" href="{route name='zikulausersmodule_admin_modify' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
                 {else}
                     <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if $available_options.deleteUsers}
-            {if $usersitems[usersitems].options.deleteUsers}
-                {gt text="Delete '%s'" tag1=$usersitems[usersitems].uname assign='title'}
-                <a class="fa fa-trash-o fa-fw tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='deleteUsers' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
-            {else}
-                <span class="fa-fw"></span>
+                {if $usersitems[usersitems].options.deleteUsers}
+                    {gt text="Delete '%s'" tag1=$usersitems[usersitems].uname assign='title'}
+                    <a class="fa fa-trash-o tooltips" href="{route name='zikulausersmodule_admin_deleteusers' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
+                {else}
+                    <span class="fa-fw"></span>
+                {/if}
             {/if}
         </td>
-        {/if}
     </tr>
 {/section}

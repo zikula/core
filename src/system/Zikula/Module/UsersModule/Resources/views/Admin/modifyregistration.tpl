@@ -36,7 +36,7 @@
 
 <p class="alert alert-warning">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='modifyRegistration'}" method="post">
+<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{route name='zikulausersmodule_admin_modifyregistration'}" method="post">
     <div>
         <input type="hidden" id="{$formData->getFormId()}_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="modify_registration" />
@@ -102,7 +102,7 @@
                         <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
                         {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' class='btn btn-success' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
                         {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='btn btn-warning' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                        <a class="btn btn-default" href="{if $restoreview == 'view'}{modurl modname='ZikulaUsersModule' type='admin' func='viewRegistrations' restoreview=true}{else}{modurl modname='ZikulaUsersModule' type='admin' func='displayRegistration' uid=$formData->getFieldData('uid')}{/if}">{gt text='Cancel'}</a>
+                        <a class="btn btn-default" href="{if $restoreview == 'view'}{route name='zikulausersmodule_admin_viewregistrations' restoreview=true}{else}{route name='zikulausersmodule_admin_displayregistration' uid=$formData->getFieldData('uid')}{/if}">{gt text='Cancel'}</a>
                 </div>
             </div>
         </fieldset>

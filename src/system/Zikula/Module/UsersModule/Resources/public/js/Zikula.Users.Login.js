@@ -119,7 +119,7 @@ Zikula.Users.Login =
         parameterObj.form_type = 'loginscreen';
 
         var r = new Zikula.Ajax.Request(
-            Zikula.Config.baseURL + 'index.php?module=Users&type=ajax&func=getLoginFormFields',
+            Routing.generate('zikulausersmodule_ajax_getloginformfields'),
             {
                 parameters: parameterObj,
                 onSuccess: Zikula.Users.Login.getSelectAuthenticationMethodResponse,

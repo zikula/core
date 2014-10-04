@@ -40,7 +40,7 @@
         <a class="btn btn-success" href="{$regactions.approveForce|safetext}" title="title='Skip verification (approves, and creates a new user account)'}"><span class="fa fa-plus"></span> {gt text='Add user without verification'}</a>&nbsp;
     {/if}
 
-    <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='viewRegistrations' restoreview='true'}"><span class="fa fa-reply"></span> {gt text='Return to registrations'}</a>&nbsp;
+    <a class="btn btn-default" href="{route name='zikulausersmodule_admin_viewregistrations' restoreview='true'}"><span class="fa fa-reply"></span> {gt text='Return to registrations'}</a>&nbsp;
     {/strip}
 </div>
 

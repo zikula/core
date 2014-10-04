@@ -31,7 +31,7 @@
 </div>
 {/if}
 
-<form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='verifyRegistration'}" method="post">
+<form class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_verifyregistration'}" method="post">
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_setpass" name="setpass" value="{$setpass}" />

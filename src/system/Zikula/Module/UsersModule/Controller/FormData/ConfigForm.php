@@ -22,19 +22,20 @@ use Zikula\Module\UsersModule\Helper\HashMethodListHelper;
 use Zikula\Module\UsersModule\Controller\FormData\Validator\StringInSet;
 use Zikula\Module\UsersModule\Controller\FormData\Validator\IntegerNumericInSet;
 use Zikula\Module\UsersModule\Controller\FormData\Validator\StringRegularExpression;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Contains and validates the data found on the Users module's configration form.
+ * Contains and validates the data found on the Users module's configuration form.
  */
 class ConfigForm extends AbstractFormData
 {
     /**
      * Create a new instance of the form data container, intializing the fields and validators.
      *
-     * @param string                 $formId         The id value to use for the form.
-     * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param string             $formId         The id value to use for the form.
+     * @param ContainerInterface $serviceManager The current service manager instance.
      */
-    public function __construct($formId, \Zikula_ServiceManager $serviceManager = null)
+    public function __construct($formId, ContainerInterface $serviceManager = null)
     {
         parent::__construct($formId, $serviceManager);
 

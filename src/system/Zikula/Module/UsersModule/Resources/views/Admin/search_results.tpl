@@ -8,7 +8,7 @@
     {gt text="Search results"}
 </h3>
 
-<form id="users_searchresults" class="form-horizontal" role="form" method="post" action="{modurl modname="Users" type="admin" func="deleteUsers"}">
+<form id="users_searchresults" class="form-horizontal" role="form" method="post" action="{route name='zikulausersmodule_admin_deleteusers'}">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <table class="table table-bordered table-striped">
@@ -62,7 +62,7 @@
             {if $deleteUsers}
                 {button type='submit' class="btn btn-warning"  __alt="Delete selected users" __title="Delete selected users" __text="Delete selected users"}
             {/if}
-                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Return to User Administration'}">{gt text='Return to User Administration'}</a>
+                <a class="btn btn-default" href="{route name='zikulausersmodule_admin_index'}" title="{gt text='Return to User Administration'}">{gt text='Return to User Administration'}</a>
             </div>
         </div>
     </div>

@@ -462,8 +462,9 @@ class System
         } else {
             $headers = array(); // change to empty array
         }
+        $from = System::getVar('adminmail');
 
-        return $mailer->send((array)$from, (array)$to, $subject, $body, 'text/plain', null, null, (array)$from, $altbody, $headers, $altBodyContentType, $failedRecipients);
+        return $mailer->send((array)$from, (array)$to, $subject, $message, 'text/plain', null, null, (array)$from, $altbody, $headers, $altBodyContentType, $failedRecipients);
     }
 
     /**

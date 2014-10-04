@@ -45,7 +45,7 @@
 {if $editingSelf}
 <div class="alert alert-info">{gt text='You are editing your own record, therefore you are not permitted to change your membership in certain system groups, and you are not permitted to change your activated state. These fields are disabled below.'}</div>
 {/if}
-<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='modify'}" method="post">
+<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{route name='zikulausersmodule_admin_modify'}" method="post">
     <fieldset>
         <legend>{gt text='Account information'}</legend>
         <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -237,7 +237,7 @@
             <button id="{$formData->getFormId()|cat:'_submit'}" class="btn btn-success" type="submit" title="{gt text='Save'}">
                 {gt text='Save'}
             </button>
-            <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}">{gt text='Cancel'}</a>
+            <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}">{gt text='Cancel'}</a>
         </div>
     </div>
 </form>
@@ -250,10 +250,10 @@
 <div class="form-group">
     <div class="col-lg-offset-3 col-lg-9">
         {if !$editingSelf}
-        <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='deleteusers' userid=$formData->getFieldData('uid')}">{gt text='Delete'}</a>
+        <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_deleteusers' userid=$formData->getFieldData('uid')}">{gt text='Delete'}</a>
         {/if}
-        <a class="btn btn-info" href="{modurl modname='ZikulaUsersModule' type='admin' func='lostUsername' userid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{gt text='Send user name'}</a>
-        <a class="btn btn-info" href="{modurl modname='ZikulaUsersModule' type='admin' func='lostPassword' userid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{gt text='Send password recovery code'}</a>
+        <a class="btn btn-info" href="{route name='zikulausersmodule_admin_lostusername' userid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{gt text='Send user name'}</a>
+        <a class="btn btn-info" href="{route name='zikulausersmodule_admin_lostpassword' userid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{gt text='Send password recovery code'}</a>
     </div>
 </div>
 {adminfooter}

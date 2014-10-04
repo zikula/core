@@ -18,22 +18,45 @@ use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula_View;
 use ModUtil;
 use SecurityUtil;
 use Zikula;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use DataUtil;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 
 /**
+ * @Route("/ajax")
+ * 
  * Access to actions initiated through AJAX for the Users module.
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
+     * Create and configure the view for the controller.
+     *
+     * @return void
+     *
+     * NOTE: This is necessary because the Zikula_Controller_AbstractAjax overrides this method located in Zikula_AbstractController.
+     */
+    protected function configureView()
+    {
+        $this->setView();
+        $this->view->setController($this);
+        $this->view->assign('controller', $this);
+    }
+
+    /**
+     * @Route("/getusers", options={"expose"=true})
+     * @Method("POST")
+     * 
      * Performs a user search based on the user name fragment entered so far.
+     *
+     * @param Request $request
      *
      * Parameters passed via POST:
      * ---------------------------
@@ -41,13 +64,12 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return string PlainResponse response object with list of users matching the criteria.
      */
-    public function getUsersAction()
+    public function getUsersAction(Request $request)
     {
         $this->checkAjaxToken();
-        $view = Zikula_View::getInstance($this->name);
 
         if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
+            $fragment = $request->request->get('fragment');
 
             $qb = $this->entityManager->createQueryBuilder();
             $query = $qb->select('u')
@@ -57,17 +79,22 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                  ->getQuery();
 
             $results = $query->getArrayResult();
-            $view->assign('results', $results);
+            $this->view->assign('results', $results);
         }
 
-        $output = $view->fetch('Ajax/getusers.tpl');
+        $output = $this->view->fetch('Ajax/getusers.tpl');
 
         return new PlainResponse($output);
     }
 
 
     /**
+     * @Route("/getusersastable", options={"expose"=true})
+     * @Method("POST")
+     *
      * Performs a user search based on the user name fragment entered so far.
+     *
+     * @param Request $request
      *
      * Parameters passed via POST:
      * ---------------------------
@@ -75,17 +102,16 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return string PlainResponse response object with list of users matching the criteria.
      */
-    public function getUsersAsTableAction()
+    public function getUsersAsTableAction(Request $request)
     {
         $this->checkAjaxToken();
 
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
+
             return new PlainResponse('');
         }
 
-        $view = Zikula_View::getInstance($this->name);
-
-        $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
+        $fragment = $request->query->get('fragment', $request->request->get('fragment'));
 
         $qb = $this->entityManager->createQueryBuilder();
         $query = $qb->select('u')
@@ -124,7 +150,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $userList = ModUtil::apiFunc('ZikulaUsersModule', 'admin', 'extendUserList', array('userList' => $userList, 'groups' => $groups));
 
         // Assign the items to the template & return output
-        $output = $view->assign('usersitems', $userList)
+        $output = $this->view->assign('usersitems', $userList)
             ->assign('allGroups', $groupsArray)
             ->assign('canSeeGroups', $canSeeGroups)
             ->assign('available_options', $availableOptions)
@@ -135,7 +161,12 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
 
     /**
+     * @Route("/getregistrationerrors", options={"expose"=true})
+     * @Method("POST")
+     *
      * Validate new user information entered by the user.
+     *
+     * @param Request $request
      *
      * Parameters passed via POST:
      * ---------------------------
@@ -149,22 +180,22 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * string  antispamanswer The user-entered answer to the registration question.
      * string  checkmode      Either 'new' or 'modify', depending on whether the record is a new user or an existing user or registration.
      *
-     * @return array A AjaxResponse containing error messages and message counts.
+     * @return array AjaxResponse containing error messages and message counts.
      *
-     * @throws AccessDeniedExceptionThrown if registration is disbled.
+     * @throws AccessDeniedException Thrown if registration is disbled.
      */
-    public function getRegistrationErrorsAction()
+    public function getRegistrationErrorsAction(Request $request)
     {
         $this->checkAjaxToken();
         $userOrRegistration = array(
-            'uid'           => $this->request->request->get('uid', null),
-            'uname'         => $this->request->request->get('uname', null),
-            'pass'          => $this->request->request->get('pass', null),
-            'passreminder'  => $this->request->request->get('passreminder', null),
-            'email'         => $this->request->request->get('email', null),
+            'uid'           => $request->request->get('uid', null),
+            'uname'         => $request->request->get('uname', null),
+            'pass'          => $request->request->get('pass', null),
+            'passreminder'  => $request->request->get('passreminder', null),
+            'email'         => $request->request->get('email', null),
         );
 
-        $eventType = $this->request->request->get('event_type', 'new_registration');
+        $eventType = $request->request->get('event_type', 'new_registration');
         if (($eventType == 'new_registration') || ($eventType == 'new_user')) {
             $checkMode = 'new';
         } else {
@@ -185,10 +216,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'validatorErrors'       => array(),
         );
 
-        $emailAgain         = $this->request->request->get('emailagain', '');
-        $setPassword        = $this->request->request->get('setpass', false);
-        $passwordAgain      = $this->request->request->get('passagain', '');
-        $antiSpamUserAnswer = $this->request->request->get('antispamanswer', '');
+        $emailAgain         = $request->request->get('emailagain', '');
+        $setPassword        = $request->request->get('setpass', false);
+        $passwordAgain      = $request->request->get('passagain', '');
+        $antiSpamUserAnswer = $request->request->get('antispamanswer', '');
 
         $registrationErrors = ModUtil::apiFunc($this->name, 'registration', 'getRegistrationErrors', array(
             'checkmode'         => $checkMode,
@@ -242,7 +273,12 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     }
 
     /**
+     * @Route("/getloginformfields", options={"expose"=true})
+     * @Method("POST")
+     *
      * Retrieve the form fields for the login form that are appropriate for the selected authentication method.
+     *
+     * @param Request $request
      *
      * Parameters passed via POST:
      * ---------------------------
@@ -253,11 +289,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @throws FatalErrorException Thrown if the authentication module name or method name are not valid.
      */
-    public function getLoginFormFieldsAction()
+    public function getLoginFormFieldsAction(Request $request)
     {
         $this->checkAjaxToken();
-        $formType = $this->request->request->get('form_type', false);
-        $selectedAuthenticationMethod = $this->request->request->get('authentication_method', array());
+        $formType = $request->request->get('form_type', false);
+        $selectedAuthenticationMethod = $request->request->get('authentication_method', array());
         $modname = (isset($selectedAuthenticationMethod['modname']) && !empty($selectedAuthenticationMethod['modname']) ? $selectedAuthenticationMethod['modname'] : false);
         $method = (isset($selectedAuthenticationMethod['method']) && !empty($selectedAuthenticationMethod['method']) ? $selectedAuthenticationMethod['method'] : false);
 
@@ -294,6 +330,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function getLoginFormFields()
     {
-        return $this->getLoginFormFieldsAction();
+        return $this->getLoginFormFieldsAction($this->request);
     }
 }

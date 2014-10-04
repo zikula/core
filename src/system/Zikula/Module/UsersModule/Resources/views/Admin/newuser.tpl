@@ -53,7 +53,7 @@
 
 <p class="alert alert-warning">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='newUser'}" method="post">
+<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{route name='zikulausersmodule_admin_newuser'}" method="post">
     <div>
         <input type="hidden" id="{$formData->getFormId()}_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_user" />
@@ -204,7 +204,7 @@
                     <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
                     {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' class='btn btn-success' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
                     {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='btn btn-warning' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                    <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}">{gt text='Cancel'}</a>
+                    <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}">{gt text='Cancel'}</a>
                 </div>
             </div>
         </div>

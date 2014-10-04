@@ -2,7 +2,7 @@
 
 {include file='User/menu.tpl'}
 <p class="alert alert-info">{gt text="Please enter your e-mail address below and click the 'Submit' button. You will be sent an e-mail with your account information."}</p>
-<form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='lostUname'}" method="post">
+<form class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_lostuname'}" method="post">
     <fieldset>
         <input type="hidden" id="lostunamecsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <div class="form-group">

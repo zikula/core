@@ -13,7 +13,7 @@
         <h5 id="users_login_h5_no_authentication_method" class="alert alert-info{if !empty($selected_authentication_method)} hide{/if}">{gt text="Choose how you would like to log in by clicking on one of the following buttons."}</h5>
         <h5 id="users_login_h5_authentication_method" class="alert alert-info{if empty($selected_authentication_method)} hide{/if}">{gt text="Log in below, or change how you would like to log in by clicking on one of the following buttons."}</h5>
         <h5 id="users_login_h5" class="alert alert-info hide"></h5>
-        {modurl modname='ZikulaUsersModule' type='user' func='login' returnpage=$returnpage|urlencode assign='form_action'}
+        {route name='zikulausersmodule_user_login' returnpage=$returnpage|urlencode assign='form_action'}
         {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
             {authentication_method_selector form_type='loginscreen' form_action=$form_action authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}
         {/foreach}
@@ -23,7 +23,7 @@
 {if !empty($selected_authentication_method)}
     {login_form_fields form_type='loginscreen' authentication_method=$selected_authentication_method assign='login_form_fields'}
 {/if}
-<form id="users_login_login_form" class="form-horizontal{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
+<form id="users_login_login_form" class="form-horizontal{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}" action="{route name='zikulausersmodule_user_login'}" method="post">
     <div>
         <input id="users_login_selected_authentication_module" type="hidden" name="authentication_method[modname]" value="{$selected_authentication_method.modname|safetext|default:''}" />
         <input id="users_login_selected_authentication_method" type="hidden" name="authentication_method[method]" value="{$selected_authentication_method.method|safetext|default:''}" />

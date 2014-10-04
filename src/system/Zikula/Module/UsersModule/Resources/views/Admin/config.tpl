@@ -53,7 +53,7 @@
     {gt text="Settings"}
 </h3>
 
-<form class="form-horizontal" role="form" id="{$configData->getFormId()}" action="{modurl modname='ZikulaUsersModule' type='admin' func='config'}" method="post">
+<form class="form-horizontal" role="form" id="{$configData->getFormId()}" action="{route name='zikulausersmodule_admin_config'}" method="post">
     <div>
         <input id="{$configData->getFormId()}_csrftoken" name="csrftoken" type="hidden" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -551,7 +551,7 @@
                     {gt text="Save"}
                 </button>
                 {helplink filename='Help/Admin/config.txt' class="btn btn-info" popup=1 __title='Help' icon_type='help' icon_size='extrasmall' __icon_alt='Help' __icon_title='Help'}
-                <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+                <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>
     </div>
 </form>

@@ -41,7 +41,7 @@ class AccountApi extends \Zikula_AbstractApi
         if (!empty($pass) && ($pass != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
             // show edit password link
             $items['1'] = array(
-                'url'   => ModUtil::url($this->name, 'user', 'changePassword'),
+                'url'   => $this->get('router')->generate('zikulausersmodule_user_changepassword'),
                 'module'=> $this->name,
                 'title' => $this->__('Password changer'),
                 'icon'  => 'password.png'
@@ -51,7 +51,7 @@ class AccountApi extends \Zikula_AbstractApi
         // show edit email link if configured to manage email address
         if ($this->getVar('changeemail', true)) {
             $items['2'] = array(
-                'url'   => ModUtil::url($this->name, 'user', 'changeEmail'),
+                'url'   => $this->get('router')->generate('zikulausersmodule_user_changeemail'),
                 'module'=> $this->name,
                 'title' => $this->__('E-mail address manager'),
                 'icon'  => 'message.png'
@@ -73,7 +73,7 @@ class AccountApi extends \Zikula_AbstractApi
 
         if ($found) {
             $items['3'] = array(
-                'url'   => ModUtil::url($this->name, 'user', 'usersBlock'),
+                'url'   => $this->get('router')->generate('zikulausersmodule_user_usersblock'),
                 'module'=> $this->name,
                 'title' => $this->__('Personal custom block'),
                 'icon'  => 'folder_home.png'
@@ -83,7 +83,7 @@ class AccountApi extends \Zikula_AbstractApi
         if (System::getVar('multilingual')) {
             if (count(ZLanguage::getInstalledLanguages()) > 1) {
                 $items['4'] = array(
-                    'url'   => ModUtil::url($this->name, 'user', 'changeLang'),
+                    'url'   => $this->get('router')->generate('zikulausersmodule_user_changelang'),
                     'module'=> $this->name,
                     'title' => $this->__('Language switcher'),
                     'icon'  => 'locale.png'
@@ -92,7 +92,7 @@ class AccountApi extends \Zikula_AbstractApi
         }
 
         $items['5'] = array(
-            'url'   => ModUtil::url($this->name, 'user', 'logout'),
+            'url'   => $this->get('router')->generate('zikulausersmodule_user_logout'),
             'module'=> $this->name,
             'title' => $this->__('Log out'),
             'icon'  => 'exit.png'

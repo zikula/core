@@ -14,7 +14,7 @@
     {$templatetitle}
 </h3>
 
-<form id="users_search" class="form-horizontal" role="form" method="post" action="{modurl modname='ZikulaUsersModule' type='admin' func=$callbackFunc|default:'search'}">
+<form id="users_search" class="form-horizontal" role="form" method="post" action="{route name='zikulausersmodule_admin_'|cat:$callbackFunc|default:'search'|lower}">
     <div>
         <input id="users_search_csrftoken" name="csrftoken" type="hidden" value="{insert name='csrftoken'}" />
         <input id="users_search_formid" name="formid" type="hidden" value="users_search" />
@@ -72,7 +72,7 @@
                 <button class="btn btn-success" title="{gt text="Search"}">
                     {gt text='Search'}
                 </button>
-                <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+                <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>
         </div>
     </div>

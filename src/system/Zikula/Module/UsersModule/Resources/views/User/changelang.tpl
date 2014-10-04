@@ -2,7 +2,7 @@
 {gt text='Language switcher' assign='templatetitle'}
 {include file='User/menu.tpl'}
 
-<form id="changelang" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='index'}" method="post">
+<form id="changelang" class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_index'}" method="post">
     <fieldset>
         <legend>{gt text="Change language"}</legend>
         <div class="form-group">
@@ -25,7 +25,7 @@
             <button class="btn btn-success" title="{gt text="Save"}">
                 {gt text="Save"}
             </button>
-            <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{route name='zikulausersmodule_user_index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
 </form>
