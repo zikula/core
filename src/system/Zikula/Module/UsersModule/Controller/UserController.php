@@ -85,7 +85,7 @@ class UserController extends \Zikula_AbstractController
             $this->request->getSession()->getFlashBag()->add('warning', $this->__('Error! No account links available.'));
         }
 
-        return new Response($this->view->assign('accountLinks', $accountLinks)
+        return $this->response($this->view->assign('accountLinks', $accountLinks)
                           ->fetch('User/main.tpl'));
     }
 
@@ -105,7 +105,7 @@ class UserController extends \Zikula_AbstractController
             return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
         }
 
-        return new Response($this->view->assign($this->getVars())
+        return $this->response($this->view->assign($this->getVars())
             ->fetch('User/view.tpl'));
     }
 
@@ -153,7 +153,7 @@ class UserController extends \Zikula_AbstractController
 
         // Check if registration is enabled
         if (!$this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED)) {
-            return new Response($this->view->fetch('User/registration_disabled.tpl'));
+            return $this->response($this->view->fetch('User/registration_disabled.tpl'));
         }
 
         // Initialize state for the state machine later on.
@@ -285,7 +285,7 @@ class UserController extends \Zikula_AbstractController
                         'errorMessages'         => isset($errorMessages) ? $errorMessages : array(),
                     );
 
-                    return new Response($this->view->assign_by_ref('formData', $formData)
+                    return $this->response($this->view->assign_by_ref('formData', $formData)
                             ->assign($arguments)
                             ->fetch('User/register.tpl'));
                     break;
@@ -314,7 +314,7 @@ class UserController extends \Zikula_AbstractController
                         'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
                     );
 
-                    return new Response($this->view->assign($arguments)
+                    return $this->response($this->view->assign($arguments)
                             ->fetch('User/registration_method.tpl'));
                     break;
 
@@ -637,7 +637,7 @@ class UserController extends \Zikula_AbstractController
                     // At the end of the registration process with no where else to go.
                     // Show the user the current status message(s) or error message(s).
                     $state = 'stop';
-                    return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
+                    return $this->response($this->view->fetch('User/displaystatusmsg.tpl'));
                     break;
 
                 case 'redirect':
@@ -686,7 +686,7 @@ class UserController extends \Zikula_AbstractController
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'index')));
         }
 
-        return new Response($this->view->fetch('User/lostpwduname.tpl'));
+        return $this->response($this->view->fetch('User/lostpwduname.tpl'));
     }
 
     /**
@@ -750,7 +750,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if ($proceedToForm) {
-            return new Response($this->view->assign('email', $email)
+            return $this->response($this->view->assign('email', $email)
                     ->fetch('User/lostuname.tpl'));
         } else {
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'login')));
@@ -893,7 +893,7 @@ class UserController extends \Zikula_AbstractController
                 'uname' => $uname,
                 'email' => $email,
             );
-            return new Response($this->view->assign($templateVariables)
+            return $this->response($this->view->assign($templateVariables)
                     ->fetch('User/lostpassword.tpl'));
         } elseif ($formStage == 'code') {
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'lostPasswordCode')));
@@ -1069,7 +1069,7 @@ class UserController extends \Zikula_AbstractController
                 'email' => $email,
                 'code'  => $code,
             );
-            return new Response($this->view->assign($templateVariables)
+            return $this->response($this->view->assign($templateVariables)
                     ->fetch('User/lostpasswordcode.tpl'));
         } elseif ($formStage == 'setpass') {
             $templateVariables = array(
@@ -1079,7 +1079,7 @@ class UserController extends \Zikula_AbstractController
                 'errormessages'     => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
             );
 
-            return new Response($this->view->assign($templateVariables)
+            return $this->response($this->view->assign($templateVariables)
                     ->fetch('User/passwordreminder.tpl'));
         } elseif ($formStage == 'login') {
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'login')));
@@ -1459,7 +1459,7 @@ class UserController extends \Zikula_AbstractController
                 'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
                 'user_obj'                              => isset($user) ? $user : array(),
             );
-            return new Response($this->view->assign($templateArgs)
+            return $this->response($this->view->assign($templateArgs)
                     ->fetch('User/login.tpl'));
         } else {
             $eventArgs = array(
@@ -1664,7 +1664,7 @@ class UserController extends \Zikula_AbstractController
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             $this->request->getSession()->getFlashBag()->add('status', $regErrorsMessage);
                                         }
-                                        return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
+                                        return $this->response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         break;
                                     case UsersConstant::ACTIVATED_ACTIVE:
                                         if (!$extAuthModuleUsed) {
@@ -1676,7 +1676,7 @@ class UserController extends \Zikula_AbstractController
                                         }
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             $this->request->getSession()->getFlashBag()->add('status', $regErrorsMessage);
-                                            return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
+                                            return $this->response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         } else {
                                             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'login')));
                                         }
@@ -1687,7 +1687,7 @@ class UserController extends \Zikula_AbstractController
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             $this->request->getSession()->getFlashBag()->add('status', $regErrorsMessage);
                                         }
-                                        return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
+                                        return $this->response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         break;
                                 }
                             } else {
@@ -1731,7 +1731,7 @@ class UserController extends \Zikula_AbstractController
             'errormessages'     => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
         );
 
-        return new Response($this->view->assign($rendererArgs)
+        return $this->response($this->view->assign($rendererArgs)
                           ->fetch('User/verifyregistration.tpl'));
     }
 
@@ -1941,7 +1941,7 @@ class UserController extends \Zikula_AbstractController
             throw new FatalErrorException();
         }
 
-        return new Response($this->view->assign(UserUtil::getVars(UserUtil::getVar('uid')))
+        return $this->response($this->view->assign(UserUtil::getVars(UserUtil::getVar('uid')))
                 ->fetch('User/usersblock.tpl'));
     }
 
@@ -2102,7 +2102,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         // Return the output that has been generated by this function
-        return new Response($this->view->assign('password_errors', $passwordErrors)
+        return $this->response($this->view->assign('password_errors', $passwordErrors)
                           ->assign('login', (bool)$args['login'])
                           ->assign('user_obj', ($args['login'] ? $sessionVars['user_obj'] : null))
                           ->assign('authentication_method', ($args['login'] ? $sessionVars['authentication_method'] : null))
@@ -2258,7 +2258,7 @@ class UserController extends \Zikula_AbstractController
             return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'user', 'index')));
         }
 
-        return new Response($this->view->fetch('User/changeemail.tpl'));
+        return $this->response($this->view->fetch('User/changeemail.tpl'));
     }
 
     /**
@@ -2349,7 +2349,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         // Assign the languages
-        return new Response($this->view->assign('languages', \ZLanguage::getInstalledLanguageNames())
+        return $this->response($this->view->assign('languages', \ZLanguage::getInstalledLanguageNames())
                 ->assign('usrlang', \ZLanguage::getLanguageCode())
                 ->fetch('User/changelang.tpl'));
     }
