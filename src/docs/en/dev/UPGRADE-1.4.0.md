@@ -450,8 +450,10 @@ Routing follows standard Symfony routing specifications:
   - http://symfony.com/doc/current/components/routing/hostname_pattern.html
 
 Additionally, Zikula uses the [JMSI18nRoutingBundle](http://jmsyst.com/bundles/JMSI18nRoutingBundle) to have
-multilingual and translated routes. Zikula also uses the [FOSJsRoutingBundle](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle)
-to expose routes in javascript files for ajax.
+multilingual and translated routes. The [JMSTranslationBundle](http://jmsyst.com/bundles/JMSTranslationBundle) is included in the core, too, as it is required by the JMSI18nRoutingBundle.
+
+Zikula also uses the [FOSJsRoutingBundle](https://github.com/FriendsOfSymfony/FOSJsRoutingBundle)
+to expose routes in javascript files for ajax requests.
 
 By default Zikula will look for routing in the module's `Resources/config/routing.yml` file.
 You can configure the routes as stated in the Symfony docs in YAML, PHP or XML and addtionally, due to our use
@@ -603,10 +605,12 @@ ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettin
    url: Routing.generate('acmemigethmakermodule_ajax_methodname'),
 ```
 
+### Multilingual routes
+
+For making routes translatable please refer to the [JMSI18nRoutingBundle documentation](http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/usage). There is also a dedicated documentation page showing [how to translate your messages](http://jmsyst.com/bundles/JMSTranslationBundle/master/usage) available.
+
 ### Expansion of `System::queryStringDecode`
-As you probably know, this function tries calculate the module, type, func parameters from an url. On top of it,
-a new section is added trying to match the current url with a Symfony route. If it succeeds, the Symfony route
-will take precedence over the old system.
+As you probably know, this function tries to calculate the module, type and func parameters from a given url. On top of it, a new section has been added trying to match the current url with a Symfony route. If it succeeds, the Symfony route will take precedence over the old system.
 ```php
 // Try to match a route first.
 /** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
@@ -635,7 +639,7 @@ try {
     // This is an old style url.
 }
 ```
-As you see, it fails silently if no route is found, and will calculate the parameters the old way.
+As you see, it fails silently if no route is found and will calculate the parameters the old way instead.
 **Note:** You MUST NOT use  any of the `$request->attributes` set here. They are for core internals only and can
 be changed or removed at any time.
 
