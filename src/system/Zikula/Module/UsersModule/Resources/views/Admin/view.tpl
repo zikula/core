@@ -16,7 +16,7 @@
 <div id="user-search-min-char" class="hide">{gt text="Please enter at least 3 characters"}</div>
 
 <p id="users-alphafilter">
-    {pagerabc posvar="letter" forwardvars="sortby" printempty=true}
+    {pagerabc posvar="letter" forwardvars="sortby" printempty=true route='zikulausersmodule_admin_view'}
 </p>
 
 <table id="user-search-list" class="table table-bordered table-striped hide">
@@ -54,22 +54,22 @@
         <thead>
         <tr>
             <th>
-                {sortlink __linktext='User name' sort='uname' currentsort=$sort sortdir=$sortdir modname='ZikulaUsersModule' type='admin' func='view'}
+                {sortlink __linktext='User name' sort='uname' currentsort=$sort sortdir=$sortdir route='zikulausersmodule_admin_view'}
             </th>
             <th>
-                {sortlink __linktext='Internal ID' sort='uid' currentsort=$sort sortdir=$sortdir modname='ZikulaUsersModule' type='admin' func='view'}
+                {sortlink __linktext='Internal ID' sort='uid' currentsort=$sort sortdir=$sortdir route='zikulausersmodule_admin_view'}
             </th>
             <th>
-                {sortlink __linktext='Registration date' sort='user_regdate' currentsort=$sort sortdir=$sortdir modname='ZikulaUsersModule' type='admin' func='view'}
+                {sortlink __linktext='Registration date' sort='user_regdate' currentsort=$sort sortdir=$sortdir route='zikulausersmodule_admin_view'}
             </th>
             <th>
-                {sortlink __linktext='Last login' sort='lastlogin' currentsort=$sort sortdir=$sortdir modname='ZikulaUsersModule' type='admin' func='view'}
+                {sortlink __linktext='Last login' sort='lastlogin' currentsort=$sort sortdir=$sortdir route='zikulausersmodule_admin_view'}
             </th>
             {if $canSeeGroups}
                 <th>{gt text="User's groups"}</th>
             {/if}
             <th class="text-center">
-                {sortlink __linktext='Status' sort='activated' currentsort=$sort sortdir=$sortdir modname='ZikulaUsersModule' type='admin' func='view'}
+                {sortlink __linktext='Status' sort='activated' currentsort=$sort sortdir=$sortdir route='zikulausersmodule_admin_view'}
             </th>
             <th>
                 {gt text="Actions"}
@@ -80,7 +80,7 @@
         {include file="Admin/userlist.tpl"}
         </tbody>
     </table>
-    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
+    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum' route='zikulausersmodule_admin_view'}
 </div>
 
 {adminfooter}

@@ -48,7 +48,7 @@
 
 <p class="alert alert-warning">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='register'}" method="post">
+<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_register'}" method="post">
     <fieldset>
         <legend>{gt text="Choose a user name"}</legend>
         <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -185,7 +185,7 @@
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
             <input class="btn btn-success" type="submit" value="{gt text='Submit'}" />
-            <a class="btn btn-danger" href="{modurl modname=$module type=$type func='main'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+            <a class="btn btn-danger" href="{route name='zikulausersmodule_user_index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             <input class="btn btn-default" type="reset" value="{gt text='Reset'}" />
         </div>
     </div>

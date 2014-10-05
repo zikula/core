@@ -13,7 +13,7 @@
 <div>
     <h5 id="users_login_h5_no_authentication_method"{if !empty($selected_authentication_method)} class="hide"{/if}>{gt text="Choose how you would like to log in."}</h5>
     <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="hide"{/if}>{gt text="Log in below, or change how you would like to log in."}</h5>
-    {modurl modname='ZikulaUsersModule' type='user' func='register' assign='form_action'}
+    {route name='zikulausersmodule_user_register' assign='form_action'}
     <div class="alert alert-info">
         {gt text='If you prefer, you can create an account and password for use only with this site by clicking below...'}
         {gt text='Click on one of the following to log into this site using that service...'}
@@ -28,7 +28,7 @@
 {if !empty($selected_authentication_method)}
     {login_form_fields form_type='registration' authentication_method=$selected_authentication_method assign='login_form_fields'}
 {/if}
-<form id="users_login_login_form" class="z-form gap z-clearer{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}" action="{modurl modname="Users" type="user" func="register"}" method="post">
+<form id="users_login_login_form" class="z-form gap z-clearer{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}" action="{route name='zikulausersmodule_user_register'}" method="post">
     <div>
         <input id="users_login_selected_authentication_module" type="hidden" name="authentication_method[modname]" value="{$selected_authentication_method.modname|default:''}" />
         <input id="users_login_selected_authentication_method" type="hidden" name="authentication_method[method]" value="{$selected_authentication_method.method|default:''}" />

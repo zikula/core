@@ -16,6 +16,7 @@ namespace Zikula\Module\UsersModule\Controller\FormData;
 use ServiceUtil;
 use ModUtil;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A form data container and validator.
@@ -46,12 +47,12 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
     /**
      * Construct a new form data container instance, initializing the id value.
      *
-     * @param string                 $formId         A value for the form's id attribute.
-     * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param string             $formId         A value for the form's id attribute.
+     * @param ContainerInterface $serviceManager The current service manager instance.
      *
      * @throws \InvalidArgumentException Thrown if the specified form id is not valid.
      */
-    public function __construct($formId, \Zikula_ServiceManager $serviceManager = null)
+    public function __construct($formId, ContainerInterface $serviceManager = null)
     {
         if (!isset($serviceManager)) {
             $serviceManager = ServiceUtil::getManager();

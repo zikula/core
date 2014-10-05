@@ -23,7 +23,7 @@ class NewUserForm extends AbstractFormData
     /**
      * A validator to conditionally check the length of the password field.
      *
-     * @var Users_Controller_Data_Validator
+     * @var \Zikula\Module\UsersModule\Controller\FormData\Validator\AbstractValidator
      */
     protected $passwordLengthValidator;
 

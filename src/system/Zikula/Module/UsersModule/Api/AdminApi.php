@@ -374,12 +374,18 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view'), 'text' => $this->__('Users list'), 'icon' => 'list');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulausersmodule_admin_view'), 
+                'text' => $this->__('Users list'), 
+                'icon' => 'list');
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
             $pending = ModUtil::apiFunc($this->name, 'registration', 'countAll');
             if ($pending) {
-                $links[] = array('url' => ModUtil::url($this->name, 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'icon' => 'plus');
+                $links[] = array(
+                    'url' => $this->get('router')->generate('zikulausersmodule_admin_viewregistrations'),
+                    'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 
+                    'icon' => 'plus');
             }
         }
 
@@ -393,21 +399,40 @@ class AdminApi extends \Zikula_AbstractApi
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', $createUserAccessLevel)) {
             $submenulinks = array();
-            $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'));
-            $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'import'), 'text' => $this->__('Import users'));
+            $submenulinks[] = array(
+                'url' => $this->get('router')->generate('zikulausersmodule_admin_newuser'),
+                'text' => $this->__('Create new user'));
+            $submenulinks[] = array(
+                'url' => $this->get('router')->generate('zikulausersmodule_admin_import'),
+                'text' => $this->__('Import users'));
             if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADMIN)) {
-                 $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'exporter'), 'text' => $this->__('Export users'));
+                 $submenulinks[] = array(
+                     'url' => $this->get('router')->generate('zikulausersmodule_admin_exporter'),
+                     'text' => $this->__('Export users'));
             }
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'icon' => 'plus', 'links' => $submenulinks);
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulausersmodule_admin_newuser'),
+                'text' => $this->__('Create new user'), 
+                'icon' => 'plus', 
+                'links' => $submenulinks);
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'search'), 'text' => $this->__('Find users'), 'icon' => 'search');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulausersmodule_admin_search'), 
+                'text' => $this->__('Find users'), 
+                'icon' => 'search');
         }
         if (SecurityUtil::checkPermission('ZikulaUsersModule::MailUsers', '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'mailUsers'), 'text' => $this->__('E-mail users'), 'icon' => 'envelope');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulausersmodule_admin_mailusers'),
+                'text' => $this->__('E-mail users'), 
+                'icon' => 'envelope');
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'config'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulausersmodule_admin_config'), 
+                'text' => $this->__('Settings'), 
+                'icon' => 'wrench');
         }
 
         return $links;

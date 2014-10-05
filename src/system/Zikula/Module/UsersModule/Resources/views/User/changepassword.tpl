@@ -31,7 +31,7 @@
     {if $login}<p>{gt text='Once you have successfully changed your password, the log-in process will continue.'}</p>{/if}
 </div>
 
-<form id="users_user_changepassword" class="form-horizontal" role="form" action="{modurl modname="Users" type="user" func="updatePassword"}" method="post">
+<form id="users_user_changepassword" class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_updatepassword'}" method="post">
     <fieldset>
         <legend>{gt text="Change password"}</legend>
         <input type="hidden" id="changepassword_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -112,7 +112,7 @@
                 {gt text='Save'}
             </button>
             {/if}
-            <a href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text='Cancel'}" class="btn btn-danger">{gt text='Cancel'}</a>
+            <a href="{route name='zikulausersmodule_user_index'}" title="{gt text='Cancel'}" class="btn btn-danger">{gt text='Cancel'}</a>
         </div>
     </div>
 </form>

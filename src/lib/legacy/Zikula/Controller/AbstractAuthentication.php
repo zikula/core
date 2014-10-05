@@ -104,6 +104,9 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      * @deprecated Use "getAuthenticationMethodSelectorAction" instead.
      *
      * @return string
+     *
+     * @throws \InvalidArgumentException
+     * @throws FatalErrorException
      */
     public function getAuthenticationMethodSelector(array $args)
     {
@@ -164,6 +167,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
 
             return $this->response($view->fetch($templateName));
         } else {
+
             return $this->response('');
         }
     }
@@ -218,6 +222,8 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      * @deprecated Use "validateAuthenticationInformationAction" instead.
      *
      * @return bool
+     *
+     * @throws \LogicException
      */
     public function validateAuthenticationInformation(array $args)
     {

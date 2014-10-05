@@ -14,7 +14,6 @@
 namespace Zikula\Module\UsersModule\Api;
 
 use SecurityUtil;
-use LogUtil;
 use DataUtil;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use UserUtil;
@@ -25,6 +24,7 @@ use DateTimeZone;
 use DateTime;
 use Doctrine\ORM\AbstractQuery;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * The system-level and database-level functions for user-initiated actions for the Users module.
@@ -317,7 +317,7 @@ class UserApi extends \Zikula_AbstractApi
                 'authentication_methods'=> $authenticationMethods,
                 'sitename'              => System::getVar('sitename'),
                 'hostname'              => System::serverGetVar('REMOTE_ADDR'),
-                'url'                   => ModUtil::url($this->name, 'user', 'login', array(), null, null, true),
+                'url'                   => $this->getContainer()->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL),
                 'adminRequested'        => $adminRequested,
             );
             $view->assign($viewArgs);
@@ -412,7 +412,7 @@ class UserApi extends \Zikula_AbstractApi
                         'sitename'      => System::getVar('sitename'),
                         'hostname'      => System::serverGetVar('REMOTE_ADDR'),
                         'code'          => $confirmationCode,
-                        'url'           => ModUtil::url($this->name, 'user', 'lostPasswordCode', $urlArgs, null, null, true),
+                        'url'           => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpasswordcode', $urlArgs, RouterInterface::ABSOLUTE_URL),
                         'adminRequested'=> $adminRequested,
                     );
                     $view->assign($viewArgs);
@@ -617,7 +617,7 @@ class UserApi extends \Zikula_AbstractApi
             'email'     => UserUtil::getVar('email'),
             'newemail'  => $args['newemail'],
             'sitename'  => System::getVar('sitename'),
-            'url'       =>  ModUtil::url($this->name, 'user', 'confirmChEmail', array('confirmcode' => $confirmCode), null, null, true),
+            'url'       => $this->getContainer()->get('router')->generate('zikulausersmodule_user_confirmchemail', array('confirmcode' => $confirmCode), RouterInterface::ABSOLUTE_URL),
         );
         $view->assign($viewArgs);
 
@@ -747,7 +747,7 @@ class UserApi extends \Zikula_AbstractApi
             $links[] = array(
                 'icon' => 'sign-in',
                 'text' => $this->__('Log in'),
-                'url' => ModUtil::url($this->name, 'user', 'login')            
+                'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_login')            
             );
 
             $links[] = array(
@@ -755,26 +755,26 @@ class UserApi extends \Zikula_AbstractApi
                 'links' => array(
                     array(
                         'text' => $this->__('Recover Lost User Name'),
-                        'url' => ModUtil::url($this->name, 'user', 'lostuname')
+                        'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostuname')
                     ),
                     array(
                         'text' => $this->__('Recover Lost Password'),
-                        'url' => ModUtil::url($this->name, 'user', 'lostpassword')
+                        'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpassword')
                     ),
                     array(
                         'text' => $this->__('Enter Password Recovery Code'),
-                        'url' => ModUtil::url($this->name, 'user', 'lostpasswordcode')
+                        'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpasswordcode')
                     )
                 ),
                 'text' => $this->__('Recover account information or password'),
-                'url' => ModUtil::url($this->name, 'user', 'lostPwdUname'),
+                'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpwduname'),
             );
 
             if ($this->getVar('reg_allowreg')) {
                 $links[] = array(
                     'icon' => 'plus',
                     'text'  => $this->__('New account'),
-                    'url'   => ModUtil::url($this->name, 'user', 'register')
+                    'url'   => $this->getContainer()->get('router')->generate('zikulausersmodule_user_register')
                 );
             }
         }
@@ -783,12 +783,14 @@ class UserApi extends \Zikula_AbstractApi
             $links[] = array(
                 'icon' => 'wrench',
                 'text' => $this->__('Account Settings'),
-                'url' => ModUtil::url($this->name, 'user', 'main')
+                'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_index')
             );
         }
 
         if ((UserUtil::isLoggedIn()) && (ModUtil::available($profile_module)) && (SecurityUtil::checkPermission($profile_module.'::', '::', ACCESS_READ))) {
             $links[] = array(
+                'text' => $this->__('Profile'),
+                'url' => ModUtil::url($profile_module, 'user', 'view'),
                 'icon' => 'user',
                 'links' => array(
                     array(
@@ -797,15 +799,13 @@ class UserApi extends \Zikula_AbstractApi
                     ),
                     array(
                         'text' => $this->__('Change Email Address'),
-                        'url' => ModUtil::url($this->name, 'user', 'changeEmail')
+                        'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_changeemail')
                     ),
                     array(
                         'text' => $this->__('Change Password'),
-                        'url' => ModUtil::url($this->name, 'user', 'changePassword')
+                        'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_changepassword')
                     )
-                ),
-                'text' => $this->__('Profile'),
-                'url' => ModUtil::url($profile_module, 'user', 'view')
+                )
             );
         }
 
@@ -818,34 +818,21 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if ((ModUtil::available($profile_module)) && (SecurityUtil::checkPermission($profile_module.':Members:', '::', ACCESS_READ))) {
-            $links[] = array(
+            $links[9999] = array(
                 'icon' => 'list',
-                'links' => array(
-                    array(
-                        'url' => ModUtil::url($profile_module, 'user', 'recentmembers'),
-                        'text' => $this->__f('Last %s Registered Users', ModUtil::getVar($profile_module, 'recentmembersitemsperpage'))),
-                    array(
-                        'url' => ModUtil::url($profile_module, 'user', 'onlinemembers'),
-                        'text' => $this->__('Users Online')
-                    )
-                ),
                 'text' => $this->__('Registered Users'),
                 'url' => ModUtil::url($profile_module, 'user', 'viewmembers')                
             );
             
             if (SecurityUtil::checkPermission($profile_module.':Members:recent', '::', ACCESS_READ)) {
-                $key = key($links);
-            
-                $links[$key]['links'][] = array(
+                $links[9999]['links'][] = array(
                     'text' => $this->__f('Last %s Registered Users', ModUtil::getVar($profile_module, 'recentmembersitemsperpage')),
                     'url' => ModUtil::url($profile_module, 'user', 'recentmembers')      
                 );
             }
 
             if (SecurityUtil::checkPermission($profile_module.':Members:online', '::', ACCESS_READ)) {
-                $key = key($links);
-            
-                $links[$key]['links'][] = array(
+                $links[9999]['links'][] = array(
                     'text' => $this->__('Users Online'),
                     'url' => ModUtil::url($profile_module, 'user', 'online')       
                 );

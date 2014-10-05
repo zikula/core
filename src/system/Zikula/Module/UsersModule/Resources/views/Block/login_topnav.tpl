@@ -1,1 +1,1 @@
-<ul><li><a href="{modurl modname='ZikulaUsersModule' type='user' func='login' returnpage=$returnpage|urlencode}">Log in</a></li></ul>
+<ul><li><a href="{route name='zikulausersmodule_user_login' returnpage=$returnpage|urlencode}">Log in</a></li></ul>

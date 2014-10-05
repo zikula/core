@@ -5,7 +5,7 @@
     {gt text="E-mail Users"}
 </h3>
 
-<form id="users_mailusers" class="form-horizontal" role="form" method="post" action="{modurl modname="Users" type="admin" func="mailUsers"}">
+<form id="users_mailusers" class="form-horizontal" role="form" method="post" action="{route name='zikulausersmodule_admin_mailusers'}">
     <div>
         <input type="hidden" id="users_mailusers_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_mailusers_formid" name="formid" value="users_mailusers" />
@@ -101,7 +101,7 @@
                     <button class="btn btn-success" type='submit' title="{gt text='Send e-mail to selected recipients'}">
                         {gt text="Send e-mail to selected recipients"}
                     </button>
-                    <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+                    <a class="btn btn-default" href="{route name='zikulausersmodule_admin_index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
                 </div>
             </div>
         </div>
