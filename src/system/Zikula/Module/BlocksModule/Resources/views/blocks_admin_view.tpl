@@ -55,26 +55,26 @@
     <thead>
         <tr>
             <th>
-                {sortlink __linktext='Block ID' sort='bid' currentsort=$sort sortdir=$sortdir modname='ZikulaBlocksModule' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='Block ID' sort='bid' currentsort=$sort sortdir=$sortdir route='zikulablocksmodule_admin_view' filter=$filter}
             </th>
             <th>
-                {sortlink __linktext='Title' sort='title' currentsort=$sort sortdir=$sortdir modname='ZikulaBlocksModule' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='Title' sort='title' currentsort=$sort sortdir=$sortdir route='zikulablocksmodule_admin_view' filter=$filter}
             </th>
             <th>
-                {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sortdir modname='ZikulaBlocksModule' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sortdir route='zikulablocksmodule_admin_view' filter=$filter}
             </th>
             <th>
                 {gt text="Module"}
             </th>
             <th>
-                {sortlink __linktext='Name' sort='bkey' currentsort=$sort sortdir=$sortdir modname='ZikulaBlocksModule' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='Name' sort='bkey' currentsort=$sort sortdir=$sortdir route='zikulablocksmodule_admin_view' filter=$filter}
             </th>
             <th>{gt text="Position(s)"}</th>
             <th>
-                {sortlink __linktext='Language' sort='language' currentsort=$sort sortdir=$sortdir modname='ZikulaBlocksModule' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='Language' sort='language' currentsort=$sort sortdir=$sortdir route='zikulablocksmodule_admin_view' filter=$filter}
             </th>
             <th>
-                {sortlink __linktext='State' sort='active' currentsort=$sort sortdir=$sortdir modname='ZikulaBlocksModule' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='State' sort='active' currentsort=$sort sortdir=$sortdir route='zikulablocksmodule_admin_view' filter=$filter}
             </th>
             <th class="text-right">{gt text="Actions"}</th>
         </tr>
