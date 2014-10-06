@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\SeaBreezeTheme;
+namespace Zikula\SeaBreezeTheme;
 
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\SeaBreezeTheme;
+namespace Zikula\SeaBreezeTheme;
 
 class SeaBreezeThemeVersion extends \Zikula_AbstractThemeVersion
 {

@@ -21,6 +21,7 @@
 !/src/themes/Zikula/Theme/PrinterTheme
 !/src/themes/Zikula/Theme/RssTheme
 !/src/themes/Zikula/Theme/SeaBreezeTheme
+!/src/themes/SeaBreezeTheme
 /src/app/Resources/locale/*
 !/src/app/Resources/locale/en
 !/src/app/Resources/locale/zikula.pot
