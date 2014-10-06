@@ -1817,7 +1817,7 @@ class AdminController extends \Zikula_AbstractController
         $configData = new FormData\ConfigForm('users_config', $this->getContainer());
         $errorFields = array();
 
-        if ($this->request->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             $this->checkCsrfToken();
 
             $configData->setFromRequestCollection($request->request);
@@ -1844,17 +1844,11 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/import")
+     * @Method({"GET", "POST"})
      *
      * Show the form to choose a CSV file and import several users from this file.
      *
-     * Parameters passed via the $args array:
-     * --------------------------------------
-     * boolean $args['confirmed']  True if the user has confirmed the upload/import. Used as the default if $_POST['confirmed']
-     *                                  is not set. Allows this function to be called internally, rather than as a result of a form post.
-     * array   $args['importFile'] Information about the file to import. Used as the default if $_FILES['importFile'] is not set.
-     *                                  Allows this function to be called internally, rather than as a result of a form post.
-     * integer $args['delimiter']  A code indicating the delimiter used in the file. Used as the default if $_POST['delimiter']
-     *                                  is not set. Allows this function to be called internally, rather than as a result of a form post.
+     * @param Request $request
      *
      * Parameters passed via GET:
      * --------------------------
@@ -1871,14 +1865,11 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @param array $args All arguments passed to the function.
-     *
      * @return Response symfony response object
      *
-     * @throws \InvalidArgumentException Thrown if the $args parameter is not valid.
      * @throws AccessDeniedException Thrown if the current user does not have add access.
      */
-    public function importAction(array $args = array())
+    public function importAction(Request $request)
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADD)) {
@@ -1886,15 +1877,11 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get input values. Check for direct function call first because calling function might be either get or post
-        if (isset($args) && is_array($args) && !empty($args)) {
-            $confirmed = isset($args['confirmed']) ? $args['confirmed'] : false;
-        } elseif (isset($args) && !is_array($args)) {
-            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
-        } elseif ($this->request->getMethod() == 'GET') {
+        if ($request->getMethod() == 'GET') {
             $confirmed = false;
-        } elseif ($this->request->getMethod() == 'POST') {
+        } elseif ($request->getMethod() == 'POST') {
             $this->checkCsrfToken();
-            $confirmed = $this->request->request->get('confirmed', false);
+            $confirmed = $request->request->get('confirmed', false);
         }
 
         // set default parameters
@@ -1903,12 +1890,12 @@ class AdminController extends \Zikula_AbstractController
 
         if ($confirmed) {
             // get other import values
-            $importFile = $this->request->getFiles()->get('importFile', isset($args['importFile']) ? $args['importFile'] : null);
-            $delimiter = $this->request->request->get('delimiter', isset($args['delimiter']) ? $args['delimiter'] : null);
+            $importFile = $request->files->get('importFile', null);
+            $delimiter = $request->request->get('delimiter', null);
             $importResults = $this->uploadImport($importFile, $delimiter);
             if ($importResults == '') {
                 // the users have been imported successfully
-                $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Users imported successfully.'));
+                $request->getSession()->getFlashBag()->add('status', $this->__('Done! Users imported successfully.'));
 
                 return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
             }
@@ -1929,19 +1916,11 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/export")
+     * @Method({"GET", "POST"})
      *
      * Show the form to export a CSV file of users.
      *
-     * Parameters passed via the $args array:
-     * --------------------------------------
-     * boolean $args['confirmed']       True if the user has confirmed the export.
-     * string  $args['exportFile']      Filename of the file to export (optional) (default=users.csv)
-     * integer $args['delimiter']       A code indicating the type of delimiter found in the export file. 1 = comma, 2 = semicolon, 3 = colon, 4 = tab.
-     * integer $args['exportEmail']     Flag to export email addresses, 1 for yes.
-     * integer $args['exportTitles']    Flag to export a title row, 1 for yes.
-     * integer $args['exportLastLogin'] Flag to export the last login date/time, 1 for yes.
-     * integer $args['exportRegDate']   Flag to export the registration date/time, 1 for yes.
-     * integer $args['exportGroups']    Flag to export the group membership, 1 for yes.
+     * @param Request $request
      *
      * Parameters passed via GET:
      * --------------------------
@@ -1962,47 +1941,31 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @param array $args All arguments passed to the function.
-     *
      * @return Response
      *
      * @throws \InvalidArgumentException Thrown if parameters are passed via the $args array, but $args is invalid.
      * @throws AccessDeniedException Thrown if the current user does not have admin access
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      */
-    public function exporterAction(array $args = array())
+    public function exporterAction(Request $request)
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        // get input values. Check for direct function call first because calling function might be either get or post
-        if (isset($args) && is_array($args) && !empty($args)) {
-            $confirmed  = isset($args['confirmed']) ? $args['confirmed'] : false;
-            $exportFile = isset($args['exportFile']) ? $args['exportFile'] : null;
-            $delimiter  = isset($args['delimiter']) ? $args['delimiter'] : null;
-            $email      = isset($args['exportEmail']) ? $args['exportEmail'] : null;
-            $titles     = isset($args['exportTitles']) ? $args['exportTitles'] : null;
-            $lastLogin  = isset($args['exportLastLogin']) ? $args['exportLastLogin'] : null;
-            $regDate    = isset($args['exportRegDate']) ? $args['exportRegDate'] : null;
-            $groups     = isset($args['exportGroups']) ? $args['exportGroups'] : null;
-        } elseif (isset($args) && !is_array($args)) {
-            throw new \InvalidArgumentException(LogUtil::getErrorMsgArgs());
-        } elseif ($this->request->getMethod() == 'GET') {
+        if ($request->getMethod() == 'GET') {
             $confirmed = false;
-        } elseif ($this->request->getMethod() == 'POST') {
+        } elseif ($request->getMethod() == 'POST') {
             $this->checkCsrfToken();
-            $confirmed  = $this->request->request->get('confirmed', false);
-            $exportFile = $this->request->request->get('exportFile', null);
-            $delimiter  = $this->request->request->get('delimiter', null);
-            $email      = $this->request->request->get('exportEmail', null);
-            $titles     = $this->request->request->get('exportTitles', null);
-            $lastLogin  = $this->request->request->get('exportLastLogin', null);
-            $regDate    = $this->request->request->get('exportRegDate', null);
-            $groups     = $this->request->request->get('exportGroups', null);
-        } else {
-            throw new FatalErrorException();
+            $confirmed = $request->request->get('confirmed', false);
+            $exportFile = $request->request->get('exportFile', null);
+            $delimiter = $request->request->get('delimiter', null);
+            $email = $request->request->get('exportEmail', null);
+            $titles = $request->request->get('exportTitles', null);
+            $lastLogin = $request->request->get('exportLastLogin', null);
+            $regDate = $request->request->get('exportRegDate', null);
+            $groups = $request->request->get('exportGroups', null);
         }
 
         if ($confirmed) {
