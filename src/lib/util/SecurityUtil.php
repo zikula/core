@@ -352,10 +352,10 @@ class SecurityUtil
             return $groupperms;
         }
 
-        static $usergroups = array();
+        $usergroups = array();
         if (!$usergroups) {
             $usergroups[] = -1;
-            if (!UserUtil::isLoggedIn()) {
+            if ($vars['Active User'] == 'unregistered') {
                 $usergroups[] = 0; // Unregistered GID
             }
         }
