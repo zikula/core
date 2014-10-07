@@ -12,16 +12,19 @@
         <legend>{gt text="Confirmation prompt"}</legend>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmation" value="1" />
-        {if $theme_change}
         <div class="form-group">
             <label class="col-lg-3 control-label" for="themeswitcher_theme_change">
                 {gt text="Override users' theme settings"}
             </label>
             <div class="col-lg-9">
-                <input id="themeswitcher_theme_change" name="resetuserselected" type="checkbox" value="1"  />
+                <input id="themeswitcher_theme_change" name="resetuserselected" type="checkbox" value="1" />
+                {if $theme_change}
+                    <em class="help-block">{gt text='Users are allowed to change their own theme.'}</em>
+                {else}
+                    <em class="help-block">{gt text='Users are not currently allowed to change their own theme, but may have previously changed them.'}</em>
+                {/if}
             </div>
         </div>
-        {/if}
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 <button class="btn btn-success" title="{gt text='Accept'}">

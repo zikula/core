@@ -15,7 +15,7 @@ namespace Zikula\Module\ThemeModule;
 
 use ModUtil;
 use FileUtil;
-use LogUtil;
+use ZLanguage;
 use ThemeUtil;
 use ServiceUtil;
 use Zikula\Module\ThemeModule\Entity\ThemeEntity;
@@ -51,6 +51,10 @@ class Util
             foreach ($theme->getPsr0() as $ns => $path) {
                 ZLoader::addPrefix($ns, $path);
             }
+            foreach ($theme->getPsr4() as $ns => $path) {
+                ZLoader::addPrefixPsr4($ns, $path);
+            }
+
             $class = $theme->getClass();
 
             /** @var $bundle \Zikula\Core\AbstractTheme */
@@ -66,6 +70,9 @@ class Util
             $directory = explode('/', $bundle->getRelativePath());
             array_shift($directory);
             $array['directory'] = implode('/', $directory);
+
+            // loads the gettext domain for theme
+            ZLanguage::bindThemeDomain($bundle->getName());
 
             $array['type'] = 3;
             $array['state'] = 1;
