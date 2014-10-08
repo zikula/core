@@ -26,19 +26,19 @@
         {if $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint neq 1}
         {assign var='themeurl' value="`$homepageurl`/`$theme.name`"}
         {elseif $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint eq 1}
-        {assign var='themeurl' value="`$homepageurl``$theme.displayname`"}
+        {assign var='themeurl' value="`$homepageurl``$theme.name`"}
         {else}
         {if $homepageurl|strstr:"?"}
-        {assign var='themeurl' value="`$homepageurl`&theme=`$theme.displayname`"}
+        {assign var='themeurl' value="`$homepageurl`&theme=`$theme.name`"}
         {else}
-        {assign var='themeurl' value="`$homepageurl`?theme=`$theme.displayname`"}
+        {assign var='themeurl' value="`$homepageurl`?theme=`$theme.name`"}
         {/if}
         {/if}
-        <tr {if $theme.displayname|strtolower eq $currenttheme|strtolower}class="success"{/if}>
+        <tr {if $theme.name|strtolower eq $currenttheme|strtolower}class="success"{/if}>
             <td>
                 {if !$theme.structure}<strike>{/if}
                 {previewimage name=$theme.name assign='img'}
-                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}{if $theme.displayname|strtolower eq $currenttheme|strtolower} ({gt text='Default theme'}){/if}" class="marktooltip" data-trigger="hover" data-html="true" data-content="{$img|safetext}">
+                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}{if $theme.name|strtolower eq $currenttheme|strtolower} ({gt text='Default theme'}){/if}" class="marktooltip" data-trigger="hover" data-html="true" data-content="{$img|safetext}">
                    {$theme.displayname|safetext}
                 </a>
                 {if !$theme.structure}</strike>{/if}
@@ -55,17 +55,17 @@
                 {gt text='Delete: %s' tag1=$theme.displayname assign=strDeleteTheme}
                 {gt text='Set as default: %s' tag1=$theme.displayname assign=strSetDefaultTheme}
                 {gt text='Credits: %s' tag1=$theme.displayname assign=strCreditsTheme}
-                {if $theme.displayname neq $currenttheme and $theme.user and $theme.state neq 2 and $theme.structure}
+                {if $theme.name neq $currenttheme and $theme.user and $theme.state neq 2 and $theme.structure}
                 <a href="{route name='zikulathememodule_admin_setasdefault' themename=$theme.name}"><span class="fa fa-check tooltips" title="{$strSetDefaultTheme}"></span></a>
                 {/if}
                 {if $theme.structure}
                 <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}"><span class="fa fa-eye tooltips" title="{$strPreviewTheme}"></span></a>
-                <a href="{route name='zikulathememodule_admin_modify' themename=$theme.displayname}"><span class="fa fa-pencil tooltips" title="{$strEditTheme}"></span></a>
+                <a href="{route name='zikulathememodule_admin_modify' themename=$theme.name}"><span class="fa fa-pencil tooltips" title="{$strEditTheme}"></span></a>
                 {/if}
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
-                <a href="{route name='zikulathememodule_admin_delete' themename=$theme.displayname}"><span class="fa fa-trash-o tooltips" title="{$strDeleteTheme}"></span></a>
+                <a href="{route name='zikulathememodule_admin_delete' themename=$theme.name}"><span class="fa fa-trash-o tooltips" title="{$strDeleteTheme}"></span></a>
                 {/if}
-                <a href="{route name='zikulathememodule_admin_credits' themename=$theme.displayname}"><span class="fa fa-info-circle tooltips" title="{$strCreditsTheme}"></span></a>
+                <a href="{route name='zikulathememodule_admin_credits' themename=$theme.name}"><span class="fa fa-info-circle tooltips" title="{$strCreditsTheme}"></span></a>
             </td>
         </tr>
         {foreachelse}

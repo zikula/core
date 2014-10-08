@@ -286,8 +286,14 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $themeinfo   = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
-        $templatedir = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates/config';
+        $themename = $args['theme'];
+        $theme = ThemeUtil::getTheme($themename);
+        $themeinfo   = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
+        if (isset($theme)) {
+            $templatedir = $theme->getConfigPath();
+        } else {
+            $templatedir = 'themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/templates/config';
+        }
 
         // get the available .ini files and exclude the core ones
         $inifiles = FileUtil::getFiles($templatedir, false, true, '.ini', 'f');

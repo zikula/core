@@ -565,6 +565,9 @@ class AdminController extends \Zikula_AbstractController
     public function pageconfigurationsAction(Request $request, $themename)
     {
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
+        $themename = $themeinfo['name'];
+        $theme = ThemeUtil::getTheme($themename);
+
         $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
@@ -592,6 +595,7 @@ class AdminController extends \Zikula_AbstractController
 
         // checks the  page configuration files in use
         $pageconfigfiles = array();
+        $existingconfigs = array();
         foreach ($pageconfigurations as $name => $pageconfiguration) {
             // checks for non-standard pagetypes
             if (strpos($name, '*') === 0 && !isset($pagetypes[$name])) {
@@ -599,7 +603,9 @@ class AdminController extends \Zikula_AbstractController
                 $pagetypes[$name] = $this->__f('%s type pages', ucfirst(substr($name, 1)));
             }
             // check if the file exists
-            if ($exists = file_exists("themes/$themeinfo[directory]/templates/config/$pageconfiguration[file]")) {
+            if (isset($theme) && ($exists = file_exists($theme->getConfigPath() . "/$pageconfiguration[file]"))) {
+                $existingconfigs[] = $pageconfiguration['file'];
+            } elseif ($exists = file_exists("themes/$themeinfo[directory]/templates/config/$pageconfiguration[file]")) {
                 $existingconfigs[] = $pageconfiguration['file'];
             }
             $pageconfigfiles[$pageconfiguration['file']] = $exists;
