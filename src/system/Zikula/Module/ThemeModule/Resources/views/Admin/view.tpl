@@ -38,7 +38,7 @@
             <td>
                 {if !$theme.structure}<strike>{/if}
                 {previewimage name=$theme.name assign='img'}
-                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}{if $theme.name|strtolower eq $currenttheme|strtolower} ({gt text='Default theme'}){/if}" class="marktooltip" data-trigger="hover" data-html="true" data-content="{$img|safetext}">
+                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}{if $theme.name|strtolower eq $currenttheme|strtolower} ({gt text='Default theme'}){/if}" class="marktooltip" data-trigger="hover" data-html="true" data-content='{$img|safehtml}'>
                    {$theme.displayname|safetext}
                 </a>
                 {if !$theme.structure}</strike>{/if}
