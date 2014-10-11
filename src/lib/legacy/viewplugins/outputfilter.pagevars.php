@@ -32,8 +32,11 @@ function smarty_outputfilter_pagevars($source, $view)
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
     $cssjscombine = ModUtil::getVar('ZikulaThemeModule', 'cssjscombine', false);
+
+    $isAdminController = isAdminController($view);
+
     // get list of stylesheets and scripts from JCSSUtil
-    $jcss = JCSSUtil::prepareJCSS($cssjscombine,$view->cache_dir);
+    $jcss = JCSSUtil::prepareJCSS($themeinfo, $cssjscombine, $view->cache_dir, $isAdminController);
 
     if (is_array($jcss['stylesheets']) && !empty($jcss['stylesheets'])) {
         foreach ($jcss['stylesheets'] as $stylesheet) {
@@ -71,7 +74,7 @@ function smarty_outputfilter_pagevars($source, $view)
     }
 
     // if we've got some page vars to add the header wrap the output in
-    // suitable identifiying comments when in development mode
+    // suitable identifying comments when in development mode
     $return = trim($return);
     if (!empty($return) && System::getVar('development') != 0) {
         $return = "<!-- zikula pagevars -->\n" . $return . "\n<!-- /zikula pagevars -->";
@@ -111,4 +114,16 @@ function smarty_outputfilter_pagevars($source, $view)
 
     // return the modified source
     return $source;
+}
+
+/**
+ * determine if current controller is an admin controller
+ *
+ * @param Zikula_View $view
+ * @return bool
+ */
+function isAdminController(Zikula_View $view) {
+    $type = $view->getRequest()->get('type');
+    $zkType = $view->getRequest()->attributes->get('_zkType');
+    return ($type == 'admin' || $zkType == 'admin');
 }
