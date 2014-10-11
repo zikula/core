@@ -55,15 +55,17 @@ class JCSSUtil
      * Returns an array with two arrays, containing list of js and css files
      * ready to embedded in the HTML HEAD.
      *
+     * @param array  $themeinfo array of info on current theme
      * @param bool   $combine   Should files be combined.
      * @param string $cache_dir Path to cache directory.
+     * @param bool   $isAdminController
      *
      * @return array Array with two array containing the files to be embedded into HTML HEAD
      */
-    public static function prepareJCSS($combine = false, $cache_dir = null)
+    public static function prepareJCSS($themeinfo, $combine = false, $cache_dir = null, $isAdminController = false)
     {
         $combine = $combine && is_writable($cache_dir);
-        $jcss = array();
+
         // get page vars
         $javascripts = PageUtil::getVar('javascript');
         $stylesheets = PageUtil::getVar('stylesheet');
@@ -89,10 +91,10 @@ class JCSSUtil
                 }
             }
         }
-        $javascripts = self::prepareJavascripts($javascripts, $combine);
+        $javascripts = self::prepareJavascripts($javascripts);
         // update stylesheets as there might be some additions for js
         $stylesheets = array_merge((array) $stylesheets, (array) PageUtil::getVar('stylesheet'));
-        $stylesheets = self::prepareStylesheets($stylesheets, $combine);
+        $stylesheets = self::prepareStylesheets($themeinfo, $stylesheets, $isAdminController);
         if ($combine) {
             $javascripts = (array) self::save($javascripts, 'js', $cache_dir);
             $stylesheets = (array) self::save($stylesheets, 'css', $cache_dir);
@@ -113,11 +115,13 @@ class JCSSUtil
     /**
      * Procedure for managinig stylesheets.
      *
+     * @param array  $themeinfo  array of info on current theme
      * @param array $stylesheets List of demanded stylesheets.
+     * @param boolean $isAdminController
      *
      * @return array List of stylesheets
      */
-    public static function prepareStylesheets($stylesheets)
+    public static function prepareStylesheets($themeinfo, $stylesheets, $isAdminController)
     {
         if (ThemeUtil::getVar('noCoreCss', false)) {
             $initStyle = null;
@@ -136,13 +140,19 @@ class JCSSUtil
         }
         // Add core stylesheet
         array_unshift($stylesheets, $coreStyle[0]);
-        // Add bootstrap stylesheet
-        $overrideBootstrapPath = ThemeUtil::getVar('bootstrapPath', ''); // allows for theme override of bootstrap css path
-        $bootstrapPath = !empty($overrideBootstrapPath) ? $overrideBootstrapPath : ServiceUtil::getManager()->getParameter('zikula.stylesheet.bootstrap.min.path');
-        array_unshift($stylesheets, $bootstrapPath);
-        // Add font-awesome
-        array_unshift($stylesheets, ServiceUtil::getManager()->getParameter('zikula.stylesheet.fontawesome.min.path'));
-        $stylesheets = array_unique(array_values($stylesheets));
+
+        // is theme a 1.4.0 type bundle?
+        $theme = ThemeUtil::getTheme($themeinfo['name']);
+
+        // Add bootstrap stylesheet only for 1.4.x type themes or if an admin controller is in use
+        if (isset($theme) || $isAdminController) {
+            $overrideBootstrapPath = ThemeUtil::getVar('bootstrapPath', ''); // allows for theme override of bootstrap css path
+            $bootstrapPath = !empty($overrideBootstrapPath) ? $overrideBootstrapPath : ServiceUtil::getManager()->getParameter('zikula.stylesheet.bootstrap.min.path');
+            array_unshift($stylesheets, $bootstrapPath);
+            // Add font-awesome
+            array_unshift($stylesheets, ServiceUtil::getManager()->getParameter('zikula.stylesheet.fontawesome.min.path'));
+            $stylesheets = array_unique(array_values($stylesheets));
+        }
         $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
         PageUtil::addVar('header', $iehack);
 
