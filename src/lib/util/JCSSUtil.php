@@ -94,7 +94,7 @@ class JCSSUtil
         $javascripts = self::prepareJavascripts($javascripts);
         // update stylesheets as there might be some additions for js
         $stylesheets = array_merge((array) $stylesheets, (array) PageUtil::getVar('stylesheet'));
-        $stylesheets = self::prepareStylesheets($themeinfo, $stylesheets, $isAdminController);
+        $stylesheets = self::prepareStylesheets($stylesheets, $themeinfo, $isAdminController);
         if ($combine) {
             $javascripts = (array) self::save($javascripts, 'js', $cache_dir);
             $stylesheets = (array) self::save($stylesheets, 'css', $cache_dir);

@@ -38,7 +38,7 @@ function smarty_outputfilter_pagevars($source, $view)
     $isAdminController = ($type == 'admin' || $zkType == 'admin');
 
     // get list of stylesheets and scripts from JCSSUtil
-    $jcss = JCSSUtil::prepareJCSS($themeinfo, $cssjscombine, $view->cache_dir, $isAdminController);
+    $jcss = JCSSUtil::prepareJCSS($cssjscombine, $view->cache_dir, $themeinfo, $isAdminController);
 
     if (is_array($jcss['stylesheets']) && !empty($jcss['stylesheets'])) {
         foreach ($jcss['stylesheets'] as $stylesheet) {
