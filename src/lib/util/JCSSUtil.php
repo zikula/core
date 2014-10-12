@@ -55,14 +55,14 @@ class JCSSUtil
      * Returns an array with two arrays, containing list of js and css files
      * ready to embedded in the HTML HEAD.
      *
-     * @param array  $themeinfo array of info on current theme
      * @param bool   $combine   Should files be combined.
      * @param string $cache_dir Path to cache directory.
+     * @param array  $themeinfo array of info on current theme
      * @param bool   $isAdminController
      *
      * @return array Array with two array containing the files to be embedded into HTML HEAD
      */
-    public static function prepareJCSS($themeinfo, $combine = false, $cache_dir = null, $isAdminController = false)
+    public static function prepareJCSS($combine = false, $cache_dir = null, $themeinfo = array(), $isAdminController = false)
     {
         $combine = $combine && is_writable($cache_dir);
 
@@ -115,13 +115,13 @@ class JCSSUtil
     /**
      * Procedure for managinig stylesheets.
      *
-     * @param array  $themeinfo  array of info on current theme
      * @param array $stylesheets List of demanded stylesheets.
+     * @param array  $themeinfo  array of info on current theme
      * @param boolean $isAdminController
      *
      * @return array List of stylesheets
      */
-    public static function prepareStylesheets($themeinfo, $stylesheets, $isAdminController)
+    public static function prepareStylesheets($stylesheets, $themeinfo = array(), $isAdminController = false)
     {
         if (ThemeUtil::getVar('noCoreCss', false)) {
             $initStyle = null;
@@ -142,7 +142,10 @@ class JCSSUtil
         array_unshift($stylesheets, $coreStyle[0]);
 
         // is theme a 1.4.0 type bundle?
-        $theme = ThemeUtil::getTheme($themeinfo['name']);
+        $theme = null;
+        if (!empty($themeinfo)) {
+            $theme = ThemeUtil::getTheme($themeinfo['name']);
+        }
 
         // Add bootstrap stylesheet only for 1.4.x type themes or if an admin controller is in use
         if (isset($theme) || $isAdminController) {

@@ -33,7 +33,9 @@ function smarty_outputfilter_pagevars($source, $view)
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
     $cssjscombine = ModUtil::getVar('ZikulaThemeModule', 'cssjscombine', false);
 
-    $isAdminController = isAdminController($view);
+    $type = $view->getRequest()->get('type');
+    $zkType = $view->getRequest()->attributes->get('_zkType');
+    $isAdminController = ($type == 'admin' || $zkType == 'admin');
 
     // get list of stylesheets and scripts from JCSSUtil
     $jcss = JCSSUtil::prepareJCSS($themeinfo, $cssjscombine, $view->cache_dir, $isAdminController);
@@ -114,16 +116,4 @@ function smarty_outputfilter_pagevars($source, $view)
 
     // return the modified source
     return $source;
-}
-
-/**
- * determine if current controller is an admin controller
- *
- * @param Zikula_View $view
- * @return bool
- */
-function isAdminController(Zikula_View $view) {
-    $type = $view->getRequest()->get('type');
-    $zkType = $view->getRequest()->attributes->get('_zkType');
-    return ($type == 'admin' || $zkType == 'admin');
 }
