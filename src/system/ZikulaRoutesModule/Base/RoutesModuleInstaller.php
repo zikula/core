@@ -47,7 +47,7 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
             }
             $returnMessage = $this->__f('An error was encountered while creating the tables for the %s extension.', array($this->name));
             if (!System::isDevelopmentMode()) {
-                $returnMessage .= ' ' . $this->__('Please enable the development mode by editing the /config/config.php file in order to reveal the error details.');
+                $returnMessage .= ' ' . $this->__('Please enable the development mode by editing the /app/config/parameters.yml file (change the env variable to dev) in order to reveal the error details.');
             }
             $this->request->getSession()->getFlashBag()->add('error', $returnMessage);
             $logger = $this->serviceManager->get('logger');
