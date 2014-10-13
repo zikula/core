@@ -365,9 +365,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            throw new \InvalidArgumentException();
-        }
+        $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::variables", ACCESS_EDIT)) {
@@ -506,9 +504,7 @@ class AdminController extends \Zikula_AbstractController
 
         // check if this is a valid theme
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            throw new \InvalidArgumentException();
-        }
+        $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::palettes", ACCESS_EDIT)) {
@@ -648,9 +644,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifypageconfigtemplatesAction(Request $request, $themename, $filename = null)
     {
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            throw new \Exception($this->__f("file: %s not found.", $themeinfo['name'] . '.php'));
-        }
+        $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
@@ -780,9 +774,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-         if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            throw new \InvalidArgumentException();
-        }
+        $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
@@ -876,9 +868,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifypageconfigurationassignmentAction(Request $request, $themename, $pcname = null)
     {
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            throw new \Exception($this->__f("file: %s not found.", $themeinfo['name'] . '.php'));
-        }
+        $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
@@ -989,9 +979,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            throw new \InvalidArgumentException();
-        }
+        $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
@@ -1703,7 +1691,7 @@ class AdminController extends \Zikula_AbstractController
         $mainThemeFile = 'themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php';
         $mainThemeFileLegacy = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php';
         if (!file_exists($mainThemeFile) && !file_exists($mainThemeFileLegacy)) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException($this->__('Main theme file not found!'));
         }
     }
 
