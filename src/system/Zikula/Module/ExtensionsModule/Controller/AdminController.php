@@ -35,7 +35,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotati
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @Route("/admin")
+ * No need for a route prefix, as there isn't a user controller.
  *
  * Administrative controllers for the extensions module
  */
