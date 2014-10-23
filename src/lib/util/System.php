@@ -15,6 +15,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 /**
  * System class.
@@ -698,6 +699,8 @@ class System
             // This is an old style url.
         } catch (RouteNotFoundException $e) {
             // This is an old style url.
+        } catch (MethodNotAllowedException $e) {
+            // this is an old style url.
         }
 
         // get our base parameters to work out if we need to decode the url
