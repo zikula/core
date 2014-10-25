@@ -148,7 +148,7 @@ class RouterListener implements EventSubscriberInterface
         } catch (MethodNotAllowedException $e) {
             $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $request->getMethod(), $request->getPathInfo(), implode(', ', $e->getAllowedMethods()));
 
-            throw new MethodNotAllowedHttpException($e->getAllowedMethods(), $message, $e);
+            //throw new MethodNotAllowedHttpException($e->getAllowedMethods(), $message, $e);
         }
     }
 
