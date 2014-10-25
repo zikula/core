@@ -678,6 +678,17 @@ class System
                 // This might be the web profiler or another native bundle.
                 return;
             }
+            // The following block is needed as long as not every url is a route. To be removed when all legacy routing
+            // is removed.
+            if ($parameters['_route'] == 'zikularoutesmodule_redirectingcontroller_removetrailingslash') {
+                $pathInfo = $request->getPathInfo();
+                $requestUri = $request->getRequestUri();
+
+                // Check if url without slash exists. If it doesn't exist, it will throw an exception which is caught
+                // by the try->catch below.
+                $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
+                $router->match($url);
+            }
 
             $modname = strtolower($parameters['_zkModule']);
             $type = strtolower($parameters['_zkType']);
