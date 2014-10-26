@@ -1,12 +1,15 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
+/**
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
