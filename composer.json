@@ -66,7 +66,8 @@
         "bootstrap-plus/bootstrap-media-lightbox": "dev-master",
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
         "vakata/jstree": "dev-master",
-        "afarkas/html5shiv": "*"
+        "afarkas/html5shiv": "*",
+        "webfactory/exceptions-bundle": "@stable"
     },
     "scripts": {
         "post-install-cmd": [

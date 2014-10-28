@@ -24,6 +24,7 @@ class ZikulaKernel extends Kernel
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new Webfactory\Bundle\ExceptionsBundle\WebfactoryExceptionsBundle(),
         );
 
         $this->registerCoreModules($bundles);
