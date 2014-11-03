@@ -41,7 +41,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.preinit', 'initDB');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
-        $this->addHandlerDefinition('core.postinit', 'doctrineExtensions');
     }
 
     /**
@@ -291,38 +290,4 @@ class SystemListeners extends Zikula_AbstractEventHandler
         //header("X-Content-Security-Policy: frame-ancestors 'self'");
         header('X-XSS-Protection: 1');
     }
-
-    /**
-     * Adds Doctrine extensions.
-     *
-     * Implements 'core.postinit' event.
-     *
-     * @param Zikula_Event $event The event handler.
-     *
-     * @deprecated since 1.4.0
-     * @todo remove in 1.5.0
-     *
-     * @return void
-     */
-    public function doctrineExtensions(Zikula_Event $event)
-    {
-        $definition = new Definition('Doctrine\Common\Annotations\AnnotationReader');
-        $this->serviceManager->setDefinition('doctrine.annotation_reader', $definition);
-
-        $definition = new Definition('Doctrine\ORM\Mapping\Driver\AnnotationDriver', array(new Reference('doctrine.annotation_reader')));
-        $this->serviceManager->setDefinition('doctrine.annotation_driver', $definition);
-
-        $definition = new Definition('Doctrine\ORM\Mapping\Driver\DriverChain');
-        $this->serviceManager->setDefinition('doctrine.driver_chain', $definition);
-
-        $definition = new Definition('Zikula\Core\Doctrine\ExtensionsManager', array(new Reference('doctrine.eventmanager'), new Reference('service_container')));
-        $this->serviceManager->setDefinition('doctrine_extensions', $definition);
-
-        $types = array('Blameable', 'Exception', 'Loggable', 'Mapping', 'SoftDeleteable', 'Uploadable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
-        foreach ($types as $type) {
-            $definition = new Definition("Gedmo\\$type\\{$type}Listener");
-            $this->serviceManager->setDefinition(strtolower("doctrine_extensions.listener.$type"), $definition);
-        }
-    }
-
 }
