@@ -494,7 +494,8 @@ class Zikula_Core
         if ($stage & self::STAGE_MODS) {
             // Set compression on if desired
             if (System::getVar('UseCompression') == 1) {
-                //ob_start("ob_gzhandler");
+                ini_set('zlib.output_handler', '');
+                ini_set('zlib.output_compression', 'On');
             }
 
             ModUtil::load('ZikulaSecurityCenterModule');
