@@ -135,6 +135,7 @@
             <tag name="monolog.logger" channel="request" />
             <argument type="service" id="logger" on-invalid="ignore" />
             <argument type="service" id="router" />
+            <argument type="service" id="event_dispatcher" />
         </service>
     </services>
 </container>

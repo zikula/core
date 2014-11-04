@@ -14,6 +14,7 @@
 
 use Zikula_Request_Http as Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 // Defines for access levels
 define('ACCESS_INVALID', -1);
@@ -244,7 +245,7 @@ class Zikula_Core
      */
     public function reboot()
     {
-        $event = new \Zikula\Core\Event\GenericEvent($this);
+        $event = new GenericEvent($this);
         $this->dispatcher->dispatch('shutdown', $event);
 
         // flush handlers
@@ -405,7 +406,7 @@ class Zikula_Core
     {
         $GLOBALS['__request'] = $request; // hack for pre 1.5.0 - drak
 
-        $coreInitEvent = new \Zikula\Core\Event\GenericEvent($this);
+        $coreInitEvent = new GenericEvent($this);
 
         // store the load stages in a global so other API's can check whats loaded
         $this->stage = $this->stage | $stage;
@@ -414,11 +415,16 @@ class Zikula_Core
             ModUtil::flushCache();
             System::flushCache();
             $args = !System::isInstalling() ? array('lazy' => true) : array();
-            $this->dispatcher->dispatch('core.preinit', new \Zikula\Core\Event\GenericEvent($this, $args));
+            $this->dispatcher->dispatch('core.preinit', new GenericEvent($this, $args));
         }
 
         // Initialise and load configuration
         if ($stage & self::STAGE_CONFIG) {
+            // for BC only. remove this code in 2.0.0
+            if (!System::isInstalling()) {
+                $this->dispatcher->dispatch('setup.errorreporting', new GenericEvent(null, array('stage' => $stage)));
+            }
+
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArgument('stage', self::STAGE_CONFIG);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
@@ -433,7 +439,7 @@ class Zikula_Core
 
         if ($stage & self::STAGE_DB) {
             try {
-                $dbEvent = new \Zikula\Core\Event\GenericEvent($this, array('stage' => self::STAGE_DB));
+                $dbEvent = new GenericEvent($this, array('stage' => self::STAGE_DB));
                 $this->dispatcher->dispatch('core.init', $dbEvent);
             } catch (PDOException $e) {
                 if (!System::isInstalling()) {
@@ -540,7 +546,7 @@ class Zikula_Core
         }
 
         if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
-            $this->dispatcher->dispatch('core.postinit', new \Zikula\Core\Event\GenericEvent($this, array('stages' => $stage)));
+            $this->dispatcher->dispatch('core.postinit', new GenericEvent($this, array('stages' => $stage)));
         }
     }
 }

@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 use UserUtil;
@@ -30,11 +31,13 @@ class ExceptionListener implements EventSubscriberInterface
 {
     private $logger;
     private $router;
+    private $dispatcher;
 
-    public function __construct(LoggerInterface $logger = null, RouterInterface $router = null)
+    public function __construct(LoggerInterface $logger = null, RouterInterface $router = null, EventDispatcherInterface $dispatcher = null)
     {
         $this->logger = $logger;
         $this->router = $router;
+        $this->dispatcher = $dispatcher;
     }
 
     public static function getSubscribedEvents()
@@ -53,6 +56,9 @@ class ExceptionListener implements EventSubscriberInterface
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
+        // for BC only, remove in 2.0.0
+        $this->handleLegacyExceptionEvent($event);
+
         $exception = $event->getException();
         $userLoggedIn = UserUtil::isLoggedIn();
         do {
@@ -86,5 +92,34 @@ class ExceptionListener implements EventSubscriberInterface
         $response = new RedirectResponse($route);
         $event->setResponse($response);
         $event->stopPropagation();
+    }
+
+    /**
+     * Dispatch and handle the legacy event `frontcontroller.exception`
+     *
+     * @deprecated removal scheduled for 2.0.0
+     *
+     * @param GetResponseForExceptionEvent $event
+     */
+    private function handleLegacyExceptionEvent(GetResponseForExceptionEvent $event)
+    {
+        $modinfo = \ModUtil::getInfoFromName($event->getRequest()->attributes['_zkModule']);
+        $legacyEvent = new \Symfony\Component\EventDispatcher\GenericEvent($event->getException(),
+            array('modinfo' => $modinfo,
+                'type' => $event->getRequest()->attributes['_zkType'],
+                'func' => $event->getRequest()->attributes['_zkFunc'],
+                'arguments' => $event->getRequest()->attributes));
+        $this->dispatcher->dispatch('frontcontroller.exception', $legacyEvent);
+        if ($legacyEvent->isPropagationStopped()) {
+            $event->getRequest()->getSession()->getFlashBag()->add('error', __f('The \'%1$s\' module returned an error in \'%2$s\'. (%3$s)', array(
+                $event->getRequest()->attributes['_zkModule'],
+                $event->getRequest()->attributes['_zkFunc'],
+                $legacyEvent->getArgument('message'))),
+                    $legacyEvent->getArgument('httpcode'));
+            $route = $event->getRequest()->server->get('referrer');
+            $response = new RedirectResponse($route);
+            $event->setResponse($response);
+            $event->stopPropagation();
+        }
     }
 }
