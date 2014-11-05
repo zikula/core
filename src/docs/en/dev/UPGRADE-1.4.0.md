@@ -694,6 +694,13 @@ you use them:
 
 Documentation: http://symfony.com/doc/master/components/event_dispatcher/introduction.html
 
+please note that the following events have been deprecated and are scheduled for removal in 2.0.0
+ - `bootstrap.getconfig`
+ - `bootstrap.custom`
+ - `frontcontroller.predispatch`
+ - `frontcontroller.exception`
+ - `setup.errorreporting`
+
 
 <a name="eventnames" />
 Event Names
