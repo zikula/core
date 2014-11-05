@@ -14,7 +14,7 @@
 
 use Zikula_Request_Http as Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Zikula\Core\Event\GenericEvent;
 
 // Defines for access levels
 define('ACCESS_INVALID', -1);

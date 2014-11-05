@@ -104,7 +104,7 @@ class ExceptionListener implements EventSubscriberInterface
     private function handleLegacyExceptionEvent(GetResponseForExceptionEvent $event)
     {
         $modinfo = \ModUtil::getInfoFromName($event->getRequest()->attributes['_zkModule']);
-        $legacyEvent = new \Symfony\Component\EventDispatcher\GenericEvent($event->getException(),
+        $legacyEvent = new \Zikula\Core\Event\GenericEvent($event->getException(),
             array('modinfo' => $modinfo,
                 'type' => $event->getRequest()->attributes['_zkType'],
                 'func' => $event->getRequest()->attributes['_zkFunc'],
