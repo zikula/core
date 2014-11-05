@@ -136,6 +136,7 @@
             <tag name="monolog.logger" channel="request" />
             <argument type="service" id="logger" on-invalid="ignore" />
             <argument type="service" id="router" />
+            <argument type="service" id="event_dispatcher" />
         </service>
 
         <service id="zikula.strip_front_controller_listener" class="%zikula.strip_front_controller_listener.class%">

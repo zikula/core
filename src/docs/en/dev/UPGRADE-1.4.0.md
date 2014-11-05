@@ -94,14 +94,7 @@ Event Removal
 
 The following events have been removed:
 
-  - `bootstrap.getconfig` - there is no replacement
-  - `bootstrap.custom` - there is no replacement
-  - `frontcontroller.predispatch` - there is no replacement
-  - `frontcontroller.exception` - Subscribe to KernelEvents::EXCEPTION instead
-  - `setup.errorreporting` - there is no replacement
-  - `systemerror` - there is no replacement
-
-see [new events](#eventnames) for potential replacements
+  - `systemerror` - This was never actually implemented in the core and there is no replacement
 
 
 Forward Compatibility Layer
@@ -700,6 +693,13 @@ you use them:
     $event->setArgs() ==== $event->setArguments()
 
 Documentation: http://symfony.com/doc/master/components/event_dispatcher/introduction.html
+
+please note that the following events have been deprecated and are scheduled for removal in 2.0.0
+ - `bootstrap.getconfig`
+ - `bootstrap.custom`
+ - `frontcontroller.predispatch`
+ - `frontcontroller.exception`
+ - `setup.errorreporting`
 
 
 <a name="eventnames" />
