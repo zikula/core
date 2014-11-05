@@ -103,17 +103,17 @@ class ExceptionListener implements EventSubscriberInterface
      */
     private function handleLegacyExceptionEvent(GetResponseForExceptionEvent $event)
     {
-        $modinfo = \ModUtil::getInfoFromName($event->getRequest()->attributes['_zkModule']);
+        $modinfo = \ModUtil::getInfoFromName($event->getRequest()->attributes->get('_zkModule'));
         $legacyEvent = new \Zikula\Core\Event\GenericEvent($event->getException(),
             array('modinfo' => $modinfo,
-                'type' => $event->getRequest()->attributes['_zkType'],
-                'func' => $event->getRequest()->attributes['_zkFunc'],
-                'arguments' => $event->getRequest()->attributes));
+                'type' => $event->getRequest()->attributes->get('_zkType'),
+                'func' => $event->getRequest()->attributes->get('_zkFunc'),
+                'arguments' => $event->getRequest()->attributes->all()));
         $this->dispatcher->dispatch('frontcontroller.exception', $legacyEvent);
         if ($legacyEvent->isPropagationStopped()) {
             $event->getRequest()->getSession()->getFlashBag()->add('error', __f('The \'%1$s\' module returned an error in \'%2$s\'. (%3$s)', array(
-                $event->getRequest()->attributes['_zkModule'],
-                $event->getRequest()->attributes['_zkFunc'],
+                $event->getRequest()->attributes->get('_zkModule'),
+                $event->getRequest()->attributes->get('_zkFunc'),
                 $legacyEvent->getArgument('message'))),
                     $legacyEvent->getArgument('httpcode'));
             $route = $event->getRequest()->server->get('referrer');
