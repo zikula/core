@@ -498,6 +498,9 @@ function upgrade_140(Connection $conn, ZikulaKernel $kernel)
         'Settings', 'Theme', 'Users',
     );
 
+    // remove event handlers that were replaced by DependencyInjection
+    $conn->executeQuery("DELETE FROM module_vars WHERE modname = '/EventHandlers' AND name IN ('Extensions', 'Users', 'Search', 'Settings')");
+
     foreach ($modules as $module) {
         $conn->executeQuery("UPDATE modules SET name = 'Zikula{$module}Module', directory = 'Zikula/Module/{$module}Module' WHERE name = '$module'");
         $conn->executeQuery("UPDATE module_vars SET modname = 'Zikula{$module}Module' WHERE modname = '$module'");
@@ -506,9 +509,6 @@ function upgrade_140(Connection $conn, ZikulaKernel $kernel)
         $feedback .= "Updated module: $module<br />\n";
     }
     $feedback .= "<br />\n";
-
-    // remove event handlers that were replaced by DependencyInjection
-    $conn->executeQuery("DELETE FROM module_vars WHERE modname = '/EventHandlers' AND name IN ('Extensions', 'Users', 'Search', 'Settings')");
 
     $themes = array(
         'Andreas08', 'Atom', 'SeaBreeze', 'Mobile', 'Printer',
