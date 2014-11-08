@@ -74,7 +74,7 @@ class UserController extends \Zikula_AbstractController
             if ($blockinfo['active'] || $showinactive) {
                 $this->view->assign('bid', $bid);
 
-                return new Response($this->view->fetch('blocks_user_display.tpl'));
+                return new Response($this->view->fetch('User/display.tpl'));
             }
         }
 

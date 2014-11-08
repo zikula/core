@@ -154,7 +154,7 @@ class AdminController extends \Zikula_AbstractController
         $positions = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getallpositions');
         $this->view->assign('positions', $positions);
 
-        return new Response($this->view->fetch('blocks_admin_view.tpl'));
+        return new Response($this->view->fetch('Admin/view.tpl'));
     }
 
     /**
@@ -334,7 +334,7 @@ class AdminController extends \Zikula_AbstractController
             604800 => $this->__('Seven days'));
         $this->view->assign('blockrefreshtimes', $refreshtimes);
 
-        return new Response($this->view->fetch('blocks_admin_modify.tpl'));
+        return new Response($this->view->fetch('Admin/modify.tpl'));
     }
 
     /**
@@ -507,7 +507,7 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('block_positions', $block_positions);
 
         return new Response($this->view->assign('block', $inputblock)
-                          ->fetch('blocks_admin_newblock.tpl'));
+                          ->fetch('Admin/newblock.tpl'));
     }
 
     /**
@@ -616,7 +616,7 @@ class AdminController extends \Zikula_AbstractController
             // add the block id
             $this->view->assign('block', $blockinfo);
 
-            return new Response($this->view->fetch('blocks_admin_delete.tpl'));
+            return new Response($this->view->fetch('Admin/delete.tpl'));
         }
 
         $this->checkCsrfToken();
@@ -650,7 +650,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         return new Response($this->view->assign('name', $name)
-                          ->fetch('blocks_admin_newposition.tpl'));
+                          ->fetch('Admin/newposition.tpl'));
     }
 
     /**
@@ -761,7 +761,7 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('assignedblocks', $blocks)
                    ->assign('unassignedblocks', $allblocks);
 
-        return new Response($this->view->fetch('blocks_admin_modifyposition.tpl'));
+        return new Response($this->view->fetch('Admin/modifyposition.tpl'));
     }
 
     /**
@@ -843,7 +843,7 @@ class AdminController extends \Zikula_AbstractController
             // No confirmation yet
             $this->view->assign('position', $item);
 
-            return $this->view->fetch('blocks_admin_deleteposition.tpl');
+            return $this->view->fetch('Admin/deleteposition.tpl');
         }
 
         $this->checkCsrfToken();
@@ -876,7 +876,7 @@ class AdminController extends \Zikula_AbstractController
         // assign all the module vars
         $this->view->assign($this->getVars());
 
-        return new Response($this->view->fetch('blocks_admin_modifyconfig.tpl'));
+        return new Response($this->view->fetch('Admin/modifyconfig.tpl'));
     }
 
     /**

@@ -67,9 +67,31 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
         switch ($oldversion) {
             case '3.8.1':
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
-                
             case '3.8.2':
             case '3.9.0':
+                $blocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findAll();
+                /** @var \Zikula\Module\BlocksModule\Entity\BlockEntity $block */
+                foreach ($blocks as $block) {
+                    $content = $block->getContent();
+                    if(\DataUtil::is_serialized($content)) {
+                        $content = unserialize($content);
+                        foreach ($content as $k => $item) {
+                            if (is_string($item)) {
+                                if (strpos($item, 'blocks_block_extmenu_topnav.tpl') !== false) {
+                                    $content[$k] = str_replace('blocks_block_extmenu_topnav.tpl', 'Block/Extmenu/topnav.tpl', $item);
+                                } elseif (strpos($item, 'blocks_block_extmenu.tpl') !== false) {
+                                    $content[$k] = str_replace('blocks_block_extmenu.tpl', 'Block/Extmenu/extmenu.tpl', $item);
+                                } elseif (strpos($item, 'menutree/blocks_block_menutree_') !== false) {
+                                    $content[$k] = str_replace('menutree/blocks_block_menutree_', 'Block/Menutree/', $item);
+                                }
+                            }
+                        }
+                        $block->setContent(serialize($content));
+                    }
+                }
+                $this->entityManager->flush();
+                $this->request->getSession()->getFlashBag()->add(\Zikula_Session::MESSAGE_WARNING, $this->__('Warning: Block template locations modified, you may need to fix your template overrides if you have any.'));
+            case '3.9.1':
                 // future upgrade routines
         }
 
@@ -131,7 +153,7 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
 
             $menucontent['displaymodules'] = '0';
             $menucontent['stylesheet'] = 'extmenu.css';
-            $menucontent['template'] = 'blocks_block_extmenu.tpl';
+            $menucontent['template'] = 'Block/extmenu.tpl';
             $menucontent['blocktitles'][$lang] = $this->__('Main menu');
 
             // insert the links
@@ -143,7 +165,7 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
 
             $topnavcontent['displaymodules'] = '0';
             $topnavcontent['stylesheet'] = 'extmenu.css';
-            $topnavcontent['template'] = 'blocks_block_extmenu_topnav.tpl';
+            $topnavcontent['template'] = 'Block/Extmenu/topnav.tpl';
             $topnavcontent['blocktitles'][$lang] = $this->__('Top navigation');
 
             // insert the links

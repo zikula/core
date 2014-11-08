@@ -44,7 +44,7 @@
 </div>
 
 <h4>{gt text="Block titles"}</h4>
-<p class="alert alert-info">{gt text="These block titles override the title entered in the Blocks/extmenu section at the top of this page. If you enter titles here, it is these titles here that will be displayed in site pages. The title entered under Blocks/extmenu will be the title seen in the blocks list in the Blocks administration." domain='zikula'}</p>
+<p class="alert alert-info">{gt text="These block titles override the title entered in the Block/extmenu section at the top of this page. If you enter titles here, it is these titles here that will be displayed in site pages. The title entered under Block/extmenu will be the title seen in the blocks list in the Blocks administration." domain='zikula'}</p>
 
 {foreach item=blocktitle from=$blocktitles key=lang}
 <div class="form-group">

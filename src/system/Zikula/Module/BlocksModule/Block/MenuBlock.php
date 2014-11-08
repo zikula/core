@@ -87,8 +87,8 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
             $this->view->setCacheId($blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.UserUtil::getGidCacheString());
 
             // check out if the contents are cached
-            if ($this->view->is_cached('blocks_block_menu.tpl')) {
-                $blockinfo['content'] = $this->view->fetch('blocks_block_menu.tpl');
+            if ($this->view->is_cached('Block/menu.tpl')) {
+                $blockinfo['content'] = $this->view->fetch('Block/menu.tpl');
 
                 return BlockUtil::themeBlock($blockinfo);
             }
@@ -138,7 +138,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
         $this->view->assign('menuitems', $menuitems);
 
         // get the block content
-        $blockinfo['content'] = $this->view->fetch('blocks_block_menu.tpl');
+        $blockinfo['content'] = $this->view->fetch('Block/menu.tpl');
 
         // pass the block array back to the theme for display
         return BlockUtil::themeBlock($blockinfo);
@@ -266,7 +266,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
         $this->view->assign('menuitems', $menuitems);
 
         // return the output
-        return $this->view->fetch('blocks_block_menu_modify.tpl');
+        return $this->view->fetch('Block/menu_modify.tpl');
     }
 
     /**
@@ -335,7 +335,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $this->view->clear_cache('blocks_block_menu.tpl');
+        $this->view->clear_cache('Block/menu.tpl');
 
         // and clear the theme cache
         Zikula_View_Theme::getInstance()->clear_cache();
