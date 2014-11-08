@@ -107,7 +107,7 @@ function menutree_stylehelper(event)
         return;
     }
     //pattern for tpl name
-    var p = /blocks_block_menutree_(.+?)\.tpl/,
+    var p = /Blocks\/Menutree\/(.+?)\.tpl/,
         tpl = (tpl = $('menutree_tpl').value.match(p)) ? tpl[1] : '',
         hidden = false;
     //hide all options not containing selected tpl name

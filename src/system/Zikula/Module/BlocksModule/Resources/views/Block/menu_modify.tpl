@@ -1,4 +1,3 @@
-{* $Id$ *}
 <h4>{gt text="CSS styling"}</h4>
 <div class="form-group">
     <label class="col-lg-3 control-label" for="blocks_menu_stylesheet">{gt text="Style sheet" domain='zikula'}</label>

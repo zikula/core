@@ -10,7 +10,7 @@
 <input type="hidden" id="returntoblock" name="returntoblock" value="{$blockinfo.bid}" />
 {/if}
 
-{include file="menutree/blocks_block_menutree_help.tpl"}
+{include file="Block/Menutree/help.tpl"}
 
 <ul id="menutree_tabs" class="nav nav-tabs">
     <li class="active"><a href="#menutree_tabmenu" id="menutree_tabmenu_control" data-toggle="tab">{gt text="Block content"}</a></li>
@@ -72,7 +72,7 @@
             <fieldset>
                 <legend>{gt text="Block display settings"}</legend>
                 {if $somethemes}
-                    <p class="help-block alert alert-info">{gt text='<strong>Note</strong>: some templates and/or stylesheets are found only in certain themes. These templates and stylesheets have been included in the "Only in some themes" group. Choosing a template or a stylesheet from this group you must take into account the fact that it might not be available in certain theme - in such situation default template and style ("blocks_block_menutree_default.tpl") is used.'}</p>
+                    <p class="help-block alert alert-info">{gt text='<strong>Note</strong>: some templates and/or stylesheets are found only in certain themes. These templates and stylesheets have been included in the "Only in some themes" group. Choosing a template or a stylesheet from this group you must take into account the fact that it might not be available in certain theme - in such situation default template and style ("Block/Menutree/default.tpl") is used.'}</p>
                 {/if}
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="menutree_tpl">{gt text="Template"}</label>
@@ -208,15 +208,15 @@
     </div>
 </div><!-- /.tab-content -->
 
+{if $menutree_newurl}
 <script type="text/javascript">
     //add this url
-    {{if $menutree_newurl}}
     Event.observe(window, 'load', function() {
         var data = {link_href: '{{$menutree_newurl|safetext}}'};
         Zikula.Menutree.Tree.inst.newNode(data);
     });
-    {{/if}}
 </script>
+{/if}
 
 {capture assign="itemForm"}
     {* ATTENTION: Zikula.UI.FormDialog does not support bootstrap form styling. There is no reason to refactor until Zikula.UI is replaced *}

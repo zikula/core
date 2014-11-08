@@ -3,7 +3,7 @@
     <div class="col-lg-9">
         <select id="blocks_thelang_format" class="form-control" name="format">
             <option value="1" {if $format eq 1} selected="selected"{/if}>{gt text="Flags" domain='zikula'}</option>
-            <option value="2" {if $format eq 2} selected="selected"{/if}>{gt text="Dropdown menu" domain='zikula'"}</option>
+            <option value="2" {if $format eq 2} selected="selected"{/if}>{gt text="Dropdown menu" domain='zikula'}</option>
             <option value="3"  {if $format eq 3} selected="selected"{/if}>{gt text="List" domain='zikula'}</option>
         </select>
     </div>
@@ -13,7 +13,7 @@
     <div class="col-lg-9">
         <select id="blocks_thelang_fulltranslation" class="form-control" name="fulltranslation">
             <option value="1" {if $fulltranslation eq 1} selected="selected"{/if}>{gt text="No" domain='zikula'}</option>
-            <option value="2" {if $fulltranslation eq 2} selected="selected"{/if}>{gt text="Yes" domain='zikula'"}</option>
+            <option value="2" {if $fulltranslation eq 2} selected="selected"{/if}>{gt text="Yes" domain='zikula'}</option>
         </select>
     </div>
 </div>
