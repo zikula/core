@@ -1847,8 +1847,15 @@ class UserUtil
             }
         }
 
-        // Page-specific theme
+        // Retrieve required parameters
         $type = FormUtil::getPassedValue('type', null, 'GETPOST');
+        $legacyType = FormUtil::getPassedValue('lct', null, 'GETPOST');
+        if ($type != $legacyType) {
+            // BC support (see #2051 for example)
+            $type = $legacyType;
+        }
+
+        // Page-specific theme
         $qstring = System::serverGetVar('QUERY_STRING');
         if (!empty($pagetheme)) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($pagetheme));
@@ -1863,7 +1870,8 @@ class UserUtil
         }
 
         // check for an admin theme
-        if (($type == 'admin' || $type == 'adminplugin') && SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
+        $adminSections = array('admin', 'adminplugin');
+        if (in_array($type, $adminSections) && SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
             $admintheme = ModUtil::getVar('ZikulaAdminModule', 'admintheme');
             if (!empty($admintheme)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
