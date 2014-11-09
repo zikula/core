@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Zikula\Core\Response\PlainResponse;
 
 /**
  * Route controller class providing navigation and interaction functionality.
@@ -232,7 +233,13 @@ class RouteController extends BaseRouteController
 
         $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'));
 
-        return new RedirectResponse(\System::normalizeUrl($redirectUrl));
+        //return new RedirectResponse(\System::normalizeUrl($redirectUrl));
+        $this->view->assign('delay', 2);
+        $this->view->assign('url', $redirectUrl);
+        // how do we forward the flashbag?
+//        $this->view->assign('flashbag', $this->request->getSession()->getFlashBag()->all());
+        $response = new PlainResponse($this->view->fetch('Admin/nakedmessage.tpl'));
+        return $response;
     }
 
     /**
