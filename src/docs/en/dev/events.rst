@@ -67,7 +67,7 @@ Receives args['areaid'] as the areaId.  Use this to remove orphan data associate
 receives the args `array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api)`
 
 #### `module_dispatch.preexecute`
-Occurs in `ModUtil::exec()` after function call with the following args:
+Occurs in `ModUtil::exec()` before function call with the following args:
 `array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
 
 #### `module_dispatch.postexecute`
