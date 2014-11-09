@@ -24,7 +24,6 @@ class ZikulaKernel extends Kernel
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Webfactory\Bundle\ExceptionsBundle\WebfactoryExceptionsBundle(),
         );
 
         $this->registerCoreModules($bundles);
@@ -36,6 +35,7 @@ class ZikulaKernel extends Kernel
             $bundles[] = new Elao\WebProfilerExtraBundle\WebProfilerExtraBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Zikula\Bundle\GeneratorBundle\ZikulaGeneratorBundle();
+            $bundles[] = new Webfactory\Bundle\ExceptionsBundle\WebfactoryExceptionsBundle();
         }
 
         return $bundles;
