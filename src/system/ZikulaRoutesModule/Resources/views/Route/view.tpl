@@ -49,6 +49,9 @@
         top: 10px;
         z-index: 9999;
     }
+    .zikularoutesmodule-view .ui-sortable .sortable {
+        cursor: move;
+    }
 </style>
 {img set='ajax' modname='core' src='zktimer_48px_white_rounded.gif' id='indicator' class="hidden"}
 {/if}
