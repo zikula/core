@@ -150,16 +150,22 @@ class Route extends BaseRoute
         }
     }
 
+    /**
+     * @param AbstractModule $module
+     * @param bool $userRoutes
+     * @return bool
+     */
     public function removeAllOfModule(AbstractModule $module, $userRoutes = false)
     {
         $routes = $this->findBy(array('userRoute' => $userRoutes, 'bundle' => $module->getName()));
 
         if (empty($routes)) {
-            return;
+            return false;
         }
         $workflowHelper = new WorkflowUtil(\ServiceUtil::getManager(), \ModUtil::getModule('ZikulaRoutesModule'));
         foreach ($routes as $routeEntity) {
             $workflowHelper->executeAction($routeEntity, 'delete');
         }
+        return true;
     }
 }

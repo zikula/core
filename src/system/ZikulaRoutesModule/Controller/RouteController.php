@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Zikula\Core\Response\PlainResponse;
 
 /**
  * Route controller class providing navigation and interaction functionality.
@@ -206,22 +207,27 @@ class RouteController extends BaseRouteController
             return $viewHelper->processTemplate($this->view, $objectType, 'reload', $request, $templateFile);
         }
 
+        /** @var \Zikula\RoutesModule\Entity\Repository\Route $routeRepository */
         $routeRepository = $this->entityManager->getRepository('ZikulaRoutesModule:RouteEntity');
         $module = $this->request->request->get('reload-module', -1);
         if ($module == -1) {
             $routeRepository->reloadAllRoutes($this->getContainer());
+            $request->getSession()->getFlashBag()->add('status', $this->__('Done! All routes reloaded.'));
+            $hadRoutes = false;
         } else {
             $module = ModUtil::getModule($module);
             if ($module === null) {
                 throw new NotFoundHttpException();
             }
+            /** @var \Zikula\RoutesModule\Routing\RouteFinder $routeFinder */
             $routeFinder = $this->get('zikularoutesmodule.routing_finder');
             $routeCollection = $routeFinder->find($module);
 
-            $routeRepository->removeAllOfModule($module);
+            $hadRoutes = $routeRepository->removeAllOfModule($module);
             if ($routeCollection->count() > 0) {
                 $routeRepository->addRouteCollection($module, $routeCollection);
             }
+            $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Routes reloaded for %s.', '<strong>' . $module->getName() . '</strong>'));
         }
 
 
@@ -232,7 +238,15 @@ class RouteController extends BaseRouteController
 
         $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'));
 
-        return new RedirectResponse(\System::normalizeUrl($redirectUrl));
+        if ($hadRoutes) {
+            // no need to pass through to nakedmessage if module previously had routes loaded.
+            return new RedirectResponse(\System::normalizeUrl($redirectUrl));
+        } else {
+            $this->view->assign('delay', 2);
+            $this->view->assign('url', $redirectUrl);
+            $response = new PlainResponse($this->view->fetch('Admin/nakedmessage.tpl'));
+            return $response;
+        }
     }
 
     /**
