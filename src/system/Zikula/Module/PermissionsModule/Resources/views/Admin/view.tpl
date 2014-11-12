@@ -213,7 +213,7 @@
                 <h4 class="modal-title" id="instanceInfoModalLabel">{gt text="Permission rule information"}</h4>
             </div>
             <div class="modal-body">
-                {include file="instanceinfo.tpl"}
+                {include file="Admin/instanceinfo.tpl"}
             </div>
         </div>
     </div>

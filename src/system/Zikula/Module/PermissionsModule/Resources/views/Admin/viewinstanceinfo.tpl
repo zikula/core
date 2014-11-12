@@ -4,5 +4,5 @@
     {gt text="Permission rule information"}
 </h3>
 
-{include file="instanceinfo.tpl"}
+{include file="Admin/instanceinfo.tpl"}
 {adminfooter}
