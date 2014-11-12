@@ -36,7 +36,7 @@ class SearchHelper extends AbstractSearchable
 
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
             $options = $this->view->assign('active', $active)
-                ->fetch('users_search_options.tpl');
+                ->fetch('Search/options.tpl');
         }
 
         return $options;

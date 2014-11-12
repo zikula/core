@@ -572,7 +572,7 @@ class AdminApi extends \Zikula_AbstractApi
                     $view->assign('email', $value['email']);
                     $view->assign('uname', $value['uname']);
                     $view->assign('pass', $value['pass']);
-                    $message = $view->fetch('users_email_importnotify_html.tpl');
+                    $message = $view->fetch('Email/importnotify_html.tpl');
                     $subject = $this->__f('Password for %1$s from %2$s', array($value['uname'], $sitename));
                     $sendMessageArgs = array(
                         'toaddress' => $value['email'],

@@ -206,14 +206,14 @@ class UserApi extends \Zikula_AbstractApi
 
         $renderer->assign($templateArgs);
 
-        $templateName = "users_email_{$notificationType}_html.tpl";
+        $templateName = "Email/{$notificationType}_html.tpl";
         if ($renderer->template_exists($templateName)) {
             $mailerArgs['html'] = true;
             $mailerArgs['body'] = $renderer->fetch($templateName);
             $subject = trim($renderer->get_template_vars('subject'));
         }
 
-        $templateName = "users_email_{$notificationType}_txt.tpl";
+        $templateName = "Email/{$notificationType}_txt.tpl";
         if ($renderer->template_exists($templateName)) {
             if (isset($mailerArgs['body'])) {
                 $bodyType = 'altbody';
@@ -321,8 +321,8 @@ class UserApi extends \Zikula_AbstractApi
                 'adminRequested'        => $adminRequested,
             );
             $view->assign($viewArgs);
-            $htmlBody = $view->fetch('users_email_lostuname_html.tpl');
-            $plainTextBody = $view->fetch('users_email_lostuname_txt.tpl');
+            $htmlBody = $view->fetch('Email/lostuname_html.tpl');
+            $plainTextBody = $view->fetch('Email/lostuname_txt.tpl');
 
             $subject = $this->__f('Account information for %s', $userObj['uname']);
 
@@ -416,8 +416,8 @@ class UserApi extends \Zikula_AbstractApi
                         'adminRequested'=> $adminRequested,
                     );
                     $view->assign($viewArgs);
-                    $htmlBody = $view->fetch('users_email_lostpassword_html.tpl');
-                    $plainTextBody = $view->fetch('users_email_lostpassword_txt.tpl');
+                    $htmlBody = $view->fetch('Email/lostpassword_html.tpl');
+                    $plainTextBody = $view->fetch('Email/lostpassword_txt.tpl');
 
                     $subject = $this->__f('Confirmation code for %s', $user['uname']);
 
@@ -508,7 +508,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $view = Zikula_View::getInstance($this->name, false);
         $view->assign('returnpage', urlencode(System::getCurrentUri()));
-        return $view->fetch('users_userapi_expiredsession.tpl');
+        return $view->fetch('User/api_expiredsession.tpl');
     }
 
     /**
@@ -621,7 +621,7 @@ class UserApi extends \Zikula_AbstractApi
         );
         $view->assign($viewArgs);
 
-        $message = $view->fetch('users_email_userverifyemail_html.tpl');
+        $message = $view->fetch('Email/userverifyemail_html.tpl');
         $sent = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', array(
             'toaddress' => $args['newemail'],
             'subject'   => $subject,
