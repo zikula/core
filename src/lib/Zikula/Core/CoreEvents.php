@@ -12,7 +12,7 @@ final class CoreEvents
     /** Occurs when a module has been installed. */
     const MODULE_INSTALL = 'module.install';
 
-    /** Occurs when a module has been removed entirely. */
+    /** Occurs after a module has been installed (on reload of the extensions view). */
     const MODULE_POSTINSTALL = 'module.postinstall';
 
     /** Occurs when a module has been upgraded to a newer version. */
