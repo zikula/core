@@ -715,6 +715,7 @@ Inside the Zikula core there has been a new event class introduced (Zikula\Core\
 specifically for events which change the state of a module.
 
     - `module.install` - occurs when a module has been installed.
+    - `module.postinstall` - occurs after a module has been installed (on reload of the extensions view)
     - `module.upgrade` - occurs when a module has been upgraded to a newer version.
     - `module.enable` - occurs when a module has been enabled after it has been disabled before.
     - `module.disable` - occurs when a module has been disabled.
