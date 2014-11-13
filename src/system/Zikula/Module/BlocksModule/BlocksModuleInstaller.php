@@ -153,7 +153,7 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
 
             $menucontent['displaymodules'] = '0';
             $menucontent['stylesheet'] = 'extmenu.css';
-            $menucontent['template'] = 'Block/extmenu.tpl';
+            $menucontent['template'] = 'Block/Extmenu/extmenu.tpl';
             $menucontent['blocktitles'][$lang] = $this->__('Main menu');
 
             // insert the links
