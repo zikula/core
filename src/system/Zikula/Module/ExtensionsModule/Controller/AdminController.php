@@ -205,7 +205,7 @@ class AdminController extends \Zikula_AbstractController
         // check for just installed module and fire event
         $modulesJustInstalled = $request->query->get('justinstalled', null);
         if (!empty($modulesJustInstalled)) {
-            $modulesJustInstalled = unserialize($modulesJustInstalled);
+            $modulesJustInstalled = json_decode($modulesJustInstalled);
             foreach ($modulesJustInstalled as $justInstalled) {
                 $modInfo = ModUtil::getInfo($justInstalled);
                 $module = ModUtil::getModule($modInfo['name']);
@@ -654,7 +654,7 @@ class AdminController extends \Zikula_AbstractController
                                                  array('startnum' => $startnum,
                                                        'letter' => $letter,
                                                        'state' => $state,
-                                                       'justinstalled' => serialize($modulesInstalled)), RouterInterface::ABSOLUTE_URL));
+                                                       'justinstalled' => json_encode($modulesInstalled)), RouterInterface::ABSOLUTE_URL));
         } else {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Initialization of %s failed!', $modinfo['name']));
 
