@@ -203,12 +203,16 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // check for just installed module and fire event
-        $moduleJustInstalled = $request->query->get('justinstalled', null);
-        if (!empty($moduleJustInstalled)) {
-            $module = ModUtil::getModule($moduleJustInstalled);
-            if (!empty($module)) {
-                $event = new ModuleStateEvent($module);
-                $this->getDispatcher()->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
+        $modulesJustInstalled = $request->query->get('justinstalled', null);
+        if (!empty($modulesJustInstalled)) {
+            $modulesJustInstalled = unserialize($modulesJustInstalled);
+            foreach ($modulesJustInstalled as $justInstalled) {
+                $modInfo = ModUtil::getInfo($justInstalled);
+                $module = ModUtil::getModule($modInfo['name']);
+                if (!empty($module)) {
+                    $event = new ModuleStateEvent($module);
+                    $this->getDispatcher()->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
+                }
             }
         }
 
@@ -597,6 +601,8 @@ class AdminController extends \Zikula_AbstractController
             throw new \InvalidArgumentException($this->__('Error! No module ID provided.'));
         }
 
+        $modulesInstalled = array();
+
         // initialise and activate any dependencies
         if (isset($dependencies) && is_array($dependencies)) {
             foreach ($dependencies as $dependency) {
@@ -615,6 +621,7 @@ class AdminController extends \Zikula_AbstractController
                             'letter' => $letter,
                             'state' => $state), RouterInterface::ABSOLUTE_URL));
                 }
+                $modulesInstalled[] = $dependency;
             }
         }
 
@@ -641,12 +648,13 @@ class AdminController extends \Zikula_AbstractController
                     $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Activated %s.', $modinfo['name']));
                 }
             }
+            $modulesInstalled[] = $id;
 
             return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_view',
                                                  array('startnum' => $startnum,
                                                        'letter' => $letter,
                                                        'state' => $state,
-                                                       'justinstalled' => $modinfo['name']), RouterInterface::ABSOLUTE_URL));
+                                                       'justinstalled' => serialize($modulesInstalled)), RouterInterface::ABSOLUTE_URL));
         } else {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Initialization of %s failed!', $modinfo['name']));
 
