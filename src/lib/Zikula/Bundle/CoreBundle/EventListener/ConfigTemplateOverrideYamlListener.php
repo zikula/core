@@ -20,12 +20,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Event handler to override templates.
  */
-class TemplateOverrideYamlListener implements EventSubscriberInterface
+class ConfigTemplateOverrideYamlListener implements EventSubscriberInterface
 {
     /**
      * Associative array.
      *
-     * Maps template path to overriden path.
+     * Maps template path to overridden path.
      *
      * @var array
      */
@@ -55,6 +55,8 @@ class TemplateOverrideYamlListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array('zikula_view.template_override' => array('handler', 5));
+        // weight as 4 sets theme overrides taking precedent over config overrides
+        // @see \Zikula\Bundle\CoreBundle\EventListener\ThemeTemplateOverrideYamlListener
+        return array('zikula_view.template_override' => array('handler', 4));
     }
 }
