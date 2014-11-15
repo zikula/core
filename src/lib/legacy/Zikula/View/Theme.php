@@ -181,14 +181,6 @@ class Zikula_View_Theme extends Zikula_View
 
         EventUtil::attachCustomHandlers("themes/$themeName/EventHandlers");
         EventUtil::attachCustomHandlers("themes/$themeName/lib/$themeName/EventHandlers");
-        $themeBundle = ThemeUtil::getTheme($themeName);
-        if (null !== $themeBundle && is_readable($yaml = $themeBundle->getPath().'/Resources/config/overrides.yml')) {
-            $this->getDispatcher()->addListener('zikula_view.template_override', array($this, '_templateOverride'), 0);
-            $this->_overrideMap = Yaml::parse($yaml);
-        } else if (is_readable("themes/$themeName/templates/overrides.yml")) {
-            $this->getDispatcher()->addListener('zikula_view.template_override', array($this, '_templateOverride'), 0);
-            $this->_overrideMap = Yaml::parse("themes/$themeName/templates/overrides.yml");
-        }
 
         $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('theme.preinit', $event);
