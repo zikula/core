@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-26 17:44+0000\n"
+"POT-Creation-Date: 2014-11-16 10:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,40 +17,48 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: javascript/zikula/zikula.min.js:974 javascript/zikula/zikula.min.js:1061
+#: javascript/zikula/zikula.util.gettext.js:33
+#: javascript/zikula/zikula.util.gettext.js:120
+#: javascript/helpers/Zikula.js:693 javascript/helpers/Zikula.js:785
+msgid "hello"
+msgstr ""
+
+#: javascript/zikula/zikula.min.js:975 javascript/zikula/zikula.min.js:1075
+#: javascript/zikula/zikula.util.gettext.js:34
+#: javascript/zikula/zikula.util.gettext.js:134
+#: javascript/helpers/Zikula.js:694 javascript/helpers/Zikula.js:799
+#, php-format
+msgid "hello %s"
+msgstr ""
+
+#: javascript/zikula/zikula.min.js:976 javascript/zikula/zikula.min.js:1090
+#: javascript/zikula/zikula.util.gettext.js:35
+#: javascript/zikula/zikula.util.gettext.js:149
+#: javascript/helpers/Zikula.js:695 javascript/helpers/Zikula.js:814
+msgid "hello my friend"
+msgid_plural "hello my friends"
+msgstr[0] ""
+msgstr[1] ""
+
+#: javascript/zikula/zikula.min.js:977 javascript/zikula/zikula.min.js:1113
+#: javascript/zikula/zikula.util.gettext.js:36
+#: javascript/zikula/zikula.util.gettext.js:172
+#: javascript/helpers/Zikula.js:696 javascript/helpers/Zikula.js:837
+#, php-format
+msgid "hello my friend %s"
+msgid_plural "hello my friends %s"
+msgstr[0] ""
+msgstr[1] ""
+
 #: javascript/helpers/Zikula.itemlist.js:236
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:46
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:46
 msgid "Maximum depth reached. Limit is: "
 msgstr ""
 
 #: javascript/helpers/Zikula.itemlist.js:237
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:47
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:47
 msgid "You have unsaved changes!"
-msgstr ""
-
-#: javascript/helpers/Zikula.UI.js:953 javascript/helpers/Zikula.UI.js:1036
-#: javascript/helpers/Zikula.UI.js:1200
-msgid "Ok"
-msgstr ""
-
-#: javascript/helpers/Zikula.UI.js:1037 javascript/helpers/Zikula.UI.js:1156
-#: modules/Clip/javascript/Zikula.Clip.Container.js:614
-#: modules/Clip/javascript/Zikula.Clip.Container.js:646
-#: modules/Clip/javascript/Clip.Pubfields.js:59
-#: system/Categories/javascript/categories_admin_view.js:93
-#: system/Categories/javascript/categories_admin_view.js:104
-#: system/Categories/javascript/categories_admin_view.js:249
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:42
-msgid "Cancel"
-msgstr ""
-
-#: javascript/helpers/Zikula.UI.js:1155
-#: modules/Clip/javascript/Zikula.Clip.Container.js:613
-#: system/Categories/javascript/categories_admin_view.js:248
-msgid "Submit"
-msgstr ""
-
-#: javascript/helpers/Zikula.UI.js:1198
-msgid "Select multiple"
 msgstr ""
 
 #: javascript/helpers/Zikula.js:105
@@ -61,28 +69,6 @@ msgstr ""
 #: javascript/helpers/Zikula.js:410
 msgid "Ajax connection time out!"
 msgstr ""
-
-#: javascript/helpers/Zikula.js:693 javascript/helpers/Zikula.js:785
-msgid "hello"
-msgstr ""
-
-#: javascript/helpers/Zikula.js:694 javascript/helpers/Zikula.js:799
-#, php-format
-msgid "hello %s"
-msgstr ""
-
-#: javascript/helpers/Zikula.js:695 javascript/helpers/Zikula.js:814
-msgid "hello my friend"
-msgid_plural "hello my friends"
-msgstr[0] ""
-msgstr[1] ""
-
-#: javascript/helpers/Zikula.js:696 javascript/helpers/Zikula.js:837
-#, php-format
-msgid "hello my friend %s"
-msgid_plural "hello my friends %s"
-msgstr[0] ""
-msgstr[1] ""
 
 #: javascript/helpers/Zikula.ImageViewer.js:68
 msgid "Close"
@@ -100,252 +86,220 @@ msgstr ""
 msgid "Image #{index} of #{total}"
 msgstr ""
 
-#: modules/Clip/javascript/Zikula.Clip.Container.js:410
-#: modules/Clip/javascript/Zikula.Clip.Container.js:447
-#: system/Categories/javascript/categories_admin_view.js:30
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:30
-msgid "Edit"
+#: javascript/helpers/bootstrap-zikula.js:32
+msgid "No"
 msgstr ""
 
-#: modules/Clip/javascript/Zikula.Clip.Container.js:419
-#: modules/Clip/javascript/Zikula.Clip.Container.js:645
-#: system/Categories/javascript/categories_admin_view.js:36
-#: system/Categories/javascript/categories_admin_view.js:92
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:31
-msgid "Delete"
+#: javascript/helpers/bootstrap-zikula.js:32
+msgid "Yes"
 msgstr ""
 
-#: modules/Clip/javascript/Zikula.Clip.Container.js:428
-msgid "Add group after selected"
+#: javascript/helpers/Zikula.UI.js:953 javascript/helpers/Zikula.UI.js:1036
+#: javascript/helpers/Zikula.UI.js:1200
+msgid "Ok"
 msgstr ""
 
-#: modules/Clip/javascript/Zikula.Clip.Container.js:437
-msgid "Add subgroup into selected"
+#: javascript/helpers/Zikula.UI.js:1037 javascript/helpers/Zikula.UI.js:1156
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:42
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:93
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:104
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:247
+msgid "Cancel"
 msgstr ""
 
-#: modules/Clip/javascript/Zikula.Clip.Container.js:458
-msgid "Fields"
+#: javascript/helpers/Zikula.UI.js:1155
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:246
+msgid "Submit"
 msgstr ""
 
-#: modules/Clip/javascript/Zikula.Clip.Container.js:469
-msgid "Relations"
+#: javascript/helpers/Zikula.UI.js:1198
+msgid "Select multiple"
 msgstr ""
 
-#: modules/Clip/javascript/Zikula.Clip.Container.js:480
-msgid "Code"
-msgstr ""
-
-#: modules/Clip/javascript/Zikula.Clip.Container.js:492
-msgid "Editor list"
-msgstr ""
-
-#: modules/Clip/javascript/Zikula.Clip.Container.js:503
-msgid "New publication"
-msgstr ""
-
-#: modules/Clip/javascript/Zikula.Clip.Container.js:642
-msgid "Do you really want to delete this group?"
-msgstr ""
-
-#: modules/Clip/javascript/Zikula.Clip.Container.js:652
-#: system/Categories/javascript/categories_admin_view.js:110
-#: system/PageLock/javascript/pagelock.js:27
-msgid "Confirmation prompt"
-msgstr ""
-
-#: modules/Clip/javascript/Clip.Pubfields.js:54
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:43
-msgid "Save"
-msgstr ""
-
-#: modules/Clip/javascript/Clip.Pubfields.js:65
-msgid "Plugin configuration"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:42
-msgid "Copy"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:48
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:28
-msgid "Activate"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:57
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:29
-msgid "Deactivate"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:66
-msgid "Add category (after selected)); ?>"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:72
-msgid "Add subcategory (into selected)); ?>"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:89
-msgid "Do you really want to delete this category?"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:97
-#, php-format
-msgid "It contains %s direct sub-categories."
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:99
-msgid "Please also choose what to do with this category's sub-categories."
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:102
-msgid "Delete all sub-categories"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:103
-msgid "Move all sub-categories"
-msgstr ""
-
-#: system/PageLock/javascript/pagelock.js:26
-msgid "Are you sure you want to break this lock?"
-msgstr ""
-
-#: system/PageLock/javascript/pagelock.js:130
-msgid "Back"
-msgstr ""
-
-#: system/PageLock/javascript/pagelock.js:131
-msgid "Check again"
-msgstr ""
-
-#: system/PageLock/javascript/pagelock.js:132
-msgid "Ignore Lock"
-msgstr ""
-
-#: system/Admin/javascript/admin_admin_ajax.js:12
-msgid "Right-click down arrows to edit tab name"
-msgstr ""
-
-#: system/Admin/javascript/admin_admin_ajax.js:13
-msgid "Edit category"
-msgstr ""
-
-#: system/Admin/javascript/admin_admin_ajax.js:14
-msgid "Delete category"
-msgstr ""
-
-#: system/Admin/javascript/admin_admin_ajax.js:15
-msgid "Make default category"
-msgstr ""
-
-#: system/Admin/javascript/admin_admin_ajax.js:16
-msgid "Saving"
-msgstr ""
-
-#: system/Admin/javascript/admin_admin_ajax.js:282
-msgid "You must enter a name for the new category"
-msgstr ""
-
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:20
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:20
 msgid "Do you really want to delete this node and all of it child nodes?"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:21
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:21
 msgid "Link name"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:22
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:22
 msgid "Link URL"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:23
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:23
 msgid "Link title"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:24
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:24
 msgid "Link class"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:25
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:25
 msgid "Select class"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:26
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:26
 msgid "Language"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:27
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:27
 msgid "Active?"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:32
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:28
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:48
+msgid "Activate"
+msgstr ""
+
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:29
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:57
+msgid "Deactivate"
+msgstr ""
+
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:30
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:30
+msgid "Edit"
+msgstr ""
+
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:31
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:36
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:92
+msgid "Delete"
+msgstr ""
+
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:32
 msgid "Add new..."
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:33
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:33
 msgid "before"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:34
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:34
 msgid "after"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:35
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:35
 msgid "as child"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:36
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:36
 msgid "Expand this node"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:37
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:37
 msgid "Collapse this node"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:38
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:38
 msgid "Status"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:39
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:39
 msgid "Activate for all langs"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:40
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:40
 msgid "Deactivate for all langs"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:41
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:41
 msgid "Use one for all langs"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:44
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:43
+msgid "Save"
+msgstr ""
+
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:44
 msgid "Please fill required fields"
 msgstr ""
 
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:45
+#: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:45
 msgid "Marked fields are required"
 msgstr ""
 
-#: system/Users/javascript/Zikula.Users.PassMeter.js:154
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:154
 msgid "Weak"
 msgstr ""
 
-#: system/Users/javascript/Zikula.Users.PassMeter.js:154
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:154
 msgid "Normal"
 msgstr ""
 
-#: system/Users/javascript/Zikula.Users.PassMeter.js:154
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:154
 msgid "Strong"
 msgstr ""
 
-#: system/Users/javascript/Zikula.Users.PassMeter.js:154
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:154
 msgid "Very Strong"
 msgstr ""
 
-#: system/Users/javascript/Zikula.Users.PassMeter.js:158
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:158
 #, php-format
 msgid "The minimum length for user passwords is %s characters."
 msgstr ""
 
-#: system/Users/javascript/Zikula.Users.PassMeter.js:164
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:164
 msgid "Password can not match the username, choose a different password."
+msgstr ""
+
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:42
+msgid "Copy"
+msgstr ""
+
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:66
+msgid "Add category (after selected)); ?>"
+msgstr ""
+
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:72
+msgid "Add subcategory (into selected)); ?>"
+msgstr ""
+
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:89
+msgid "Do you really want to delete this category?"
+msgstr ""
+
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:97
+#, php-format
+msgid "It contains %s direct sub-categories."
+msgstr ""
+
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:99
+msgid "Please also choose what to do with this category's sub-categories."
+msgstr ""
+
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:102
+msgid "Delete all sub-categories"
+msgstr ""
+
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:103
+msgid "Move all sub-categories"
+msgstr ""
+
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:110
+#: system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js:27
+msgid "Confirmation prompt"
+msgstr ""
+
+#: system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js:26
+msgid "Are you sure you want to break this lock?"
+msgstr ""
+
+#: system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js:130
+msgid "Back"
+msgstr ""
+
+#: system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js:131
+msgid "Check again"
+msgstr ""
+
+#: system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js:132
+msgid "Ignore Lock"
+msgstr ""
+
+#: system/ZikulaRoutesModule/Resources/public/js/ZikulaRoutesModule_validation.js:65
+msgid "No spaces"
 msgstr ""
