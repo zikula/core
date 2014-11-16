@@ -65,6 +65,7 @@
         "zikula/jquery-minicolors-bundle": "dev-master",
         "bootstrap-plus/bootstrap-media-lightbox": "dev-master",
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
+        "bassjobsen/bootstrap-3-typeahead": "dev-master",
         "vakata/jstree": "dev-master",
         "afarkas/html5shiv": "*",
         "webfactory/exceptions-bundle": "@stable"
