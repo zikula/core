@@ -42,13 +42,12 @@ class MenutreeUtil
      */
     public static function getTemplates()
     {
-        $templates = array();
         $tpls = array();
 
         // restricted templates, array for possible future changes
         $sysTpls = array(
-            'Block/Menutree/modify.tpl',
-            'Block/Menutree/help.tpl'
+            'modify.tpl',
+            'help.tpl'
         );
 
         // module templates
@@ -59,13 +58,17 @@ class MenutreeUtil
         // themes templates - get user and admin themes
         $userThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
+        $mergedThemes = $userThemes + $adminThemes;
         $themesTpls = array();
-        foreach ($userThemes as $ut) {
-            $themesTpls[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/templates/modules/ZikulaBlocksModule/menutree', false, true, 'tpl', null, false, null, false);
-        }
-        foreach ($adminThemes as $at) {
-            if (!array_key_exists($at['name'], $themesTpls)) {
-                $themesTpls[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/templates/modules/ZikulaBlocksModule/menutree', false, true, 'tpl', null, false, null, false);
+        foreach ($mergedThemes as $ut) {
+            $themeBundle = ThemeUtil::getTheme($ut['name']);
+            if (null !== $themeBundle) {
+                $files = FileUtil::getFiles($themeBundle->getRelativePath() . '/Resources/views/modules/ZikulaBlocksModule/menutree', false, false, 'tpl', null, false);
+                if (count($files > 0)) {
+                    $themesTpls[$ut['name']] = $files;
+                }
+            } elseif (is_readable('themes/' . $ut['name'] . '/templates/modules/ZikulaBlocksModule/menutree')) {
+                $themesTpls[$ut['name']] = FileUtil::getFiles('themes/' . $ut['name'] . '/templates/modules/ZikulaBlocksModule/menutree', false, true, 'tpl', null, false, null, false);
             }
         }
 
@@ -87,7 +90,7 @@ class MenutreeUtil
         // prepare array values
         $templatesValues = array();
         foreach ($templates as $t) {
-            $templatesValues[] = 'menutree/'.$t;
+            $templatesValues[] = 'Block/Menutree/'.$t;
         }
         // fill array keys using values
         $templates = array_combine($templatesValues, $templates);
@@ -96,7 +99,7 @@ class MenutreeUtil
         if (!empty($tpls['themes']['some'])) {
             sort($tpls['themes']['some']);
             foreach ($tpls['themes']['some'] as $k => $t) {
-                $tpls['themes']['some'][$k] = 'menutree/'.$t;
+                $tpls['themes']['some'][$k] = 'Block/Menutree/'.$t;
             }
             $templates[$someThemes] = array_combine($tpls['themes']['some'], $tpls['themes']['some']);
         }
@@ -111,7 +114,6 @@ class MenutreeUtil
      */
     public static function getStylesheets()
     {
-        $stylesheets = array();
         $styles = array();
 
         // restricted stylesheets, array for possible future changes
@@ -129,13 +131,17 @@ class MenutreeUtil
         // themes stylesheets - get user and admin themes
         $userThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
+        $mergedThemes = $userThemes + $adminThemes;
         $themesStyles = array();
-        foreach ($userThemes as $ut) {
-            $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/style/ZikulaBlocksModule/menutree', false, false, 'css', null, false);
-        }
-        foreach ($adminThemes as $at) {
-            if (!array_key_exists($at['name'], $themesStyles)) {
-                $themesStyles[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/style/ZikulaBlocksModule/menutree', false, false, 'css', null, false);
+        foreach ($mergedThemes as $ut) {
+            $themeBundle = ThemeUtil::getTheme($ut['name']);
+            if (null !== $themeBundle) {
+                $files = FileUtil::getFiles($themeBundle->getRelativePath() . '/Resources/public/css/ZikulaBlocksModule/menutree', false, false, 'css', null, false);
+                if (count($files > 0)) {
+                    $themesStyles[$ut['name']] = $files;
+                }
+            } elseif (is_readable('themes/' . $ut['name'] . '/style/ZikulaBlocksModule/menutree')) {
+                $themesStyles[$ut['name']] = FileUtil::getFiles('themes/' . $ut['name'] . '/style/ZikulaBlocksModule/menutree', false, false, 'css', null, false);
             }
         }
 
