@@ -2,4 +2,4 @@
 ## original/file.tpl: override/file.tpl
 ---
 system/Zikula/Module/SearchModule/Resources/views/Block/search.tpl: themes/Zikula/Theme/Andreas08Theme/Resources/views/modules/ZikulaSearchModule/Block/search.tpl
-system/Zikula/Module/BlocksModule/Resources/views/blocks_block_extmenu_topnav.tpl: themes/Zikula/Theme/Andreas08Theme/Resources/views/modules/ZikulaBlocksModule/blocks_block_extmenu_topnav.tpl
+system/Zikula/Module/BlocksModule/Resources/views/Block/Extmenu/topnav.tpl: themes/Zikula/Theme/Andreas08Theme/Resources/views/modules/ZikulaBlocksModule/Block/Extmenu/topnav.tpl
