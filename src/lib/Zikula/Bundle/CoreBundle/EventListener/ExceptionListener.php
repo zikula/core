@@ -85,7 +85,7 @@ class ExceptionListener implements EventSubscriberInterface
         } else {
             $event->getRequest()->getSession()->getFlashBag()->add('error', __('You do not have permission for that action.'));
             // redirect to previous page
-            $route = $event->getRequest()->server->get('referrer');
+            $route = $event->getRequest()->server->get('HTTP_REFERER', \System::getHomepageUrl());
         }
         // optionally add logging action here
 
