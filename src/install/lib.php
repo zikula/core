@@ -304,7 +304,7 @@ function install(Zikula_Core $core, Request $request)
 
                     LogUtil::registerStatus(__('Congratulations! Zikula has been successfully installed.'));
                     System::setInstalling(false);
-                    $response = new RedirectResponse(ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'));
+                    $response = new RedirectResponse($container->get('Router')->generate('zikulaadminmodule_admin_adminpanel'));
                     $response->send();
                     exit;
                 }
