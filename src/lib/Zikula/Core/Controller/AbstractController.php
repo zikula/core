@@ -5,7 +5,6 @@ namespace Zikula\Core\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zikula\Bundle\ModuleBundle\AbstractModule;
 use Zikula\Common\I18n\TranslatorAwareInterface;
 use Zikula\Common\I18n\Translator;
 use Zikula\Core\AbstractBundle;
@@ -26,6 +25,24 @@ abstract class AbstractController extends Controller implements TranslatorAwareI
         $this->name = $bundle->getName();
         $this->trans = (null === $translator) ?
             new Translator($bundle->getTranslationDomain()) : $translator;
+        $this->boot($bundle);
+    }
+
+    /**
+     * boot the controller
+     *
+     * @param AbstractBundle $bundle
+     */
+    public function boot(AbstractBundle $bundle)
+    {
+        // load optional bootstrap
+        $bootstrap = $bundle->getPath() ."/bootstrap.php";
+        if (file_exists($bootstrap)) {
+            include_once $bootstrap;
+        }
+        // load any plugins
+        // @todo adjust this when Namespaced plugins are implemented
+        \PluginUtil::loadPlugins($bundle->getPath() ."/plugins", "ModulePlugin_{$this->name}");
     }
 
     public function setTranslator(Translator $translator)
