@@ -37,7 +37,7 @@ $GLOBALS['_ZikulaUpgrader'] = array();
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
-$upgradeFeedback = upgrade_140($connection, $core->getContainer()->getService('kernel'));
+$upgradeFeedback = upgrade_140($connection, $core->getContainer()->getService('kernel'), $request);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
@@ -483,7 +483,7 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
  *
  * @return string
  */
-function upgrade_140(Connection $conn, ZikulaKernel $kernel)
+function upgrade_140(Connection $conn, ZikulaKernel $kernel, $request)
 {
     $feedback = '';
     $res = $conn->executeQuery("SELECT name FROM modules WHERE name = 'ZikulaExtensionsModule'");
@@ -546,6 +546,13 @@ function upgrade_140(Connection $conn, ZikulaKernel $kernel)
     $parameters = Yaml::parse(file_get_contents($path));
     $parameters['parameters']['secret'] = RandomUtil::getRandomString(50);
     $parameters['parameters']['url_secret'] = RandomUtil::getRandomString(10);
+
+    // Configure the Request Context
+    // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
+    $parameters['parameters']['router.request_context.host'] = $request->getHost();
+    $parameters['parameters']['router.request_context.scheme'] = 'http';
+    $parameters['parameters']['router.request_context.base_url'] = $request->getBasePath();
+
     file_put_contents($path, Yaml::dump($parameters));
 
     return $feedback;

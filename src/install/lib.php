@@ -156,7 +156,7 @@ function install(Zikula_Core $core, Request $request)
                 $action = 'dbinformation';
                 $smarty->assign('dbinvalidname', true);
             } else {
-                update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver, $dbtabletype);
+                update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver, $dbtabletype, $request);
                 update_installed_status(false);
                 try {
                     $dbh = new PDO("$dbdriver:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
@@ -540,7 +540,7 @@ function _installer_replace_keys($searchKey, $replaceWith, $string)
     return preg_replace($search, $replace, $string);
 }
 
-function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver, $dbtabletype)
+function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver, $dbtabletype, Request $request)
 {
     $file = file_get_contents('config/config.php');
     $file = _installer_replace_keys('dbname', $dbname, $file);
@@ -560,6 +560,13 @@ function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver
     $array['parameters']['database_password'] = $dbpassword;
     $array['parameters']['secret'] = RandomUtil::getRandomString(50);
     $array['parameters']['url_secret'] = RandomUtil::getRandomString(10);
+
+    // Configure the Request Context to be able to generate urls from the Console.
+    // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
+    $array['parameters']['router.request_context.host'] = $request->getHost();
+    $array['parameters']['router.request_context.scheme'] = 'http';
+    $array['parameters']['router.request_context.base_url'] = $request->getBasePath();
+
     file_put_contents(__DIR__.'/../app/config/parameters.yml', Yaml::dump($array));
 }
 
