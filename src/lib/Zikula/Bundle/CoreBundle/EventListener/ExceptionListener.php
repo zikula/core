@@ -15,6 +15,7 @@
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -64,6 +65,10 @@ class ExceptionListener implements EventSubscriberInterface
         do {
             if ($exception instanceof AccessDeniedException) {
                 $this->handleAccessDeniedException($event, $userLoggedIn);
+            } elseif ($exception instanceof RouteNotFoundException) {
+                if ($userLoggedIn) {
+                    $this->handleRouteNotFoundException($event);
+                }
             }
             // list and handle additional exceptions here
         } while (null !== $exception = $exception->getPrevious());
@@ -81,7 +86,7 @@ class ExceptionListener implements EventSubscriberInterface
             $event->getRequest()->getSession()->getFlashBag()->add('error', __('You do not have permission. You must login first.'));
             $params = array('returnpage' => urlencode($event->getRequest()->getSchemeAndHttpHost() . $event->getRequest()->getRequestUri()));
             // redirect to login page
-            $route = $this->router->generate('zikulausersmodule_user_login', $params);
+            $route = $this->router->generate('zikulausersmodule_user_login', $params, RouterInterface::ABSOLUTE_URL);
         } else {
             $event->getRequest()->getSession()->getFlashBag()->add('error', __('You do not have permission for that action.'));
             // redirect to previous page
@@ -92,6 +97,21 @@ class ExceptionListener implements EventSubscriberInterface
         $response = new RedirectResponse($route);
         $event->setResponse($response);
         $event->stopPropagation();
+    }
+
+    /**
+     * Handle an RouteNotFoundException
+     *
+     * @param GetResponseForExceptionEvent $event
+     */
+    private function handleRouteNotFoundException(GetResponseForExceptionEvent $event)
+    {
+        if (\SecurityUtil::checkPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
+            $message = $event->getException()->getMessage();
+            $event->getRequest()->getSession()->getFlashBag()->add('error', "$message<br />" . __('You might try re-loading the routes for the extension in question.'));
+            $event->setResponse(new RedirectResponse($this->router->generate('zikularoutesmodule_route_reload', array('lct' => 'admin'), RouterInterface::ABSOLUTE_URL)));
+            $event->stopPropagation();
+        }
     }
 
     /**

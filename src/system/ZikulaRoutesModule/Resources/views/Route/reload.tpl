@@ -7,6 +7,7 @@
         {$templateTitle}
     </h3>
 
+    {insert name="getstatusmsg"}
     <p class="alert alert-warning">{gt text='Do you really want to reload routes? Note: Custom routes won\'t be removed.'}</p>
     <form class="form-horizontal" action="{modurl modname='ZikulaRoutesModule' type='route' func='reload' lct='admin'}" method="post" role="form">
         <div>
