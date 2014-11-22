@@ -300,7 +300,7 @@ function install(Zikula_Core $core, Request $request)
 
                     // fire MODULE_INSTALL event to reload all routes
                     $event = new ModuleStateEvent($kernel->getModule('ZikulaRoutesModule'));
-                    $kernel->getContainer()->get('event_dispatcher')->dispatch(CoreEvents::MODULE_INSTALL, $event);
+                    $kernel->getContainer()->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
 
                     LogUtil::registerStatus(__('Congratulations! Zikula has been successfully installed.'));
                     System::setInstalling(false);
