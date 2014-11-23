@@ -14,6 +14,9 @@ namespace Zikula\RoutesModule\Util;
 
 use Zikula\RoutesModule\Util\Base\ControllerUtil as BaseControllerUtil;
 use Zikula_Request_Http;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use FOS\JsRoutingBundle\Command\DumpCommand;
 
 /**
  * Utility implementation class for controller helper methods.
@@ -43,5 +46,28 @@ class ControllerUtil extends BaseControllerUtil
         }
 
         return $idValues;
+    }
+
+    /**
+     * Dump the routes exposed to javascript to '/web/js/fos_js_routes.js'
+     *
+     * @param null $lang
+     * @return int|string
+     * @throws \Exception
+     */
+    public function dumpJsRoutes($lang = null)
+    {
+        // @todo create loop here for all installed langs ($lang=null) or specify lang based on param
+
+        $command = new DumpCommand();
+        $command->setContainer($this->getContainer());
+        $input = new ArrayInput(array()); //array('some-param' => 10, '--some-option' => true)
+        $output = new NullOutput();
+        try {
+            $outputCode = $command->run($input, $output);
+        } catch (\RuntimeException $e) {
+            $outputCode = $e->getMessage();
+        }
+        return $outputCode;
     }
 }
