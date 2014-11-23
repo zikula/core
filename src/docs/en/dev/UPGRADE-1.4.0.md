@@ -546,8 +546,8 @@ The action mainly happens in the `Routing` folder of the module. You'll find the
 `InstallerListener.php`, `RouteFinder.php` and `RouteLoader.php`.
 
 1. `InstallerListener.php`:
-The installer listener listens to `CoreEvents::MODULE_INSTALL`, `CoreEvents::MODULE_UPGRADE` and
-`CoreEvents::MODULE_REMOVE`. On installation, it searches for any routes in the newly installed module using the
+The installer listener listens to `CoreEvents::MODULE_POSTINSTALL`, `CoreEvents::MODULE_UPGRADE` and
+`CoreEvents::MODULE_REMOVE`. Following installation, it searches for any routes in the newly installed module using the
 `RouteFinder`. On upgrade, it first deletes all routes of the upgraded module and then re-reads the routes. That way
 updated routes are properly added to the database. On uninstall, all routes of the uninstalled module are removed from
 database. **Note:** Routes added using the webinterface aren't touched.
@@ -559,7 +559,7 @@ in `getRoutingConfig()` (see above) is not present, an empty collection is retur
 This service takes care of actually giving Symfony all the routes saved in the ZikulaRoutesModule database.
 It is a so-called [custom route loader](http://symfony.com/doc/current/cookbook/routing/custom_route_loader.html).
 It's simply loading all the routes from the database and adds them to a new RouteCollection. Additionally, there is
-one important task the RouteLoader takes care of: When reading the routes, it also parses adds the following defaults
+one important task the RouteLoader takes care of: When reading the routes, it also adds the following default parameters
 to the route: **_zkModule**, **_zkType** and **_zkFunc**, which are used in `System::queryStringDecode` (see below)
 later on. In development mode, this procedure *might* happen on every page load, but it *won't* in production mode.
 The RouteLoader is activated in `app/config/routing.yml`:
