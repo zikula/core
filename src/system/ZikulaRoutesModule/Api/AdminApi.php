@@ -32,6 +32,9 @@ class AdminApi extends BaseAdminApi
             $links[] = array('url' => $this->serviceManager->get('router')->generate('zikularoutesmodule_route_renew', array('lct' => 'admin')),
                 'text' => $this->__('Reload multilingual routing settings'),
                 'title' => $this->__('Reload multilingual routing settings'));
+            $links[] = array('url' => $this->serviceManager->get('router')->generate('zikularoutesmodule_route_dumpjsroutes', array('lct' => 'admin')),
+                'text' => $this->__('Dump exposed js routes to file'),
+                'title' => $this->__('Dump exposed js routes to file'));
         }
 
         return $links;

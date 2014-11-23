@@ -23,6 +23,7 @@ use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Event handler implementation class for module installer events.
@@ -35,11 +36,14 @@ class InstallerListener extends BaseInstallerListener
 
     private $cacheClearer;
 
-    function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer)
+    private $container;
+
+    function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer, ContainerInterface $container)
     {
         $this->em = $em;
         $this->routeFinder = $routeFinder;
         $this->cacheClearer = $cacheClearer;
+        $this->container = $container;
     }
 
     /**
@@ -62,7 +66,7 @@ class InstallerListener extends BaseInstallerListener
      */
     public function modulePostInstall(ModuleStateEvent $event)
     {
-        parent::moduleInstalled($event);
+//        parent::moduleInstalled($event);
 
         $module = $event->getModule();
         if ($module === null) {
@@ -79,6 +83,10 @@ class InstallerListener extends BaseInstallerListener
         }
 
         $this->cacheClearer->clear('symfony.routing');
+
+        // reload **all** JS routes
+        $controllerHelper = $this->container->get('zikularoutesmodule.controller_helper');
+        $controllerHelper->dumpJsRoutes();
     }
     
     /**
@@ -111,6 +119,10 @@ class InstallerListener extends BaseInstallerListener
         $this->addRoutesToCache($module);
 
         $this->cacheClearer->clear('symfony.routing');
+
+        // reload **all** JS routes
+        $controllerHelper = $this->container->get('zikularoutesmodule.controller_helper');
+        $controllerHelper->dumpJsRoutes();
     }
     
     /**
@@ -157,6 +169,10 @@ class InstallerListener extends BaseInstallerListener
         }
 
         $this->removeRoutesFromCache($module);
+
+        // reload **all** JS routes
+        $controllerHelper = $this->container->get('zikularoutesmodule.controller_helper');
+        $controllerHelper->dumpJsRoutes();
 
         $this->cacheClearer->clear('symfony.routing');
     }
