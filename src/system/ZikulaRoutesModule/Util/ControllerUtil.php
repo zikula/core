@@ -77,7 +77,7 @@ class ControllerUtil extends BaseControllerUtil
         foreach($langs as $lang) {
             $command = new DumpCommand();
             $command->setContainer($this->getContainer());
-            $input = new ArrayInput(array('--locale' => $lang));
+            $input = new ArrayInput(array('--locale' => $lang . '__RG__')); // this seems a bit hacky. where does this __RG__ come from in other routes?
             $output = new NullOutput();
             try {
                 $outputCode += $command->run($input, $output);
