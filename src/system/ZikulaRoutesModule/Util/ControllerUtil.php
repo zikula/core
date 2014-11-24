@@ -57,17 +57,34 @@ class ControllerUtil extends BaseControllerUtil
      */
     public function dumpJsRoutes($lang = null)
     {
-        // @todo create loop here for all installed langs ($lang=null) or specify lang based on param
-
-        $command = new DumpCommand();
-        $command->setContainer($this->getContainer());
-        $input = new ArrayInput(array()); //array('some-param' => 10, '--some-option' => true)
-        $output = new NullOutput();
-        try {
-            $outputCode = $command->run($input, $output);
-        } catch (\RuntimeException $e) {
-            $outputCode = $e->getMessage();
+        $installedLanguages = \ZLanguage::getInstalledLanguages();
+        if (isset($lang) && in_array($lang, $installedLanguages)) {
+            // use provided lang if available
+            $langs = array($lang);
+        } else {
+            $multilingual = (bool)\System::getVar('multilingual', 0);
+            if ($multilingual) {
+                // get all available locales
+                $langs = $installedLanguages;
+            } else {
+                // get only the default locale
+                $langs = array(\System::getVar('language_i18n', 'en')); //$this->getContainer()->getParameter('locale');
+            }
         }
-        return $outputCode;
+
+        $outputCode = 0;
+        $errors = '';
+        foreach($langs as $lang) {
+            $command = new DumpCommand();
+            $command->setContainer($this->getContainer());
+            $input = new ArrayInput(array('--locale' => $lang));
+            $output = new NullOutput();
+            try {
+                $outputCode += $command->run($input, $output);
+            } catch (\RuntimeException $e) {
+                $errors .= $e->getMessage() .". ";
+            }
+        }
+        return $outputCode = 0 ? $outputCode : $errors;
     }
 }
