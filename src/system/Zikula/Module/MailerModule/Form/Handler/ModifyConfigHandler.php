@@ -132,7 +132,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                     'encryption' => $this->getFormValue('encryption', null),
                     'auth_mode' => $this->getFormValue('auth_mode', null),
                     // the items below can be configured by modifying the app/config/dynamic/generated.yml file
-                    'spool' => !empty($currentConfig['spool']) ? $currentConfig['spool'] : array('type' => 'memory'),
+//                    'spool' => !empty($currentConfig['spool']) ? $currentConfig['spool'] : array('type' => 'memory'),
                     'delivery_address' => !empty($currentConfig['delivery_address']) ? $currentConfig['delivery_address'] : null,
                     'disable_delivery' => !empty($currentConfig['disable_delivery']) ? $currentConfig['disable_delivery'] : false,
                 );
