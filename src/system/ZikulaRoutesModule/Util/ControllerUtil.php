@@ -17,6 +17,7 @@ use Zikula_Request_Http;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use FOS\JsRoutingBundle\Command\DumpCommand;
+use JMS\I18nRoutingBundle\Router\I18nLoader;
 
 /**
  * Utility implementation class for controller helper methods.
@@ -77,7 +78,7 @@ class ControllerUtil extends BaseControllerUtil
         foreach($langs as $lang) {
             $command = new DumpCommand();
             $command->setContainer($this->getContainer());
-            $input = new ArrayInput(array('--locale' => $lang . '__RG__')); // this seems a bit hacky. where does this __RG__ come from in other routes?
+            $input = new ArrayInput(array('--locale' => $lang . I18nLoader::ROUTING_PREFIX));
             $output = new NullOutput();
             try {
                 $outputCode += $command->run($input, $output);
