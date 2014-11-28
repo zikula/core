@@ -538,6 +538,14 @@ function upgrade_140(Connection $conn, ZikulaKernel $kernel, $request)
     installBundlesTable();
     $feedback .= "Bundles Table installed.<br />\n";
 
+    // install the Routes module
+    if (!installRoutesModule()) {
+        $feedback .= "ERROR: Routes Module could not be installed properly.<br />\n";
+        return $feedback;
+    }
+    $feedback .= "Routes Module installed.<br />\n";
+
+    // add new configuration parameters
     $rootDir = $kernel->getRootDir() . "/config";
     $path = $rootDir . "/custom_parameters.yml";
     if (!is_readable($path)) {
@@ -573,4 +581,52 @@ function installBundlesTable()
     $bundles = array();
     // this neatly autoloads
     $boot->getPersistedBundles($kernel, $bundles);
+}
+
+/**
+ * Calls Routes module installer
+ */
+function installRoutesModule()
+{
+    $sm = ServiceUtil::getManager();
+    $kernel = $sm->get('kernel');
+
+    // manually install the Routes module
+    $routeModuleName = 'ZikulaRoutesModule';
+    $module = $kernel->getModule($routeModuleName);
+    $installerClassName = $module->getInstallerClass();
+    $bootstrap = $module->getPath() . '/bootstrap.php';
+    if (file_exists($bootstrap)) {
+        include_once $bootstrap;
+    }
+    $instance = new $installerClassName($sm, $module);
+    if (!$instance->install()) {
+        // error
+        return false;
+    }
+
+    // determine module id
+    $mid = ModUtil::getIdFromName($routeModuleName, true);
+
+    // force load the modules admin API
+    ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
+
+    // regenerate modules list
+    ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $modApi->getfilemodules()));
+
+    // set module to active
+    ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $mid, 'state' => ModUtil::STATE_INACTIVE));
+    ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $mid, 'state' => ModUtil::STATE_ACTIVE));
+
+    // add the Routes module to the appropriate category
+    $categories = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
+    $modscat = array();
+    foreach ($categories as $category) {
+        $modscat[$category['name']] = $category['cid'];
+    }
+    $category = __('System');
+    $destinationCategoryId = isset($modscat[$category]) ? $modscat[$category] : $modscat[0];
+    ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', array('module' => $routeModuleName, 'category' => $destinationCategoryId));
+
+    return true;
 }
