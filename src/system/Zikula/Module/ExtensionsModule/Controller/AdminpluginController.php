@@ -104,6 +104,6 @@ class AdminpluginController extends \Zikula_AbstractController
             throw new NotFoundHttpException();
         }
 
-        return $this->pluginController->$action();
+        return $this->response($this->pluginController->$action());
     }
 }

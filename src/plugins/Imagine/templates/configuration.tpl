@@ -1,6 +1,6 @@
 {pageaddvar name='javascript' value='plugins/Imagine/javascript/configuration.js'}
 
-{$header}
+{adminheader}
 <h3>
     <span class="fa fa-wrench"></span>
     {gt text='Imagine plugin settings'}
@@ -128,4 +128,4 @@
     </div>
 </form>
 
-{$footer}
+{adminfooter}
