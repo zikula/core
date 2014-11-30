@@ -256,7 +256,7 @@ class WorkflowUtil extends Zikula_AbstractBase
         $amounts = array();
         $modname = 'ZikulaRoutesModule';
     
-        $logger = $serviceManager->get('logger');
+        $logger = $this->get('logger');
     
         // check if objects are waiting for approval
         $state = 'waiting';
