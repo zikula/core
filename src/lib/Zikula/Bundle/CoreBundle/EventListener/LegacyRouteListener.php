@@ -14,22 +14,10 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Zikula\Core\Exception\FatalErrorException;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
-use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\RequestContextAwareInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,15 +30,10 @@ use ModUtil;
 use UserUtil;
 use LogUtil;
 use System;
-use Zikula_View_Theme;
 use SecurityUtil;
-use PageUtil;
 use Zikula\Core\Response\PlainResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception;
-use Symfony\Component\HttpKernel\Exception\FlattenException;
-use Symfony\Bundle\TwigBundle\Controller\ExceptionController;
 
 class LegacyRouteListener implements EventSubscriberInterface
 {
@@ -74,7 +57,7 @@ class LegacyRouteListener implements EventSubscriberInterface
         }
 
         if ($request->isXmlHttpRequest()) {
-            return $this->ajax($event);
+            $this->ajax($event);
         }
 
         $module = $request->attributes->get('_zkModule');
@@ -84,81 +67,56 @@ class LegacyRouteListener implements EventSubscriberInterface
 
         // get module information
         $modinfo = ModUtil::getInfoFromName($module);
+        /**
+         * It is possible the code below will throw an exception. The absence of a try/catch block here
+         * allows this exception to 'bubble up' to the exception handler.
+         * @see \Zikula\Bundle\CoreBundle\EventListener\ExceptionListener
+         */
         if (!$module) {
             // module could not be filtered from url.
             $path = $event->getRequest()->getPathInfo();
             if ($path == "" || $path == "/") {
                 // we have a static homepage
-                $response = new Response('');
+                $this->setResponse($event, new Response(''));
             } else {
-                $response = new Response(__('Page not found.'), 404);
+                throw new NotFoundHttpException(__('Page not found.'));
+            }
+        } else {
+            if (!$modinfo) {
+                throw new NotFoundHttpException(__('Page not found.'));
             }
 
-            return $this->setResponse($event, $response);
-        } else {
+            // call the requested/homepage module
             try {
-                if (!$modinfo) {
-                    $response = new Response(__('Page not found.'), 404);
+                ModUtil::getModule($module);
+                $newType = true;
+            } catch (\Exception $e) {
+                $newType = false;
+            }
 
-                    return $this->setResponse($event, $response);
-                }
+            if ($newType) {
+                $return = ModUtil::func($modinfo['name'], $type, $func);
+            } else {
+                $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+            }
 
-                // call the requested/homepage module
-                try {
-                    ModUtil::getModule($module);
-                    $newType = true;
-                } catch (\Exception $e) {
-                    $newType = false;
-                }
-
-                if ($newType) {
-                    $return = ModUtil::func($modinfo['name'], $type, $func);
+            if (false === $return) {
+                // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
+                throw new NotFoundHttpException(__('Page not found.'));
+            } else {
+                if (true === $return) {
+                    // controllers should not return boolean anymore, this is BC for the time being.
+                    $response = new PlainResponse();
                 } else {
-                    $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
-                }
-
-                if (false === $return) {
-                    // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
-                    $response = new Response(__('Page not found.'), 404);
-
-                    return $this->setResponse($event, $response);
-                } else {
-                    if (true === $return) {
-                        // controllers should not return boolean anymore, this is BC for the time being.
-                        $response = new PlainResponse();
+                    if (false === $return instanceof Response) {
+                        $response = new Response($return);
                     } else {
-                        if (false === $return instanceof Response) {
-                            $response = new Response($return);
-                        } else {
-                            $response = $return;
-                        }
+                        $response = $return;
                     }
                 }
-            } catch (\Exception $e) {
-                if ($e instanceof NotFoundHttpException) {
-                    $response = new Response($e->getMessage(), 404);
-                } elseif ($e instanceof AccessDeniedException) {
-                    $response = new Response($e->getMessage(), 403);
-                } elseif ($e instanceof \Zikula_Exception_Redirect) {
-                    $response = new RedirectResponse(System::normalizeUrl($e->getUrl()), $e->getType());
-                } else {
-                    throw $e;
-                }
-            }
-            if ($response->getStatusCode() == 403 && !UserUtil::isLoggedIn()) {
-                $url = ModUtil::url(
-                    'ZikulaUsersModule',
-                    'user',
-                    'login',
-                    array('returnpage' => urlencode($request->getSchemeAndHttpHost().$request->getRequestUri()))
-                );
-                $response = new RedirectResponse($url, 302);
-                $errorMessage = $e->getMessage();
-                LogUtil::registerError(!empty($errorMessage) ? $errorMessage : LogUtil::getErrorMsgPermission(), 403, $url);
                 $this->setResponse($event, $response);
             }
         }
-        $this->setResponse($event, $response);
     }
 
     private function ajax(GetResponseEvent $event)
@@ -211,26 +169,7 @@ class LegacyRouteListener implements EventSubscriberInterface
             $response = new AjaxResponse($response, LogUtil::getStatusMessages());
         }
 
-        return $this->setResponse($event, $response);
-    }
-
-    public function onException(GetResponseForExceptionEvent $event)
-    {
-        $response = $event->getResponse();
-        $request = $event->getRequest();
-        $exception = $event->getException();
-        if ($exception instanceof AccessDeniedException && !UserUtil::isLoggedIn()) {
-            $url = ModUtil::url(
-                'ZikulaUsersModule',
-                'user',
-                'login',
-                array('returnpage' => urlencode($request->getSchemeAndHttpHost().$request->getRequestUri()))
-            );
-            $response = new RedirectResponse($url, 302);
-            LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url, false);
-            $this->setResponse($event, $response);
-            $event->stopPropagation();
-        }
+        $this->setResponse($event, $response);
     }
 
     public static function getSubscribedEvents()
