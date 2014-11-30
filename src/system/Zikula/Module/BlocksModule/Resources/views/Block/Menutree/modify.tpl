@@ -185,7 +185,7 @@
                 <li>
                     {gt text="Change active language:"}
                     {foreach from=$languages key=code item=name name=langloop}
-                        <a href="#" lang="{$code}" class="menutree_langcontrols{if $code == $defaultanguage} activelang{/if}">{$name}</a> {if !$smarty.foreach.langloop.last} | {/if}
+                        <a href="#" lang="{$code}" class="menutree_langcontrols{if $code == $defaultlanguage} activelang{/if}">{$name}</a> {if !$smarty.foreach.langloop.last} | {/if}
                     {/foreach}
                 </li>
             {/if}
