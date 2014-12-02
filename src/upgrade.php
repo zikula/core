@@ -24,6 +24,9 @@ ini_set('max_execution_time', 86400);
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 
+// add request to global so ServiceManager can use it (#2074)
+$GLOBALS['request'] = $request;
+
 $eventManager = $core->getDispatcher();
 $container = $core->getContainer();
 
