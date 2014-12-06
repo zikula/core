@@ -47,26 +47,16 @@ class InstallerListener extends BaseInstallerListener
     }
 
     /**
-     * Makes our handlers known to the event system.
-     */
-    public static function getSubscribedEvents()
-    {
-        $events = parent::getSubscribedEvents();
-        $events[CoreEvents::MODULE_POSTINSTALL] = array('modulePostInstall', 5);
-        return $events;
-    }
-    
-    /**
      * Listener for the `module.postinstall` event.
      *
-     * Called after a module has been successfully installed.
+     * Called after a module has been installed (on reload of the extensions view).
      * Receives `$modinfo` as args.
      *
      * @param ModuleStateEvent $event The event instance.
      */
-    public function modulePostInstall(ModuleStateEvent $event)
+    public function modulePostInstalled(ModuleStateEvent $event)
     {
-//        parent::modulePostInstall($event); // not available in current generation of MOST
+        parent::modulePostInstalled($event);
 
         $module = $event->getModule();
         if ($module === null) {

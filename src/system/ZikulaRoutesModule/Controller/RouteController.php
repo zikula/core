@@ -311,12 +311,12 @@ class RouteController extends BaseRouteController
         }
 
         $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
-        $resultCode = $controllerHelper->dumpJsRoutes($lang);
+        $result = $controllerHelper->dumpJsRoutes($lang);
 
-        if($resultCode == 0) {
+        if ($result == '') {
             $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Exposed JS Routes dumped to %s.', 'web/js/fos_js_routes.js'));
         } else {
-            $request->getSession()->getFlashBag()->add('error', $this->__('Error! There was an error dumping exposed JS Routes:' . "$resultCode"));
+            $request->getSession()->getFlashBag()->add('error', $this->__('Error! There was an error dumping exposed JS Routes:') . ' ' . $result);
         }
         $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'));
 

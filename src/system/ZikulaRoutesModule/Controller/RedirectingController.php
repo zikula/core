@@ -26,4 +26,4 @@ class RedirectingController extends Controller
 
         return $this->redirect($url, 301);
     }
-} 
+}

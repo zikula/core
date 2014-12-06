@@ -30,6 +30,7 @@ class InstallerListener implements EventSubscriberInterface
     {
         return array(
             CoreEvents::MODULE_INSTALL             => array('moduleInstalled', 5),
+            CoreEvents::MODULE_POSTINSTALL => array('modulePostInstalled', 5),
             CoreEvents::MODULE_UPGRADE             => array('moduleUpgraded', 5),
             CoreEvents::MODULE_ENABLE              => array('moduleEnabled', 5),
             CoreEvents::MODULE_DISABLE             => array('moduleDisabled', 5),
@@ -47,6 +48,18 @@ class InstallerListener implements EventSubscriberInterface
      * @param ModuleStateEvent $event The event instance.
      */
     public function moduleInstalled(ModuleStateEvent $event)
+    {
+    }
+    
+    /**
+     * Listener for the `module.postinstall` event.
+     *
+     * Called after a module has been installed (on reload of the extensions view).
+     * Receives `$modinfo` as args.
+     *
+     * @param ModuleStateEvent $event The event instance.
+     */
+    public function modulePostInstalled(ModuleStateEvent $event)
     {
     }
     
