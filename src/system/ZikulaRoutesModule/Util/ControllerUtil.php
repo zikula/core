@@ -74,12 +74,12 @@ class ControllerUtil extends BaseControllerUtil
             }
         }
 
+        // force deletion of existing file
         $targetPath = sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
         if (file_exists($targetPath)) {
             unlink($targetPath);
         }
 
-        $outputCode = 0;
         $errors = '';
         foreach ($langs as $lang) {
             $command = new DumpCommand();
@@ -87,12 +87,12 @@ class ControllerUtil extends BaseControllerUtil
             $input = new ArrayInput(array('--locale' => $lang . I18nLoader::ROUTING_PREFIX));
             $output = new NullOutput();
             try {
-                $outputCode += $command->run($input, $output);
+                $command->run($input, $output);
             } catch (\RuntimeException $e) {
-                $errors .= $e->getMessage() .". ";
+                $errors .= $e->getMessage() . ". ";
             }
         }
 
-        return empty($errors) ? '' : $errors;
+        return $errors;
     }
 }

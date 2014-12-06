@@ -43,6 +43,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class AdminController extends \Zikula_AbstractController
 {
+    const NEW_ROUTES_AVAIL = 'new.routes.avail';
+
     /**
      * Post initialise.
      *
@@ -239,10 +241,9 @@ class AdminController extends \Zikula_AbstractController
         } else {
             $modulesJustInstalled = $request->query->get('justinstalled', null);
             if (!empty($modulesJustInstalled)) {
-                // enforce a js route dump
-                // @todo move into a custom event
-                $routeControllerHelper = $this->get('zikularoutesmodule.controller_helper');
-                $result = $routeControllerHelper->dumpJsRoutes();
+                // alert the system that new routes are available (ids of modules just installed avail as args)
+                $event = new GenericEvent(null, json_decode($modulesJustInstalled));
+                $this->getDispatcher()->dispatch(self::NEW_ROUTES_AVAIL, $event);
             }
         }
 

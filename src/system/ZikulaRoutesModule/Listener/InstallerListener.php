@@ -74,8 +74,7 @@ class InstallerListener extends BaseInstallerListener
 
         $this->cacheClearer->clear('symfony.routing');
 
-        // reload **all** JS routes
-        $this->controllerHelper->dumpJsRoutes();
+        // dumping the JS routes after module install occurs in \Zikula\Module\ExtensionsModule\Controller\AdminController::viewAction
     }
     
     /**
@@ -175,6 +174,21 @@ class InstallerListener extends BaseInstallerListener
     public function subscriberAreaUninstalled(GenericEvent $event)
     {
         parent::subscriberAreaUninstalled($event);
+    }
+
+    /**
+     * Listener for the `new.routes.avail` generic event
+     *
+     * called in module installer process AFTER the MODULE_POSTINSTALL event
+     *
+     * @param GenericEvent $event
+     */
+    public function newRoutesAvail(GenericEvent $event)
+    {
+        parent::newRoutesAvail($event);
+
+        // reload **all** JS routes
+        $this->controllerHelper->dumpJsRoutes();
     }
 
     /**
