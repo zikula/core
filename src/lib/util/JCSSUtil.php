@@ -364,7 +364,7 @@ class JCSSUtil
                 'require' => array('noconflict', 'jquery-migrate'),
             ),
             'jquery-ui'          => array(
-                'path'    => 'web/jquery-ui/ui/minified/jquery-ui.min.js',
+                'path'    => 'web/jquery-ui/jquery-ui.min.js',
                 'require' => array('jquery'),
             ),
             'noconflict'         => array(
