@@ -25,7 +25,7 @@ include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 
 // add request to global so ServiceManager can use it (#2074)
-$GLOBALS['request'] = $request;
+$GLOBALS['__request'] = $request;
 
 $eventManager = $core->getDispatcher();
 $container = $core->getContainer();
