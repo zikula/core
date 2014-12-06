@@ -60,21 +60,23 @@ class ExceptionListener implements EventSubscriberInterface
         // for BC only, remove in 2.0.0
         $this->handleLegacyExceptionEvent($event);
 
-        $exception = $event->getException();
-        $userLoggedIn = UserUtil::isLoggedIn();
-        do {
-            if ($exception instanceof AccessDeniedException) {
-                $this->handleAccessDeniedException($event, $userLoggedIn);
-            } elseif ($exception instanceof RouteNotFoundException) {
-                if ($userLoggedIn) {
-                    $this->handleRouteNotFoundException($event);
+        if (!$event->getRequest()->isXmlHttpRequest()) {
+            $exception = $event->getException();
+            $userLoggedIn = UserUtil::isLoggedIn();
+            do {
+                if ($exception instanceof AccessDeniedException) {
+                    $this->handleAccessDeniedException($event, $userLoggedIn);
+                } elseif ($exception instanceof RouteNotFoundException) {
+                    if ($userLoggedIn) {
+                        $this->handleRouteNotFoundException($event);
+                    }
                 }
-            }
-            // list and handle additional exceptions here
-        } while (null !== $exception = $exception->getPrevious());
+                // list and handle additional exceptions here
+            } while (null !== $exception = $exception->getPrevious());
 
-        // force all exception to render in BC theme (remove in 2.0.0)
-        $event->getRequest()->attributes->set('_legacy', true);
+            // force all exception to render in BC theme (remove in 2.0.0)
+            $event->getRequest()->attributes->set('_legacy', true);
+        }
     }
 
     /**
