@@ -217,7 +217,7 @@ class AdminController extends \Zikula_AbstractController
                     $this->getDispatcher()->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
                 }
             }
-            // because the Symfony cache is renewed we need dump the js routes in the next request
+            // because the Symfony cache is renewed we need to dump the js routes in the next request
             $redirectForJsRouteDumpRequired = true;
         }
 
