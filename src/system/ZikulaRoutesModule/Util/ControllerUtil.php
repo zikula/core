@@ -86,6 +86,7 @@ class ControllerUtil extends BaseControllerUtil
                 $errors .= $e->getMessage() .". ";
             }
         }
+
         return $outputCode = 0 ? $outputCode : $errors;
     }
 }
