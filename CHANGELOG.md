@@ -4,33 +4,42 @@ CHANGELOG - ZIKULA 1.4.0
 Fixes:
 - Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category
 - Fixed not working password recovery process if using your email adress
-- Fixed System::queryStringSetVar() does not update the request object, #753.
-- Fixed category tree html encoding problem, #681
-- Fixed extmenu drag and drop problem, #801.
-- Fixed setState module problem, #843.
-- Deprecated preg_replace() /e modifier in DataUtil replaced, #889.
-- Fixed SecurityCenter - warnings during installation, #880.
-- Fix ModUtil::getName() inconsistencies, #848.
-- Fixed strip entry point root access, #936.
-- Fix block filtering by module does an incorrect comparison, #339.
-- Fix admin-tab problem with content module, #940.
-- Fixed Extensions module pager, #961.
-- Pass-meter was hidden, because no height was set, #997.
-- Do not show multi-lingual user settings if multi-lingual is disabled, #1050.
-- Fixed Admin breadcrumbs does not work with system plugins, #1056.
-- Fixed wrong handling of MinDate in function.jquery_datepicker.php, #1361
+- Fixed System::queryStringSetVar() does not update the request object (#753).
+- Fixed category tree html encoding problem (#681)
+- Fixed extmenu drag and drop problem (#801)
+- Fixed setState module problem (#843)
+- Deprecated preg_replace() /e modifier in DataUtil replaced (#889)
+- Fixed SecurityCenter - warnings during installation (#880)
+- Fixed ModUtil::getName() inconsistencies (#848)
+- Fixed strip entry point root access (#936)
+- Fixed block filtering by module does an incorrect comparison (#339)
+- Fixed admin-tab problem with content module (#940)
+- Fixed Extensions module pager (#961)
+- Pass-meter was hidden, because no height was set (#997)
+- Do not show multi-lingual user settings if multi-lingual functionality is disabled (#1050)
+- Fixed Admin breadcrumbs does not work with system plugins (#1056)
+- Fixed wrong handling of MinDate in function.jquery_datepicker.php (#1361)
 - Added output sanitizing for authentication module/method in login form
+- Do not register hooks twice (#484).
+- Do not register eventhandlers twice (#727).
+- Several minor bugfixes.
 
 Features:
+- Symfony has been updated to the 2.6 version (#1755, #2076)
 - Show an error message if version number of a module is incorrect.
+- jQuery is used as primary scripting framework (makes Prototype obsolete) (#844, #1043, #1214, #1752, others)
+- Switched to Symfony2 routing, including JS routes, multilingual routes and more (#1788, #1789, #1793, others)
+- Added FontAwesome (#359, #1351)
+- Complete adaption of Bootstrap for frontend (#845, #1036, #1052, #1073, #1092, #1123, #1149, #1230, #1378, #1706, #1751, #1759, others)
 - Added garbage collection to CSRF token generator
-- Introduced Symfony2 Forms
+- The mailer module uses SwiftMailer instead of PHPMailer (#1717)
+- Introduced Symfony2 Forms plugin offering integration helpers like a form type for Zikula categories.
 
 - Controller methods need to be suffixed with the word 'Action'. Old methods will continue to work.
 - Deprecated `Zikula_EventManager` for Symfony2 EventDispatcher component
-- Deprecated `Zikula_ServiceManager` for symfony2 Dependency Injection component
-- Switched to Composer dependency manager see http://getcomposer.org/ which are now
-  managed in `composer.json`
+- Deprecated `Zikula_ServiceManager` for Symfony2 Dependency Injection component
+- Switched to Composer dependency manager see http://getcomposer.org/ which causes
+  dependencies now being managed in a file named `composer.json`
 - [FORWARD COMPAT] Added forward compatibility layer with Symfony2 HttpFoundation
 
   - `$request->isGet/Post()` should be replaced with `$request->isMethod('GET/POST')`.
@@ -48,7 +57,7 @@ Features:
 - Zikula Form - automatically set proper form enctype when upload input is used
 - Added ModUtil::getModuleImagePath() for getting the admin image of a module
 - Update Smarty to 2.6.27
-- Give possibility to set timezone_adjust default value global.
+- Give possibility to set a global timezone_adjust default value.
 - Theme settings: mobile theme different then default; mobile domain; alternative site view
   theme and domain; set admin theme in theme settings section.
 - Select if the mobile theme shall be applied for smartphones, tablets or both of them.
@@ -62,21 +71,19 @@ Features:
 - Update JqueryMobile to 1.3.0
 - Update Mapstraction to 3.0.0
 - Mobile Theme now has an configurable block position for startpage.
-- Dont send an welcome email to new users function added, #731.
+- Dont send an welcome email to new users function added (#731).
 - The password reminder can be turned off now.
 - The password reminder is turned off if a third-party auth-module is used.
 - 1.2.x to 1.3.x migration script converted to pure php script.
-- Reset start page module to static frontpage if it is deactivated, #104.
+- Reset start page module to static frontpage if it is deactivated (#104).
 - jQuery and jQuery UI are now outsourced to their own bundles.
 - Added events if a module is activated and if a module is deactivated.
 - Implemented OpenSearch.
 - Added "hybrid" login option. The user can either provide his email address or user name and will be logged in.
 - Added system information page using `phpinfo()` to the settings module.
-- Params delivery from zikula html_select_* to smarty_function_html_options, #1031.
+- Params delivery from zikula html_select_* to smarty_function_html_options (#1031).
 - Added a third level of warning messages: LogUtil::registerWarning(). These override status messages and are
   overridden by error messages.
-- Do not register hooks twice, #484.
-- Do not register eventhandlers twice, #727.
 - Added a `reason` key to module dependendies array in module version file.
 - add 'moduleBundle' template variable for 1.4.0-type modules (is NULL for legacy mods)
   instance of `\Zikula\Core\AbstractModule` for current module
@@ -88,9 +95,9 @@ Features:
 - Removed DebugToolbar and replaced with Symfony Debug and Profile Toolbar
 - Switched to Symfony error handling.
 - Switched to HttpKernel request cycle.
-- Removed Errors module.
-- Removed support old function based controllers and APIs.
-- Removed events: systemerror, setup.errorreporting, frontcontroller.exception event.
+- Removed Errors module, since error handling is now done using Symfony2 mechanisms.
+- Removed support for old function based controllers and APIs (pre-1.3.x style).
+- Removed events: systemerror, setup.errorreporting, frontcontroller.exception.
 - Development mode is now controlled by editing app/config/kernel.yml `kernel = dev` or `kernel = prod`
 - Removed old legacy (Smarty plugins, hooks etc, old module types).
 - Made it possible to hide the email adress field during registration for external auth modules.
@@ -98,8 +105,16 @@ Features:
 - Login provider now can specify the path to an icon or the name of a FontAwesome icon to display in the login buttons.
 - Added functionality for authentication modules to redirect the user to the registration screen if the given login
   information does not match an existing user account.
-- Increased SearchResultEntity:extra field from 100 to 1000 chars #834.
+- Increased SearchResultEntity:extra field from 100 to 1000 chars (#834).
 - Zikula_EntityAccess now also finds getter methods named `isField()` and not only `getField()`.
+- FilterUtil has been updated to work with Doctrine 2 (#118).
+
+CHANGELOG - ZIKULA 1.3.10
+-------------------------
+
+- Added missing hook area registration for HTML blocks
+- Show registration errors in current language
+- Improved language detection when using short urls
 
 CHANGELOG - ZIKULA 1.3.9
 ------------------------
@@ -125,25 +140,25 @@ CHANGELOG - ZIKULA 1.3.7
 ------------------------
 
 - Fixed unsanitized inputs (Secunia Advisory SA56274)
-- Fixed deprecated /e modifier to preg_replace (PHP 5.5) #889
-- Fixed Workflow handling (needed for MOST-Modules) (issue #704)
-- Fixed dragging and dropping in extmenu (issue #924)
-- Fixed Zikula_Form_Plugin_PostBackFunction name capitalization (issue #916)
-- Fixed Block filtering (issues #516, #938)
-- Fixed CSS for displaying selection boxes (issue #775)
-- Fixed allowing jpeg files next to jpg in userdata (issue #783)
-- Fixed siteoff problems in 1.3.6 (issue #1486)
-- Fixed flush during category selection (issues #1561, #1566)
-- Fixed login block issue due to template comment inclusion with IE<10 (issue #666)
-- Fix for admin panel and extmenu #80, #665, #924
-- Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category #598
-- Smarty Error when no admin.png is available #593
-- Get modimage by ModUtil::getModuleImagePath() #607
+- Fixed deprecated /e modifier to preg_replace (PHP 5.5) (#889)
+- Fixed Workflow handling (needed for MOST-Modules) (#704)
+- Fixed dragging and dropping in extmenu (#924)
+- Fixed Zikula_Form_Plugin_PostBackFunction name capitalization (#916)
+- Fixed Block filtering (#516, #938)
+- Fixed CSS for displaying selection boxes (#775)
+- Fixed allowing jpeg files next to jpg in userdata (#783)
+- Fixed siteoff problems in 1.3.6 (#1486)
+- Fixed flush during category selection (#1561, #1566)
+- Fixed login block issue due to template comment inclusion with IE<10 (#666)
+- Fix for admin panel and extmenu (#80, #665, #924)
+- Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category (#598)
+- Smarty Error when no admin.png is available (#593)
+- Get modimage by ModUtil::getModuleImagePath() (#607)
 - Fix E_NOTICES in Extensions/templates/extensions_hookui_hooks.tpl
-- Fixed bugs in DBObject #616, #617, #618
-- Fixed Formutil z-formrow - label - input type file looks bad on Safari (webkit) #621
-- Added fileupload input styling Webkit #622 
-- Fix developer notices #564
+- Fixed bugs in DBObject (#616, #617, #618)
+- Fixed Formutil z-formrow - label - input type file looks bad on Safari (webkit) (#621)
+- Added fileupload input styling Webkit (#622)
+- Fix developer notices (#564)
 - Fixed decoding of Block content which made problems on some servers
 
 CHANGELOG - ZIKULA 1.3.6
@@ -157,9 +172,9 @@ CHANGELOG - ZIKULA 1.3.5
 ------------------------
 
 Fixes:
-- Fixed return of DBUtil::selectExpandedObjectCount(), should not return false for 0 count (issue #512)
-- Fixed error related to wrong case use in the Mobile theme (issue #529)
-- Fixed ValidationUtil::validateField() return if a validation error for given field already exists (issue #534)
+- Fixed return of DBUtil::selectExpandedObjectCount(), should not return false for 0 count (#512)
+- Fixed error related to wrong case use in the Mobile theme (#529)
+- Fixed ValidationUtil::validateField() return if a validation error for given field already exists (#534)
 - Fixed JSCCUtil attempting (incorrectly) to combine remote scripts/styles (refs #435)
 - Fixed minor typo in UserUtil::loginUsing() that prevented correct usage of function
 - Fixed issue with setting active panel by element ID in Zikula.UI.Panels
@@ -180,46 +195,46 @@ CHANGELOG - ZIKULA 1.3.4
 
 - Update jQuery-UI to 1.8.23
 - Update jQuery to 1.8.1
-- Fixed invalid URL send in Password recovery (issue #443)
-- Fixed users module failing to send password recovery (admin) (issue #459)
-- Fixed category management migration 1.2.6 -> 1.3. The display_name and display_desc are updated fine during upgrade from Zikula 12x to Zikula 134 (issue #69)
-- Fixed checks in DateUtil::getDateFormatData (issue #198)
-- Added message about clearing the database when re-install is needed (issue #200)
-- Updated config.php for PHP 5.4 compatibility with explicit E_STRICT excluding in production (issue #451)
-- Fixed php warning with array usage in Users_Controller_Admin (issue #440)
-- Added a param minLength to the Textinput form plugin (issue #445)
-- Added mandatory Param for checkboxes to the Checkbox form plugin (issue #456, #457))
-- Adjusted form contextmenu to work again in IE browsers for submitting from a hidden div (module Content uses this a lot) (issue #423)
-- Fixed access to admin in IE8 (issue #420)
-- Fixed no redirect from session expired page (issue #416)
-- Fixed JS error in IE8 when clicking a submit button (issue #451)
-- Fixed normalized paths in Menutree, especially for custom templates/styles (issue #414)
-- Fixed formcategorycheckboxlist plugin to enable multiple category selection with Doctrine2 (issue #403, #404)
-- Fixed creating a category via right click (issue #316)
-- Added ability to edit empty menuitems (with a space char) in Menutree, although using stylesheets is the recommmended way (issue #264)
-- Fixed Contextmenu in admin area to work in Opera browser (issue #258)
-- Fixed error message when uninstalling a module (issue #231)
-- Fixed incoherent permissions in Users_Controller_Admin (issue #167)
-- Added ability to generate an overrides.yml file (issue #136)
-- Extended DateUtil::getdatetime with an option for not translating dates, backwards compatible (issue #81)
-- Fixed mailer smtp password being stored too short (issue #441)
-- Added correct Categories in the ExampleDoctrine module (issue #401)
-- Fixed using setSelectedValue in CategorySelector if there is no selected category (issue #479)
-- Added option that a theme can avoid the loading of core.css, e.g. Mobile themes (issue #453)
-- Fixed typo causing interactive installers not being recognised (issue #448)
-- Fixed blocks migration from Zikula 1.2 to Zikula 1.3 (issue #406)
-- Added reimplementation of a core solution for pagetitles/sitenames, (issue #237)
-- Added check for outdated config.php in upgrade.php (issue #143)
-- Fixed url of preview theme link (issue #493)
-- Fixed formfloatinput plugin localisation (issue #462)
-- Fixed localisation of formdateinput (issue #496)
-- Fixed broken dateinput handling with time (issue #199)
-- Fixed in IE8, clicking on a submit button, gives js error 'Object required' (issue #415)
-- Added a default mobile theme (issue #436)
-- Fixed strict standards: Non-static method ZLanguage::getLanguageCodeLegacy() should not be called statically (issue #442)
-- Fixed ModulePlugins do not add the right template directory (issue #452)
-- Fixed incorrect object field reference in DBObject.php (issue #494)
-- Fixed module.users.ui.logout.succeeded logout event (issue #508)
+- Fixed invalid URL send in Password recovery (#443)
+- Fixed users module failing to send password recovery (admin) (#459)
+- Fixed category management migration 1.2.6 -> 1.3. The display_name and display_desc are updated fine during upgrade from Zikula 12x to Zikula 134 (#69)
+- Fixed checks in DateUtil::getDateFormatData (#198)
+- Added message about clearing the database when re-install is needed (#200)
+- Updated config.php for PHP 5.4 compatibility with explicit E_STRICT excluding in production (#451)
+- Fixed php warning with array usage in Users_Controller_Admin (#440)
+- Added a param minLength to the Textinput form plugin (#445)
+- Added mandatory Param for checkboxes to the Checkbox form plugin (#456, #457))
+- Adjusted form contextmenu to work again in IE browsers for submitting from a hidden div (module Content uses this a lot) (#423)
+- Fixed access to admin in IE8 (#420)
+- Fixed no redirect from session expired page (#416)
+- Fixed JS error in IE8 when clicking a submit button (#451)
+- Fixed normalized paths in Menutree, especially for custom templates/styles (#414)
+- Fixed formcategorycheckboxlist plugin to enable multiple category selection with Doctrine2 (#403, #404)
+- Fixed creating a category via right click (#316)
+- Added ability to edit empty menuitems (with a space char) in Menutree, although using stylesheets is the recommmended way (#264)
+- Fixed Contextmenu in admin area to work in Opera browser (#258)
+- Fixed error message when uninstalling a module (#231)
+- Fixed incoherent permissions in Users_Controller_Admin (#167)
+- Added ability to generate an overrides.yml file (#136)
+- Extended DateUtil::getdatetime with an option for not translating dates, backwards compatible (#81)
+- Fixed mailer smtp password being stored too short (#441)
+- Added correct Categories in the ExampleDoctrine module (#401)
+- Fixed using setSelectedValue in CategorySelector if there is no selected category (#479)
+- Added option that a theme can avoid the loading of core.css, e.g. Mobile themes (#453)
+- Fixed typo causing interactive installers not being recognised (#448)
+- Fixed blocks migration from Zikula 1.2 to Zikula 1.3 (#406)
+- Added reimplementation of a core solution for pagetitles/sitenames, (#237)
+- Added check for outdated config.php in upgrade.php (#143)
+- Fixed url of preview theme link (#493)
+- Fixed formfloatinput plugin localisation (#462)
+- Fixed localisation of formdateinput (#496)
+- Fixed broken dateinput handling with time (#199)
+- Fixed in IE8, clicking on a submit button, gives js error 'Object required' (#415)
+- Added a default mobile theme (#436)
+- Fixed strict standards: Non-static method ZLanguage::getLanguageCodeLegacy() should not be called statically (#442)
+- Fixed ModulePlugins do not add the right template directory (#452)
+- Fixed incorrect object field reference in DBObject.php (#494)
+- Fixed module.users.ui.logout.succeeded logout event (#508)
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------
@@ -235,7 +250,7 @@ CHANGELOG - ZIKULA 1.3.3
 CHANGELOG - ZIKULA 1.3.1
 ------------------------
 
-- Fixed issue with FileUtil::getFiles() not respecting nestedData arg (issue #3139).
+- Fixed issue with FileUtil::getFiles() not respecting nestedData arg (#3139).
 - Updated DoctrineExtensions.
 - Added Imagine image manipulation library - https://github.com/avalanche123/Imagine
 - Added standard-fields, attributable, category and metadata extensions for Doctrine 2.
@@ -248,8 +263,8 @@ CHANGELOG - ZIKULA 1.3.1
 - Fixed issue with DoctrineExtensions plugin and short URLs - issue #91.
 - Adjusted installer to handle multilingual custom SQL files.
 - Upgraded PHPIDS to 0.7.0.
-- Fixed issue where restoring defauls for a module, the localization wasn't used (issue #71)
-- Fixed issue where pager wasn't able to parse array with three dimensions (issue #111)
+- Fixed issue where restoring defauls for a module, the localization wasn't used (#71)
+- Fixed issue where pager wasn't able to parse array with three dimensions (#111)
 
 
 CHANGELOG - ZIKULA 1.3.0
@@ -288,13 +303,13 @@ There has been a significant overhaul of Users module:
 
   - Admin can now send a password reset e-mail to a user.
 
-  - Improved password recovery workflow. (issue #1631).
+  - Improved password recovery workflow. (#1631).
 
-  - Added user name recovery. (issue #243).
+  - Added user name recovery. (#243).
 
   - Removed old Authentication API.
 
-  - Changed old password checker js sytem to "passwordchecker" library (issue #1841).
+  - Changed old password checker js sytem to "passwordchecker" library (#1841).
 
   - Introduced new Authentication API capable of dealing with modern
 authentication (login) methods.
@@ -330,7 +345,7 @@ age-check during registration has moved to the Legal module.
   - Removed MD5 as a valid hash method for user passwords.
 
   - Permission checks in the Users module were made more consistent
-throughout (issue #1872).
+throughout (#1872).
 
   - All e-mail messages sent by the Users module can now be
 multi-part/alternative messages, containing both a plain-text version and
@@ -440,63 +455,63 @@ automatically remove invalid modules that have been removed from the file
 system.
 
 - Fixed problem with deleting group via ajax with insufficient permissions
-(issue #1568).
+(#1568).
 
 - Fixed an issue where an incorrect group type was displayed when editing a
-group through the administration panel (issue #2993).
+group through the administration panel (#2993).
 
 - Allow module to specify core version requirements.
 
-- Added missing icons for blocks collapsible function. (issue #1847).
+- Added missing icons for blocks collapsible function. (#1847).
 
-- Moved search procedure to api function. (issue #1859).
+- Moved search procedure to api function. (#1859).
 
 - Admin panel icons are shown to a user if that user has edit access for
-at least one instance. (issue #1026).
+at least one instance. (#1026).
 
 - When accessing the site through the admin.php entry point with no module
 specified, if the user is not logged in then he is redirected to a login
-screen. (issue #1729).
+screen. (#1729).
 
 - Corrected minor defects that generated notices (issues #1901, #1902).
 
 - The Mailer module can now send multipart/alternative e-mails with the
-specification of a plain-text altbody (issue #1768).
+specification of a plain-text altbody (#1768).
 
 - Fix a problem with the encodeurl function of the Search module (issue
 #1866).
 
-- Added {modulelinks} navigation plugin (issue #1238).
+- Added {modulelinks} navigation plugin (#1238).
 
 - Added new {helplink} plugin for documentation with ability to use Zikula.UI.
 
-- Searchbox toggle (issue #1810).
+- Searchbox toggle (#1810).
 
-- Link to help page for each security alert (issue #1692).
+- Link to help page for each security alert (#1692).
 
 - Removed the requirement for block templates to specify language domain manually.
 
-- Added ability to check all radios in HTML Settings (issue #1551).
+- Added ability to check all radios in HTML Settings (#1551).
 
 - New APIs DataUtil::decodeNVP(), DataUtil::encodeNVP(),
 DataUtil::encodeNVPArray().
 
 - Adapted the Extensions module for a Zikula multisites system with
-multiple domains (issue #1968).
+multiple domains (#1968).
 
 - Modify html maxlength of block title to reflect the database structure.
-(issue #1980).
+(#1980).
 
 - Addition of Zikula_FileSystem class libraries to allow easy interaction with
-file systems via local/ftp(s)/sftp (issue #1517).
+file systems via local/ftp(s)/sftp (#1517).
 
-- Ability to export CSV file from users module added. (issue #1954).
+- Ability to export CSV file from users module added. (#1954).
 
-- Escaped illegal char in pagelock template (issue #2004).
+- Escaped illegal char in pagelock template (#2004).
 
-- Added minute based refresh times for blocks (issue #1999).
+- Added minute based refresh times for blocks (#1999).
 
-- Added ability to administrate the "Admin Panel" with using AJAX, drag and drop to move modules to different categories, create/edit/delete admin categories via right click (issue #1919).
+- Added ability to administrate the "Admin Panel" with using AJAX, drag and drop to move modules to different categories, create/edit/delete admin categories via right click (#1919).
 
 - Improved and simplified `.htaccess` rulesets.
 
@@ -506,11 +521,11 @@ language code should be so, but the country code should be se. (issue
 
 - Blocks module admin section now has filtering options for
 block-position, module, language and active-status. The allows remove of
-the old showall/showinactive link in the admin section. (issue #2012,
+the old showall/showinactive link in the admin section. (#2012,
 #2020)
 
 - Blocks module now has sorting options for the main columns in the admin
-view. (issue #2012).
+view. (#2012).
 
 - Fixed Zikula_Form_View::registerPlugin() in environments where the
 installation is not in the server document root.
@@ -521,13 +536,13 @@ installation is not in the server document root.
 processing the ADODB object manually (without the use of
 DBUtil::marshallObjects().
 
-- Fixed theme list not sorted correctly on Theme view (issue #1974).
+- Fixed theme list not sorted correctly on Theme view (#1974).
 
-- Fixed pager plugin images always in english (issue #1883).
+- Fixed pager plugin images always in english (#1883).
 
-- Fixed wrong contents in modvar 'permareplace' (issue #2044).
+- Fixed wrong contents in modvar 'permareplace' (#2044).
 
-- Updated css messages (issue #2043, #2030).
+- Updated css messages (#2043, #2030).
 
 - Added support for HTTP 500 response in Errors module.
 
@@ -549,10 +564,10 @@ Zikula_ServiceManager, one instance per module or plugin.
 - Improved StringUtil::highlightWords() (patch by Gabriele Pohl).
 
 - When short URLs are enabled, 3-letter or 2-letters can't be used
-anymore. This also fixes issues with the RSS theme. (issue #1800).
+anymore. This also fixes issues with the RSS theme. (#1800).
 
 - Fixed validation of directory based short URLs to produce 404 if target
-not found (issue #923).
+not found (#923).
 
 - Removed support for filebased short URL rewriting.
 
@@ -566,23 +581,23 @@ definitions.
 - tables.php: $module_column is now unnecessary if the there is no column
 prefix, i.e. if name => name.
 
-- DataUtil::formatForOS() not Windows file path compatible (issue #1838).
+- DataUtil::formatForOS() not Windows file path compatible (#1838).
 
-- New location for core stylesheet in /style/core.css (issue #2211).
+- New location for core stylesheet in /style/core.css (#2211).
 
 - Deprecated ZFeed and SimplePie from the core.
 
-- New location for core stylesheet in /style/core.css (issue #2211).
+- New location for core stylesheet in /style/core.css (#2211).
 
-- Added @import handling to css combiner (issue #1801).
+- Added @import handling to css combiner (#1801).
 
-- New button styling (issue #1574).
+- New button styling (#1574).
 
 - Relocated system fatal error templates (siteoff.tpl, notinstalled.tpl,
 dbconnectionerror.tpl and sessionfailed.tpl) to
 system/Theme/templates/system.
 
-- Add date in Zikula error log file (issue #2209).
+- Add date in Zikula error log file (#2209).
 
 - Allow override of style/core.css with config/style/core.css.
 
@@ -590,37 +605,37 @@ system/Theme/templates/system.
 PageUtil::addVar, {pageaddvar}, or {pageaddvarblock}.  This allows for
 complete override freedom.
 
-- Added new default pager style (issue #2264)
+- Added new default pager style (#2264)
 
-- Streamlined user frontend of Themes module (issue #2279, #3034).
+- Streamlined user frontend of Themes module (#2279, #3034).
 
 - Added Upgrade All options, and Module API to upgrade all modules with
 one click.  This will work for all non-complicated upgrades of Core also.
 
-- Fixed LogUtil errors in CategoryUtil (issue #2276).
+- Fixed LogUtil errors in CategoryUtil (#2276).
 
-- Admin icons update of the system modules. (issue #2300).
+- Admin icons update of the system modules. (#2300).
 
 - tables.php now supports index options in the _column_idx array.
 array(inxname, array('columns' => array(fld1, fld2..), 'options' =>
-'unique') (issue #1885).
+'unique') (#1885).
 
 - Added the Menutree into the Blocks module.
 
-- Added horizontal and vertical drop down menu examples for Menutree. (issue #2313).
+- Added horizontal and vertical drop down menu examples for Menutree. (#2313).
 
 - Added htmlentities modifier to properly convert utf8 chars to html
 entities.
 
 - Replaced SetEnvIf with FilesMatch in .htaccess files. Removed extensions
 tif, flv, ico, cur from all .htaccess, swf from all except modules/ and
-html from all except system/Theme/includes (issue #2334).
+html from all except system/Theme/includes (#2334).
 
 - Added FileUtil::exportCSV() to simplify data export to csv files.
 
-- Themes can now process ajax request natively (issue #2326).
+- Themes can now process ajax request natively (#2326).
 
-- New block with User account links (issue #2374).
+- New block with User account links (#2374).
 
 - Deprecated DataUtil::parseIniFile(), use native PHP parse_ini_file()
 instead.
@@ -632,9 +647,9 @@ recipient's e-mail client does not support HTML messages, then the
 plain-text message will be displayed to him.
 
 - Added option to translate the language changer block option into native
-language. (issue #2119).
+language. (#2119).
 
-- Added {gettext} block (issue #2414).
+- Added {gettext} block (#2414).
 
 - Changed the label for the user's account activated status from
 'Activated' to 'Status' in the administrator's Users manager.
@@ -644,54 +659,54 @@ user name, uid (internal ID), registration date, date last logged in, and
 status.
 
 - Added markdown and markdown-extra support and with Smarty modifiers
-(issue #2487).
+(#2487).
 
 - Added doctrine support to DropdownRelationlist form view plugin. (issue
 #2442).
 
 - Added more HTML5 tags to allowed HTML settings page (issues #2139 and #2460).
 
-- Fixed conflict in search module short-urls url (issue #2494).
+- Fixed conflict in search module short-urls url (#2494).
 
-- Fixed minor issue in uploadinput form plugin (issue #2551).
+- Fixed minor issue in uploadinput form plugin (#2551).
 
 - Added missing member var for display area format in dateinput form
-plugin (issue #2552).
+plugin (#2552).
 
 - Added doctrine support to selectmodobject(Array) view plugins (issue
 #2542).
 
-- Included generic url routing classes (issue #2557)
+- Included generic url routing classes (#2557)
 
 - Added a new attribute, precision, to the formfloatinput Form plugin,
-which controls the number of digits after the decimal (issue #2616)
+which controls the number of digits after the decimal (#2616)
 
-- The {userprofilelink} Smarty modifier was splitted on profilelinkbyuid and {profilelinkbyuname} to avoid problems with numeric usernames (issue #2971).
+- The {userprofilelink} Smarty modifier was splitted on profilelinkbyuid and {profilelinkbyuname} to avoid problems with numeric usernames (#2971).
 
 - Fix bad icon transparency.
 
-- Recoded all icons to PNG format (issue #2831).
+- Recoded all icons to PNG format (#2831).
 
-- Fix inconsistency with styles/ vs. style/ folders (issue #2805).
+- Fix inconsistency with styles/ vs. style/ folders (#2805).
 
-- Cleanup RSS icons (issue #2830).
+- Cleanup RSS icons (#2830).
 
-- Altered style for number fields(issue #2757).
+- Altered style for number fields(#2757).
 
-- Activate new Categories by default (issue #2748).
+- Activate new Categories by default (#2748).
 
-- Switchdisplaystate rendering Bug in IE7 and Chrome (issue #2714,
+- Switchdisplaystate rendering Bug in IE7 and Chrome (#2714,
 #2707).
 
-- CSS issues in IE and Chrome (issue #2685, #2702).
+- CSS issues in IE and Chrome (#2685, #2702).
 
-- Removed smilies removed (issue #2640).
+- Removed smilies removed (#2640).
 
-- New color picker solution (issue #2634).
+- New color picker solution (#2634).
 
-- Created easy drop-menu for module (admin) links (issue #2646).
+- Created easy drop-menu for module (admin) links (#2646).
 
-- Dropdown menus (issue #2649).
+- Dropdown menus (#2649).
 
 - Added a new template block function
 {pageaddvarblock}...{/pageaddvarblock} to allow inline scripts, styles,
@@ -703,25 +718,25 @@ will map to 'header', if not then 'rawtext' will be treated as just
 another page variable name, and will NOT render to the page.
 
 - Enabled support of persistent data on Zikula_Form_View to let Form
-Handlers store data through the process (issue #3023).
+Handlers store data through the process (#3023).
 
 - Theme config .ini files now can handle their own variables, overriding
-the themevariables.ini general ones (issue #3034).
+the themevariables.ini general ones (#3034).
 
 - Forms framework has been extended to allow multiple forms on a single page and does not break in a tabbed environment.
 
-- improved functionality and usability of advanced block filtering (issue #2875)
+- improved functionality and usability of advanced block filtering (#2875)
 
-- Fixed CSS/JS combination not working if using personal_config.php (issue #2916)
+- Fixed CSS/JS combination not working if using personal_config.php (#2916)
 
-- Fixed Render and Theme cache (issue #3030)
+- Fixed Render and Theme cache (#3030)
 
-- Theme Admin Panel fixed. Theme config .ini files now can handle their own variables, overriding the themevariables.ini general ones. (issue #3034)
+- Theme Admin Panel fixed. Theme config .ini files now can handle their own variables, overriding the themevariables.ini general ones. (#3034)
 
 - Changed template override system from 'scan everywhere' to explicit override mapping.
 
-- Added indexes to object_attribution (issue #3048).
+- Added indexes to object_attribution (#3048).
 
-- Clear theme cache automatically when it gets disabled (issue #2743).
+- Clear theme cache automatically when it gets disabled (#2743).
 
-- Optimization of the admin templates (issue #3088).
+- Optimization of the admin templates (#3088).
