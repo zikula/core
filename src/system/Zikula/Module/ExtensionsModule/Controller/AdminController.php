@@ -202,11 +202,14 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
+        // flag indicating whether we need to dump the js routes
+        $redirectForJsRouteDumpRequired = false;
+
         // check for just installed module and fire event
-        $modulesJustInstalled = $request->query->get('justinstalled', null);
-        if (!empty($modulesJustInstalled)) {
-            $modulesJustInstalled = json_decode($modulesJustInstalled);
-            foreach ($modulesJustInstalled as $justInstalled) {
+        $modulesPostInstall = $request->query->get('postinstall', null);
+        if (!empty($modulesPostInstall)) {
+            $modulesPostInstall = json_decode($modulesPostInstall);
+            foreach ($modulesPostInstall as $justInstalled) {
                 $modInfo = ModUtil::getInfo($justInstalled);
                 $module = ModUtil::getModule($modInfo['name']);
                 if (!empty($module)) {
@@ -214,6 +217,8 @@ class AdminController extends \Zikula_AbstractController
                     $this->getDispatcher()->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
                 }
             }
+            // because the Symfony cache is renewed we need dump the js routes in the next request
+            $redirectForJsRouteDumpRequired = true;
         }
 
         // Get parameters from whatever input we need.
@@ -224,6 +229,23 @@ class AdminController extends \Zikula_AbstractController
         $state = $request->get('state', (!strstr($request->server->get('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('state', null));
         $sort = $request->query->get('sort', (!strstr($request->server->get('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('sort', null));
         $sortdir = $request->query->get('sortdir', (!strstr($request->server->get('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('sortdir', null));
+
+        if ($redirectForJsRouteDumpRequired === true) {
+            return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_view',
+                                                 array('startnum' => $startnum,
+                                                       'letter' => $letter,
+                                                       'state' => $state,
+                                                       'justinstalled' => json_encode($modulesPostInstall)), RouterInterface::ABSOLUTE_URL));
+        } else {
+            $modulesJustInstalled = $request->query->get('justinstalled', null);
+            if (!empty($modulesJustInstalled)) {
+                // enforce a js route dump
+                // @todo move into a custom event
+                $routeControllerHelper = $this->get('zikularoutesmodule.controller_helper');
+                $result = $routeControllerHelper->dumpJsRoutes();
+            }
+        }
+
 
         // parameter for used sort order
         if ($sort != 'name' && $sort != 'displayname') $sort = 'name';
@@ -654,7 +676,7 @@ class AdminController extends \Zikula_AbstractController
                                                  array('startnum' => $startnum,
                                                        'letter' => $letter,
                                                        'state' => $state,
-                                                       'justinstalled' => json_encode($modulesInstalled)), RouterInterface::ABSOLUTE_URL));
+                                                       'postinstall' => json_encode($modulesInstalled)), RouterInterface::ABSOLUTE_URL));
         } else {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Initialization of %s failed!', $modinfo['name']));
 
