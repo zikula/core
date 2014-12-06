@@ -75,7 +75,7 @@ class ControllerUtil extends BaseControllerUtil
 
         $outputCode = 0;
         $errors = '';
-        foreach($langs as $lang) {
+        foreach ($langs as $lang) {
             $command = new DumpCommand();
             $command->setContainer($this->getContainer());
             $input = new ArrayInput(array('--locale' => $lang . I18nLoader::ROUTING_PREFIX));
