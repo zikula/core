@@ -10,6 +10,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
@@ -19,12 +20,8 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula\Core\Response\Ajax\FatalResponse;
-use Zikula\Core\Response\Ajax\ForbiddenResponse;
-use Zikula\Core\Response\Ajax\NotFoundResponse;
 use Zikula\Core\Response\Ajax\UnavailableResponse;
 use ModUtil;
 use UserUtil;
@@ -32,7 +29,6 @@ use LogUtil;
 use System;
 use SecurityUtil;
 use Zikula\Core\Response\PlainResponse;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception;
 
 class LegacyRouteListener implements EventSubscriberInterface
@@ -56,22 +52,23 @@ class LegacyRouteListener implements EventSubscriberInterface
             return;
         }
 
-        if ($request->isXmlHttpRequest()) {
-            $this->ajax($event);
-        }
-
-        $module = $request->attributes->get('_zkModule');
-        $type = $request->attributes->get('_zkType');
-        $func = $request->attributes->get('_zkFunc');
-        $arguments = $request->attributes->get('_zkArgs');
-
-        // get module information
-        $modinfo = ModUtil::getInfoFromName($module);
         /**
          * It is possible the code below will throw an exception. The absence of a try/catch block here
          * allows this exception to 'bubble up' to the exception handler.
          * @see \Zikula\Bundle\CoreBundle\EventListener\ExceptionListener
          */
+        if ($request->isXmlHttpRequest()) {
+            $this->ajax($event);
+        }
+
+        $module = $request->attributes->get('_zkModule');
+        $type = $request->attributes->get('_zkType', 'user');
+        $func = $request->attributes->get('_zkFunc', 'index');
+        $arguments = $request->attributes->get('_zkArgs');
+
+        // get module information
+        $modinfo = ModUtil::getInfoFromName($module);
+
         if (!$module) {
             // module could not be filtered from url.
             $path = $event->getRequest()->getPathInfo();
@@ -140,27 +137,19 @@ class LegacyRouteListener implements EventSubscriberInterface
         }
 
         // Dispatch controller.
-        try {
-            if (!isset($response)) {
-                $response = ModUtil::func($modinfo['name'], $type, $func);
-                if (System::isLegacyMode() && $response == false && LogUtil::hasErrors()) {
-                    throw new FatalErrorException(__(
-                        'An unknown error occurred in module %s, controller %s, action %s',
-                        array($modinfo['name'], $type, $func)
-                    ));
-                }
-                // BC
-                if ($response === true) {
-                    // Do not return an ajax response but a normal, empty response for BC here.
-                    $response = new Response();
-                }
+        if (!isset($response)) {
+            $response = ModUtil::func($modinfo['name'], $type, $func);
+            if (System::isLegacyMode() && $response == false && LogUtil::hasErrors()) {
+                throw new FatalErrorException(__(
+                    'An unknown error occurred in module %s, controller %s, action %s',
+                    array($modinfo['name'], $type, $func)
+                ));
             }
-        } catch (NotFoundHttpException $e) {
-            $response = new NotFoundResponse($e->getMessage());
-        } catch (AccessDeniedException $e) {
-            $response = new ForbiddenResponse($e->getMessage());
-        } catch (\Exception $e) {
-            $response = new FatalResponse($e->getMessage());
+            // BC
+            if ($response === true) {
+                // Do not return an ajax response but a normal, empty response for BC here.
+                $response = new Response();
+            }
         }
 
         // Process final response.
@@ -185,5 +174,6 @@ class LegacyRouteListener implements EventSubscriberInterface
     {
         $response->legacy = true;
         $event->setResponse($response);
+        $event->stopPropagation();
     }
 }
