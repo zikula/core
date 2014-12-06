@@ -62,6 +62,7 @@ services:
             objectManager: "@doctrine.orm.entity_manager"
             routeFinder: "@zikularoutesmodule.routing_finder"
             cacheClearer: "@zikula.cache_clearer"
+            controllerHelper: "@zikularoutesmodule.controller_helper"
 
     zikularoutesmodule.moduledispatch_listener:
         class: "%zikularoutesmodule.moduledispatch_listener.class%"

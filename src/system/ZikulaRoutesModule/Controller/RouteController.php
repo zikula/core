@@ -236,6 +236,15 @@ class RouteController extends BaseRouteController
 
         $this->view->clear_cache();
 
+        // reload **all** JS routes
+        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
+        $resultCode = $controllerHelper->dumpJsRoutes();
+        if($resultCode == 0) {
+            $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Exposed JS Routes dumped to %s.', 'web/js/fos_js_routes.js'));
+        } else {
+            $request->getSession()->getFlashBag()->add('error', $this->__('Error! There was an error dumping exposed JS Routes:' . "$resultCode"));
+        }
+
         $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'));
 
         if ($hadRoutes) {
@@ -274,6 +283,41 @@ class RouteController extends BaseRouteController
         ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
 
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Routing settings renewed.'));
+        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'));
+
+        return new RedirectResponse(\System::normalizeUrl($redirectUrl));
+    }
+
+    /**
+     * This is a custom method.
+     * Dump the routes exposed to javascript to '/web/js/fos_js_routes.js'
+     *
+     * @Route("/%zikularoutesmodule.routing.route.plural%/dump/{lang}",
+     *        name = "zikularoutesmodule_route_dumpjsroutes",
+     *        methods = {"GET"}
+     * )
+     *
+     * @param Request  $request      Current request instance
+     *
+     * @return mixed Output.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function dumpJsRoutesAction(Request $request, $lang = null)
+    {
+        $objectType = 'route';
+        if (!SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+
+        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
+        $result = $controllerHelper->dumpJsRoutes($lang);
+
+        if ($result == '') {
+            $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Exposed JS Routes dumped to %s.', 'web/js/fos_js_routes.js'));
+        } else {
+            $request->getSession()->getFlashBag()->add('error', $this->__('Error! There was an error dumping exposed JS Routes:') . ' ' . $result);
+        }
         $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'));
 
         return new RedirectResponse(\System::normalizeUrl($redirectUrl));

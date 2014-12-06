@@ -23,6 +23,7 @@ use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\RoutesModule\Util\ControllerUtil;
 
 /**
  * Event handler implementation class for module installer events.
@@ -35,34 +36,27 @@ class InstallerListener extends BaseInstallerListener
 
     private $cacheClearer;
 
-    function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer)
+    private $controllerHelper;
+
+    function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer, ControllerUtil $controllerHelper)
     {
         $this->em = $em;
         $this->routeFinder = $routeFinder;
         $this->cacheClearer = $cacheClearer;
+        $this->controllerHelper = $controllerHelper;
     }
 
     /**
-     * Makes our handlers known to the event system.
-     */
-    public static function getSubscribedEvents()
-    {
-        $events = parent::getSubscribedEvents();
-        $events[CoreEvents::MODULE_POSTINSTALL] = array('modulePostInstall', 5);
-        return $events;
-    }
-    
-    /**
      * Listener for the `module.postinstall` event.
      *
-     * Called after a module has been successfully installed.
+     * Called after a module has been installed (on reload of the extensions view).
      * Receives `$modinfo` as args.
      *
      * @param ModuleStateEvent $event The event instance.
      */
-    public function modulePostInstall(ModuleStateEvent $event)
+    public function modulePostInstalled(ModuleStateEvent $event)
     {
-        parent::moduleInstalled($event);
+        parent::modulePostInstalled($event);
 
         $module = $event->getModule();
         if ($module === null) {
@@ -79,6 +73,9 @@ class InstallerListener extends BaseInstallerListener
         }
 
         $this->cacheClearer->clear('symfony.routing');
+
+        // reload **all** JS routes
+        $this->controllerHelper->dumpJsRoutes();
     }
     
     /**
@@ -111,6 +108,9 @@ class InstallerListener extends BaseInstallerListener
         $this->addRoutesToCache($module);
 
         $this->cacheClearer->clear('symfony.routing');
+
+        // reload **all** JS routes
+        $this->controllerHelper->dumpJsRoutes();
     }
     
     /**
@@ -157,6 +157,9 @@ class InstallerListener extends BaseInstallerListener
         }
 
         $this->removeRoutesFromCache($module);
+
+        // reload **all** JS routes
+        $this->controllerHelper->dumpJsRoutes();
 
         $this->cacheClearer->clear('symfony.routing');
     }

@@ -14,14 +14,17 @@ namespace Zikula\RoutesModule\Util;
 
 use Zikula\RoutesModule\Util\Base\ControllerUtil as BaseControllerUtil;
 use Zikula_Request_Http;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use FOS\JsRoutingBundle\Command\DumpCommand;
+use JMS\I18nRoutingBundle\Router\I18nLoader;
 
 /**
  * Utility implementation class for controller helper methods.
  */
 class ControllerUtil extends BaseControllerUtil
 {
-
-	// Bugfix, @Most#592
+    /** @todo this is a bugfix for @MostGenerator#592, to be removed with next regeneration */
     public function retrieveIdentifier(Zikula_Request_Http $request, array $args, $objectType = '', array $idFields)
     {
         $idValues = array();
@@ -43,5 +46,53 @@ class ControllerUtil extends BaseControllerUtil
         }
 
         return $idValues;
+    }
+
+    /**
+     * Dump the routes exposed to javascript to '/web/js/fos_js_routes.js'
+     *
+     * @param null $lang
+     * @return int|string
+     * @throws \Exception
+     */
+    public function dumpJsRoutes($lang = null)
+    {
+        // determine list of supported languages
+        $langs = array();
+        $installedLanguages = \ZLanguage::getInstalledLanguages();
+        if (isset($lang) && in_array($lang, $installedLanguages)) {
+            // use provided lang if available
+            $langs = array($lang);
+        } else {
+            $multilingual = (bool)\System::getVar('multilingual', 0);
+            if ($multilingual) {
+                // get all available locales
+                $langs = $installedLanguages;
+            } else {
+                // get only the default locale
+                $langs = array(\System::getVar('language_i18n', 'en')); //$this->getContainer()->getParameter('locale');
+            }
+        }
+
+        $targetPath = sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
+        if (file_exists($targetPath)) {
+            unlink($targetPath);
+        }
+
+        $outputCode = 0;
+        $errors = '';
+        foreach ($langs as $lang) {
+            $command = new DumpCommand();
+            $command->setContainer($this->getContainer());
+            $input = new ArrayInput(array('--locale' => $lang . I18nLoader::ROUTING_PREFIX));
+            $output = new NullOutput();
+            try {
+                $outputCode += $command->run($input, $output);
+            } catch (\RuntimeException $e) {
+                $errors .= $e->getMessage() .". ";
+            }
+        }
+
+        return empty($errors) ? '' : $errors;
     }
 }
