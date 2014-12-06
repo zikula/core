@@ -90,7 +90,14 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
                     }
                 }
                 $this->entityManager->flush();
-                $this->request->getSession()->getFlashBag()->add(\Zikula_Session::MESSAGE_WARNING, $this->__('Warning: Block template locations modified, you may need to fix your template overrides if you have any.'));
+
+                // check if request is available (#2073)
+                $templateWarning = $this->__('Warning: Block template locations modified, you may need to fix your template overrides if you have any.');
+                if (is_object($this->request) && method_exists($this->request, 'getSession') && is_object($this->request->getSession())) {
+                    $this->request->getSession()->getFlashBag()->add(\Zikula_Session::MESSAGE_WARNING, $templateWarning);
+                } else {
+                    LogUtil::registerWarning($templateWarning);
+                }
             case '3.9.1':
                 // future upgrade routines
         }
