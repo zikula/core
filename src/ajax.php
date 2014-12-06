@@ -13,7 +13,7 @@
  */
 
 /**
- * @deprecated remove in 1.4
+ * @deprecated remove in 2.0
  */
 include 'index.php';
 
