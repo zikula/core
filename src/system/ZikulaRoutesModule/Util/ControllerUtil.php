@@ -24,8 +24,7 @@ use JMS\I18nRoutingBundle\Router\I18nLoader;
  */
 class ControllerUtil extends BaseControllerUtil
 {
-
-	// Bugfix, @Most#592
+    /** @todo this is a bugfix for @MostGenerator#592, to be removed with next regeneration */
     public function retrieveIdentifier(Zikula_Request_Http $request, array $args, $objectType = '', array $idFields)
     {
         $idValues = array();
@@ -58,6 +57,8 @@ class ControllerUtil extends BaseControllerUtil
      */
     public function dumpJsRoutes($lang = null)
     {
+        // determine list of supported languages
+        $langs = array();
         $installedLanguages = \ZLanguage::getInstalledLanguages();
         if (isset($lang) && in_array($lang, $installedLanguages)) {
             // use provided lang if available
@@ -87,6 +88,6 @@ class ControllerUtil extends BaseControllerUtil
             }
         }
 
-        return $outputCode = 0 ? $outputCode : $errors;
+        return empty($errors) ? '' : $errors;
     }
 }
