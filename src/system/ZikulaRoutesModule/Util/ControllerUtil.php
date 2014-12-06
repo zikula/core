@@ -74,6 +74,11 @@ class ControllerUtil extends BaseControllerUtil
             }
         }
 
+        $targetPath = sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
+        if (file_exists($targetPath)) {
+            unlink($targetPath);
+        }
+
         $outputCode = 0;
         $errors = '';
         foreach ($langs as $lang) {
