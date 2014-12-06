@@ -594,6 +594,10 @@ function installRoutesModule()
     $sm = ServiceUtil::getManager();
     $kernel = $sm->get('kernel');
 
+    // ensure that hook-related entities are available
+    include_once 'lib/Zikula/Component/HookDispatcher/Storage/Doctrine/Entity/HookAreaEntity.php';
+    include_once 'lib/Zikula/Component/HookDispatcher/Storage/Doctrine/Entity/HookSubscriberEntity.php';
+
     // manually install the Routes module
     $routeModuleName = 'ZikulaRoutesModule';
     $module = $kernel->getModule($routeModuleName);
