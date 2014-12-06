@@ -69,6 +69,18 @@
         "vakata/jstree": "dev-master",
         "afarkas/html5shiv": "*"
     },
+    "scripts": {  
+        "post-install-cmd": [     
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",    
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",    
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"  
+        ],    
+        "post-update-cmd": [  
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",    
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",    
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"  
+        ]
+    },
     "config": {
         "vendor-dir": "src/vendor",
         "bin-dir": "bin",
@@ -76,7 +88,6 @@
     },
     "extra": {
         "symfony-app-dir": "src/app",
-        "symfony-web-dir": "src/web",
-        "symfony-assets-install": "relative"
+        "symfony-web-dir": "src/web"
     }
 }
