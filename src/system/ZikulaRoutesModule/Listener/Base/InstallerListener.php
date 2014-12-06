@@ -30,7 +30,7 @@ class InstallerListener implements EventSubscriberInterface
     {
         return array(
             CoreEvents::MODULE_INSTALL             => array('moduleInstalled', 5),
-            CoreEvents::MODULE_POSTINSTALL => array('modulePostInstalled', 5),
+            CoreEvents::MODULE_POSTINSTALL         => array('modulePostInstalled', 5),
             CoreEvents::MODULE_UPGRADE             => array('moduleUpgraded', 5),
             CoreEvents::MODULE_ENABLE              => array('moduleEnabled', 5),
             CoreEvents::MODULE_DISABLE             => array('moduleDisabled', 5),
