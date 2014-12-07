@@ -175,7 +175,7 @@ class JCSSUtil
     public static function prepareJavascripts($javascripts)
     {
         $sm = ServiceUtil::getManager();
-        array_unshift($javascripts, 'jquery', 'javascript/helpers/bootstrap-zikula.js', $sm->getParameter('zikula.javascript.bootstrap.min.path'));
+        array_unshift($javascripts, 'jquery', $sm->getParameter('zikula.javascript.bootstrap.min.path'), 'javascript/helpers/bootstrap-zikula.js');
         if ($sm->getParameter('env') == 'prod' && file_exists(realpath('web/js/fos_js_routes.js'))) {
             array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', 'web/js/fos_js_routes.js');
         } else {
