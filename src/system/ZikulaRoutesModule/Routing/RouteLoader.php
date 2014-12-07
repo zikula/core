@@ -40,6 +40,10 @@ class RouteLoader implements LoaderInterface
         $routeCollection = new RouteCollection();
 
         try {
+            // clear entity manager to ensure that we also fetch new routes which have been newly inserted during a module's installation
+            $this->em->clear();
+
+            // fetch all approved routes
             $routes = $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->findBy(array('workflowState' => 'approved'), array('group' => 'ASC', 'sort' => 'ASC'));
         } catch (DBALException $e) {
             // It seems like the module is not yet installed. Fail silently.
