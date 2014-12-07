@@ -42,6 +42,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class AdminApi extends \Zikula_AbstractApi
 {
+    const EXTENSION_ENTITY = 'Zikula\Core\Doctrine\Entity\ExtensionEntity';
     /**
      * Update module information
      *
@@ -53,7 +54,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function modify($args)
     {
-        return $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findOneBy($args);
+        return $this->entityManager->getRepository(self::EXTENSION_ENTITY)->findOneBy($args);
     }
 
     /**
@@ -108,7 +109,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Rename operation
         /* @var ExtensionEntity $entity */
-        $entity = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findOneBy(array('id' => $args['id']));
+        $entity = $this->entityManager->getRepository(self::EXTENSION_ENTITY)->findOneBy(array('id' => $args['id']));
         $entity->setDisplayname($args['displayname']);
         $entity->setDescription($args['description']);
         $entity->setUrl($args['url']);
@@ -151,7 +152,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('e')
-           ->from('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e');
+           ->from(self::EXTENSION_ENTITY, 'e');
 
         // filter by first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
@@ -242,7 +243,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get module
-        $module = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->find($args['id']);
+        $module = $this->entityManager->getRepository(self::EXTENSION_ENTITY)->find($args['id']);
         if (empty($module)) {
             return false;
         }
@@ -264,7 +265,7 @@ class AdminApi extends \Zikula_AbstractApi
                 $eventName = CoreEvents::MODULE_DISABLE;
                 break;
             case ModUtil::STATE_ACTIVE:
-                if ($module['state'] === ModUtil::STATE_INACTIVE) {
+                if ($module->getState() === ModUtil::STATE_INACTIVE) {
                     // ACTIVE is used for freshly installed modules, so only register the transition
                     // if previously inactive.
                     $eventName = CoreEvents::MODULE_ENABLE;
@@ -273,7 +274,7 @@ class AdminApi extends \Zikula_AbstractApi
             case ModUtil::STATE_MISSING:
                 break;
             case ModUtil::STATE_UPGRADED:
-                $oldstate = $module['state'];
+                $oldstate = $module->getState();
                 if ($oldstate == ModUtil::STATE_UNINITIALISED) {
                     throw new \RuntimeException($this->__('Error! Invalid module state transition.'));
                 }
@@ -281,7 +282,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // change state
-        $module['state'] = $args['state'];
+        $module->setState($args['state']);
         $this->entityManager->flush();
 
         // clear the cache before calling events
@@ -295,8 +296,8 @@ class AdminApi extends \Zikula_AbstractApi
 
         if (isset($eventName)) {
             // only notify for enable or disable transitions
-            $module = \ModUtil::getModule($modinfo['name']);
-            $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
+            $moduleBundle = \ModUtil::getModule($modinfo['name']);
+            $event = new ModuleStateEvent($moduleBundle, ($moduleBundle === null) ? $modinfo : null);
             $this->getDispatcher()->dispatch($eventName, $event);
         }
 
@@ -443,7 +444,7 @@ class AdminApi extends \Zikula_AbstractApi
                 // remove the entry from the modules table
                 $query = $this->entityManager->createQueryBuilder()
                                              ->delete()
-                                             ->from('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e')
+                                             ->from(self::EXTENSION_ENTITY, 'e')
                                              ->where('e.id = :id')
                                              ->setParameter('id', $args['id'])
                                              ->getQuery();
@@ -456,7 +457,7 @@ class AdminApi extends \Zikula_AbstractApi
             // remove the entry from the modules table
             $query = $this->entityManager->createQueryBuilder()
                                          ->delete()
-                                         ->from('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e')
+                                         ->from(self::EXTENSION_ENTITY, 'e')
                                          ->where('e.id = :id')
                                          ->setParameter('id', $args['id'])
                                          ->getQuery();
@@ -720,14 +721,12 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $entity = 'Zikula\Core\Doctrine\Entity\ExtensionEntity';
-
         // default action
         $filemodules = $args['filemodules'];
         $defaults = (isset($args['defaults']) ? $args['defaults'] : false);
 
         // Get all modules in DB
-        $allmodules = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findAll();
+        $allmodules = $this->entityManager->getRepository(self::EXTENSION_ENTITY)->findAll();
         if (!$allmodules) {
             throw new \RuntimeException($this->__('Error! Could not load data.'));
         }
@@ -749,7 +748,7 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
-        // see if any modules have changed name since last generation
+        // see if any modules have changed name since last regeneration
         foreach ($filemodules as $name => $modinfo) {
             if (isset($modinfo['oldnames']) && !empty($modinfo['oldnames'])) {
                 foreach ($dbmodules as $dbname => $dbmodinfo) {
@@ -766,7 +765,7 @@ class AdminApi extends \Zikula_AbstractApi
 
                         // rename the module register
                         $query = $this->entityManager->createQueryBuilder()
-                             ->update('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e')
+                             ->update(self::EXTENSION_ENTITY, 'e')
                              ->set('e.name', ':modname')
                              ->setParameter('modname', $modinfo['name'])
                              ->where('e.id = :dbname')
@@ -784,11 +783,13 @@ class AdminApi extends \Zikula_AbstractApi
                 }
             }
 
+            // If module was previously determined to be incompatible with the core. return to original state
             if (isset($dbmodules[$name]) && $dbmodules[$name]['state'] > 10) {
-                $dbmodules[$name]['state'] = $dbmodules[$name]['state'] - 20;
+                $dbmodules[$name]['state'] = $dbmodules[$name]['state'] - ModUtil::INCOMPATIBLE_CORE_SHIFT;
                 $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => $dbmodules[$name]['state']));
             }
 
+            // update the DB information for this module to reflect user settings (e.g. url)
             if (isset($dbmodules[$name]['id'])) {
                 $modinfo['id'] = $dbmodules[$name]['id'];
                 if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED && $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
@@ -804,26 +805,17 @@ class AdminApi extends \Zikula_AbstractApi
                 unset($modinfo['dependencies']);
                 $modinfo['capabilities'] = unserialize($modinfo['capabilities']);
                 $modinfo['securityschema'] = unserialize($modinfo['securityschema']);
-                $module = $this->entityManager->getRepository($entity)->find($modinfo['id']);
+                $module = $this->entityManager->getRepository(self::EXTENSION_ENTITY)->find($modinfo['id']);
                 $module->merge($modinfo);
                 $this->entityManager->flush();
             }
 
             // check core version is compatible with current
-            $minok = 0;
-            $maxok = 0;
-            // strip any -dev, -rcN etc from version number
-            $coreVersion = preg_replace('#(\d+\.\d+\.\d+).*#', '$1', Zikula_Core::VERSION_NUM);
-            if (!empty($filemodules[$name]['core_min'])) {
-                $minok = version_compare($coreVersion, $filemodules[$name]['core_min']);
-            }
-            if (!empty($filemodules[$name]['core_max'])) {
-                $maxok = version_compare($filemodules[$name]['core_max'], $coreVersion);
-            }
-
+            $isCompatible = $this->isCoreCompatible($filemodules[$name]['core_min'], $filemodules[$name]['core_max']);
             if (isset($dbmodules[$name])) {
-                if ($minok == -1 || $maxok == -1) {
-                    $dbmodules[$name]['state'] = $dbmodules[$name]['state'] + 20;
+                if (!$isCompatible) {
+                    // module is incompatible with current core
+                    $dbmodules[$name]['state'] = $dbmodules[$name]['state'] + ModUtil::INCOMPATIBLE_CORE_SHIFT;
                     $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => $dbmodules[$name]['state']));
                 }
                 if (isset($dbmodules[$name]['state'])) {
@@ -832,23 +824,26 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
-        // See if we have lost any modules since last generation
+        // See if we have lost any modules since last regeneration
         foreach ($dbmodules as $name => $modinfo) {
             if (!in_array($name, $module_names)) {
-                $lostmodule = $this->entityManager->getRepository($entity)->findOneBy(array('name' => $name));
-                if (!$lostmodule) {
+                $lostModule = $this->entityManager->getRepository(self::EXTENSION_ENTITY)->findOneBy(array('name' => $name));
+                if (!$lostModule) {
                     throw new \RuntimeException($this->__f('Error! Could not load data for module %s.', array($name)));
                 }
-
-                if ($dbmodules[$name]['state'] == ModUtil::STATE_INVALID) {
-                    // module was invalid and now it was removed, delete it
-                    $this->remove(array('id' => $dbmodules[$name]['id']));
-                } elseif ($dbmodules[$name]['state'] == ModUtil::STATE_UNINITIALISED) {
-                    // module was uninitialised and subsequently removed, delete it
-                    $this->remove(array('id' => $dbmodules[$name]['id']));
+                $lostModuleState = $lostModule->getState();
+                if (($lostModuleState == ModUtil::STATE_INVALID) || ($lostModuleState = ModUtil::STATE_INVALID + ModUtil::INCOMPATIBLE_CORE_SHIFT)) {
+                    // module was invalid and subsequently removed from file system,
+                    // or module was incompatible with core and subsequently removed, delete it
+                    $this->entityManager->remove($lostModule);
+                    $this->entityManager->flush();
+                } elseif (($lostModuleState == ModUtil::STATE_UNINITIALISED) || ($lostModuleState = ModUtil::STATE_UNINITIALISED + ModUtil::INCOMPATIBLE_CORE_SHIFT)) {
+                    // module was uninitialised and subsequently removed from file system, delete it
+                    $this->entityManager->remove($lostModule);
+                    $this->entityManager->flush();
                 } else {
                     // Set state of module to 'missing'
-                    $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_MISSING));
+                    $this->setState(array('id' => $lostModule->getId(), 'state' => ModUtil::STATE_MISSING));
                 }
 
                 unset($dbmodules[$name]);
@@ -864,20 +859,8 @@ class AdminApi extends \Zikula_AbstractApi
                 if (!$modinfo['version']) {
                     $modinfo['state'] = ModUtil::STATE_INVALID;
                 } else {
-                    // check if module is compatible with core version
-                    $minok = 0;
-                    $maxok = 0;
-                    // strip any -dev, -rcN etc from version number
-                    $coreVersion = preg_replace('#(\d+\.\d+\.\d+).*#', '$1', Zikula_Core::VERSION_NUM);
-                    if (!empty($modinfo['core_min'])) {
-                        $minok = version_compare($coreVersion, $modinfo['core_min']);
-                    }
-                    if (!empty($modinfo['core_max'])) {
-                        $maxok = version_compare($modinfo['core_max'], $coreVersion);
-                    }
-                    if ($minok == -1 || $maxok == -1) {
-                        $modinfo['state'] = ModUtil::STATE_NOTALLOWED;
-                    }
+                    // shift state if module is incompatible with core version
+                    $modinfo['state'] = $this->isCoreCompatible($modinfo['core_min'], $modinfo['core_max']) ? $modinfo['state'] : $modinfo['state'] + ModUtil::INCOMPATIBLE_CORE_SHIFT;
                 }
 
                 // unset some vars
@@ -892,27 +875,31 @@ class AdminApi extends \Zikula_AbstractApi
                 if ($this->serviceManager['multisites.enabled'] == 1) {
                     // only the main site can regenerate the modules list
                     if (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
-                        $item = new $entity;
+                        $item = new ExtensionEntity();
                         $item->merge($modinfo);
                         $this->entityManager->persist($item);
                     }
                 } else {
-                    $item = new $entity;
+                    $item = new ExtensionEntity();
                     $item->merge($modinfo);
                     $this->entityManager->persist($item);
                 }
-
                 $this->entityManager->flush();
             } else {
                 // module is in the db already
-                if ($dbmodules[$name]['state'] == ModUtil::STATE_MISSING) {
+                if (($dbmodules[$name]['state'] == ModUtil::STATE_MISSING) || ($dbmodules[$name]['state'] == ModUtil::STATE_MISSING + ModUtil::INCOMPATIBLE_CORE_SHIFT)) {
                     // module was lost, now it is here again
                     $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_INACTIVE));
-                } elseif ($dbmodules[$name]['state'] == ModUtil::STATE_INVALID && $modinfo['version']) {
-                    // module was invalid, now it is valid
-                    $item = $this->entityManager->getRepository($entity)->find($dbmodules[$name]['id']);
-                    $item['state'] = ModUtil::STATE_UNINITIALISED;
-                    $this->entityManager->flush();
+                } elseif ((($dbmodules[$name]['state'] == ModUtil::STATE_INVALID)
+                    || ($dbmodules[$name]['state'] == ModUtil::STATE_INVALID + ModUtil::INCOMPATIBLE_CORE_SHIFT))
+                    && $modinfo['version']) {
+                    $isCompatible = $this->isCoreCompatible($modinfo['core_min'], $modinfo['core_max']);
+                    if ($isCompatible) {
+                        // module was invalid, now it is valid
+                        $item = $this->entityManager->getRepository(self::EXTENSION_ENTITY)->find($dbmodules[$name]['id']);
+                        $item->setState(ModUtil::STATE_UNINITIALISED);
+                        $this->entityManager->flush();
+                    }
                 }
 
                 if ($dbmodules[$name]['version'] != $modinfo['version']) {
@@ -1096,8 +1083,6 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $entity = 'Zikula\Core\Doctrine\Entity\ExtensionEntity';
-
         // Get module information
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
@@ -1176,7 +1161,7 @@ class AdminApi extends \Zikula_AbstractApi
             if (is_string($result)) {
                 if ($result != $modinfo['version']) {
                     // update the last successful updated version
-                    $item = $this->entityManager->getRepository($entity)->find($modinfo['id']);
+                    $item = $this->entityManager->getRepository(self::EXTENSION_ENTITY)->find($modinfo['id']);
                     $item['version'] = $result;
                     $this->entityManager->flush();
                 }
@@ -1200,7 +1185,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // update the module with the new version
-        $item = $this->entityManager->getRepository($entity)->find($args['id']);
+        $item = $this->entityManager->getRepository(self::EXTENSION_ENTITY)->find($args['id']);
         $item['version'] = $version;
         $this->entityManager->flush();
 
@@ -1279,7 +1264,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('COUNT(e.id)')
-           ->from('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e');
+           ->from(self::EXTENSION_ENTITY, 'e');
 
         // filter by first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
@@ -1563,5 +1548,30 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         return ModUtil::getModuleBaseDir($args['modulename']) === 'system' ? true : false;
+    }
+
+    /**
+     * Determine if $min and $max values are compatible with Current Core version
+     *
+     * @param string $min
+     * @param string $max
+     * @return bool
+     */
+    private function isCoreCompatible($min = null, $max = null)
+    {
+        $minok = 0;
+        $maxok = 0;
+        // strip any -dev, -rcN etc from version number
+        $coreVersion = preg_replace('#(\d+\.\d+\.\d+).*#', '$1', Zikula_Core::VERSION_NUM);
+        if (!empty($min)) {
+            $minok = version_compare($coreVersion, $min);
+        }
+        if (!empty($max)) {
+            $maxok = version_compare($max, $coreVersion);
+        }
+        if ($minok == -1 || $maxok == -1) {
+            return false;
+        }
+        return true;
     }
 }

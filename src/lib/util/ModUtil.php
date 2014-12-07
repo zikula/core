@@ -30,6 +30,7 @@ class ModUtil
     const STATE_UPGRADED = 5;
     const STATE_NOTALLOWED = 6;
     const STATE_INVALID = -1;
+    const INCOMPATIBLE_CORE_SHIFT = 20;
 
     const CONFIG_MODULE = 'ZConfig';
 
