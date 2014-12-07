@@ -246,9 +246,10 @@ class RegistrationApi extends \Zikula_AbstractApi
     {
         $registrationErrors = array();
 
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        // we do not check permissions here (see #1874)
+        /*if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
-        }
+        }*/
 
         $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
@@ -393,9 +394,10 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function registerNewUser($args)
     {
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        // we do not check permissions here (see #1874)
+        /*if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
-        }
+        }*/
 
         $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
@@ -989,8 +991,11 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function get($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
+        $isLoggedIn = UserUtil::isLoggedIn();
+
+        // we do not check permissions for guests here (see #1874)
+        if ((!$isLoggedIn/* && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)*/)
+                || ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             throw new AccessDeniedException();
         }
 
@@ -1399,8 +1404,12 @@ class RegistrationApi extends \Zikula_AbstractApi
         // In the future, it is possible we will add a feature to allow a newly registered user to resend
         // a new verification code to himself after doing a login-like process with information from  his
         // registration record, so allow not-logged-in plus READ, as well as moderator.
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
+
+        $isLoggedIn = UserUtil::isLoggedIn();
+
+        // we do not check permissions for guests here (see #1874)
+        if ((!$isLoggedIn/* && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)*/)
+                || ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             throw new AccessDeniedException();
         }
 
@@ -1508,8 +1517,11 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function getVerificationCode($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
+        $isLoggedIn = UserUtil::isLoggedIn();
+
+        // we do not check permissions for guests here (see #1874)
+        if ((!$isLoggedIn/* && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)*/)
+                || ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             throw new AccessDeniedException();
         }
 
@@ -1668,9 +1680,11 @@ class RegistrationApi extends \Zikula_AbstractApi
     public function activateUser($args)
     {
         // This function is an end-user function.
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+
+        // we do not check permissions here (see #1874)
+        /*if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             return false;
-        }
+        }*/
 
         // Preventing reactivation from same link !
         $newregdate = DateUtil::getDatetime(strtotime($args['regdate'])+1);

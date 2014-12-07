@@ -164,10 +164,10 @@ class UserController extends \Zikula_AbstractController
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
         }
 
-        // check permisisons
-        if (!SecurityUtil::checkPermission($this->name .'::', '::', ACCESS_READ)) {
+        // we do not check permissions here (see #1874)
+        /*if (!SecurityUtil::checkPermission($this->name .'::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
-        }
+        }*/
 
         // Check if registration is enabled
         if (!$this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED)) {
