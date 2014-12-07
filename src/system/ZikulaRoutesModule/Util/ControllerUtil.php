@@ -52,7 +52,7 @@ class ControllerUtil extends BaseControllerUtil
      * Dump the routes exposed to javascript to '/web/js/fos_js_routes.js'
      *
      * @param null $lang
-     * @return int|string
+     * @return string
      * @throws \Exception
      */
     public function dumpJsRoutes($lang = null)
