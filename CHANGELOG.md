@@ -108,6 +108,7 @@ Features:
 - Increased SearchResultEntity:extra field from 100 to 1000 chars (#834).
 - Zikula_EntityAccess now also finds getter methods named `isField()` and not only `getField()`.
 - FilterUtil has been updated to work with Doctrine 2 (#118).
+- Added admin access for console commands (#1908).
 
 CHANGELOG - ZIKULA 1.3.10
 -------------------------
