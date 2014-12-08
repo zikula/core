@@ -32,7 +32,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
+#    bundles:        [ ] #commenting this out automatically loads all presently loaded bundles
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
