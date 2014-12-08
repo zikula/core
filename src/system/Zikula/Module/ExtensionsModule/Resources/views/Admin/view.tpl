@@ -30,12 +30,12 @@
                         <select id="modules_state" name="state" onchange="submit()">
                             <option value="0">{gt text="All"}</option>
                             <option value="{const name="ModUtil::STATE_UNINITIALISED"}"{if $state eq 1} selected="selected"{/if}>{gt text="Not installed"}</option>
-                            <option value="{const name="ModUtil::STATE_INACTIVE}"{if $state eq 2} selected="selected"{/if}>{gt text="Inactive"}</option>
-                            <option value="{const name="ModUtil::STATE_ACTIVE}"{if $state eq 3} selected="selected"{/if}>{gt text="Active"}</option>
-                            <option value="{const name="ModUtil::STATE_MISSING}"{if $state eq 4} selected="selected"{/if}>{gt text="Files missing"}</option>
-                            <option value="{const name="ModUtil::STATE_UPGRADED}"{if $state eq 5} selected="selected"{/if}>{gt text="New version uploaded"}</option>
+                            <option value="{const name="ModUtil::STATE_INACTIVE"}"{if $state eq 2} selected="selected"{/if}>{gt text="Inactive"}</option>
+                            <option value="{const name="ModUtil::STATE_ACTIVE"}"{if $state eq 3} selected="selected"{/if}>{gt text="Active"}</option>
+                            <option value="{const name="ModUtil::STATE_MISSING"}"{if $state eq 4} selected="selected"{/if}>{gt text="Files missing"}</option>
+                            <option value="{const name="ModUtil::STATE_UPGRADED"}"{if $state eq 5} selected="selected"{/if}>{gt text="New version uploaded"}</option>
                             {if $multi}
-                            <option value="{const name="ModUtil::STATE_NOTALLOWED}"{if $state eq 6} selected="selected"{/if}>{gt text="Not allowed"}</option>
+                            <option value="{const name="ModUtil::STATE_NOTALLOWED"}"{if $state eq 6} selected="selected"{/if}>{gt text="Not allowed"}</option>
                             {/if}
                             <option value="10"{if $state eq 10} selected="selected"{/if}>{gt text="Incompatible"}</option>
                             <option value="{const name="ModUtil::STATE_INVALID"}"{if $state eq -1} selected="selected"{/if}>{gt text="Invalid structure"}</option>

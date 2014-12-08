@@ -370,18 +370,8 @@ class AdminController extends \Zikula_AbstractController
                             break;
 
                         case ModUtil::STATE_INVALID:
-                        // nothing to do, remove manually
-                        // future wish list, allow removal if FS is writable
-                        /*
-                        $actions[] = array(
-                            'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_remove', array(
-                                'id' => $mod['id'],
-                                'startnum' => $startnum,
-                                'authid' => $authid,
-                                'letter' => $letter,
-                                'state' => $state)),
-                            'image' => '14_layer_deletelayer.png',
-                            'title' => $this->__('Remove module')); */
+                            // nothing to do.
+                            // do not allow deletion of invalid modules if previously installed (#1278)
                             break;
 
                         case ModUtil::STATE_NOTALLOWED:
@@ -410,17 +400,6 @@ class AdminController extends \Zikula_AbstractController
                                         'image' => 'cog text-success',
                                         'color' => '#0c0',
                                         'title' => $this->__f('Install \'%s\'', $mod['name']));
-//                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == $request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
-//                                    $actions[] = array(
-//                                            'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_remove', array(
-//                                            'id' => $mod['id'],
-//                                            'startnum' => $startnum,
-//                                            'authid' => $authid,
-//                                            'letter' => $letter,
-//                                            'state' => $state)),
-//                                            'image' => 'trash-o',
-//                                            'title' => $this->__('Remove module'));
-//                                }
                             } else {
                                 $actions[] = array(
                                         'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_compinfo', array(
