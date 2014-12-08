@@ -15,5 +15,5 @@
 /**
  * @deprecated remove in 2.0
  */
+$_GET['type'] = 'ajax';
 include 'index.php';
-
