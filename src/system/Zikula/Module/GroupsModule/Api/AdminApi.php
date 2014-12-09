@@ -246,7 +246,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
 
         if (!$group) {
             return false;
@@ -293,7 +293,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
 
         if (!$group) {
             return false;
@@ -429,18 +429,20 @@ class AdminApi extends \Zikula_AbstractApi
         $items = array();
 
         foreach ($objArray as $obj) {
-            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $obj['gid']));
-            if ($group) {
-                if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
-                    $items[] = array(
-                        'app_id' => $obj['app_id'],
-                        'userid' => $obj['uid'],
-                        'username' => UserUtil::getVar('uname', $obj['uid']),
-                        'appgid' => $obj['gid'],
-                        'gname' => $group['name'],
-                        'application' => nl2br($obj['application']),
-                        'status' => $obj['status']);
-                }
+            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $obj['gid'], 'group_membership' => false));
+            if (!$group) {
+                continue;
+            }
+
+            if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
+                $items[] = array(
+                    'app_id' => $obj['app_id'],
+                    'userid' => $obj['uid'],
+                    'username' => UserUtil::getVar('uname', $obj['uid']),
+                    'appgid' => $obj['gid'],
+                    'gname' => $group['name'],
+                    'application' => nl2br($obj['application']),
+                    'status' => $obj['status']);
             }
         }
 
