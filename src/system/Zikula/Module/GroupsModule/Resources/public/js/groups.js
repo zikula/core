@@ -2,7 +2,7 @@
         
 /*******************************************************************************
  * Delete group
-*******************************************************************************/
+ *******************************************************************************/
 
 $('.fa-trash-o').click( function(e) {
     e.preventDefault();
@@ -15,7 +15,6 @@ $('.fa-trash-o').click( function(e) {
             },
             success: function(response) {
                 a.parent().parent().remove();
-
             },
             error: function (response) {
                 alert($.parseJSON(response.responseText).core.statusmsg);
@@ -23,6 +22,5 @@ $('.fa-trash-o').click( function(e) {
         });
     }
 });    
-        
-        
+
 });})(jQuery);
