@@ -96,6 +96,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function get($args)
     {
+
         // Argument check
         if (!isset($args['gid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -103,7 +104,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // get item
         $result = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
-
+        
         if (!$result) {
             return false;
         }
@@ -113,28 +114,43 @@ class UserApi extends \Zikula_AbstractApi
 
         // Get group membership
         // Optional arguments.
+        
+        $args['group_membership'] = (!isset($args['group_membership'])) ? true : (bool)$args['group_membership'];
+        $args['uid'] = (!isset($args['uid'])) ? null : (int)$args['uid'];
+        
         if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
             $args['startnum'] = null;
         }
+
         if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
             $args['numitems'] = null;
         }
 
-        $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy(array('gid' => $args['gid']), array(), $args['numitems'], $args['startnum']);
-
-        // Check for an error with the database code
-        if ($groupmembership === false) {
-            return false;
-        }
-
         $uidsArray = array();
-        foreach ($groupmembership as $gm) {
-            $gm = $gm->toArray();
-            $uidsArray[$gm['uid']] = $gm;
+
+        if ($args['group_membership']) {
+            if (!is_null($args['uid'])) {
+                $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']), array(), $args['numitems'], $args['startnum']);
+                
+                if (!$groupmembership) {
+                    return false;
+                }
+            } else {
+                $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy(array('gid' => $args['gid']), array(), $args['numitems'], $args['startnum']);
+                
+                if (!$groupmembership) {
+                    return false;
+                }               
+            }
+
+            foreach ($groupmembership as $gm) {
+                $gm = $gm->toArray();
+                $uidsArray[$gm['uid']] = $gm;
+            }
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $result['gid'] . '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $result['gid'].'::', ACCESS_READ)) {
             return false;
         }
 
@@ -142,15 +158,18 @@ class UserApi extends \Zikula_AbstractApi
         $result['nbuser'] = count($uidsArray);
         $result['members'] = $uidsArray;
 
-        $uid = UserUtil::getVar('uid');
-        if ($uid != 0) {
-            $result['status'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', array('gid' => $args['gid'], 'uid' => $uid));
+        if (!is_null($args['uid'])) {
+            $result['status'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isuserpending', array(
+                'gid' => $args['gid'],
+                'uid' => $args['uid']
+            ));
         } else {
             $result['status'] = false;
         }
 
         // Return the item array
         return $result;
+
     }
 
     /**
@@ -417,13 +436,13 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
+        $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
 
         if (!$item) {
             return false;
         }
 
-        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'].'::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
@@ -624,9 +643,11 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
-
+        /**
+         * Get Group
+         */
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
+        
         if (!$group) {
             return false;
         }
@@ -682,8 +703,10 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
+        /**
+         * Get Group
+         */
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
 
         if (!$group) {
             return false;
@@ -744,6 +767,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function isgroupmember($args)
     {
+
         if ((!isset($args['uid']) && !is_numeric($args['uid'])) ||
             (!isset($args['gid']) && !is_numeric($args['gid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -754,22 +778,18 @@ class UserApi extends \Zikula_AbstractApi
             return false;
         }
 
-        // Get the group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
-
-        // check if group exists
+        /**
+         * Get group, and check if the user exists in the group.
+         */
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => true, 'uid' => $args['uid']));
+        
         if (!$group) {
-            // report failure
-            return false;
-        }
-
-        // check if the user exists in the group
-        if (!isset($group['members'][$args['uid']])) {
-            // report failure
             return false;
         }
 
         // report the user is a member of the group
         return true;
+
     }
+
 }

@@ -23,6 +23,5 @@ $('.fa-trash-o').click( function(e) {
         });
     }
 });    
-        
-        
+    
 });})(jQuery);
