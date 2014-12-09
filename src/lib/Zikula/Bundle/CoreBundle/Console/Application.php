@@ -21,7 +21,7 @@ class Application extends BaseApplication
 
         // ensure that we have admin access
         try {
-            $this->loginAsAdministrator()
+            $this->loginAsAdministrator();
         } catch (\Exception $e) {
             die(__('Sorry, an exception occured:') . ' ' . $e->getMessage());
         }
