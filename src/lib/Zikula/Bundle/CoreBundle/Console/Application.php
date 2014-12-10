@@ -4,6 +4,7 @@ namespace Zikula\Bundle\CoreBundle\Console;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class Application extends BaseApplication
 {
@@ -23,12 +24,12 @@ class Application extends BaseApplication
         try {
             $this->loginAsAdministrator();
         } catch (\Exception $e) {
-            die(__('Sorry, an exception occured:') . ' ' . $e->getMessage());
+            die(__('Sorry, an exception occurred:') . ' ' . $e->getMessage());
         }
     }
 
     /**
-     * Grants admin access for console commmands (#1908).
+     * Grants admin access for console commands (#1908).
      * This avoids subsequent permission problems from any components used.
      */
     protected function loginAsAdministrator()
@@ -36,26 +37,26 @@ class Application extends BaseApplication
         $adminId = 2;
 
         // no need to do anything if there is already an admin login
-        if (UserUtil::isLoggedIn()) {
-            if (UserUtil::getVar('uid') == $adminId) {
+        if (\UserUtil::isLoggedIn()) {
+            if (\UserUtil::getVar('uid') == $adminId) {
                 return;
             }
 
-            if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
+            if (\SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
                 return;
             }
         }
 
         // login / impersonate now
-        UserUtil::setUserByUid($adminId);
+        \UserUtil::setUserByUid($adminId);
 
         // check if it worked
-        if (!UserUtil::isLoggedIn()) {
+        if (!\UserUtil::isLoggedIn()) {
             throw new AccessDeniedException(__('Error! Auto login failed.'));
         }
 
         // check if permissions have become available
-        if (!SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
+        if (!\SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException(__('Error! Insufficient permissions after auto login.'));
         }
     }
