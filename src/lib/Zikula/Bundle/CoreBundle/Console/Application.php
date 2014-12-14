@@ -79,9 +79,6 @@ class Application extends BaseApplication
     {
         $adminId = 2;
 
-        //initialise service manager
-        $sm = \ServiceUtil::getManager();
-
         // no need to do anything if there is already an admin login
         if (\UserUtil::isLoggedIn()) {
             if (\UserUtil::getVar('uid') == $adminId) {
