@@ -38,7 +38,7 @@ $core = new Zikula_Core();
 $core->setKernel($kernel);
 $core->boot();
 
-// these two event for BC only. remove in 2.0.0
+// these two events are called for BC only. remove in 2.0.0
 $core->getDispatcher()->dispatch('bootstrap.getconfig', new GenericEvent($core));
 $core->getDispatcher()->dispatch('bootstrap.custom', new GenericEvent($core));
 
