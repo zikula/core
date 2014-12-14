@@ -67,12 +67,15 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
             return true;
         }
 
+        // http host is not given for CLI requests for example
+        $ipDefault = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+
         $obj = $this->storage->getBag('attributes')->get('obj');
         $obj['sessid'] = $sessionId;
         $obj['vars'] = $vars;
         $obj['remember'] = $this->storage->getBag('attributes')->get('rememberme', 0);
         $obj['uid'] = $this->storage->getBag('attributes')->get('uid', 0);
-        $obj['ipaddr'] = $this->storage->getBag('attributes')->get('obj/ipaddr', $_SERVER['HTTP_HOST']);
+        $obj['ipaddr'] = $this->storage->getBag('attributes')->get('obj/ipaddr', $ipDefault);
         $obj['lastused'] = date('Y-m-d H:i:s', $this->storage->getMetadataBag()->getLastUsed());
 
         $query = $this->conn->executeQuery('SELECT * FROM session_info WHERE sessid=:id', array('id' => $sessionId));

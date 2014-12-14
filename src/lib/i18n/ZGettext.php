@@ -192,6 +192,13 @@ class ZGettext
      */
     public static function getReader($domain=null, $category = null, $cache = true)
     {
+        // check if classes are included (which is not true for CLI commands)
+        if (!class_exists('StreamReader_Abstract')) {
+            include_once 'lib/StreamReader/Abstract.php';
+            include_once 'lib/StreamReader/String.php';
+            include_once 'lib/StreamReader/CachedFile.php';
+        }
+
         $_this = self::getInstance();
         $domain = (isset($domain) ? $domain : $_this->defaultDomain);
         $category = isset($category) ? $category : $_this->getCategory();
