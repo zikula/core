@@ -35,6 +35,7 @@
         <parameter key="zikula.legacy_route_listener.class">Zikula\Bundle\CoreBundle\EventListener\LegacyRouteListener</parameter>
         <parameter key="router_listener.class">Zikula\Bundle\CoreBundle\EventListener\RouterListener</parameter>
         <parameter key="zikula.exception_listener.class">Zikula\Bundle\CoreBundle\EventListener\ExceptionListener</parameter>
+        <parameter key="zikula.output_compression_listener.class">Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener</parameter>
         <parameter key="zikula.strip_front_controller_listener.class">Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener</parameter>
     </parameters>
 
@@ -142,6 +143,10 @@
             <argument type="service" id="logger" on-invalid="ignore" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
+        </service>
+
+        <service id="zikula.output_compression_listener" class="%zikula.output_compression_listener.class%">
+            <tag name="kernel.event_subscriber" />
         </service>
 
         <service id="zikula.strip_front_controller_listener" class="%zikula.strip_front_controller_listener.class%">
