@@ -30,6 +30,12 @@ class Application extends BaseApplication
 
     protected function registerCommands()
     {
+        if (isset($GLOBALS['ZConfig']['DBInfo']['databases']['default']['password']) &&
+            $GLOBALS['ZConfig']['DBInfo']['databases']['default']['password'] == '') {
+            // composer is called, the system may not be installed yet
+            return;
+        }
+
         // ensure that we have admin access
         $this->bootstrap();
         try {
