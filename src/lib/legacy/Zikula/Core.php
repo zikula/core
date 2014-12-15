@@ -498,11 +498,6 @@ class Zikula_Core
         // end block
 
         if ($stage & self::STAGE_MODS) {
-            // Set compression on if desired
-            if (System::getVar('UseCompression') == 1) {
-                //ob_start("ob_gzhandler");
-            }
-
             ModUtil::load('ZikulaSecurityCenterModule');
 
             $coreInitEvent->setArgument('stage', self::STAGE_MODS);
