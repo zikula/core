@@ -194,9 +194,16 @@ class ZGettext
     {
         // check if classes are included (which is not true for CLI commands)
         if (!class_exists('StreamReader_Abstract')) {
-            include_once 'lib/StreamReader/Abstract.php';
-            include_once 'lib/StreamReader/String.php';
-            include_once 'lib/StreamReader/CachedFile.php';
+            if (file_exists('lib/StreamReader/Abstract.php')) {
+                include_once 'lib/StreamReader/Abstract.php';
+                include_once 'lib/StreamReader/String.php';
+                include_once 'lib/StreamReader/CachedFile.php';
+            } elseif (file_exists('src/lib/StreamReader/Abstract.php')) {
+                // true when calling composer
+                include_once 'src/lib/StreamReader/Abstract.php';
+                include_once 'src/lib/StreamReader/String.php';
+                include_once 'src/lib/StreamReader/CachedFile.php';
+            }
         }
 
         $_this = self::getInstance();
