@@ -30,6 +30,11 @@ class OutputCompressionListener implements EventSubscriberInterface
             return;
         }
 
+        // Check if zlib extension is available
+        if (!extension_loaded('zlib')) {
+            return;
+        }
+
         // Set compression on
         ini_set('zlib.output_handler', '');
         ini_set('zlib.output_compression', 'On');
