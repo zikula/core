@@ -85,8 +85,6 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('pagetitle', $pagetitle)
                    ->assign('zlibEnabled', $zlibExtensionEnabled);
 
-        $this->view
-
         return new Response($this->view->fetch('Admin/modifyconfig.tpl'));
     }
 
