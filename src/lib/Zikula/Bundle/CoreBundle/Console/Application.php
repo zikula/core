@@ -41,7 +41,8 @@ class Application extends BaseApplication
         try {
             $this->loginAsAdministrator();
         } catch (\Exception $e) {
-            die(__('Sorry, an exception occurred:') . ' ' . $e->getMessage());
+            $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+            $this->renderException($e, $output);
         }
 
         return parent::registerCommands();
