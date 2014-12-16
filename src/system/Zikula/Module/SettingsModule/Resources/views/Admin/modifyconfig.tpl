@@ -125,11 +125,14 @@
                 <label class="col-lg-3 control-label">{gt text="Activate compression"}</label>
                 <div class="col-lg-9">
                     <div id="settings_usecompression">
-                        <input id="UseCompression1" type="radio" name="settings[UseCompression]" value="1" {if $modvars.ZConfig.UseCompression eq 1}checked="checked"{/if} />
+                        <input id="UseCompression1" type="radio" name="settings[UseCompression]" value="1"{if $modvars.ZConfig.UseCompression eq 1} checked="checked"{/if} />
                         <label for="UseCompression1">{gt text="Yes"}</label>
-                        <input id="UseCompression0" type="radio" name="settings[UseCompression]" value="0" {if $modvars.ZConfig.UseCompression eq 0}checked="checked"{/if} />
+                        <input id="UseCompression0" type="radio" name="settings[UseCompression]" value="0"{if $modvars.ZConfig.UseCompression eq 0} checked="checked"{/if} />
                         <label for="UseCompression0">{gt text="No"}</label>
                     </div>
+                    {if isset($zlibEnabled) && !$zlibEnabled}
+                        <p class="alert alert-warning">{gt text="Notice: The PHP Zlib extension is not enabled on your host. This setting will not do anything in this case."}</p>
+                    {/if}
                 </div>
             </div>
             <div class="form-group">
