@@ -13,6 +13,7 @@
 
 namespace Zikula\Module\UsersModule\Controller;
 
+use Doctrine\DBAL\Exception\InvalidArgumentException;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula_View;
@@ -339,7 +340,7 @@ class UserController extends \Zikula_AbstractController
                             || !isset($selectedAuthenticationMethod['modname']) || !is_string($selectedAuthenticationMethod['modname']) || empty($selectedAuthenticationMethod['modname'])
                             || !isset($selectedAuthenticationMethod['method']) || !is_string($selectedAuthenticationMethod['method']) || empty($selectedAuthenticationMethod['method'])
                             ) {
-                        throw new FatalErrorException($this->__('An invalid authentication method was selected.'));
+                        throw new \InvalidArgumentException($this->__('An invalid authentication method was selected.'));
                     }
 
                     if ($selectedAuthenticationMethod['modname'] == $this->name) {
@@ -1265,7 +1266,7 @@ class UserController extends \Zikula_AbstractController
                         || !isset($selectedAuthenticationMethod['modname']) || empty($selectedAuthenticationMethod['modname'])
                         || !isset($selectedAuthenticationMethod['method']) || empty($selectedAuthenticationMethod['method'])
                         ) {
-                    throw new FatalErrorException($this->__('Error! Invalid authentication method information.'));
+                    throw new \InvalidArgumentException($this->__('Error! Invalid authentication method information.'));
                 }
 
                 if (ModUtil::available($selectedAuthenticationMethod['modname'])
@@ -1444,7 +1445,7 @@ class UserController extends \Zikula_AbstractController
                     }
                 }
             } elseif (isset($authenticationInfo) && (!is_array($authenticationInfo))) {
-                throw new FatalErrorException($this->__('Error! Invalid authentication information received.'));
+                throw new \InvalidArgumentException($this->__('Error! Invalid authentication information received.'));
             }
         }
 
@@ -1953,7 +1954,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws FatalErrorException Thrown if the users block isn't found
+     * @throws NotFoundHttpException Thrown if the users block isn't found
      */
     public function usersBlockAction()
     {
@@ -1968,7 +1969,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (!$found) {
-            throw new FatalErrorException();
+            throw new NotFoundHttpException();
         }
 
         return new Response($this->view->assign(UserUtil::getVars(UserUtil::getVar('uid')))
@@ -2000,7 +2001,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return AccessDeniedException Thrown if the user isn't logged in or
      *                                          if there are no post parameters
-     * @throws FatalErrorException Thrown if the users block isn't found
+     * @throws NotFoundHttpException Thrown if the users block isn't found
      */
     public function updateUsersBlockAction(Request $request)
     {
@@ -2019,7 +2020,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (!$found) {
-            throw new FatalErrorException();
+            throw new NotFoundHttpException();
         }
 
         $ublockon = (bool)$request->request->get('ublockon', false);
@@ -2063,7 +2064,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Response symfony response object
      *
-     * @throws FatalErrorException Thrown if there are no arguments provided or
+     * @throws FatalErrorException|\InvalidArgumentException Thrown if there are no arguments provided or
      *                                    if the user is logged in but the user is coming from the login process or
      *                                    if the authentication information is invalid
      * @throws AccessDeniedException Thrown if the user isn't logged in and isn't coming from the login process
@@ -2092,7 +2093,7 @@ class UserController extends \Zikula_AbstractController
                 || !isset($sessionVars['authentication_info']) || !is_array($sessionVars['authentication_info'])
                 || !isset($sessionVars['authentication_method']) || !is_array($sessionVars['authentication_method']))
                 ) {
-            throw new FatalErrorException();
+            throw new \InvalidArgumentException();
         }
 
         if ($this->getVar('changepassword', 1) != 1) {
@@ -2154,7 +2155,7 @@ class UserController extends \Zikula_AbstractController
      * @throws AccessDeniedException Thrown if there is no POST information
      * @throws FatalErrorException Thrown if there are no arguments provided or
      *                                    if the user is logged in but the user is coming from the login process or
-     *                                    if there's a problem saving the new password
+     * @throws \RuntimeException if there's a problem saving the new password
      */
     public function updatePasswordAction(Request $request)
     {
@@ -2225,7 +2226,7 @@ class UserController extends \Zikula_AbstractController
                     }
                 }
             } else {
-                throw new FatalErrorException($this->__('Sorry! There was a problem saving your new password.'));
+                throw new \RuntimeException($this->__('Sorry! There was a problem saving your new password.'));
             }
         }
 

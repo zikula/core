@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 use DataUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Zikula\Core\Exception\ExtensionNotAvailableException;
 
 /**
  * @Route("/ajax")
@@ -287,7 +288,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return AjaxResponse An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
      *
-     * @throws FatalErrorException Thrown if the authentication module name or method name are not valid.
+     * @throws \InvalidArgumentException|ExtensionNotAvailableException Thrown if the authentication module name or method name are not valid or unavailable.
      */
     public function getLoginFormFieldsAction(Request $request)
     {
@@ -298,11 +299,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $method = (isset($selectedAuthenticationMethod['method']) && !empty($selectedAuthenticationMethod['method']) ? $selectedAuthenticationMethod['method'] : false);
 
         if (empty($modname) || !is_string($modname)) {
-            throw new FatalErrorException($this->__('An invalid authentication module name was received.'));
+            throw new \InvalidArgumentException($this->__('An invalid authentication module name was received.'));
         } elseif (!ModUtil::available($modname)) {
-            throw new FatalErrorException($this->__f('The \'%1$s\' module is not in an available state.', array($modname)));
+            throw new ExtensionNotAvailableException($this->__f('The \'%1$s\' module is not in an available state.', array($modname)));
         } elseif (!ModUtil::isCapable($modname, 'authentication')) {
-            throw new FatalErrorException($this->__f('The \'%1$s\' module is not an authentication module.', array($modname)));
+            throw new \InvalidArgumentException($this->__f('The \'%1$s\' module is not an authentication module.', array($modname)));
         }
 
         $loginFormFields = ModUtil::func($modname, 'Authentication', 'getLoginFormFields', array(
