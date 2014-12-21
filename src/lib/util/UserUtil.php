@@ -14,9 +14,8 @@
 
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
-use Zikula_Exception_Fatal as FatalException;
-use Zikula_Exception_Redirect as RedirectException;
-use Zikula_Exception_Forbidden as ForbiddenException;
+use Zikula\Core\Exception\FatalErrorException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -352,10 +351,10 @@ class UserUtil
     /**
      * Return a array strcuture for the user dropdown box.
      *
-     * @param miexed $defaultValue The default value of the selector (optional) (default=0).
+     * @param mixed $defaultValue The default value of the selector (optional) (default=0).
      * @param string $defaultText  The text of the default value (optional) (default='').
      * @param array  $ignore       An array of keys to ignore (optional) (default=array()).
-     * @param miexed $includeAll   Whether to include an "All" choice (optional) (default=0).
+     * @param mixed $includeAll   Whether to include an "All" choice (optional) (default=0).
      * @param string $allText      The text to display for the "All" choice (optional) (default='').
      * @param string $exclude      An SQL IN-LIST string to exclude specified uids.
      *
@@ -404,19 +403,19 @@ class UserUtil
      *
      * @return array An array of account recovery information.
      *
-     * @throws FatalException If the $uid parameter is not valid.
+     * @throws FatalErrorException If the $uid parameter is not valid.
      */
     public static function getUserAccountRecoveryInfo($uid = -1)
     {
         if (!isset($uid) || !is_numeric($uid) || ((string)((int)$uid) != $uid) || (($uid < -1) || ($uid == 0) || ($uid == 1))) {
-            throw new FatalException('Attempt to get authentication information for an invalid user id.');
+            throw new FatalErrorException('Attempt to get authentication information for an invalid user id.');
         }
 
         if ($uid == -1) {
             if (self::isLoggedIn()) {
                 $uid = self::getVar('uid');
             } else {
-                throw new FatalException('Attempt to get authentication information for an invalid user id.');
+                throw new FatalErrorException('Attempt to get authentication information for an invalid user id.');
             }
         }
 
@@ -478,34 +477,34 @@ class UserUtil
      * @param array  $authenticationMethod Auth method.
      * @param string $reentrantURL         Reentrant URL (optional).
      *
-     * @throws FatalException
+     * @throws FatalErrorException
      *
      * @return true
      */
     private static function preAuthenticationValidation(array $authenticationMethod, $reentrantURL = null)
     {
         if (empty($authenticationMethod) || (count($authenticationMethod) != 2)) {
-            throw new FatalException(__f('An invalid %1$s parameter was received.', array('authenticationMethod')));
+            throw new FatalErrorException(__f('An invalid %1$s parameter was received.', array('authenticationMethod')));
         }
 
         if (!isset($authenticationMethod['modname']) || !is_string($authenticationMethod['modname']) || empty($authenticationMethod['modname'])) {
-            throw new FatalException(__f('An invalid %1$s parameter was received.', array('modname')));
+            throw new FatalErrorException(__f('An invalid %1$s parameter was received.', array('modname')));
         } elseif (!ModUtil::getInfoFromName($authenticationMethod['modname'])) {
-            throw new FatalException(__f('The authentication module \'%1$s\' could not be found.', array($authenticationMethod['modname'])));
+            throw new FatalErrorException(__f('The authentication module \'%1$s\' could not be found.', array($authenticationMethod['modname'])));
         } elseif (!ModUtil::available($authenticationMethod['modname'])) {
-            throw new FatalException(__f('The authentication module \'%1$s\' is not available.', array($authenticationMethod['modname'])));
+            throw new FatalErrorException(__f('The authentication module \'%1$s\' is not available.', array($authenticationMethod['modname'])));
         } elseif (!ModUtil::loadApi($authenticationMethod['modname'], 'Authentication')) {
-            throw new FatalException(__f('The authentication module \'%1$s\' could not be loaded.', array($authenticationMethod['modname'])));
+            throw new FatalErrorException(__f('The authentication module \'%1$s\' could not be loaded.', array($authenticationMethod['modname'])));
         }
 
         if (!isset($authenticationMethod['method']) || !is_string($authenticationMethod['method']) || empty($authenticationMethod['method'])) {
-            throw new FatalException(__f('An invalid %1$s parameter was received.', array('method')));
+            throw new FatalErrorException(__f('An invalid %1$s parameter was received.', array('method')));
         } elseif (!ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'supportsAuthenticationMethod', array('method' => $authenticationMethod['method']), 'Zikula_Api_AbstractAuthentication')) {
-            throw new FatalException(__f('The authentication method \'%1$s\' is not supported by the authentication module \'%2$s\'.', array($authenticationMethod['method'], $authenticationMethod['modname'])));
+            throw new FatalErrorException(__f('The authentication method \'%1$s\' is not supported by the authentication module \'%2$s\'.', array($authenticationMethod['method'], $authenticationMethod['modname'])));
         }
 
         if (ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'isReentrant', null, 'Zikula_Api_AbstractAuthentication') && (!isset($reentrantURL) || empty($reentrantURL))) {
-            throw new FatalException(__f('The authentication module \'%1$s\' is reentrant. A %2$s is required.', array($authenticationMethod['modname'], 'reentrantURL')));
+            throw new FatalErrorException(__f('The authentication module \'%1$s\' is reentrant. A %2$s is required.', array($authenticationMethod['modname'], 'reentrantURL')));
         }
 
         return true;
@@ -640,7 +639,7 @@ class UserUtil
             if (!$userObj || !is_array($userObj)) {
                 // Note that we have not actually logged into anything yet, just authenticated.
 
-                throw new FatalException(__f('A %1$s (%2$s) was returned by the authenticating module, but a user account record (or registration request record) could not be found.', array('uid', $uid)));
+                throw new FatalErrorException(__f('A %1$s (%2$s) was returned by the authenticating module, but a user account record (or registration request record) could not be found.', array('uid', $uid)));
             }
 
             if (!isset($userObj['activated'])) {
@@ -789,7 +788,7 @@ class UserUtil
                     $authenticatedUid = $preauthenticatedUser['uid'];
                     $userObj = $preauthenticatedUser;
                 } else {
-                    throw new FatalException();
+                    throw new FatalErrorException();
                 }
             } else {
                 $authArgs = array(
@@ -844,9 +843,11 @@ class UserUtil
                             SessionUtil::setVar($sessionVarName, $sessionVars, $sessionNamespace, true, true);
                         }
                         $userObj = false;
-                        throw new RedirectException($redirectURL);
+                        $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirectURL);
+                        $response->send();
+                        exit;
                     } else {
-                        throw new ForbiddenException();
+                        throw new AccessDeniedException();
                     }
                 } else {
                     // The login has not been vetoed
@@ -873,7 +874,7 @@ class UserUtil
     public static function setUserByUname($uname, $rememberMe = false)
     {
         if (!isset($uname) || !is_string($uname) || empty($uname)) {
-            throw new FatalException(__('Attempt to set the current user with an invalid uname.'));
+            throw new FatalErrorException(__('Attempt to set the current user with an invalid uname.'));
         }
 
         $uid = self::getIdFromName($uname);
@@ -902,12 +903,12 @@ class UserUtil
     public static function setUserByUid($uid, $rememberMe = false, array $authenticationMethod = null)
     {
         if (!isset($uid) || empty($uid) || ((string)((int)$uid) != $uid)) {
-            throw new FatalException(__('Attempt to set the current user with an invalid uid.'));
+            throw new FatalErrorException(__('Attempt to set the current user with an invalid uid.'));
         }
 
         $userObj = self::getVars($uid);
         if (!isset($userObj) || !is_array($userObj) || empty($userObj)) {
-            throw new FatalException(__('Attempt to set the current user with an unknown uid.'));
+            throw new FatalErrorException(__('Attempt to set the current user with an unknown uid.'));
         }
 
         if (!isset($authenticationMethod)) {
@@ -918,7 +919,7 @@ class UserUtil
         } elseif (empty($authenticationMethod) || !isset($authenticationMethod['modname']) || empty($authenticationMethod['modname'])
                 || !isset($authenticationMethod['method']) || empty($authenticationMethod['method'])
                 ) {
-            throw new FatalException(__('Attempt to set the current user with an invalid authentication method.'));
+            throw new FatalErrorException(__('Attempt to set the current user with an invalid authentication method.'));
         }
 
         // Storing Last Login date -- store it in UTC! Do not use date() function!

@@ -235,7 +235,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *
      * @return array An array containing the authentication method requested.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     * @throws FatalErrorException Thrown if invalid parameters are sent in $args.
      */
     public function getAuthenticationMethod(array $args)
     {
