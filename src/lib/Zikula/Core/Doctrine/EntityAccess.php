@@ -51,6 +51,11 @@ class EntityAccess implements \ArrayAccess
     {
         $method = $this->getGetterForProperty($key);
 
+        // see #1863
+        if (empty($method)) {
+            return null;
+        }
+
         return $this->$method();
     }
 
