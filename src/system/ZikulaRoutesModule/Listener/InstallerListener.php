@@ -38,7 +38,15 @@ class InstallerListener extends BaseInstallerListener
 
     private $controllerHelper;
 
-    function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer, ControllerUtil $controllerHelper)
+    public static function getSubscribedEvents()
+    {
+        $events = parent::getSubscribedEvents();
+        $events['new.routes.avail'] = array('newRoutesAvail', 5);
+
+        return $events;
+    }
+
+    public function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer, ControllerUtil $controllerHelper)
     {
         $this->em = $em;
         $this->routeFinder = $routeFinder;
@@ -185,8 +193,6 @@ class InstallerListener extends BaseInstallerListener
      */
     public function newRoutesAvail(GenericEvent $event)
     {
-        parent::newRoutesAvail($event);
-
         // reload **all** JS routes
         $this->controllerHelper->dumpJsRoutes();
     }
