@@ -42,7 +42,7 @@ is taken.
 
 Zikula makes use of [composer](http://getcomposer.org/) to manage and download
 all dependencies. Composer must be run prior to installing a site using Zikula.
-Run `composer self-update && composer update`. 
+Run `composer self-update` and `composer update`.
 
 If you store Composer in the root of the Zikula Core checkout, please
 rename it from `composer.phar` to `composer` to avoid your IDE reading
@@ -58,7 +58,7 @@ The following process should be followed for all upgrades even smaller point rel
   - Delete your `config/config.php` and `config/personal_config.php` keeping a note
     of your database settings.
   - Upload new files.
-  - Copy your new`config/config.php` and `config/personal_config.php` and update
+  - Copy your new`config/config.php` to `config/personal_config.php` and update
     `config/personal_config.php` with your database settings.
   - Copy `app/config/parameters.yml` to `app/config/custom_parameters.yml` and update
     values with your database settings. Also set `installed` to `true`.
