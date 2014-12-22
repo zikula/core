@@ -16,4 +16,3 @@ final class StandardFields extends Annotation
     public $field;
     public $value;
 }
-
