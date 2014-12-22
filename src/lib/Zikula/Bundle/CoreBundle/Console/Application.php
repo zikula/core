@@ -38,11 +38,13 @@ class Application extends BaseApplication
 
         // ensure that we have admin access
         $this->bootstrap();
-        try {
-            $this->loginAsAdministrator();
-        } catch (\Exception $e) {
-            $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $this->renderException($e, $output);
+        if ($this->kernel->getContainer()->getParameter('installed') === true) {
+            try {
+                $this->loginAsAdministrator();
+            } catch (\Exception $e) {
+                $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+                $this->renderException($e, $output);
+            }
         }
 
         return parent::registerCommands();
