@@ -3,6 +3,7 @@
 namespace Zikula\Core\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * Workflow
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="workflows")
  * @ORM\Entity
  */
-class WorkflowEntity
+class WorkflowEntity extends EntityAccess
 {
     /**
      * @var integer $id
@@ -91,6 +92,12 @@ class WorkflowEntity
      */
     private $debug;
 
+    public function __construct()
+    {
+        $this->setMetaid(0);
+        $this->setType(1);
+        $this->setBusy(0);
+    }
 
     /**
      * Get id
