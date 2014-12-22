@@ -19,8 +19,15 @@ use Zikula\Core\Event\ModuleStateEvent;
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
-ini_set('memory_limit', '128M');
-ini_set('max_execution_time', 86400);
+$warnings = array();
+if (ini_set('memory_limit', '128M') === false) {
+    $currentSetting = ini_get('memory_limit');
+    $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The upgrade process may fail at your current setting of %4$s', array('ini_set', 'memory_limit', '128M', $currentSetting));
+}
+if (ini_set('max_execution_time', 86400) === false) {
+    $currentSetting = ini_get('max_execution_time');
+    $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The upgrade process may fail at your current setting of %4$s', array('ini_set', 'max_execution_time', '86400', $currentSetting));
+}
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
@@ -93,7 +100,7 @@ switch ($action) {
         _upg_login(true);
         break;
     case 'sanitycheck': // step three
-        _upg_sanity_check($username, $password);
+        _upg_sanity_check($username, $password, $warnings);
         break;
     case 'upgrademodules': // step four
         _upg_upgrademodules($username, $password, $kernel);
@@ -401,10 +408,11 @@ function _upg_continue($action, $text, $username, $password)
  *
  * @param string $username Username of the admin user.
  * @param string $password Password of the admin user.
+ * @param array $warnings
  *
  * @return void
  */
-function _upg_sanity_check($username, $password)
+function _upg_sanity_check($username, $password, array $warnings = array())
 {
     _upg_header();
 
@@ -429,6 +437,10 @@ function _upg_sanity_check($username, $password)
         echo '<h2>'.__('Legacy plugins found.')."</h2>\n";
         echo '<p class="alert alert-warning text-center">'.__f('Please delete the folders <strong>plugins/Doctrine</strong> and <strong>plugins/DoctrineExtensions</strong> as they have been deprecated', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
         $validupgrade = false;
+    } elseif (!empty($warnings)) {
+        foreach ($warnings as $warning) {
+            echo '<div class="alert alert-warning">'.__('WARNING').": ".$warning.'</div>';
+        }
     }
 
     if ($validupgrade) {
