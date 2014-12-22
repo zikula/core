@@ -13,7 +13,6 @@
 
 namespace Zikula\Module\UsersModule\Controller;
 
-use Doctrine\DBAL\Exception\InvalidArgumentException;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula_View;
