@@ -12,8 +12,10 @@
 
 use Symfony\Component\Yaml\Yaml;
 use Zikula_Request_Http as Request;
-use Zikula\Core\Event\GenericEvent;
 use Doctrine\DBAL\Connection;
+use Zikula\Core\CoreEvents;
+use Zikula\Core\Event\ModuleStateEvent;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
@@ -95,7 +97,7 @@ switch ($action) {
         _upg_sanity_check($username, $password);
         break;
     case 'upgrademodules': // step four
-        _upg_upgrademodules($username, $password, $request);
+        _upg_upgrademodules($username, $password, $kernel);
         break;
     default: // step one
         _upg_selectlanguage($upgradeFeedback);
@@ -280,11 +282,11 @@ function _upg_login($showheader = true)
  *
  * @param string $username Username of the admin user.
  * @param string $password Password of the admin user.
- * @param \Symfony\Component\HttpFoundation\Request $request
+ * @param ZikulaKernel $kernel
  *
  * @return void
  */
-function _upg_upgrademodules($username, $password, \Symfony\Component\HttpFoundation\Request $request)
+function _upg_upgrademodules($username, $password, ZikulaKernel $kernel)
 {
     $content = _upg_header(false);
 
@@ -309,6 +311,12 @@ function _upg_upgrademodules($username, $password, \Symfony\Component\HttpFounda
             }
         }
     }
+
+    // fire MODULE_INSTALL event to reload all routes
+    $event = new ModuleStateEvent($kernel->getModule('ZikulaRoutesModule'));
+    $kernel->getContainer()->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
+    $content .= '<li class="passed">' . __('Routes reloaded') . '</li>';
+
     $content .= '</ul>'."\n";
     if (!$results) {
         $content .= '<br />'."\n";
@@ -344,6 +352,8 @@ function _upg_upgrademodules($username, $password, \Symfony\Component\HttpFounda
         $content .= __f('Go to the startpage for %s', $url);
     } else {
         upgrade_clear_caches();
+        $cacheClearer = $kernel->getContainer()->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
         $url = sprintf('<a href="%s">%s</a>', ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'), DataUtil::formatForDisplay(System::getVar('sitename')));
         $content .= __f('Go to the admin panel for %s', $url);
     }
@@ -596,10 +606,6 @@ function installBundlesTable(ZikulaKernel $kernel)
  */
 function installRoutesModule(ZikulaKernel $kernel)
 {
-    // ensure that hook-related entities are available
-    include_once 'lib/Zikula/Component/HookDispatcher/Storage/Doctrine/Entity/HookAreaEntity.php';
-    include_once 'lib/Zikula/Component/HookDispatcher/Storage/Doctrine/Entity/HookSubscriberEntity.php';
-
     // manually install the Routes module
     $routeModuleName = 'ZikulaRoutesModule';
     $module = $kernel->getModule($routeModuleName);
