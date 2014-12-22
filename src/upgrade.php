@@ -334,7 +334,7 @@ function _upg_upgrademodules($username, $password, ZikulaKernel $kernel)
     $content .= '<p class="alert alert-success text-center">'.__('Finished upgrade')." - \n";
 
     // Relogin the admin user to give a proper admin link
-    SessionUtil::requireSession();
+    $kernel->getContainer()->get('session')->start();
 
     $authenticationInfo = array(
         'login_id' => $username,
