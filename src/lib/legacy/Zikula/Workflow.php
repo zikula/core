@@ -108,13 +108,19 @@ class Zikula_Workflow
                            'state'        => $stateID);
 
         $entity = new Zikula\Core\Doctrine\Entity\WorkflowEntity();
-        $entity->merge($insertObj);
+        $entity->setObjTable($insertObj['obj_table']);
+        $entity->setObjIdcolumn($insertObj['obj_idcolumn']);
+        $entity->setObjId($insertObj['obj_id']);
+        $entity->setModule($insertObj['module']);
+        $entity->setSchemaname($insertObj['schemaname']);
+        $entity->setState($insertObj['state']);
 
         //get the entity manager
         $em = ServiceUtil::get('doctrine.entitymanager');
         $em->persist($entity);
-
         $em->flush();
+
+        $insertObj['id'] = $entity->getId();
 
         $this->workflowData = $insertObj;
         if ($obj instanceof Doctrine_Record) {
