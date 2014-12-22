@@ -129,9 +129,9 @@ class Zikula_Workflow_Util
             return $configpath;
         } elseif (is_readable($modulepath)) {
             return $modulepath;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -185,15 +185,20 @@ class Zikula_Workflow_Util
      */
      public static function deleteWorkflowsForModule($module)
     {
-        if (!isset($module)) {
-            $module = ModUtil::getName();
-        }
-        //This is a static function, so we have to user ServiceUtil to get the entity manager
+        $theModule = isset($module) ? $module : ModUtil::getName();
+
+        //This is a static function, so we have to use ServiceUtil to get the entity manager
         $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
-        //crete the dql query.
-        $dql = "DELETE  Zikula\Core\Doctrine\Entity\WorkflowEntity w WHERE w.module = '$module'";
-        $query = $em->createQuery($dql);
-        $result = $query->execute();        
+
+        //create the dql query.
+        $query = $em->createQueryBuilder()
+                    ->delete('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+                    ->where('w.module = :module')
+                    ->setParameter('module', $theModule)
+                    ->getQuery();
+
+        $result = $query->execute();
+
         return $result;
     }
 
@@ -207,13 +212,20 @@ class Zikula_Workflow_Util
     public static function deleteWorkflow($obj)
     {
         $workflow = $obj['__WORKFLOW__'];
-        $idcolumn = $workflow['obj_idcolumn'];
-        //This is a static function, so we have to user ServiceUtil to get the entity manager
+        $idColumn = $workflow['obj_idcolumn'];
+
+        //This is a static function, so we have to use ServiceUtil to get the entity manager
         $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
-        //crete the dql query.
-        $dql = "DELETE Zikula\Core\Doctrine\Entity\WorkflowEntity i WHERE i.objIdcolumn = '$idcolumn'";
-        $query = $em->createQuery($dql);
-        $result = $query->execute();        
+
+        //create the dql query.
+        $query = $em->createQueryBuilder()
+                    ->delete('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+                    ->where('w.objIdcolumn = :idColumn')
+                    ->setParameter('idColumn', $idColumn)
+                    ->getQuery();
+
+        $result = $query->execute();
+
         return $result;
     }
 

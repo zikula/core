@@ -107,9 +107,14 @@ class Zikula_Workflow
                            'schemaname'   => $this->id,
                            'state'        => $stateID);
 
-        if (!DBUtil::insertObject($insertObj, 'workflows')) {
-            return false;
-        }
+        $entity = new Zikula\Core\Doctrine\Entity\WorkflowEntity();
+        $entity->merge($insertObj);
+
+        //get the entity manager
+        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em->persist($entity);
+
+        $em->flush();
 
         $this->workflowData = $insertObj;
         if ($obj instanceof Doctrine_Record) {
@@ -131,14 +136,27 @@ class Zikula_Workflow
      */
     public function updateWorkflowState($stateID, $debug = null)
     {
-        $obj = array('id'    => $this->workflowData['id'],
-                     'state' => $stateID);
+        //get the entity manager
+        $em = ServiceUtil::get('doctrine.entitymanager');
+
+        //create the dql query.
+        $qb = $em->createQueryBuilder()
+                 ->update('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+                 ->set('w.state', ':newState')
+                 ->setParameter('newState', $stateID);
 
         if (isset($debug)) {
-            $obj['debug'] = $debug;
+            $qb->set('w.debug', ':newDebug')
+               ->setParameter('newDebug', $debug);
         }
 
-        return (bool)DBUtil::updateObject($obj, 'workflows');
+        $query = $qb->where('w.id = :id')
+                    ->setParameter('id', $this->workflowData['id'])
+                    ->getQuery();
+
+        $result = $query->execute();
+
+        return true;
     }
 
     /**
