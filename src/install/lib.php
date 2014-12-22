@@ -20,9 +20,6 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Event\ModuleStateEvent;
 
-ini_set('memory_limit', '84M');
-ini_set('max_execution_time', 300);
-
 function install(Zikula_Core $core, Request $request)
 {
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
