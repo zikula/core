@@ -15,7 +15,6 @@ use Zikula_Request_Http as Request;
 use Doctrine\DBAL\Connection;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
