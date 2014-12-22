@@ -96,7 +96,7 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
                 if (is_object($this->request) && method_exists($this->request, 'getSession') && is_object($this->request->getSession())) {
                     $this->request->getSession()->getFlashBag()->add(\Zikula_Session::MESSAGE_WARNING, $templateWarning);
                 } else {
-                    LogUtil::registerWarning($templateWarning);
+                    \LogUtil::registerWarning($templateWarning);
                 }
             case '3.9.1':
                 // future upgrade routines
