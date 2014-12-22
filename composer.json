@@ -67,7 +67,14 @@
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
         "bassjobsen/bootstrap-3-typeahead": "dev-master",
         "vakata/jstree": "dev-master",
-        "afarkas/html5shiv": "*"
+        "afarkas/html5shiv": "*",
+        "composer/installers": "~1.0",
+
+        "zikula/legal-module": "dev-master",
+        "zikula/profile-module": "dev-master"
+    },
+    "require-dev": {
+        "zikula/breakit-module": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -88,6 +95,24 @@
     },
     "extra": {
         "symfony-app-dir": "src/app",
-        "symfony-web-dir": "src/web"
-    }
+        "symfony-web-dir": "src/web",
+        "installer-paths": {
+            "src/modules/{$vendor}/{$name}": ["type:zikula-module"],
+            "src/themes/{$vendor}/{$name}": ["type:zikula-theme"]
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/zikula-modules/Legal"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/zikula-modules/Profile"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/craigh/Breakit"
+        }
+    ]
 }
