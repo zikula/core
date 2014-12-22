@@ -54,19 +54,19 @@ function install(Zikula_Core $core, Request $request, $warnings)
     $smarty->clear_compiled_tpl();
     file_put_contents("$tempDir/view_compiled/index.html", '');
 
-    $lang = FormUtil::getPassedValue('lang', '', 'GETPOST');
-    $dbhost = FormUtil::getPassedValue('dbhost', '', 'GETPOST');
-    $dbusername = FormUtil::getPassedValue('dbusername', '', 'GETPOST');
-    $dbpassword = FormUtil::getPassedValue('dbpassword', '', 'GETPOST');
-    $dbname = FormUtil::getPassedValue('dbname', '', 'GETPOST');
+    $lang = $request->get('lang', '');
+    $dbhost = $request->get('dbhost', '');
+    $dbusername = $request->get('dbusername', '');
+    $dbpassword = $request->get('dbpassword', '');
+    $dbname = $request->get('dbname', '');
     $dbprefix = '';
-    $dbdriver = FormUtil::getPassedValue('dbdriver', '', 'GETPOST');
-    $dbtabletype = FormUtil::getPassedValue('dbtabletype', '', 'GETPOST');
-    $username = FormUtil::getPassedValue('username', '', 'POST');
-    $password = FormUtil::getPassedValue('password', '', 'POST');
-    $repeatpassword = FormUtil::getPassedValue('repeatpassword', '', 'POST');
-    $email = FormUtil::getPassedValue('email', '', 'GETPOST');
-    $action = FormUtil::getPassedValue('action', '', 'GETPOST');
+    $dbdriver = $request->get('dbdriver', '');
+    $dbtabletype = $request->get('dbtabletype', '');
+    $username = $request->request->get('username', '');
+    $password = $request->request->get('password', '');
+    $repeatpassword = $request->request->get('repeatpassword', '');
+    $email = $request->get('email', '');
+    $action = $request->get('action', '');
 
     $notinstalled = isset($_GET['notinstalled']);
     $installedState = $container->getParameter('installed');
