@@ -342,11 +342,11 @@ class System
      * @param string  $redirecturl       URL to redirect to.
      * @param array   $additionalheaders Array of header strings to send with redirect.
      * @param integer $type              Number type of the redirect.
+     * @param mixed   $response          unused
      *
-     * @deprecated since 1.4.0 - from a controller, return RedirectResponse, or
-     * if necessary throw Zikula_Redirect_Exception.
+     * @deprecated since 1.4.0 - from a controller, return RedirectResponse
      *
-     * @return boolean True if redirect successful, false otherwise.
+     * @throws \Exception
      */
     public static function redirect($redirecturl, $additionalheaders = array(), $type = 302, $response = false)
     {
@@ -359,28 +359,20 @@ class System
 
         // check if the headers have already been sent
         if (headers_sent()) {
-            return false;
+            throw new \Exception(__('Unable to redirect. Headers already sent.'));
         }
 
         // Always close session before redirect
         session_write_close();
 
-        // add any additional headers supplied
-        if (!empty($additionalheaders)) {
-            foreach ($additionalheaders as $additionalheader) {
-                header($additionalheader);
-            }
-        }
-
         $redirecturl = self::normalizeUrl($redirecturl);
 
-        if ($response) {
-            $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl);
-            $response->send();
-            return;
+        $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl, $type);
+        if (!empty($additionalheaders)) {
+            $response->headers->add($additionalheaders);
         }
-
-        throw new Zikula_Exception_Redirect($redirecturl, $type);
+        $response->send();
+        exit;
     }
 
     public static function normalizeUrl($url)

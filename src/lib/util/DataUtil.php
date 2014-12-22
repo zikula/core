@@ -318,7 +318,7 @@ class DataUtil
      *
      * This API is insanely unsafe. Always prepare and bind variables in SQL statements.
      *
-     * @return The formatted variable.
+     * @return string The formatted variable.
      */
     public static function formatForStore($var)
     {

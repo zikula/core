@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 /**
  * Abstract AJAX controller.
  */
@@ -33,7 +35,7 @@ abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
      *
      * @param string $token Token, default null.
      *
-     * @throws Zikula_Exception_Forbidden If the CSFR token fails.
+     * @throws AccessDeniedException If the CSFR token fails.
      *
      * @return void
      */
@@ -47,9 +49,9 @@ abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
 
         try {
             $this->checkCsrfToken($token);
-        } catch (Zikula_Exception_Forbidden $e) {
+        } catch (AccessDeniedException $e) {
         }
 
-        throw new Zikula_Exception_Forbidden(__('Ajax security checks failed.'));
+        throw new AccessDeniedException(__('Ajax security checks failed.'));
     }
 }

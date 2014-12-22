@@ -14,7 +14,6 @@
 namespace Zikula\Module\UsersModule\Api;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\Exception\FatalErrorException;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper;
 use ModUtil;
@@ -235,7 +234,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *
      * @return array An array containing the authentication method requested.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     * @throws \InvalidArgumentException Thrown if invalid parameters are sent in $args.
      */
     public function getAuthenticationMethod(array $args)
     {
@@ -244,7 +243,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
         }
 
         if (!isset($this->authenticationMethods[($args['method'])])) {
-            throw new FatalErrorException($this->__f('The requested authentication method \'%1$s\' does not exist.', array($args['method'])));
+            throw new \InvalidArgumentException($this->__f('The requested authentication method \'%1$s\' does not exist.', array($args['method'])));
         }
 
         return $this->authenticationMethods[($args['method'])];

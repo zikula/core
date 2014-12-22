@@ -142,7 +142,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return void
      *
-     * @throws FatalErrorException Thrown if the module name is not valid.
+     * @throws \InvalidArgumentException Thrown if the module name is not valid.
      */
     private function setModule($modname)
     {
@@ -152,7 +152,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         } elseif (!empty($modname) && is_string($modname) && ModUtil::available($modname, true) && ModUtil::isCapable($modname, 'authentication')) {
             $this->modname = $modname;
         } else {
-            throw new FatalErrorException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
+            throw new \InvalidArgumentException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
                 'modname',
                 empty($modname) ? 'NULL' : $modname)
             ));
@@ -176,7 +176,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return void
      *
-     * @throws FatalErrorException Thrown if the name is not valid.
+     * @throws \InvalidArgumentException Thrown if the name is not valid.
      */
     private function setMethod($method)
     {
@@ -184,7 +184,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         if (!empty($method) && is_string($method) && preg_match('/\\w+/', $method)) {
             $this->method = $method;
         } else {
-            throw new FatalErrorException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
+            throw new \InvalidArgumentException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
                 'method',
                 empty($method) ? 'NULL' : $method)
             ));
@@ -208,7 +208,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return void
      *
-     * @throws FatalErrorException Thrown if the description is invalid.
+     * @throws \InvalidArgumentException Thrown if the description is invalid.
      */
     private function setShortDescription($shortDescription)
     {
@@ -216,7 +216,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         if (!empty($shortDescription) && is_string($shortDescription)) {
             $this->shortDescription = $shortDescription;
         } else {
-            throw new FatalErrorException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
+            throw new \InvalidArgumentException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
                 'shortDescription',
                 empty($shortDescription) ? 'NULL' : $shortDescription)
             ));
@@ -240,7 +240,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      *
      * @return void
      *
-     * @throws FatalErrorException Thrown if the description is invalid.
+     * @throws \InvalidArgumentException Thrown if the description is invalid.
      */
     private function setLongDescription($longDescription)
     {
@@ -248,7 +248,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
         if (!empty($longDescription) && is_string($longDescription)) {
             $this->longDescription = $longDescription;
         } else {
-            throw new FatalErrorException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
+            throw new \InvalidArgumentException($this->__f('An invalid \'%1$s\' parameter was received (\'%2$s\').', array(
                 'longDescription',
                 empty($longDescription) ? 'NULL' : $longDescription)
             ));
@@ -342,6 +342,8 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      * Enable this authentication method for use in the registration process as an external registration method.
      *
      * @return void
+     *
+     * @throws FatalErrorException
      */
     public function enableForRegistration()
     {
