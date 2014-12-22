@@ -109,6 +109,7 @@ Features:
 - Zikula_EntityAccess now also finds getter methods named `isField()` and not only `getField()`.
 - FilterUtil has been updated to work with Doctrine 2 (#118).
 - Added admin access for console commands (#1908).
+- Cookie Warning to ensure EU regulatory compliance in the LegalModule (#728)
 
 CHANGELOG - ZIKULA 1.3.10
 -------------------------
