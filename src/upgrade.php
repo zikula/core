@@ -165,7 +165,7 @@ function _upg_footer($echo = true)
     $content .= '</div></div>'."\n";
     $content .= '<div id="footer">'."\n";
     $content .= '<br />'."\n";
-    $content .= '<div class="alert alert-info text-center">'.__f('For more information about the upgrade process, please read the <a href="docs/%1$s/UPGRADING.md">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.', $lang).'</div>';
+    $content .= '<div class="alert alert-info text-center">'.__f('For more information about the upgrade process, please read the <a href="docs/%1$s/UPGRADING.md">upgrade documentation</a>, visit our <a href="https://github.com/zikula/core/wiki">wiki</a> or the <a href="http://www.zikula.org/forums">support forum</a>.', $lang).'</div>';
     $content .= '</div>'."\n";
     $content .= '</div></body>'."\n";
     $content .= '</html>';

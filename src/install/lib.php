@@ -20,7 +20,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Event\ModuleStateEvent;
 
-function install(Zikula_Core $core, Request $request)
+function install(Zikula_Core $core, Request $request, $warnings)
 {
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 
@@ -345,6 +345,7 @@ function install(Zikula_Core $core, Request $request)
         $smarty->assign('action', 'error');
         $templateName = 'installer_error.tpl';
     }
+    $smarty->assign('ini_warnings', $warnings);
 
     $smarty->assign('maincontent', $smarty->fetch($templateName));
     $smarty->display('installer_page.tpl');
