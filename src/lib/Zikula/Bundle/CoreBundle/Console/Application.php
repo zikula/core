@@ -33,7 +33,7 @@ class Application extends BaseApplication
         if (isset($GLOBALS['ZConfig']['DBInfo']['databases']['default']['password']) &&
             $GLOBALS['ZConfig']['DBInfo']['databases']['default']['password'] == '') {
             // composer is called, the system may not be installed yet
-            return;
+            return parent::registerCommands();
         }
 
         // ensure that we have admin access
