@@ -40,7 +40,7 @@ $GLOBALS['_ZikulaUpgrader'] = array();
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
-$upgradeFeedback = upgrade_140($connection, $core->getContainer()->getService('kernel'), $request);
+$upgradeFeedback = upgrade_140($connection, $core->getContainer()->get('kernel'), $request);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
@@ -483,10 +483,12 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
  * Upgrade tables from 1.3.5+
  *
  * @param Connection $conn
- *
+ * @param ZikulaKernel $kernel
+ * @param \Symfony\Component\HttpFoundation\Request $request
  * @return string
+ * @throws \Doctrine\DBAL\DBALException
  */
-function upgrade_140(Connection $conn, ZikulaKernel $kernel, $request)
+function upgrade_140(Connection $conn, ZikulaKernel $kernel, \Symfony\Component\HttpFoundation\Request $request)
 {
     $feedback = '';
     $res = $conn->executeQuery("SELECT name FROM modules WHERE name = 'ZikulaExtensionsModule'");
@@ -538,11 +540,11 @@ function upgrade_140(Connection $conn, ZikulaKernel $kernel, $request)
     $feedback .= "Updated default theme to ZikulaAndreas08Theme<br />\n";
 
     // install Bundles table
-    installBundlesTable();
+    installBundlesTable($kernel);
     $feedback .= "Bundles Table installed.<br />\n";
 
     // install the Routes module
-    if (!installRoutesModule()) {
+    if (!installRoutesModule($kernel)) {
         $feedback .= "ERROR: Routes Module could not be installed properly.<br />\n";
         return $feedback;
     }
@@ -571,12 +573,11 @@ function upgrade_140(Connection $conn, ZikulaKernel $kernel, $request)
 
 /**
  * add the bundles table
+ *
+ * @param ZikulaKernel $kernel
  */
-function installBundlesTable()
+function installBundlesTable(ZikulaKernel $kernel)
 {
-    $sm = ServiceUtil::getManager();
-    $kernel = $sm->get('kernel');
-
     $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
     $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($kernel));
     $helper->createSchema();
@@ -588,12 +589,13 @@ function installBundlesTable()
 
 /**
  * Calls Routes module installer
+ *
+ * @param ZikulaKernel $kernel
+ *
+ * @return boolean
  */
-function installRoutesModule()
+function installRoutesModule(ZikulaKernel $kernel)
 {
-    $sm = ServiceUtil::getManager();
-    $kernel = $sm->get('kernel');
-
     // ensure that hook-related entities are available
     include_once 'lib/Zikula/Component/HookDispatcher/Storage/Doctrine/Entity/HookAreaEntity.php';
     include_once 'lib/Zikula/Component/HookDispatcher/Storage/Doctrine/Entity/HookSubscriberEntity.php';
@@ -606,20 +608,22 @@ function installRoutesModule()
     if (file_exists($bootstrap)) {
         include_once $bootstrap;
     }
-    $instance = new $installerClassName($sm, $module);
+    /** @var \Zikula_AbstractInstaller $instance */
+    $instance = new $installerClassName($kernel->getContainer(), $module);
     if (!$instance->install()) {
         // error
         return false;
     }
+
+    // regenerate modules list
+    $modApi = new Zikula\Module\ExtensionsModule\Api\AdminApi($kernel->getContainer(), new \Zikula\Module\ExtensionsModule\ZikulaExtensionsModule());
+    ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $modApi->getfilemodules()));
 
     // determine module id
     $mid = ModUtil::getIdFromName($routeModuleName, true);
 
     // force load the modules admin API
     ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
-
-    // regenerate modules list
-    ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $modApi->getfilemodules()));
 
     // set module to active
     ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $mid, 'state' => ModUtil::STATE_INACTIVE));
