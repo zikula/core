@@ -389,14 +389,16 @@ class Zikula_Workflow_Util
                          ->getQuery();
 
             $workflow = $query->getArrayResult();
-            $workflow = $workflow[0];
-            $renameKey = function (&$array, $old, $new) {
-                $array[$new] = $array[$old];
-                unset($array[$old]);
-            };
-            $renameKey($workflow, 'objTable', 'obj_table');
-            $renameKey($workflow, 'objId', 'obj_id');
-            $renameKey($workflow, 'objIdcolumn', 'obj_idcolumn');
+            if ($workflow) {
+                $workflow = $workflow[0];
+                $renameKey = function (&$array, $old, $new) {
+                    $array[$new] = $array[$old];
+                    unset($array[$old]);
+                };
+                $renameKey($workflow, 'objTable', 'obj_table');
+                $renameKey($workflow, 'objId', 'obj_id');
+                $renameKey($workflow, 'objIdcolumn', 'obj_idcolumn');
+            }
         }
 
         if (!$workflow) {
