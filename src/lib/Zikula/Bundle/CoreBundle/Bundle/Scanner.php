@@ -48,6 +48,9 @@ class Scanner
     public function decode($file)
     {
         $base = str_replace('\\', '/', dirname($file));
+        $zkRoot = realpath(dirname(__FILE__) . '/../../../../../');
+        $base = substr($base, strlen($zkRoot) + 1);
+
         $json = json_decode($this->getFileContents($file), true);
         if (\JSON_ERROR_NONE === json_last_error() && true === $this->validateBasic($json)) {
             // add base-path for future use
