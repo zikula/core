@@ -39,9 +39,9 @@ class SiteOffListener implements EventSubscriberInterface
         }
 
         // Get variables
-        $module = $request->attributes->get('_module');
-        $type = $request->attributes->get('_type');
-        $func = $request->attributes->get('_func');
+        $module = strtolower($request->query->get('module'));
+        $type = strtolower($request->query->get('type'));
+        $func = strtolower($request->query->get('func'));
         $siteOff = (bool)\System::getVar('siteoff');
         $hasAdminPerms = \SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
         $urlParams = ($module == 'users' && $type == 'user' && $func == 'siteofflogin'); // params are lowercase
