@@ -15,13 +15,29 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Zikula\Core\Response\PlainResponse;
 
 class SiteOffListener implements EventSubscriberInterface
 {
 
     public function onKernelRequestSiteOff(GetResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+        $response = $event->getResponse();
         $request = $event->getRequest();
+        if ($response instanceof PlainResponse
+            || $response instanceof JsonResponse
+            || $request->isXmlHttpRequest()) {
+            return;
+        }
+        if (\System::isInstalling()) {
+            return;
+        }
+
         // Get variables
         $module = $request->attributes->get('_module');
         $type = $request->attributes->get('_type');
@@ -42,9 +58,13 @@ class SiteOffListener implements EventSubscriberInterface
             $lang = \ZLanguage::getInstance();
             $lang->setup($request);
 
-            header('HTTP/1.1 503 Service Unavailable');
-            require_once \System::getSystemErrorTemplate('siteoff.tpl');
-            exit;
+            $response = new Response();
+            $response->headers->add(array('HTTP/1.1 503 Service Unavailable'));
+            $response->setStatusCode(503);
+            $content = require_once \System::getSystemErrorTemplate('siteoff.tpl'); // move to CoreBundle and use Twig
+            $response->setContent($content);
+            $event->setResponse($response);
+            $event->stopPropagation();
         }
     }
 
@@ -52,7 +72,7 @@ class SiteOffListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => array(
-                array('onKernelRequestSiteOff', 31),
+                array('onKernelRequestSiteOff', 200), // priority set high to catch request before other subscribers
             )
         );
     }
