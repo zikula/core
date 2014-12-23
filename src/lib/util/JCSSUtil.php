@@ -592,7 +592,7 @@ class JCSSUtil
     /**
      * Reads an file and add its contents to the $contents array.
      *
-     * This function includes the content of all @import statements (recursive).
+     * This function includes the content of all "@import" statements (recursive).
      *
      * @param array  &$contents Array to save content to.
      * @param string $file      Path to file.

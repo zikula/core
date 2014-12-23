@@ -134,7 +134,7 @@ class ExtensionDependencyEntity extends EntityAccess
      * This is a dummy method to set the reason for a dependency. However, the reason is not saved into the database.
      * This method is required for merges to work.
      *
-     * @note The reason of a dependency is not saved into the database to avoid multilingual problems but loaded from Version.php.
+     * Note: The reason of a dependency is not saved into the database to avoid multilingual problems but loaded from Version.php.
      */
     public function setReason($reason)
     {
@@ -144,9 +144,7 @@ class ExtensionDependencyEntity extends EntityAccess
     /**
      * Get the reason for a dependency.
      *
-     * @param string $reason
-     *
-     * @note The reason of a dependency is not saved into the database to avoid multilingual problems but loaded from Version.php.
+     * Note: The reason of a dependency is not saved into the database to avoid multilingual problems but loaded from Version.php.
      */
     public function getReason()
     {
