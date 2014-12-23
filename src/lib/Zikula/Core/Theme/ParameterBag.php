@@ -5,14 +5,14 @@ namespace Zikula\Core\Theme;
 class ParameterBag implements \IteratorAggregate, \Countable
 {
     /**
-     * @parameter array
+     * @var array
      */
     private $parameters;
 
     /**
      * Namespace character.
      *
-     * @parameter string
+     * @var string
      */
     private $ns;
 

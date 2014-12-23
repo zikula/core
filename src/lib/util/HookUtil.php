@@ -12,8 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\Event\GenericEvent;
-
 /**
  * HookUtil.
  *

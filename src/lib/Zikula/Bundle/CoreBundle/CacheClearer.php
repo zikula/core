@@ -15,8 +15,8 @@
 namespace Zikula\Bundle\CoreBundle;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class CacheClearer
 {

@@ -15,9 +15,9 @@
 
 namespace Zikula\Core\Hook;
 
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula_TranslatableInterface;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as EventDispatcher;
 
 /**
  * Custom Hook Handler interface.

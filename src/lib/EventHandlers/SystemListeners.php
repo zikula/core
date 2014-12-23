@@ -12,12 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Zikula_Request_Http as Request;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * Event handler to override templates.
  */

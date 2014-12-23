@@ -2,20 +2,19 @@
 
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
+use Composer\Autoload\ClassLoader;
+use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Debug\DebugClassLoader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Yaml\Yaml;
 use Zikula\Bridge\DependencyInjection\PhpDumper;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Config\ConfigCache;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
 use Zikula\Core\AbstractTheme;
-use Composer\Autoload\ClassLoader;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 abstract class ZikulaKernel extends Kernel
 {

@@ -1,7 +1,6 @@
 <?php
 namespace Zikula\Core\Theme\Asset;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Templating\Asset\PathPackage as BasePathPackage;
 

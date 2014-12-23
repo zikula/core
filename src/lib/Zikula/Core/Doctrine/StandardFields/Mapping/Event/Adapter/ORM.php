@@ -2,8 +2,8 @@
 
 namespace Zikula\Core\Doctrine\StandardFields\Mapping\Event\Adapter;
 
-use Gedmo\Mapping\Event\Adapter\ORM as BaseAdapterORM;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Gedmo\Mapping\Event\Adapter\ORM as BaseAdapterORM;
 use Zikula\Core\Doctrine\StandardFields\Mapping\Event\StandardFieldsAdapter;
 
 /**

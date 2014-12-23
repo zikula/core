@@ -2,9 +2,9 @@
 
 namespace DoctrineExtensions\StandardFields\Mapping\Event\Adapter;
 
-use Gedmo\Mapping\Event\Adapter\ORM as BaseAdapterORM;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use DoctrineExtensions\StandardFields\Mapping\Event\StandardFieldsAdapter;
+use Gedmo\Mapping\Event\Adapter\ORM as BaseAdapterORM;
 
 /**
  * Doctrine event adapter for ORM adapted

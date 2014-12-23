@@ -12,9 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula_Request_Http as Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Core\Event\GenericEvent;
+use Zikula_Request_Http as Request;
 
 // Defines for access levels
 define('ACCESS_INVALID', -1);

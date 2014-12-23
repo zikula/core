@@ -13,23 +13,23 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use LogUtil;
+use ModUtil;
 use Psr\Log\LoggerInterface;
-use Zikula\Core\Exception\FatalErrorException;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use SecurityUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelEvents;
+use System;
+use UserUtil;
+use Zikula\Core\Exception\FatalErrorException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\UnavailableResponse;
-use ModUtil;
-use UserUtil;
-use LogUtil;
-use System;
-use SecurityUtil;
 use Zikula\Core\Response\PlainResponse;
-use Symfony\Component\HttpKernel\Exception;
 
 class LegacyRouteListener implements EventSubscriberInterface
 {

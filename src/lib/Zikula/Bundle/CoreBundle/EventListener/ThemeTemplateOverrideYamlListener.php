@@ -13,9 +13,9 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Zikula\Core\Event\GenericEvent;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Yaml\Yaml;
+use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler to override templates.

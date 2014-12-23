@@ -12,8 +12,8 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Module\ThemeModule\Entity\ThemeEntity;
 use Doctrine\ORM\Query;
+use Zikula\Module\ThemeModule\Entity\ThemeEntity;
 
 /**
  * ThemeUtil

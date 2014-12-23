@@ -15,11 +15,11 @@
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Component\HookDispatcher\Exception\LogicException;
-use Zikula\Component\HookDispatcher\StorageInterface;
-use Zikula\Component\HookDispatcher\ServiceFactory;
 use Zikula\Component\HookDispatcher\Hook;
-use Zikula\Component\HookDispatcher\SubscriberBundle;
 use Zikula\Component\HookDispatcher\ProviderBundle;
+use Zikula\Component\HookDispatcher\ServiceFactory;
+use Zikula\Component\HookDispatcher\StorageInterface;
+use Zikula\Component\HookDispatcher\SubscriberBundle;
 
 /**
  * HookDispatcher class.

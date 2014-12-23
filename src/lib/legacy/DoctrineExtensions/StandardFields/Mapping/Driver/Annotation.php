@@ -2,10 +2,9 @@
 
 namespace DoctrineExtensions\StandardFields\Mapping\Driver;
 
-use Gedmo\Mapping\Driver\AnnotationDriverInterface,
-    Doctrine\Common\Persistence\Mapping\ClassMetadata,
-    Doctrine\Common\Annotations\AnnotationReader,
-    Gedmo\Exception\InvalidMappingException;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Gedmo\Exception\InvalidMappingException;
+use Gedmo\Mapping\Driver\AnnotationDriverInterface;
 
 /**
  * This is an annotation mapping driver for StandardFields

@@ -13,13 +13,13 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Core\Doctrine\Listener\MySqlGenerateSchemaListener;
 use Zikula\Core\Doctrine\Logger\ZikulaSqlLogger;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Doctrine\Listener\MySqlGenerateSchemaListener;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Configuration;
 
 /**
  * Event handler to override templates.

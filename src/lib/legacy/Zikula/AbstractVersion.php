@@ -12,8 +12,8 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\HookDispatcher\SubscriberBundle;
 use Zikula\Component\HookDispatcher\ProviderBundle;
+use Zikula\Component\HookDispatcher\SubscriberBundle;
 
 /**
  * Zikula Version base class.

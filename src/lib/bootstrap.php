@@ -12,8 +12,8 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Debug\Debug;
+use Symfony\Component\Yaml\Yaml;
 use Zikula\Core\Event\GenericEvent;
 
 $loader = require __DIR__.'/../app/autoload.php';

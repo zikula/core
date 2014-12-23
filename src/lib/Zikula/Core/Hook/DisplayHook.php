@@ -17,7 +17,6 @@ namespace Zikula\Core\Hook;
 
 use Zikula\Component\HookDispatcher\Hook;
 use Zikula\Core\UrlInterface;
-use Zikula\Core\Hook\DisplayHookResponse;
 
 /**
  * DisplayHook class.
