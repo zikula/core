@@ -3,8 +3,6 @@
 namespace Zikula\Bundle\CoreBundle\Console;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Event\GenericEvent;

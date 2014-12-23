@@ -3,13 +3,13 @@
 namespace Zikula\Core\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zikula\Common\I18n\TranslatorAwareInterface;
-use Zikula\Common\I18n\Translator;
-use Zikula\Core\AbstractBundle;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Common\I18n\Translator;
+use Zikula\Common\I18n\TranslatorAwareInterface;
+use Zikula\Core\AbstractBundle;
 
 abstract class AbstractController extends Controller implements TranslatorAwareInterface
 {

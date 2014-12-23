@@ -2,13 +2,13 @@
 
 namespace Zikula\Bundle\CoreBundle;
 
-use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrinePass;
-use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterCoreListenersPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Matthias\SymfonyServiceDefinitionValidator\Compiler\Compatibility\FixSymfonyValidatorDefinitionPass;
 use Matthias\SymfonyServiceDefinitionValidator\Compiler\ValidateServiceDefinitionsPass;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrinePass;
+use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterCoreListenersPass;
 
 class CoreBundle extends Bundle
 {

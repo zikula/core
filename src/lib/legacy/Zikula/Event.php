@@ -13,8 +13,8 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Zikula_Event encapsulation class.

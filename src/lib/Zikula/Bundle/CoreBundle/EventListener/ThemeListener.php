@@ -12,15 +12,12 @@
  */
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Zikula_View_Theme;
 use Zikula\Core\Response\PlainResponse;
+use Zikula_View_Theme;
 
 class ThemeListener implements EventSubscriberInterface
 {

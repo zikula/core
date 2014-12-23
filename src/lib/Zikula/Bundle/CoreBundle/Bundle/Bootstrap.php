@@ -2,12 +2,12 @@
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\DriverManager;
-  
+
 class Bootstrap
 {
     /**

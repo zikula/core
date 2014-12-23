@@ -13,8 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\ModUrl;
-
 /**
  * Zikula_View function notify display hooks.
  *

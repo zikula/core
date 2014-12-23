@@ -16,7 +16,6 @@
 namespace Zikula\Core\Hook;
 
 use Zikula\Common\Collection\Container;
-use Zikula\Core\Hook\ValidationResponse;
 
 /**
  * Hook validation collection

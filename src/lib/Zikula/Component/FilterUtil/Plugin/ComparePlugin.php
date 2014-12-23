@@ -14,8 +14,8 @@
  */
 namespace Zikula\Component\FilterUtil\Plugin;
 
-use Zikula\Component\FilterUtil;
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
+use Zikula\Component\FilterUtil;
 
 /**
  * Provide a set of default filter operations.

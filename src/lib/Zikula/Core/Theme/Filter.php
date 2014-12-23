@@ -2,8 +2,6 @@
 
 namespace Zikula\Core\Theme;
 
-use Zikula\Core\Theme\ParameterBag;
-
 class Filter
 {
     private $pageVars;

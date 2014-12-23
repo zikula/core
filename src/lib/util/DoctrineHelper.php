@@ -11,8 +11,8 @@
  * information regarding copyright and licensing.
  */
 
-use Doctrine\ORM\Tools\SchemaTool as SchemaTool;
 use Doctrine\ORM\EntityManager as EntityManager;
+use Doctrine\ORM\Tools\SchemaTool as SchemaTool;
 
 class DoctrineHelper
 {

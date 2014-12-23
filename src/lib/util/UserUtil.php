@@ -12,14 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Module\UsersModule\Constant as UsersConstant;
-use Zikula\Core\Exception\FatalErrorException;
-use Zikula\Core\Exception\ExtensionNotAvailableException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Core\Event\GenericEvent;
+use Zikula\Core\Exception\ExtensionNotAvailableException;
+use Zikula\Module\UsersModule\Constant as UsersConstant;
 
 /**
  * UserUtil

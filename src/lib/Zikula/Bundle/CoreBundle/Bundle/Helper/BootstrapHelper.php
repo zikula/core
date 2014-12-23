@@ -3,12 +3,10 @@
 
 namespace Zikula\Bundle\CoreBundle\Bundle\Helper;
 
-use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Types\IntegerType;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Doctrine\DBAL\Connection;
 use Zikula\Core\AbstractBundle;
 
 class BootstrapHelper

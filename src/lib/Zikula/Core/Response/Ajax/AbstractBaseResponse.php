@@ -15,8 +15,8 @@
 
 namespace Zikula\Core\Response\Ajax;
 
-use Zikula\Core\Response\PlainResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Zikula\Core\Response\PlainResponse;
 
 /**
  * Ajax class.

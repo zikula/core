@@ -2,10 +2,9 @@
 
 namespace DoctrineExtensions\StandardFields;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata,
-    Doctrine\Common\Persistence\Proxy,
-    Doctrine\Common\EventArgs,
-    Gedmo\Mapping\MappedEventSubscriber;
+use Doctrine\Common\EventArgs;
+use Doctrine\Common\Persistence\Proxy;
+use Gedmo\Mapping\MappedEventSubscriber;
 
 /**
  * The StandardFields listener handles the update of

@@ -14,9 +14,9 @@
 
 namespace Zikula\Core\Doctrine\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use ModUtil;
 use Zikula\Core\Doctrine\EntityAccess;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Extension dependencies.

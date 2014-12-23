@@ -16,7 +16,6 @@ namespace Zikula\Component\FilterUtil;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * This is the configuration class for all FilterUtil classes.

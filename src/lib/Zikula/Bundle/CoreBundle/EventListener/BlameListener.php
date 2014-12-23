@@ -14,14 +14,12 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Gedmo\Loggable\LoggableListener;
+use Gedmo\Blameable\BlameableListener;
+use ServiceUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use UserUtil;
-use ServiceUtil;
-use Gedmo\Blameable\BlameableListener;
 use Zikula\Core\Event\GenericEvent;
 
 class BlameListener implements EventSubscriberInterface

@@ -15,12 +15,12 @@
 
 namespace Zikula\Component\HookDispatcher\Storage\Doctrine;
 
-use Zikula\Component\HookDispatcher\StorageInterface;
-use Zikula\Component\HookDispatcher\Exception\InvalidArgumentException;
-use \Doctrine\ORM\EntityManager;
-use System;
-use LogUtil;
 use DataUtil;
+use Doctrine\ORM\EntityManager;
+use LogUtil;
+use System;
+use Zikula\Component\HookDispatcher\Exception\InvalidArgumentException;
+use Zikula\Component\HookDispatcher\StorageInterface;
 
 /**
  * Doctrine class.

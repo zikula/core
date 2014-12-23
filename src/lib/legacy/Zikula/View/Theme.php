@@ -13,7 +13,6 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Zikula_View_Theme class.

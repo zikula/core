@@ -12,10 +12,9 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Component\HookDispatcher\Hook;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Abstract controller for modules.

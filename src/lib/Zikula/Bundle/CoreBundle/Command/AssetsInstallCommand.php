@@ -10,12 +10,12 @@
  */
 namespace Zikula\Bundle\CoreBundle\Command;
 
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
  * Command that places bundle web assets into a given directory.

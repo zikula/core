@@ -14,7 +14,6 @@
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Zikula\Core\Event\GenericEvent;
 
 /**

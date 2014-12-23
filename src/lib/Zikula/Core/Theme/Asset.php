@@ -3,7 +3,6 @@
 namespace Zikula\Core\Theme;
 
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Theme\Asset\PackagePath;
 
 class Asset

@@ -13,15 +13,15 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use CacheUtil;
+use Doctrine_Core;
+use Doctrine_Manager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine_Manager,
-    Doctrine_Core,
-    CacheUtil,
-    Zikula_Event,
-    System;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use System;
 use Zikula\Core\Event\GenericEvent;
+use Zikula_Event;
 
 /**
  * Doctrine listeners.

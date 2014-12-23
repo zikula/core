@@ -3,8 +3,8 @@
 namespace Zikula\Core\Forms\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Event\FilterDataEvent;
+use Symfony\Component\Form\FormEvents;
 
 class CategoriesMergeCollectionListener implements EventSubscriberInterface
 {
