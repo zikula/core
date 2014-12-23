@@ -40,32 +40,32 @@
 {/if}
 {assign var='lctUc' value=$lct|ucfirst}
 {include file="`$lctUc`/header.tpl"}
-{pageaddvar name='javascript' value='modules/ZikulaRoutesModule/Resources/public/js/ZikulaRoutesModule_editFunctions.js'}
-{pageaddvar name='javascript' value='modules/ZikulaRoutesModule/Resources/public/js/ZikulaRoutesModule_validation.js'}
+{pageaddvar name='javascript' value='@ZikulaRoutesModule/Resources/public/js/ZikulaRoutesModule.EditFunctions.js'}
+{pageaddvar name='javascript' value='@ZikulaRoutesModule/Resources/public/js/ZikulaRoutesModule.Validation.js'}
 
 {if $mode eq 'edit'}
     {gt text='Edit route' assign='templateTitle'}
     {if $lct eq 'admin'}
-    {assign var='adminPageIcon' value='pencil-square-o'}
+        {assign var='adminPageIcon' value='pencil-square-o'}
     {/if}
 {elseif $mode eq 'create'}
     {gt text='Create route' assign='templateTitle'}
     {if $lct eq 'admin'}
-    {assign var='adminPageIcon' value='plus'}
+        {assign var='adminPageIcon' value='plus'}
     {/if}
 {else}
     {gt text='Edit route' assign='templateTitle'}
     {if $lct eq 'admin'}
-    {assign var='adminPageIcon' value='pencil-square-o'}
-{/if}
+        {assign var='adminPageIcon' value='pencil-square-o'}
+    {/if}
 {/if}
 <div class="zikularoutesmodule-route zikularoutesmodule-edit">
     {pagesetvar name='title' value=$templateTitle}
     {if $lct eq 'admin'}
-    <h3>
-        <span class="icon icon-{$adminPageIcon}"></span>
-        {$templateTitle}
-    </h3>
+        <h3>
+            <span class="icon icon-{$adminPageIcon}"></span>
+            {$templateTitle}
+        </h3>
     {else}
         <h2>{$templateTitle}</h2>
     {/if}
@@ -86,7 +86,6 @@
             <div class="col-lg-9">
                 {formtextinput group='route' id='name' mandatory=true readOnly=false __title='Enter the name of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
             </div>
-            {zikularoutesmoduleValidationError id='name' class='required'}
         </div>*}
 
         <div class="form-group">
@@ -95,7 +94,6 @@
                 {*formtextinput group='route' id='bundle' mandatory=true readOnly=false __title='Enter the bundle of the route' textMode='singleline' maxLength=255 cssClass='form-control required' *}
                 {formdropdownlist items=$modules group='route' id='bundle' mandatory=true readOnly=false __title='Enter the bundle of the route' cssClass='form-control required' }
             </div>
-            {zikularoutesmoduleValidationError id='bundle' class='required'}
         </div>
 
         <div class="form-group">
@@ -104,7 +102,6 @@
                 {formtextinput group='route' id='controller' mandatory=true readOnly=false __title='Enter the controller of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
                 <em class="z-sub">{gt text='Insert the name of the controller, which was called "type" in earlier versions of Zikula. Example: "UserController"'}</em>
             </div>
-            {zikularoutesmoduleValidationError id='controller' class='required'}
         </div>
 
         <div class="form-group">
@@ -113,7 +110,6 @@
                 {formtextinput group='route' id='action' mandatory=true readOnly=false __title='Enter the action of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
                 <em class="z-sub">{gt text='Insert the name of the action, which was called "func" in earlier versions of Zikula. Example: "EditAction"'}</em>
             </div>
-            {zikularoutesmoduleValidationError id='action' class='required'}
         </div>
 
         <div class="form-group">
@@ -136,7 +132,6 @@
                     <span class="input-group-addon" id="pathPrefix"></span>
                     {formtextinput group='route' id='path' mandatory=true readOnly=false __title='Enter the path of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
                 </div>
-                {zikularoutesmoduleValidationError id='path' class='required'}
                 <em class="z-sub">{gt text='The path must start with a "/" and can be a regular expression. Example: "/login"'}</em>
             </div>
         </div>
@@ -171,13 +166,12 @@
                 {formcheckbox group='route' id='userRoute' readOnly=false __title='user route ?' cssClass='' }
             </div>
         </div>
-        
+
         <div class="form-group">
-            {formlabel for='sort' __text='Sort' mandatorysym='1' cssClass=' col-lg-3 control-label'}
+            {formlabel for='sort' __text='Sort' cssClass=' col-lg-3 control-label'}
             <div class="col-lg-9">
             {formintinput group='route' id='sort' mandatory=false __title='Enter the sort of the route' maxLength=11 cssClass='form-control  validate-digits' }
             </div>
-            {zikularoutesmoduleValidationError id='sort' class='validate-digits'}
         </div>
 
         <div class="form-group">
@@ -187,11 +181,11 @@
             </div>
         </div>*}
     </fieldset>
-    
+
     {if $mode ne 'create'}
         {include file='Helper/include_standardfields_edit.tpl' obj=$route}
     {/if}
-    
+
     {* include display hooks *}
     {if $mode ne 'create'}
         {assign var='hookId' value=$route.id}
@@ -200,13 +194,31 @@
         {notifydisplayhooks eventname='routes.ui_hooks.routes.form_edit' id=null assign='hooks'}
     {/if}
     {if is_array($hooks) && count($hooks)}
-        {foreach key='providerArea' item='hook' from=$hooks}
+        {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}
             <fieldset>
                 {$hook}
             </fieldset>
         {/foreach}
     {/if}
-    
+
+    <fieldset>
+        <legend>{gt text='Communication'}</legend>
+        <div class="form-group">
+            {usergetvar name='uid' assign='uid'}
+            {formlabel for='additionalNotificationRemarks' __text='Additional remarks' cssClass='col-lg-3 control-label'}
+            {gt text='Enter any additions about your changes' assign='fieldTitle'}
+            {if $mode eq 'create'}
+                {gt text='Enter any additions about your content' assign='fieldTitle'}
+            {/if}
+            {formtextinput group='route' id='additionalNotificationRemarks' mandatory=false title=$fieldTitle textMode='multiline' rows='6'}
+            {if $isModerator || $isSuperModerator}
+                <span class="help-block">{gt text='These remarks (like a reason for deny) are not stored, but added to any notification emails send to the creator.'}</span>
+            {elseif $isCreator}
+                <span class="help-block">{gt text='These remarks (like questions about conformance) are not stored, but added to any notification emails send to our moderators.'}</span>
+            {/if}
+        </div>
+    </fieldset>
+
     {* include return control *}
     {if $mode eq 'create'}
         <fieldset>
@@ -219,21 +231,21 @@
             </div>
         </fieldset>
     {/if}
-    
+
     {* include possible submit actions *}
     <div class="form-group form-buttons">
     <div class="col-lg-offset-3 col-lg-9">
-    {foreach item='action' from=$actions}
-        {assign var='actionIdCapital' value=$action.id|@ucwords}
-        {gt text=$action.title assign='actionTitle'}
-        {*gt text=$action.description assign='actionDescription'*}{* TODO: formbutton could support title attributes *}
-        {if $action.id eq 'delete'}
-            {gt text='Really delete this route?' assign='deleteConfirmMsg'}
-            {formbutton id="btn`$actionIdCapital`" commandName=$action.id text=$actionTitle class=$action.buttonClass confirmMessage=$deleteConfirmMsg}
-        {else}
-            {formbutton id="btn`$actionIdCapital`" commandName=$action.id text=$actionTitle class=$action.buttonClass}
-        {/if}
-    {/foreach}
+        {foreach item='action' from=$actions}
+            {assign var='actionIdCapital' value=$action.id|@ucfirst}
+            {gt text=$action.title assign='actionTitle'}
+            {*gt text=$action.description assign='actionDescription'*}{* TODO: formbutton could support title attributes *}
+            {if $action.id eq 'delete'}
+                {gt text='Really delete this route?' assign='deleteConfirmMsg'}
+                {formbutton id="btn`$actionIdCapital`" commandName=$action.id text=$actionTitle class=$action.buttonClass confirmMessage=$deleteConfirmMsg}
+            {else}
+                {formbutton id="btn`$actionIdCapital`" commandName=$action.id text=$actionTitle class=$action.buttonClass}
+            {/if}
+        {/foreach}
         {formbutton id='btnCancel' commandName='cancel' __text='Cancel' class='btn btn-default'}
     </div>
     </div>
@@ -249,42 +261,44 @@
 <script type="text/javascript">
 /* <![CDATA[ */
 
-    var formButtons, formValidator;
+            var formButtons;
 
-    function handleFormButton (event) {
-        var result = formValidator.validate();
-        if (!result) {
-            // validation error, abort form submit
-            Event.stop(event);
-        } else {
-            // hide form buttons to prevent double submits by accident
-            formButtons.each(function (btn) {
-                btn.addClassName('hidden');
-            });
-        }
+            function handleFormButton (event) {
+                zikulaRoutesPerformCustomValidationRules('route', '{{if $mode ne 'create'}}{{$route.id}}{{/if}}');
+                var result = document.getElementById('{{$__formid}}').checkValidity();
+                if (!result) {
+                    // validation error, abort form submit
+                    event.stopPropagation();
+                } else {
+                    // hide form buttons to prevent double submits by accident
+                    formButtons.each(function (btn) {
+                        btn.addClass('hidden');
+                    });
+                }
 
-        return result;
-    }
-
-    document.observe('dom:loaded', function() {
-
-        routesAddCommonValidationRules('route', '{{if $mode ne 'create'}}{{$route.id}}{{/if}}');
-        {{* observe validation on button events instead of form submit to exclude the cancel command *}}
-        formValidator = new Validation('{{$__formid}}', {onSubmit: false, immediate: true, focusOnError: false});
-        {{if $mode ne 'create'}}
-            var result = formValidator.validate();
-        {{/if}}
-
-        formButtons = $('{{$__formid}}').select('div.form-buttons input');
-
-        formButtons.each(function (elem) {
-            if (elem.id != 'btnCancel') {
-                elem.observe('click', handleFormButton);
+                return result;
             }
-        });
 
-        Zikula.UI.Tooltips($$('.zikularoutesmodule-form-tooltips'));
-    });
+            ( function($) {
+                $(document).ready(function() {
 
+                    {{* observe validation on button events instead of form submit to exclude the cancel command *}}
+                    {{if $mode ne 'create'}}
+                        if (!document.getElementById('{{$__formid}}').checkValidity()) {
+                            document.getElementById('{{$__formid}}').submit();
+                        }
+                    {{/if}}
+
+                    formButtons = $('#{{$__formid}}').find('div.form-buttons input');
+
+                    formButtons.each(function (elem) {
+                        if (elem.attr('id') != 'btnCancel') {
+                            elem.click(handleFormButton);
+                        }
+                    });
+
+                    $('.zikularoutesmodule-form-tooltips').tooltip();
+                });
+            })(jQuery);
 /* ]]> */
 </script>

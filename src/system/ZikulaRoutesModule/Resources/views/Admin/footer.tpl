@@ -3,9 +3,9 @@
     {adminfooter}
 {elseif isset($smarty.get.func) && $smarty.get.func eq 'edit'}
     {pageaddvar name='stylesheet' value='style/core.css'}
-    {pageaddvar name='stylesheet' value='system/ZikulaRoutesModule/Resources/public/css/style.css'}
-    {pageaddvar name='stylesheet' value='system/Zikula/Module/ThemeModule/Resources/public/css/form/style.css'}
-    {pageaddvar name='stylesheet' value='themes/Zikula/Theme/Andreas08Theme/Resources/public/css/fluid960gs/reset.css'}
+    {pageaddvar name='stylesheet' value='@ZikulaRoutesModule/Resources/public/css/style.css'}
+    {pageaddvar name='stylesheet' value='@ZikulaThemeModule/Resources/public/css/form/style.css'}
+    {pageaddvar name='stylesheet' value='@ZikulaAndreas08Theme/Resources/public/css/fluid960gs/reset.css'}
     {capture assign='pageStyles'}
     <style type="text/css">
         body {

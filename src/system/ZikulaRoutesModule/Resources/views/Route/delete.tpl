@@ -19,7 +19,7 @@
 
     <p class="alert alert-warningmsg">{gt text='Do you really want to delete this route ?'}</p>
 
-    <form class="form-horizontal" action="{modurl modname='ZikulaRoutesModule' type='route' func='delete' id=$route.id lct=$lct}" method="post" role="form">
+    <form class="form-horizontal" action="{route name='zikularoutesmodule_route_delete'  id=$route.id lct=$lct}" method="post" role="form">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" id="confirmation" name="confirmation" value="1" />
@@ -29,7 +29,7 @@
                 <div class="col-lg-offset-3 col-lg-9">
                     {gt text='Delete' assign='deleteTitle'}
                     {button src='14_layer_deletelayer.png' set='icons/small' text=$deleteTitle title=$deleteTitle class='btn btn-danger'}
-                    <a href="{modurl modname='ZikulaRoutesModule' type='route' func='view' lct=$lct}" class="btn btn-default" role="button"><span class="fa fa-times"></span> {gt text='Cancel'}</a>
+                    <a href="{route name='zikularoutesmodule_route_view' lct=$lct}" class="btn btn-default" role="button"><span class="fa fa-times"></span> {gt text='Cancel'}</a>
                 </div>
                 </div>
             </fieldset>

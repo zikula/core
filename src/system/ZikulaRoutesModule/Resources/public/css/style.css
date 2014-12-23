@@ -4,7 +4,7 @@ div#z-maincontent.z-module-routes table tbody tr td {
 }
 
 /* display pages */
-.zikularoutesmodule-display.with-rightbox div.z-panel-content {
+.zikularoutesmodule-display.with-rightbox div.panel {
     float: left;
     width: 79%;
 }
@@ -29,14 +29,6 @@ div#z-maincontent.z-module-routes table tbody tr td {
 /* validation */
 div.form-group input.required, div.form-group textarea.required {
     border: 1px solid #00a8e6;
-}
-div.form-group input.validation-failed, div.form-group textarea.validation-failed {
-    border: 1px solid #f30;
-    color: #f30;
-}
-div.form-group input.validation-passed, div.form-group textarea.validation-passed {
-    border: 1px solid #0c0;
-    color: #000;
 }
 
 .validation-advice {

@@ -25,7 +25,6 @@
     <!-- available permissions: overview, read, comment, moderate, edit, add, delete, admin -->
     <actions>
         <!-- From state: Initial -->
-        
         <action id="submit">
             <title>Submit</title>
             <description>Submit content for acceptance by a moderator.</description>
@@ -34,7 +33,6 @@
         
             <operation>update</operation>
         </action>
-        
         
         <action id="approve">
             <title>Submit and Approve</title>
@@ -54,7 +52,6 @@
         
             <operation>update</operation>
         </action>
-        
         
         <action id="approve">
             <title>Approve</title>
@@ -86,6 +83,7 @@
             <state>waiting</state>
         
             <operation>delete</operation>
+            <operation recipientType="creator" action="delete">notify</operation>
         </action>
         
         <action id="delete">
@@ -95,6 +93,7 @@
             <state>approved</state>
         
             <operation>delete</operation>
+            <operation recipientType="creator" action="delete">notify</operation>
         </action>
         
     </actions>

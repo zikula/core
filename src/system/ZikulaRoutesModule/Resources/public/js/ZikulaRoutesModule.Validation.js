@@ -1,6 +1,6 @@
 'use strict';
 
-function routesToday(format)
+function zikulaRoutesToday(format)
 {
     var timestamp, todayDate, month, day, hours, minutes, seconds;
 
@@ -39,7 +39,7 @@ function routesToday(format)
 }
 
 // returns YYYY-MM-DD even if date is in DD.MM.YYYY
-function routesReadDate(val, includeTime)
+function zikulaRoutesReadDate(val, includeTime)
 {
     // look if we have YYYY-MM-DD
     if (val.substr(4, 1) === '-' && val.substr(7, 1) === '-') {
@@ -56,16 +56,24 @@ function routesReadDate(val, includeTime)
     }
 }
 
-/**
- * Add special validation rules.
- */
-function routesAddCommonValidationRules(objectType, id)
+function zikulaRoutesValidateNoSpace(val)
 {
-    Validation.addAllThese([
-        ['validate-nospace', Zikula.__('No spaces', 'module_zikularoutesmodule_js'), function(val, elem) {
-            var valStr;
-            valStr = new String(val);
-            return (valStr.indexOf(' ') === -1);
-        }],
-    ]);
+    var valStr;
+    valStr = new String(val);
+
+    return (valStr.indexOf(' ') === -1);
+}
+
+/**
+ * Runs special validation rules.
+ */
+function zikulaRoutesPerformCustomValidationRules(objectType, id)
+{
+    $('.validate-nospace').each( function() {
+        if (zikulaRoutesValidateNoSpace($(this).val())) {
+            $(this).setCustomValidity(Zikula.__('This value must not contain spaces.', 'module_zikularoutesmodule_js'));
+        } else {
+            $(this).setCustomValidity('');
+        }
+    });
 }

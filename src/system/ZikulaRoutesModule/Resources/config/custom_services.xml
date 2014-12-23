@@ -22,5 +22,13 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="service_container" />
         </service>
+
+        <service id="zikularoutesmodule.installer_listener" class="%zikularoutesmodule.installer_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="zikularoutesmodule.routing_finder" />
+            <argument type="service" id="zikula.cache_clearer" />
+            <argument type="service" id="zikularoutesmodule.controller_helper" />
+        </service>
     </services>
 </container>

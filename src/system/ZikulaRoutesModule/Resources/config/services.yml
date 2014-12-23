@@ -1,5 +1,6 @@
 parameters:
     # Route parts
+    zikularoutesmodule.routing.ajax: ajax
     zikularoutesmodule.routing.external: external
     zikularoutesmodule.routing.view.suffix: view
     zikularoutesmodule.routing.route.singular: route
@@ -43,6 +44,7 @@ services:
         arguments:
             objectManager: "@doctrine.orm.entity_manager"
             className: Zikula\RoutesModule\Entity\RouteEntity
+    
 
     zikularoutesmodule.core_listener:
         class: "%zikularoutesmodule.core_listener.class%"
@@ -58,12 +60,7 @@ services:
         class: "%zikularoutesmodule.installer_listener.class%"
         tags:
             - { name: kernel.event_subscriber }
-        arguments:
-            objectManager: "@doctrine.orm.entity_manager"
-            routeFinder: "@zikularoutesmodule.routing_finder"
-            cacheClearer: "@zikula.cache_clearer"
-            controllerHelper: "@zikularoutesmodule.controller_helper"
-
+    
     zikularoutesmodule.moduledispatch_listener:
         class: "%zikularoutesmodule.moduledispatch_listener.class%"
         tags:

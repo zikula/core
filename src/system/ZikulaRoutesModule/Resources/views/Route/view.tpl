@@ -4,7 +4,7 @@
     {assign var='lct' value='admin'}
 {/if}
 {assign var='lctUc' value=$lct|ucfirst}
-{include file="$lctUc/header.tpl"}
+{include file="`$lctUc`/header.tpl"}
 {if count($items) > 1}
 {pageaddvar value='jquery-ui' name='javascript'}
 <script type="text/javascript">
@@ -59,10 +59,10 @@
     {gt text='Route list' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
     {if $lct eq 'admin'}
-    <h3>
-        <span class="fa fa-list"></span>
-        {$templateTitle}
-    </h3>
+        <h3>
+            <span class="fa fa-list"></span>
+            {$templateTitle}
+        </h3>
     {else}
         <h2>{$templateTitle}</h2>
     {/if}
@@ -81,49 +81,53 @@
     {if $canBeCreated}
         {checkpermissionblock component='ZikulaRoutesModule:Route:' instance='::' level='ACCESS_COMMENT'}
             {gt text='Create route' assign='createTitle'}
-            <a href="{modurl modname='ZikulaRoutesModule' type='route' func='edit' lct=$lct id=0}" title="{$createTitle}" class="fa fa-plus">{$createTitle}</a>
+            <a href="{route name='zikularoutesmodule_route_edit' lct=$lct}" title="{$createTitle}" class="fa fa-plus">{$createTitle}</a>
         {/checkpermissionblock}
     {/if}
-    {assign var='own' value=0}
+    {*assign var='own' value=0}
     {if isset($showOwnEntries) && $showOwnEntries eq 1}
         {assign var='own' value=1}
     {/if}
     {assign var='all' value=0}
-    {*if isset($showAllEntries) && $showAllEntries eq 1}
+    {if isset($showAllEntries) && $showAllEntries eq 1}
         {gt text='Back to paginated view' assign='linkTitle'}
-        <a href="{modurl modname='ZikulaRoutesModule' type='route' func='view' lct=$lct}" title="{$linkTitle}" class="fa fa-table">{$linkTitle}</a>
+        <a href="{route name='zikularoutesmodule_route_view' lct=$lct}" title="{$linkTitle}" class="fa fa-table">{$linkTitle}</a>
         {assign var='all' value=1}
     {else}
         {gt text='Show all entries' assign='linkTitle'}
-        <a href="{modurl modname='ZikulaRoutesModule' type='route' func='view' lct=$lct all=1}" title="{$linkTitle}" class="fa fa-table">{$linkTitle}</a>
+        <a href="{route name='zikularoutesmodule_route_view' lct=$lct all=1}" title="{$linkTitle}" class="fa fa-table">{$linkTitle}</a>
     {/if*}
 
     {*include file='Route/view_quickNav.tpl' all=$all own=$own*}{* see template file for available options *}
 
     {if $lct eq 'admin'}
-    <form action="{modurl modname='ZikulaRoutesModule' type='route' func='handleSelectedEntries' lct=$lct}" method="post" id="routesViewForm" class="form-horizontal" role="form">
+    <form action="{route name='zikularoutesmodule_route_handleselectedentries' lct=$lct}" method="post" id="routesViewForm" class="form-horizontal" role="form">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
     {/if}
-            <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover table-condensed">
-                <colgroup>
+        <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            <colgroup>
                 {if $lct eq 'admin'}
                     <col id="cSelect" />
                 {/if}
-                    <col id="cWorkflowState" />
-                    <col id="cPath" />
-                    <col id="cHost" />
-                    <col id="cCondition" />
-                    <col id="cDescription" />
-                    <col id="cBundle" />
-                    <col id="cUserRoute" />
-                    <col id="cSort" />
-                    {*<col id="cGroup" />*}
-                    <col id="cItemActions" />
-                </colgroup>
-                <thead>
-                <tr>
+                <col id="cWorkflowState" />
+                {*<col id="cName" />
+                <col id="cBundle" />
+                <col id="cController" />
+                <col id="cAction" />*}}
+                <col id="cPath" />
+                <col id="cHost" />
+                <col id="cCondition" />
+                <col id="cDescription" />
+                <col id="cBundle" />
+                <col id="cUserRoute" />
+                <col id="cSort" />
+                {*<col id="cGroup" />*}
+                <col id="cItemActions" />
+            </colgroup>
+            <thead>
+            <tr>
                 {if $lct eq 'admin'}
                     <th id="hSelect" scope="col" align="center" valign="middle">
                         <input type="checkbox" id="toggleRoutes" />
@@ -205,36 +209,35 @@
                     </td>*}
                     <td id="itemActions{$route.id}" headers="hItemActions" class="actions nowrap z-w02">
                         {if count($route._actions) gt 0}
-                            {foreach item='option' from=$route._actions}
-                                <a href="{$option.url.type|zikularoutesmoduleActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}"{if $option.icon eq 'zoom-in'} target="_blank"{/if} class="fa fa-{$option.icon}" data-linktext="{$option.linkText|safetext}"></a>
-                            {/foreach}
-                            {icon id="itemActions`$route.id`Trigger" type='options' size='extrasmall' __alt='Actions' class='cursor-pointer hidden'}
-                            <script type="text/javascript">
-                            /* <![CDATA[ */
-                                document.observe('dom:loaded', function() {
-                                    routesInitItemActions('route', 'view', 'itemActions{{$route.id}}');
-                                });
-                            /* ]]> */
-                            </script>
-                        {/if}
-                    </td>
-                </tr>
+                        <div class="dropdown">
+                            <a id="itemActions{$route.id}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="itemActions{$route.id}DropDownToggle">
+                                {foreach item='option' from=$route._actions}
+                                    <li role="presentation"><a href="{$option.url.type|zikularoutesmoduleActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" role="menuitem" tabindex="-1" class="fa fa-{$option.icon}">{$option.linkText|safetext}</a></li>
+
+                                {/foreach}
+                            </ul>
+                        </div>
+                    {/if}
+                </td>
+            </tr>
                 {assign var='groupOld' value=$route.group}
-            {foreachelse}
+        {foreachelse}
             <tr class="z-{if $lct eq 'admin'}admin{else}data{/if}tableempty">
               <td class="text-left" colspan="{if $lct eq 'admin'}8{else}7{/if}">
-                {gt text='No routes found.'}
-                  </td>
-                </tr>
-            {/foreach}
-            
-                </tbody>
-            </table>
-            </div>
-            
-            {if !isset($showAllEntries) || $showAllEntries ne 1}
-            {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' modname='ZikulaRoutesModule' type='route' func='view' lct=$lct}
-            {/if}
+            {gt text='No routes found.'}
+              </td>
+            </tr>
+        {/foreach}
+
+            </tbody>
+        </table>
+        </div>
+
+        {if !isset($showAllEntries) || $showAllEntries ne 1}
+            {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' lct=$lct route='zikularoutesmodule_route_view'}
+        {/if}
     {if $lct eq 'admin'}
             <fieldset>
                 <label for="zikulaRoutesModuleAction" class="col-lg-3 control-label">{gt text='With selected routes'}</label>
@@ -252,6 +255,7 @@
     {/if}
 
 
+    {* here you can activate calling display hooks for the view page if you need it *}
     {if $lct ne 'admin'}
         {notifydisplayhooks eventname='zikularoutesmodule.ui_hooks.routes.display_view' urlobject=$currentUrlObject assign='hooks'}
         {foreach key='providerArea' item='hook' from=$hooks}
@@ -259,20 +263,32 @@
         {/foreach}
     {/if}
 </div>
-{include file="$lctUc/footer.tpl"}
+{include file="`$lctUc`/footer.tpl"}
 
 <script type="text/javascript">
-/* <![CDATA[ */
-    document.observe('dom:loaded', function() {
-    {{if $lct eq 'admin'}}
-    {{* init the "toggle all" functionality *}}
-    if ($('toggleRoutes') != undefined) {
-        $('toggleRoutes').observe('click', function (e) {
-            Zikula.toggleInput('routesViewForm');
-            e.stop()
+    /* <![CDATA[ */
+    ( function($) {
+        $(document).ready(function() {
+            $('.dropdown-toggle').dropdown();
+            $('a.fa-zoom-in').attr('target', '_blank');
         });
-    }
-    {{/if}}
-    });
+    })(jQuery);
+    /* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+    ( function($) {
+        $(document).ready(function() {
+            {{if $lct eq 'admin'}}
+                {{* init the "toggle all" functionality *}}
+                if ($('#toggleRoutes') != undefined) {
+                    $('#toggleRoutes').on('click', function (e) {
+                        Zikula.toggleInput('routesViewForm');
+                        e.stop()
+                    });
+                }
+            {{/if}}
+        });
+    })(jQuery);
 /* ]]> */
 </script>

@@ -24,7 +24,7 @@
         {if !isset($searchFilter) || $searchFilter eq true}
             <div class="form-group">
                 <label for="searchTerm">{gt text='Search'}</label>
-                <input type="text" id="searchTerm" name="searchterm" value="{$searchterm}" class="form-control input-sm" />
+                <input type="text" id="searchTerm" name="q" value="{$q}" class="form-control input-sm" />
             </div>
         {/if}
         {if !isset($sorting) || $sorting eq true}
@@ -96,13 +96,15 @@
 
 <script type="text/javascript">
 /* <![CDATA[ */
-    document.observe('dom:loaded', function() {
-        routesInitQuickNavigation('route');
-        {{if isset($searchFilter) && $searchFilter eq false}}
-            {{* we can hide the submit button if we have no quick search field *}}
-            $('quicknavSubmit').addClassName('hidden');
-        {{/if}}
-    });
+    ( function($) {
+        $(document).ready(function() {
+            zikulaRoutesInitQuickNavigation('route');
+            {{if isset($searchFilter) && $searchFilter eq false}}
+                {{* we can hide the submit button if we have no quick search field *}}
+                $('#quicknavSubmit').addClass('hidden');
+            {{/if}}
+        });
+    })(jQuery);
 /* ]]> */
 </script>
 {/checkpermissionblock}

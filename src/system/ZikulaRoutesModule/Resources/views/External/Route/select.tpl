@@ -54,7 +54,7 @@
 </p>
 <p>
     <label for="{$baseID}SearchTerm"{$leftSide}>{gt text='Search for'}:</label>
-    <input type="text" id="{$baseID}SearchTerm" name="searchterm" class="form-control"{$rightSide} />
+    <input type="text" id="{$baseID}SearchTerm" name="q" class="form-control"{$rightSide} />
     <input type="button" id="zikulaRoutesModuleSearchGo" name="gosearch" value="{gt text='Filter'}" class="btn btn-default" />
     <br{$break} />
 </p>
@@ -63,8 +63,10 @@
 
 <script type="text/javascript">
 /* <![CDATA[ */
-    document.observe('dom:loaded', function() {
-        routes.itemSelector.onLoad('{{$baseID}}', {{$selectedId|default:0}});
-    });
+    ( function($) {
+        $(document).ready(function() {
+            zikulaRoutesModule.itemSelector.onLoad('{{$baseID}}', {{$selectedId|default:0}});
+        });
+    })(jQuery);
 /* ]]> */
 </script>
