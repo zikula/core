@@ -432,7 +432,10 @@ class Zikula_Core
 
         // Check that Zikula is installed before continuing
         if (!$this->getContainer()->getParameter('installed') && !System::isInstalling()) {
-            $response = new RedirectResponse($request->getBasePath().'/install.php?notinstalled', 302);
+//            $response = new RedirectResponse($request->getBasePath().'/install.php?notinstalled', 302);
+            $url = $this->container->get('router')->generate('upgrade', array('disable_core' => true));
+            $response = new RedirectResponse('/'.$url, 302);
+//            $response = new RedirectResponse($request->getBasePath().'/upgrade', 302);
             $response->send();
             System::shutDown();
         }

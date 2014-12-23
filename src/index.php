@@ -16,10 +16,15 @@ use Zikula_Request_Http as Request;
 include 'lib/bootstrap.php';
 
 $request = Request::createFromGlobals();
-$core->init(Zikula_Core::STAGE_ALL, $request);
+$disableCore = $request->get('disable_core', null);
+if (!isset($disableCore) || ($disableCore === false)) {
+    $core->init(Zikula_Core::STAGE_ALL, $request);
 
-// this event for BC only. remove in 2.0.0
-$core->getDispatcher()->dispatch('frontcontroller.predispatch', new \Zikula\Core\Event\GenericEvent());
+    // this event for BC only. remove in 2.0.0
+    $core->getDispatcher()->dispatch('frontcontroller.predispatch', new \Zikula\Core\Event\GenericEvent());
+} else {
+    System::setInstalling(true);
+}
 
 $response = $kernel->handle($request);
 $response->send();
