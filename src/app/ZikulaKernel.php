@@ -19,6 +19,7 @@ class ZikulaKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Zikula\Bundle\CoreBundle\CoreBundle(),
+            new Zikula\Bundle\CoreInstallerBundle\ZikulaCoreInstallerBundle(),
             new Zikula\Bundle\JQueryBundle\ZikulaJQueryBundle(),
             new Zikula\Bundle\JQueryUIBundle\ZikulaJQueryUIBundle(),
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
