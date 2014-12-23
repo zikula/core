@@ -10,12 +10,11 @@
     <script type="text/javascript">/* <![CDATA[ */
         if (typeof(Zikula) == 'undefined') {var Zikula = {};}
         Zikula.Config = {'entrypoint': '{{$ourEntry|default:'index.php'}}', 'baseURL': '{{$baseurl}}'}; /* ]]> */</script>
-        <script type="text/javascript" src="{$baseurl}javascript/ajax/proto_scriptaculous.combined.min.js"></script>
-        <script type="text/javascript" src="{$baseurl}javascript/helpers/Zikula.js"></script>
-        <script type="text/javascript" src="{$baseurl}javascript/livepipe/livepipe.combined.min.js"></script>
-        <script type="text/javascript" src="{$baseurl}javascript/helpers/Zikula.UI.js"></script>
-        <script type="text/javascript" src="{$baseurl}javascript/helpers/Zikula.ImageViewer.js"></script>
-    <script type="text/javascript" src="{$baseurl}system/Resources/public/js/ZikulaRoutesModule_finder.js"></script>
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap-theme.css" type="text/css" />
+        <script type="text/javascript" src="web/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="web/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{$baseurl}system/Resources/public/js/ZikulaRoutesModule.Finder.js"></script>
 </head>
 <body>
     <form action="{$ourEntry|default:'index.php'}" id="zikulaRoutesModuleSelectorForm" method="get" class="form-horizontal" role="form">
@@ -112,13 +111,13 @@
             <div class="form-group">
                 <label for="zikulaRoutesModuleSearchTerm" class="col-lg-3 control-label">{gt text='Search for'}:</label>
             <div class="col-lg-9">
-                    <input type="text" id="zikulaRoutesModuleSearchTerm" name="searchterm" style="width: 150px" class="form-control pull-left" style="margin-right: 10px" />
+                    <input type="text" id="zikulaRoutesModuleSearchTerm" name="q" style="width: 150px" class="form-control pull-left" style="margin-right: 10px" />
                     <input type="button" id="zikulaRoutesModuleSearchGo" name="gosearch" value="{gt text='Filter'}" style="width: 80px" class="btn btn-default" />
             </div>
             </div>
             
             <div style="margin-left: 6em">
-                {pager display='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='pos' template='pagercss.tpl' maxpages='10'}
+                {pager display='page' rowcount=$pager.numitems limit=$pager.itemsperpage posvar='pos' template='pagercss.tpl' maxpages='10' route='zikularoutesmodule_external_finder'}
             </div>
             <input type="submit" id="zikulaRoutesModuleSubmit" name="submitButton" value="{gt text='Change selection'}" class="btn btn-success" />
             <input type="button" id="zikulaRoutesModuleCancel" name="cancelButton" value="{gt text='Cancel'}" class="btn btn-default" />
@@ -129,9 +128,11 @@
 
     <script type="text/javascript">
     /* <![CDATA[ */
-        document.observe('dom:loaded', function() {
-            routes.finder.onLoad();
-        });
+        ( function($) {
+            $(document).ready(function() {
+                zikulaRoutesModule.finder.onLoad();
+            });
+        })(jQuery);
     /* ]]> */
     </script>
 

@@ -1,114 +1,72 @@
 'use strict';
 
-var routesContextMenu;
-
-routesContextMenu = Class.create(Zikula.UI.ContextMenu, {
-    selectMenuItem: function ($super, event, item, item_container) {
-        // open in new tab / window when right-clicked
-        if (event.isRightClick()) {
-            item.callback(this.clicked, true);
-            event.stop(); // close the menu
-            return;
-        }
-        // open in current window when left-clicked
-        return $super(event, item, item_container);
-    }
-});
-
-/**
- * Initialises the context menu for item actions.
- */
-function routesInitItemActions(objectType, func, containerId)
+function zikulaRoutesCapitaliseFirstLetter(string)
 {
-    var triggerId, contextMenu, icon;
-
-    triggerId = containerId + 'Trigger';
-
-    // attach context menu
-    contextMenu = new routesContextMenu(triggerId, { leftClick: true, animation: false });
-
-    // process normal links
-    $$('#' + containerId + ' a').each(function (elem) {
-        // save css class before hiding (#428)
-        var elemClass = elem.readAttribute('class');
-        // hide it
-        elem.addClassName('hidden');
-        // determine the link text
-        var linkText = '';
-        if (func === 'display') {
-            linkText = elem.innerHTML;
-        } else if (func === 'view') {
-            linkText = elem.readAttribute('data-linktext');
-        }
-
-        // determine the icon
-        icon = '';
-        if (elem.hasClassName('fa')) {
-            icon = '<span class="' + elemClass + '"></span>';
-        }
-
-        contextMenu.addItem({
-            label: icon + linkText,
-            callback: function (selectedMenuItem, isRightClick) {
-                var url;
-
-                url = elem.readAttribute('href');
-                if (isRightClick) {
-                    window.open(url);
-                } else {
-                    window.location = url;
-                }
-            }
-        });
-    });
-    $(triggerId).removeClassName('hidden');
-}
-
-function routesCapitaliseFirstLetter(string)
-{
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    return string.charAt(0).toUpperCase() + string.substring(1);
 }
 
 /**
  * Submits a quick navigation form.
  */
-function routesSubmitQuickNavForm(objectType)
+function zikulaRoutesSubmitQuickNavForm(objectType)
 {
-    $('zikularoutesmodule' + routesCapitaliseFirstLetter(objectType) + 'QuickNavForm').submit();
+    $('#zikularoutesmodule' + zikulaRoutesCapitaliseFirstLetter(objectType) + 'QuickNavForm').submit();
 }
 
 /**
  * Initialise the quick navigation panel in list views.
  */
-function routesInitQuickNavigation(objectType)
+function zikulaRoutesInitQuickNavigation(objectType)
 {
-    if ($('zikularoutesmodule' + routesCapitaliseFirstLetter(objectType) + 'QuickNavForm') == undefined) {
+    if ($('#zikularoutesmodule' + zikulaRoutesCapitaliseFirstLetter(objectType) + 'QuickNavForm').size() < 1) {
         return;
     }
 
-    if ($('catid') != undefined) {
-        $('catid').observe('change', function () { routesSubmitQuickNavForm(objectType); });
+    if ($('#catid').size() > 0) {
+        $('#catid').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
     }
-    if ($('sortby') != undefined) {
-        $('sortby').observe('change', function () { routesSubmitQuickNavForm(objectType); });
+    if ($('#sortby').size() > 0) {
+        $('#sortby').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
     }
-    if ($('sortdir') != undefined) {
-        $('sortdir').observe('change', function () { routesSubmitQuickNavForm(objectType); });
+    if ($('#sortdir').size() > 0) {
+        $('#sortdir').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
     }
-    if ($('num') != undefined) {
-        $('num').observe('change', function () { routesSubmitQuickNavForm(objectType); });
+    if ($('#num').size() > 0) {
+        $('#num').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
     }
 
     switch (objectType) {
     case 'route':
-        if ($('workflowState') != undefined) {
-            $('workflowState').observe('change', function () { routesSubmitQuickNavForm(objectType); });
+        if ($('#workflowState').size() > 0) {
+            $('#workflowState').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
-        if ($('userRoute') != undefined) {
-            $('userRoute').observe('change', function () { routesSubmitQuickNavForm(objectType); });
+        if ($('#userRoute').size() > 0) {
+            $('#userRoute').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
         break;
     default:
         break;
     }
+}
+
+/**
+ * Simulates a simple alert using bootstrap.
+ */
+function zikulaRoutesSimpleAlert(beforeElem, title, content, alertId, cssClass)
+{
+    var alertBox;
+
+    alertBox = ' \
+        <div id="' + alertId + '" class="alert alert-' + cssClass + ' fade"> \
+          <button type="button" class="close" data-dismiss="alert">&times;</button> \
+          <h4>' + title + '</h4> \
+          <p>' + content + '</p> \
+        </div>';
+
+    // insert alert before the given element
+    beforeElem.before(alertBox);
+
+    $('#' + alertId).delay(200).addClass('in').fadeOut(4000, function () {
+        $(this).remove();
+    });
 }

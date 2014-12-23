@@ -42,10 +42,10 @@ class WorkflowUtil extends Zikula_AbstractBase
          $states[] = array('value' => 'deleted',
                            'text' => $this->__('Deleted'),
                            'ui' => 'danger');
-
+    
          return $states;
      }
-
+    
     /**
      * This method returns information about a certain state.
      *
@@ -64,10 +64,10 @@ class WorkflowUtil extends Zikula_AbstractBase
             $result = $singleState;
             break;
         }
-
+    
         return $result;
     }
-
+    
     /**
      * This method returns the workflow name for a certain object type.
      *
@@ -83,10 +83,10 @@ class WorkflowUtil extends Zikula_AbstractBase
                 $result = 'standard';
                 break;
         }
-
+    
         return $result;
     }
-
+    
     /**
      * This method returns the workflow schema for a certain object type.
      *
@@ -101,10 +101,10 @@ class WorkflowUtil extends Zikula_AbstractBase
         if ($schemaName != '') {
             $schema = Zikula_Workflow_Util::loadSchema($schemaName, $this->name);
         }
-
+    
         return $schema;
     }
-
+    
     /**
      * Retrieve the available actions for a given entity object.
      *
@@ -116,12 +116,12 @@ class WorkflowUtil extends Zikula_AbstractBase
     {
         // get possible actions for this object in it's current workflow state
         $objectType = $entity['_objectType'];
-
+    
         $this->normaliseWorkflowData($entity);
-
-        $idcolumn = $entity['__WORKFLOW__']['obj_idcolumn'];
-        $wfActions = Zikula_Workflow_Util::getActionsForObject($entity, $objectType, $idcolumn, $this->name);
-
+    
+        $idColumn = $entity['__WORKFLOW__']['obj_idcolumn'];
+        $wfActions = Zikula_Workflow_Util::getActionsForObject($entity, $objectType, $idColumn, $this->name);
+    
         // as we use the workflows for multiple object types we must maybe filter out some actions
         $listHelper = $this->serviceManager->get('zikularoutesmodule.listentries_helper');
         $states = $listHelper->getEntries($objectType, 'workflowState');
@@ -129,21 +129,21 @@ class WorkflowUtil extends Zikula_AbstractBase
         foreach ($states as $state) {
             $allowedStates[] = $state['value'];
         }
-
+    
         $actions = array();
         foreach ($wfActions as $actionId => $action) {
             $nextState = (isset($action['nextState']) ? $action['nextState'] : '');
             if ($nextState != '' && !in_array($nextState, $allowedStates)) {
                 continue;
             }
-
+    
             $actions[$actionId] = $action;
             $actions[$actionId]['buttonClass'] = $this->getButtonClassForAction($actionId);
         }
-
+    
         return $actions;
     }
-
+    
     /**
      * Returns a button class for a certain action.
      *
@@ -166,22 +166,22 @@ class WorkflowUtil extends Zikula_AbstractBase
                 $buttonClass = 'danger';
                 break;
         }
-
+    
         if (empty($buttonClass)) {
             $buttonClass = 'default';
         }
-
+    
         $buttonClass = 'btn btn-' . $buttonClass;
-
+    
         return $buttonClass;
     }
-
+    
     /**
      * Executes a certain workflow action for a given entity object.
      *
      * @param \Zikula_EntityAccess $entity   The given entity instance.
      * @param string               $actionId Name of action to be executed.
-     * @param bool                 $recursive true if the function called itself.
+     * @param bool                 $recursive true if the function called itself.  
      *
      * @return bool False on error or true if everything worked well.
      */
@@ -189,14 +189,14 @@ class WorkflowUtil extends Zikula_AbstractBase
     {
         $objectType = $entity['_objectType'];
         $schemaName = $this->getWorkflowName($objectType);
-
+    
         $entity->initWorkflow(true);
-        $idcolumn = $entity['__WORKFLOW__']['obj_idcolumn'];
-
+        $idColumn = $entity['__WORKFLOW__']['obj_idcolumn'];
+    
         $this->normaliseWorkflowData($entity);
-
-        $result = Zikula_Workflow_Util::executeAction($schemaName, $entity, $actionId, $objectType, $this->name, $idcolumn);
-
+    
+        $result = Zikula_Workflow_Util::executeAction($schemaName, $entity, $actionId, $objectType, $this->name, $idColumn);
+    
         if ($result !== false && !$recursive) {
             $entities = $entity->getRelatedObjectsToPersist();
             foreach ($entities as $rel) {
@@ -205,7 +205,7 @@ class WorkflowUtil extends Zikula_AbstractBase
                 }
             }
         }
-
+    
         return ($result !== false);
     }
     /**
@@ -221,18 +221,18 @@ class WorkflowUtil extends Zikula_AbstractBase
         if (!isset($workflow[0]) && isset($workflow['module'])) {
             return;
         }
-
+    
         if (isset($workflow[0])) {
             $workflow = $workflow[0];
         }
-
+    
         if (!is_object($workflow)) {
             $workflow['module'] = 'ZikulaRoutesModule';
             $entity['__WORKFLOW__'] = $workflow;
-
+    
             return true;
         }
-
+    
         $entity['__WORKFLOW__'] = array(
             'module'        => 'ZikulaRoutesModule',
             'id'            => $workflow->getId(),
@@ -242,10 +242,10 @@ class WorkflowUtil extends Zikula_AbstractBase
             'obj_id'        => $workflow->getObjId(),
             'schemaname'    => $workflow->getSchemaname()
         );
-
+    
         return true;
     }
-
+    
     /**
      * Collects amount of moderation items foreach object type.
      *
@@ -255,13 +255,13 @@ class WorkflowUtil extends Zikula_AbstractBase
     {
         $amounts = array();
         $modname = 'ZikulaRoutesModule';
-
+    
         $logger = $this->get('logger');
-
+    
         // check if objects are waiting for approval
         $state = 'waiting';
         $objectType = 'route';
-        if (SecurityUtil::checkPermission($modname . ':' . ucwords($objectType) . ':', '::', ACCESS_ADD)) {
+        if (SecurityUtil::checkPermission($modname . ':' . ucfirst($objectType) . ':', '::', ACCESS_ADD)) {
             $amount = $this->getAmountOfModerationItems($objectType, $state);
             if ($amount > 0) {
                 $amounts[] = array(
@@ -272,16 +272,16 @@ class WorkflowUtil extends Zikula_AbstractBase
                     'state' => $state,
                     'message' => $this->_fn('One route is waiting for approval.', '%s routes are waiting for approval.', $amount, array($amount))
                 );
-
+        
                 if ($amounts > 0) {
                     $logger->info('{app}: There are {amount} {entities} waiting for approval.', array('app' => 'ZikulaRoutesModule', 'amount' => $amount, 'entities' => 'routes'));
                 }
             }
         }
-
+    
         return $amounts;
     }
-
+    
     /**
      * Retrieves the amount of moderation items for a given object type
      * and a certain workflow state.
@@ -294,12 +294,12 @@ class WorkflowUtil extends Zikula_AbstractBase
     public function getAmountOfModerationItems($objectType, $state)
     {
         $repository = $this->serviceManager->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
-
+    
         $where = 'tbl.workflowState = \'' . $state . '\'';
         $parameters = array('workflowState' => $state);
         $useJoins = false;
         $amount = $repository->selectCount($where, $useJoins, $parameters);
-
+    
         return $amount;
     }
 }

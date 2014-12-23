@@ -30,7 +30,7 @@ use Zikula\Core\Response\PlainResponse;
 class RouteController extends BaseRouteController
 {
     /**
-     * This method is the default function handling the admin area called without defining arguments.
+     * This method is the default function handling the main area called without defining arguments.
      *
      * @Route("/%zikularoutesmodule.routing.route.plural%",
      *        name = "zikularoutesmodule_route_index",
@@ -41,7 +41,7 @@ class RouteController extends BaseRouteController
      *
      * @return mixed Output.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
      */
     public function indexAction(Request $request)
     {
@@ -67,7 +67,7 @@ class RouteController extends BaseRouteController
      *
      * @return mixed Output.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
      */
     public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
@@ -104,8 +104,9 @@ class RouteController extends BaseRouteController
      *
      * @return mixed Output.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws NotFoundHttpException Thrown by form handler if item to be edited isn't found.
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
      */
     public function editAction(Request $request)
     {
@@ -128,8 +129,8 @@ class RouteController extends BaseRouteController
      *
      * @return mixed Output.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws NotFoundHttpException Thrown by param converter if item to be displayed isn't found.
      */
     public function displayAction(Request $request, RouteEntity $route)
     {
@@ -153,8 +154,9 @@ class RouteController extends BaseRouteController
      *
      * @return mixed Output.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     * @throws NotFoundHttpException Thrown by param converter if item to be deleted isn't found.
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available).
      */
     public function deleteAction(Request $request, RouteEntity $route)
     {
@@ -173,12 +175,12 @@ class RouteController extends BaseRouteController
      *
      * @return mixed Output.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
      */
     public function reloadAction(Request $request)
     {
         $objectType = 'route';
-        if (!SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -270,12 +272,12 @@ class RouteController extends BaseRouteController
      *
      * @return mixed Output.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
      */
-    public function renew(Request $request)
+    public function renewAction(Request $request)
     {
         $objectType = 'route';
-        if (!SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -306,7 +308,7 @@ class RouteController extends BaseRouteController
     public function dumpJsRoutesAction(Request $request, $lang = null)
     {
         $objectType = 'route';
-        if (!SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -366,4 +368,6 @@ class RouteController extends BaseRouteController
     {
         return parent::handleInlineRedirectAction($idPrefix, $commandName, $id);
     }
+
+    // feel free to add your own controller methods here
 }

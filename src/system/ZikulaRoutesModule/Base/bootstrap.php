@@ -15,14 +15,5 @@
  *
  * This is only called once, and only if the core has reason to initialise this module,
  * usually to dispatch a controller request or API.
- *
- * For example you can register additional AutoLoaders with ZLoader::addAutoloader($namespace, $path)
- * whereby $namespace is the first part of the PEAR class name
- * and $path is the path to the containing folder.
  */
-// initialise doctrine extension listeners
-$helper = ServiceUtil::get('doctrine_extensions');
-$helper->getListener('sortable');
-$helper->getListener('timestampable');
-$helper->getListener('standardfields');
 

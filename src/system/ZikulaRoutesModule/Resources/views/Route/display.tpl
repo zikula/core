@@ -10,12 +10,58 @@
     {assign var='templateTitle' value=$route->getTitleFromDisplayPattern()|default:$templateTitle}
     {pagesetvar name='title' value=$templateTitle|@html_entity_decode}
     {if $lct eq 'admin'}
-    <h3>
-        <span class="fa fa-eye"></span>
-        {$templateTitle|notifyfilters:'zikularoutesmodule.filter_hooks.routes.filter'} <small>({$route.workflowState|zikularoutesmoduleObjectState:false|lower})</small>{icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='cursor-pointer hidden'}
-    </h3>
+        <h3>
+            <span class="fa fa-eye"></span>
+            {$templateTitle|notifyfilters:'zikularoutesmodule.filter_hooks.routes.filter'} <small>({$route.workflowState|zikularoutesmoduleObjectState:false|lower})</small>
+            {if count($route._actions) gt 0}
+                <div class="dropdown">
+                    <a id="itemActions{$route.id}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> {gt text='Actions'} <span class="caret"></span></a>
+
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="itemActions{$route.id}DropDownToggle">
+                        {foreach item='option' from=$route._actions}
+                            <li role="presentation"><a href="{$option.url.type|zikularoutesmoduleActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" role="menuitem" tabindex="-1" class="fa fa-{$option.icon}">{$option.linkText|safetext}</a></li>
+
+                        {/foreach}
+                    </ul>
+                </div>
+                <script type="text/javascript">
+                /* <![CDATA[ */
+                    ( function($) {
+                        $(document).ready(function() {
+                            $('.dropdown-toggle').dropdown();
+                            $('a.fa-zoom-in').attr('target', '_blank');
+                        });
+                    })(jQuery);
+                /* ]]> */
+                </script>
+            {/if}
+        </h3>
     {else}
-        <h2>{$templateTitle|notifyfilters:'zikularoutesmodule.filter_hooks.routes.filter'} <small>({$route.workflowState|zikularoutesmoduleObjectState:false|lower})</small>{icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='cursor-pointer hidden'}</h2>
+        <h2>
+            {$templateTitle|notifyfilters:'zikularoutesmodule.filter_hooks.routes.filter'} <small>({$route.workflowState|zikularoutesmoduleObjectState:false|lower})</small>
+            {if count($route._actions) gt 0}
+                <div class="dropdown">
+                    <a id="itemActions{$route.id}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> {gt text='Actions'} <span class="caret"></span></a>
+
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="itemActions{$route.id}DropDownToggle">
+                        {foreach item='option' from=$route._actions}
+                            <li role="presentation"><a href="{$option.url.type|zikularoutesmoduleActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" role="menuitem" tabindex="-1" class="fa fa-{$option.icon}">{$option.linkText|safetext}</a></li>
+
+                        {/foreach}
+                    </ul>
+                </div>
+                <script type="text/javascript">
+                /* <![CDATA[ */
+                    ( function($) {
+                        $(document).ready(function() {
+                            $('.dropdown-toggle').dropdown();
+                            $('a.fa-zoom-in').attr('target', '_blank');
+                        });
+                    })(jQuery);
+                /* ]]> */
+                </script>
+            {/if}
+        </h2>
     {/if}
 
     <dl>
@@ -60,23 +106,9 @@
     {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
         {* include display hooks *}
         {notifydisplayhooks eventname='zikularoutesmodule.ui_hooks.routes.display_view' id=$route.id urlobject=$currentUrlObject assign='hooks'}
-        {foreach key='providerArea' item='hook' from=$hooks}
+        {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}
             {$hook}
         {/foreach}
-        {if count($route._actions) gt 0}
-            <p id="itemActions">
-            {foreach item='option' from=$route._actions}
-                <a href="{$option.url.type|zikularoutesmoduleActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" class="fa fa-{$option.icon}">{$option.linkText|safetext}</a>
-            {/foreach}
-            </p>
-            <script type="text/javascript">
-            /* <![CDATA[ */
-                document.observe('dom:loaded', function() {
-                    routesInitItemActions('route', 'display', 'itemActions');
-                });
-            /* ]]> */
-            </script>
-        {/if}
     {/if}
 </div>
 {include file="`$lctUc`/footer.tpl"}

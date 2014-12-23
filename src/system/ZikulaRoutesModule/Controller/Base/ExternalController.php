@@ -55,38 +55,38 @@ class ExternalController extends Zikula_AbstractController
     public function displayAction($ot, $id, $source, $displayMode)
     {
         $controllerHelper = $this->serviceManager->get('zikularoutesmodule.controller_helper');
-
+        
         $objectType = $ot;
         $utilArgs = array('controller' => 'external', 'action' => 'display');
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controller', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('controllerType', $utilArgs);
         }
-
-        $component = $this->name . ':' . ucwords($objectType) . ':';
+        
+        $component = $this->name . ':' . ucfirst($objectType) . ':';
         if (!SecurityUtil::checkPermission($component, $id . '::', ACCESS_READ)) {
             return '';
         }
-
+        
         $repository = $this->serviceManager->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
         $repository->setRequest($this->request);
         $idFields = ModUtil::apiFunc('ZikulaRoutesModule', 'selection', 'getIdFields', array('ot' => $objectType));
         $idValues = array('id' => $id);
-
+        
         $hasIdentifier = $controllerHelper->isValidIdentifier($idValues);
         if (!$hasIdentifier) {
             return $this->__('Error! Invalid identifier received.');
         }
-
+        
         // assign object data fetched from the database
         $entity = $repository->selectById($idValues);
         if ((!is_array($entity) && !is_object($entity)) || !isset($entity[$idFields[0]])) {
             return $this->__('No such item.');
         }
-
+        
         $entity->initWorkflow();
-
+        
         $instance = $entity->createCompositeIdentifier() . '::';
-
+        
         $this->view->setCaching(Zikula_View::CACHE_ENABLED);
         // set cache id
         $accessLevel = ACCESS_READ;
@@ -97,15 +97,15 @@ class ExternalController extends Zikula_AbstractController
             $accessLevel = ACCESS_EDIT;
         }
         $this->view->setCacheId($objectType . '|' . $id . '|a' . $accessLevel);
-
+        
         $this->view->assign('objectType', $objectType)
                   ->assign('source', $source)
                   ->assign($objectType, $entity)
                   ->assign('displayMode', $displayMode);
-
-        return $this->response($this->view->fetch('External/' . ucwords($objectType) . '/display.tpl'));
+        
+        return $this->response($this->view->fetch('External/' . ucfirst($objectType) . '/display.tpl'));
     }
-
+    
     /**
      * Popup selector for Scribite plugins.
      * Finds items of a certain object type.
@@ -123,40 +123,40 @@ class ExternalController extends Zikula_AbstractController
      */
     public function finderAction($objectType, $editor, $sort, $sortdir, $pos = 1, $num = 0)
     {
-        PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('ZikulaRoutesModule'));
-
+        PageUtil::addVar('stylesheet', '@ZikulaRoutesModule/Resources/public/css/style.css');
+        
         $getData = $this->request->query;
         $controllerHelper = $this->serviceManager->get('zikularoutesmodule.controller_helper');
-
+        
         $utilArgs = array('controller' => 'external', 'action' => 'finder');
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controller', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('controllerType', $utilArgs);
         }
-
-        if (!SecurityUtil::checkPermission('ZikulaRoutesModule:' . ucwords($objectType) . ':', '::', ACCESS_COMMENT)) {
+        
+        if (!SecurityUtil::checkPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', '::', ACCESS_COMMENT)) {
             throw new AccessDeniedException();
         }
-
+        
         $repository = $this->serviceManager->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
         $repository->setRequest($this->request);
-
+        
         if (empty($editor) || !in_array($editor, array('xinha', 'tinymce', 'ckeditor'))) {
             return $this->__('Error: Invalid editor context given for external controller action.');
         }
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
         }
-
+        
         $sdir = strtolower($sortdir);
         if ($sdir != 'asc' && $sdir != 'desc') {
             $sdir = 'asc';
         }
-
+        
         $sortParam = $sort . ' ' . $sdir;
-
+        
         // the current offset which is used to calculate the pagination
         $currentPage = (int) $pos;
-
+        
         // the number of items displayed on a page for pagination
         $resultsPerPage = (int) $num;
         if ($resultsPerPage == 0) {
@@ -164,13 +164,13 @@ class ExternalController extends Zikula_AbstractController
         }
         $where = '';
         list($entities, $objectCount) = $repository->selectWherePaginated($where, $sortParam, $currentPage, $resultsPerPage);
-
+        
         foreach ($entities as $k => $entity) {
             $entity->initWorkflow();
         }
-
+        
         $view = Zikula_View::getInstance('ZikulaRoutesModule', false);
-
+        
         $view->assign('editorName', $editor)
              ->assign('objectType', $objectType)
              ->assign('items', $entities)
@@ -179,7 +179,7 @@ class ExternalController extends Zikula_AbstractController
              ->assign('currentPage', $currentPage)
              ->assign('pager', array('numitems'     => $objectCount,
                                      'itemsperpage' => $resultsPerPage));
-
-        return new PlainResponse($view->display('External/' . ucwords($objectType) . '/find.tpl'));
+        
+        return new PlainResponse($view->display('External/' . ucfirst($objectType) . '/find.tpl'));
     }
 }

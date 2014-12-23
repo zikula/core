@@ -27,7 +27,6 @@ class ExternalController extends BaseExternalController
      * Displays one item of a certain object type using a separate template for external usages.
      *
      * @Route("/display/{ot}/{id}/{source}/{displayMode}",
-     *        name = "zikularoutesmodule_external_display",
      *        requirements = {"id" = "\d+", "source" = "contentType|scribite", "displayMode" = "link|embed"},
      *        defaults = {"source" = "contentType", "contentType" = "embed"},
      *        methods = {"GET"}
@@ -50,10 +49,10 @@ class ExternalController extends BaseExternalController
      * Finds items of a certain object type.
      *
      * @Route("/finder/{objectType}/{editor}/{sort}/{sortdir}/{pos}/{num}",
-     *        name = "zikularoutesmodule_external_finder",
      *        requirements = {"editor" = "xinha|tinymce|ckeditor", "sortdir" = "asc|desc", "pos" = "\d+", "num" = "\d+"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 0},
-     *        methods = {"GET"}
+     *        methods = {"GET"},
+     *        options={"expose"=true}
      * )
      *
      * @param string $objectType The object type.

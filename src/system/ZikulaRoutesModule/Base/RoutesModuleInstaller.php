@@ -54,20 +54,23 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
             $logger->error('{app}: User {user} could not create the database tables during installation. Error details: {errorMessage}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'errorMessage' => $e->getMessage()));
             return false;
         }
-
+    
+        // set up all our vars with initial values
+        $this->setVar('moderationGroupForRoutes', 2);
+    
         $categoryRegistryIdsPerEntity = array();
-
+    
         // create the default data
         $this->createDefaultData($categoryRegistryIdsPerEntity);
-
+    
         // register hook subscriber bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
-
-
+        
+    
         // initialisation successful
         return true;
     }
-
+    
     /**
      * Upgrade the ZikulaRoutesModule application from an older version.
      *
@@ -103,40 +106,40 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
                     return false;
                 }
         }
-
+    
         // Note there are several helpers available for making migration of your extension easier.
         // The following convenience methods are each responsible for a single aspect of upgrading to Zikula 1.4.0.
-
+    
         // here is a possible usage example
         // of course 1.2.3 should match the number you used for the last stable 1.3.x module version.
         /* if ($oldVersion = '1.2.3') {
             // rename module for all modvars
             $this->updateModVarsTo140();
-
+            
             // update extension information about this app
             $this->updateExtensionInfoFor140();
-
+            
             // rename existing permission rules
             $this->renamePermissionsFor140();
-
+            
             // rename existing category registries
             $this->renameCategoryRegistriesFor140();
-
+            
             // rename all tables
             $this->renameTablesFor140();
-
+            
             // remove event handler definitions from database
             $this->dropEventHandlersFromDatabase();
-
+            
             // update module name in the hook tables
             $this->updateHookNamesFor140();
         } * /
     */
-
+    
         // update successful
         return true;
     }
-
+    
     /**
      * Renames the module name for variables in the module_vars table.
      */
@@ -144,13 +147,13 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         $dbName = $this->getDbName();
         $conn = $this->getConnection();
-
+    
         $conn->executeQuery("UPDATE $dbName.module_vars
                              SET modname = 'ZikulaRoutesModule'
                              WHERE modname = 'Routes';
         ");
     }
-
+    
     /**
      * Renames this application in the core's extensions table.
      */
@@ -158,14 +161,14 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         $conn = $this->getConnection();
         $dbName = $this->getDbName();
-
+    
         $conn->executeQuery("UPDATE $dbName.modules
                              SET name = 'ZikulaRoutesModule',
                                  directory = 'Zikula/RoutesModule'
                              WHERE name = 'Routes';
         ");
     }
-
+    
     /**
      * Renames all permission rules stored for this app.
      */
@@ -173,15 +176,15 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         $conn = $this->getConnection();
         $dbName = $this->getDbName();
-
+    
         $componentLength = strlen('Routes') + 1;
-
+    
         $conn->executeQuery("UPDATE $dbName.group_perms
                              SET component = CONCAT('ZikulaRoutesModule', SUBSTRING(component, $componentLength))
                              WHERE component LIKE 'Routes%';
         ");
     }
-
+    
     /**
      * Renames all category registries stored for this app.
      */
@@ -189,15 +192,15 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         $conn = $this->getConnection();
         $dbName = $this->getDbName();
-
+    
         $componentLength = strlen('Routes') + 1;
-
+    
         $conn->executeQuery("UPDATE $dbName.categories_registry
                              SET modname = CONCAT('ZikulaRoutesModule', SUBSTRING(component, $componentLength))
                              WHERE modname LIKE 'Routes%';
         ");
     }
-
+    
     /**
      * Renames all (existing) tables of this app.
      */
@@ -205,11 +208,11 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         $conn = $this->getConnection();
         $dbName = $this->getDbName();
-
+    
         $oldPrefix = 'routes_';
         $oldPrefixLength = strlen($oldPrefix);
         $newPrefix = 'zikula_routes_';
-
+    
         $sm = $conn->getSchemaManager();
         $tables = $sm->listTables();
         foreach ($tables as $table) {
@@ -217,15 +220,15 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
             if (substr($tableName, 0, $oldPrefixLength) != $oldPrefix) {
                 continue;
             }
-
+    
             $newTableName = str_replace($oldPrefix, $newPrefix, $tableName);
-
+    
             $conn->executeQuery("RENAME TABLE $dbName.$tableName
                                  TO $dbName.$newTableName;
             ");
         }
     }
-
+    
     /**
      * Removes event handlers from database as they are now described by service definitions and managed by dependency injection.
      */
@@ -233,7 +236,7 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         EventUtil::unregisterPersistentModuleHandlers('Routes');
     }
-
+    
     /**
      * Updates the module name in the hook tables.
      */
@@ -241,46 +244,46 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         $conn = $this->getConnection();
         $dbName = $this->getDbName();
-
+    
         $conn->executeQuery("UPDATE $dbName.hook_area
                              SET owner = 'ZikulaRoutesModule'
                              WHERE owner = 'Routes';
         ");
-
+    
         $componentLength = strlen('subscriber.routes') + 1;
         $conn->executeQuery("UPDATE $dbName.hook_area
                              SET areaname = CONCAT('subscriber.zikularoutesmodule', SUBSTRING(areaname, $componentLength))
                              WHERE areaname LIKE 'subscriber.routes%';
         ");
-
+    
         $conn->executeQuery("UPDATE $dbName.hook_binding
                              SET sowner = 'ZikulaRoutesModule'
                              WHERE sowner = 'Routes';
         ");
-
+    
         $conn->executeQuery("UPDATE $dbName.hook_runtime
                              SET sowner = 'ZikulaRoutesModule'
                              WHERE sowner = 'Routes';
         ");
-
+    
         $componentLength = strlen('routes') + 1;
         $conn->executeQuery("UPDATE $dbName.hook_runtime
                              SET eventname = CONCAT('zikularoutesmodule', SUBSTRING(eventname, $componentLength))
                              WHERE eventname LIKE 'routes%';
         ");
-
+    
         $conn->executeQuery("UPDATE $dbName.hook_subscriber
                              SET owner = 'ZikulaRoutesModule'
                              WHERE owner = 'Routes';
         ");
-
+    
         $componentLength = strlen('routes') + 1;
         $conn->executeQuery("UPDATE $dbName.hook_subscriber
                              SET eventname = CONCAT('zikularoutesmodule', SUBSTRING(eventname, $componentLength))
                              WHERE eventname LIKE 'routes%';
         ");
     }
-
+    
     /**
      * Returns connection to the database.
      *
@@ -290,10 +293,10 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         $em = $this->entityManager;
         $conn = $em->getConnection();
-
+    
         return $conn;
     }
-
+    
     /**
      * Returns the name of the default system database.
      *
@@ -303,7 +306,7 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         return $this->getContainer()->getParameter('database_name');
     }
-
+    
     /**
      * Uninstall ZikulaRoutesModule.
      *
@@ -321,7 +324,7 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
             $logger->error('{app}: User {user} could not remove stored object workflows during uninstallation.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')));
             return false;
         }
-
+    
         try {
             DoctrineHelper::dropSchema($this->entityManager, $this->listEntityClasses());
         } catch (\Exception $e) {
@@ -336,15 +339,18 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
             $logger->error('{app}: User {user} could not remove the database tables during uninstallation. Error details: {errorMessage}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'errorMessage' => $e->getMessage()));
             return false;
         }
-
+    
         // unregister hook subscriber bundles
         HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
-
-
+        
+    
+        // remove all module vars
+        $this->delVars();
+    
         // uninstallation successful
         return true;
     }
-
+    
     /**
      * Build array with all entity classes for ZikulaRoutesModule.
      *
@@ -354,10 +360,10 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         $classNames = array();
         $classNames[] = 'Zikula\RoutesModule\Entity\RouteEntity';
-
+    
         return $classNames;
     }
-
+    
     /**
      * Create the default data for ZikulaRoutesModule.
      *

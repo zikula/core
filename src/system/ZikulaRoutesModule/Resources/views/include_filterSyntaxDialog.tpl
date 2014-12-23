@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{gt text='Close'}</span></button>
                 <h4 class="modal-title" id="filterSyntaxModalLabel">{gt text='Filter syntax explained}</h4>
             </div>
             <div class="modal-body">
@@ -75,7 +75,7 @@
                     <li>{gt text='You can use relative time information according to the GNU Date Input Formats syntax.'}
                         <ul>
                             <li><code>date:eq:today</code> {gt text='All items with date of today.'}</li>
-                            <li><code>date:ge:?24 hours</code> {gt text='All items with date up from 24 hours ago.'}</li>
+                            <li><code>date:ge:24 hours</code> {gt text='All items with date up from 24 hours ago.'}</li>
                             <li><code>date:eq:last year</code> {gt text='All items with date in the last year.'}</li>
                         </ul>
                     </li>

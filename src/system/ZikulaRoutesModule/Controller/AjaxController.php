@@ -16,12 +16,33 @@ use SecurityUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\RoutesModule\Controller\Base\AjaxController as BaseAjaxController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * This is the Ajax controller class providing navigation and interaction functionality.
+ * Ajax controller class providing navigation and interaction functionality.
+ *
+ * @Route("/%zikularoutesmodule.routing.ajax%")
  */
 class AjaxController extends BaseAjaxController
 {
+    /**
+     * Retrieve item list for finder selections in Forms, Content type plugin and Scribite.
+     *
+     * @Route("/getItemListFinder", options={"expose"=true})
+
+     *
+     * @param string $ot      Name of currently used object type.
+     * @param string $sort    Sorting field.
+     * @param string $sortdir Sorting direction.
+     *
+     * @return AjaxResponse
+     */
+    public function getItemListFinderAction(Request $request)
+    {
+        return parent::getItemListFinderAction($request);
+    }
+    // feel free to add your own controller methods here
+
     public function sort(Request $request)
     {
         if (!SecurityUtil::checkPermission($this->name . '::Ajax', '::', ACCESS_EDIT)) {

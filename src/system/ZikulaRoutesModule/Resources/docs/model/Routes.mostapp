@@ -26,7 +26,7 @@ application Routes {
 		generateJsonTemplates false
 		generatePoweredByBacklinksIntoFooterTemplates false
 		writeModelToDocs true
-		skipFiles "
+		markFiles "
 			README.md,
 			CHANGELOG.md,
 			Api/AdminApi.php,
@@ -44,101 +44,85 @@ application Routes {
 			Util/ControllerUtil.php,
 			workflows/function.standard_permissioncheck.php
 		"
-		markFiles "
-			Resources/config/services.yml
-		"
 	}
-	modelLayer {
-		modelContainer Model {
-			defaultDataSource true
-			entities {
-				entity route leading {
-					nameMultiple routes
-					displayPattern "#path# (#sort#)"
-					workflow STANDARD
-					fields {
-						string name {
-							dbName route_name
-						},
-						string bundle {
-						
-						},
-						string "controller" {
-						
-						},
-						string "action" {
-							dbName route_action
-						},
-						string path {
-							dbName route_path
-						},
-						string host nullable {
-							mandatory false
-						},
-						array schemes {
-							mandatory false
-						},
-						array methods {
-							mandatory false
-						},
-						array defaults {
-							dbName route_defaults
-						},
-						array requirements {
-							mandatory false
-						},
-						array options {
-							mandatory false
-						},
-						string "condition" nullable {
-							dbName route_condition
-							mandatory false
-						},
-						string description nullable {
-							mandatory false
-						},
-						boolean userRoute {
-							mandatory false
-						},
-						integer sort sortablePosition {
-							mandatory false
-						},
-						string group sortableGroup {
-							dbName sort_group
-							mandatory false
-						}
-					}
-				}
-			}
-		}
-	}
-	controllerLayer {
-		controllerContainer Controller {
-			modelContext ( "Routes.Model" )
-			processViews "Routes.View"
-			controllers {
-				adminController Admin {
-					actions {
-						mainAction Main,
-						viewAction View,
-						editAction Edit,
-						displayAction Display,
-						deleteAction Delete,
-						customAction reload,
-						customAction renew
-					}
+	entities {
+		entity route leading {
+			nameMultiple routes
+			displayPattern "#path# (#sort#)"
+			workflow STANDARD
+			fields {
+				string name {
+					dbName route_name
 				},
-				ajaxController Ajax {
-					actions {
-						mainAction Main
-					}
+				string bundle {
+				
+				},
+				string "controller" {
+				
+				},
+				string "action" {
+					dbName route_action
+				},
+				string path {
+					dbName route_path
+				},
+				string host nullable {
+					mandatory false
+				},
+				array schemes {
+					mandatory false
+				},
+				array methods {
+					mandatory false
+				},
+				array defaults {
+					dbName route_defaults
+				},
+				array requirements {
+					mandatory false
+				},
+				array options {
+					mandatory false
+				},
+				string "condition" nullable {
+					dbName route_condition
+	 	 	 		mandatory false
+				},
+				string description nullable {
+					mandatory false
+				},
+				boolean userRoute {
+					mandatory false
+				},
+				integer sort sortablePosition {
+					mandatory false
+				},
+				string group sortableGroup {
+					dbName sort_group
+					mandatory false
 				}
 			}
+		    	actions {
+				mainAction Main,
+				viewAction View,
+				editAction Edit,
+				displayAction Display,
+				deleteAction Delete,
+				customAction reload,
+				customAction renew
+		    	}
 		}
 	}
-	viewLayer {
-		viewContainer View {
-			controller "Routes.Controller"
+	controllers {
+		adminController Admin {
+			actions {
+				mainAction Main
+			}
+		},
+		ajaxController Ajax {
+			actions {
+				mainAction Main
+			}
 		}
 	}
 }

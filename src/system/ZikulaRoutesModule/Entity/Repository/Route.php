@@ -52,7 +52,7 @@ class Route extends BaseRoute
         $request = $sm->get('request');
         $dom = \ZLanguage::getModuleDomain('ZikulaRoutesModule');
 
-        // See http://docs.doctrine-project.org/en/2.0.x/reference/transactions-and-concurrency.html#approach-2-explicitly
+        // See http://doctrine-orm.readthedocs.org/en/latest/reference/transactions-and-concurrency.html#approach-2-explicitly
         $this->getEntityManager()->beginTransaction(); // suspend auto-commit
 
         $this->removeAll(false);

@@ -35,7 +35,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
             'module_dispatch.service_links'    => array('serviceLinks', 5)
         );
     }
-
+    
     /**
      * Listener for the `module_dispatch.postloadgeneric` event.
      *
@@ -47,11 +47,11 @@ class ModuleDispatchListener implements EventSubscriberInterface
     public function postLoadGeneric(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `module_dispatch.preexecute` event.
      *
-     * Occurs in `ModUtil::exec()` after function call with the following args:
+     * Occurs in `ModUtil::exec()` before function call with the following args:
      *     `array('modname' => $modname,
      *            'modfunc' => $modfunc,
      *            'args' => $args,
@@ -65,7 +65,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
     public function preExecute(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `module_dispatch.postexecute` event.
      *
@@ -85,7 +85,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
     public function postExecute(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `module_dispatch.custom_classname` event.
      *
@@ -100,7 +100,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
     public function customClassname(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `module_dispatch.service_links` event.
      *

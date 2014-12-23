@@ -38,7 +38,7 @@ class InstallerListener implements EventSubscriberInterface
             'installer.subscriberarea.uninstalled' => array('subscriberAreaUninstalled', 5)
         );
     }
-
+    
     /**
      * Listener for the `module.install` event.
      *
@@ -50,7 +50,7 @@ class InstallerListener implements EventSubscriberInterface
     public function moduleInstalled(ModuleStateEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `module.postinstall` event.
      *
@@ -62,7 +62,7 @@ class InstallerListener implements EventSubscriberInterface
     public function modulePostInstalled(ModuleStateEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `module.upgrade` event.
      *
@@ -74,39 +74,43 @@ class InstallerListener implements EventSubscriberInterface
     public function moduleUpgraded(ModuleStateEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `module.enable` event.
      *
      * Called after a module has been successfully enabled.
      * Receives `$modinfo` as args.
+     *
+     * @param ModuleStateEvent $event The event instance.
      */
     public function moduleEnabled(ModuleStateEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `module.disable` event.
      *
      * Called after a module has been successfully disabled.
      * Receives `$modinfo` as args.
+     *
+     * @param ModuleStateEvent $event The event instance.
      */
     public function moduleDisabled(ModuleStateEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `module.remove` event.
      *
      * Called after a module has been successfully removed.
      * Receives `$modinfo` as args.
      *
-     * @param GenericEvent $event The event instance.
+     * @param ModuleStateEvent $event The event instance.
      */
     public function moduleRemoved(ModuleStateEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `installer.subscriberarea.uninstalled` event.
      *

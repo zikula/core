@@ -27,7 +27,7 @@ use ZLanguage;
 use Zikula\Core\Hook\ProcessHook;
 use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ValidationProviders;
-use Zikula\Core\ModUrl;
+use Zikula\Core\RouteUrl;
 
 /**
  * This handler class handles the page events of editing forms.
@@ -100,7 +100,7 @@ class EditHandler extends Zikula_Form_AbstractHandler
      * @var array
      */
     protected $idValues = array();
-
+    
     /**
      * List of identifiers for predefined relationships.
      *
@@ -206,36 +206,36 @@ class EditHandler extends Zikula_Form_AbstractHandler
     {
         $this->inlineUsage = ((UserUtil::getTheme() == 'Printer') ? true : false);
         $this->idPrefix = $this->request->query->filter('idp', '', false, FILTER_SANITIZE_STRING);
-
+    
         // initialise redirect goal
         $this->returnTo = $this->request->query->filter('returnTo', null, false, FILTER_SANITIZE_STRING);
         // store current uri for repeated creations
         $this->repeatReturnUrl = System::getCurrentURI();
-
+    
         $this->permissionComponent = $this->name . ':' . $this->objectTypeCapital . ':';
-
-        $entityClass = 'ZikulaRoutesModule:' . ucwords($this->objectType) . 'Entity';
+    
+        $entityClass = 'ZikulaRoutesModule:' . ucfirst($this->objectType) . 'Entity';
         $this->idFields = ModUtil::apiFunc($this->name, 'selection', 'getIdFields', array('ot' => $this->objectType));
-
+    
         // retrieve identifier of the object we wish to view
         $controllerHelper = $this->view->getServiceManager()->get('zikularoutesmodule.controller_helper');
-
+    
         $this->idValues = $controllerHelper->retrieveIdentifier($this->request, array(), $this->objectType, $this->idFields);
         $hasIdentifier = $controllerHelper->isValidIdentifier($this->idValues);
-
+    
         $entity = null;
         $this->mode = ($hasIdentifier) ? 'edit' : 'create';
-
+    
         if ($this->mode == 'edit') {
             if (!SecurityUtil::checkPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
-
+    
             $entity = $this->initEntityForEdit();
             if (!is_object($entity)) {
-                throw new NotFoundHttpException($this->__('No such item.'));
+                return false;
             }
-
+    
             if ($this->hasPageLockSupport === true && ModUtil::available('PageLock')) {
                 // try to guarantee that only one person at a time can be editing this entity
                 ModUtil::apiFunc('PageLock', 'user', 'pageLock',
@@ -246,17 +246,17 @@ class EditHandler extends Zikula_Form_AbstractHandler
             if (!SecurityUtil::checkPermission($this->permissionComponent, '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
-
+    
             $entity = $this->initEntityForCreation();
         }
-
+    
         $this->view->assign('mode', $this->mode)
                    ->assign('inlineUsage', $this->inlineUsage);
-
+    
         // save entity reference for later reuse
         $this->entityRef = $entity;
-
-
+    
+    
         $workflowHelper = $this->view->getServiceManager()->get('zikularoutesmodule.workflow_helper');
         $actions = $workflowHelper->getActionsForObject($entity);
         if ($actions === false || !is_array($actions)) {
@@ -267,15 +267,15 @@ class EditHandler extends Zikula_Form_AbstractHandler
         }
         // assign list of allowed actions to the view for further processing
         $this->view->assign('actions', $actions);
-
+    
         // everything okay, no initialization errors occured
         return true;
     }
-
+    
     /**
      * Create concatenated identifier string (for composite keys).
      *
-     * @return String concatenated identifiers.
+     * @return String concatenated identifiers. 
      */
     protected function createCompositeIdentifier()
     {
@@ -286,10 +286,10 @@ class EditHandler extends Zikula_Form_AbstractHandler
             }
             $itemId .= $this->idValues[$idField];
         }
-
+    
         return $itemId;
     }
-
+    
     /**
      * Initialise existing entity for editing.
      *
@@ -303,12 +303,12 @@ class EditHandler extends Zikula_Form_AbstractHandler
         if ($entity == null) {
             throw new NotFoundHttpException($this->__('No such item.'));
         }
-
+    
         $entity->initWorkflow();
-
+    
         return $entity;
     }
-
+    
     /**
      * Initialise new entity for creation.
      *
@@ -324,7 +324,7 @@ class EditHandler extends Zikula_Form_AbstractHandler
             $templateIdValueParts = explode('_', $templateId);
             $this->hasTemplateId = (count($templateIdValueParts) == count($this->idFields));
         }
-
+    
         if ($this->hasTemplateId === true) {
             $templateIdValues = array();
             $i = 0;
@@ -339,11 +339,11 @@ class EditHandler extends Zikula_Form_AbstractHandler
             }
             $entity = clone $entityT;
         } else {
-            $entityClass = 'Zikula\\RoutesModule\\Entity\\' . ucwords($this->objectType) . 'Entity';
+            $entityClass = 'Zikula\\RoutesModule\\Entity\\' . ucfirst($this->objectType) . 'Entity';
             $createMethod = 'create' . ucfirst($this->objectType);
             $entity = $this->view->getContainer()->get('zikularoutesmodule.' . $this->objectType . '_factory')->$createMethod();
         }
-
+    
         return $entity;
     }
 
@@ -377,7 +377,7 @@ class EditHandler extends Zikula_Form_AbstractHandler
         $codes[] = 'adminDisplay';
         // index page of ajax area
         $codes[] = 'ajax';
-
+    
         return $codes;
     }
 
@@ -402,28 +402,28 @@ class EditHandler extends Zikula_Form_AbstractHandler
     {
         $action = $args['commandName'];
         $isRegularAction = !in_array($action, array('delete', 'cancel'));
-
+    
         if ($isRegularAction) {
             // do forms validation including checking all validators on the page to validate their input
             if (!$this->view->isValid()) {
                 return false;
             }
         }
-
+    
         if ($action != 'cancel') {
             $otherFormData = $this->fetchInputData($view, $args);
-        	if ($otherFormData === false) {
-            	return false;
-        	}
-    	}
-
+            if ($otherFormData === false) {
+                return false;
+            }
+        }
+    
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
-
+    
         $hookAreaPrefix = $entity->getHookAreaPrefix();
         if ($action != 'cancel') {
             $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
-
+    
             // Let any hooks perform additional validation actions
             $hook = new ValidationHook(new ValidationProviders());
             $validators = $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook)->getValidators();
@@ -431,40 +431,40 @@ class EditHandler extends Zikula_Form_AbstractHandler
                 return false;
             }
         }
-
+    
         if ($action != 'cancel') {
             $success = $this->applyAction($args);
             if (!$success) {
                 // the workflow operation failed
                 return false;
             }
-
+    
             // Let any hooks know that we have created, updated or deleted an item
             $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
             $url = null;
             if ($action != 'delete') {
                 $urlArgs = $entity->createUrlArgs();
-                $url = new ModUrl($this->name, $this->objectType, 'display', ZLanguage::getLanguageCode(), $urlArgs);
+                $url = new RouteUrl('zikularoutesmodule_' . $this->objectType . '_display', $urlArgs);
             }
             $hook = new ProcessHook($entity->createCompositeIdentifier(), $url);
             $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook);
-
+    
             // An item was created, updated or deleted, so we clear all cached pages for this item.
             $cacheArgs = array('ot' => $this->objectType, 'item' => $entity);
             ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
-
+    
             // clear view cache to reflect our changes
             $this->view->clear_cache();
         }
-
+    
         if ($this->hasPageLockSupport === true && $this->mode == 'edit' && ModUtil::available('PageLock')) {
             ModUtil::apiFunc('PageLock', 'user', 'releaseLock',
                              array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier()));
         }
-
+    
         return $this->view->redirect($this->getRedirectUrl($args));
     }
-
+    
     /**
      * Get success or error message for default operations.
      *
@@ -498,10 +498,10 @@ class EditHandler extends Zikula_Form_AbstractHandler
                     }
                     break;
         }
-
+    
         return $message;
     }
-
+    
     /**
      * Add success or error message to session.
      *
@@ -540,18 +540,18 @@ class EditHandler extends Zikula_Form_AbstractHandler
         // we want the array with our field values
         $entityData = $formData[$this->objectTypeLower];
         unset($formData[$this->objectTypeLower]);
-
+    
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
-
-
+    
+    
         if ($args['commandName'] != 'cancel') {
             if (count($this->listFields) > 0) {
                 foreach ($this->listFields as $listField => $multiple) {
                     if (!$multiple) {
                         continue;
                     }
-                    if (is_array($entityData[$listField])) {
+                    if (is_array($entityData[$listField])) { 
                         $values = $entityData[$listField];
                         $entityData[$listField] = '';
                         if (count($values) > 0) {
@@ -561,31 +561,35 @@ class EditHandler extends Zikula_Form_AbstractHandler
                 }
             }
         }
-
+    
         if (isset($entityData['repeatCreation'])) {
             if ($this->mode == 'create') {
                 $this->repeatCreateAction = $entityData['repeatCreation'];
             }
             unset($entityData['repeatCreation']);
         }
-
+        if (isset($entityData['additionalNotificationRemarks'])) {
+            $this->request->getSession()->set($this->name . 'AdditionalNotificationRemarks', $entityData['additionalNotificationRemarks']);
+            unset($entityData['additionalNotificationRemarks']);
+        }
+    
         // search for relationship plugins to update the corresponding data
         $entityData = $this->writeRelationDataToEntity($view, $entity, $entityData);
-
+    
         // assign fetched data
         $entity->merge($entityData);
-
+    
         // we must persist related items now (after the merge) to avoid validation errors
         // if cascades cause the main entity becoming persisted automatically, too
         $this->persistRelationData($view);
-
+    
         // save updated entity
         $this->entityRef = $entity;
-
+    
         // return remaining form data
         return $formData;
     }
-
+    
     /**
      * Updates the entity with new relationship data.
      *
@@ -598,10 +602,10 @@ class EditHandler extends Zikula_Form_AbstractHandler
     protected function writeRelationDataToEntity(Zikula_Form_View $view, $entity, $entityData)
     {
         $entityData = $this->writeRelationDataToEntity_rec($entity, $entityData, $view->plugins);
-
+    
         return $entityData;
     }
-
+    
     /**
      * Searches for relationship plugins to write their updated values
      * back to the given entity.
@@ -620,10 +624,10 @@ class EditHandler extends Zikula_Form_AbstractHandler
             }
             $entityData = $this->writeRelationDataToEntity_rec($entity, $entityData, $plugin->plugins);
         }
-
+    
         return $entityData;
     }
-
+    
     /**
      * Persists any related items.
      *
@@ -633,7 +637,7 @@ class EditHandler extends Zikula_Form_AbstractHandler
     {
         $this->persistRelationData_rec($view->plugins);
     }
-
+    
     /**
      * Searches for relationship plugins to persist their related items.
      */

@@ -30,7 +30,7 @@ function ZikulaRoutesModule_workflow_standard_permissioncheck($obj, $permLevel, 
 
     // calculate the permission component
     $objectType = $obj['_objectType'];
-    $component = 'ZikulaRoutesModule:' . ucwords($objectType) . ':';
+    $component = 'ZikulaRoutesModule:' . ucfirst($objectType) . ':';
 
     // calculate the permission instance
     $idFields = ModUtil::apiFunc('ZikulaRoutesModule', 'selection', 'getIdFields', array('ot' => $objectType));

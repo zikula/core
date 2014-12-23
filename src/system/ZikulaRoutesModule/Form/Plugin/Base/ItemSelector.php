@@ -93,14 +93,15 @@ class ItemSelector extends Zikula_Form_Plugin_TextInput
     {
         static $firstTime = true;
         if ($firstTime) {
-            PageUtil::addVar('javascript', 'prototype');
-            PageUtil::addVar('javascript', 'Zikula.UI'); // imageviewer
-            PageUtil::addVar('javascript', 'Resources/public/js/ZikulaRoutesModule_finder.js');
-            PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('ZikulaRoutesModule'));
+            PageUtil::addVar('javascript', 'jquery');
+            PageUtil::addVar('javascript', 'web/bootstrap-media-lightbox/bootstrap-media-lightbox.min.js');
+            PageUtil::addVar('stylesheet', 'web/bootstrap-media-lightbox/bootstrap-media-lightbox.css');
+            PageUtil::addVar('javascript', '@ZikulaRoutesModule/Resources/public/js/ZikulaRoutesModule.Finder.js');
+            PageUtil::addVar('stylesheet', '@ZikulaRoutesModule/Resources/public/css/style.css');
         }
         $firstTime = false;
 
-        if (!SecurityUtil::checkPermission('ZikulaRoutesModule:' . ucwords($this->objectType) . ':', '::', ACCESS_COMMENT)) {
+        if (!SecurityUtil::checkPermission('ZikulaRoutesModule:' . ucfirst($this->objectType) . ':', '::', ACCESS_COMMENT)) {
             return false;
         }
 
@@ -123,7 +124,7 @@ class ItemSelector extends Zikula_Form_Plugin_TextInput
              ->assign('items', $entities)
              ->assign('selectedId', $this->selectedItemId);
 
-        return $view->fetch('External/' . ucwords($this->objectType) . '/select.tpl');
+        return $view->fetch('External/' . ucfirst($this->objectType) . '/select.tpl');
     }
 
     /**
