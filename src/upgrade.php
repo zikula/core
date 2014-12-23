@@ -12,14 +12,22 @@
 
 use Symfony\Component\Yaml\Yaml;
 use Zikula_Request_Http as Request;
-use Zikula\Core\Event\GenericEvent;
 use Doctrine\DBAL\Connection;
+use Zikula\Core\CoreEvents;
+use Zikula\Core\Event\ModuleStateEvent;
 
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
-ini_set('memory_limit', '128M');
-ini_set('max_execution_time', 86400);
+$warnings = array();
+if (ini_set('memory_limit', '128M') === false) {
+    $currentSetting = ini_get('memory_limit');
+    $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The upgrade process may fail at your current setting of %4$s', array('ini_set', 'memory_limit', '128M', $currentSetting));
+}
+if (ini_set('max_execution_time', 86400) === false) {
+    $currentSetting = ini_get('max_execution_time');
+    $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The upgrade process may fail at your current setting of %4$s', array('ini_set', 'max_execution_time', '86400', $currentSetting));
+}
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
@@ -40,7 +48,7 @@ $GLOBALS['_ZikulaUpgrader'] = array();
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
-$upgradeFeedback = upgrade_140($connection, $core->getContainer()->getService('kernel'), $request);
+$upgradeFeedback = upgrade_140($connection, $core->getContainer()->get('kernel'), $request);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
@@ -92,10 +100,10 @@ switch ($action) {
         _upg_login(true);
         break;
     case 'sanitycheck': // step three
-        _upg_sanity_check($username, $password);
+        _upg_sanity_check($username, $password, $warnings);
         break;
     case 'upgrademodules': // step four
-        _upg_upgrademodules($username, $password, $request);
+        _upg_upgrademodules($username, $password, $kernel);
         break;
     default: // step one
         _upg_selectlanguage($upgradeFeedback);
@@ -157,7 +165,7 @@ function _upg_footer($echo = true)
     $content .= '</div></div>'."\n";
     $content .= '<div id="footer">'."\n";
     $content .= '<br />'."\n";
-    $content .= '<div class="alert alert-info text-center">'.__f('For more information about the upgrade process, please read the <a href="docs/%1$s/UPGRADING.md">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.', $lang).'</div>';
+    $content .= '<div class="alert alert-info text-center">'.__f('For more information about the upgrade process, please read the <a href="docs/%1$s/UPGRADING.md">upgrade documentation</a>, visit our <a href="https://github.com/zikula/core/wiki">wiki</a> or the <a href="http://www.zikula.org/forums">support forum</a>.', $lang).'</div>';
     $content .= '</div>'."\n";
     $content .= '</div></body>'."\n";
     $content .= '</html>';
@@ -280,11 +288,11 @@ function _upg_login($showheader = true)
  *
  * @param string $username Username of the admin user.
  * @param string $password Password of the admin user.
- * @param \Symfony\Component\HttpFoundation\Request $request
+ * @param ZikulaKernel $kernel
  *
  * @return void
  */
-function _upg_upgrademodules($username, $password, \Symfony\Component\HttpFoundation\Request $request)
+function _upg_upgrademodules($username, $password, ZikulaKernel $kernel)
 {
     $content = _upg_header(false);
 
@@ -309,6 +317,12 @@ function _upg_upgrademodules($username, $password, \Symfony\Component\HttpFounda
             }
         }
     }
+
+    // fire MODULE_INSTALL event to reload all routes
+    $event = new ModuleStateEvent($kernel->getModule('ZikulaRoutesModule'));
+    $kernel->getContainer()->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
+    $content .= '<li class="passed">' . __('Routes reloaded') . '</li>';
+
     $content .= '</ul>'."\n";
     if (!$results) {
         $content .= '<br />'."\n";
@@ -326,7 +340,7 @@ function _upg_upgrademodules($username, $password, \Symfony\Component\HttpFounda
     $content .= '<p class="alert alert-success text-center">'.__('Finished upgrade')." - \n";
 
     // Relogin the admin user to give a proper admin link
-    SessionUtil::requireSession();
+    $kernel->getContainer()->get('session')->start();
 
     $authenticationInfo = array(
         'login_id' => $username,
@@ -344,6 +358,8 @@ function _upg_upgrademodules($username, $password, \Symfony\Component\HttpFounda
         $content .= __f('Go to the startpage for %s', $url);
     } else {
         upgrade_clear_caches();
+        $cacheClearer = $kernel->getContainer()->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
         $url = sprintf('<a href="%s">%s</a>', ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'), DataUtil::formatForDisplay(System::getVar('sitename')));
         $content .= __f('Go to the admin panel for %s', $url);
     }
@@ -392,10 +408,11 @@ function _upg_continue($action, $text, $username, $password)
  *
  * @param string $username Username of the admin user.
  * @param string $password Password of the admin user.
+ * @param array $warnings
  *
  * @return void
  */
-function _upg_sanity_check($username, $password)
+function _upg_sanity_check($username, $password, array $warnings = array())
 {
     _upg_header();
 
@@ -420,6 +437,10 @@ function _upg_sanity_check($username, $password)
         echo '<h2>'.__('Legacy plugins found.')."</h2>\n";
         echo '<p class="alert alert-warning text-center">'.__f('Please delete the folders <strong>plugins/Doctrine</strong> and <strong>plugins/DoctrineExtensions</strong> as they have been deprecated', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
         $validupgrade = false;
+    } elseif (!empty($warnings)) {
+        foreach ($warnings as $warning) {
+            echo '<div class="alert alert-warning">'.__('WARNING').": ".$warning.'</div>';
+        }
     }
 
     if ($validupgrade) {
@@ -483,10 +504,12 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
  * Upgrade tables from 1.3.5+
  *
  * @param Connection $conn
- *
+ * @param ZikulaKernel $kernel
+ * @param \Symfony\Component\HttpFoundation\Request $request
  * @return string
+ * @throws \Doctrine\DBAL\DBALException
  */
-function upgrade_140(Connection $conn, ZikulaKernel $kernel, $request)
+function upgrade_140(Connection $conn, ZikulaKernel $kernel, \Symfony\Component\HttpFoundation\Request $request)
 {
     $feedback = '';
     $res = $conn->executeQuery("SELECT name FROM modules WHERE name = 'ZikulaExtensionsModule'");
@@ -538,11 +561,11 @@ function upgrade_140(Connection $conn, ZikulaKernel $kernel, $request)
     $feedback .= "Updated default theme to ZikulaAndreas08Theme<br />\n";
 
     // install Bundles table
-    installBundlesTable();
+    installBundlesTable($kernel);
     $feedback .= "Bundles Table installed.<br />\n";
 
     // install the Routes module
-    if (!installRoutesModule()) {
+    if (!installRoutesModule($kernel)) {
         $feedback .= "ERROR: Routes Module could not be installed properly.<br />\n";
         return $feedback;
     }
@@ -571,12 +594,11 @@ function upgrade_140(Connection $conn, ZikulaKernel $kernel, $request)
 
 /**
  * add the bundles table
+ *
+ * @param ZikulaKernel $kernel
  */
-function installBundlesTable()
+function installBundlesTable(ZikulaKernel $kernel)
 {
-    $sm = ServiceUtil::getManager();
-    $kernel = $sm->get('kernel');
-
     $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
     $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($kernel));
     $helper->createSchema();
@@ -588,16 +610,13 @@ function installBundlesTable()
 
 /**
  * Calls Routes module installer
+ *
+ * @param ZikulaKernel $kernel
+ *
+ * @return boolean
  */
-function installRoutesModule()
+function installRoutesModule(ZikulaKernel $kernel)
 {
-    $sm = ServiceUtil::getManager();
-    $kernel = $sm->get('kernel');
-
-    // ensure that hook-related entities are available
-    include_once 'lib/Zikula/Component/HookDispatcher/Storage/Doctrine/Entity/HookAreaEntity.php';
-    include_once 'lib/Zikula/Component/HookDispatcher/Storage/Doctrine/Entity/HookSubscriberEntity.php';
-
     // manually install the Routes module
     $routeModuleName = 'ZikulaRoutesModule';
     $module = $kernel->getModule($routeModuleName);
@@ -606,20 +625,22 @@ function installRoutesModule()
     if (file_exists($bootstrap)) {
         include_once $bootstrap;
     }
-    $instance = new $installerClassName($sm, $module);
+    /** @var \Zikula_AbstractInstaller $instance */
+    $instance = new $installerClassName($kernel->getContainer(), $module);
     if (!$instance->install()) {
         // error
         return false;
     }
+
+    // regenerate modules list
+    $modApi = new Zikula\Module\ExtensionsModule\Api\AdminApi($kernel->getContainer(), new \Zikula\Module\ExtensionsModule\ZikulaExtensionsModule());
+    ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $modApi->getfilemodules()));
 
     // determine module id
     $mid = ModUtil::getIdFromName($routeModuleName, true);
 
     // force load the modules admin API
     ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
-
-    // regenerate modules list
-    ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $modApi->getfilemodules()));
 
     // set module to active
     ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $mid, 'state' => ModUtil::STATE_INACTIVE));

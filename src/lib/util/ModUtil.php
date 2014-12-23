@@ -676,7 +676,9 @@ class ModUtil
                 $data = call_user_func($tablefuncOld);
             }
 
-            $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+            /** @var $connection Doctrine\DBAL\Connection */
+            $connection = $serviceManager->get('doctrine.dbal.default_connection');
+            $dbDriverName = $connection->getDriver()->getName();
 
             // Generate _column automatically from _column_def if it is not present.
             foreach ($data as $key => $value) {

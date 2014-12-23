@@ -44,6 +44,11 @@
                     </ol>
                     <p class="installguide"><em>{gt text="Please refer to the <a style=\"color: red\" href=\"%1\$s\" onclick=\"window.open('%2\$s');return false;\">Installation guide</a> during the process." html=1 tag1=$doclink tag2=$doclink}</em></p>
                 </div>
+                {if !empty($ini_warnings)}
+                    {foreach from=$ini_warnings item=$warning}
+                        <div class="alert alert-warning">{gt text="WARNING"}: {$warning}</div>
+                    {/foreach}
+                {/if}
                 <div id="maincontent">{$maincontent}</div>
             </div>
             <div id="footer" class="footer">
@@ -54,8 +59,8 @@
                 <ul>
                     <li><strong>{gt text="Useful resources"}:</strong></li>
                     <li><a href="docs/{$lang}/INSTALL.md" onclick="window.open('docs/{$lang}/INSTALL.md');return false;">{gt text="Installation guide"}</a></li>
-                    <li><a href="{gt text="http://community.zikula.org/module-Wiki.htm"}">{gt text="Zikula documentation"}</a></li>
-                    <li><a href="{gt text="http://community.zikula.org/module-Forum.htm"}">{gt text="Support forums"}</a></li>
+                    <li><a href="{gt text="https://github.com/zikula/core/wiki"}">{gt text="Zikula documentation"}</a></li>
+                    <li><a href="{gt text="http://www.zikula.org/forums"}">{gt text="Support forums"}</a></li>
                     {* custom links for each action go here*}
                     {if $action eq requirements}
                     <li class="highlight"><a href="{gt text="http://www.wikipedia.org/wiki/File_system_permissions"}">{gt text="File system permissions"}</a></li>

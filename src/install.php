@@ -14,11 +14,18 @@
 
 use Zikula_Request_Http as Request;
 
-ini_set('max_execution_time', 86400);
-ini_set('memory_limit', '128M');
+$warnings = array();
+if (ini_set('memory_limit', '128M') === false) {
+    $currentSetting = ini_get('memory_limit');
+    $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The upgrade process may fail at your current setting of %4$s', array('ini_set', 'memory_limit', '128M', $currentSetting));
+}
+if (ini_set('max_execution_time', 86400) === false) {
+    $currentSetting = ini_get('max_execution_time');
+    $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The upgrade process may fail at your current setting of %4$s', array('ini_set', 'max_execution_time', '86400', $currentSetting));
+}
 
 include 'lib/bootstrap.php';
 include 'install/lib.php';
 
 $request = Request::createFromGlobals();
-install($core, $request);
+install($core, $request, $warnings);
