@@ -100,14 +100,6 @@
 
         <exec command="cp -a ${workspace}/source/src ${packagepath}"/>
 
-        <exec command="svn export https://github.com/zikula-modules/Legal/branches/master
- ${builddir}/tmp/Legal"/>
-        <exec command="mv ${builddir}/tmp/Legal ${packagepath}/modules"/>
-
-        <exec command="svn export https://github.com/zikula-modules/Profile/branches/master
- ${builddir}/tmp/Profile"/>
-        <exec command="mv ${builddir}/tmp/Profile ${packagepath}/modules"/>
-
         <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor"/>
         <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor"/>
 
