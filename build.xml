@@ -107,7 +107,7 @@
         <exec command="php ${packagepath}/app/console assets:install ${packagepath}/web"/>
         
         <!-- create route translation dummy file -->
-        <exec command="php ${packagepath}/app/console translation:extract --enable-extractor=jms_i18n_routing --dir=app/logs --output-dir=app/Resources/translations template" />
+        <exec command="php ${packagepath}/app/console translation:extract --enable-extractor=jms_i18n_routing --dir=${packagepath}/app/logs --output-dir=${packagepath}/app/Resources/translations template" />
 
         <!-- Clear cache and log directories filled by the console command above -->
         <delete includeEmptyDirs="true">
