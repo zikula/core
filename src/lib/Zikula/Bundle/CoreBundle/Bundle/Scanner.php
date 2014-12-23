@@ -131,7 +131,7 @@ class Scanner
     {
         $array = array();
         foreach ($this->jsons as $json) {
-            if ($json['type'] === $type && true) {
+            if ($json['type'] === $type) {
                 $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];
                 $array[$indexField] = new MetaData($json);
             }
