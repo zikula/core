@@ -113,23 +113,24 @@ Module Specification from Zikula Core 1.4.0
   2. [Namespaces](#namespaces)
   3. [Naming conventions](#namingconventions)
   4. [Module Structure](#modulestructure)
-  5. [Module composer.json](#modulecomposer)
-  6. [Controller Methods](#controllermethods)
-  7. [Controller Method Parameters](#controllermethodparameters)
-  8. [Controller Response](#controllerresponse)
-  9. [Routing](#routing)
-  10. [Service Manager](#servicemanager)
-  11. [Events](#events)
-  12. [Event Names](#eventnames)
-  13. [Hooks](#hooks)
-  14. [ModUrl Deprecated](#modurl)
-  15. [Request](#request)
-  16. [Search](#search)
-  17. [Version File](#versionfile)
-  18. [Persistent Event Listeners](#eventlisteners)
-  19. [Theme Standard](#themes)
-  20. [Theme composer.json](#themecomposer)
-  
+  5. [Resource loading](#resourceloading)
+  6. [Module composer.json](#modulecomposer)
+  7. [Controller Methods](#controllermethods)
+  8. [Controller Method Parameters](#controllermethodparameters)
+  9. [Controller Response](#controllerresponse)
+  10 [Routing](#routing)
+  11. [Service Manager](#servicemanager)
+  12. [Events](#events)
+  13. [Event Names](#eventnames)
+  14. [Hooks](#hooks)
+  15. [ModUrl Deprecated](#modurl)
+  16. [Request](#request)
+  17. [Search](#search)
+  18. [Version File](#versionfile)
+  19. [Persistent Event Listeners](#eventlisteners)
+  20. [Theme Standard](#themes)
+  21. [Theme composer.json](#themecomposer)
+
 
 <a name="bootstrapjquery" />
 Bootstrap and jQuery
@@ -149,7 +150,7 @@ Namespaces
 ----------
 
 Zikula Core 1.4.0 supports PHP namespaces and module should be refactored
-for namespace compliance which should MUST be in line with PSR-0 or PSR-4; and 
+for namespace compliance which should MUST be in line with PSR-0 or PSR-4; and
 both PSR-1 and PSR-2.
 
 The examples below will use PSR-4.
@@ -340,6 +341,27 @@ This necessitates a change in template calls such as:
 
 ```php
     $this->view->fetch('Admin/view.tpl');
+```
+
+<a name="resourceloading" />
+Resource loading
+----------------
+
+1.4.0-compatible extensions should not use Zikula root-relative paths (i.e. `modules/Foo/...`) with
+`PageUtil::addVar()` and `{pageaddvar}`. Instead, use Symfony-style paths starting with `@MyModule/Resources/...`.
+```smarty
+{* Old *}
+{pageaddvar name='javascript' value='modules/MyNewsModule/javascript/script.js'}
+
+{* New *}
+{pageaddvar name='javascript' value='@MyNewsModule/Resources/public/js/script.js}
+```
+```php
+// Old
+PageUtil::addVar('javascript', 'modules/MyNewsModule/javascript/script.js');
+
+// New
+PageUtil::addVar('javascript', '@MyNewsModule/Resources/public/js/script.js');
 ```
 
 <a name="modulecomposer" />
@@ -664,7 +686,7 @@ The main changes are:
 
   - Introduced a new generic event object called `Zikula\Core\Event\GenericEvent`.
     This is compatible with `Zikula_Event` and you should switch to using it immediately.
-    
+
   - Events are triggered by `->dispatch($name, $event)` instead of `->notify($event)`.
 
 Example in Core 1.3.0-1.3.x
@@ -731,7 +753,7 @@ Hooks have been altered to use the Symfony2 Event Dispatcher 2.2 component.
 The main changes are:
 
   - Four new Hook objects with no name arg in the constructor:
-  
+
     - `Zikula\Core\Hook\DisplayHook` (was `Zikula_DisplayHook`).
     - `Zikula\Core\Hook\FilterHook` (was `Zikula_FilterHook`).
     - `Zikula\Core\Hook\ProcessHook` (was `Zikula_ProcessHook`).
@@ -833,7 +855,7 @@ Version File
 Modules should have `core_min = 1.4.0`.
 
 You now can add a reason for each dependency. Add a `reason` key to any dependency array you want. Example:
-    
+
 ```php
 $meta['dependencies'] = array(
         array('modname'    => 'Scribite',
@@ -851,7 +873,7 @@ $meta['dependencies'] = array(
 Persistent Event Listeners
 --------------------------
 
-Persistent event listeners are no longer stored in the database. They should be loaded by 
+Persistent event listeners are no longer stored in the database. They should be loaded by
 the DependecyInjection extension.
 
 ```php

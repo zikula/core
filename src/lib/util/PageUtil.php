@@ -349,10 +349,11 @@ class PageUtil
         if (is_array($value)) {
             $value = array_unique($value);
         }
-        
+
+        $value = self::resolveSymfonyAsset($value);
+
         // @todo Remove in 1.5.0.
         $value = self::fixJQueryThemesPath($value);
-
 
         $event = new \Zikula\Core\Event\GenericEvent($varname, array(), $value);
         $value = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event)->getData();
@@ -382,5 +383,28 @@ class PageUtil
         $moduleGetName = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
         return empty($moduleGetName) ? true : false;
+    }
+
+    private static function resolveSymfonyAsset($path)
+    {
+        if (is_array($path)) {
+            $return = array();
+            foreach ($path as $key => $value) {
+                $return[$key] = self::resolveSymfonyAsset($value);
+            }
+            return $return;
+        }
+
+        if (substr($path, 0, 1) != "@") {
+            return $path;
+        }
+        $sm = \ServiceUtil::getManager();
+        $kernel = $sm->get('kernel');
+
+        $root = realpath($kernel->getRootDir() . "/../");
+        $fullPath = $kernel->locateResource($path);
+        $path = System::getBaseUri() . substr($fullPath, strlen($root));
+
+        return $path;
     }
 }
