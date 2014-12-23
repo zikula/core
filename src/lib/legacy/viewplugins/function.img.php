@@ -122,13 +122,13 @@ function smarty_function_img($params, Zikula_View $view)
 
         // form the array of paths
         $paths = array($pluglangpath, $plugpath);
-
     } else {
         // module directory
-        $modinfo   = ModUtil::getInfoFromName($modname);
-        $osmoddir  = DataUtil::formatForOS($modinfo['directory']);
-        $moduleDir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules');
-        $module = ModUtil::getModule($modinfo['name']);
+        if ($modname != 'core') {
+            $modinfo   = ModUtil::getInfoFromName($modname);
+            $osmoddir  = DataUtil::formatForOS($modinfo['directory']);
+            $moduleDir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules');
+        }
 
         if ($modplugin) {
             $osmodplugdir    = DataUtil::formatForOS($modplugin);
@@ -143,36 +143,36 @@ function smarty_function_img($params, Zikula_View $view)
         } else {
             // theme directory
             $ostheme       = DataUtil::formatForOS(UserUtil::getTheme());
-            $osmodname     = DataUtil::formatForOS($modname);
             $theme = ThemeUtil::getTheme($ostheme);
             $themePath = null === $theme ? '' : $theme->getRelativePath().'/Resources/public/images';
-            $themelangpath = "$themePath/$lang";
             $themepath     = $themePath;
-            $themelangpathOld = "themes/$ostheme/templates/modules/$osmodname/images/$lang";
-            $themepathOld     = "themes/$ostheme/templates/modules/$osmodname/images";
             $corethemepath = "themes/$ostheme/images";
 
             if ($modname == 'core') {
-                $modpath        = "images";
+                $modpath = "images";
+                $paths = array($themepath, $corethemepath, $modpath);
             } else {
+                $osmodname     = DataUtil::formatForOS($modname);
+                $themelangpath = "$themePath/$lang";
+                $themelangpathOld = "themes/$ostheme/templates/modules/$osmodname/images/$lang";
+                $themepathOld     = "themes/$ostheme/templates/modules/$osmodname/images";
+
                 $module = ModUtil::getModule($modinfo['name']);
-                $moduleBasePath = null === $module ? '' : $module->getRelativePath().'/Resources/public/images';
-                $modlangpath    = "$moduleBasePath/$lang";
-                $modpath        = $moduleBasePath;
-                $modlangpathOld = "$moduleDir/$osmoddir/images/$lang";
-                $modpathOld     = "$moduleDir/$osmoddir/images";
+                $moduleBasePath  = null === $module ? '' : $module->getRelativePath().'/Resources/public/images';
+                $modlangpath     = "$moduleBasePath/$lang";
+                $modpath         = $moduleBasePath;
+                $modlangpathOld  = "$moduleDir/$osmoddir/images/$lang";
+                $modpathOld      = "$moduleDir/$osmoddir/images";
                 $modlangpathOld2 = "$moduleDir/$osmoddir/pnimages/$lang";
                 $modpathOld2     = "$moduleDir/$osmoddir/pnimages";
-            }
 
-            // form the array of paths
-            if ($modname == 'core') {
-                $paths = array($themepath, $corethemepath, $modpath);
-            } elseif (preg_match('/^admin.(png|gif|jpg)$/', $params['src'])) {
-                // special processing for modules' admin icon
-                $paths = array($modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
-            } else {
-                $paths = array($themelangpath, $themepath, $themelangpathOld, $themepathOld,$corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
+                // form the array of paths
+                if (preg_match('/^admin.(png|gif|jpg)$/', $params['src'])) {
+                    // special processing for modules' admin icon
+                    $paths = array($modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
+                } else {
+                    $paths = array($themelangpath, $themepath, $themelangpathOld, $themepathOld,$corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
+                }
             }
         }
     }
