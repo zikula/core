@@ -113,22 +113,23 @@ Module Specification from Zikula Core 1.4.0
   2. [Namespaces](#namespaces)
   3. [Naming conventions](#namingconventions)
   4. [Module Structure](#modulestructure)
-  5. [Module composer.json](#modulecomposer)
-  6. [Controller Methods](#controllermethods)
-  7. [Controller Method Parameters](#controllermethodparameters)
-  8. [Controller Response](#controllerresponse)
-  9. [Routing](#routing)
-  10. [Service Manager](#servicemanager)
-  11. [Events](#events)
-  12. [Event Names](#eventnames)
-  13. [Hooks](#hooks)
-  14. [ModUrl Deprecated](#modurl)
-  15. [Request](#request)
-  16. [Search](#search)
-  17. [Version File](#versionfile)
-  18. [Persistent Event Listeners](#eventlisteners)
-  19. [Theme Standard](#themes)
-  20. [Theme composer.json](#themecomposer)
+  5. [Resource loading](#resourceloading)
+  6. [Module composer.json](#modulecomposer)
+  7. [Controller Methods](#controllermethods)
+  8. [Controller Method Parameters](#controllermethodparameters)
+  9. [Controller Response](#controllerresponse)
+  10 [Routing](#routing)
+  11. [Service Manager](#servicemanager)
+  12. [Events](#events)
+  13. [Event Names](#eventnames)
+  14. [Hooks](#hooks)
+  15. [ModUrl Deprecated](#modurl)
+  16. [Request](#request)
+  17. [Search](#search)
+  18. [Version File](#versionfile)
+  19. [Persistent Event Listeners](#eventlisteners)
+  20. [Theme Standard](#themes)
+  21. [Theme composer.json](#themecomposer)
   
 
 <a name="bootstrapjquery" />
@@ -340,6 +341,21 @@ This necessitates a change in template calls such as:
 
 ```php
     $this->view->fetch('Admin/view.tpl');
+```
+
+<a name="resourceloading" />
+Resouce loading
+----------------
+
+Resources (i.e. JavaScript and CSS files) should not be loaded with `pageaddvar` in 1.4.0-compatible extensions,
+because `pageaddvar` requires the extension to be installed into a specific directory. A new Smarty plugin has
+been added to deal with Resources and should be used instead. Usage example:
+```smarty
+{* Old *}
+{pageaddvar name='javascript' value='modules/MyNewsModule/javascript/script.js'}
+
+{* New *}
+{resource res='@MyNewsModule/Resources/public/js/script.js}
 ```
 
 <a name="modulecomposer" />
