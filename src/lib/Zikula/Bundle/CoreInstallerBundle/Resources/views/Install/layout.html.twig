@@ -1,7 +1,17 @@
 {% extends '@ZikulaCoreInstaller/Install/base.html.twig' %}
 
+{% block stylesheets %}
+    {% stylesheets '@ZikulaCoreInstallerBundle/Resources/public/css/*' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
 {% block body %}
-
-    <div class="alert alert-success">AWESOME!</div>
-
+<div class="container">
+    <div class="row">
+        {% block content %}
+        <div class="alert alert-success text-center">CoreInstaller layout!</div>
+        {% endblock %}
+    </div>
+</div>
 {% endblock %}

@@ -15,13 +15,13 @@
 
         <service id="core_installer.controller.installer" class="%core_installer.controller.installer.class%">
             <argument type="service" id="router" />
-            <argument type="service" id="twig" />
+            <argument type="service" id="templating" />
             <argument type="service" id="core_installer.controller.util" />
         </service>
 
         <service id="core_installer.controller.upgrader" class="%core_installer.controller.upgrader.class%">
             <argument type="service" id="router" />
-            <argument type="service" id="twig" />
+            <argument type="service" id="templating" />
             <argument type="service" id="core_installer.controller.util" />
         </service>
 

@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Assetic\Factory\LazyAssetManager as AssetManager;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**
  * Class InstallerController
@@ -27,19 +29,20 @@ use Symfony\Component\Routing\RouterInterface;
 class InstallerController
 {
     private $router;
-    private $twig;
+    private $templatingService;
     private $util;
 
     /**
      * Constructor.
      *
-     * @param RouterInterface       $router          The route generator
-     * @param \Twig_Environment     $twig            The twig environment
+     * @param RouterInterface $router The route generator
+     * @param EngineInterface $templatingService
+     * @param $util
      */
-    public function __construct(RouterInterface $router, \Twig_Environment $twig, $util)
+    public function __construct(RouterInterface $router, EngineInterface $templatingService, $util)
     {
         $this->router = $router;
-        $this->twig = $twig;
+        $this->templatingService = $templatingService;
         $this->util = $util;
     }
 
@@ -49,6 +52,6 @@ class InstallerController
      */
     public function installAction(Request $request)
     {
-        return new Response($this->twig->render("ZikulaCoreInstallerBundle:Install:layout.html.twig", array('param' => 177)), 200, array('Content-Type' => 'text/html'));
+        return $this->templatingService->renderResponse("ZikulaCoreInstallerBundle:Install:layout.html.twig");
     }
 }
