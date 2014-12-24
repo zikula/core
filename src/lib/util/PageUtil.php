@@ -188,12 +188,13 @@ class PageUtil
 
         if (System::isLegacyMode()) {
             $sm = ServiceUtil::getManager();
+            $metaTags = $sm->getParameter('zikula_view.metatags');
             switch ($varname) {
                 case 'description':
-                    return $sm['zikula_view.metatags']['description'];
+                    return $metaTags['description'];
                     break;
                 case 'keywords':
-                    return $sm['zikula_view.metatags']['keywords'];
+                    return $metaTags['keywords'];
                     break;
                 case 'rawtext':
                     LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
@@ -251,14 +252,17 @@ class PageUtil
 
         if (System::isLegacyMode()) {
             $sm = ServiceUtil::getManager();
+            $metaTags = $sm->hasParameter('zikula_view.metatags') ? $sm->getParameter('zikula_view.metatags') : array();
             switch ($varname) {
                 case 'description':
-                    $sm['zikula_view.metatags']['description'] = $value;
+                    $metaTags['description'] = $value;
+                    $sm->setParameter('zikula_view.metatags', $metaTags);
 
                     return true;
                     break;
                 case 'keywords':
-                    $sm['zikula_view.metatags']['keywords'] = $value;
+                    $metaTags['keywords'] = $value;
+                    $sm->setParameter('zikula_view.metatags', $metaTags);
 
                     return true;
                     break;

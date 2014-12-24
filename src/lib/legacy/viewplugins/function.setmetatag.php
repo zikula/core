@@ -40,6 +40,8 @@ function smarty_function_setmetatag($params, Zikula_View $view)
         return false;
     }
 
-    $sm = $view->getContainer();
-    $sm['zikula_view.metatags'][$name] = DataUtil::formatForDisplay($value);
+    $container = $view->getContainer();
+    $metaTags = $container->hasParameter('zikula_view.metatags') ? $container->getParameter('zikula_view.metatags') : array();
+    $metaTags[$name] = DataUtil::formatForDisplay($value);
+    $container->setParameter('zikula_view.metatags', $metaTags);
 }
