@@ -45,7 +45,7 @@
                     <p class="installguide"><em>{gt text="Please refer to the <a style=\"color: red\" href=\"%1\$s\" onclick=\"window.open('%2\$s');return false;\">Installation guide</a> during the process." html=1 tag1=$doclink tag2=$doclink}</em></p>
                 </div>
                 {if !empty($ini_warnings)}
-                    {foreach from=$ini_warnings item=$warning}
+                    {foreach item='warning' from=$ini_warnings}
                         <div class="alert alert-warning">{gt text="WARNING"}: {$warning}</div>
                     {/foreach}
                 {/if}
