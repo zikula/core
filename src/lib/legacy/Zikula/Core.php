@@ -431,13 +431,20 @@ class Zikula_Core
         }
 
         // Check that Zikula is installed before continuing
-        if (!$this->getContainer()->getParameter('installed') && !System::isInstalling()) {
-//            $response = new RedirectResponse($request->getBasePath().'/install.php?notinstalled', 302);
-            $url = $this->container->get('router')->generate('upgrade', array('installing' => true));
-            $response = new RedirectResponse('/'.$url, 302);
-//            $response = new RedirectResponse($request->getBasePath().'/upgrade', 302);
+        $installed = $this->getContainer()->getParameter('installed');
+        // can't use $request->get('_route') to get any of the following
+        $uriContainsInstall = strpos($request->getRequestUri(), '/install') !== false;
+        $uriContainsWdt = strpos($request->getRequestUri(), '/_wdt') !== false;
+        $uriContainsProfiler = strpos($request->getRequestUri(), '/_profiler') !== false;
+
+        if (!$installed && !$uriContainsInstall && !$uriContainsProfiler && !$uriContainsWdt) {
+            $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
+            $url = $this->container->get('router')->generate('install', array(), true);
+            $response = new RedirectResponse($url);
             $response->send();
             System::shutDown();
+        } elseif (!$installed && ($uriContainsInstall || $uriContainsProfiler || $uriContainsWdt)) {
+            System::setInstalling(true);
         }
 
         if ($stage & self::STAGE_DB) {
@@ -501,7 +508,9 @@ class Zikula_Core
         // end block
 
         if ($stage & self::STAGE_MODS) {
-            ModUtil::load('ZikulaSecurityCenterModule');
+            if (!System::isInstalling()) {
+                ModUtil::load('ZikulaSecurityCenterModule');
+            }
 
             $coreInitEvent->setArgument('stage', self::STAGE_MODS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
