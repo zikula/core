@@ -17,12 +17,12 @@ namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class LangType extends AbstractType
+class LocaleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lang', 'choice', array(
+            ->add('locale', 'choice', array(
                 'label' => __('Select your default language'),
                 'label_attr' => array('class' => 'col-lg-3'),
                 'choices' => \ZLanguage::getInstalledLanguageNames(),
@@ -32,6 +32,6 @@ class LangType extends AbstractType
 
     public function getName()
     {
-        return 'lang';
+        return 'locale';
     }
 }

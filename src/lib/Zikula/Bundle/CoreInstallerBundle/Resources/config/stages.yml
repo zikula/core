@@ -3,8 +3,8 @@ stages:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\NotInstalledStage
         order: 1
         default: true
-    lang:
-        class: Zikula\Bundle\CoreInstallerBundle\Stage\LangStage
+    locale:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\LocaleStage
         order: 2
     requirements:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\RequirementsStage

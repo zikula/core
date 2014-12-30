@@ -18,13 +18,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\LangType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
-class LangStage implements StageInterface, FormHandlerInterface, InjectContainerInterface
+class LocaleStage implements StageInterface, FormHandlerInterface, InjectContainerInterface
 {
     /**
      * @var YamlDumper
@@ -44,37 +44,37 @@ class LangStage implements StageInterface, FormHandlerInterface, InjectContainer
 
     public function getName()
     {
-        return 'lang';
+        return 'locale';
     }
 
     public function getFormType()
     {
-        return new LangType();
+        return new LocaleType();
     }
 
     public function getTemplateName()
     {
-        return "ZikulaCoreInstallerBundle:Install:lang.html.twig";
+        return "ZikulaCoreInstallerBundle:Install:locale.html.twig";
     }
 
     public function isNecessary()
     {
-        $currentLangParameter = $this->yamlManager->getParameter('lang');
+        $currentLangParameter = $this->yamlManager->getParameter('locale');
         if (!empty($currentLangParameter)) {
 
             return false;
         }
         $installedLanguages = \ZLanguage::getInstalledLanguages();
         if (count($installedLanguages) == 1) {
-            $this->writeParams(array('lang' => $installedLanguages[0]));
+            $this->writeParams(array('locale' => $installedLanguages[0]));
 
             return false;
         } else {
             // see if the browser has a preference set
             $detector = new \ZLanguageBrowser($installedLanguages);
-            $lang = $detector->discover();
-            if ($lang !== false) {
-                $this->writeParams(array('lang' => $lang));
+            $locale = $detector->discover();
+            if ($locale !== false) {
+                $this->writeParams(array('locale' => $locale));
 
                 return false;
             } else {

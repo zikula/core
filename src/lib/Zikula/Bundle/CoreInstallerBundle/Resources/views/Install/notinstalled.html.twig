@@ -15,7 +15,7 @@
                  2: '<a href="%url%">%text%</a>' | replace({'%url%': 'http://www.zikula.org', '%text%': __('online documentation') }) } ) | raw }}
             </p>
             <p>
-                <a class="btn btn-success btn-lg" href="{{ url('install', {'stage': 'lang' }) }}">
+                <a class="btn btn-success btn-lg" href="{{ url('install', {'stage': 'locale' }) }}">
                     <i class="fa fa-thumbs-up fa-3x pull-left"></i> {{ __("Install Zikula!") }}<br />{{ __('Version') }} {{ version }}
                 </a>
             </p>
