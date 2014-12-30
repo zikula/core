@@ -91,6 +91,15 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         // regenerate the theme list
         \Zikula\Module\ThemeModule\Util::regenerate();
 
+        // add remaining parameters and remove unneeded ones
+        $params = $this->yamlManager->getParameters();
+        unset($params['username'], $params['password'], $params['email']);
+        $params['datadir'] = 'userdir';
+        $this->yamlManager->setParameters($params);
+
+        // write legacy config file
+        $this->container->get('core_installer.config.util')->writeLegacyConfig();
+
         // set site status as installed and protect config.php file
         update_installed_status(true);
         foreach (array(
@@ -116,7 +125,6 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         $event = new ModuleStateEvent($this->container->get('kernel')->getModule('ZikulaRoutesModule'));
         $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
 
-        $this->container->get('core_installer.config.util')->writeLegacyConfig();
         \System::setInstalling(false);
     }
 }
