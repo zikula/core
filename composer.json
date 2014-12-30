@@ -44,7 +44,7 @@
         "friendsofsymfony/jsrouting-bundle": "~1.5",
         "gedmo/doctrine-extensions": "dev-master",
         "imagine/Imagine": "dev-master",
-        "matthiasnoback/symfony-service-definition-validator": "dev-master",
+        "matthiasnoback/symfony-service-definition-validator": "~1.2,>=1.2.1",
         "michelf/php-markdown": "1.4.*@dev",
         "phpids/phpids": "dev-master",
         "sensio/distribution-bundle": "dev-master",
