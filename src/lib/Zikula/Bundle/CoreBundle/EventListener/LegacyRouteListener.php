@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use System;
 use UserUtil;
@@ -42,10 +41,12 @@ class LegacyRouteListener implements EventSubscriberInterface
 
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ($event->getRequestType() !== Kernel::MASTER_REQUEST) {
+        if (!$event->isMasterRequest()) {
             return;
         }
-
+        if (\System::isInstalling()) {
+            return;
+        }
         $request = $event->getRequest();
         if ($request->attributes->has('_controller')) {
             // routing is already done

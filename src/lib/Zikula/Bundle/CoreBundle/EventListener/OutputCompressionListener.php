@@ -14,14 +14,16 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class OutputCompressionListener implements EventSubscriberInterface
 {
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if ($event->getRequestType() !== Kernel::MASTER_REQUEST) {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+        if (\System::isInstalling()) {
             return;
         }
 

@@ -1,0 +1,60 @@
+{% extends '@ZikulaCoreInstaller/structure.html.twig' %}
+
+{% block stylesheets %}
+    {#{% stylesheets '@ZikulaCoreInstallerBundle/Resources/public/css/*' %}#}
+    {#<link rel="stylesheet" href="{{ asset_url }}" />#}
+    {#{% endstylesheets %}#}
+    <link href="{{ asset('bundles/zikulacoreinstaller/css/installer.css') }}" rel="stylesheet" />
+    <link href="{{ asset('bundles/zikulacoreinstaller/css/systemdialogs.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ app.request.basepath }}/style/core.css" type="text/css" />
+    <!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->
+    <!--[if IE 7]><link rel="stylesheet" type="text/css" href="web/font-awesome/css/font-awesome-ie7.min.css" media="print,projection,screen" /><![endif]-->
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div id="content">
+        <div id="header">
+            <h1>{{ __('Zikula Application Framework') }}</h1>
+            <h2>{{ __('Installer script') }}</h2>
+            <ol class="wizard">
+                <li{% if currentstage == 'lang' %} class="active"{% endif %}>
+                    <a href="{{ url('install', { 'stage': 'lang' }) }}">{{ __('Select language') }}</a>
+                </li>
+                <li{% if currentstage == 'requirements' %} class="active"{% endif %}>
+                    {{ __('Check requirements') }}
+                </li>
+                <li{% if currentstage == 'dbcreds' %} class="active"{% endif %}>
+                    {{ __('Database information') }}
+                </li>
+                <li{% if currentstage == 'createadmin' %} class="active"{% endif %}>
+                    {{ __("Create administrator's account") }}
+                </li>
+            </ol>
+            <p class="installguide"><em>{{ __f("Please refer to the %s during the process.",
+                    '<a href="%url%">%text%</a>' | replace({'%url%': url('doc'), '%text%': __('installation guide') }) ) | raw }}</em></p>
+        </div>
+
+        <div id="maincontent">
+            {{ showflashes() }}
+
+            {% block content '' %}
+        </div>
+    </div>
+    <div id="footer" class="footer">
+        <br />
+        <div class="alert alert-warning center">{{ __("NOTICE: Official copies of Zikula are only from zikula.org") }}</div>
+        <ul>
+            <li><strong>{{ __("Useful resources") }}:</strong></li>
+            <li><a href="{{ url('doc') }}" onclick="window.open('docs/{$lang}/INSTALL.md');return false;">{{ __("Installation guide") }}</a></li>
+            <li><a href="https://github.com/zikula/core/wiki">{{ __("Zikula documentation") }}</a></li>
+            <li><a href="http://www.zikula.org/forums">{{ __("Support forums") }}</a></li>
+            {# custom links for each action go here #}
+            {% if currentstage == 'requirements' %}
+            <li class="highlight"><a href="http://www.wikipedia.org/wiki/File_system_permissions">{{ __("File system permissions") }}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+<div id="ZikulaOverlay" class="hide"></div>
+{% endblock %}

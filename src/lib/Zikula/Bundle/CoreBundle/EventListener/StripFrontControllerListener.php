@@ -40,6 +40,12 @@ class StripFrontControllerListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+        if (\System::isInstalling()) {
+            return;
+        }
         $requestUri = $event->getRequest()->getRequestUri();
         $frontController = \System::getVar('entrypoint', 'index.php');
         $stripEntryPoint = (bool) \System::getVar('shorturlsstripentrypoint', false);

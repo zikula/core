@@ -18,33 +18,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**
  * Class UpgraderController
  * @package Zikula\Bundle\CoreInstallerBundle\Controller
  */
-class UpgraderController
+class UpgraderController extends AbstractController
 {
-    private $router;
-    private $templatingService;
-    private $util;
-
-    /**
-     * Constructor.
-     *
-     * @param RouterInterface $router The route generator
-     * @param EngineInterface $templatingService
-     * @param $util
-     */
-    public function __construct(RouterInterface $router, EngineInterface $templatingService, $util)
-    {
-        $this->router = $router;
-        $this->templatingService = $templatingService;
-        $this->util = $util;
-    }
-
     /**
      * @param Request $request
      * @return Response

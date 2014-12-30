@@ -18,40 +18,64 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use Assetic\Factory\LazyAssetManager as AssetManager;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Zikula\Component\Wizard\FormHandlerInterface;
+use Zikula\Component\Wizard\Wizard;
+use Zikula\Component\Wizard\WizardCompleteInterface;
 
 /**
  * Class InstallerController
  * @package Zikula\Bundle\CoreInstallerBundle\Controller
  */
-class InstallerController
+class InstallerController extends AbstractController
 {
-    private $router;
-    private $templatingService;
-    private $util;
-
-    /**
-     * Constructor.
-     *
-     * @param RouterInterface $router The route generator
-     * @param EngineInterface $templatingService
-     * @param $util
-     */
-    public function __construct(RouterInterface $router, EngineInterface $templatingService, $util)
-    {
-        $this->router = $router;
-        $this->templatingService = $templatingService;
-        $this->util = $util;
-    }
-
     /**
      * @param Request $request
+     * @param string $stage
      * @return Response
      */
-    public function installAction(Request $request)
+    public function installAction(Request $request, $stage)
     {
-        return $this->templatingService->renderResponse("ZikulaCoreInstallerBundle:Install:layout.html.twig");
+        // already installed?
+        if ($this->container->getParameter('installed') == true) {
+            $stage = 'installed';
+        }
+
+        // notinstalled but requesting installed stage?
+        if (($this->container->getParameter('installed') == false) && ($stage == 'installed')) {
+            $stage = 'notinstalled';
+        }
+
+        // check php
+        $ini_warnings = $this->util->initPhp();
+        if (count($ini_warnings) > 0) {
+            $request->getSession()->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
+        }
+
+        // begin the wizard
+        $wizard = new Wizard($this->container, realpath(__DIR__ . '/../Resources/config'));
+        $currentStage = $wizard->getCurrentStage($stage);
+        if ($currentStage instanceof WizardCompleteInterface) {
+            return $currentStage->getResponse($request);
+        }
+        $templateParams = $this->util->getTemplateGlobals($currentStage);
+        if ($wizard->isHalted()) {
+            $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());
+            return $this->templatingService->renderResponse('ZikulaCoreInstallerBundle::error.html.twig', $templateParams);
+        }
+
+        // handle the form
+        if ($currentStage instanceof FormHandlerInterface) {
+            $form = $this->form->create($currentStage->getFormType());
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $currentStage->handleFormResult($form);
+                $url = $this->router->generate('install', array('stage' => $wizard->getNextStage()->getName()), true);
+
+                return new RedirectResponse($url);
+            }
+            $templateParams['form'] = $form->createView();
+        }
+
+        return $this->templatingService->renderResponse($currentStage->getTemplateName(), $templateParams);
     }
 }

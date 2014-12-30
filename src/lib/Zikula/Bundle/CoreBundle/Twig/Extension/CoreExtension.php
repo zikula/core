@@ -37,7 +37,8 @@ class CoreExtension extends \Twig_Extension
             'showblockposition' => new \Twig_Function_Method($this, 'showBlockPosition'),
             'showblock' => new \Twig_Function_Method($this, 'showBlock'),
             'blockinfo' => new \Twig_Function_Method($this, 'getBlockInfo'),
-            'zasset' => new \Twig_Function_Method($this, 'getAssetPath')
+            'zasset' => new \Twig_Function_Method($this, 'getAssetPath'),
+            'showflashes' => new \Twig_Function_Method($this, 'showFlashes', array('is_safe' => array('html'))),
         );
     }
 
@@ -107,6 +108,71 @@ class CoreExtension extends \Twig_Extension
     public function icon()
     {
 
+    }
+
+    /**
+     * Display flash messages in twig template. Defaults to bootstrap alert classes.
+     *
+     * <pre>
+     *  {{ showflashes() }}
+     *  {{ showflashes({'class': 'custom-class', 'tag': 'span'}) }}
+     * </pre>
+     *
+     * @param array $params
+     * @return string
+     */
+    public function showFlashes(array $params = array())
+    {
+        $result = '';
+
+        $total_messages = array();
+
+        $messageTypeMap = array(
+            \Zikula_Session::MESSAGE_ERROR => 'danger',
+            \Zikula_Session::MESSAGE_WARNING => 'warning',
+            \Zikula_Session::MESSAGE_STATUS => 'success',
+            'danger' => 'danger',
+            'success' => 'success',
+        );
+
+        foreach ($messageTypeMap as $messageType => $bootstrapClass) {
+            /**
+             * Get messages.
+             */
+            $messages = $this->container->get('session')->getFlashBag()->get($messageType);
+
+            if (count($messages) > 0) {
+                /**
+                 * Set class for the messages.
+                 */
+                $class = (!empty($params['class'])) ? $params['class'] : "alert alert-$bootstrapClass";
+
+                $total_messages = $total_messages + $messages;
+
+                /**
+                 * Build output of the messages.
+                 */
+                if (empty($params['tag']) || ($params['tag'] != 'span')) {
+                    $params['tag'] = 'div';
+                }
+
+                $result .= '<' . $params['tag'] . ' class="' . $class . '"';
+
+                if (!empty($params['style'])) {
+                    $result .= ' style="' . $params['style'] . '"';
+                }
+
+                $result .= '>';
+                $result .= implode('<hr />', $messages);
+                $result .= '</' . $params['tag'] . '>';
+            }
+        }
+
+        if (empty($total_messages)) {
+            return "";
+        }
+
+        return $result;
     }
 
     /**
