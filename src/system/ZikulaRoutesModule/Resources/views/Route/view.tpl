@@ -115,7 +115,7 @@
                 {*<col id="cName" />
                 <col id="cBundle" />
                 <col id="cController" />
-                <col id="cAction" />*}}
+                <col id="cAction" />*}
                 <col id="cPath" />
                 <col id="cHost" />
                 <col id="cCondition" />
