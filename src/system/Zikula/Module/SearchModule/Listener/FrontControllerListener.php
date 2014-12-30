@@ -52,6 +52,12 @@ class FrontControllerListener implements EventSubscriberInterface
      */
     public function pageload(GetResponseEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+        if (\System::isInstalling()) {
+            return;
+        }
         $openSearchEnabled = ModUtil::getVar('ZikulaSearchModule', 'opensearch_enabled');
         if ($openSearchEnabled && SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             // The current user has the rights to search the page.
