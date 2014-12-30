@@ -95,13 +95,13 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         $params = $this->yamlManager->getParameters();
         unset($params['username'], $params['password'], $params['email']);
         $params['datadir'] = 'userdir';
+        $params['installed'] = true;
         $this->yamlManager->setParameters($params);
 
         // write legacy config file
         $this->container->get('core_installer.config.util')->writeLegacyConfig();
 
-        // set site status as installed and protect config.php file
-        update_installed_status(true);
+        // protect config.php file
         foreach (array(
                      $this->container->get('kernel')->getRootDir().'config/config.php',
                      $this->container->get('kernel')->getRootDir().'app/config/parameters.yml'
