@@ -122,8 +122,8 @@
                 <col id="cDescription" />
                 <col id="cBundle" />
                 <col id="cUserRoute" />
-                <col id="cSort" />
-                {*<col id="cGroup" />*}
+                {*<col id="cSort" />
+                <col id="cGroup" />*}
                 <col id="cItemActions" />
             </colgroup>
             <thead>
@@ -244,7 +244,7 @@
                 <div class="col-lg-9">
                 <select id="zikulaRoutesModuleAction" name="action" class="form-control">
                     <option value="">{gt text='Choose action'}</option>
-                <option value="approve" title="{gt text='Update content and approve for immediate publishing.'}">{gt text='Approve'}</option>
+                    <option value="approve" title="{gt text='Update content and approve for immediate publishing.'}">{gt text='Approve'}</option>
                     <option value="delete" title="{gt text='Delete content permanently.'}">{gt text='Delete'}</option>
                 </select>
                 </div>
