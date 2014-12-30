@@ -8,7 +8,7 @@ parameters:
     system.chmod_dir: 0777
 
     database_driver:   pdo_mysql
-    database_host:     127.0.0.1
+    database_host:     localhost
     database_port:     ~
     database_name:     zikula
     database_user:     root
