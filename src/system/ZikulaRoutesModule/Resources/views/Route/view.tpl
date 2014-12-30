@@ -122,8 +122,8 @@
                 <col id="cDescription" />
                 <col id="cBundle" />
                 <col id="cUserRoute" />
-                {*<col id="cSort" />
-                <col id="cGroup" />*}
+                <col id="cSort" />
+                {*<col id="cGroup" />*}
                 <col id="cItemActions" />
             </colgroup>
             <thead>
@@ -212,7 +212,7 @@
                         <div class="dropdown">
                             <a id="itemActions{$route.id}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
 
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="itemActions{$route.id}DropDownToggle">
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="itemActions{$route.id}DropDownToggle">
                                 {foreach item='option' from=$route._actions}
                                     <li role="presentation"><a href="{$option.url.type|zikularoutesmoduleActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" role="menuitem" tabindex="-1" class="fa fa-{$option.icon}">{$option.linkText|safetext}</a></li>
 
@@ -244,7 +244,7 @@
                 <div class="col-lg-9">
                 <select id="zikulaRoutesModuleAction" name="action" class="form-control">
                     <option value="">{gt text='Choose action'}</option>
-                    <option value="approve" title="{gt text='Update content and approve for immediate publishing.'}">{gt text='Approve'}</option>
+                <option value="approve" title="{gt text='Update content and approve for immediate publishing.'}">{gt text='Approve'}</option>
                     <option value="delete" title="{gt text='Delete content permanently.'}">{gt text='Delete'}</option>
                 </select>
                 </div>
