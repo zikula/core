@@ -122,8 +122,8 @@
                 <col id="cDescription" />
                 <col id="cBundle" />
                 <col id="cUserRoute" />
-                <col id="cSort" />
-                {*<col id="cGroup" />*}
+                {*<col id="cSort" />
+                <col id="cGroup" />*}
                 <col id="cItemActions" />
             </colgroup>
             <thead>
