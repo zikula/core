@@ -71,6 +71,10 @@ class UserApi extends \Zikula_AbstractApi
         if ($params['transport'] == 'test') {
             $output = '<p>';
             foreach ($args as $key => $value) {
+                if ($key == 'password') {
+                    // do not expose the password (#2149)
+                    continue;
+                }
                 $output .= '<strong>'.$key.'</strong>: '.$value.'<br />';
             }
             $output .= '</p>';
