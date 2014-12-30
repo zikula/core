@@ -16,10 +16,6 @@ use Zikula_Request_Http as Request;
 include 'lib/bootstrap.php';
 
 $request = Request::createFromGlobals();
-$installing = $request->get('installing', null);
-if (!empty($installing) && ($installing != false)) {
-    System::setInstalling(true);
-}
 
 $core->init(Zikula_Core::STAGE_ALL, $request);
 
