@@ -29,38 +29,38 @@ class DbCredsType extends AbstractType
         $builder
             ->add('database_driver', 'choice', array(
                 'label' => __('Database type'),
-                'label_attr' => array('class' => 'col-lg-3'),
+                'label_attr' => array('class' => 'col-lg-5'),
                 'choices' => $this->getDbTypes(),
                 'data' => 'mysql'))
             ->add('dbtabletype', 'choice', array(
                 'label' => __('Database table type (MySQL only)'),
-                'label_attr' => array('class' => 'col-lg-3'),
+                'label_attr' => array('class' => 'col-lg-5'),
                 'choices' => array(
                     'innodb' => __('InnoDB'),
                     'myisam' => __('MyISAM')),
                 'data' => 'myisam'))
             ->add('database_host', 'text', array(
                 'label' => __('Host'),
-                'label_attr' => array('class' => 'col-lg-3'),
+                'label_attr' => array('class' => 'col-lg-5'),
                 'data' => __('localhost'),
                 'constraints' => array(
                     new NotBlank(),
                 )))
             ->add('database_user', 'text', array(
                 'label' => __('DB Username'),
-                'label_attr' => array('class' => 'col-lg-3'),
+                'label_attr' => array('class' => 'col-lg-5'),
                 'constraints' => array(
                     new NotBlank(),
                 )))
             ->add('database_password', 'password', array(
                 'label' => __('DB Password'),
-                'label_attr' => array('class' => 'col-lg-3'),
+                'label_attr' => array('class' => 'col-lg-5'),
                 'constraints' => array(
                     new NotBlank(),
                 )))
             ->add('database_name', 'text', array(
                 'label' => __('DB Name'),
-                'label_attr' => array('class' => 'col-lg-3'),
+                'label_attr' => array('class' => 'col-lg-5'),
                 'constraints' => array(
                     new NotBlank(),
                     new Length(array('max' => 64)),
