@@ -35,7 +35,6 @@ class YamlDumper
                 // initialize file from a copy of original
                 $this->fs->copy($configDir . DIRECTORY_SEPARATOR . $initCopy, $this->fullPath);
             }
-
         }
     }
 

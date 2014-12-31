@@ -59,7 +59,7 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
         $params = $this->yamlManager->getParameters();
         if (!empty($params['username']) && !empty($params['password']) && !empty($params['email'])) {
             $this->installSystemModules($params['locale']);
-            $this->createAdmin($params);
+            $this->updateAdmin($params);
 
             return false;
         }
@@ -75,10 +75,8 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
     public function handleFormResult(FormInterface $form)
     {
         $this->writeParams($form->getData());
-        
-        $this->installSystemModules($this->yamlManager->getParameter('lang'));
-        $this->createAdmin($form->getData());
-
+        $this->installSystemModules($this->container->getParameter('locale'));
+        $this->updateAdmin($form->getData());
     }
 
     private function writeParams($data)
@@ -94,7 +92,7 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
     /**
      * This function inserts the admin's user data
      */
-    private function createAdmin($params)
+    private function updateAdmin($params)
     {
         $em = $this->container->get('doctrine.entitymanager');
 

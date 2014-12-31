@@ -79,18 +79,22 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
 
     public function handleFormResult(FormInterface $form)
     {
-        $this->writeParams($form->getData());
+        $data = $form->getData();
+        $data['database_driver'] = 'pdo_' . $data['database_driver']; // doctrine requires prefix in custom_parameters.yml
+        $params = array_merge($this->yamlManager->getParameters(), $data);
+        $this->writeParams($params);
+        $this->container->get('core_installer.config.util')->writeLegacyConfig($params);
     }
 
-    private function writeParams($data)
+    private function writeParams($params)
     {
-        $data['database_driver'] = 'pdo_' . $data['database_driver']; // doctrine requires prefix
-        $params = array_merge($this->yamlManager->getParameters(), $data);
         try {
             $this->yamlManager->setParameters($params);
         } catch (IOException $e) {
             throw new AbortStageException(__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
         }
+        // clear the cache
+        $this->container->get('zikula.cache_clearer')->clear('symfony.config');
     }
 
     public function testDBConnection($params)

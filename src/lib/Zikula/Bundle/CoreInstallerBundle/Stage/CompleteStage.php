@@ -32,8 +32,8 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
         $this->finishInstall();
-        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'dynamic/installerTemp.yml');
     }
 
     public function getName()
@@ -93,18 +93,15 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
         // add remaining parameters and remove unneeded ones
         $params = $this->yamlManager->getParameters();
-        unset($params['username'], $params['password'], $params['email']);
+        unset($params['username'], $params['password'], $params['email'], $params['dbtabletype']);
         $params['datadir'] = 'userdir';
         $params['installed'] = true;
         $this->yamlManager->setParameters($params);
 
-        // write legacy config file
-        $this->container->get('core_installer.config.util')->writeLegacyConfig();
-
         // protect config.php file
         foreach (array(
-                     $this->container->get('kernel')->getRootDir().'config/config.php',
-                     $this->container->get('kernel')->getRootDir().'app/config/parameters.yml'
+                     realpath($this->container->get('kernel')->getRootDir().'/../config/config.php'),
+                     realpath($this->container->get('kernel')->getRootDir().'/../app/config/parameters.yml')
                  ) as $file) {
             @chmod($file, 0400);
             if (!is_readable($file)) {
@@ -120,6 +117,9 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         foreach ($systemPlugins as $plugin) {
             \PluginUtil::install($plugin);
         }
+
+        // clear the cache
+        $this->container->get('zikula.cache_clearer')->clear('symfony.config');
 
         // fire MODULE_INSTALL event to reload all routes
         $event = new ModuleStateEvent($this->container->get('kernel')->getModule('ZikulaRoutesModule'));
