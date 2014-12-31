@@ -92,6 +92,13 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         $params = $this->yamlManager->getParameters();
         unset($params['username'], $params['password'], $params['email'], $params['dbtabletype']);
         $params['datadir'] = 'userdir';
+        $parameters['parameters']['secret'] = RandomUtil::getRandomString(50);
+        $parameters['parameters']['url_secret'] = RandomUtil::getRandomString(10);
+        // Configure the Request Context
+        // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
+        $parameters['parameters']['router.request_context.host'] = $this->container->get('request')->getHost();
+        $parameters['parameters']['router.request_context.scheme'] = 'http';
+        $parameters['parameters']['router.request_context.base_url'] = $this->container->get('request')->getBasePath();
         $params['installed'] = true;
         $this->yamlManager->setParameters($params);
 
