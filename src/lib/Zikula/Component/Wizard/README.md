@@ -14,16 +14,16 @@ A Stage is simply a class which implements the StageInterface. It defines a **na
 by possibly completing some logic and returning a boolean.
 
 Stages may optionally implement:
- - InjectContainerInterface if the Stage requires the Symfony container
- - FormHandlerInterface if the Stage will be using a form
- - WizardCompleteInterface on the last stage to indicate the wizard is finished and wrap up any logic at the end.
+ - `InjectContainerInterface` if the Stage requires the Symfony container
+ - `FormHandlerInterface` if the Stage will be using a Symfony Form
+ - `WizardCompleteInterface` to indicate the wizard is finished and wrap up any logic at the end.
 
-The Wizard can be halted during the `isNecessary()` method by throwing an AbortStageException. The message of which is
+The Wizard can be halted in the `isNecessary()` method by throwing an AbortStageException. The message of which is
 available for retrieval using `$wizard->getWarning()`.
 
-On instantiation, the Wizard class requires the Symfony Container and a full path to the stage definition file (in yaml
-format). The Wizard will load the stages definitions from there. The Wizard Component includes a YamlFileLoader for
-this purpose.
+On instantiation, the Wizard class requires the **Symfony Container** and a full path to the **stage definition file**
+(in yaml format). The Wizard will load the stages definitions from there. The Wizard Component includes a YamlFileLoader
+for this purpose.
 
 
 ###Sample stages.yml
