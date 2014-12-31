@@ -84,7 +84,7 @@ class MyController
         if ($currentStage instanceof FormHandlerInterface) {
             $form = $this->container->get('form.factory')->create($currentStage->getFormType());
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);
                 $url = $this->container->get('router')->generate('index', array('stage' => $wizard->getNextStage()->getName()), true);
 

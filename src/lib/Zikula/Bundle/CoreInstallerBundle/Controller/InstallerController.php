@@ -67,7 +67,7 @@ class InstallerController extends AbstractController
         if ($currentStage instanceof FormHandlerInterface) {
             $form = $this->form->create($currentStage->getFormType());
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);
                 $url = $this->router->generate('install', array('stage' => $wizard->getNextStage()->getName()), true);
 
