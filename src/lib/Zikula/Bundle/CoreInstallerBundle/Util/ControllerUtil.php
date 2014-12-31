@@ -93,13 +93,13 @@ class ControllerUtil
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
         $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
         $results['json_encode'] = function_exists('json_encode');
-        $results['config_personal_config_php'] = !is_writable('config/personal_config.php');
+//        $results['config_personal_config_php'] = !is_writable('config/personal_config.php');
 //        $results['custom_parameters_yml'] = !is_writable('app/config/custom_parameters.yml');
         $datadir = $container->getParameter('datadir');
         $files = array(
-            'config/config.php',
+//            'config/config.php',
             'app/cache/',
-            'app/config/parameters.yml',
+//            'app/config/parameters.yml',
             "$datadir/",
             'app/config/dynamic'
         );
