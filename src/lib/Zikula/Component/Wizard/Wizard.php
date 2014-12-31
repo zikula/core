@@ -14,10 +14,16 @@
 
 namespace Zikula\Component\Wizard;
 
+use Gedmo\Exception\RuntimeException;
+use Symfony\Component\Config\Exception\FileLoaderLoadException;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Debug\Exception\ClassNotFoundException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
+/**
+ * Class Wizard
+ * @package Zikula\Component\Wizard
+ */
 class Wizard
 {
     private $container;
@@ -32,28 +38,39 @@ class Wizard
      * Constructor.
      *
      * @param ContainerInterface $container
-     * @param null $path
+     * @param string $path including filename, e.g. my/full/path/to/my/stages.yml
+     * @throws FileLoaderLoadException
      */
-    function __construct(ContainerInterface $container, $path = null)
+    function __construct(ContainerInterface $container, $path)
     {
         $this->container = $container;
         if (!empty($path)) {
             $this->loadStagesFromYaml($path);
+        } else {
+            throw new FileLoaderLoadException('No stage definition file provided.');
         }
     }
 
     /**
-     * Load the stage definitions from stages.yml
+     * Load the stage definitions from $path
      *
-     * @param $path
+     * @param string $path including filename, e.g. my/full/path/to/my/stages.yml
+     * @throws FileLoaderLoadException
      */
     public function loadStagesFromYaml($path)
     {
+        if (!file_exists($path)) {
+            throw new FileLoaderLoadException('Stage definition file cannot be found.');
+        }
+        $pathInfo = pathinfo($path);
+        if ($pathInfo['extension'] !== 'yml') {
+            throw new FileLoaderLoadException('Stage definition file must include .yml extension.');
+        }
         $this->stages = array(); // empty the stages
         if (!isset($this->YamlFileLoader)) {
-            $this->YamlFileLoader = new YamlFileLoader(new FileLocator($path));
+            $this->YamlFileLoader = new YamlFileLoader(new FileLocator($pathInfo['dirname']));
         }
-        $this->YamlFileLoader->load('stages.yml');
+        $this->YamlFileLoader->load($pathInfo['basename']);
         $stages = $this->YamlFileLoader->getContent()['stages'];
         foreach ($stages as $key => $stageArray) {
             $this->stagesByName[$key] = $stageArray['class'];
@@ -148,9 +165,14 @@ class Wizard
      */
     private function getStageInstance($stageClass)
     {
+        if (!class_exists($stageClass)) {
+            throw new RuntimeException('Error: Could not find requested stage class.');
+        }
         if(in_array("Zikula\\Component\\Wizard\\InjectContainerInterface", class_implements($stageClass))) {
+
             return new $stageClass($this->container);
         } else {
+
             return new $stageClass();
         }
     }
@@ -185,9 +207,11 @@ class Wizard
     private function getStageClassName($name)
     {
         if (!empty($this->stagesByName[$name])) {
+
             return $this->stagesByName[$name];
         }
         if (!empty($this->defaultStage) && !empty($this->stagesByName[$this->defaultStage])) {
+
             return $this->stagesByName[$this->defaultStage];
         }
         throw new \InvalidArgumentException('The request stage could not be found and there is no default stage defined.');

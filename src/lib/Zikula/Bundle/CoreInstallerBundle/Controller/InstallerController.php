@@ -52,7 +52,7 @@ class InstallerController extends AbstractController
         }
 
         // begin the wizard
-        $wizard = new Wizard($this->container, realpath(__DIR__ . '/../Resources/config'));
+        $wizard = new Wizard($this->container, realpath(__DIR__ . '/../Resources/config/install_stages.yml'));
         $currentStage = $wizard->getCurrentStage($stage);
         if ($currentStage instanceof WizardCompleteInterface) {
             return $currentStage->getResponse($request);
