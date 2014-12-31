@@ -16,25 +16,29 @@ namespace Zikula\Bundle\CoreInstallerBundle\Validator;
 
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class Validator
+class PdoConnectionValidator
 {
+    /**
+     * Validate provided database credentials by attempting to establish connection with the database.
+     *
+     * @param $object
+     * @param ExecutionContextInterface $context
+     */
     public static function validate($object, ExecutionContextInterface $context)
     {
         try {
             $dbh = new \PDO("$object[database_driver]:host=$object[database_host];dbname=$object[database_name]", $object['database_user'], $object['database_password']);
-            $sql = ($object['dbdriver'] == 'mysql' || $object['dbdriver'] == 'mysqli') ?
-                "SHOW TABLES FROM `$object[dbname]` LIKE '%'" :
-                "SHOW TABLES FROM $object[dbname] LIKE '%'";
+            $sql = ($object['database_driver'] == 'mysql' || $object['database_driver'] == 'mysqli') ?
+                "SHOW TABLES FROM `$object[database_name]` LIKE '%'" :
+                "SHOW TABLES FROM $object[database_name] LIKE '%'";
             $tables = $dbh->query($sql);
             if ($tables->rowCount() > 0) {
                 $context->buildViolation(__('Error! The database exists and contain tables. Please delete all tables before proceeding or select a new database.'))
-                    ->atPath('dbname')
                     ->addViolation()
                 ;
             }
         } catch (\PDOException $eb) {
-            $context->buildViolation(__('Error! Could not connect to the database. Please check that you have entered the correct database information and try again.' . $eb->getMessage()))
-                ->atPath('dbname')
+            $context->buildViolation(__('Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ' . $eb->getMessage()))
                 ->addViolation()
             ;
         }

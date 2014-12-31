@@ -14,13 +14,13 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
-use Guzzle\Http\Message\Request;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DbCredsType extends AbstractType
 {
@@ -66,10 +66,8 @@ class DbCredsType extends AbstractType
                     new Length(array('max' => 64)),
                     new Regex(array(
                         'pattern' => '/^[\w-]*$/',
-                        'match' => false,
                         'message' => __('Error! Invalid database name. Please use only letters, numbers, "-" or "_".')
                     )),
-                    new Callback(array('Zikula\Bundle\CoreInstallerBundle\Validator\Validator', 'validate'))
                 )))
             ->add('save', 'submit', array('label' => __('Next')));
     }
@@ -96,5 +94,15 @@ class DbCredsType extends AbstractType
             $types['postgres'] = __('PostgreSQL');
         }
         return $types;
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        // add a constraint to the entire form
+        // thanks to @Matt Daum : http://shout.setfive.com/2013/06/27/symfony2-forms-without-an-entity-and-with-a-conditional-validator/
+        $resolver->setDefaults(array(
+                'constraints' => new Callback(array('callback' => array('Zikula\Bundle\CoreInstallerBundle\Validator\PdoConnectionValidator', 'validate'))),
+            )
+        );
     }
 }
