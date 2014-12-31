@@ -17,8 +17,8 @@
             <h1>{{ __('Zikula Application Framework') }}</h1>
             <h2>{{ __('Installer script') }}</h2>
             <ol class="wizard">
-                <li{% if currentstage == 'lang' %} class="active"{% endif %}>
-                    <a href="{{ url('install', { 'stage': 'lang' }) }}">{{ __('Select language') }}</a>
+                <li{% if currentstage == 'locale' %} class="active"{% endif %}>
+                    <a href="{{ url('install', { 'stage': 'locale' }) }}">{{ __('Select language') }}</a>
                 </li>
                 <li{% if currentstage == 'requirements' %} class="active"{% endif %}>
                     {{ __('Check requirements') }}
