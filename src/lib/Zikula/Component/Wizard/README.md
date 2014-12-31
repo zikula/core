@@ -1,12 +1,12 @@
 Wizard
 ======
 
-The Wizard Component is a management tool for multi-stage forms. It utilizes several Interfaces and the Wizard class to
-create a workflow that is compatible with Symfony Forms and Twig templating. Relying on the concept of **Stages**, the
-developer is able to define a sequence using a `.yml` file and control that sequence in their Controller.
+The Wizard Component is a management tool for multi-stage user interaction. It utilizes several Interfaces and the
+Wizard class to create a workflow that is compatible with Symfony Forms and Twig templating. Relying on the concept of
+**Stages**, the developer is able to define a sequence using a `.yml` file and control that sequence in their Controller.
 
 On instantiation, the Wizard class requires the **Symfony Container** and a full path to the **stage definition file**
-(in yaml format). The Wizard will load the stages definitions from there. The Wizard Component includes a YamlFileLoader
+(in yaml format). The Wizard will load the stage definitions from there. The Wizard Component includes a YamlFileLoader
 for this purpose.
 
 
@@ -14,8 +14,8 @@ Stage
 -----
 
 A Stage is simply a class which implements the StageInterface. It defines a **name**, a **template name** and any
-**template parameters** that stage will require in its template. A stage must also define whether it is **necessary**
-by possibly completing some logic and returning a boolean.
+**template parameters** that stage will require. A stage must also define whether it is **necessary** by possibly
+completing some logic and returning a boolean.
 
 Stages may optionally implement:
  - `InjectContainerInterface` if the Stage requires the Symfony container
@@ -43,8 +43,8 @@ stages:
     complete:
         class: Acme\Bundle\DemoBundle\Stage\CompleteStage
         order: 4
-    error:
-        class: Acme\Bundle\DemoBundle\Stage\ErrorStage
+    nonstage:
+        class: Acme\Bundle\DemoBundle\Stage\NonStage
         order: 99
 ```
 
