@@ -56,9 +56,6 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         return array();
     }
 
-    /**
-     * @return string
-     */
     public function getResponse(Request $request)
     {
         $request->getSession()->getFlashBag()->add('success', 'Congratulations! Zikula has been successfully installed.');
