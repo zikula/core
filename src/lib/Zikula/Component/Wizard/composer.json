@@ -1,0 +1,23 @@
+{
+    "name": "zikula/wizard",
+    "description": "Wizard for multi-stage interaction",
+    "type": "component",
+    "homepage": "http://zikula.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Craig Heydenburg",
+            "email": "craig@zikula.org"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Zikula\\Component\\Wizard": ""
+        }
+    },
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": "2.6.*"
+    },
+    "target-dir": "Zikula/Component/Wizard"
+}

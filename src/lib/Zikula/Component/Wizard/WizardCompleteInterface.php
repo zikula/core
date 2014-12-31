@@ -19,8 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 interface WizardCompleteInterface
 {
     /**
+     * Get the Response (probably RedirectResponse) for this completed Wizard
+     *
      * @param Request $request
-     * @return string
+     * @return \Symfony\Component\HttpFoundation\Response;
      */
     public function getResponse(Request $request);
 }

@@ -5,6 +5,10 @@ The Wizard Component is a management tool for multi-stage forms. It utilizes sev
 create a workflow that is compatible with Symfony Forms and Twig templating. Relying on the concept of **Stages**, the
 developer is able to define a sequence using a `.yml` file and control that sequence in their Controller.
 
+On instantiation, the Wizard class requires the **Symfony Container** and a full path to the **stage definition file**
+(in yaml format). The Wizard will load the stages definitions from there. The Wizard Component includes a YamlFileLoader
+for this purpose.
+
 
 Stage
 -----
@@ -18,12 +22,8 @@ Stages may optionally implement:
  - `FormHandlerInterface` if the Stage will be using a Symfony Form
  - `WizardCompleteInterface` to indicate the wizard is finished and wrap up any logic at the end.
 
-The Wizard can be halted in the `isNecessary()` method by throwing an AbortStageException. The message of which is
+The Wizard can be halted in the `isNecessary()` method by throwing an `AbortStageException`. The message of which is
 available for retrieval using `$wizard->getWarning()`.
-
-On instantiation, the Wizard class requires the **Symfony Container** and a full path to the **stage definition file**
-(in yaml format). The Wizard will load the stages definitions from there. The Wizard Component includes a YamlFileLoader
-for this purpose.
 
 
 ###Sample stages.yml

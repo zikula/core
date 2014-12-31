@@ -18,5 +18,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 interface InjectContainerInterface
 {
+    /**
+     * Require the Symfony Container on instantiation
+     *
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container);
 }
