@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CreateAdminType extends AbstractType
 {
@@ -35,6 +36,7 @@ class CreateAdminType extends AbstractType
                     new Length(array('min' => 5)),
                     new Regex(array(
                         'pattern' => '/[^\p{L}\p{N}_\.\-]/u',
+                        'match' => false,
                         'message' => __('Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _')
                     ))
                 )))
@@ -69,5 +71,16 @@ class CreateAdminType extends AbstractType
     public function getName()
     {
         return 'createadmin';
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+                'csrf_protection' => false,
+//                'csrf_field_name' => '_token',
+//                // a unique key to help generate the secret token
+//                'intention'       => '_zk_bdcreds',
+            )
+        );
     }
 }
