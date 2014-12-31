@@ -84,6 +84,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
 
     private function writeParams($data)
     {
+        $data['database_driver'] = 'pdo_' . $data['database_driver']; // doctrine requires prefix
         $params = array_merge($this->yamlManager->getParameters(), $data);
         try {
             $this->yamlManager->setParameters($params);
