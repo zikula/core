@@ -63,8 +63,7 @@ class CreateAdminType extends AbstractType
 //                        'match' => false,
 //                        'message' => __("Error! The administrator's e-mail address is not correctly formed. Please correct your entry and try again.")
 //                    ))
-                )))
-            ->add('save', 'submit', array('label' => __('Next')));
+                )));
     }
 
     public function getName()

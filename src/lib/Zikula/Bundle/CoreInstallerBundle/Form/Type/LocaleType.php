@@ -26,8 +26,7 @@ class LocaleType extends AbstractType
                 'label' => __('Select your default language'),
                 'label_attr' => array('class' => 'col-lg-3'),
                 'choices' => \ZLanguage::getInstalledLanguageNames(),
-                'data' => \ZLanguage::getLanguageCode()))
-            ->add('save', 'submit', array('label' => __('Next')));
+                'data' => \ZLanguage::getLanguageCode()));
     }
 
     public function getName()

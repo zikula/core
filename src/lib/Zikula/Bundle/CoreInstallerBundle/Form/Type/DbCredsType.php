@@ -68,8 +68,7 @@ class DbCredsType extends AbstractType
                         'pattern' => '/^[\w-]*$/',
                         'message' => __('Error! Invalid database name. Please use only letters, numbers, "-" or "_".')
                     )),
-                )))
-            ->add('save', 'submit', array('label' => __('Next')));
+                )));
     }
 
     public function getName()
