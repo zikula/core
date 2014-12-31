@@ -1,7 +1,8 @@
 {
     "name": "zikula/wizard",
-    "description": "Wizard for multi-stage interaction",
-    "type": "component",
+    "description": "Wizard for multi-stage interaction including Symfony Forms",
+    "keywords": ["symfony2", "wizard", "forms", "step", "stage"],
+    "type": "library",
     "homepage": "http://zikula.org",
     "license": "MIT",
     "authors": [
@@ -11,9 +12,7 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Zikula\\Component\\Wizard": ""
-        }
+        "psr-4": { "Zikula\\Component\\Wizard": "" }
     },
     "require": {
         "php": ">=5.3.2",
