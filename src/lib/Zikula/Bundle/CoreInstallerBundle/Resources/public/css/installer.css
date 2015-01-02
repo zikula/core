@@ -135,6 +135,7 @@ h2 {
 #maincontent {
     margin: 1em auto;
     width: 80%;
+    padding: 1em;
 }
 
 #maincontent h2 {

@@ -1,5 +1,4 @@
 /*! to do */
-h6 {
-    font-size: small;
-    color: blue;
+#begininstall, #continueinstall {
+    margin: 1em;
 }

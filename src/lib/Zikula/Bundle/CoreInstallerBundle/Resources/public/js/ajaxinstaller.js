@@ -11,6 +11,8 @@ jQuery( document ).ready(function( $ ) {
     var percentage = (1 / stages.length) * 100;
 
     $("#begininstall").click(function() {
+        $(this).addClass('disabled');
+        $(this).bind('click', false);
         processStage(getnextstage())
     });
 

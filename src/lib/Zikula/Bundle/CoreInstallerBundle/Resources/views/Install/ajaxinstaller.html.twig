@@ -19,7 +19,8 @@
             <span class="sr-only">Progress bar</span>
         </div>
     </div>
-    <div><a href="#" id="begininstall" class="btn btn-lg btn-success">Start Installation</a></div>
+
+    <div><a href="#" id="begininstall" class="btn btn-lg btn-success">{{ __('Begin Installer') }}</a></div>
 
     <fieldset>
         <legend>{{  __("Installing Modules and Helpers") }}</legend>
@@ -34,7 +35,7 @@
 
     </fieldset>
 
-    <div><a href="{{ url('install', { 'stage': 'complete' }) }}" id="continueinstall" class="btn btn-lg btn-success" style="display:none;">Continue</a></div>
+    <div><a href="{{ url('install', { 'stage': 'complete' }) }}" id="continueinstall" class="btn btn-lg btn-success" style="display:none;">{{ __('Finish') }} <i class="fa fa-angle-double-right"></i></a></div>
 </div>
 {# create a javascript array of all the stages #}
 <script>
