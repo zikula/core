@@ -10,6 +10,12 @@
         <option key="i18n">false</option>
     </route>
 
+    <route id="ajaxinstall" path="/ajaxinstall">
+        <default key="_controller">core_installer.controller.ajax:ajaxAction</default>
+        <option key="expose">true</option>
+        <option key="i18n">false</option>
+    </route>
+
     <route id="upgrade" path="/upgrade">
         <default key="_controller">core_installer.controller.upgrader:upgradeAction</default>
         <option key="i18n">false</option>

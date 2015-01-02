@@ -15,11 +15,15 @@
                     {1: '<a href="%url%">%text%</a>' | replace({'%url%': url('doc'), '%text%': __('installation instructions') }),
                      2: '<a href="%url%">%text%</a>' | replace({'%url%': 'http://www.zikula.org', '%text%': __('online documentation') }) } ) | raw }}
                 </p>
-                <p>
-                    <a class="btn btn-success btn-lg" href="{{ url('install', {'stage': 'locale' }) }}">
-                        <i class="fa fa-thumbs-up fa-3x pull-left"></i> {{ __("Install Zikula!") }}<br />{{ __('Version') }} {{ version }}
-                    </a>
-                </p>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <a class="btn btn-success btn-lg btn-block" href="{{ url('install', {'stage': 'locale' }) }}">
+                            <i class="fa fa-thumbs-up fa-3x pull-left"></i> {{ __("Install Zikula!") }}<br />{{ __('Version') }} {{ version }}
+                        </a>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
                 <p>
                     {{ __("Zikula is free software released under the GPL license!") }}<br />
                     {{ __('For more information, please visit <a href="http://zikula.org/" title="Zikula Homepage">http://zikula.org</a>.') | raw }}

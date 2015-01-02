@@ -15,9 +15,12 @@ stages:
     createadmin:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\CreateAdminStage
         order: 5
+    ajaxinstaller:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\AjaxInstallerStage
+        order: 6
     complete:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\CompleteStage
-        order: 6
+        order: 7
     installed:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\AlreadyInstalledStage
-        order: 7
+        order: 8

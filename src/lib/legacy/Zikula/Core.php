@@ -436,14 +436,16 @@ class Zikula_Core
         $uriContainsInstall = strpos($request->getRequestUri(), '/install') !== false;
         $uriContainsWdt = strpos($request->getRequestUri(), '/_wdt') !== false;
         $uriContainsProfiler = strpos($request->getRequestUri(), '/_profiler') !== false;
+        $uriContainsRouter = strpos($request->getRequestUri(), '/js/routing?callback=fos.Router.setData') !== false;
 
-        if (!$installed && !$uriContainsInstall && !$uriContainsProfiler && !$uriContainsWdt) {
+        if (!$installed && !$uriContainsInstall && !$uriContainsProfiler && !$uriContainsWdt && !$uriContainsRouter && !$request->isXmlHttpRequest()) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->container->get('router')->generate('install', array(), true);
             $response = new RedirectResponse($url);
             $response->send();
             System::shutDown();
-        } elseif (!$installed && ($uriContainsInstall || $uriContainsProfiler || $uriContainsWdt)) {
+        }
+        if (!$installed) {
             System::setInstalling(true);
         }
 

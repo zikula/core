@@ -1,0 +1,47 @@
+{% extends '@ZikulaCoreInstaller/theme.html.twig' %}
+
+{% block childjavascripts %}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/zikulacoreinstaller/js/ajaxinstaller.js') }}"></script>
+{% endblock %}
+{%  block childstylesheets %}
+    <link href="{{ asset('bundles/zikulacoreinstaller/css/ajaxinstaller.css') }}" rel="stylesheet" />
+{%  endblock %}
+
+{% block title __('Zikula is installing!') %}
+
+{% block content %}
+
+<div>
+    <div class="progress">
+        <div id="progress-bar" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+            <span class="sr-only">Progress bar</span>
+        </div>
+    </div>
+    <div><a href="#" id="begininstall" class="btn btn-lg btn-success">Start Installation</a></div>
+
+    <fieldset>
+        <legend>{{  __("Installing Modules and Helpers") }}</legend>
+
+        <div class="center-block" style="width: 50%">
+            <ul id="ajaxlist" class="fa-ul text-left">
+                {% for stage in stages %}
+                <li id="{{ stage }}" class="text-muted"><i class="fa-li fa fa-circle-o"></i><span class="installing" style="display:none;">{{ __('Installing') }}</span> {{ stage }} <span class="not" style="display:none;">{{ __('not') }} </span><span class="installed" style="display:none;">{{ __('installed.') }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </fieldset>
+
+    <div><a href="{{ url('install', { 'stage': 'complete' }) }}" id="continueinstall" class="btn btn-lg btn-success" style="display:none;">Continue</a></div>
+</div>
+{# create a javascript array of all the stages #}
+<script>
+    var stages = [
+    {% for stage in stages %}
+        "{{ stage }}",
+    {% endfor %}
+    ];
+</script>
+{% endblock %}
