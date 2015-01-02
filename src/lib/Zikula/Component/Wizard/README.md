@@ -26,6 +26,17 @@ The Wizard can be halted in the `isNecessary()` method by throwing an `AbortStag
 available for retrieval using `$wizard->getWarning()`.
 
 
+Stage Definition File
+---------------------
+
+The stage definition file is a simple yaml file. The first key `stages:` is required and then each stage should be
+listed by `name` and each should have properties `class` and `order`. The `name` key must be the same as the name of the
+stage as set in its Stage class. The `class` property should be the fully-qualified classname (with namespace) and the
+`order` property should be an integer identifying the sequential order of the stage. Optionally, a stage can be
+identified with a `default` property which should be set to true. This stage will be used by the wizard if no stage
+argument is provided.
+
+
 ###Sample stages.yml
 
 ```yaml
