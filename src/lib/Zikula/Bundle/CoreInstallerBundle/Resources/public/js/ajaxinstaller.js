@@ -13,7 +13,7 @@ jQuery( document ).ready(function( $ ) {
     $("#begininstall").click(function() {
         $(this).addClass('disabled');
         $(this).bind('click', false);
-        processStage(getnextstage())
+        processStage(getNextStage())
     });
 
     function processStage(stagename) {
@@ -42,7 +42,7 @@ jQuery( document ).ready(function( $ ) {
             },
             complete: function(jqXHR, textStatus) {
                 indicateStageComplete(stageitem);
-                var nextstage = getnextstage(stagename);
+                var nextstage = getNextStage(stagename);
                 updateProgressBar(nextstage);
                 processStage(nextstage)
             }
@@ -51,30 +51,29 @@ jQuery( document ).ready(function( $ ) {
 
     function indicateStageStarted(listitem) {
         listitem.removeClass('text-muted').addClass('text-primary');
-        listitem.find('.installing').show();
+        listitem.children('.pre').hide();
+        listitem.children('.during').show();
         listitem.find('i').removeClass('fa-circle-o').addClass('fa-cog fa-spin'); // spinner
     }
 
     function indicateStageComplete(listitem) {
         listitem.find('i').removeClass('fa-cog fa-spin'); // spinner
+        listitem.children('.during').hide();
     }
 
     function indicateStageSuccessful(listitem) {
         listitem.removeClass("text-primary").addClass("text-success");
-        listitem.children('.installing').hide();
-        listitem.children('.installed').show();
+        listitem.children('.success').show();
         listitem.find('i').addClass('fa-check-circle'); // spinner
     }
 
     function indicateStageFailure(listitem) {
         listitem.removeClass("text-primary").addClass("text-danger");
-        listitem.children('.installing').hide();
-        listitem.children('.not').show();
-        listitem.children('.installed').show();
+        listitem.children('.fail').show();
         listitem.find('i').addClass('fa-times-circle'); // spinner
     }
 
-    function getnextstage(stagename) {
+    function getNextStage(stagename) {
         if (typeof stagename == 'undefined') return stages[0];
         var key = stages.indexOf(stagename);
         return (key == -1) ? stages[0] : stages[++key];

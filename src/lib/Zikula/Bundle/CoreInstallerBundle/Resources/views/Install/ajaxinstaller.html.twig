@@ -25,10 +25,16 @@
     <fieldset>
         <legend>{{  __("Installing Modules and Helpers") }}</legend>
 
-        <div class="center-block" style="width: 50%">
+        <div class="center-block" style="width: 60%">
             <ul id="ajaxlist" class="fa-ul text-left">
                 {% for stage in stages %}
-                <li id="{{ stage }}" class="text-muted"><i class="fa-li fa fa-circle-o"></i><span class="installing" style="display:none;">{{ __('Installing') }}</span> {{ stage }} <span class="not" style="display:none;">{{ __('not') }} </span><span class="installed" style="display:none;">{{ __('installed.') }}</span></li>
+                <li id="{{ stage.name }}" class="text-muted">
+                    <i class="fa-li fa fa-circle-o"></i>
+                    <span class="pre">{{ stage.pre }}</span>
+                    <span class="during" style="display:none;">{{ stage.during }} </span>
+                    <span class="success" style="display:none;">{{ stage.success }}</span>
+                    <span class="fail" style="display:none;">{{ stage.fail }}</span>
+                </li>
                 {% endfor %}
             </ul>
         </div>
@@ -41,7 +47,7 @@
 <script>
     var stages = [
     {% for stage in stages %}
-        "{{ stage }}",
+        "{{ stage.name }}",
     {% endfor %}
     ];
 </script>

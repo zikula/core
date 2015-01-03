@@ -2,3 +2,9 @@
 #begininstall, #continueinstall {
     margin: 1em;
 }
+#ajaxlist {
+    font-size: 1.5em;
+}
+#ajaxlist li {
+    padding-bottom: .3em;
+}
