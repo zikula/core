@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Zikula\Module\UsersModule\Constant as UsersConstant;
 
 class CreateAdminType extends AbstractType
 {
@@ -35,8 +36,7 @@ class CreateAdminType extends AbstractType
                     new NotBlank(),
                     new Length(array('min' => 5)),
                     new Regex(array(
-                        'pattern' => '/[^\p{L}\p{N}_\.\-]/u',
-                        'match' => false,
+                        'pattern' => '#' . UsersConstant::UNAME_VALIDATION_PATTERN . '#',
                         'message' => __('Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _')
                     ))
                 )))
@@ -59,12 +59,7 @@ class CreateAdminType extends AbstractType
                 'label_attr' => array('class' => 'col-md-5'),
                 'constraints' => array(
                     new NotBlank(),
-                    new Email(), // this should take the place of the Regex below...
-//                    new Regex(array(
-//                        'pattern' => '/^(?:[^\s\000-\037\177\(\)<>@,;:\\"\[\]]\.?)+@(?:[^\s\000-\037\177\(\)<>@,;:\\\"\[\]]\.?)+\.[a-z]{2,6}$/Ui',
-//                        'match' => false,
-//                        'message' => __("Error! The administrator's e-mail address is not correctly formed. Please correct your entry and try again.")
-//                    ))
+                    new Email(),
                 )));
     }
 
