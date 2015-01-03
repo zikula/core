@@ -1,17 +1,9 @@
-html {
-    background: #eaeaea; /*non-CSS3 browsers*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#eaeaea'); /*IE*/
-    background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) ) fixed; /*webkit*/
-    background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*gecko*/
-    background: linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*CSS3*/
-    height: 100%;
-}
-
 body {
     font-family: Verdana, Arial, Helvetica, Sans-serif;
-    font-size: 12px;
+    font-size: 16px;
     line-height: 1.6em;
     color: #444;
+    background-color: #ffffff;
     margin: 0;
     padding: 0;
 }
@@ -26,9 +18,6 @@ body {
 #cell {
     display: table-cell;
     vertical-align: middle;
-    /* For IE6/7 */
-    position: relative;
-    top:expression(this.parentNode.clientHeight/2 - this.firstChild.clientHeight/2 + " px");
 }
 
 #content {
@@ -39,9 +28,7 @@ body {
     -webkit-box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
     -moz-box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
     box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
-    /*margin: 3% 1% 0;*/
     margin: 0 auto;
-    /*padding: 1.5em;*/
     padding: 1% 0;
     border: 1px solid #42403E\9; /* IE6/7/8 */
     color: #444;
@@ -72,7 +59,7 @@ h1 {
 
 h2 {
     color: #E5352C;
-    font-size: 22px;
+    font-size: 24px;
     line-height: 26px;
     text-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
     text-transform: uppercase;
@@ -117,21 +104,6 @@ h2 {
     margin: 5px;
 }
 
-#notice {
-    color: #222;
-    background:#E6E6FF;
-    border:1px solid #999999;
-    font-size:0.9em;
-    margin: 2% 1%;
-    padding:5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
-    -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
-}
-
 #maincontent {
     margin: 1em auto;
     width: 80%;
@@ -163,50 +135,22 @@ ul.systemrequirements li {
   padding-left: 25px;
 }
 
-#ZikulaOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-    background: #000000 url('../../../../images/ajax/zktimer_48px_black_rounded.gif') no-repeat scroll center center;
-    padding: 0;
-    margin: 0;
-    border: 0;
-    filter:alpha(opacity=60);
-    -moz-opacity: 0.60;
-    opacity: 0.60;
-}
-
-button{
-    font-weight:normal;
-}
-
-fieldset{
-    font-size:1.2em;
+fieldset > legend {
+    font-size:1.4em;
     line-height:1.2;
 }
 
-.alert-warning{
-    font-size:1.4em;
-    margin-top:10px;
-}
-
-.alert-danger{
-    font-size:1.4em;
-}
-
-.footer li{
+.installguide{
     font-size:1.2em;
 }
 
-.installguide{
-    font-size:1.6em;
-}
+/*****************************
+ * WIZARD STYLES (breadcrumbs)
+ ****************************/
 
 .wizard {
     margin-left: -50px;
+    font-size: 14px;
 }
 
 .wizard a {
@@ -271,62 +215,4 @@ fieldset{
     border-top: 20px inset transparent;
     content: "";
     z-index: 2;
-}
-
-@-webkit-keyframes shake {
-	0%, 100% {-webkit-transform: translateX(0);}
-	10%, 30%, 50%, 70%, 90% {-webkit-transform: translateX(-10px);}
-	20%, 40%, 60%, 80% {-webkit-transform: translateX(10px);}
-}
-
-@-moz-keyframes shake {
-	0%, 100% {-moz-transform: translateX(0);}
-	10%, 30%, 50%, 70%, 90% {-moz-transform: translateX(-10px);}
-	20%, 40%, 60%, 80% {-moz-transform: translateX(10px);}
-}
-
-@-ms-keyframes shake {
-	0%, 100% {-ms-transform: translateX(0);}
-	10%, 30%, 50%, 70%, 90% {-ms-transform: translateX(-10px);}
-	20%, 40%, 60%, 80% {-ms-transform: translateX(10px);}
-}
-
-@-o-keyframes shake {
-	0%, 100% {-o-transform: translateX(0);}
-	10%, 30%, 50%, 70%, 90% {-o-transform: translateX(-10px);}
-	20%, 40%, 60%, 80% {-o-transform: translateX(10px);}
-}
-
-@keyframes shake {
-	0%, 100% {transform: translateX(0);}
-	10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);}
-	20%, 40%, 60%, 80% {transform: translateX(10px);}
-}
-
-.shake {
-	-webkit-animation-name: shake;
-	-moz-animation-name: shake;
-	-ms-animation-name: shake;
-	-o-animation-name: shake;
-	animation-name: shake;
-}
-
-.animate{
-	-webkit-animation-duration: 1s;
-    -webkit-animation-delay: 1s;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-name: shake;
-    -webkit-animation-iteration-count: 1;
-    
-    animation-name: shake;
-    animation-duration: 1s;
-    animation-iteration-count: 1;
-
-    -o-animation-name: shake;
-    -o-animation-duration: 1s;
-    -o-animation-iteration-count: 1;
-
-    -moz-animation-name: shake;
-    -moz-animation-duration: 1s;
-    -moz-animation-iteration-count: 1;
 }
