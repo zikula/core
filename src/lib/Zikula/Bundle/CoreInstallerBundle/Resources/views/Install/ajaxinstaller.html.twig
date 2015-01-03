@@ -20,15 +20,15 @@
         </div>
     </div>
 
-    <div><a href="#" id="begininstall" class="btn btn-lg btn-success">{{ __('Begin Installer') }}</a></div>
+    <div><a href="#install-fieldset" id="begininstall" class="btn btn-lg btn-success">{{ __('Begin Installer') }}</a></div>
 
-    <fieldset>
+    <fieldset id="install-fieldset">
         <legend>{{  __("Installing Modules and Helpers") }}</legend>
 
-        <div class="center-block" style="width: 60%">
+        <div class="row">
             <ul id="ajaxlist" class="fa-ul text-left">
                 {% for stage in stages %}
-                <li id="{{ stage.name }}" class="text-muted">
+                <li id="{{ stage.name }}" class="text-muted col-md-5 col-md-offset-1 pull-left">
                     <i class="fa-li fa fa-circle-o"></i>
                     <span class="pre">{{ stage.pre }}</span>
                     <span class="during" style="display:none;">{{ stage.during }} </span>
