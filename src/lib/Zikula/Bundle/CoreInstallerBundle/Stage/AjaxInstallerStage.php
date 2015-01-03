@@ -185,7 +185,7 @@ class AjaxInstallerStage implements StageInterface
             21 => array(
                 self::NAME => "reloadroutes",
                 self::PRE => __('Reload routes'),
-                self::DURING => __('Reloading routes'),
+                self::DURING => __('Reloading routes (takes longer...)'),
                 self::SUCCESS => __('Routes reloaded'),
                 self::FAIL => __('There was an error reloading the routes')
             ),
