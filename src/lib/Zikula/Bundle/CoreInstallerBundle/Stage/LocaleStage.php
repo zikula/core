@@ -99,7 +99,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
             throw new AbortStageException(__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
         }
         // setup multilingual
-        $this->container->setParameter('language_i18n', $data['lang']);
+        $this->container->setParameter('language_i18n', $data['locale']);
         $this->container->setParameter('multilingual', true);
         $this->container->setParameter('languageurl', true);
         $this->container->setParameter('language_detect', false);
