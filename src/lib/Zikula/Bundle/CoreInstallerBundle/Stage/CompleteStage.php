@@ -20,6 +20,8 @@ use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\WizardCompleteInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Swift_Mailer;
+use Symfony\Component\Routing\RouterInterface;
 
 class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
 {
@@ -52,8 +54,38 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
     public function getResponse(Request $request)
     {
-        $request->getSession()->getFlashBag()->add('success', 'Congratulations! Zikula has been successfully installed.');
+        $admin = \UserUtil::getVars(2);
+        if ($this->sendEmailToAdmin($admin)) {
+            $request->getSession()->getFlashBag()->add('success', __('Congratulations! Zikula has been successfully installed.'));
+            return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', array(), RouterInterface::ABSOLUTE_URL));
+        } else {
+            $request->getSession()->getFlashBag()->add('warning', __('Email settings are not yet configured. Please configure them below.'));
+            return new RedirectResponse($this->container->get('router')->generate('zikulamailermodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        }
+    }
 
-        return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', array(), true));
+    private function sendEmailToAdmin($admin)
+    {
+        $baseUrl = $this->container->get('request')->getBasePath();
+        $body = <<<EOF
+<html>
+<head></head>
+<body>
+<h1>Hi $admin[uname]!</h1>
+<p>Zikula has been successfully installed at <a href="$baseUrl">$baseUrl</a>. If you have further questions,
+visit <a href="http://zikula.org">zikula.org</a></p>
+</body>
+EOF;
+        $message = \Swift_Message::newInstance()
+            ->setSubject(__('Zikula installation completed!'))
+            ->setFrom(\System::getVar('adminmail'))
+            ->setTo($admin['email'])
+            ->setBody($body)
+        ;
+        /**
+         * @var Swift_Mailer $mailer
+         */
+        $mailer = $this->container->get('mailer');
+        return $mailer->send($message);
     }
 }

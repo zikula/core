@@ -27,7 +27,7 @@ use Zikula\Module\ExtensionsModule\ZikulaExtensionsModule;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Event\ModuleStateEvent;
-use \Zikula\Core\CoreEvents;
+use Zikula\Core\CoreEvents;
 
 /**
  * Class InstallerController
@@ -307,12 +307,13 @@ class AjaxController extends AbstractController
 
     private function installPlugins()
     {
+        $result = true;
         $systemPlugins = \PluginUtil::loadAllSystemPlugins();
         foreach ($systemPlugins as $plugin) {
-            \PluginUtil::install($plugin);
+            $result = $result && \PluginUtil::install($plugin);
         }
 
-        return true;
+        return $result;
     }
 
     private function protectFiles()

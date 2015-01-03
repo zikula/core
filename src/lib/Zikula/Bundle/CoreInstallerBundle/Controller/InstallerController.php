@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\Wizard;
 use Zikula\Component\Wizard\WizardCompleteInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class InstallerController
@@ -69,7 +70,7 @@ class InstallerController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);
-                $url = $this->router->generate('install', array('stage' => $wizard->getNextStage()->getName()), true);
+                $url = $this->router->generate('install', array('stage' => $wizard->getNextStage()->getName()), RouterInterface::ABSOLUTE_URL);
 
                 return new RedirectResponse($url);
             }
