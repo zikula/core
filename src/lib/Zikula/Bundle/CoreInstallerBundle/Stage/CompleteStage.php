@@ -14,13 +14,22 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 
+use Zikula\Component\Wizard\InjectContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\WizardCompleteInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class CompleteStage implements StageInterface, WizardCompleteInterface
+class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
 {
+    private $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     public function getName()
     {
         return 'complete';
