@@ -59,11 +59,6 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
 
     public function isNecessary()
     {
-        $currentLangParameter = $this->yamlManager->getParameter('locale');
-        if (!empty($currentLangParameter)) {
-
-            return false;
-        }
         $installedLanguages = \ZLanguage::getInstalledLanguages();
         if (count($installedLanguages) == 1) {
             $this->writeParams(array('locale' => $installedLanguages[0]));
@@ -73,7 +68,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
             // see if the browser has a preference set
             $detector = new \ZLanguageBrowser($installedLanguages);
             $locale = $detector->discover();
-            if ($locale !== false) {
+            if (($locale !== false) && (in_array($locale, $installedLanguages))) {
                 $this->writeParams(array('locale' => $locale));
 
                 return false;
