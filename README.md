@@ -11,25 +11,23 @@ Zikula Core - Application Framework
 Introduction
 ------------
 
-Zikula Core is a web based application framework, fully extensible by
-Modules, plugins and themes.
+Zikula Core is a web based application framework, fully extensible by Modules, plugins and themes.
 
 For more information visit http://zikula.org/ and read our [user manual](https://github.com/zikula/zikula-docs/tree/master/Users%20Manual).
+
 
 <a name="requirements" />
 Requirements
 ------------
-Before installing Zikula it's important to ensure that the hosting server environment
-meets the requirements of the new core release. Zikula Core 1.4.0 has the following 
-requirements
+Before installing Zikula it's important to ensure that the hosting server environment meets the requirements
+of the new core release. Zikula Core 1.4.0 has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
 | PHP           | 5.3.3         | 5.5          |
 
 
-Please note that PHP versions before 5.3.8 are known to be buggy and might not
-work for you:
+Please note that PHP versions below are known to be buggy and will not work:
 
   - before PHP 5.3.4, if you get "Notice: Trying to get property of
     non-object", you've hit a known PHP bug (see
@@ -45,23 +43,23 @@ work for you:
 Zikula requires more memory than typical to install. You should set your memory limit in `php.ini` to 128 MB for the
 installation process.
 
+
 <a name="beforeinstalling" />
 Before installing
 -----------------
 
-Zikula makes use of [composer](http://getcomposer.org/) to manage and download
-all dependencies. Composer must be run prior to installing a site using Zikula.
-Run `composer self-update && composer update`. 
+Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies. Composer must
+be run prior to installing a site using Zikula. Run `composer self-update && composer update`.
 
-If you store Composer in the root of the Zikula Core checkout, please
-rename it from `composer.phar` to `composer` to avoid your IDE reading
-the package contents.
+If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to `composer`
+to avoid your IDE reading the package contents.
+
 
 <a name="installing" />
 Installing
 ----------
-Once all of the pre-install steps are complete Run `http://yoursiteurl/install.php` 
-and follow any on-screen prompts.
+Once all of the pre-install steps are complete Run `http://yoursiteurl/install` and follow any on-screen prompts.
+
 
 <a name="contributing" />
 Contributing

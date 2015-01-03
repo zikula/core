@@ -84,6 +84,9 @@ class ControllerUtil
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
         $results['phpsatisfied'] = version_compare($phpVersion, \Zikula_Core::PHP_MINIMUM_VERSION, ">=");
+        $results['phpsatisfied'] = $results['phpsatisfied'] && !version_compare($phpVersion, '5.3.8', "<");
+        $results['phpsatisfied'] = $results['phpsatisfied'] && !version_compare($phpVersion, '5.3.16', "==");
+
         $results['datetimezone'] = ini_get('date.timezone');
         $results['pdo'] = extension_loaded('pdo');
         $results['register_globals'] = !ini_get('register_globals');
