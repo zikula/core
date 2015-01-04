@@ -22,8 +22,9 @@
         <option key="i18n">false</option>
     </route>
 
-    <route id="upgrade" path="/upgrade">
+    <route id="upgrade" path="/upgrade/{stage}">
         <default key="_controller">core_installer.controller.upgrader:upgradeAction</default>
+        <default key="stage">null</default>
         <option key="i18n">false</option>
     </route>
 
