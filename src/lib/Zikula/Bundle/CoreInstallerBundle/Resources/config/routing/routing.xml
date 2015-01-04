@@ -11,7 +11,13 @@
     </route>
 
     <route id="ajaxinstall" path="/ajaxinstall">
-        <default key="_controller">core_installer.controller.ajax:ajaxAction</default>
+        <default key="_controller">core_installer.controller.ajaxinstall:ajaxAction</default>
+        <option key="expose">true</option>
+        <option key="i18n">false</option>
+    </route>
+
+    <route id="ajaxupgrade" path="/ajaxupgrade">
+        <default key="_controller">core_installer.controller.ajaxupgrade:ajaxAction</default>
         <option key="expose">true</option>
         <option key="i18n">false</option>
     </route>

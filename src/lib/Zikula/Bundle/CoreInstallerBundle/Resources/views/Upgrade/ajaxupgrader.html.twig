@@ -9,7 +9,7 @@
     <link href="{{ asset('bundles/zikulacoreinstaller/css/ajaxinstaller.css') }}" rel="stylesheet" />
 {%  endblock %}
 
-{% block title __('Zikula is installing!') %}
+{% block title __('Zikula is upgrading!') %}
 
 {% block content %}
 
@@ -20,10 +20,10 @@
         </div>
     </div>
 
-    <div><a href="#install-fieldset" id="begininstall" class="btn btn-lg btn-success">{{ __('Begin Installer') }}</a></div>
+    <div><a href="#upgrade-fieldset" id="beginupgrade" class="btn btn-lg btn-success">{{ __('Begin Upgrader') }}<br />>{{ __('be patient!') }}</a></div>
 
-    <fieldset id="install-fieldset">
-        <legend>{{  __("Installing Modules and Helpers") }}</legend>
+    <fieldset id="upgrade-fieldset">
+        <legend>{{  __("Upgrading Modules and Helpers") }}</legend>
 
         <div class="row">
             <ul id="ajaxlist" class="fa-ul text-left">
@@ -41,7 +41,7 @@
 
     </fieldset>
 
-    <div><a href="{{ url('install', { 'stage': 'complete' }) }}" id="continuebutton" class="btn btn-lg btn-success" style="display:none;">{{ __('Finish') }} <i class="fa fa-angle-double-right"></i></a></div>
+    <div><a href="{{ url('upgrade', { 'stage': 'complete' }) }}" id="continuebutton" class="btn btn-lg btn-success" style="display:none;">{{ __('Finish') }} <i class="fa fa-angle-double-right"></i></a></div>
 </div>
 {# create a javascript array of all the stages #}
 <script>

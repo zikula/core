@@ -10,7 +10,8 @@
         <parameter key="core_installer.controller.installer.class">Zikula\Bundle\CoreInstallerBundle\Controller\InstallerController</parameter>
         <parameter key="core_installer.controller.upgrader.class">Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController</parameter>
         <parameter key="core_installer.controller.doc.class">Zikula\Bundle\CoreInstallerBundle\Controller\DocController</parameter>
-        <parameter key="core_installer.controller.ajax.class">Zikula\Bundle\CoreInstallerBundle\Controller\AjaxController</parameter>
+        <parameter key="core_installer.controller.ajaxinstall.class">Zikula\Bundle\CoreInstallerBundle\Controller\AjaxInstallController</parameter>
+        <parameter key="core_installer.controller.ajaxupgrade.class">Zikula\Bundle\CoreInstallerBundle\Controller\AjaxUpgradeController</parameter>
     </parameters>
 
     <services>
@@ -29,7 +30,11 @@
             <argument type="service" id="service_container" />
         </service>
 
-        <service id="core_installer.controller.ajax" class="%core_installer.controller.ajax.class%">
+        <service id="core_installer.controller.ajaxinstall" class="%core_installer.controller.ajaxinstall.class%">
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="core_installer.controller.ajaxupgrade" class="%core_installer.controller.ajaxupgrade.class%">
             <argument type="service" id="service_container" />
         </service>
 

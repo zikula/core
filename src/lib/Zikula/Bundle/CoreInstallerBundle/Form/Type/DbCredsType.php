@@ -100,7 +100,7 @@ class DbCredsType extends AbstractType
         // add a constraint to the entire form
         // thanks to @Matt Daum : http://shout.setfive.com/2013/06/27/symfony2-forms-without-an-entity-and-with-a-conditional-validator/
         $resolver->setDefaults(array(
-                'constraints' => new Callback(array('callback' => array('Zikula\Bundle\CoreInstallerBundle\Validator\PdoConnectionValidator', 'validate'))),
+                'constraints' => new Callback(array('callback' => array('Zikula\Bundle\CoreInstallerBundle\Validator\CoreInstallerValidator', 'validatePdoConnection'))),
                 'csrf_protection' => false,
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token

@@ -1,16 +1,23 @@
 /**
- * Zikula.ZikulaCoreInstallerBundle:Install:ajaxinstaller.html.twig
- * ajaxinstaller.js
+ * ajaxcommon.js
  *
  * jQuery based JS
  */
 
 jQuery( document ).ready(function( $ ) {
     // the `stages` array is declared in the template
+    var route;
     var progressbar = 0;
     var percentage = (1 / stages.length) * 100;
 
     $("#begininstall").click(function() {
+        route = 'ajaxinstall';
+        $(this).addClass('disabled');
+        $(this).bind('click', false);
+        processStage(getNextStage())
+    });
+    $("#beginupgrade").click(function() {
+        route = 'ajaxupgrade';
         $(this).addClass('disabled');
         $(this).bind('click', false);
         processStage(getNextStage())
@@ -29,7 +36,7 @@ jQuery( document ).ready(function( $ ) {
             data: {
                 stage: stagename
             },
-            url: Routing.generate('ajaxinstall'),
+            url: Routing.generate(route),
             success: function(data, textStatus, jqXHR) {
                 if (data.status == 1) {
                     indicateStageSuccessful(stageitem);
@@ -90,7 +97,6 @@ jQuery( document ).ready(function( $ ) {
     function finalizeUI() {
         $('li#finish').removeClass('text-muted').addClass('text-success');
         $('li#finish').children('i').removeClass('fa-circle-o').addClass('fa-check-circle');
-        $('li#finish').children('.installed').show();
-        $('#continueinstall').show();
+        $('#continuebutton').show();
     }
 });

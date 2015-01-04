@@ -18,6 +18,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\Component\Wizard\FormHandlerInterface;
+use Zikula\Component\Wizard\Wizard;
+use Zikula\Component\Wizard\WizardCompleteInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class UpgraderController
@@ -25,12 +29,73 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UpgraderController extends AbstractController
 {
+    const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.3.5';
+
     /**
      * @param Request $request
+     * @param string $stage
      * @return Response
      */
-    public function upgradeAction(Request $request)
+    public function upgradeAction(Request $request, $stage)
     {
-        return $this->templatingService->renderResponse("ZikulaCoreInstallerBundle:Install:layout.html.twig");
+        $this->defineCurrentInstalledCoreVersion();
+        if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, self::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '=')) {
+            $stage = 'complete';
+        }
+        // notinstalled?
+        if (($this->container->getParameter('installed') == false)) {
+
+            return new RedirectResponse($this->router->generate('install', array(), RouterInterface::ABSOLUTE_URL));
+        }
+
+        // check php
+        $ini_warnings = $this->util->initPhp();
+        if (count($ini_warnings) > 0) {
+            $request->getSession()->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
+        }
+
+        // begin the wizard
+        $wizard = new Wizard($this->container, realpath(__DIR__ . '/../Resources/config/upgrade_stages.yml'));
+        $currentStage = $wizard->getCurrentStage($stage);
+        if ($currentStage instanceof WizardCompleteInterface) {
+            return $currentStage->getResponse($request);
+        }
+        $templateParams = $this->util->getTemplateGlobals($currentStage);
+        if ($wizard->isHalted()) {
+            $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());
+            return $this->templatingService->renderResponse('ZikulaCoreInstallerBundle::error.html.twig', $templateParams);
+        }
+
+        // handle the form
+        if ($currentStage instanceof FormHandlerInterface) {
+            $form = $this->form->create($currentStage->getFormType());
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $currentStage->handleFormResult($form);
+                $url = $this->router->generate('install', array('stage' => $wizard->getNextStage()->getName()), RouterInterface::ABSOLUTE_URL);
+
+                return new RedirectResponse($url);
+            }
+            $templateParams['form'] = $form->createView();
+        }
+
+        return $this->templatingService->renderResponse($currentStage->getTemplateName(), $templateParams);
+    }
+
+    /**
+     * Get current installed version number
+     *
+     * @return string
+     */
+    private function defineCurrentInstalledCoreVersion()
+    {
+        $moduleTable = 'module_vars';
+        try {
+            $stmt = $this->container->get('doctrine.dbal.default_connection')->executeQuery("SELECT value FROM $moduleTable WHERE modname = 'ZConfig' AND name = 'Version_Num'");
+            $result = $stmt->fetch(\PDO::FETCH_NUM);
+            define('ZIKULACORE_CURRENT_INSTALLED_VERSION', unserialize($result[0]));
+        } catch (\Exception $e) {
+            // now what? @todo
+        }
     }
 }

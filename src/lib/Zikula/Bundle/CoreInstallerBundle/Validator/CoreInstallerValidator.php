@@ -16,7 +16,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Validator;
 
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class PdoConnectionValidator
+class CoreInstallerValidator
 {
     /**
      * Validate provided database credentials by attempting to establish connection with the database.
@@ -24,7 +24,7 @@ class PdoConnectionValidator
      * @param $object
      * @param ExecutionContextInterface $context
      */
-    public static function validate($object, ExecutionContextInterface $context)
+    public static function validatePdoConnection($object, ExecutionContextInterface $context)
     {
         try {
             $dbh = new \PDO("$object[database_driver]:host=$object[database_host];dbname=$object[database_name]", $object['database_user'], $object['database_password']);
@@ -42,5 +42,36 @@ class PdoConnectionValidator
                 ->addViolation()
             ;
         }
+    }
+
+    /**
+     * Validate provided login credentials and login
+     *
+     * @param $object
+     * @param ExecutionContextInterface $context
+     */
+    public static function validateAndLogin($object, ExecutionContextInterface $context)
+    {
+        $authenticationInfo = array(
+            'login_id' => $object['username'],
+            'pass'     => $object['password']
+        );
+        $authenticationMethod = array(
+            'modname' => 'ZikulaUsersModule',
+            'method'  => 'uname',
+        );
+        try {
+            $loginResult = \UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
+            if (!$loginResult) {
+                $context->buildViolation(__('Error! Could not login with provided credentials. Please try again.'))
+                    ->addViolation()
+                ;
+            }
+        } catch (\Exception $e) {
+            $context->buildViolation(__('Error! There was a problem logging in.'))
+                ->addViolation()
+            ;
+        }
+
     }
 }

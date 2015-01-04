@@ -30,10 +30,10 @@ use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\CoreEvents;
 
 /**
- * Class InstallerController
+ * Class AjaxController
  * @package Zikula\Bundle\CoreInstallerBundle\Controller
  */
-class AjaxController extends AbstractController
+class AjaxInstallController extends AbstractController
 {
     /**
      * @var YamlDumper
