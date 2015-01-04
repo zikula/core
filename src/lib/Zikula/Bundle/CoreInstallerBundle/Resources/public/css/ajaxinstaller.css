@@ -1,5 +1,7 @@
-/*! to do */
-#begininstall, #continueinstall {
+#begininstall,
+#continueinstall,
+#beginupgrade,
+#continueupgrade {
     margin: 1em;
 }
 #ajaxlist {
