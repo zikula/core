@@ -71,7 +71,7 @@ class UpgraderController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);
-                $url = $this->router->generate('install', array('stage' => $wizard->getNextStage()->getName()), RouterInterface::ABSOLUTE_URL);
+                $url = $this->router->generate('upgrade', array('stage' => $wizard->getNextStage()->getName()), RouterInterface::ABSOLUTE_URL);
 
                 return new RedirectResponse($url);
             }
