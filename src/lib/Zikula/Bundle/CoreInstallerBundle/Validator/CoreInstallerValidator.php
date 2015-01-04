@@ -67,6 +67,13 @@ class CoreInstallerValidator
                     ->addViolation()
                 ;
             }
+            if (is_array($loginResult)) {
+                $granted = \SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN, $loginResult['uid']);
+                if (!$granted) {
+                    $context->buildViolation(__('Error! You logged in to an account without Admin permissions'))
+                        ->addViolation();
+                }
+            }
         } catch (\Exception $e) {
             $context->buildViolation(__('Error! There was a problem logging in.'))
                 ->addViolation()
