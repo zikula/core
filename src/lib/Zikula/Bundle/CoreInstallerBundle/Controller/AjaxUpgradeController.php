@@ -41,6 +41,8 @@ class AjaxUpgradeController extends AbstractController
     private function executeStage($stageName)
     {
         switch($stageName) {
+            case "installroutes":
+                return $this->installRoutesModule();
             case "upgrademodules":
                 return $this->upgradeModules();
             case "reloadroutes":
@@ -51,8 +53,47 @@ class AjaxUpgradeController extends AbstractController
                 return $this->container->get('core_installer.controller.ajaxinstall')->loginAdmin();
             case "finalizeparameters":
                 return $this->finalizeParameters();
+            case "clearcaches":
+                return $this->clearCaches();
         }
         \System::setInstalling(false);
+        return true;
+    }
+
+    private function installRoutesModule()
+    {
+        $kernel = $this->container->get('kernel');
+        $routeModuleName = 'ZikulaRoutesModule';
+        $install = $this->container->get('core_installer.controller.ajaxinstall')->installModule($routeModuleName);
+        if (!$install) {
+            // error
+            return false;
+        }
+
+        // regenerate modules list
+        $modApi = new \Zikula\Module\ExtensionsModule\Api\AdminApi($kernel->getContainer(), new \Zikula\Module\ExtensionsModule\ZikulaExtensionsModule());
+        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $modApi->getfilemodules()));
+
+        // determine module id
+        $mid = \ModUtil::getIdFromName($routeModuleName, true);
+
+        // force load the modules admin API
+        \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
+
+        // set module to active
+        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $mid, 'state' => \ModUtil::STATE_INACTIVE));
+        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $mid, 'state' => \ModUtil::STATE_ACTIVE));
+
+        // add the Routes module to the appropriate category
+        $categories = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
+        $modscat = array();
+        foreach ($categories as $category) {
+            $modscat[$category['name']] = $category['cid'];
+        }
+        $category = __('System');
+        $destinationCategoryId = isset($modscat[$category]) ? $modscat[$category] : $modscat[0];
+        \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', array('module' => $routeModuleName, 'category' => $destinationCategoryId));
+
         return true;
     }
 
@@ -100,6 +141,11 @@ class AjaxUpgradeController extends AbstractController
 
         file_put_contents($rootDir . "/custom_parameters.yml", Yaml::dump($parameters));
 
+        return true;
+    }
+
+    private function clearCaches()
+    {
         \Zikula_View_Theme::getInstance()->clear_all_cache();
         \Zikula_View_Theme::getInstance()->clear_compiled();
         $cacheClearer = $this->container->get('zikula.cache_clearer');

@@ -43,6 +43,7 @@ class InitStage implements StageInterface, InjectContainerInterface
     public function isNecessary()
     {
         $this->init();
+        $this->upgradeUsersModule();
         return false;
     }
 
@@ -109,59 +110,20 @@ class InitStage implements StageInterface, InjectContainerInterface
         $bundles = array();
         // this neatly autoloads
         $boot->getPersistedBundles($kernel, $bundles);
-
-        // install the Routes module
-        $this->installRoutesModule($kernel);
     }
 
-    /**
-     * Calls Routes module installer
-     *
-     * @param \ZikulaKernel $kernel
-     *
-     * @return boolean
-     */
-    private function installRoutesModule(\ZikulaKernel $kernel)
+    private function upgradeUsersModule()
     {
-        // manually install the Routes module
-        $routeModuleName = 'ZikulaRoutesModule';
-        $module = $kernel->getModule($routeModuleName);
-        $installerClassName = $module->getInstallerClass();
-        $bootstrap = $module->getPath() . '/bootstrap.php';
-        if (file_exists($bootstrap)) {
-            include_once $bootstrap;
-        }
-        /** @var \Zikula_AbstractInstaller $instance */
-        $instance = new $installerClassName($kernel->getContainer(), $module);
-        if (!$instance->install()) {
-            // error
-            return false;
-        }
-
-        // regenerate modules list
-        $modApi = new \Zikula\Module\ExtensionsModule\Api\AdminApi($kernel->getContainer(), new \Zikula\Module\ExtensionsModule\ZikulaExtensionsModule());
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $modApi->getfilemodules()));
-
-        // determine module id
-        $mid = \ModUtil::getIdFromName($routeModuleName, true);
-
-        // force load the modules admin API
-        \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
-
-        // set module to active
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $mid, 'state' => \ModUtil::STATE_INACTIVE));
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $mid, 'state' => \ModUtil::STATE_ACTIVE));
-
-        // add the Routes module to the appropriate category
-        $categories = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
-        $modscat = array();
-        foreach ($categories as $category) {
-            $modscat[$category['name']] = $category['cid'];
-        }
-        $category = __('System');
-        $destinationCategoryId = isset($modscat[$category]) ? $modscat[$category] : $modscat[0];
-        \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', array('module' => $routeModuleName, 'category' => $destinationCategoryId));
-
-        return true;
+        $oldModuleInfo = \ModUtil::getInfoFromName('ZikulaUsersModule');
+        /** @var \Zikula\Core\AbstractBundle $module */
+        $module = $this->container->get('kernel')->getModule('ZikulaUsersModule');
+        $installerInstance = new \Zikula\Module\UsersModule\UsersModuleInstaller($this->container, $module);
+        $installerInstance->upgrade($oldModuleInfo['version']);
+        $versionInstance = new \Zikula\Module\UsersModule\UsersModuleVersion($module);
+        $metaData = $versionInstance->getMetaData();
+        $item = $this->container->get('doctrine.entitymanager')->getRepository(\Zikula\Module\ExtensionsModule\Api\AdminApi::EXTENSION_ENTITY)->find($oldModuleInfo['id']);
+        $item['version'] = $metaData['version'];
+        $item['state'] = \ModUtil::STATE_ACTIVE;
+        $this->container->get('doctrine.entitymanager')->flush();
     }
 }

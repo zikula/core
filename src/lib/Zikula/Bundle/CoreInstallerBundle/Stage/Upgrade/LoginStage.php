@@ -28,10 +28,6 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        // force upgrade of Users module before authentication check
-        $usersModuleID = \ModUtil::getIdFromName('ZikulaUsersModule');
-        \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
-        \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgrade', array('id' => $usersModuleID));
     }
 
     public function getName()
@@ -46,7 +42,7 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function getTemplateName()
     {
-        return '';
+        return 'ZikulaCoreInstallerBundle::login.html.twig';
     }
 
     public function handleFormResult(FormInterface $form)
