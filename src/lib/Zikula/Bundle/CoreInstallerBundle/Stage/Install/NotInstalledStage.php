@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Bundle\CoreInstallerBundle\Stage;
+namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
 use Zikula\Component\Wizard\StageInterface;
 
