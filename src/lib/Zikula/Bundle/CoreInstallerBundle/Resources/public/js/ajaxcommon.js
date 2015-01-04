@@ -1,4 +1,5 @@
 /**
+ * CoreInstallerBundle: Install and Upgrade templates for ajax operations
  * ajaxcommon.js
  *
  * jQuery based JS
