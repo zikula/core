@@ -137,7 +137,12 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    private function installModule($moduleName)
+    /**
+     * public because called by AjaxUpgradeController also
+     * @param $moduleName
+     * @return bool
+     */
+    public function installModule($moduleName)
     {
         $module = $this->container->get('kernel')->getModule($moduleName);
         /** @var \Zikula\Core\AbstractModule $module */
@@ -247,7 +252,11 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    private function loginAdmin()
+    /**
+     * public because called by AjaxUpgradeController also
+     * @return bool
+     */
+    public function loginAdmin()
     {
         $this->container->get('session')->start();
         $params = $this->yamlManager->getParameters();
@@ -296,7 +305,11 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    private function reloadRoutes()
+    /**
+     * public because called by AjaxUpgradeController also
+     * @return bool
+     */
+    public function reloadRoutes()
     {
         // fire MODULE_INSTALL event to reload all routes
         $event = new ModuleStateEvent($this->container->get('kernel')->getModule('ZikulaRoutesModule'));
