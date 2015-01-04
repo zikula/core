@@ -38,7 +38,6 @@ class UpgraderController extends AbstractController
      */
     public function upgradeAction(Request $request, $stage)
     {
-        $this->defineCurrentInstalledCoreVersion();
         if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, self::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '=')) {
             $stage = 'complete';
         }
@@ -80,22 +79,5 @@ class UpgraderController extends AbstractController
         }
 
         return $this->templatingService->renderResponse($currentStage->getTemplateName(), $templateParams);
-    }
-
-    /**
-     * Get current installed version number
-     *
-     * @return string
-     */
-    private function defineCurrentInstalledCoreVersion()
-    {
-        $moduleTable = 'module_vars';
-        try {
-            $stmt = $this->container->get('doctrine.dbal.default_connection')->executeQuery("SELECT value FROM $moduleTable WHERE modname = 'ZConfig' AND name = 'Version_Num'");
-            $result = $stmt->fetch(\PDO::FETCH_NUM);
-            define('ZIKULACORE_CURRENT_INSTALLED_VERSION', unserialize($result[0]));
-        } catch (\Exception $e) {
-            // now what? @todo
-        }
     }
 }
