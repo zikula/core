@@ -15,7 +15,7 @@ stages:
     login:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\LoginStage
         order: 5
-    ajaxinstaller:
+    ajaxupgrader:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage
         order: 6
     complete:
