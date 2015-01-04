@@ -16,6 +16,7 @@ use ModUtil;
 use ServiceUtil;
 use System;
 use UserUtil;
+use LogUtil;
 
 use Zikula_AbstractApi;
 use Zikula_View;
