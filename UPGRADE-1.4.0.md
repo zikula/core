@@ -8,9 +8,11 @@ Upgrading Zikula
   5. [Upgrading](#upgrading)
   6. [Notes](#notes)
 
+
 <a name="introduction" />
 Introduction
 ------------
+
 Zikula Core 1.4.0 introduces a lot of forward compatibility for new features that will come in Zikula 2.0.0.
 
 For more information visit http://zikula.org/ and read our
@@ -20,19 +22,28 @@ For more information visit http://zikula.org/ and read our
 <a name="requirements" />
 Requirements
 ------------
+
 Before upgrading Zikula it's important to ensure that the hosting server environment meets the requirements
 of the new core release. Zikula Core 1.4.0 has the following requirements
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.3.3         | 5.5          |
+| PHP           | 5.3.8         | 5.5          |
 
- - Please note that PHP versions less than `5.3.8` and `5.3.16` are known to be buggy and will not work.
+ - Please note that PHP version `5.3.16` is known to be buggy and will not work.
+ - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
+   to 128 MB for the installation process.
+ - Zikula requires that `date.timezone` be set in the `php.ini` configuration file (or `.htaccess`).
+ - Zikula also requires other php extensions and configurations. These are checked during the upgrade
+   process and if there are problems, you will be notified. If you discover errors, check with your hosting
+   provider on how to rectify these issues. Typically, they will require changing the `php.ini` file or
+   possibly reconfiguring the php installation by your provider.
 
 
 <a name="testenv" />
 Test Environment
 ----------------
+
 The Zikula team strongly recommend having a duplicate testing environment of the live site in which all
 changes including upgrades are tested on before application to the live site.
 
@@ -40,7 +51,8 @@ changes including upgrades are tested on before application to the live site.
 <a name="beforeupgrading" />
 Before upgrading
 ----------------
-Prior to any upgrade ensure that a reliable backup of all files and the database is taken.
+
+***Prior to any upgrade ensure that a reliable backup of all files and the database is taken.***
 
 ###If you obtained Zikula 1.4.0 from cloning the repo at Github
 
@@ -60,6 +72,7 @@ All the dependencies and requirements are included in this package, so there is 
 <a name="upgrading" />
 Upgrading
 ---------
+
 The following process should be followed for all upgrades even small point releases (e.g. `1.4.x`).
 
   - Backup all your files and database. Keep a note of your database settings from `config.php` (or
@@ -79,5 +92,6 @@ The following process should be followed for all upgrades even small point relea
 <a name="notes" />
 Notes
 -----
+
   - As of 1.4.0 `ztemp` is now located in the `app/cache/<kernel-mode>/ztemp` location automatically.
   - the old `upgrade.php` has been replaced by simply `/upgrade`

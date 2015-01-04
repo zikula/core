@@ -46,31 +46,31 @@ class ControllerUtil
     {
         $warnings = array();
         if (!function_exists('mb_get_info')) {
-            $warnings[] = __('mbstring is not installed in PHP.  Zikula cannot install without this extension.');
+            $warnings[] = __('mbstring is not installed in PHP.  Zikula cannot install or upgrade without this extension.');
         }
         if (ini_set('mbstring.internal_encoding', 'UTF-8') === false) {
             // mbstring.internal_encoding is deprecated in php 5.6.0
             $currentSetting = ini_get('mbstring.internal_encoding');
-            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The upgrade process may fail at your current setting of %4$s.', array('ini_set', 'mbstring.internal_encoding', 'UTF-8', $currentSetting));
+            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', array('ini_set', 'mbstring.internal_encoding', 'UTF-8', $currentSetting));
         }
         if (ini_set('default_charset', 'UTF-8') === false) {
             $currentSetting = ini_get('default_charset');
-            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The upgrade process may fail at your current setting of %4$s.', array('ini_set', 'default_charset', 'UTF-8', $currentSetting));
+            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', array('ini_set', 'default_charset', 'UTF-8', $currentSetting));
         }
         if (mb_regex_encoding('UTF-8') === false) {
             $currentSetting = mb_regex_encoding();
-            $warnings[] = __f('Could not set %1$s to the value of %2$s. The upgrade process may fail at your current setting of %3$s.', array('mb_regex_encoding', 'UTF-8', $currentSetting));
+            $warnings[] = __f('Could not set %1$s to the value of %2$s. The install or upgrade process may fail at your current setting of %3$s.', array('mb_regex_encoding', 'UTF-8', $currentSetting));
         }
         if (ini_set('memory_limit', '128M') === false) {
             $currentSetting = ini_get('memory_limit');
-            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The upgrade process may fail at your current setting of %4$s.', array('ini_set', 'memory_limit', '128M', $currentSetting));
+            $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', array('ini_set', 'memory_limit', '128M', $currentSetting));
         }
         if (ini_set('max_execution_time', 86400) === false) {
             // 86400 = 24 hours
             $currentSetting = ini_get('max_execution_time');
             if ($currentSetting > 0) {
                 // 0 = unlimited time
-                $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The upgrade process may fail at your current setting of %4$s.', array('ini_set', 'max_execution_time', '86400', $currentSetting));
+                $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', array('ini_set', 'max_execution_time', '86400', $currentSetting));
             }
         }
 
@@ -84,8 +84,7 @@ class ControllerUtil
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
         $results['phpsatisfied'] = version_compare($phpVersion, \Zikula_Core::PHP_MINIMUM_VERSION, ">=");
-        $results['phpsatisfied'] = $results['phpsatisfied'] && !version_compare($phpVersion, '5.3.8', "<");
-        $results['phpsatisfied'] = $results['phpsatisfied'] && !version_compare($phpVersion, '5.3.16', "==");
+        $results['phpsatisfied'] = $results['phpsatisfied'] && !version_compare($phpVersion, '5.3.16', "=="); // 5.3.16 is known to not work
 
         $results['datetimezone'] = ini_get('date.timezone');
         $results['pdo'] = extension_loaded('pdo');

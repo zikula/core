@@ -24,24 +24,14 @@ of the new core release. Zikula Core 1.4.0 has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.3.3         | 5.5          |
+| PHP           | 5.3.8         | 5.5          |
 
 
-Please note that PHP versions below are known to be buggy and will not work:
+Please note:
 
-  - before PHP 5.3.4, if you get "Notice: Trying to get property of
-    non-object", you've hit a known PHP bug (see
-    https://bugs.php.net/bug.php?id=52083 and
-    https://bugs.php.net/bug.php?id=50027);
-
-  - before PHP 5.3.8, if you get an error involving annotations, you've hit
-    a known PHP bug (see https://bugs.php.net/bug.php?id=55156).
-
-  - PHP 5.3.16 has a major bug in the Reflection subsystem and is not 
-    suitable to run Zikula (https://bugs.php.net/bug.php?id=62715)
-
-Zikula requires more memory than typical to install. You should set your memory limit in `php.ini` to 128 MB for the
-installation process.
+  - PHP 5.3.16 has a major bug in the Reflection subsystem and is not suitable to run Zikula (https://bugs.php.net/bug.php?id=62715)
+  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini` to 128 MB for the
+    installation process.
 
 
 <a name="beforeinstalling" />
