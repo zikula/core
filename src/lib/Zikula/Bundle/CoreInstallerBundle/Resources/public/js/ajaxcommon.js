@@ -46,6 +46,7 @@ jQuery( document ).ready(function( $ ) {
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
+                indicateStageFailure(stageitem);
                 alert(jqXHR.responseText);
             },
             complete: function(jqXHR, textStatus) {
