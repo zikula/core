@@ -282,6 +282,10 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             }
 
             foreach ($selectedValues as $selectedValue) {
+                if ($selectedValue === null) {
+                    // If no category has been selected.
+                    continue;
+                }
                 $category = $em->find($categoryEntityClass, $selectedValue);
                 $class = $em->getClassMetadata($entityClass)->getAssociationTargetClass($this->dataField);
                 $collection->add(new $class($this->registryId, $category, $entity));
