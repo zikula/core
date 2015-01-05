@@ -8,9 +8,9 @@
         <div id="content">
             <div id="maincontent">
                 <h1>{{ __("Zikula Application Framework") }}</h1>
-                <h2>{{ __("Zikula Core is not upgraded!") }}</h2>
+                <h2>{{ __("Zikula Core requires upgrade!") }}</h2>
                 <p>
-                    {{ __f('You are seeing this message because Zikula has not yet been upgraded. You can upgrade Zikula by clicking
+                    {{ __f('You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking
                     on the upgrade button, but before doing so please read the %1$s. Further information can be found in the %2$s.',
                     {1: '<a href="%url%">%text%</a>' | replace({'%url%': url('upgrade'), '%text%': __('upgrade instructions') }),
                      2: '<a href="%url%">%text%</a>' | replace({'%url%': 'http://www.zikula.org', '%text%': __('online documentation') }) } ) | raw }}
