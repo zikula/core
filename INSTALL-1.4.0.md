@@ -22,7 +22,8 @@ Zikula can be extended with modules, plugins and themes which can add functional
 website. These are available at http://www.zikula.org/library
 
 Zikula Core 1.4.0 maintains backward-compatibility with Zikula Core 1.3.0 and runs all 1.3.x-compatible
-modules, plugins and themes without changes.
+modules, plugins and themes without changes. If a module doesn't work with 1.4 but worked with 1.3, feel free
+to open an issue at the GitHub Core Repository and we will try to fix any problems.
 
 
 <a name="requirements" />
@@ -56,9 +57,8 @@ If you obtained the Zikula Core by cloning the repo at Github, you should see th
 instructions. This is **not recommended for non-developers**.
 
 If you obtained Zikula Core from zikula.org or the CI server, then you can upload the entire archive (`.zip`
-or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable). In the
-end, however, you will only need the contents of the `/src` archive; copy all these files and directories to
-your webroot (typically `public_html` or `httpdocs`).
+or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable). Copy all the
+files and directories to your webroot (typically `public_html` or `httpdocs`).
 
 ###Set file permissions (Critical)
 
@@ -73,15 +73,16 @@ the permission settings as they were set correctly by the development team).
 
 ###Create the Database
 
-Create a database on your server and note the **name**, **username** and **password**.
-These will be needed during install. You can use an existing database, but this is not recommended unless Zikula
-will be the only application using that database. In this case, remove all existing tables from the existing database.
+Create a database on your server. Take note of the database **name** as well as the database **username** and
+**password** which are likely given by your provider. These will be needed during install. You can use an existing
+database, but this is not recommended unless Zikula will be the only application using that database. In this case,
+remove all existing tables from the existing database.
 
 ###Web Installer
 
-To begin the installer, simply visit `/install` in the root directory with your browser,
-e.g. `http://www.example.com/install`. If you installed Zikula into a subdirectory 'foo' the URL would
-be `http://www.example.com/foo/install`
+To begin the installer, simply visit the root directory with your browser, e.g. `http://www.example.com/`.
+If you installed Zikula into a subdirectory 'foo' the URL would be `http://www.example.com/foo/`. You will be
+automatically redirected to the installer.
 
 
 <a name="final">
@@ -91,4 +92,6 @@ be `http://www.example.com/foo/install`
 Modifications to the Zikula core system code or database are not supported. Doing so can cause extensive
 problems when upgrading the system in the future and therefore these *hacks* are not recommended. Zikula
 has a flexible extensions system and configuration override system to allow customization and we recommend
-you consult the developer documentation about this.
+you consult the developer documentation about this. If you feel like your hack is useful / a bug fix / a nice
+feature, Please open an issue/pull-request at the GitHub Core Repository. We're glad to merge any improvements
+of the core
