@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
+use Zikula\Module\ThemeModule\Util as ThemeUtil;
 
 /**
  * Class AjaxUpgradeController
@@ -43,14 +44,18 @@ class AjaxUpgradeController extends AbstractController
         switch($stageName) {
             case "installroutes":
                 return $this->installRoutesModule();
+            case "loginadmin":
+                return $this->container->get('core_installer.controller.ajaxinstall')->loginAdmin();
             case "upgrademodules":
-                return $this->upgradeModules();
+                $result = $this->upgradeModules();
+                if (count($result) === 0) {
+                    return true;
+                }
+                return (boolean) $result;
             case "reloadroutes":
                 return $this->container->get('core_installer.controller.ajaxinstall')->reloadRoutes();
             case "regenthemes":
                 return $this->regenerateThemes();
-            case "loginadmin":
-                return $this->container->get('core_installer.controller.ajaxinstall')->loginAdmin();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
@@ -108,7 +113,7 @@ class AjaxUpgradeController extends AbstractController
     private function regenerateThemes()
     {
         // regenerate the themes list
-       return  \ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'regenerate');
+       return ThemeUtil::regenerate();
     }
 
     private function finalizeParameters()
@@ -131,6 +136,7 @@ class AjaxUpgradeController extends AbstractController
             $path = $rootDir . "/parameters.yml";
         }
         $parameters = Yaml::parse(file_get_contents($path));
+        unset($parameters['username'], $parameters['password']);
         $parameters['parameters']['secret'] = \RandomUtil::getRandomString(50);
         $parameters['parameters']['url_secret'] = \RandomUtil::getRandomString(10);
         // Configure the Request Context
@@ -146,8 +152,9 @@ class AjaxUpgradeController extends AbstractController
 
     private function clearCaches()
     {
-        \Zikula_View_Theme::getInstance()->clear_all_cache();
-        \Zikula_View_Theme::getInstance()->clear_compiled();
+        \System::setVar('Default_Theme', 'ZikulaAndreas08Theme');
+        \Zikula_View_Theme::getInstance('ZikulaAndreas08Theme')->clear_all_cache();
+        \Zikula_View_Theme::getInstance('ZikulaAndreas08Theme')->clear_compiled();
         $cacheClearer = $this->container->get('zikula.cache_clearer');
         $cacheClearer->clear('symfony.config');
 

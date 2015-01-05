@@ -20,14 +20,17 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
 use Zikula\Component\Wizard\StageInterface;
+use Zikula\Bundle\CoreBundle\YamlDumper;
 
 class LoginStage implements StageInterface, FormHandlerInterface, InjectContainerInterface
 {
     private $container;
+    private $yamlManager;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
     }
 
     public function getName()
@@ -47,7 +50,8 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function handleFormResult(FormInterface $form)
     {
-        return;
+        $params = array_merge($this->yamlManager->getParameters(), $form->getData());
+        $this->yamlManager->setParameters($params);
     }
 
     public function isNecessary()

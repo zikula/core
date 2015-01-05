@@ -50,32 +50,32 @@ class AjaxUpgraderStage implements StageInterface
                 self::FAIL => __('There was an error installing Zikula Routes Module')
             ),
             2 => array(
+                self::NAME => "loginadmin",
+                self::PRE => __('Login'),
+                self::DURING => __('Logging in as admin'),
+                self::SUCCESS => __('Logged in as admin'),
+                self::FAIL => __('There was an error logging in as admin')
+            ),
+            3 => array(
                 self::NAME => "upgrademodules",
                 self::PRE => __('Upgrade modules'),
                 self::DURING => __('Upgrading modules'),
                 self::SUCCESS => __('Modules upgraded'),
                 self::FAIL => __('There was an error upgrading the modules')
             ),
-            3 => array(
+            4 => array(
                 self::NAME => "reloadroutes",
                 self::PRE => __('Reload routes'),
                 self::DURING => __('Reloading routes (takes longer...)'),
                 self::SUCCESS => __('Routes reloaded'),
                 self::FAIL => __('There was an error reloading the routes')
             ),
-            4 => array(
+            5 => array(
                 self::NAME => "regenthemes",
                 self::PRE => __('Regenerate themes'),
                 self::DURING => __('Regenerating themes'),
                 self::SUCCESS => __('Themes regenerated'),
                 self::FAIL => __('There was an error regenerating the themes')
-            ),
-            5 => array(
-                self::NAME => "loginadmin",
-                self::PRE => __('Login'),
-                self::DURING => __('Logging in as admin'),
-                self::SUCCESS => __('Logged in as admin'),
-                self::FAIL => __('There was an error logging in as admin')
             ),
             6 => array(
                 self::NAME => "finalizeparameters",
@@ -91,6 +91,13 @@ class AjaxUpgraderStage implements StageInterface
                 self::SUCCESS => __('Caches cleared'),
                 self::FAIL => __('There was an error clearing caches')
             ),
+            8 => array(
+                self::NAME => "finish",
+                self::PRE => __('Finish'),
+                self::DURING => __('Finish'),
+                self::SUCCESS => __('Finish'),
+                self::FAIL => __('Finish')
+            )
         ));
     }
 }
