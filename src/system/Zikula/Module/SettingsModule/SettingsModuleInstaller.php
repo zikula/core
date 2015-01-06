@@ -78,6 +78,8 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
             // Only strip entry point if "mod_rewrite" is available.
             System::setVar('shorturlsstripentrypoint', true);
+        } else {
+            System::setVar('shorturlsstripentrypoint', false);
         }
 
         System::setVar('shorturlsdefaultmodule', '');
