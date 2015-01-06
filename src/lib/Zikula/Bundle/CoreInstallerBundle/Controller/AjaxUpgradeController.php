@@ -17,8 +17,8 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Yaml\Yaml;
 use Zikula\Module\ThemeModule\Util as ThemeUtil;
+use Zikula\Bundle\CoreBundle\YamlDumper;
 
 /**
  * Class AjaxUpgradeController
@@ -26,32 +26,43 @@ use Zikula\Module\ThemeModule\Util as ThemeUtil;
  */
 class AjaxUpgradeController extends AbstractController
 {
+    /**
+     * @var YamlDumper
+     */
+    private $yamlManager;
+
     function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
+        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
     }
 
     public function ajaxAction(Request $request)
     {
         $stage = $request->request->get('stage');
         $status = $this->executeStage($stage);
+        $response = array('status' => (boolean) $status);
+        if (is_array($status)) {
+            $response['results'] = $status;
+        }
 
-        return new JsonResponse(array('status' => $status));
+        return new JsonResponse($response);
     }
 
     private function executeStage($stageName)
     {
         switch($stageName) {
-            case "installroutes":
-                return $this->installRoutesModule();
             case "loginadmin":
+                $this->yamlManager->setParameter('upgrading', true);
                 return $this->container->get('core_installer.controller.ajaxinstall')->loginAdmin();
             case "upgrademodules":
                 $result = $this->upgradeModules();
                 if (count($result) === 0) {
                     return true;
                 }
-                return (boolean) $result;
+                return $result;
+            case "installroutes":
+                return $this->installRoutesModule();
             case "reloadroutes":
                 return $this->container->get('core_installer.controller.ajaxinstall')->reloadRoutes();
             case "regenthemes":
@@ -130,22 +141,16 @@ class AjaxUpgradeController extends AbstractController
         \System::setVar('language_i18n', \ZLanguage::getLanguageCode());
 
         // add new configuration parameters
-        $rootDir = $this->container->get('kernel')->getRootDir() . "/config";
-        $path = $rootDir . "/custom_parameters.yml";
-        if (!is_readable($path)) {
-            $path = $rootDir . "/parameters.yml";
-        }
-        $parameters = Yaml::parse(file_get_contents($path));
+        $parameters = $this->yamlManager->getParameters();
         unset($parameters['username'], $parameters['password']);
-        $parameters['parameters']['secret'] = \RandomUtil::getRandomString(50);
-        $parameters['parameters']['url_secret'] = \RandomUtil::getRandomString(10);
+        $parameters['secret'] = \RandomUtil::getRandomString(50);
+        $parameters['url_secret'] = \RandomUtil::getRandomString(10);
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
-        $parameters['parameters']['router.request_context.host'] = $request->getHost();
-        $parameters['parameters']['router.request_context.scheme'] = 'http';
-        $parameters['parameters']['router.request_context.base_url'] = $request->getBasePath();
-
-        file_put_contents($rootDir . "/custom_parameters.yml", Yaml::dump($parameters));
+        $parameters['router.request_context.host'] = $request->getHost();
+        $parameters['router.request_context.scheme'] = 'http';
+        $parameters['router.request_context.base_url'] = $request->getBasePath();
+        $this->yamlManager->setParameters($parameters);
 
         return true;
     }
@@ -155,6 +160,9 @@ class AjaxUpgradeController extends AbstractController
         \System::setVar('Default_Theme', 'ZikulaAndreas08Theme');
         \Zikula_View_Theme::getInstance('ZikulaAndreas08Theme')->clear_all_cache();
         \Zikula_View_Theme::getInstance('ZikulaAndreas08Theme')->clear_compiled();
+
+        $this->yamlManager->setParameter('upgrading', false);
+
         $cacheClearer = $this->container->get('zikula.cache_clearer');
         $cacheClearer->clear('symfony.config');
 

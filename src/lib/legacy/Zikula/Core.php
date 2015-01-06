@@ -477,7 +477,7 @@ class Zikula_Core
             $response->send();
             System::shutDown();
         }
-        if (!$installed || $requiresUpgrade) {
+        if (!$installed || $requiresUpgrade || $this->getContainer()->getParameter('upgrading')) {
             System::setInstalling(true);
         }
 

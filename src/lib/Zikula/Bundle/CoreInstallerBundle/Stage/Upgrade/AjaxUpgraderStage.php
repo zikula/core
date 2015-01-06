@@ -43,25 +43,25 @@ class AjaxUpgraderStage implements StageInterface
     {
         return array('stages' => array(
             1 => array(
-                self::NAME => "installroutes",
-                self::PRE => __('Install Zikula Routes Module'),
-                self::DURING => __('Installing Zikula Routes Module'),
-                self::SUCCESS => __('Zikula Routes Module installed'),
-                self::FAIL => __('There was an error installing Zikula Routes Module')
-            ),
-            2 => array(
                 self::NAME => "loginadmin",
                 self::PRE => __('Login'),
                 self::DURING => __('Logging in as admin'),
                 self::SUCCESS => __('Logged in as admin'),
                 self::FAIL => __('There was an error logging in as admin')
             ),
-            3 => array(
+            2 => array(
                 self::NAME => "upgrademodules",
                 self::PRE => __('Upgrade modules'),
                 self::DURING => __('Upgrading modules'),
                 self::SUCCESS => __('Modules upgraded'),
                 self::FAIL => __('There was an error upgrading the modules')
+            ),
+            3 => array(
+                self::NAME => "installroutes",
+                self::PRE => __('Install Zikula Routes Module'),
+                self::DURING => __('Installing Zikula Routes Module'),
+                self::SUCCESS => __('Zikula Routes Module installed'),
+                self::FAIL => __('There was an error installing Zikula Routes Module')
             ),
             4 => array(
                 self::NAME => "reloadroutes",

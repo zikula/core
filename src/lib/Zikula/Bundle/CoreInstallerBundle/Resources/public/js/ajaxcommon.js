@@ -44,6 +44,9 @@ jQuery( document ).ready(function( $ ) {
                 } else {
                     indicateStageFailure(stageitem);
                 }
+                if ((typeof data.results !== 'undefined') && (data.results.length > 0)) {
+                    stageitem.append(getResultTable(data.results));
+                }
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 indicateStageFailure(stageitem);
@@ -100,5 +103,14 @@ jQuery( document ).ready(function( $ ) {
         $('li#finish').removeClass('text-muted').addClass('text-success');
         $('li#finish').children('i').removeClass('fa-circle-o').addClass('fa-check-circle');
         $('#continuebutton').show();
+    }
+
+    function getResultTable(resultArray) {
+        var table = '<table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>';
+        var index;
+        for (index = 0; index < resultArray.length; ++index) {
+            table += '<tr><td>'+resultArray[index][0]+'</td><td>'+resultArray[index][1]+'</td></tr>';
+        }
+        table += '</tbody></table>';
     }
 });
