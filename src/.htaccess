@@ -2,22 +2,36 @@
 # This file is required for short urls to function.
 # ----------------------------------------------------------------------
 
-# security options if they work in your environment.  If you get a 500 error then they wont.
+# security options if they work in your environment. If you get a 500 error then they wont.
 # These settings are best turned off in php.ini and will be on modern hosting environemnts.
 # php_flag magic_quotes_gpc off
 
-# turn the rewriting engine on
-RewriteEngine On
+<IfModule mod_rewrite.c>
+    # Turn the rewriting engine on
+    RewriteEngine On
 
-# For rewriting to work you might need allow overrides, e.g.:
-#AllowOverride All
+    # For rewriting to work you might need allow overrides, e.g.:
+    #AllowOverride All
 
-# Enable RewriteBase if Zikula is installed to a sub-directory
-# RewriteBase /your/path/to/Zikula
+    # Enable RewriteBase if Zikula is installed to a sub-directory
+    # RewriteBase /your/path/to/Zikula
 
-# rewrite any unknown directories and files
-RewriteCond %{REQUEST_FILENAME} -d [OR]
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -l
-RewriteRule ^(.*)$ - [NC,L]
-RewriteRule ^(.*)$ index.php [QSA,L]
+    # rewrite any unknown directories and files
+
+    # Check if the requested path is an existing directory
+    RewriteCond %{REQUEST_FILENAME} -d [OR]
+    # or a file
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    # or a symbolic link
+    RewriteCond %{REQUEST_FILENAME} -l
+    # If yes, match any URL and
+    # NC: Makes the pattern comparison case-insensitive.
+    # L: Stop the rewriting process immediately and don't apply any more rules.
+    # --> Basically just display the file and stop the rewriting process.
+    RewriteRule ^(.*)$ - [NC,L]
+
+    # Match any URL and rewrite it to "index.php"
+    # QSA: Appends any query string from the original request URL to any query string created in the rewrite target.
+    # L: Stop the rewriting process immediately and don't apply any more rules.
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
