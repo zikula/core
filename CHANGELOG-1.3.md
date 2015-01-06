@@ -1,9 +1,10 @@
 CHANGELOG - ZIKULA 1.3.10
 -------------------------
 
-- Added missing hook area registration for HTML blocks
-- Show registration errors in current language
-- Improved language detection when using short urls
+- Added missing hook area registration for HTML blocks.
+- Show registration errors in current language.
+- Improved language detection when using short urls.
+- Corrected behaviour of CategorySelector if no category is selected.
 
 CHANGELOG - ZIKULA 1.3.9
 ------------------------
