@@ -165,6 +165,7 @@ CHANGELOG - ZIKULA 1.3.7
 - Fix developer notices (#564)
 - Fixed decoding of Block content which made problems on some servers
 
+
 CHANGELOG - ZIKULA 1.3.6
 ------------------------
 
@@ -188,11 +189,13 @@ Features:
 - Added development/debug email mode
 - Added basic setup for jQuery ajax to pass csfr token checks
 - Added new option for Zikula UI Windows - autoClose
+- Update jQuery-UI to 1.9.1
 - Update jQuery to 1.8.3
 - Mark active item in modulelinks
 - Mobile Theme: Changed blockposition in home.tpl to 'mobile'
 - Added thumbnail management features to Imagine plugin
 - Refactor Mailer module to use Zikula Form
+- Zikula Form - automatically set proper form enctype when upload input is used
 
 CHANGELOG - ZIKULA 1.3.4
 ------------------------
