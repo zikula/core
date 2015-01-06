@@ -37,11 +37,11 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        // Set up an initial value for a module variable.  Note that all module
+        // Set up an initial value for a module variable. Note that all module
         // variables should be initialised with some value in this way rather
         // than just left blank, this helps the user-side code and means that
         // there doesn't need to be a check to see if the variable is set in
-        // the rest of the code as it always will be
+        // the rest of the code as it always will be.
         System::setVar('debug', '0');
         System::setVar('sitename', $this->__('Site name'));
         System::setVar('slogan', $this->__('Site description'));
@@ -74,7 +74,12 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('shorturls', false);
         System::setVar('shorturlstype', '0');
         System::setVar('shorturlsseparator', '-');
-        System::setVar('shorturlsstripentrypoint', true);
+
+        if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
+            // Only strip entry point if "mod_rewrite" is available.
+            System::setVar('shorturlsstripentrypoint', true);
+        }
+
         System::setVar('shorturlsdefaultmodule', '');
         System::setVar('profilemodule', ((ModUtil::available('ZikulaProfileModule')) ? 'ZikulaProfileModule' : ''));
         System::setVar('messagemodule', '');
