@@ -20,6 +20,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\Validator\Constraints\Null;
+use Zikula_Core;
+use Zikula_Request_Http as Request;
 
 class InstallCommand extends ContainerAwareCommand
 {
@@ -227,37 +234,37 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return \CommandLineInstaller
      */
-    protected function createInstaller()
-    {
-        $loader = require(__DIR__ . '/../../../../../app/autoload.php');
-        \ZLoader::register($loader);
-
-        $core = new Zikula_Core();
-        $core->setKernel($this->getContainer()->get('kernel'));
-        $core->boot();
-
-        foreach ($GLOBALS['ZConfig'] as $config) {
-            $core->getContainer()->loadArguments($config);
-        }
-        $GLOBALS['ZConfig']['System']['temp'] = $core->getContainer()->getParameter('temp_dir');
-        $GLOBALS['ZConfig']['System']['datadir'] = $core->getContainer()->getParameter('datadir');
-        $GLOBALS['ZConfig']['System']['system.chmod_dir'] = $core->getContainer()->getParameter('system.chmod_dir');
-
-        \ServiceUtil::getManager($core);
-        \EventUtil::getManager($core);
-        $core->attachHandlers('config/EventHandlers');
-
-        // Disable sessions.
-        $this->getContainer()->set('session.storage', new MockArraySessionStorage());
-        $this->getContainer()->set('session.handler', new NullSessionHandler());
-
-
-        require_once(__DIR__ . '/../../../../../install/CommandLineInstaller.php');
-
-        // Fake request
-        $request = Request::create('http://localhost/install');
-        $installer = new \CommandLineInstaller($core, $request);
-
-        return $installer;
-    }
+//    protected function createInstaller()
+//    {
+//        $loader = require(__DIR__ . '/../../../../../app/autoload.php');
+//        \ZLoader::register($loader);
+//
+//        $core = new Zikula_Core();
+//        $core->setKernel($this->getContainer()->get('kernel'));
+//        $core->boot();
+//
+//        foreach ($GLOBALS['ZConfig'] as $config) {
+//            $core->getContainer()->loadArguments($config);
+//        }
+//        $GLOBALS['ZConfig']['System']['temp'] = $core->getContainer()->getParameter('temp_dir');
+//        $GLOBALS['ZConfig']['System']['datadir'] = $core->getContainer()->getParameter('datadir');
+//        $GLOBALS['ZConfig']['System']['system.chmod_dir'] = $core->getContainer()->getParameter('system.chmod_dir');
+//
+//        \ServiceUtil::getManager($core);
+//        \EventUtil::getManager($core);
+//        $core->attachHandlers('config/EventHandlers');
+//
+//        // Disable sessions.
+//        $this->getContainer()->set('session.storage', new MockArraySessionStorage());
+//        $this->getContainer()->set('session.handler', new NullSessionHandler());
+//
+//
+//        require_once(__DIR__ . '/../../../../../install/CommandLineInstaller.php');
+//
+//        // Fake request
+//        $request = Request::create('http://localhost/install');
+//        $installer = new \CommandLineInstaller($core, $request);
+//
+//        return $installer;
+//    }
 }
