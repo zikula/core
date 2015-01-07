@@ -7,7 +7,7 @@ Zikula Core - Application Framework
   4. [Installing](#installing)
   5. [Contributing](#contributing)
 
-<a name="introduction" />
+<a name="introduction"></a>
 Introduction
 ------------
 
@@ -16,7 +16,7 @@ Zikula Core is a web based application framework, fully extensible by modules, p
 For more information visit http://zikula.org/ and read our [user manual](https://github.com/zikula/zikula-docs/tree/master/Users%20Manual).
 
 
-<a name="requirements" />
+<a name="requirements"></a>
 Requirements
 ------------
 Before installing Zikula it's important to ensure that the hosting server environment meets the requirements
@@ -34,7 +34,7 @@ Please note:
     installation process.
 
 
-<a name="beforeinstalling" />
+<a name="beforeinstalling"></a>
 Before installing
 -----------------
 
@@ -45,13 +45,13 @@ If you store Composer in the root of the Zikula Core checkout, please rename it 
 to avoid your IDE reading the package contents.
 
 
-<a name="installing" />
+<a name="installing"></a>
 Installing
 ----------
 Once all of the pre-install steps are complete Run `http://yoursiteurl/install` and follow any on-screen prompts.
 
 
-<a name="contributing" />
+<a name="contributing"></a>
 Contributing
 ------------
 

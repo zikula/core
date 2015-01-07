@@ -8,7 +8,7 @@ Zikula Installation Instructions
   5.  [Final Note](#final)
 
 
-<a name="zikula" />
+<a name="zikula"></a>
 1. Zikula
 ---------
 
@@ -26,7 +26,7 @@ modules, plugins and themes without changes. If a module doesn't work with 1.4 b
 to open an issue at the GitHub Core Repository and we will try to fix any problems.
 
 
-<a name="requirements" />
+<a name="requirements"></a>
 2. Server Consideration
 -----------------------
 
@@ -47,7 +47,7 @@ of the new core release. Zikula Core 1.4.0 has the following requirements:
    possibly reconfiguring the php installation by your provider.
 
 
-<a name="upload">
+<a name="upload"></a>
 3. Upload and Prepare
 ---------------------
 
@@ -67,7 +67,7 @@ these directories are writable. `chmod 777 app/cache` and `chmod 777 app/logs`. 
 the permission settings as they were set correctly by the development team).
 
 
-<a name="install">
+<a name="install"></a>
 4. New Installation
 -------------------
 
@@ -85,7 +85,7 @@ If you installed Zikula into a subdirectory 'foo' the URL would be `http://www.e
 automatically redirected to the installer.
 
 
-<a name="final">
+<a name="final"></a>
 5. Final Note
 -------------
 

@@ -9,7 +9,7 @@ Upgrading Zikula
   6. [Notes](#notes)
 
 
-<a name="introduction" />
+<a name="introduction"></a>
 Introduction
 ------------
 
@@ -19,7 +19,7 @@ For more information visit http://zikula.org/ and read our
 [user manual](https://github.com/zikula/zikula-docs/tree/master/Users%20Manual).
 
 
-<a name="requirements" />
+<a name="requirements"></a>
 Requirements
 ------------
 
@@ -40,7 +40,7 @@ of the new core release. Zikula Core 1.4.0 has the following requirements
    possibly reconfiguring the php installation by your provider.
 
 
-<a name="testenv" />
+<a name="testenv"></a>
 Test Environment
 ----------------
 
@@ -48,7 +48,7 @@ The Zikula team strongly recommend having a duplicate testing environment of the
 changes including upgrades are tested on before application to the live site.
 
 
-<a name="beforeupgrading" />
+<a name="beforeupgrading"></a>
 Before upgrading
 ----------------
 
@@ -69,7 +69,7 @@ If you store Composer in the root of the Zikula Core checkout, please rename it 
 All the dependencies and requirements are included in this package, so there is no need to use composer at all.
 
 
-<a name="upgrading" />
+<a name="upgrading"></a>
 Upgrading
 ---------
 
@@ -89,7 +89,7 @@ The following process should be followed for all upgrades even small point relea
     upgrade independently.
 
 
-<a name="notes" />
+<a name="notes"></a>
 Notes
 -----
 
