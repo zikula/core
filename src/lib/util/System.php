@@ -269,9 +269,14 @@ class System
 
         // obtain the uri from symfony container
         $serviceManager = ServiceUtil::getManager();
-        $requestBasePath = $serviceManager->get('request')->getBasePath();
-        if (!empty($requestBasePath)) {
-            self::$cache['baseuri.path'] = $requestBasePath;
+        try {
+            $requestBasePath = $serviceManager->has('request') ? $serviceManager->get('request')->getBasePath() : '';
+            if (!empty($requestBasePath)) {
+                self::$cache['baseuri.path'] = $requestBasePath;
+            }
+        } catch (\Exception $e) {
+            // silent fail
+            self::$cache['baseuri.path'] = null;
         }
 
         if (!isset(self::$cache['baseuri.path'])) {
