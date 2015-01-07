@@ -222,6 +222,8 @@ class Zikula_Core
             $stmt = $this->container->get('doctrine.dbal.default_connection')->executeQuery("SELECT value FROM $moduleTable WHERE modname = 'ZConfig' AND name = 'Version_Num'");
             $result = $stmt->fetch(\PDO::FETCH_NUM);
             define('ZIKULACORE_CURRENT_INSTALLED_VERSION', unserialize($result[0]));
+        } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
+            throw new \Exception("ERROR: Could not find $moduleTable table.");
         } catch (\Exception $e) {
             // now what? @todo
         }
