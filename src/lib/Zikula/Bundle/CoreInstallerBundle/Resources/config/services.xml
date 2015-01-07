@@ -39,9 +39,10 @@
         </service>
 
         <service id="core_installer.controller.doc" class="%core_installer.controller.doc.class%">
+            <argument type="service" id="kernel" />
             <argument type="service" id="router" />
             <argument type="service" id="templating" />
-            <argument type="service" id="core_installer.controller.util" />
+            <argument type="service" id="markdown_extra_parser" />
         </service>
 
     </services>

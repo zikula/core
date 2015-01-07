@@ -22,7 +22,7 @@
             <h2>{{ __('Installer script') }}</h2>
             <ol class="wizard">
                 <li{% if currentstage == 'locale' %} class="active"{% endif %}>
-                    <a href="{{ url('install', { 'stage': 'locale' }) }}">{{ __('Select language') }}</a>
+                    <a href="{{ path('install', { 'stage': 'locale' }) }}">{{ __('Select language') }}</a>
                 </li>
                 <li{% if currentstage == 'requirements' %} class="active"{% endif %}>
                     {{ __('Check requirements') }}
@@ -35,7 +35,10 @@
                 </li>
             </ol>
             <p class="installguide"><em>{{ __f("Please refer to the %s during the process.",
-                    '<a href="%url%">%text%</a>' | replace({'%url%': url('doc'), '%text%': __('installation guide') }) ) | raw }}</em></p>
+                    '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({
+                        '%url%': path('doc', {'name': 'INSTALL-1.4.0.md'}),
+                        '%text%': __('installation guide') }) ) | raw }}</em>
+            </p>
         </div>
 
         <div id="maincontent">
@@ -49,12 +52,12 @@
         <div class="alert alert-warning center">{{ __("NOTICE: Official copies of Zikula are only from zikula.org") }}</div>
         <ul>
             <li><strong>{{ __("Useful resources") }}:</strong></li>
-            <li><a href="{{ url('doc') }}" onclick="window.open('docs/{$lang}/INSTALL.md');return false;">{{ __("Installation guide") }}</a></li>
-            <li><a href="https://github.com/zikula/core/wiki">{{ __("Zikula documentation") }}</a></li>
-            <li><a href="http://www.zikula.org/forums">{{ __("Support forums") }}</a></li>
+            <li><a href="{{ path('doc', {'name': 'INSTALL-1.4.0.md'}) }}" onclick="window.open(this.href);return false;">{{ __("Installation guide") }}</a></li>
+            <li><a href="https://github.com/zikula/core/wiki" onclick="window.open(this.href);return false;">{{ __("Zikula documentation") }}</a></li>
+            <li><a href="http://www.zikula.org/forums" onclick="window.open(this.href);return false;">{{ __("Support forums") }}</a></li>
             {# custom links for each action go here #}
             {% if currentstage == 'requirements' %}
-            <li class="highlight"><a href="http://www.wikipedia.org/wiki/File_system_permissions">{{ __("File system permissions") }}</a></li>
+            <li class="highlight"><a href="http://www.wikipedia.org/wiki/File_system_permissions" onclick="window.open(this.href);return false;">{{ __("File system permissions") }}</a></li>
             {% endif %}
         </ul>
     </div>

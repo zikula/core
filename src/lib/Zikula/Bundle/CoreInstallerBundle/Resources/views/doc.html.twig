@@ -1,0 +1,14 @@
+{#{% extends '@ZikulaCoreInstaller/theme.html.twig' %}#}
+{% extends '@ZikulaCoreInstaller/structure.html.twig' %}
+
+{% block title "Zikula Core Installer :: Doc Viewer" %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" style="padding:5em;">
+            {{ content | raw }}
+        </div>
+    </div>
+</div>
+{% endblock %}
