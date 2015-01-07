@@ -56,7 +56,6 @@ class InitStage implements StageInterface, InjectContainerInterface
     {
         $conn = $this->container->get('doctrine.dbal.default_connection');
         $kernel = $this->container->get('kernel');
-        $request = $this->container->get('request');
 
         $res = $conn->executeQuery("SELECT name FROM modules WHERE name = 'ZikulaExtensionsModule'");
         if ($res->fetch()) {
