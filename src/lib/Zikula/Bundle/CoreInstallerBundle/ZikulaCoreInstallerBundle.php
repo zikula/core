@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula jQuery bundle.
+ * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
