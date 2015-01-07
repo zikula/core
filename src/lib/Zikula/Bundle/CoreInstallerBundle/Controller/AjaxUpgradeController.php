@@ -129,8 +129,6 @@ class AjaxUpgradeController extends AbstractController
 
     private function finalizeParameters()
     {
-        $request = $this->container->get('request');
-
         // Set the System Identifier as a unique string.
         if (!\System::getVar('system_identifier')) {
             \System::setVar('system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
@@ -147,9 +145,9 @@ class AjaxUpgradeController extends AbstractController
         $parameters['url_secret'] = \RandomUtil::getRandomString(10);
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
-        $parameters['router.request_context.host'] = $request->getHost();
+        $parameters['router.request_context.host'] = $this->container->get('request')->getHost();
         $parameters['router.request_context.scheme'] = 'http';
-        $parameters['router.request_context.base_url'] = $request->getBasePath();
+        $parameters['router.request_context.base_url'] = $this->container->get('request')->getBasePath();
         $this->yamlManager->setParameters($parameters);
 
         return true;
