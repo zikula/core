@@ -69,6 +69,11 @@ class AjaxInstallController extends AbstractController
         return new JsonResponse(array('status' => $status));
     }
 
+    public function commandLineAction($stage)
+    {
+        return $this->executeStage($stage);
+    }
+
     private function executeStage($stageName)
     {
         switch($stageName) {
@@ -93,23 +98,23 @@ class AjaxInstallController extends AbstractController
             case "security":
                 return $this->installModule('ZikulaSecurityCenterModule');
             case "categories":
-                return $this->installModule('ZikulaSecurityCenterModule');
+                return $this->installModule('ZikulaCategoriesModule');
             case "mailer":
                 return $this->installModule('ZikulaMailerModule');
             case "search":
                 return $this->installModule('ZikulaSearchModule');
             case "routes":
                 return $this->installModule('ZikulaRoutesModule');
+            case "updateadmin":
+                return $this->updateAdmin();
+            case "loginadmin":
+                return $this->loginAdmin();
             case "activatemodules":
                 return $this->activateModules();
             case "categorize":
                 return $this->categorizeModules();
             case "createblocks":
                 return $this->createBlocks();
-            case "updateadmin":
-                return $this->updateAdmin();
-            case "loginadmin":
-                return $this->loginAdmin();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "reloadroutes":
