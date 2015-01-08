@@ -103,11 +103,11 @@ class ControllerUtil
             'app/cache/',
 //            'app/config/parameters.yml',
             "$datadir/",
+            'app/config/',
             'app/config/dynamic'
         );
-        $results['files'] = array();
         foreach ($files as $file) {
-            $results['files'][] = array('filename' => $file, 'writable' => is_writable($file));
+            $results[$file] = is_writable($file);
         }
         $requirementsMet = true;
         foreach ($results as $check) {
@@ -117,12 +117,6 @@ class ControllerUtil
             }
         }
         $results['phpversion'] = phpversion();
-        foreach ($results['files'] as $check) {
-            if (!$check['writable']) {
-                $requirementsMet = false;
-                break;
-            }
-        }
         if ($requirementsMet) {
 
             return true;
