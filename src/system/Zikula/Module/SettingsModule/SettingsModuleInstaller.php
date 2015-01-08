@@ -107,15 +107,18 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
-        if (!DBUtil::createTable('objectdata_attributes')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('objectdata_log')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('objectdata_meta')) {
+        /**
+         * These entities are only used to install the tables and they
+         * are @deprecated as of 1.4.0 because the Objectdata paradigm
+         * is being removed at 2.0.0
+         */
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array(
+                'Zikula\Module\SettingsModule\Entity\ObjectdataAttributes',
+                'Zikula\Module\SettingsModule\Entity\ObjectdataLog',
+                'Zikula\Module\SettingsModule\Entity\ObjectdataMeta',
+            ));
+        } catch (\Exception $e) {
             return false;
         }
 

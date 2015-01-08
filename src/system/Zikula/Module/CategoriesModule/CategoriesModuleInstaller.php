@@ -29,7 +29,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * initialise module
      *
-     * @return bool true if succesful, false otherwise
+     * @return bool true if successful, false otherwise
      */
     public function install()
     {
@@ -46,8 +46,16 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
-        // needed for legacy - remove @1.5.0
-        DBUtil::createTable('categories_mapobj');
+        /**
+         * This entity is only used to install the table and it
+         * is @deprecated as of 1.4.0 because the Objectdata paradigm
+         * is being removed at 2.0.0
+         */
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\CategoriesModule\Entity\CategoriesMapobj'));
+        } catch (\Exception $e) {
+            return false;
+        }
 
         // insert some default data
         $this->insertData_10();
