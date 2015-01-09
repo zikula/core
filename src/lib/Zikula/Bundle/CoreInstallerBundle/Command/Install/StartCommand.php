@@ -14,25 +14,19 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command\Install;
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\Validator\Constraints\Null;
 use Zikula_Core;
 use Zikula_Request_Http as Request;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use \Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 
-class GetDataCommand extends ContainerAwareCommand
+class StartCommand extends ContainerAwareCommand
 {
     private $settings = array(
         /* Database */
@@ -118,8 +112,8 @@ class GetDataCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('zikula:install:getdata')
-            ->setDescription('private: DO NOT CALL DIRECTLY')
+            ->setName('zikula:install:start')
+            ->setDescription('call this command first')
         ;
 
         foreach ($this->settings as $name => $setting) {

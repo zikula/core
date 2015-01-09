@@ -31,7 +31,7 @@ class FinishCommand extends ContainerAwareCommand
     {
         $this
             ->setName('zikula:install:finish')
-            ->setDescription('private: DO NOT CALL DIRECTLY')
+            ->setDescription('Call this command after the install:start command')
         ;
     }
 
@@ -48,37 +48,14 @@ class FinishCommand extends ContainerAwareCommand
         $ajaxInstallerStage = new AjaxInstallerStage();
         $stages = $ajaxInstallerStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
-            if ($key < 15) {
-                continue;
-            }
             $output->writeln($stage[AjaxInstallerStage::PRE]);
             $status = $this->getContainer()->get('core_installer.controller.ajaxinstall')->commandLineAction($stage[AjaxInstallerStage::NAME]);
             $output->writeln($stage[$status ? AjaxInstallerStage::SUCCESS : AjaxInstallerStage::FAIL]);
         }
-//        $output->writeln('*** FINISHED ***');
     }
 
     private function bootstrap()
     {
-//        if (!$this->getContainer()->has('zikula')) {
-//            $kernel = $this->getContainer()->get('kernel');
-//            $loader = require($kernel->getRootDir() . '/autoload.php');
-//            \ZLoader::register($loader);
-//
-//            $core = new \Zikula_Core();
-//            $core->setKernel($kernel);
-//            $core->boot();
-//
-//            foreach ($GLOBALS['ZConfig'] as $config) {
-//                $core->getContainer()->loadArguments($config);
-//            }
-//            $GLOBALS['ZConfig']['System']['temp'] = $core->getContainer()->getParameter('temp_dir');
-//            $GLOBALS['ZConfig']['System']['datadir'] = $core->getContainer()->getParameter('datadir');
-//            $GLOBALS['ZConfig']['System']['system.chmod_dir'] = $core->getContainer()->getParameter('system.chmod_dir');
-//
-//            \ServiceUtil::getManager($core);
-//            \EventUtil::getManager($core);
-//        }
         $kernel = $this->getContainer()->get('kernel');
         $loader = require($kernel->getRootDir() . '/autoload.php');
         \ZLoader::register($loader);
