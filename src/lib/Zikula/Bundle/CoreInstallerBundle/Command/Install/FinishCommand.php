@@ -31,7 +31,7 @@ class FinishCommand extends ContainerAwareCommand
     {
         $this
             ->setName('zikula:install:finish')
-            ->setDescription('Call this command after the install:start command')
+            ->setDescription('Call this command after zikula:install:start')
         ;
     }
 
