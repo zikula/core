@@ -57,12 +57,16 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
+        $adminUserObj = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', 2);
+
         // insert some default data
-        $this->insertData_10();
+        $this->insertData_10($adminUserObj);
 
         // Set autonumber to 10000 (for DB's that support autonumber fields)
         $cat = new CategoryEntity;
-        $cat['id'] = 9999;
+        $cat->setId(9999);
+        $cat->setLu_uid($adminUserObj);
+        $cat->setCr_uid($adminUserObj);
         $this->entityManager->persist($cat);
         $this->entityManager->flush();
         $this->entityManager->remove($cat);
@@ -130,9 +134,11 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * insert default data
      *
+     * @param $adminUserObj
+     *
      * @return void
      */
-    public function insertData_10()
+    public function insertData_10($adminUserObj)
     {
         $objArray = array();
         $objArray[] = array(
@@ -701,6 +707,8 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             }
 
             $category->merge($obj);
+            $category->setCr_uid($adminUserObj);
+            $category->setLu_uid($adminUserObj);
             $this->entityManager->persist($category);
             $this->entityManager->flush();
             $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadataInfo::GENERATOR_TYPE_AUTO);
