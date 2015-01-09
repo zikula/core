@@ -214,6 +214,7 @@ class Zikula_Core
      * Get current installed version number
      *
      * @return string
+     * @throws \Exception
      */
     private function defineCurrentInstalledCoreVersion()
     {
@@ -223,7 +224,7 @@ class Zikula_Core
             $result = $stmt->fetch(\PDO::FETCH_NUM);
             define('ZIKULACORE_CURRENT_INSTALLED_VERSION', unserialize($result[0]));
         } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
-            throw new \Exception("ERROR: Could not find $moduleTable table.");
+            throw new \Exception("ERROR: Could not find $moduleTable table. Maybe you forgot to copy it to your server, or you left a custom_parameters.yml file in place with installed: true in it.");
         } catch (\Exception $e) {
             // now what? @todo
         }
@@ -251,7 +252,6 @@ class Zikula_Core
         $this->container->setAlias('zikula.eventmanager', 'event_dispatcher');
 
         $this->container->set('zikula', $this);
-        $this->defineCurrentInstalledCoreVersion();
 
         $this->attachHandlers($this->handlerDir);
     }
@@ -288,7 +288,6 @@ class Zikula_Core
         $this->attachedHandlers = array();
         $this->stage = 0;
         $this->bootime = microtime(true);
-        $this->defineCurrentInstalledCoreVersion();
         $this->attachHandlers($this->handlerDir);
     }
 
@@ -453,6 +452,9 @@ class Zikula_Core
 
         // create several booleans to test condition of request regrading install/upgrade
         $installed = $this->getContainer()->getParameter('installed');
+        if ($installed) {
+            $this->defineCurrentInstalledCoreVersion();
+        }
         $requiresUpgrade = $installed && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, self::VERSION_NUM, '<');
         // can't use $request->get('_route') to get any of the following
         // all these routes are hard-coded in xml files
@@ -479,7 +481,7 @@ class Zikula_Core
             $response->send();
             System::shutDown();
         }
-        if (!$installed || $requiresUpgrade || $this->getContainer()->getParameter('upgrading')) {
+        if (!$installed || $requiresUpgrade || $this->getContainer()->hasParameter('upgrading')) {
             System::setInstalling(true);
         }
 
