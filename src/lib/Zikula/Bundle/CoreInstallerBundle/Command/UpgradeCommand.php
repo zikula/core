@@ -110,12 +110,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             $output->writeln($message);
         }
 
-        // overwrite params again because \Zikula\Bundle\CoreInstallerBundle\Controller\AjaxUpgradeController::finalizeParameters
-        // creates faulty router.request_context data based on request. use data provided here instead.
-        unset ($settings['username'], $settings['password']);
-        $params = array_merge($yamlManager->getParameters(), $settings);
-        $yamlManager->setParameters($params);
-
         $output->writeln("UPGRADE COMPLETE!");
     }
 

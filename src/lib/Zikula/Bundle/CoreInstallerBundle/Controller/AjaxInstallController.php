@@ -299,9 +299,9 @@ class AjaxInstallController extends AbstractController
         $params['url_secret'] = \RandomUtil::getRandomString(10);
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
-        $params['router.request_context.host'] = $this->container->get('request')->getHost();
-        $params['router.request_context.scheme'] = 'http';
-        $params['router.request_context.base_url'] = $this->container->get('request')->getBasePath();
+        $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] :$this->container->get('request')->getHost();
+        $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
+        $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $this->container->get('request')->getBasePath();
         $this->yamlManager->setParameters($params);
 
         // clear the cache

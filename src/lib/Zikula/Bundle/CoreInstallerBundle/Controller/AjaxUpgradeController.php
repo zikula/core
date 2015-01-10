@@ -144,16 +144,16 @@ class AjaxUpgradeController extends AbstractController
         \System::setVar('language_i18n', \ZLanguage::getLanguageCode());
 
         // add new configuration parameters
-        $parameters = $this->yamlManager->getParameters();
-        unset($parameters['username'], $parameters['password']);
-        $parameters['secret'] = \RandomUtil::getRandomString(50);
-        $parameters['url_secret'] = \RandomUtil::getRandomString(10);
+        $params = $this->yamlManager->getParameters();
+        unset($params['username'], $params['password']);
+        $params['secret'] = \RandomUtil::getRandomString(50);
+        $params['url_secret'] = \RandomUtil::getRandomString(10);
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
-        $parameters['router.request_context.host'] = $this->container->get('request')->getHost();
-        $parameters['router.request_context.scheme'] = 'http';
-        $parameters['router.request_context.base_url'] = $this->container->get('request')->getBasePath();
-        $this->yamlManager->setParameters($parameters);
+        $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] :$this->container->get('request')->getHost();
+        $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
+        $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $this->container->get('request')->getBasePath();
+        $this->yamlManager->setParameters($params);
 
         return true;
     }
@@ -161,7 +161,13 @@ class AjaxUpgradeController extends AbstractController
     private function clearCaches()
     {
         // use full symfony cache_clearer not zikula's to clear entire cache and set for warmup
-        $this->container->get('cache_clearer')->clear($this->container->getParameter('env'));
+        // console commands always run in `dev` mode but site should be `prod` mode. clear both for good measure.
+        $this->container->get('cache_clearer')->clear('dev');
+        $this->container->get('cache_clearer')->clear('prod');
+        if (in_array($this->container->getParameter('env'), array('dev', 'prod'))) {
+            // this is just in case anyone ever creates a mode that isn't dev|prod
+            $this->container->get('cache_clearer')->clear($this->container->getParameter('env'));
+        }
 
         // finally remove upgrading flag in parameters
         $this->yamlManager->delParameter('upgrading');
