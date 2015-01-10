@@ -37,11 +37,15 @@ class Application extends BaseApplication
         // ensure that we have admin access
         $this->bootstrap();
         if ($this->kernel->getContainer()->getParameter('installed') === true) {
-            try {
-                $this->loginAsAdministrator();
-            } catch (\Exception $e) {
-                $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-                $this->renderException($e, $output);
+            // don't attempt to login if the Core needs an upgrade
+            \Zikula_Core::defineCurrentInstalledCoreVersion($this->kernel->getContainer());
+            if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, \Zikula_Core::VERSION_NUM, '==')) {
+                try {
+                    $this->loginAsAdministrator();
+                } catch (\Exception $e) {
+                    $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+                    $this->renderException($e, $output);
+                }
             }
         }
 
