@@ -26,12 +26,24 @@ use Zikula\Bundle\CoreBundle\YamlDumper;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand
 {
+    private $selectedSettings = array(
+        'username',
+        'password',
+        'router.request_context.host',
+        'router.request_context.scheme',
+        'router.request_context.base_url'
+    );
+
     protected function configure()
     {
         $this
             ->setDescription('Upgrade Zikula from the command line.')
             ->setName('zikula:upgrade');
         foreach ($this->settings as $name => $setting) {
+            if (!in_array($name, $this->selectedSettings)) {
+                // only use selected settings for upgrade
+                continue;
+            }
             $this->addOption(
                 $name,
                 null,
@@ -77,14 +89,11 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             return;
         }
 
-        $settings = array(
-            'username' => $this->getRequiredOption($input, $output, 'username'),
-            'password' => $this->getRequiredOption($input, $output, 'password'),
-            /* Http settings */
-            'router.request_context.host' => $this->getRequiredOption($input, $output, 'router.request_context.host'),
-            'router.request_context.scheme' => $this->getRequiredOption($input, $output, 'router.request_context.scheme'),
-            'router.request_context.base_url' => $this->getRequiredOption($input, $output, 'router.request_context.base_url'),
-        );
+        // get the settings from user input
+        $settings = array();
+        foreach ($this->selectedSettings as $name) {
+            $settings[$name] = $this->getRequiredOption($input, $output, $name);
+        }
 
         // write the parameters to custom_parameters.yml
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
