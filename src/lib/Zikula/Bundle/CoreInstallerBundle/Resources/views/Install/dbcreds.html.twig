@@ -65,4 +65,9 @@
         {{ form_end(form) }}
     </fieldset>
 </div>
+<script>
+    $(document).ready(function() {
+        $('form:first *:input:text:first').focus();
+    });
+</script>
 {% endblock %}
