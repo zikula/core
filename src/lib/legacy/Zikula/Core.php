@@ -213,14 +213,15 @@ class Zikula_Core
     /**
      * Get current installed version number
      *
+     * @param ContainerInterface $container
      * @return string
      * @throws \Exception
      */
-    private function defineCurrentInstalledCoreVersion()
+    public static function defineCurrentInstalledCoreVersion($container)
     {
         $moduleTable = 'module_vars';
         try {
-            $stmt = $this->container->get('doctrine.dbal.default_connection')->executeQuery("SELECT value FROM $moduleTable WHERE modname = 'ZConfig' AND name = 'Version_Num'");
+            $stmt = $container->get('doctrine.dbal.default_connection')->executeQuery("SELECT value FROM $moduleTable WHERE modname = 'ZConfig' AND name = 'Version_Num'");
             $result = $stmt->fetch(\PDO::FETCH_NUM);
             define('ZIKULACORE_CURRENT_INSTALLED_VERSION', unserialize($result[0]));
         } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
@@ -453,7 +454,7 @@ class Zikula_Core
         // create several booleans to test condition of request regrading install/upgrade
         $installed = $this->getContainer()->getParameter('installed');
         if ($installed) {
-            $this->defineCurrentInstalledCoreVersion();
+            self::defineCurrentInstalledCoreVersion($this->getContainer());
         }
         $requiresUpgrade = $installed && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, self::VERSION_NUM, '<');
         // can't use $request->get('_route') to get any of the following
