@@ -88,10 +88,12 @@ The following process should be followed for all upgrades even small point relea
     - Via Web: launch `http://yoursiteurl/upgrade` and follow any on-screen prompts.
     - Via CLI:
       - Access your main zikula directory (`/src` if a Github clone) and run this command:
+
          ```Shell
          $ php app/console zikula:upgrade
          ```
-         Follow the prompts and complete that step. When you are finished, Open your browser and login!
+
+      - Follow the prompts and complete that step. When you are finished, Open your browser and login!
   - Return any 1.3.x-compatible modules, themes and plugins to the appropriate directory and run each
     upgrade independently.
 
