@@ -15,15 +15,10 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
 use Zikula\Component\Wizard\StageInterface;
+use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 
 class AjaxUpgraderStage implements StageInterface
 {
-    const NAME = "name";
-    const PRE = "pre";
-    const DURING = "during";
-    const SUCCESS = "success";
-    const FAIL = "fail";
-
     public function getName()
     {
         return 'ajaxupgrader';
@@ -43,60 +38,60 @@ class AjaxUpgraderStage implements StageInterface
     {
         return array('stages' => array(
             1 => array(
-                self::NAME => "loginadmin",
-                self::PRE => __('Login'),
-                self::DURING => __('Logging in as admin'),
-                self::SUCCESS => __('Logged in as admin'),
-                self::FAIL => __('There was an error logging in as admin')
+                AjaxInstallerStage::NAME => "loginadmin",
+                AjaxInstallerStage::PRE => __('Login'),
+                AjaxInstallerStage::DURING => __('Logging in as admin'),
+                AjaxInstallerStage::SUCCESS => __('Logged in as admin'),
+                AjaxInstallerStage::FAIL => __('There was an error logging in as admin')
             ),
             2 => array(
-                self::NAME => "upgrademodules",
-                self::PRE => __('Upgrade modules'),
-                self::DURING => __('Upgrading modules'),
-                self::SUCCESS => __('Modules upgraded'),
-                self::FAIL => __('There was an error upgrading the modules')
+                AjaxInstallerStage::NAME => "upgrademodules",
+                AjaxInstallerStage::PRE => __('Upgrade modules'),
+                AjaxInstallerStage::DURING => __('Upgrading modules'),
+                AjaxInstallerStage::SUCCESS => __('Modules upgraded'),
+                AjaxInstallerStage::FAIL => __('There was an error upgrading the modules')
             ),
             3 => array(
-                self::NAME => "installroutes",
-                self::PRE => __('Install Zikula Routes Module'),
-                self::DURING => __('Installing Zikula Routes Module'),
-                self::SUCCESS => __('Zikula Routes Module installed'),
-                self::FAIL => __('There was an error installing Zikula Routes Module')
+                AjaxInstallerStage::NAME => "installroutes",
+                AjaxInstallerStage::PRE => __('Install Zikula Routes Module'),
+                AjaxInstallerStage::DURING => __('Installing Zikula Routes Module'),
+                AjaxInstallerStage::SUCCESS => __('Zikula Routes Module installed'),
+                AjaxInstallerStage::FAIL => __('There was an error installing Zikula Routes Module')
             ),
             4 => array(
-                self::NAME => "reloadroutes",
-                self::PRE => __('Reload routes'),
-                self::DURING => __('Reloading routes (takes longer...)'),
-                self::SUCCESS => __('Routes reloaded'),
-                self::FAIL => __('There was an error reloading the routes')
+                AjaxInstallerStage::NAME => "reloadroutes",
+                AjaxInstallerStage::PRE => __('Reload routes'),
+                AjaxInstallerStage::DURING => __('Reloading routes (takes longer...)'),
+                AjaxInstallerStage::SUCCESS => __('Routes reloaded'),
+                AjaxInstallerStage::FAIL => __('There was an error reloading the routes')
             ),
             5 => array(
-                self::NAME => "regenthemes",
-                self::PRE => __('Regenerate themes'),
-                self::DURING => __('Regenerating themes'),
-                self::SUCCESS => __('Themes regenerated'),
-                self::FAIL => __('There was an error regenerating the themes')
+                AjaxInstallerStage::NAME => "regenthemes",
+                AjaxInstallerStage::PRE => __('Regenerate themes'),
+                AjaxInstallerStage::DURING => __('Regenerating themes'),
+                AjaxInstallerStage::SUCCESS => __('Themes regenerated'),
+                AjaxInstallerStage::FAIL => __('There was an error regenerating the themes')
             ),
             6 => array(
-                self::NAME => "finalizeparameters",
-                self::PRE => __('Finalize parameters'),
-                self::DURING => __('Finalizing parameters'),
-                self::SUCCESS => __('Parameters finalized'),
-                self::FAIL => __('There was an error finalizing the parameters')
+                AjaxInstallerStage::NAME => "finalizeparameters",
+                AjaxInstallerStage::PRE => __('Finalize parameters'),
+                AjaxInstallerStage::DURING => __('Finalizing parameters'),
+                AjaxInstallerStage::SUCCESS => __('Parameters finalized'),
+                AjaxInstallerStage::FAIL => __('There was an error finalizing the parameters')
             ),
             7 => array(
-                self::NAME => "clearcaches",
-                self::PRE => __('Clear caches'),
-                self::DURING => __('Clearing caches'),
-                self::SUCCESS => __('Caches cleared'),
-                self::FAIL => __('There was an error clearing caches')
+                AjaxInstallerStage::NAME => "clearcaches",
+                AjaxInstallerStage::PRE => __('Clear caches'),
+                AjaxInstallerStage::DURING => __('Clearing caches'),
+                AjaxInstallerStage::SUCCESS => __('Caches cleared'),
+                AjaxInstallerStage::FAIL => __('There was an error clearing caches')
             ),
             8 => array(
-                self::NAME => "finish",
-                self::PRE => __('Finish'),
-                self::DURING => __('Finish'),
-                self::SUCCESS => __('Finish'),
-                self::FAIL => __('Finish')
+                AjaxInstallerStage::NAME => "finish",
+                AjaxInstallerStage::PRE => __('Finish'),
+                AjaxInstallerStage::DURING => __('Finish'),
+                AjaxInstallerStage::SUCCESS => __('Finish'),
+                AjaxInstallerStage::FAIL => __('Finish')
             )
         ));
     }
