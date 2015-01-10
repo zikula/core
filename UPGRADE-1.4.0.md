@@ -84,7 +84,14 @@ The following process should be followed for all upgrades even small point relea
   - Copy `app/config/parameters.yml` to `app/config/custom_parameters.yml` and update
     values with your database settings. Also set `installed` to `true`.
   - Make `app/cache` and `app/logs` writable. (**Zikula WILL NOT install without this critical step**)
-  - Run `http://yoursiteurl/upgrade` and follow any on-screen prompts.
+  - **Upgrade: (do one or the other)**
+    - Via Web: launch `http://yoursiteurl/upgrade` and follow any on-screen prompts.
+    - Via CLI:
+      - Access your main zikula directory (`/src` if a Github clone) and run this command:
+         ```Shell
+         $ php app/console zikula:upgrade
+         ```
+         Follow the prompts and complete that step. When you are finished, Open your browser and login!
   - Return any 1.3.x-compatible modules, themes and plugins to the appropriate directory and run each
     upgrade independently.
 

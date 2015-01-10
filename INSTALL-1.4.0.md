@@ -84,6 +84,18 @@ To begin the installer, simply visit the root directory with your browser, e.g. 
 If you installed Zikula into a subdirectory 'foo' the URL would be `http://www.example.com/foo/`. You will be
 automatically redirected to the installer.
 
+###Command Line Installer
+
+Via CLI, access your main zikula directory (`/src` if a Github clone) and run this command:
+```Shell
+$ php app/console zikula:install:start
+```
+Follow the prompts and complete that step. When you are finished, you are directed to run the next command:
+```Shell
+$ php app/console zikula:install:finish
+```
+Open your browser and login!
+
 
 <a name="final"></a>
 5. Final Note
