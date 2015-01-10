@@ -57,9 +57,13 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
+        /**
+         * explicitly set admin as user to be set as `lu_uid` and `cr_uid` fields. Normally this would be taken care of
+         * by the BlameListener but during installation from the CLI this listener is not available
+         */
         $adminUserObj = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', 2);
 
-        // insert some default data
+        // insert default data
         $this->insertData_10($adminUserObj);
 
         // Set autonumber to 10000 (for DB's that support autonumber fields)
@@ -707,6 +711,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             }
 
             $category->merge($obj);
+            // see note above about setting these fields during installation
             $category->setCr_uid($adminUserObj);
             $category->setLu_uid($adminUserObj);
             $this->entityManager->persist($category);
