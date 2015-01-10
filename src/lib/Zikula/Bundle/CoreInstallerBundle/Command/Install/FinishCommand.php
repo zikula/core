@@ -48,7 +48,8 @@ class FinishCommand extends ContainerAwareCommand
         foreach ($stages['stages'] as $key => $stage) {
             $output->writeln($stage[AjaxInstallerStage::PRE]);
             $status = $this->getContainer()->get('core_installer.controller.ajaxinstall')->commandLineAction($stage[AjaxInstallerStage::NAME]);
-            $output->writeln($stage[$status ? AjaxInstallerStage::SUCCESS : AjaxInstallerStage::FAIL]);
+            $message = $status ? "<info>" . $stage[AjaxInstallerStage::SUCCESS] . "</info>" : "<error>" . $stage[AjaxInstallerStage::FAIL] . "</error>";
+            $output->writeln($message);
         }
     }
 
