@@ -49,6 +49,11 @@ class AjaxUpgradeController extends AbstractController
         return new JsonResponse($response);
     }
 
+    public function commandLineAction($stage)
+    {
+        return $this->executeStage($stage);
+    }
+
     private function executeStage($stageName)
     {
         switch($stageName) {
@@ -155,14 +160,11 @@ class AjaxUpgradeController extends AbstractController
 
     private function clearCaches()
     {
-        \System::setVar('Default_Theme', 'ZikulaAndreas08Theme');
-        \Zikula_View_Theme::getInstance('ZikulaAndreas08Theme')->clear_all_cache();
-        \Zikula_View_Theme::getInstance('ZikulaAndreas08Theme')->clear_compiled();
+        // use full symfony cache_clearer not zikula's to clear entire cache and set for warmup
+        $this->container->get('cache_clearer')->clear($this->container->getParameter('env'));
 
-        $this->yamlManager->setParameter('upgrading', false);
-
-        $cacheClearer = $this->container->get('zikula.cache_clearer');
-        $cacheClearer->clear('symfony.config');
+        // finally remove upgrading flag in parameters
+        $this->yamlManager->delParameter('upgrading');
 
         return true;
     }
