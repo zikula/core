@@ -19,8 +19,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use \Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula_Request_Http as Request;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class FinishCommand extends ContainerAwareCommand
 {
