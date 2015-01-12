@@ -125,6 +125,7 @@ class UserApi extends \Zikula_AbstractApi
             $args['numitems'] = null;
         }
 
+        $uidsArray = array();
         if ($args['group_membership']) {
             $gmFilterParameters = array('gid' => $args['gid']);
             if (!is_null($args['uid'])) {
@@ -136,7 +137,6 @@ class UserApi extends \Zikula_AbstractApi
                 return false;
             }
 
-            $uidsArray = array();
             foreach ($groupmembership as $gm) {
                 $gm = $gm->toArray();
                 $uidsArray[$gm['uid']] = $gm;
