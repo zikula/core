@@ -40,21 +40,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function refreshpagelockAction(Request $request)
     {
         $this->checkAjaxToken();
-        $lockName = $request->request->get('lockname');
 
-        $uname = UserUtil::getVar('uname');
-
-        $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',
-            array('lockName' => $lockName,
-                'sessionId' => $request->getSession()->getId(),
-                'lockedByTitle' => $uname,
-                'lockedByIPNo' => $request->getClientIp()));
-
-        if (!$lockInfo['hasLock']) {
-            $lockInfo['message'] = $this->__('Error! Lock broken!');
-        } else {
-            $lockInfo['message'] = null;
-        }
+        $lockInfo = $this->getLockInfo($request);
 
         return new AjaxResponse($lockInfo);
     }
@@ -72,22 +59,35 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function checkpagelockAction(Request $request)
     {
         $this->checkAjaxToken();
-        $lockName = $request->request->get('lockname');
 
-        $uname = UserUtil::getVar('uname');
-
-        $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',
-            array('lockName' => $lockName,
-                'sessionId' => $request->getSession()->getId(),
-                'lockedByTitle' => $uname,
-                'lockedByIPNo' => $request->getClientIp()));
-
-        if (!$lockInfo['hasLock']) {
-            $lockInfo['message'] = $this->__('Error! Lock broken!');
-        } else {
-            $lockInfo['message'] = null;
-        }
+        $lockInfo = $this->getLockInfo($request);
 
         return new AjaxResponse($lockInfo);
+    }
+
+    /**
+     * Requires a lock and returns it's information.
+     *
+     * @param Request $request
+     *
+     * @return array Lock information data.
+     */
+    private function getLockInfo(Request $request)
+    {
+
+        $lockName = $request->request->get('lockname');
+
+        $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',
+            array(
+                'lockName' => $lockName,
+                'sessionId' => $request->getSession()->getId(),
+                'lockedByTitle' => UserUtil::getVar('uname'),
+                'lockedByIPNo' => $request->getClientIp()
+            )
+        );
+
+        $lockInfo['message'] = $lockInfo['hasLock'] ? null : $this->__('Error! Lock broken!');
+
+        return $lockInfo;
     }
 }
