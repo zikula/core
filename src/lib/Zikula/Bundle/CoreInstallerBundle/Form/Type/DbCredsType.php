@@ -55,9 +55,8 @@ class DbCredsType extends AbstractType
             ->add('database_password', 'password', array(
                 'label' => __('DB Password'),
                 'label_attr' => array('class' => 'col-lg-5'),
-                'constraints' => array(
-                    new NotBlank(),
-                )))
+                'required' => false
+            ))
             ->add('database_name', 'text', array(
                 'label' => __('DB Name'),
                 'label_attr' => array('class' => 'col-lg-5'),

@@ -59,7 +59,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     public function isNecessary()
     {
         $params = $this->yamlManager->getParameters();
-        if (!empty($params['database_host']) && !empty($params['database_user']) && !empty($params['database_password']) && !empty($params['database_name'])) {
+        if (!empty($params['database_host']) && !empty($params['database_user']) && !empty($params['database_name'])) {
             // test the connection here.
             $test = $this->testDBConnection($params);
             if ($test !== true) {
