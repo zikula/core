@@ -55,6 +55,7 @@ doctrine:
                 password: %database_password%
                 charset:  UTF8
                 path:     %database_path%
+                server_version: %database_server_version%
 
     orm:
         proxy_namespace: DoctrineProxy

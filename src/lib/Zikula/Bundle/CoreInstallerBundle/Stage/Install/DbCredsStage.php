@@ -80,8 +80,10 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     public function handleFormResult(FormInterface $form)
     {
         $data = $form->getData();
-        $data['database_driver'] = 'pdo_' . $data['database_driver']; // doctrine requires prefix in custom_parameters.yml
         $params = array_merge($this->yamlManager->getParameters(), $data);
+        $dbh = new \PDO("$params[database_driver]:host=$params[database_host];dbname=$params[database_name]", $params['database_user'], $params['database_password']);
+        $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);
+        $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         $this->writeParams($params);
         $this->container->get('core_installer.config.util')->writeLegacyConfig($params);
     }
