@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class LocaleType extends AbstractType
 {
@@ -26,11 +27,24 @@ class LocaleType extends AbstractType
                 'label' => __('Select your default language'),
                 'label_attr' => array('class' => 'col-lg-3'),
                 'choices' => \ZLanguage::getInstalledLanguageNames(),
-                'data' => \ZLanguage::getLanguageCode()));
+                'data' => \ZLanguage::getLanguageCode()
+            ));
     }
 
     public function getName()
     {
         return 'locale';
     }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+                'csrf_protection' => false,
+//                'csrf_field_name' => '_token',
+//                // a unique key to help generate the secret token
+//                'intention'       => '_zk_bdcreds',
+            )
+        );
+    }
+
 }
