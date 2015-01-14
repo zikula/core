@@ -45,6 +45,7 @@
         "gedmo/doctrine-extensions": "dev-master",
         "imagine/Imagine": "dev-master",
         "matthiasnoback/symfony-service-definition-validator": "~1.2,>=1.2.1",
+        "matthiasnoback/symfony-console-form": "dev-master",
         "michelf/php-markdown": "1.4.*@dev",
         "phpids/phpids": "dev-master",
         "sensio/distribution-bundle": "dev-master",

@@ -29,6 +29,11 @@ use Zikula_Request_Http as Request;
  */
 abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
 {
+    /**
+     * @var array
+     * @deprecated This is not used in PHP >=5.4.0
+     * @see \Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand
+     */
     protected $settings = array(
         /* Database */
         'database_host' => array(
@@ -142,6 +147,13 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         }
     }
 
+    /**
+     * @deprecated scheduled for removal in Core 2.0.0
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param $option
+     * @return mixed
+     */
     protected function getRequiredOption(InputInterface $input, OutputInterface $output, $option)
     {
         if (!$input->isInteractive()) {

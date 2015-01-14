@@ -21,6 +21,9 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Zikula_Core;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 
 class StartCommand extends AbstractCoreInstallerCommand
 {
@@ -80,13 +83,28 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         // get the settings from user input
-        $settings = array();
-        foreach (array_keys($this->settings) as $name) {
-            $settings[$name] = $this->getRequiredOption($input, $output, $name);
+        $x = explode('.', str_replace('-', '.', phpversion()));
+        $phpVersion = "$x[0].$x[1].$x[2]";
+        if (version_compare($phpVersion, '5.4.0', "<")) {
+            /** @deprecated This method is scheduled for removal in Core 2.0.0 */
+            $settings = array();
+            foreach (array_keys($this->settings) as $name) {
+                $settings[$name] = $this->getRequiredOption($input, $output, $name);
+            }
+            // @todo validate? (validation is automatic in Form version below)
+        } else {
+            // This method works in PHP >=5.4.0
+            $formType = new LocaleType();
+            $settings = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+            $formType = new DbCredsType();
+            $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+            $settings = array_merge($settings, $data);
+            $formType = new CreateAdminType();
+            $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+            $settings = array_merge($settings, $data);
         }
 
         if ($input->isInteractive()) {
-            // @todo validate! at least the admin password and username
             $output->writeln(array("", "", ""));
             $output->writeln("Configuration successful. Please verify your parameters below:");
         }
