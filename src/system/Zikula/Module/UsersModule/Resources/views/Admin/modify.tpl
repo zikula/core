@@ -3,17 +3,18 @@
 {strip}
     {gt text='Edit user account of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
     {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
-        {pageaddvar name='javascript' value='prototype'}
+        {pageaddvar name='javascript' value='jquery'}
         {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
-                var passmeter = null;
-                document.observe("dom:loaded", function() {
-                    passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
-                        username:'{{$formData->getFieldId('uname')}}',
-                        minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                ( function($) {
+                    $(document).ready(function() {
+                        ZikulaUsersPassMeter.init('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
+                            username: '{{$formData->getFieldId('uname')}}',
+                            minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                        });
                     });
-                });
+                })(jQuery);
             </script>
         {/pageaddvarblock}
     {/if}

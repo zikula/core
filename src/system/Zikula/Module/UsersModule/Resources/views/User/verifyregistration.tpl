@@ -1,17 +1,18 @@
 {strip}
     {gt text='Enter verification code' assign='templatetitle'}
-    {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
-        {pageaddvar name='javascript' value='prototype'}
+    {if $modvars.ZikulaUsersModule.use_password_strength_meter eq 1}
+        {pageaddvar name='javascript' value='jquery'}
         {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
-                var passmeter = null;
-                document.observe("dom:loaded", function() {
-                    passmeter = new Zikula.Users.PassMeter('users_newpass', 'users_verifyregistration_passmeter',{
-                        username:'users_uname',
-                        minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                ( function($) {
+                    $(document).ready(function() {
+                        ZikulaUsersPassMeter.init('users_newpass', 'users_verifyregistration_passmeter',{
+                            username: 'users_uname',
+                            minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                        });
                     });
-                });
+                })(jQuery);
             </script>
         {/pageaddvarblock}
     {/if}

@@ -1,3 +1,5 @@
+// Copyright Zikula Foundation 2014 - license GNU/LGPLv3 (or at your option, any later version).
+
 ( function($) {
 
     var lastFragment = null;
@@ -16,15 +18,13 @@
             $('.pagination .hide-active').removeClass('hide-active').addClass('active');
         });
 
-
         $('#user-search').keyup(function(e) {
-
             queryId++;
             var currentQueryId = queryId;
 
             // skip if shift was pressed
             var key = e.keyCode || e.which;
-            if(key == 16) {
+            if (key == 16) {
                 return;
             }
 
@@ -61,7 +61,7 @@
             }
 
             // search in the dom table - if the last search string is substring of the current one
-            if( lastFragment == fragment.substring(0, fragment.length - 1)) {
+            if (lastFragment == fragment.substring(0, fragment.length - 1)) {
                 $('#user-search-list tbody tr').each(function() {
 
                     var $this = $(this);
@@ -85,15 +85,13 @@
             }
             ajax = $.ajax({
                 url: Zikula.Config.baseURL + 'index.php?module=users&type=ajax&func=getUsersAsTable',
-                dataType: "html",
+                dataType: 'html',
                 type: 'GET',
                 data: {
                     'fragment': fragment
                 },
                 success: function(data) {
-
                     $('#user-search-list tbody').empty().append(data);
-
                     resultStore[fragment] = data;
 
                     if (currentQueryId != queryId) {
@@ -113,4 +111,3 @@
         });
     });
 })(jQuery);
-

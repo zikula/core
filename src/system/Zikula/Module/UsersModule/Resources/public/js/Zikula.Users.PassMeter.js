@@ -1,30 +1,39 @@
 // Copyright Zikula Foundation 2010 - license GNU/LGPLv3 (or at your option, any later version).
-Zikula.define('Users');
 
-Zikula.Users._PassMeter = Class.create({
-    initialize: function(options) {
+var ZikulaUsersPassMeter = {};
+var ZikulaUsersPassCalc = {};
+
+var currentCalculator;
+
+( function($) {
+
+    ZikulaUsersPassCalc.initialize = function(options) {
         this.score = {};
-        this.options = Object.extend({
+        this.options = $.extend({
             minLength: 8,
             scores: [20, 35, 45, 60],
             verdicts: ['Weak', 'Normal', 'Medium', 'Strong', 'Very Strong'],
             raisePower: 1.4,
-            dseq: $A($R(1,9)).join(''),
-            lseq: $A($R('a','z')).join('')
+            dseq: '123456789'.split(''),
+            lseq: 'abcdefghijklmnopqrstuvwxyz'.split('')
         }, options || { });
-    },
-    dictionary: ['password','qwerty'],
-    restrictions: {
+
+        return this;
+    };
+    ZikulaUsersPassCalc.dictionary = ['password', 'qwerty'];
+    ZikulaUsersPassCalc.restrictions = {
         minLength: {
-            test: function(word){return word.length === 0 || word.length>=this.options.minLength;},
-            msg:'Password is to short'
+            test: function(word) {
+                return word.length === 0 || word.length >= this.options.minLength;
+            },
+            msg: 'Password is too short'
         }
-    },
-    ruleScores: {
+    };
+    ZikulaUsersPassCalc.ruleScores = {
         length: 0,
         repetitions: -1,
-        sequences: -100,
-        dictionary: -100,
+        sequences: 1/*-100*/,
+        dictionary: 1/*-100*/,
         lowercase: 1,
         uppercase: 3,
         one_number: 3,
@@ -34,8 +43,8 @@ Zikula.Users._PassMeter = Class.create({
         upper_lower_combo: 2,
         letter_number_combo: 2,
         letter_number_char_combo: 2
-    },
-    rules: {
+    };
+    ZikulaUsersPassCalc.rules = {
         length: true,
         repetitions: true,
         sequences: true,
@@ -49,8 +58,8 @@ Zikula.Users._PassMeter = Class.create({
         upper_lower_combo: true,
         letter_number_combo: true,
         letter_number_char_combo: true
-    },
-    validationRules: {
+    };
+    ZikulaUsersPassCalc.validationRules = {
         length: function (word, score) {
             return Math.pow(word.length, this.options.raisePower);
         },
@@ -58,10 +67,10 @@ Zikula.Users._PassMeter = Class.create({
             return Math.pow(word.length-word.replace(/(.+)(?=\1+)/g,'').length, this.options.raisePower*0.9) * score;
         },
         sequences: function (word, score) {
-            return (this.options.dseq.include(word) || this.options.lseq.include(word)) && score;
+            return ($.inArray(word, this.options.dseq) || $.inArray(word, this.options.lseq)) && score;
         },
         dictionary: function (word, score) {
-            return $A(this.dictionary).include(word) && score;
+            return $.inArray(word, this.dictionary) && score;
         },
         lowercase: function (word, score) {
             return word != word.toLocaleUpperCase() && score;
@@ -90,15 +99,9 @@ Zikula.Users._PassMeter = Class.create({
         letter_number_char_combo : function (word, score) {
             return word.match(/([a-zA-Z0-9].*[!,@,#,$,%,\^,&,*,?,_,~])|([!,@,#,$,%,\^,&,*,?,_,~].*[a-zA-Z0-9])/) && score;
         }
-    },
-    addRule: function (name, method, score, active) {
-        this.rules[name] = active;
-        this.ruleScores[name] = score;
-        this.validationRules[name] = method;
-        return true;
-    },
-    calculate: function (word) {
-        this.score = {
+    };
+    ZikulaUsersPassCalc.calculate = function (word) {
+        var score = {
             totalscore: 0,
             level: 0,
             percent: 0,
@@ -106,119 +109,127 @@ Zikula.Users._PassMeter = Class.create({
             word: word,
             messages: {}
         };
-        for (var rule in this.rules) if (this.rules.hasOwnProperty(rule)) {
-            if (this.rules[rule] === true) {
-                var score = this.ruleScores[rule],
-                    result = this.validationRules[rule].bind(this)(word, score);
-                if (!isNaN(result)) {
-                    this.score.totalscore += result;
+        for (var rule in this.rules) {
+            if (ZikulaUsersPassCalc.rules.hasOwnProperty(rule)) {
+                if (ZikulaUsersPassCalc.rules[rule] === true) {
+                    var scoreTmp = ZikulaUsersPassCalc.ruleScores[rule];
+                    var result = ZikulaUsersPassCalc.validationRules[rule].bind(this)(word, scoreTmp);
+                    if (!isNaN(result)) {
+                        score.totalscore += result;
+                    }
                 }
             }
         }
-        for (var restriction in this.restrictions) if (this.restrictions.hasOwnProperty(restriction)) {
-            if(Object.isFunction(this.restrictions[restriction].test) && !this.restrictions[restriction].test.bind(this)(word)) {
-                this.score.messages[restriction] = this.restrictions[restriction].msg || true;
-            } else{
-                this.score.messages[restriction] = false;
+        for (var restriction in ZikulaUsersPassCalc.restrictions) {
+            if (ZikulaUsersPassCalc.restrictions.hasOwnProperty(restriction)) {
+                if (typeof ZikulaUsersPassCalc.restrictions[restriction].test === 'function' && !ZikulaUsersPassCalc.restrictions[restriction].test.bind(this)(word)) {
+                    score.messages[restriction] = ZikulaUsersPassCalc.restrictions[restriction].msg || true;
+                } else {
+                    score.messages[restriction] = false;
+                }
             }
         }
-        this.score.totalscore = this.score.totalscore < 0 ? 0 : this.score.totalscore.round();
-        this.options.scores.each(function(e,i){
-            if(this.score.totalscore>e) {
-                this.score.level = i+1;
+        score.totalscore = score.totalscore < 0 ? 0 : Math.round(score.totalscore);
+
+        var maxValue = 0;
+        $.each(this.options.scores, function(i, e) {
+            if (score.totalscore > e) {
+                score.level = i + 1;
+            }
+            if (e > maxValue) {
+                maxValue = e;
             }
         }.bind(this));
-        this.score.verdict = this.options.verdicts[this.score.level];
-        this.score.percent = (this.score.totalscore/this.options.scores.max())*100;
-        this.score.percent = this.score.percent > 100 ? 100 : this.score.percent.round();
 
-        return this.score;
-    }
-});
+        score.verdict = this.options.verdicts[score.level];
+        score.percent = 0;
+        if (maxValue > 0) {
+            score.percent = (score.totalscore / maxValue) * 100;
+        }
+        score.percent = score.percent > 100 ? 100 : Math.round(score.percent);
 
-Zikula.Users.PassMeter = Class.create({
-    initialize: function(passwordElementId, visualizationElementId, options) {
-        this.passwordInput = $(passwordElementId);
-        if (Object.isElement($(visualizationElementId))) {
-            this.visualizationDiv = $(visualizationElementId);
+        return score;
+    };
+
+    ZikulaUsersPassMeter.init = function(passwordElementId, visualizationElementId, options) {
+        var passwordInput = $('#' + passwordElementId);
+        var visualizationDiv = false;
+        if ($('#' + visualizationElementId).length > 0) {
+            visualizationDiv = $('#' + visualizationElementId);
         } else {
-            this.visualizationDiv = false;
             options = visualizationElementId;
         }
-        this.options = Object.extend({
+        options = $.extend({
             username: false,
             onChange: false,
             messages: {},
-            colors:  ["#ff0000", "#FFCC33", "#00FF00", "#008000"],
+            colors:  ['#ff0000', '#FFCC33', '#00FF00', '#008000'],
             scores: [20, 40, 60],
-            verdicts: [Zikula.__('Weak'), Zikula.__('Normal'), Zikula.__('Strong'), Zikula.__('Very Strong')],
-            autoRun: true
+//             verdicts: [Zikula.__('Weak'), Zikula.__('Normal'), Zikula.__('Strong'), Zikula.__('Very Strong')],
+            verdicts: ['Weak', 'Normal', 'Strong', 'Very Strong']
         }, options || { });
-        this.options.messages = Object.extend({
-            minLength: Zikula.__f('The minimum length for user passwords is %s characters.', this.options.minLength)
-        },this.options.messages);
-        this.calulator = new Zikula.Users._PassMeter(this.options);
-        if(Object.isElement($(this.options.username))) {
-            this.calulator.restrictions.username = {
-                test: function(word) {return word ==='' || word != $F(this.options.username);},
-                msg: Zikula.__('Password can not match the username, choose a different password.')
+        options.messages = $.extend({
+//             minLength: Zikula.__f('The minimum length for user passwords is %s characters.', options.minLength)
+            minLength: 'The minimum length for user passwords is ' + options.minLength + ' characters.'
+        }, options.messages);
+        currentCalculator = ZikulaUsersPassCalc.initialize(options);
+        if ($('#' + options.username).length > 0) {
+            ZikulaUsersPassCalc.restrictions.username = {
+                test: function(word) {
+                    return word ==='' || word != $('#' + options.username).val();
+                },
+//                 msg: Zikula.__('Password can not match the username, choose a different password.')
+                msg: 'Password can not match the username, choose a different password.'
             };
         }
-        if (this.options.autoRun) {
-            this.start();
-        }
-    },
-    start: function() {
-        if(!this.options.onChange) {
-            this.prepareVisualisation();
-        }
-        this.passwordInput.observe('keyup',this.onChange.bindAsEventListener(this));
-        this.onChange();
-    },
-    onChange: function() {
-        this.score = this.calulator.calculate(this.passwordInput.getValue());
-        this.score.messagesStr = [];
-        for (var msg in this.score.messages) if (this.score.messages.hasOwnProperty(msg)) {
-            if (this.score.messages[msg]) {
-                if(this.options.messages[msg]) {
-                    this.score.messages[msg] = this.options.messages[msg];
-                }
-                this.score.messagesStr.push(this.score.messages[msg]);
+        if (!options.onChange) {
+            // prepare visualisation
+            var passindicatorContainer = $('<div>').attr('class', 'help-block passindicator').hide();
+            var passindicatorBarContainer = $('<div>').attr('class', 'passindicatorbarcontainer').css({ width: '200px' });
+            var passindicatorBar = $('<div>').attr('class', 'passindicatorbar').css({
+                    backgroundColor: options.colors[0],
+                    backgroundPosition: '0 0',
+                    height: '3px'
+            });
+            var passindicatorScore = $('<div>').attr('class', 'passindicatorscore');
+            var passindicatorMsg = $('<div>').attr('class', 'passindicatormsg');
+
+            var content = passindicatorContainer.append(passindicatorScore).append(passindicatorBarContainer).append(passindicatorMsg);
+
+            if (visualizationDiv) {
+                visualizationDiv.prepend(content);
+            } else {
+                passwordInput.insertAfter(content);
             }
+            passindicatorBarContainer.append(passindicatorBar);
         }
-        this.score.messagesStr.join();
-        if(Object.isFunction(this.options.onChange)) {
-            this.options.onChange(this.score);
-        } else {
-            this.passindicatorContainer.show();
-            this.passindicatorBar.setStyle({
-                width: (this.score.percent < 5 ? 5 : this.score.percent) + '%',
-                backgroundColor: this.options.colors[this.score.level],
-                backgroundPosition: '0 ' + this.score.percent+ '%'
-            });
-            this.passindicatorScore.update(this.score.verdict + ' ('+this.score.percent+'%)');
-            this.passindicatorMsg.update(this.score.messagesStr);
-        }
-    },
-    prepareVisualisation: function() {
-        this.passindicatorContainer = new Element('div',{'class':'help-block passindicator'}).hide();
-        this.passindicatorBarContainer = new Element('div',{'class':'passindicatorbarcontainer'}).setStyle({width:'200px'});
-        this.passindicatorBar = new Element('div',{'class':'passindicatorbar'}).setStyle({
-                backgroundColor: this.options.colors[0],
-                backgroundPosition: '0 0',
-                height: '3px'
+        passwordInput.bind('keyup', function() {
+            var score = currentCalculator.calculate(passwordInput.val());
+            score.messagesStr = [];
+            for (var msg in score.messages) {
+                if (score.messages.hasOwnProperty(msg)) {
+                    if (score.messages[msg]) {
+                        if (options.messages[msg]) {
+                            score.messages[msg] = options.messages[msg];
+                        }
+                        score.messagesStr.push(score.messages[msg]);
+                    }
+                }
+            }
+            score.messagesStr.join();
+            if (typeof options.onChange === 'function') {
+                options.onChange(score);
+            } else {
+                passindicatorContainer.show();
+                passindicatorBar.css({
+                    width: (score.percent < 5 ? 5 : score.percent) + '%',
+                    backgroundColor: options.colors[score.level],
+                    backgroundPosition: '0 ' + score.percent+ '%'
+                });
+                passindicatorScore.html(score.verdict + ' (' + score.percent + '%)');
+                passindicatorMsg.html(score.messagesStr);
+            }
         });
-        this.passindicatorScore = new Element('div',{'class':'passindicatorscore'});
-        this.passindicatorMsg = new Element('div',{'class':'passindicatormsg'});
-        if (this.visualizationDiv) {
-            this.visualizationDiv.insert({
-                top: this.passindicatorContainer.insert(this.passindicatorScore).insert(this.passindicatorBarContainer).insert(this.passindicatorMsg)
-            });
-        } else {
-            this.passwordInput.insert({
-                after: this.passindicatorContainer.insert(this.passindicatorScore).insert(this.passindicatorBarContainer).insert(this.passindicatorMsg)
-            });
-        }
-        this.passindicatorBarContainer.insert(this.passindicatorBar);
-    }
-});
+        passwordInput.trigger('keyup');
+    };
+})(jQuery);

@@ -3,7 +3,7 @@
 (function($) {
     $(function() {
         $('[id^=zikulausersmodule-authentication-select-method-loginblock-form]').each(function() {
-            $(this).submit(function(event){
+            $(this).submit(function(event) {
                 onSubmitSelectAuthenticationMethod(event);
             });
         });
@@ -19,7 +19,7 @@
             parameterObj.form_type = 'loginblock';
 
             $.ajax({
-                url: 'index.php?module=ZikulaUsersModule&type=ajax&func=getLoginFormFields',
+                url: Routing.generate('zikulausersmodule_ajax_getloginformfields'),
                 data: parameterObj
             }).success(function(result) {
                 var data = result.data;
@@ -33,7 +33,6 @@
                     $('#zikulausersmodule-authentication-select-method-loginblock-form_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase()).addClass('hide');
                 }
                 showAjaxComplete(false);
-
             }).error(function(result) {
                 showAjaxComplete(true);
                 Zikula.showajaxerror(result.status + ': ' + result.statusText);
