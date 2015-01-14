@@ -124,4 +124,31 @@ class ControllerUtil
 
         return $results;
     }
+
+    /**
+     * @TODO unused at the moment. probably is needed in the controller to display translations?
+     * Load the right language.
+     *
+     * @return string
+     */
+    public function setupLang(ContainerInterface $container)
+    {
+        // @TODO read this from parameters, not ini
+        if (is_readable('config/installer.ini')) {
+            $ini = parse_ini_file('config/installer.ini');
+            $lang = isset($ini['language']) ? $ini['language'] : 'en';
+        } else {
+            $lang = 'en';
+        }
+
+        // setup multilingual
+        $GLOBALS['ZConfig']['System']['language_i18n'] = $lang;
+        $GLOBALS['ZConfig']['System']['multilingual'] = true;
+        $GLOBALS['ZConfig']['System']['languageurl'] = true;
+        $GLOBALS['ZConfig']['System']['language_detect'] = false;
+        $container->loadArguments($GLOBALS['ZConfig']['System']);
+
+        $zLang = \ZLanguage::getInstance();
+        $zLang->setup($container->get('request'));
+    }
 }
