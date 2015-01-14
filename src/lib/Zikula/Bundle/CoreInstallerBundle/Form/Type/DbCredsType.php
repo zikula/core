@@ -47,18 +47,18 @@ class DbCredsType extends AbstractType
                     new NotBlank(),
                 )))
             ->add('database_user', 'text', array(
-                'label' => __('DB Username'),
+                'label' => __('Database Username'),
                 'label_attr' => array('class' => 'col-lg-5'),
                 'constraints' => array(
                     new NotBlank(),
                 )))
             ->add('database_password', 'password', array(
-                'label' => __('DB Password'),
+                'label' => __('Database Password'),
                 'label_attr' => array('class' => 'col-lg-5'),
                 'required' => false
             ))
             ->add('database_name', 'text', array(
-                'label' => __('DB Name'),
+                'label' => __('Database Name'),
                 'label_attr' => array('class' => 'col-lg-5'),
                 'constraints' => array(
                     new NotBlank(),
