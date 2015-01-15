@@ -1,5 +1,5 @@
 {* @todo - handle re-display of display hooks when AJAX changes log-in method. For now, disable AJAX switching of login method and use URL fallback. *}
-{* ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.Login.js' *}
+{ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.Login.js'}
 {ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.Util.CapsLock.js'}
 {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
 {if ('ZikulaUsersModule' != $authentication_method.modname)}
@@ -10,8 +10,8 @@
 {include file='User/menu.tpl'}
 {if (count($authentication_method_display_order) > 1)}
     <div>
-        <h5 id="users_login_h5_no_authentication_method" class="alert alert-info{if !empty($selected_authentication_method)} hide{/if}">{gt text="Choose how you would like to log in by clicking on one of the following buttons."}</h5>
-        <h5 id="users_login_h5_authentication_method" class="alert alert-info{if empty($selected_authentication_method)} hide{/if}">{gt text="Log in below, or change how you would like to log in by clicking on one of the following buttons."}</h5>
+        <h5 id="users_login_h5_no_authentication_method" class="alert alert-info{if !empty($selected_authentication_method)} hide{/if}">{gt text='Choose how you would like to log in by clicking on one of the following buttons.'}</h5>
+        <h5 id="users_login_h5_authentication_method" class="alert alert-info{if empty($selected_authentication_method)} hide{/if}">{gt text='Log in below, or change how you would like to log in by clicking on one of the following buttons.'}</h5>
         <h5 id="users_login_h5" class="alert alert-info hide"></h5>
         {route name='zikulausersmodule_user_login' returnpage=$returnpage|urlencode assign='form_action'}
         {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
@@ -41,7 +41,7 @@
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-9">
                     <input id="users_login_rememberme" type="checkbox" name="rememberme" value="1" />
-                    <label for="users_login_rememberme">{gt text="Keep me logged in on this computer"}</label>
+                    <label for="users_login_rememberme">{gt text='Keep me logged in on this computer'}</label>
                 </div>
             </div>
             {/if}
@@ -90,14 +90,9 @@
     <p class="alert alert-danger">
         {gt text='The log-in option you chose is not available at the moment.'}
         {if count($authentication_method_display_order) > 1}
-        {gt text='Please choose another or contact the site administrator for assistance.'}
+            {gt text='Please choose another or contact the site administrator for assistance.'}
         {else}
-        {gt text='Please contact the site administrator for assistance.'}
+            {gt text='Please contact the site administrator for assistance.'}
         {/if}
     </p>
 </div>
-<script type="text/javascript">
-    if (document.getElementById("users_login_login_id") !== null) {
-        document.getElementById("users_login_login_id").focus();
-    }
-</script>

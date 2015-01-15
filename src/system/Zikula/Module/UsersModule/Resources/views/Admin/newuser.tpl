@@ -2,18 +2,18 @@
     {gt text='Create new user' assign='templatetitle'}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
     {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
-        {* TODO - Using ajaxheader here causes an error when the PassMeter is initialized. *}
-        {pageaddvar name='javascript' value='prototype'}
+        {pageaddvar name='javascript' value='jquery'}
         {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
-                var passmeter = null;
-                document.observe("dom:loaded", function() {
-                    passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
-                        username:'{{$formData->getFieldId('uname')}}',
-                        minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                ( function($) {
+                    $(document).ready(function() {
+                        ZikulaUsersPassMeter.init('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
+                            username: '{{$formData->getFieldId('uname')}}',
+                            minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                        });
                     });
-                });
+                })(jQuery);
             </script>
         {/pageaddvarblock}
     {/if}

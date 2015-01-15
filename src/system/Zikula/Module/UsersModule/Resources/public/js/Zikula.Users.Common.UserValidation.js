@@ -1,16 +1,14 @@
 // Copyright Zikula Foundation 2014 - license GNU/LGPLv3 (or at your option, any later version).
 
 ( function($) {
-
     $(document).ready(function() {
 
         // set username and email input to lower case
         $('.to-lower-case').blur( function() {
-            $(this).val($(this).val().toLowerCase())
+            $(this).val($(this).val().toLowerCase());
         });
 
         $('.z-module-zikulausersmodule input[data-match]').each(function() {
-
             var $this = $(this);
             var match = $this.data('match');
 
@@ -29,9 +27,7 @@
             e2.addEventListener('paste', checkMatch, false);
         });
 
-
         $('.z-module-zikulausersmodule input[data-min]').each(function() {
-
             var $this = $(this);
 
             var checkMinLengthValidity = function() {
@@ -45,9 +41,6 @@
                 }
             };
             $this[0].addEventListener('change', checkMinLengthValidity, false);
-
         });
-
     });
-
 })(jQuery);
