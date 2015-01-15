@@ -6,16 +6,19 @@
         var zdebug_console = null;
         var zdebug_panels = []
 
-        document.observe("dom:loaded", function() {
+        document.observe('dom:loaded', function() {
             // create the debug window
-            zdebug_console = new Zikula.UI.Window($('zdebug_window'),
-                                                   {title: Zikula.__('Zikula Debug Console'),
-                                                    className: 'z-window zdebug',
-                                                    resizable: true,
-                                                    destroyOnClose: true,
-                                                    position: [function() { return document.viewport.getWidth() - zdebug_console.window.container.getWidth() - 5; }, 5],
-                                                    width: {{$zdebugwidth}},
-                                                    height: {{$zdebugheight}}});
+            zdebug_console = new Zikula.UI.Window($('zdebug_window'), {
+                title: Zikula.__('Zikula Debug Console'),
+                className: 'z-window zdebug',
+                resizable: true,
+                destroyOnClose: true,
+                position: [function() {
+                    return document.viewport.getWidth() - zdebug_console.window.container.getWidth() - 5;
+                }, 5],
+                width: {{$zdebugwidth}},
+                height: {{$zdebugheight}}
+            });
             zdebug_console.open();
 
             // scroll the console with the window
@@ -69,7 +72,7 @@
         <li class="{cycle values='zdebug-even,zdebug-odd'}">
             <tt>
                 {section name='indent' loop=$_debug_tpls[templates].depth}&nbsp;&nbsp;&nbsp;{/section}
-                <span style="color: {if $_debug_tpls[templates].type eq "template"}brown{elseif $_debug_tpls[templates].type eq "insert"}black{else}green{/if};">
+                <span style="color: {if $_debug_tpls[templates].type eq 'template'}brown{elseif $_debug_tpls[templates].type eq 'insert'}black{else}green{/if};">
                     {$_debug_tpls[templates].filename|safehtml}
                 </span>
                 {if isset($_debug_tpls[templates].exec_time)}
@@ -113,7 +116,7 @@
         </div>
         {/if}
     {sectionelse}
-        <tt>({gt text="none"})</tt>
+        <tt>({gt text='none'})</tt>
     {/section}
     </div>
 
