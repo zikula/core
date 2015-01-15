@@ -136,12 +136,12 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
 
         } elseif (!empty($this->commandScript)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
-            $click = 'javascript:' . $this->renderConfirm($view, "Form.contextMenu.commandScript('{$hiddenName}', function(commandArgument){{$this->commandScript}})");
+            $click = 'javascript:' . $this->renderConfirm($view, "FormContextMenu.commandScript('{$hiddenName}', function(commandArgument){{$this->commandScript}})");
 
         } elseif (!empty($this->commandRedirect)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
             $url = urlencode($this->commandRedirect);
-            $click = 'javascript:' . $this->renderConfirm($view, "Form.contextMenu.redirect('{$hiddenName}','{$url}')");
+            $click = 'javascript:' . $this->renderConfirm($view, "FormContextMenu.redirect('{$hiddenName}','{$url}')");
         } else {
             LogUtil::registerError('Missing commandName, commandScript, or commandRedirect in context menu item');
         }
