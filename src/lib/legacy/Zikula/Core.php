@@ -469,7 +469,7 @@ class Zikula_Core
         // check if Zikula Core is not installed
         if (!$installed && !$uriContainsInstall && !$doNotRedirect) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
-            $url = $this->container->get('router')->generate('install', array(), true);
+            $url = $this->container->get('router')->generate('install');
             $response = new RedirectResponse($url);
             $response->send();
             System::shutDown();
@@ -477,7 +477,7 @@ class Zikula_Core
         // check if Zikula Core requires upgrade
         if ($requiresUpgrade && !$uriContainsUpgrade && !$doNotRedirect) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
-            $url = $this->container->get('router')->generate('upgrade', array(), true);
+            $url = $this->container->get('router')->generate('upgrade');
             $response = new RedirectResponse($url);
             $response->send();
             System::shutDown();
