@@ -1,14 +1,14 @@
 {adminheader}
 <h3>
     <span class="fa fa-trash-o"></span>
-    {gt text="Uninstall module"} - {modgetinfo modid=$id info=displayname}
+    {gt text='Uninstall module'} - {modgetinfo modid=$id info=displayname}
 </h3>
 
-<p class="alert alert-danger">{gt text="Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>
+<p class="alert alert-danger">{gt text='Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module.'}</p>
 
 <form id="uninstall-module" class="form-horizontal" role="form" action="{route name='zikulaextensionsmodule_admin_remove'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
-        <legend>{gt text="Do you really want to uninstall this module?"}</legend>
+        <legend>{gt text='Do you really want to uninstall this module?'}</legend>
 
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmation" value="1" />
@@ -24,24 +24,24 @@
         {/if}
         {if $dependents}
         <div class="">
-            <p class="alert alert-danger">{gt text="Warning! Other modules present in your system are dependent on this module. If you uninstall this module then all modules that require it will also be uninstalled."}</p>
+            <p class="alert alert-danger">{gt text='Warning! Other modules present in your system are dependent on this module. If you uninstall this module then all modules that require it will also be uninstalled.'}</p>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>{gt text="Module name"}</th>
-                        <th>{gt text="Level"}</th>
-                        <th>{gt text="Uninstall module"}</th>
+                        <th>{gt text='Module name'}</th>
+                        <th>{gt text='Level'}</th>
+                        <th>{gt text='Uninstall module'}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {foreach from=$dependents item=dependent}
+                {foreach item='dependent' from=$dependents}
                     <tr>
                         <td>{$dependent.displayname}</td>
                         <td>
                             {if $dependent.status eq 1}
-                            {gt text="Required."}
+                            {gt text='required'}
                             {elseif $dependent.status eq 2}
-                            {gt text="optional"}
+                            {gt text='optional'}
                             {/if}
                         </td>
                         <td>
@@ -53,7 +53,7 @@
                             {/if}
                         </td>
                     </tr>
-                    {/foreach}
+                {/foreach}
                 </tbody>
             </table>
         </div>
@@ -61,10 +61,8 @@
 
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                <button class="btn btn-danger" title="{gt text='Uninstall'}">
-                    {gt text='Uninstall'}
-                </button>
-                <a class="btn btn-default" href="{route name='zikulaextensionsmodule_admin_view'}">{gt text="Cancel"}</a>
+                <button class="btn btn-danger" title="{gt text='Uninstall'}">{gt text='Uninstall'}</button>
+                <a class="btn btn-default" href="{route name='zikulaextensionsmodule_admin_view'}">{gt text='Cancel'}</a>
             </div>
         </div>
     </fieldset>
