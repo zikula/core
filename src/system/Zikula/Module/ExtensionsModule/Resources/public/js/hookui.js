@@ -212,6 +212,8 @@ var cloneDraggedItem = true;
         newContent = newContent.replace('##name', sarea_name);
         newItem.html(newContent);
 
+        newItem.find('i.fa-long-arrow-left').removeClass('fa-long-arrow-left').addClass('fa-arrows');
+
         newItem
             .removeClass('z-draggable')
             .removeClass('z-itemdragleft')
