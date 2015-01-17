@@ -867,11 +867,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $this->formatTextualField('action', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('path', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('host', $currentFunc, $usesCsvOutput);
-        $this['schemes'] = ((isset($this['schemes']) && is_array($this['schemes'])) ? DataUtil::formatForDisplay($this['schemes']) : array());
-        $this['methods'] = ((isset($this['methods']) && is_array($this['methods'])) ? DataUtil::formatForDisplay($this['methods']) : array());
-        $this['defaults'] = ((isset($this['defaults']) && is_array($this['defaults'])) ? DataUtil::formatForDisplay($this['defaults']) : array());
-        $this['requirements'] = ((isset($this['requirements']) && is_array($this['requirements'])) ? DataUtil::formatForDisplay($this['requirements']) : array());
-        $this['options'] = ((isset($this['options']) && is_array($this['options'])) ? DataUtil::formatForDisplay($this['options']) : array());
         $this->formatTextualField('condition', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('description', $currentFunc, $usesCsvOutput);
         $this['userRoute'] = (bool) $this['userRoute'];
