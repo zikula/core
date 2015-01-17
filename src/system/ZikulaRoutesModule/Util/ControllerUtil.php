@@ -50,13 +50,18 @@ class ControllerUtil extends BaseControllerUtil
             }
         }
 
+        $errors = '';
+
         // force deletion of existing file
         $targetPath = sprintf('%s/../web/js/fos_js_routes.js', $this->getContainer()->getParameter('kernel.root_dir'));
         if (file_exists($targetPath)) {
-            unlink($targetPath);
+            try {
+                unlink($targetPath);
+            } catch (\Exception $e) {
+                $errors .= __f("Error: Could not delete '%s' because %s", array($targetPath, $e->getMessage()));
+            }
         }
 
-        $errors = '';
         foreach ($langs as $lang) {
             $command = new DumpCommand();
             $command->setContainer($this->getContainer());
