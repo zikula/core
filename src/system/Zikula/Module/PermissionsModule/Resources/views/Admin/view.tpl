@@ -67,7 +67,7 @@
     </thead>
     <tbody>
         {foreach item='permission' from=$permissions}
-        <tr{if $lockadmin && $adminid == $permission.permid} class="warning"{/if} data-id="{$permission.permid}">
+        <tr id="permrow-id{$permission.permid}"{if $lockadmin && $adminid == $permission.permid} class="warning"{/if} data-id="{$permission.permid}">
 
             <td style="width:1px;white-space:nowrap;">
                 {if $lockadmin && $adminid == $permission.permid}

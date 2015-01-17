@@ -161,7 +161,7 @@ var currentDelete, currentInsertBefore;
         $('.create-new-permission').click(function (event) {
             event.preventDefault();
             $(this).addClass('fa-spin');
-            currentInsertBefore = $(this).hasClass('insertBefore') ? $(this).parent().parent() : null;
+            currentInsertBefore = $(this).hasClass('insertBefore') ? $(this).parents('tr').first() : null;
             $('#save-permission-changes').hide();
             $('#save-new-permission').show();
 
