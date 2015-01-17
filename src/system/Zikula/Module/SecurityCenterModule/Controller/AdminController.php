@@ -33,6 +33,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Bundle\CoreBundle\YamlDumper;
 
 /**
  * @Route("/admin")
@@ -102,6 +103,7 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('idshtmlfields', implode(PHP_EOL, System::getVar('idshtmlfields')));
         $this->view->assign('idsjsonfields', implode(PHP_EOL, System::getVar('idsjsonfields')));
         $this->view->assign('idsexceptions', implode(PHP_EOL, System::getVar('idsexceptions')));
+        $this->view->assign('sessionname', $this->view->getContainer()->getParameter('zikula.session.name'));
 
         return new Response($this->view->fetch('Admin/modifyconfig.tpl'));
     }
@@ -230,9 +232,10 @@ class AdminController extends \Zikula_AbstractController
         $sessionipcheck = (int)$request->request->get('sessionipcheck', 0);
         System::setVar('sessionipcheck', $sessionipcheck);
 
-        $sessionname = $request->request->get('sessionname', 'ZSID');
+        $sessionNameParameter = $this->view->getContainer()->getParameter('zikula.session.name');
+        $sessionname = $request->request->get('sessionname', $sessionNameParameter);
         if (strlen($sessionname) < 3) {
-            $sessionname = 'ZSID';
+            $sessionname = $sessionNameParameter;
         }
 
         $sessioncsrftokenonetime = (int)$request->request->get('sessioncsrftokenonetime', 0);
@@ -243,6 +246,11 @@ class AdminController extends \Zikula_AbstractController
             $cause_logout = true;
         }
 
+        // set the session name in custom_parameters.yml
+        $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
+        $yamlManager->setParameter('zikula.session.name', $sessionname);
+        // set the session name in the current container
+        $this->view->getContainer()->setParameter('zikula.session.name', $sessionname);
         System::setVar('sessionname', $sessionname);
         System::setVar('sessionstoretofile', $sessionstoretofile);
 

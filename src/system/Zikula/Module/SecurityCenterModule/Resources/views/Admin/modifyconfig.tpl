@@ -208,7 +208,7 @@
         <div class="form-group">
             <label class="col-lg-3 control-label" for="securitycenter_sessionname">{gt text="Session cookie name"}</label>
             <div class="col-lg-9">
-                <input id="securitycenter_sessionname" type="text" class="form-control" name="sessionname" value="{$modvars.ZConfig.sessionname|safetext}" size="20" />
+                <input id="securitycenter_sessionname" type="text" class="form-control" name="sessionname" value="{$sessionname|safetext}" size="20" />
                 <p class="help-block alert alert-warning">{gt text="Notice: If you change the 'Session cookie name' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again."}</p>
             </div>
         </div>

@@ -18,7 +18,7 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
-        name: _zsid
+        name: %zikula.session.name%
         handler_id: session.handler.legacy
         storage_id: session.storage.legacy
     fragments:       ~
