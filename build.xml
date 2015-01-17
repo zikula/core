@@ -100,6 +100,13 @@
 
         <exec command="cp -a ${workspace}/source/src ${packagepath}"/>
 
+        <!-- move doc files from repo root -->
+        <echo msg="Moving doc files to /docs/en ..."/>
+        <move file="${workspace}/source/README.md" tofile="${packagepath}/docs/en/README.md" overwrite="true"/>
+        <move file="${workspace}/source/INSTALL-1.4.0.md" tofile="${packagepath}/docs/en/INSTALL-1.4.0.md" overwrite="true"/>
+        <move file="${workspace}/source/UPGRADE-1.4.0.md" tofile="${packagepath}/docs/en/UPGRADE-1.4.0.md" overwrite="true"/>
+        <move file="${workspace}/source/CHANGELOG-1.4.md" tofile="${packagepath}/docs/en/CHANGELOG-1.4.md" overwrite="true"/>
+
         <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor"/>
         <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor"/>
 
