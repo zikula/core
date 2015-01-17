@@ -22,7 +22,7 @@ use Zikula\Core\Doctrine\Logger\ZikulaSqlLogger;
 use Zikula\Core\Event\GenericEvent;
 
 /**
- * Event handler to override templates.
+ * Event handler to boot Doctrine 2
  */
 class DoctrineListener implements EventSubscriberInterface
 {

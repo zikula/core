@@ -45,7 +45,7 @@
         <!--</service>-->
 
         <service id="markdown_parser" class="%markdown.class%" />
-        <service id="markdown_extra_parser" class="%markdown.class%" />
+        <service id="markdown_extra_parser" class="%markdown_extra.class%" />
 
         <!--<service id="zikula.core_init" class="%zikula.core_init_listener.class%">-->
             <!--<tag name="zikula.event_subscriber" />-->

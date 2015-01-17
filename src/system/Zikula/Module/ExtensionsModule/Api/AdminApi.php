@@ -1194,14 +1194,15 @@ class AdminApi extends \Zikula_AbstractApi
         $cacheClearer = $this->get('zikula.cache_clearer');
         $cacheClearer->clear('symfony.config');
 
-        // Upgrade succeeded, issue event.
-        // remove this legacy in 1.5.0
-        $event = new GenericEvent(null, $modinfo);
-        $this->getDispatcher()->dispatch('installer.module.upgraded', $event);
+        if (!System::isInstalling()) {
+            // Upgrade succeeded, issue event.
+            // remove this legacy in 1.5.0
+            $event = new GenericEvent(null, $modinfo);
+            $this->getDispatcher()->dispatch('installer.module.upgraded', $event);
 
-        $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
-        $this->getDispatcher()->dispatch(CoreEvents::MODULE_UPGRADE, $event);
-
+            $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
+            $this->getDispatcher()->dispatch(CoreEvents::MODULE_UPGRADE, $event);
+        }
         // Success
         return true;
     }
@@ -1220,9 +1221,8 @@ class AdminApi extends \Zikula_AbstractApi
         $this->regenerate(array('filemodules' => $filemodules));
 
         // get a list of modules needing upgrading
-        if ($this->listmodules(array('state' => ModUtil::STATE_UPGRADED))) {
-            $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED));
-
+        $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED));
+        if (isset($newmods) && is_array($newmods) && !empty($newmods)) {
             // Sort upgrade order according to this list.
             $priorities = array('ZikulaExtensionsModule', 'ZikulaUsersModule' , 'ZikulaGroupsModule', 'ZikulaPermissionsModule', 'ZikulaAdminModule', 'ZikulaBlocksModule', 'ZikulaThemeModule', 'ZikulaSettingsModule', 'ZikulaCategoriesModule', 'ZikulaSecurityCenterModule', 'ZikulaRoutesModule');
             $sortedList = array();
@@ -1238,7 +1238,11 @@ class AdminApi extends \Zikula_AbstractApi
             $newmods = array_merge($sortedList, $newmods);
 
             foreach ($newmods as $mod) {
-                $upgradeResults[$mod['name']] = $this->upgrade(array('id' => $mod['id']));
+                try {
+                    $upgradeResults[$mod['name']] = $this->upgrade(array('id' => $mod['id']));
+                } catch (\Exception $e) {
+                    $upgradeResults[$mod['name']] = false;
+                }
             }
 
             System::setVar('Version_Num', Zikula_Core::VERSION_NUM);

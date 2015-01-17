@@ -54,7 +54,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
     }
 
     /**
-     * Inialise a Doctrine 1 connection.
+     * Initialise a Doctrine 1 connection.
      *
      * Listens for 'doctrine.init_connection' events.
      *

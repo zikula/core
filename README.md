@@ -7,63 +7,51 @@ Zikula Core - Application Framework
   4. [Installing](#installing)
   5. [Contributing](#contributing)
 
-<a name="introduction" />
+<a name="introduction"></a>
 Introduction
 ------------
 
-Zikula Core is a web based application framework, fully extensible by
-Modules, plugins and themes.
+Zikula Core is a web based application framework, fully extensible by modules, plugins and themes.
 
 For more information visit http://zikula.org/ and read our [user manual](https://github.com/zikula/zikula-docs/tree/master/Users%20Manual).
 
-<a name="requirements" />
+
+<a name="requirements"></a>
 Requirements
 ------------
-Before installing Zikula it's important to ensure that the hosting server environment
-meets the requirements of the new core release. Zikula Core 1.4.0 has the following 
-requirements
+Before installing Zikula it's important to ensure that the hosting server environment meets the requirements
+of the new core release. Zikula Core 1.4.0 has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.3.3         | 5.5          |
+| PHP           | 5.3.8         | 5.5          |
 
 
-Please note that PHP versions before 5.3.8 are known to be buggy and might not
-work for you:
+Please note:
 
-  - before PHP 5.3.4, if you get "Notice: Trying to get property of
-    non-object", you've hit a known PHP bug (see
-    https://bugs.php.net/bug.php?id=52083 and
-    https://bugs.php.net/bug.php?id=50027);
+  - PHP 5.3.16 has a major bug in the Reflection subsystem and is not suitable to run Zikula (https://bugs.php.net/bug.php?id=62715)
+  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini` to 128 MB for the
+    installation process.
 
-  - before PHP 5.3.8, if you get an error involving annotations, you've hit
-    a known PHP bug (see https://bugs.php.net/bug.php?id=55156).
 
-  - PHP 5.3.16 has a major bug in the Reflection subsystem and is not 
-    suitable to run Zikula (https://bugs.php.net/bug.php?id=62715)
-
-Zikula requires more memory than typical to install. You should set your memory limit in `php.ini` to 128 MB for the
-installation process.
-
-<a name="beforeinstalling" />
+<a name="beforeinstalling"></a>
 Before installing
 -----------------
 
-Zikula makes use of [composer](http://getcomposer.org/) to manage and download
-all dependencies. Composer must be run prior to installing a site using Zikula.
-Run `composer self-update && composer update`. 
+Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies. Composer must
+be run prior to installing a site using Zikula. Run `composer self-update && composer update`.
 
-If you store Composer in the root of the Zikula Core checkout, please
-rename it from `composer.phar` to `composer` to avoid your IDE reading
-the package contents.
+If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to `composer`
+to avoid your IDE reading the package contents.
 
-<a name="installing" />
+
+<a name="installing"></a>
 Installing
 ----------
-Once all of the pre-install steps are complete Run `http://yoursiteurl/install.php` 
-and follow any on-screen prompts.
+Once all of the pre-install steps are complete Run `http://yoursiteurl/install` and follow any on-screen prompts.
 
-<a name="contributing" />
+
+<a name="contributing"></a>
 Contributing
 ------------
 

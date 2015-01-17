@@ -27,11 +27,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        $this->setVar('charset', ZLanguage::getEncoding());
-        $this->setVar('encoding', '8bit');
-        $this->setVar('html', false);
-        $this->setVar('wordwrap', 50);
-        $this->setVar('enableLogging', false);
+        $this->setVars($this->getDefaults());
 
         // Initialisation successful
         return true;
@@ -52,14 +48,19 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                 $this->setVar('smtpsecuremethod', 'ssl');
             case '1.3.2':
                 // clear old modvars
-                $modVars = $this->getVars();
+                // use manual method because getVars() is not available during system upgrade
+                $modVarEntities = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findBy(array('modname' => $this->name));
+                $modVars = array();
+                foreach ($modVarEntities as $var) {
+                    $modVars[$var['name']] = $var['value'];
+                }
                 $this->delVars();
-                $this->setVar('charset', $modVars['charset']);
-                $this->setVar('encoding', $modVars['encoding']);
-                $this->setVar('html', $modVars['html']);
-                $this->setVar('wordwrap', $modVars['wordwrap']);
+                $this->setVarWithDefault('charset', $modVars['charset']);
+                $this->setVarWithDefault('encoding', $modVars['encoding']);
+                $this->setVarWithDefault('html', $modVars['html']);
+                $this->setVarWithDefault('wordwrap', $modVars['wordwrap']);
                 // new modvar for 1.4.0
-                $this->setVar('enableLogging', false);
+                $this->setVarWithDefault('enableLogging', false);
 
                 // write the config file
                 $mailerTypeConversion = array(
@@ -110,5 +111,35 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
 
         // Deletion successful
         return true;
+    }
+
+    /**
+     * default module vars
+     * @return array
+     */
+    private function getDefaults()
+    {
+        return array(
+            'charset' => ZLanguage::getEncoding(),
+            'encoding' => '8bit',
+            'html' => false,
+            'wordwrap' => 50,
+            'enableLogging' => false,
+        );
+    }
+
+    /**
+     * set the module var but if it is not set, use the default instead.
+     *
+     * @param string $key
+     * @param null $value
+     */
+    private function setVarWithDefault($key, $value = null)
+    {
+        if (isset($value)) {
+            parent::setVar($key, $value);
+        }
+        $defaults = $this->getDefaults();
+        parent::setVar($key, $defaults[$key]);
     }
 }

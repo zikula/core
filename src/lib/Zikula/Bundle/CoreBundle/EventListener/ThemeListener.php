@@ -26,6 +26,9 @@ class ThemeListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
+        if (\System::isInstalling()) {
+            return;
+        }
 
         $response = $event->getResponse();
         $request = $event->getRequest();

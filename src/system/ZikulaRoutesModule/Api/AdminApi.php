@@ -51,7 +51,7 @@ class AdminApi extends BaseAdminApi
     {
         unset($args);
 
-        $defaultLocale = \System::getVar('language_i18n'); //$this->getContainer()->getParameter('locale');
+        $defaultLocale = \System::getVar('language_i18n', $this->getContainer()->getParameter('locale'));
         $installedLanguages = \ZLanguage::getInstalledLanguages();
         $isRequiredLangParameter = \System::getVar('languageurl', 0);
         $configDumper = $this->get('zikula.dynamic_config_dumper');

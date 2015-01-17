@@ -20,8 +20,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use UserUtil;
-use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Class BlameListener overrides Stof\DoctrineExtensionsBundle\EventListener\BlameListener
+ *
+ * @package Zikula\Bundle\CoreBundle\EventListener
+ */
 class BlameListener implements EventSubscriberInterface
 {
     /**
@@ -35,16 +40,9 @@ class BlameListener implements EventSubscriberInterface
     }
 
     /**
-     * required method as result of implementation
-     *
      * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
-    {
-        // ...
-    }
-
-    public function onPostInit(GenericEvent $event)
     {
         $em = ServiceUtil::get('doctrine.entitymanager');
         try {
@@ -68,8 +66,7 @@ class BlameListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            //KernelEvents::REQUEST => 'onKernelRequest',
-            'core.postinit' => 'onPostInit',
+            KernelEvents::REQUEST => 'onKernelRequest',
         );
     }
 }

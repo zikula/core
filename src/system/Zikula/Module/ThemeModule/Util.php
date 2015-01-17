@@ -29,8 +29,8 @@ class Util
 {
     /**
      * Regenerates the theme list
-     *
      * @return bool true
+     * @throws \Exception
      */
     public static function regenerate()
     {
@@ -124,7 +124,15 @@ class Util
         foreach ($dbthemes as $name => $themeinfo) {
             if (empty($filethemes[$name])) {
                 // delete a running configuration
-                ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', array('themename' => $name));
+                try {
+                    ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', array('themename' => $name));
+                } catch (\Exception $e) {
+                    if (\System::isInstalling()) {
+                        // silent fail when installing or upgrading
+                    } else {
+                        throw $e;
+                    }
+                }
 
                 // delete item from db
                 $item = $entityManager->getRepository('ZikulaThemeModule:ThemeEntity')->findOneBy(array('name' => $name));

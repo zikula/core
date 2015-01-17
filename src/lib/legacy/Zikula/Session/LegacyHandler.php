@@ -156,7 +156,12 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
                 break;
         }
 
-        $res = $this->conn->executeUpdate('DELETE FROM session_info '.$where);
+        try {
+            $res = $this->conn->executeUpdate('DELETE FROM session_info ' . $where);
+        } catch (\Exception $e) {
+            // silently fail
+            $res = false;
+        }
 
         return (bool) $res;
     }

@@ -16,6 +16,7 @@ use Zikula_Request_Http as Request;
 include 'lib/bootstrap.php';
 
 $request = Request::createFromGlobals();
+
 $core->init(Zikula_Core::STAGE_ALL, $request);
 
 // this event for BC only. remove in 2.0.0

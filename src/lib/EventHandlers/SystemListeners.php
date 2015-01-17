@@ -109,7 +109,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Initialise DB connection.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_DB.
+     * Implements 'core.preinit' event
      *
      * @param Zikula_Event $event The event handler.
      *
@@ -117,7 +117,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function initDB(Zikula_Event $event)
     {
+        // Doctrine 1 event
         $this->eventManager->dispatch('doctrine.init_connection', new \Zikula\Core\Event\GenericEvent(null, $event->getArgs()));
+        // Doctrine 2 event
         $this->eventManager->dispatch('doctrine.boot', new \Zikula\Core\Event\GenericEvent());
     }
 

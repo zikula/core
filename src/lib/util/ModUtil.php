@@ -104,7 +104,7 @@ class ModUtil
         self::$modvars = new ArrayObject(array(
                 EventUtil::HANDLERS => array(),
                 ServiceUtil::HANDLERS => array(),
-                'ZikulaSettingsModule'          => array(),
+                'ZikulaSettingsModule' => array(),
         ));
 
         // don't init vars during the installer or upgrader

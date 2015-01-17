@@ -267,12 +267,23 @@ class System
             self::$cache['baseuri.path'] = null;
         }
 
+        // obtain the uri from symfony container
+        $serviceManager = ServiceUtil::getManager();
+        try {
+            $requestBasePath = $serviceManager->has('request') ? $serviceManager->get('request')->getBasePath() : '';
+            if (!empty($requestBasePath)) {
+                self::$cache['baseuri.path'] = $requestBasePath;
+            }
+        } catch (\Exception $e) {
+            // silent fail
+            self::$cache['baseuri.path'] = null;
+        }
+
         if (!isset(self::$cache['baseuri.path'])) {
             $script_name = self::serverGetVar('SCRIPT_NAME');
             self::$cache['baseuri.path'] = substr($script_name, 0, strrpos($script_name, '/'));
         }
 
-        $serviceManager = ServiceUtil::getManager();
         if ($serviceManager['multisites.enabled'] == 1) {
             self::$cache['baseuri.path'] = $serviceManager['multisites.sitedns'];
         }
