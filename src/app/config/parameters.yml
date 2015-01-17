@@ -25,3 +25,5 @@ parameters:
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
     url_secret:        ~
+
+    zikula.session.name: _zsid
