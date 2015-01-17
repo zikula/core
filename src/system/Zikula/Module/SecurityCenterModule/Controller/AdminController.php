@@ -33,7 +33,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Bundle\CoreBundle\YamlDumper;
 
 /**
  * @Route("/admin")
@@ -247,8 +246,8 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // set the session name in custom_parameters.yml
-        $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
-        $yamlManager->setParameter('zikula.session.name', $sessionname);
+        $configDumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
+        $configDumper->setParameter('zikula.session.name', $sessionname);
         // set the session name in the current container
         $this->view->getContainer()->setParameter('zikula.session.name', $sessionname);
         System::setVar('sessionname', $sessionname);

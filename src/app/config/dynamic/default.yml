@@ -16,3 +16,5 @@ swiftmailer:
     auth_mode: null
     delivery_address: null
     disable_delivery: false
+parameters:
+    zikula.session.name: _zsid
