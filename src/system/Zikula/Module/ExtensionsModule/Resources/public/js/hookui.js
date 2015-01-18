@@ -186,7 +186,8 @@ var cloneDraggedItem = true;
     appendProviderAreaToSubscriberArea = function(sarea_id, sarea_name, parea_id)
     {
         var areaToAttach = $('#availablearea_' + parea_id + '-sarea_identifier');
-        var areaToAttachTo = $('#sarea_' + sarea_id + '_list');
+        var areaToAttachTo = $('#sarea_' + sarea_id);
+        var areaListToAttachTo = $('#sarea_' + sarea_id + '_list');
         var emptyArea = $('#sarea_empty_' + sarea_id);
         
         var newItem = null;
@@ -212,6 +213,7 @@ var cloneDraggedItem = true;
         newContent = newContent.replace('##name', sarea_name);
         newItem.html(newContent);
 
+        // replace arrow-left icon by move icon (for later sorting)
         newItem.find('i.fa-long-arrow-left').removeClass('fa-long-arrow-left').addClass('fa-arrows');
 
         newItem
@@ -230,9 +232,10 @@ var cloneDraggedItem = true;
         if (!emptyArea.hasClass('hide')) {
             emptyArea.addClass('hide');
         }
-        
+
         // append dragged item to our list
-        areaToAttachTo.append(newItem);
+        areaListToAttachTo.append(newItem);
+        areaToAttachTo.css('height', (areaToAttachTo.height() + newItem.height() + 4) + 'px');
 
         // create the sortable area
         createSortable('sarea_' + sarea_id);
@@ -241,7 +244,7 @@ var cloneDraggedItem = true;
         createDroppable('sarea_' + sarea_id);
 
         // recolor
-        recolorListElements(areaToAttachTo.attr('id'), 'z-itemheader');
+        recolorListElements(areaListToAttachTo.attr('id'), 'z-itemheader');
     };
 
     /**
@@ -253,18 +256,22 @@ var cloneDraggedItem = true;
     removeProviderAreaFromSubscriberArea = function(sarea_id, parea_id)
     {
         var areaToDetach = $('#attachedarea_' + parea_id + '-' + sarea_id);
+        var heightOfDetachedArea = areaToDetach.height();
         areaToDetach.remove();
+
+        var areaToDetachFrom = $('#sarea_' + sarea_id);
 
         // is area now empty?
         var amountOfAttachedAreas = 0;
-        var areaToDetachFrom = $('#sarea_' + sarea_id);
-        $('#' + areaToDetachFrom.attr('id') + ' li.z-sortable').each(function(element) {
+        areaToDetachFrom.find('li.z-sortable').each(function(element) {
             amountOfAttachedAreas++;
         });
-        
+
         // if there no more areas attached, show empty_area
         if (amountOfAttachedAreas == 0) {
             $('#sarea_empty_' + sarea_id).removeClass('hide');
+        } else {
+            areaToDetachFrom.css('height', (areaToDetachFrom.height() - heightOfDetachedArea) + 'px');
         }
 
         // recolor
@@ -371,7 +378,9 @@ var cloneDraggedItem = true;
                 $('#' + subscriberId + ' li.z-sortable').each(function(index) {
                     if ($(this).attr('id').split('_')[1].split('-')[0] == provider.identifier) {
                         alreadyAttached = true;
-                        throw $break;
+
+                        // break the loop
+                        return false;
                     }
                 });
 
