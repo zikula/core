@@ -184,6 +184,7 @@ class RouteController extends BaseRouteController
             throw new AccessDeniedException();
         }
 
+        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
         if ($request->isMethod('get') && !$request->query->filter('confirm', false, false, FILTER_VALIDATE_BOOLEAN)) {
             $legacyControllerType = 'admin';
             \System::queryStringSetVar('type', $legacyControllerType);
@@ -217,19 +218,8 @@ class RouteController extends BaseRouteController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! All routes reloaded.'));
             $hadRoutes = false;
         } else {
-            $module = ModUtil::getModule($module);
-            if ($module === null) {
-                throw new NotFoundHttpException();
-            }
-            /** @var \Zikula\RoutesModule\Routing\RouteFinder $routeFinder */
-            $routeFinder = $this->get('zikularoutesmodule.routing_finder');
-            $routeCollection = $routeFinder->find($module);
-
-            $hadRoutes = $routeRepository->removeAllOfModule($module);
-            if ($routeCollection->count() > 0) {
-                $routeRepository->addRouteCollection($module, $routeCollection);
-            }
-            $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Routes reloaded for %s.', '<strong>' . $module->getName() . '</strong>'));
+            $hadRoutes = $controllerHelper->reloadRoutesByModule($module);
+            $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Routes reloaded for %s.', '<strong>' . $module . '</strong>'));
         }
 
 
@@ -239,7 +229,6 @@ class RouteController extends BaseRouteController
         $this->view->clear_cache();
 
         // reload **all** JS routes
-        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
         $result = $controllerHelper->dumpJsRoutes();
         if($result == '') {
             $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Exposed JS Routes dumped to %s.', 'web/js/fos_js_routes.js'));
