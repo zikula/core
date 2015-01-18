@@ -16,7 +16,8 @@
                                 {foreach item='parea' from=$areasSorting.$category.$sarea}
                                     {assign var='parea_md5' value=$parea|md5}
                                     {assign var='attached_area_identifier' value="`$parea_md5`-`$sarea_md5`"}
-                                    <li id="attachedarea_{$attached_area_identifier}" class="clearfix z-sortable {cycle name="attachedareaslist_`$sarea`" values='z-even,z-odd'}">
+                                    <li id="attachedarea_{$attached_area_identifier}" class="clearfix z-sortable {cycle name="attachedareaslist_`$sarea`" values='z-even,z-odd'} list-group-item ui-draggable" style="cursor: move; left: 0px; top: 0px; opacity: 1; position: relative;">
+                                        <i class="fa fa-arrows"></i>
                                         <span>
                                             {$areasSortingTitles.$parea} <span class="sub">({$parea})</span>
                                             <a class="detachlink" title="{gt text='Detach'} {$areasSortingTitles.$parea}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('{$sarea_md5}', '{$sarea}', '{$parea_md5}', '{$parea}');"><i class="fa fa-remove"></i></a>
