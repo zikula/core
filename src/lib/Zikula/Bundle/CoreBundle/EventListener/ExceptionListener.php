@@ -24,6 +24,8 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use UserUtil;
+use Zikula\RoutesModule\Util\ControllerUtil;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 
 /**
  * ExceptionListener catches exceptions and converts them to Response instances.
@@ -33,12 +35,16 @@ class ExceptionListener implements EventSubscriberInterface
     private $logger;
     private $router;
     private $dispatcher;
+    private $routesControllerUtil;
+    private $cacheClearer;
 
-    public function __construct(LoggerInterface $logger = null, RouterInterface $router = null, EventDispatcherInterface $dispatcher = null)
+    public function __construct(LoggerInterface $logger = null, RouterInterface $router = null, EventDispatcherInterface $dispatcher = null, ControllerUtil $util, CacheClearer $cacheClearer)
     {
         $this->logger = $logger;
         $this->router = $router;
         $this->dispatcher = $dispatcher;
+        $this->routesControllerUtil = $util;
+        $this->cacheClearer = $cacheClearer;
     }
 
     public static function getSubscribedEvents()
@@ -112,9 +118,17 @@ class ExceptionListener implements EventSubscriberInterface
     private function handleRouteNotFoundException(GetResponseForExceptionEvent $event)
     {
         if (\SecurityUtil::checkPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
+            try {
+                $url = $this->router->generate('zikularoutesmodule_route_reload', array('lct' => 'admin'), RouterInterface::ABSOLUTE_URL);
+            } catch (RouteNotFoundException $e) {
+                // reload routes for the Routes Module and regenerate the route
+                $this->routesControllerUtil->reloadRoutesByModule('ZikulaRoutesModule');
+                $this->cacheClearer->clear("symfony.routing");
+                $url = $event->getRequest()->getUriForPath('/routes/reload');
+            }
             $message = $event->getException()->getMessage();
             $event->getRequest()->getSession()->getFlashBag()->add('error', "$message<br />" . __('You might try re-loading the routes for the extension in question.'));
-            $event->setResponse(new RedirectResponse($this->router->generate('zikularoutesmodule_route_reload', array('lct' => 'admin'), RouterInterface::ABSOLUTE_URL)));
+            $event->setResponse(new RedirectResponse($url));
             $event->stopPropagation();
         }
     }

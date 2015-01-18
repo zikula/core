@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use FOS\JsRoutingBundle\Command\DumpCommand;
 use JMS\I18nRoutingBundle\Router\I18nLoader;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Utility implementation class for controller helper methods.
@@ -75,5 +76,29 @@ class ControllerUtil extends BaseControllerUtil
         }
 
         return $errors;
+    }
+
+    /**
+     * Reload routes for one module by name
+     * @param string $moduleName (default: ZikulaRoutesModule)
+     * @return boolean $hadRoutes
+     */
+    public function reloadRoutesByModule($moduleName = "ZikulaRoutesRoutes")
+    {
+        $routeRepository = $this->entityManager->getRepository('ZikulaRoutesModule:RouteEntity');
+        $module = \ModUtil::getModule($moduleName);
+        if ($module === null) {
+            throw new NotFoundHttpException();
+        }
+        /** @var \Zikula\RoutesModule\Routing\RouteFinder $routeFinder */
+        $routeFinder = $this->get('zikularoutesmodule.routing_finder');
+        $routeCollection = $routeFinder->find($module);
+        /** @var \Zikula\RoutesModule\Entity\Repository\Route $routeRepository */
+        $hadRoutes = $routeRepository->removeAllOfModule($module);
+        if ($routeCollection->count() > 0) {
+            $routeRepository->addRouteCollection($module, $routeCollection);
+        }
+
+        return $hadRoutes;
     }
 }
