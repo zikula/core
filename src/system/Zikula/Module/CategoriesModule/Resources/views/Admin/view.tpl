@@ -1,4 +1,7 @@
-{ajaxheader filename='categories_admin_view.js' ui=true}
+{pageaddvar name='javascript' value='jquery'}
+{pageaddvar name='javascript' value='web/jstree/dist/jstree.min.js'}
+{pageaddvar name='stylesheet' value='web/jstree/dist/themes/default/style.min.css'}
+{pageaddvar name='javascript' value='system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js'}
 {pageaddvar name='javascript' value='system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_edit.js'}
 {adminheader}
 <h3>

@@ -1,1 +1,1 @@
-{insert name="getstatusmsg"}
+{insert name='getstatusmsg'}
