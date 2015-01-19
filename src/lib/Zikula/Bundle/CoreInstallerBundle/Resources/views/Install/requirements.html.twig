@@ -74,21 +74,22 @@
             </ul>
         </fieldset>
 
+        {% if checks.personal_config is defined and checks.custom_parameters is defined %}
         <fieldset>
-            <legend>{{ __("Personal configuration files") }}</legend>
+            <legend>{{ __("Configuration files") }}</legend>
             <ul class="systemrequirements text-left">
-                {% if checks.config_personal_config_php == true %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("'%s' is not present.  This is OK.", "config/personal_config.php") }}</li>
+                {% if checks.personal_config == true %}
+                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("'%s' is present and writeable.  This is correct.", "config/personal_config.php") }}</li>
                 {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "config/personal_config.php") }}</li>
+                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("'%s' is either not present or not writable. This is not correct: please read the upgrade instructions.", "config/personal_config.php") }}</li>
                 {% endif %}
-                {% set checks = array_unset(checks, 'config_personal_config_php') %}
-                {#{% if checks.custom_parameters_yml == true %}#}
-                {#<li><span class="fa fa-fw fa-check text-success"></span> {{ __f("'%s' is not present.  This is OK.", "app/config/custom_parameters.yml") }}</li>#}
-                {#{% else %}#}
-                {#<li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "app/config/custom_parameters.yml") }}</li>#}
-                {#{% endif %}#}
-                {#{% set checks = array_unset(checks, 'custom_parameters_yml') %}#}
+                {% set checks = array_unset(checks, 'personal_config') %}
+                {% if checks.custom_parameters == true %}
+                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("'%s' is present and writeable.  This is correct.", "app/config/custom_parameters.yml") }}</li>
+                {% else %}
+                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("'%s' is either not present or not writable. This is not correct: please read the upgrade instructions.", "app/config/custom_parameters.yml") }}</li>
+                {% endif %}
+                {% set checks = array_unset(checks, 'custom_parameters') %}
             </ul>
         </fieldset>
 

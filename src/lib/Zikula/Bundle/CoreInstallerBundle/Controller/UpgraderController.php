@@ -53,6 +53,8 @@ class UpgraderController extends AbstractController
             $request->getSession()->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
         }
 
+        $this->container->setParameter('upgrading', true);
+
         // begin the wizard
         $wizard = new Wizard($this->container, realpath(__DIR__ . '/../Resources/config/upgrade_stages.yml'));
         $currentStage = $wizard->getCurrentStage($stage);

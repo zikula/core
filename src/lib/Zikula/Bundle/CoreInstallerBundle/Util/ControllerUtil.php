@@ -95,20 +95,24 @@ class ControllerUtil
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
         $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
         $results['json_encode'] = function_exists('json_encode');
-//        $results['config_personal_config_php'] = !is_writable('config/personal_config.php');
-//        $results['custom_parameters_yml'] = !is_writable('app/config/custom_parameters.yml');
         $datadir = $container->getParameter('datadir');
-        $files = array(
-//            'config/config.php',
-            'app/cache/',
-//            'app/config/parameters.yml',
-            "$datadir/",
-            'app/config/',
-            'app/config/dynamic'
+        $directories = array(
+            '/cache/',
+            '/config/',
+            '/config/dynamic',
+            '/logs/',
+            "/../$datadir/",
+            "/../config/",
         );
-        foreach ($files as $file) {
-            $results[$file] = is_writable($file);
+        $rootDir = $container->get('kernel')->getRootDir();
+        foreach ($directories as $directory) {
+            $results[$directory] = is_writable($rootDir . $directory);
         }
+        if ($container->hasParameter('upgrading') && $container->getParameter('upgrading') === true) {
+            $results['personal_config'] = file_exists($rootDir . '/../config/personal_config.php') && is_writable($rootDir . '/../config/personal_config.php');
+            $results['custom_parameters'] = file_exists($rootDir . '/config/custom_parameters.yml') && is_writable($rootDir . '/config/custom_parameters.yml');
+        }
+        // no longer a need to check config/config.php nor parameters.yml because those files are always copied to be used.
         $requirementsMet = true;
         foreach ($results as $check) {
             if (!$check) {
@@ -116,11 +120,11 @@ class ControllerUtil
                 break;
             }
         }
-        $results['phpversion'] = phpversion();
         if ($requirementsMet) {
 
             return true;
         }
+        $results['phpversion'] = phpversion();
 
         return $results;
     }
