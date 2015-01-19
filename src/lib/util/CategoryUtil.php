@@ -932,6 +932,43 @@ class CategoryUtil
     }
 
     /**
+     * Get the java-script for the tree menu using jQuery.
+     *
+     * @param array   $cats             The categories array to represent in the tree.
+     * @param boolean $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
+     * @param boolean $sortable         Sets the zikula tree option sortable (optional) (default=false).
+     * @param array   $options          Options array for Zikula_Tree.
+     *
+     * @return string generated tree JS text.
+     */
+    public static function getCategoryTreeJqueryJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = array())
+    {
+        $leafNodes = array();
+        foreach ($cats as $i => $c) {
+            if ($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
+                $c['name'] = __('Root category');
+            }
+            $cats[$i] = self::getCategoryTreeJSNode($c);
+            if ($c['is_leaf']) {
+                $leafNodes[] = $c['id'];
+            }
+        }
+
+        $tree = new Zikula_Tree();
+        $tree->setOption('id', 'categoriesTree');
+        $tree->setOption('sortable', $sortable);
+        // disable drag and drop for root category
+        $tree->setOption('disabled', array(1));
+        $tree->setOption('disabledForDrop', $leafNodes);
+        if (!empty($options)) {
+            $tree->setOptionArray($options);
+        }
+        $tree->loadArrayData($cats);
+
+        return $tree->getJqueryHtml();
+    }
+
+    /**
      * Prepare category for the tree menu.
      *
      * @param array $category Category data.
