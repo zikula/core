@@ -42,7 +42,7 @@
     system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js,
     system/Zikula/Module/ExtensionsModule/Resources/public/js/hookui.js,
     system/Zikula/Module/GroupsModule/Resources/public/js/groups.js,
-    system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js,
+    system/Zikula/Module/PageLockModule/Resources/public/js/PageLock.js,
     system/Zikula/Module/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.ModifyConfig.js,
     system/Zikula/Module/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.View.js,
     system/Zikula/Module/SearchModule/Resources/public/js/ZikulaSearchModule.User.Form.js,
