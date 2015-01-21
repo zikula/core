@@ -106,11 +106,17 @@ class ControllerUtil
         );
         $rootDir = $container->get('kernel')->getRootDir();
         foreach ($directories as $directory) {
-            $results[$directory] = is_writable($rootDir . $directory);
+            $path = realpath($rootDir . $directory);
+            $key = $path ? "$path" : strpos($directory, '/..') === true ? substr($directory, 3) : "app{$directory}";
+            $results[$key] = is_writable($path);
         }
         if ($container->hasParameter('upgrading') && $container->getParameter('upgrading') === true) {
-            $results['personal_config'] = file_exists($rootDir . '/../config/personal_config.php') && is_writable($rootDir . '/../config/personal_config.php');
-            $results['custom_parameters'] = file_exists($rootDir . '/config/custom_parameters.yml') && is_writable($rootDir . '/config/custom_parameters.yml');
+            $path = realpath($rootDir . '/../config/personal_config.php');
+            $key = $path ? "$path" : '/config/personal_config.php';
+            $results[$key] = is_writable($path);
+            $key = $path ? "$path" : 'app/config/custom_parameters.php';
+            $path = realpath($rootDir . '/config/custom_parameters.yml');
+            $results[$key] = is_writable($path);
         }
         // no longer a need to check config/config.php nor parameters.yml because those files are always copied to be used.
         $requirementsMet = true;
