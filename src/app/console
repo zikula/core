@@ -4,6 +4,7 @@
 use Zikula\Bundle\CoreBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 
+date_default_timezone_set(date_default_timezone_get()); // force tz to be set
 set_time_limit(0);
 
 $loader = require __DIR__.'/autoload.php';
