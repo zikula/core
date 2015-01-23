@@ -93,7 +93,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
         }
 
         if (empty($this->authenticationMethods) && (($filter == Zikula_Api_AbstractAuthentication::FILTER_NONE) || ($filter == Zikula_Api_AbstractAuthentication::FILTER_ENABLED))) {
-            LogUtil::log($this->__('There were no authentication methods available. Forcing the Users module to be used for authentication.'), \Monolog\Logger::CRIT);
+            LogUtil::log($this->__('There were no authentication methods available. Forcing the Users module to be used for authentication.'), \Monolog\Logger::CRITICAL);
             $this->authenticationMethods[] = new AuthenticationMethodHelper($this->name, 'uname', $this->__('User name'), $this->__('User name and password'));
             $this->nameIndex[$this->name] = array();
         }
