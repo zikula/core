@@ -79,15 +79,15 @@
             <legend>{{ __("Configuration files") }}</legend>
             <ul class="systemrequirements text-left">
                 {% if checks.personal_config == true %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("'%s' is present and writeable.  This is correct.", "config/personal_config.php") }}</li>
+                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is present and writeable.  This is correct.", "<code>config/personal_config.php</code>") | raw }}</li>
                 {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("'%s' is either not present or not writable. This is not correct: please read the upgrade instructions.", "config/personal_config.php") }}</li>
+                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("%s is either not present or not writable. This is not correct! Please read the upgrade instructions.", "<code>config/personal_config.php</code>") | raw }}</li>
                 {% endif %}
                 {% set checks = array_unset(checks, 'personal_config') %}
                 {% if checks.custom_parameters == true %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("'%s' is present and writeable.  This is correct.", "app/config/custom_parameters.yml") }}</li>
+                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is present and writeable.  This is correct.", "<code>app/config/custom_parameters.yml</code>") | raw }}</li>
                 {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("'%s' is either not present or not writable. This is not correct: please read the upgrade instructions.", "app/config/custom_parameters.yml") }}</li>
+                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("%s is either not present or not writable. This is not correct! Please read the upgrade instructions.", "<code>app/config/custom_parameters.yml</code>") | raw }}</li>
                 {% endif %}
                 {% set checks = array_unset(checks, 'custom_parameters') %}
             </ul>
@@ -100,9 +100,9 @@
                 {# remaining array values should all be files #}
                 {% for file, isWritable in checks %}
                 {% if isWritable %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is writeable.", file) }}</li>
+                <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("%s is writeable.", "<code>" ~ file ~ "</code>") | raw }}</li>
                 {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", file) }}</li>
+                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", "<code>" ~ file ~ "</code>") | raw }}</li>
                 {% endif %}
                 {% endfor %}
             </ul>
