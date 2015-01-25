@@ -48,7 +48,7 @@ class ControllerUtil
         if (!function_exists('mb_get_info')) {
             $warnings[] = __('mbstring is not installed in PHP.  Zikula cannot install or upgrade without this extension.');
         }
-        if (ini_set('mbstring.internal_encoding', 'UTF-8') === false) {
+        if ((version_compare(\PHP_VERSION, '5.6.0', '<')) && (ini_set('mbstring.internal_encoding', 'UTF-8') === false)) {
             // mbstring.internal_encoding is deprecated in php 5.6.0
             $currentSetting = ini_get('mbstring.internal_encoding');
             $warnings[] = __f('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', array('ini_set', 'mbstring.internal_encoding', 'UTF-8', $currentSetting));
