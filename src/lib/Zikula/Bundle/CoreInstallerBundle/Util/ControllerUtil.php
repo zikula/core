@@ -107,7 +107,7 @@ class ControllerUtil
         $rootDir = $container->get('kernel')->getRootDir();
         foreach ($directories as $directory) {
             $path = realpath($rootDir . $directory);
-            $key = $path ? "$path" : strpos($directory, '/..') === true ? substr($directory, 3) : "app{$directory}";
+            $key = $path ? "$path" : strpos($directory, '/..') !== false ? substr($directory, 3) : "app{$directory}";
             $results[$key] = is_writable($path);
         }
         if ($container->hasParameter('upgrading') && $container->getParameter('upgrading') === true) {
