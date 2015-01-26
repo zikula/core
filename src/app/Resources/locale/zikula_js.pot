@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-16 10:11+0100\n"
+"POT-Creation-Date: 2015-01-26 18:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,12 +51,12 @@ msgid_plural "hello my friends %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: javascript/helpers/Zikula.itemlist.js:236
+#: javascript/helpers/Zikula.itemlist.js:239
 #: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:46
 msgid "Maximum depth reached. Limit is: "
 msgstr ""
 
-#: javascript/helpers/Zikula.itemlist.js:237
+#: javascript/helpers/Zikula.itemlist.js:240
 #: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:47
 msgid "You have unsaved changes!"
 msgstr ""
@@ -221,28 +221,28 @@ msgstr ""
 msgid "Marked fields are required"
 msgstr ""
 
-#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:154
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:168
 msgid "Weak"
 msgstr ""
 
-#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:154
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:168
 msgid "Normal"
 msgstr ""
 
-#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:154
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:168
 msgid "Strong"
 msgstr ""
 
-#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:154
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:168
 msgid "Very Strong"
 msgstr ""
 
-#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:158
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:172
 #, php-format
 msgid "The minimum length for user passwords is %s characters."
 msgstr ""
 
-#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:164
+#: system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js:181
 msgid "Password can not match the username, choose a different password."
 msgstr ""
 
@@ -280,26 +280,13 @@ msgid "Move all sub-categories"
 msgstr ""
 
 #: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:110
-#: system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js:27
 msgid "Confirmation prompt"
 msgstr ""
 
-#: system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js:26
+#: system/Zikula/Module/PageLockModule/Resources/public/js/PageLock.js:24
 msgid "Are you sure you want to break this lock?"
 msgstr ""
 
-#: system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js:130
-msgid "Back"
-msgstr ""
-
-#: system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js:131
-msgid "Check again"
-msgstr ""
-
-#: system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js:132
-msgid "Ignore Lock"
-msgstr ""
-
-#: system/ZikulaRoutesModule/Resources/public/js/ZikulaRoutesModule_validation.js:65
-msgid "No spaces"
+#: system/ZikulaRoutesModule/Resources/public/js/ZikulaRoutesModule.Validation.js:74
+msgid "This value must not contain spaces."
 msgstr ""
