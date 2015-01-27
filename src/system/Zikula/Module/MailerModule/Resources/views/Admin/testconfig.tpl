@@ -1,17 +1,17 @@
 {adminheader}
 <h3>
     <span class="fa fa-envelope"></span>
-    {gt text="Test current settings"}
+    {gt text='Test current settings'}
 </h3>
 
 <div class="alert alert-info">
-    <h4>Current Settings from <code>dynamic/generated.yml</code>:</h4>
+    <h4>{gt text='Current settings from'} <code>dynamic/generated.yml</code>:</h4>
     {$swiftmailerHtml}
 </div>
 {form cssClass='form-horizontal'}
 {formvalidationsummary}
     <fieldset>
-        <legend>{gt text="Settings test"}</legend>
+        <legend>{gt text='Settings test'}</legend>
         <div class="form-group">
             <label class="col-lg-3 control-label">{gt text="Sender's name"}</label>
             <div class="col-lg-9">
@@ -29,26 +29,26 @@
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='toname' __text="Recipient's name" mandatorysym=true}
+            {formlabel cssClass='col-lg-3 control-label' for='toname' __text="Recipient's name" mandatorysym=true}
             <div class="col-lg-9">
-                {formtextinput cssClass="form-control" id='toname' size=30 maxLength=50 mandatory=true}
+                {formtextinput id='toname' size=30 maxLength=50 mandatory=true cssClass='form-control'}
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='toaddress' __text="Recipient's e-mail address" mandatorysym=true}
+            {formlabel cssClass='col-lg-3 control-label' for='toaddress' __text="Recipient's e-mail address" mandatorysym=true}
             <div class="col-lg-9">
-                {formemailinput id='toaddress' cssClass="form-control" size=30 maxLength=50 mandatory=true}
+                {formemailinput id='toaddress' size=30 maxLength=50 mandatory=true cssClass='form-control'}
             </div>
         </div>
         <div class="form-group">
-            {formlabel cssClass="col-lg-3 control-label" for='subject' __text="Subject" mandatorysym=true}
-            <div class="col-lg-9">    
-                {formtextinput cssClass="form-control" id='subject' size=30 maxLength=50 mandatory=true}
+            {formlabel cssClass='col-lg-3 control-label' for='subject' __text='Subject' mandatorysym=true}
+            <div class="col-lg-9">
+                {formtextinput id='subject' size=30 maxLength=50 mandatory=true cssClass='form-control'}
             </div>
         </div>
         <div class="form-group">
             <label class="col-lg-3 control-label">
-                {gt text="Message Type"}
+                {gt text='Message Type'}
                 <span class="required"></span>
             </label>
             <div id="message_type" class="col-lg-9">

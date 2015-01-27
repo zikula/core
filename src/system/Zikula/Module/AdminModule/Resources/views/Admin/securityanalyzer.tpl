@@ -3,7 +3,7 @@
 {if $notices.security.magic_quotes_gpc or $notices.security.register_globals or $notices.security.config_php or !$notices.security.app_htaccess or !$notices.security.scactive}
 <div id="z-securityanalyzer" class="alert alert-warning">
     <i class="close" data-dismiss="alert">&times;</i>
-    <strong>{gt text="Security analyser warnings" domain="zikula"}</strong>
+    <strong>{gt text='Security analyser warnings' domain='zikula'}</strong>
     <ul>
         {if $notices.security.config_php}
         <li>
@@ -27,12 +27,12 @@
         {/if}
         {if !$notices.security.scactive}
         <li>
-            <a href="{$adminhelpurl|safetext}#admin_security_center_warning2">{gt text="Security center module is not installed, but preferably should be." domain="zikula"}</a>
+            <a href="{$adminhelpurl|safetext}#admin_security_center_warning2">{gt text='Security center module is not installed, but preferably should be.' domain="zikula"}</a>
         </li>
         {/if}
         {if $notices.security.useids and $notices.security.idssoftblock}
         <li>
-            <a href="{$adminhelpurl|safetext}#admin_idssoftblock_warning">{gt text="PHPIDS is activated, but requests are NOT blocked." domain="zikula"}</a>
+            <a href="{$adminhelpurl|safetext}#admin_idssoftblock_warning">{gt text='PHPIDS is activated, but requests are NOT blocked.' domain="zikula"}</a>
         </li>
         {/if}
     </ul>

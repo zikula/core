@@ -1,4 +1,4 @@
-{gt text="Membership application" assign=templatetitle}
+{gt text='Membership application' assign='templatetitle'}
 {adminheader}
 <h3>
     <span class="fa fa-plus"></span>
@@ -16,43 +16,44 @@
         <fieldset>
             <legend>{$templatetitle}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text="User name"}</label>
+                <label class="col-lg-3 control-label">{gt text='User name'}</label>
                 <div class="col-lg-9">
-                <span>{usergetvar name="uname" uid=$userid|safetext}</span>
-            </div>
+                    <span>{usergetvar name="uname" uid=$userid|safetext}</span>
+                </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text="Membership application"}</label>
+                <label class="col-lg-3 control-label">{gt text='Membership application'}</label>
                 <div class="col-lg-9">
-                <span>{$application|safehtml}</span>
+                    <span>{$application|safehtml}</span>
+                </div>
             </div>
-            {if $action == "deny"}
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="groups_reason">{gt text="Reason"}</label>
-                <div class="col-lg-9">
-                <textarea class="form-control" id="groups_reason" name="reason" cols="50" rows="8">{gt text="Sorry! This is a message to inform you with regret that your application for membership of the aforementioned private group has been rejected."}</textarea>
-            </div>
+            {if $action eq 'deny'}
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="groups_reason">{gt text='Reason'}</label>
+                    <div class="col-lg-9">
+                        <textarea class="form-control" id="groups_reason" name="reason" cols="50" rows="8">{gt text='Sorry! This is a message to inform you with regret that your application for membership of the aforementioned private group has been rejected.'}</textarea>
+                    </div>
+                </div>
             {/if}
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="groups_sendtag">{gt text="Notification type"}</label>
+                <label class="col-lg-3 control-label" for="groups_sendtag">{gt text='Notification type'}</label>
                 <div class="col-lg-9">
-                <select class="form-control" id="groups_sendtag" name="sendtag">
-                    {html_options options=$sendoptions}
-                </select>
+                    <select class="form-control" id="groups_sendtag" name="sendtag">
+                        {html_options options=$sendoptions}
+                    </select>
+                </div>
             </div>
-        </div>
         </fieldset>
 
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-            {if $action == "deny"}
-            <button type="submit">{img modname=core src=14_layer_deletelayer.png set=icons/extrasmall __alt="Deny" __title="Deny"} {gt text="Deny"}</button>
+            {if $action eq 'deny'}
+            <button type="submit">{img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt='Deny' __title='Deny'} {gt text='Deny'}</button>
             {else}
-            <button type="submit">{img modname=core class="btn btn-success" __alt="Accept" __title="Accept"} {gt text="Accept"}</button>
+            <button type="submit" class="btn btn-success" title="{gt text='Accept'}">{gt text="Accept"}</button>
             {/if}
             </div>
         </div>
     </div>
 </form>
-
 {adminfooter}

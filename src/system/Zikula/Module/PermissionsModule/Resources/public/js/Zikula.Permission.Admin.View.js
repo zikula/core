@@ -142,7 +142,9 @@ var currentDelete, currentInsertBefore;
             $.ajax({
                 url: Routing.generate("zikulapermissionsmodule_ajax_delete"),
                 type: 'POST',
-                data: {pid: currentDelete.data('id')},
+                data: {
+                    pid: currentDelete.data('id')
+                },
                 success: function () {
                     currentDelete.remove();
                 }
@@ -161,7 +163,7 @@ var currentDelete, currentInsertBefore;
         $('.create-new-permission').click(function (event) {
             event.preventDefault();
             $(this).addClass('fa-spin');
-            currentInsertBefore = $(this).hasClass('insertBefore') ? $(this).parents('tr').first() : null;
+            currentInsertBefore = $(this).hasClass('insertBefore') ? $(this).parent().parent() : null;
             $('#save-permission-changes').hide();
             $('#save-new-permission').show();
 
@@ -268,4 +270,3 @@ var currentDelete, currentInsertBefore;
 
     });
 })(jQuery);
-

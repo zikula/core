@@ -15,9 +15,7 @@
         <legend>{gt text='Confirmation prompt'}</legend>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                <button class='btn btn-danger' title="{gt text='Remove'}">
-                    {gt text='Remove'}
-                </button>
+                <button class='btn btn-danger' title="{gt text='Remove'}">{gt text='Remove'}</button>
                 <a class="btn btn-default" href="{route name='zikulagroupsmodule_admin_groupmembership' gid=$gid}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>
         </div>

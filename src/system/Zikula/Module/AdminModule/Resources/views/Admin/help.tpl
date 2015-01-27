@@ -1,18 +1,14 @@
 {adminheader}
 <h3>
     <span class="fa fa-info"></span>
-    {gt text="Help"}
+    {gt text='Help'}
 </h3>
-
-
 
 <div class="panel-group" id="accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#view">
-                    {gt text="Module categories list"}
-                </a>
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#view">{gt text='Module categories list'}</a>
             </h4>
         </div>
         <div id="view" class="panel-collapse collapse in">
@@ -34,9 +30,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#new">
-                    {gt text="Create new module category"}
-                </a>
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#new">{gt text='Create new module category'}</a>
             </h4>
         </div>
         <div id="new" class="panel-collapse collapse">
@@ -56,9 +50,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#modifyconfig">
-                    {gt text="Settings"}
-                </a>
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#modifyconfig">{gt text='Settings'}</a>
             </h4>
         </div>
         <div id="modifyconfig" class="panel-collapse collapse">
@@ -71,9 +63,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#generalsettings">
-                    {gt text="General settings"}
-                </a>
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#generalsettings">{gt text='General settings'}</a>
             </h4>
         </div>
         <div id="generalsettings" class="panel-collapse collapse">
@@ -90,9 +80,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#displaysettings">
-                    {gt text="Display settings"}
-                </a>
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#displaysettings">{gt text='Display settings'}</a>
             </h4>
         </div>
         <div id="displaysettings" class="panel-collapse collapse">
@@ -113,9 +101,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#categoryconfiguration">
-                    {gt text="Modules categorisation"}
-                </a>
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#categoryconfiguration">{gt text='Modules categorisation'}</a>
             </h4>
         </div>
         <div id="categoryconfiguration" class="panel-collapse collapse">
@@ -134,8 +120,8 @@
 
 
 <fieldset>
-    <legend>{gt text="Messages you might see"}</legend>
-    <h5 id="securitywarnings">{gt text="Security analyser warnings"}</h5>
+    <legend>{gt text='Messages you might see'}</legend>
+    <h5 id="securitywarnings">{gt text='Security analyser warnings'}</h5>
     <p>{gt text='In the Administration panel, you will see security warnings displayed if the Security analyser detects potential security vulnerabilities in your site\'s installation. If you see no warning box then it means that no vulnerabilities have been found. Below are explanations for each vulnerability possibly identified.'}</p>
 
     <h5 id="admin_psakwarning">{gt text="You see the message"}: {gt text="Stop, please! The Swiss Army Knife tool ('psak.php' file) is in the site root, but must be removed before you can access the site admin panel. Moreover, for your information, this tool is now deprecated in favor of the Zikula recovery console ('zrc.php')."}</h5>

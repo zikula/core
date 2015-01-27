@@ -22,21 +22,21 @@
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='transport' __text='Mail transport' mandatorysym=true}
             <div class="col-lg-9">
-                {formdropdownlist cssClass='form-control' id='transport' mandatory=true}
+                {formdropdownlist id='transport' mandatory=true cssClass='form-control'}
             </div>
         </div>
         <div class="form-group">
             {charset assign=defaultcharset}
             {formlabel cssClass="col-lg-3 control-label" for='charset' __text='Character set' mandatorysym=true}
             <div class="col-lg-9">
-                {formtextinput cssClass='form-control' id='charset' size=10 maxLength=20 mandatory=true}
+                {formtextinput id='charset' size=10 maxLength=20 mandatory=true cssClass='form-control'}
                 <p class="help-block sub">{gt text="Default: '%s'" tag1=$defaultcharset}</p>
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='encoding' __text="Encoding" mandatorysym=true}
             <div class="col-lg-9">
-                {formdropdownlist cssClass='form-control' id='encoding' mandatory=true}
+                {formdropdownlist id='encoding' mandatory=true cssClass='form-control'}
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='8bit'}</p>
             </div>
         </div>
@@ -51,7 +51,7 @@
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='wordwrap' __text='Word wrap' mandatorysym=true}
             <div class="col-lg-9">
-                {formtextinput cssClass='form-control' id='wordwrap' size=3 maxLength=3 mandatory=true}
+                {formtextinput id='wordwrap' size=3 maxLength=3 mandatory=true cssClass='form-control'}
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='50'}</p>
             </div>
         </div>
@@ -70,40 +70,40 @@
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='host' __text='SMTP host server'}
             <div class="col-lg-9">
-                {formtextinput cssClass='form-control' id='host' size=30 maxLength=255}
+                {formtextinput id='host' size=30 maxLength=255 cssClass='form-control'}
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='localhost'}</p>
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='port' __text='SMTP port'}
             <div class="col-lg-9">
-                {formtextinput cssClass='form-control' id='port' size=5 maxLength=5}
+                {formtextinput id='port' size=5 maxLength=5 cssClass='form-control'}
                 <p class="help-block sub">{gt text="Default: '%s'" tag1='25'}</p>
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='encryption' __text='SMTP encryption method'}
             <div class="col-lg-9">
-                {formdropdownlist cssClass='form-control' id='encryption'}
+                {formdropdownlist id='encryption' cssClass='form-control'}
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='auth_mode' __text='SMTP authentication type'}
             <div class="col-lg-9">
-                {formdropdownlist cssClass='form-control' id='auth_mode'}
+                {formdropdownlist id='auth_mode' cssClass='form-control'}
             </div>
         </div>
         <div data-switch="auth_mode[]" data-switch-value="login">
             <div class="form-group">
                 {formlabel cssClass="col-lg-3 control-label" for='username' __text='SMTP user name'}
                 <div class="col-lg-9">
-                    {formtextinput cssClass='form-control' id='username' size=30 maxLength=50}
+                    {formtextinput id='username' size=30 maxLength=50 cssClass='form-control'}
                 </div>
             </div>
             <div class="form-group">
                 {formlabel cssClass="col-lg-3 control-label" for='password' __text='SMTP password'}
                 <div class="col-lg-9">
-                    {formtextinput cssClass='form-control' id='password' textMode='password' size=30 maxLength=50}
+                    {formtextinput id='password' textMode='password' size=30 maxLength=50 cssClass='form-control'}
                 </div>
             </div>
         </div>
@@ -114,13 +114,13 @@
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='usernameGmail' __text='Gmail user name'}
             <div class="col-lg-9">
-                {formtextinput cssClass='form-control' id='usernameGmail' size=30 maxLength=50}
+                {formtextinput id='usernameGmail' size=30 maxLength=50 cssClass='form-control'}
             </div>
         </div>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='passwordGmail' __text='Gmail password'}
             <div class="col-lg-9">
-                {formtextinput cssClass='form-control' id='passwordGmail' textMode='password' size=30 maxLength=50}
+                {formtextinput id='passwordGmail' textMode='password' size=30 maxLength=50 cssClass='form-control'}
             </div>
         </div>
     </fieldset>
