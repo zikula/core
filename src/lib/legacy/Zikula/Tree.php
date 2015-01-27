@@ -188,6 +188,29 @@ class Zikula_Tree
     }
 
     /**
+     * Get HTML output using jQuery
+     *
+     * @return string HTML output.
+     */
+    public function getJqueryHtml()
+    {
+        PageUtil::addVar('javascript', 'jquery');
+        PageUtil::addVar('javascript', 'web/jstree/dist/jstree.min.js');
+        PageUtil::addVar('stylesheet', 'web/jstree/dist/themes/default/style.min.css');
+
+        $tree = $this->_toHTML($this->tree, 1, $this->config['id'], true);
+
+        if ($this->config['withWraper']) {
+            $wraperClass = !empty($this->config['wraperClass']) ? 'class="'.$this->config['wraperClass'].'"' : '';
+            $this->html = "\n<div {$wraperClass}>\n{$tree}</div>";
+        } else {
+            $this->html = $tree;
+        }
+
+        return $this->html;
+    }
+
+    /**
      * Get configuration for script.
      *
      * @param boolean $encode Whether or not to json encode the configuration.

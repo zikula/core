@@ -101,7 +101,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $cats = CategoryUtil::getSubCategories($root_id, true, true, true, true, true);
-        $menuTxt = CategoryUtil::getCategoryTreeJS($cats, true, true);
+        $menuTxt = CategoryUtil::getCategoryTreeJqueryJS($cats, true, true);
 
         $this->view->assign('menuTxt', $menuTxt);
 

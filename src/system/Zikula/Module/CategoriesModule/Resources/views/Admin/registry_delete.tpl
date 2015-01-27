@@ -11,7 +11,7 @@
     {gt text='Property name'}: <strong>{$data.property}</strong>
 </p>
 
-<form class="form-horizontal" role="form" action="{route name="zikulacategoriesmodule_adminform_editregistry" mode='delete'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulacategoriesmodule_adminform_editregistry' mode='delete'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="id" value="{$data.id}" />
         <input type="hidden" name="mode" value="delete" />
@@ -24,6 +24,7 @@
                     <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_admin_editregistry'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
                 </div>
             </div>
+        </div>
         </fieldset>
     </div>
 </form>

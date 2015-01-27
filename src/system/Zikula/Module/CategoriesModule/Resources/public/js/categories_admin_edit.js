@@ -1,84 +1,91 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-Zikula.define('Categories');
+var ZikulaCategories = {};
 
-Zikula.Categories.InitEditView = function() {
-    if ($('category_attributes_add')) {
-        Zikula.Categories.Attributes.Init();
-    }
-    Zikula.Categories.Collapse.Init();
-};
-$(document).observe('dom:loaded', Zikula.Categories.InitEditView);
+( function($) {
 
-Zikula.define('Categories.Collapse');
+    $(document).ready(function() {
+        if ($('#category_attributes_add').length > 0) {
+            ZikulaCategories.InitAttributes();
+        }
+        ZikulaCategories.InitCollapse();
+    });
 
-Zikula.Categories.Collapse.Init = function() {
-    $$('.categories_collapse_control')
-        .invoke('observe','click', Zikula.Categories.Collapse.Click)
-        .invoke('addClassName','z-toggle-link')
-        .each(function(collapse) {
-            var details = collapse.up('legend').next('.categories_collapse_details');
-            if (details && details.visible()) {
-                details.removeClassName('z-toggle-link-open').hide();
-            }
-        });
-};
+    ZikulaCategories.InitCollapse = function() {
+        $('.categories_collapse_control')
+            .click(ZikulaCategories.ClickCollapse)
+            .addClass('z-toggle-link')
+            .each(function(index) {
+                var details = $(this).parent('legend').next('.categories_collapse_details');
+                if (details && details.is(':visible')) {
+                    details.removeClass('z-toggle-link-open').hide();
+                }
+            });
+    };
 
-Zikula.Categories.Collapse.Click = function(event) {
-    event.preventDefault();
-    var collapse = event.findElement('.categories_collapse_control'),
-        details = collapse.up('legend').next('.categories_collapse_details');
-    if (details.visible()) {
-        Element.removeClassName.delay(0.9, details, 'z-toggle-link-open');
-    } else {
-        details.addClassName('z-toggle-link-open');
-    }
-    Zikula.switchdisplaystate(details);
-};
+    ZikulaCategories.ClickCollapse = function(event) {
+        event.preventDefault();
+        var collapse, details;
 
-Zikula.define('Categories.Attributes');
+        collapse = $(event.target);
+        details = collapse.parent('legend').next('.categories_collapse_details');
 
-Zikula.Categories.Attributes.Init = function () {
-    $('category_attributes_add').observe('click', Zikula.Categories.Attributes.Add);
-    $$('.category_attributes_remove').invoke('observe','click', Zikula.Categories.Attributes.Remove);
-};
+        if (details.hasClass('z-toggle-link-open')) {
+            details.removeClass('z-toggle-link-open').hide();
+        } else {
+            details.addClass('z-toggle-link-open').show();
+        }
+    };
 
-Zikula.Categories.Attributes.Add = function(event) {
-    event.preventDefault();
-    var inputElement = event.element();
-    if ($('new_attribute_name').getValue().empty() || $('new_attribute_value').getValue().empty()) {
-        return false;
-    }
+    ZikulaCategories.InitAttributes = function() {
+        $('#category_attributes_add').click(ZikulaCategories.AddAttribute);
+        $('.category_attributes_remove').click(ZikulaCategories.RemoveAttribute);
+    };
 
-    var td = inputElement.up('td'),
-        tr = td.up('tr'),
-        table = tr.up('table'),
-        newRow = table.insertRow(tr.rowIndex+1);
+    ZikulaCategories.AddAttribute = function(event) {
+        event.preventDefault();
+        if ($('#new_attribute_name').val() == '' || $('#new_attribute_value').val() == '') {
+            return false;
+        }
 
-    var newTd1 = newRow.insertCell(0),
-        newInput1 = new Element('input',{name: 'attribute_name[]', value: $('new_attribute_name').getValue()});
-    $('new_attribute_name').clear();
-    newTd1.appendChild(newInput1);
+        var table, tr, tbody, newRow;
 
-    var newTd2 = newRow.insertCell(1),
-        newInput2 = new Element('input',{name: 'attribute_value[]', value: $('new_attribute_value').getValue()});
-    $('new_attribute_value').clear();
-    newTd2.appendChild(newInput2);
+        tr = $(event.target).parent('tr');
+        tbody = tr.parent('tbody');
+        newRow = $('<tr>');
 
-    var newTd3 = newRow.insertCell(2),
-        newInput3 = new Element('input',{type: 'image', src: 'images/icons/extrasmall/edit_remove.png'}).observe('click',Zikula.Categories.Attributes.Remove);
-    newTd3.appendChild(newInput3);
+        var newTd1 = $('<td>')
+            .append($('<input>')
+                .attr({ name: 'attribute_name[]', value: $('#new_attribute_name').val() })
+            );
+        $('#new_attribute_name').val('');
+        newRow.append(newTd1);
 
-    $('new_attribute_name').focus();
+        var newTd2 = $('<td>')
+            .append($('<input>')
+                .attr({ name: 'attribute_value[]', value: $('#new_attribute_value').val(), size: 50 })
+            );
+        $('#new_attribute_value').val('');
+        newRow.append(newTd2);
 
-    return true;
-};
+        var newTd3 = $('<td>')
+            .append($('<input>')
+                .attr({ type: 'image', class: 'category_attributes_remove', src: Zikula.Config.baseURL + 'images/icons/extrasmall/edit_remove.png' })
+            );
+        newRow.append(newTd3);
 
-Zikula.Categories.Attributes.Remove = function(event) {
-    event.preventDefault();
-    var inputElement = event.element(),
-        tr = inputElement.up('tr'),
-        table = tr.up('table');
-    table.deleteRow(tr.rowIndex);
-    return true;
-};
+        // add new row to after the row containing the button that was clicked
+        $(this).closest('tr').after('<tr>' + newRow.html() + '</tr>');
+
+        // reinitialise delete buttons
+        $('.category_attributes_remove').unbind('click').click(ZikulaCategories.RemoveAttribute);
+
+        $('#new_attribute_name').focus();
+
+        return true;
+    };
+
+    ZikulaCategories.RemoveAttribute = function(event) {
+        $(this).parent().parent().remove();
+    };
+})(jQuery);
