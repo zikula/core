@@ -7,7 +7,7 @@ Event.observe(window, 'load', function() {
         });
     }
 });
-document.observe("dom:loaded", menutree_init);
+document.observe('dom:loaded', menutree_init);
 
 function menutree_init()
 {
@@ -22,9 +22,18 @@ function menutree_init()
 function menutree_treecontrols_onload()
 {
     //menutree controls - add, expand and collapse
-    $('menutree_newnode').observe('click', function(e) {e.stop(); Zikula.Menutree.Tree.inst.newNode()});
-    $('menutree_expandall').observe('click', function(e) {e.stop(); Zikula.Menutree.Tree.inst.expandAll()});
-    $('menutree_collapseall').observe('click', function(e) {e.stop(); Zikula.Menutree.Tree.inst.collapseAll()});
+    $('menutree_newnode').observe('click', function(e) {
+        e.stop();
+        Zikula.Menutree.Tree.inst.newNode();
+    });
+    $('menutree_expandall').observe('click', function(e) {
+        e.stop();
+        Zikula.Menutree.Tree.inst.expandAll();
+    });
+    $('menutree_collapseall').observe('click', function(e) {
+        e.stop();
+        Zikula.Menutree.Tree.inst.collapseAll();
+    });
     //controls for lang changing
     $$('.menutree_langcontrols').invoke('observe','click',menutree_onlangchange)
 }
@@ -62,10 +71,10 @@ function menutree_linkclass_add(event)
         id = Number(list.id.match(/\d+/)[0]),
         newId = id + 1,
         inputs = list.select('input');
-    list.id =list.id.replace(/\d+/,newId);
+    list.id = list.id.replace(/\d+/, newId);
     inputs.invoke('clear');
     inputs.each(function(i) {
-        i.name = i.name.replace(/\d+/,newId);
+        i.name = i.name.replace(/\d+/, newId);
     });
     $('menutree_linkclasses_list').insert(list);
     list.down('.menutree_linkclass_del').observe('click', menutree_linkclass_del);
@@ -144,7 +153,7 @@ function menutree_stylehelper(event)
                     }).invoke('hide');
         }
         var first = $('menutree_stylesheet').select('option').find(function(o) {
-                    return o.value != 'null' && o.visible();
+            return o.value != 'null' && o.visible();
         });
         if (first != undefined) {
             first.selected = true;

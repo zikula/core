@@ -7,7 +7,9 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             unactiveClass:      'z-tree-unactive',
             dynamicClass:       'z-tree-dynamic',
             nodeIdPrefix:       'node_',
-            dynamicPattern:     function(str) {return str ? str.startsWith('{ext:') : false;},
+            dynamicPattern:     function(str) {
+                return str ? str.startsWith('{ext:') : false;
+            },
             langs:              ['en'],
             stripBaseURL:       false,
             onSave:             this.save.bind(this),
@@ -45,7 +47,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             forminfo:           Zikula.__('Marked fields are required'),
             maxdepthreached:    Zikula.__('Maximum depth reached. Limit is: '),
             warnbeforeunload:   Zikula.__('You have unsaved changes!')
-        },config.langLabels);
+        }, config.langLabels);
         config.images = Object.extend({
             edit:               'menu/folder_edit.png',
             remove:             'menu/folder_delete.png',
@@ -75,32 +77,32 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.unsaved = false;
         Event.observe(window, 'beforeunload', this.beforeUnloadHandler.bindAsEventListener(this));
     },
-    initNode: function($super,node) {
-        node.select('a[lang!='+this.cLang+']').invoke('hide');
-        if(!node.down('.'+this.config.icon)) {
-            node.insert({top: new Element('img',{className: this.config.icon})});
+    initNode: function($super, node) {
+        node.select('a[lang!=' + this.cLang + ']').invoke('hide');
+        if (!node.down('.' + this.config.icon)) {
+            node.insert({ top: new Element('img', { className: this.config.icon }) });
         }
-        if((!node.down('.'+this.config.toggler))) {
-            node.insert({top: new Element('img',{className: this.config.toggler,src: this.config.images.plus})});
+        if ((!node.down('.' + this.config.toggler))) {
+            node.insert({ top: new Element('img', { className: this.config.toggler,src: this.config.images.plus }) });
         }
         $super(node);
     },
-    insertNode: function($super,node,params,revert){
-        var result = $super(node,params,revert);
-        if(result) {
+    insertNode: function($super, node, params, revert) {
+        var result = $super(node, params, revert);
+        if (result) {
             this.unsaved = true;
         }
         return result;
     },
     stripBaseURL: function() {
-        if(this.config.stripbaseurl) {
-            var baseurl = new RegExp('^'+Zikula.Config.baseURL);
+        if (this.config.stripbaseurl) {
+            var baseurl = new RegExp('^' + Zikula.Config.baseURL);
             this.tree.select('a').each(function(n) {
                 n.href = n.readAttribute('href').replace(baseurl, '');
             }.bind(this));
         }
     },
-    serializeNode: function($super,node,index) {
+    serializeNode: function($super, node, index) {
         return this.getNodeData(node, index, true);
     },
     observeForm: function() {
@@ -110,34 +112,35 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.save();
         this.unsaved = false;
     },
-    save: function(node,params,data) {
-        if(node && params && Object.isElement(params[1]) && params[1].hasClassName(this.config.dynamicClass) && params[0] == 'bottom') {
+    save: function(node, params, data) {
+        if (node && params && Object.isElement(params[1]) && params[1].hasClassName(this.config.dynamicClass) && params[0] == 'bottom') {
             return false;
         }
         data = data || this.serialize();
-        if(!$('menutree_content')) {
-            this.tree.up('form').insert(new Element('input',{
-                type:'hidden',
-                'id':this.config.saveContentTo,
-                name:this.config.saveContentTo
+        if (!$('menutree_content')) {
+            this.tree.up('form').insert(new Element('input', {
+                type: 'hidden',
+                'id': this.config.saveContentTo,
+                name: this.config.saveContentTo
             }));
         }
         $('menutree_content').setValue(Zikula.urlsafeJsonEncode(data, false));
+
         return true;
     },
-    changeLang: function(lang){
-        this.tree.select('li a[lang='+this.cLang+']').invoke('hide');
+    changeLang: function(lang) {
+        this.tree.select('li a[lang=' + this.cLang + ']').invoke('hide');
         this.cLang = lang;
-        this.tree.select('li a[lang='+this.cLang+']').invoke('show');
+        this.tree.select('li a[lang=' + this.cLang + ']').invoke('show');
     },
     attachMenu: function() {
         this.config.menuConfig = Object.extend({
             objs:       '',
             trigger:    'click',
             dynamic:    true
-        },this.config.menuConfig);
+        }, this.config.menuConfig);
 
-        this.config.menuConfig.objs = '#'+this.tree.id+' li a';
+        this.config.menuConfig.objs = '#' + this.tree.id + ' li a';
 
         this.menuItemsBind = this.menuItems.bind(this);
         this.config.menuConfig.items = this.menuItemsBind;
@@ -148,43 +151,44 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         var actionBind = this.menuAction.bind(this),
             element = elementEvt.element(),
             expandItem = {};
-        if(element.up('li').down('ul') && element.up('li').down('ul').visible()) {
-            expandItem = {name: 'collapse', displayname: this.config.langLabels.collapse, img: this.config.images.collapse, action: actionBind};
+        if (element.up('li').down('ul') && element.up('li').down('ul').visible()) {
+            expandItem = { name: 'collapse', displayname: this.config.langLabels.collapse, img: this.config.images.collapse, action: actionBind };
         } else if (element.up('li').down('ul') && !element.up('li').down('ul').visible()) {
-            expandItem = {name: 'expand', displayname: this.config.langLabels.expand, img: this.config.images.expand, action: actionBind};
+            expandItem = { name: 'expand', displayname: this.config.langLabels.expand, img: this.config.images.expand, action: actionBind };
         } else {
-            expandItem = {name: 'expand', displayname: this.config.langLabels.expand, disabled: true, img: this.config.images.expand, action: actionBind};
+            expandItem = { name: 'expand', displayname: this.config.langLabels.expand, disabled: true, img: this.config.images.expand, action: actionBind };
         }
-        if(this.config.maxDepth > 0) {
+        if (this.config.maxDepth > 0) {
             var addAsChildDisabled = (this.countLevels(element.up('li'),'up') + 2) > this.config.maxDepth;
         }
         var menuItems = {
-            edit: {name: 'edit', displayname: this.config.langLabels.edit, img: this.config.images.edit,action: actionBind},
-            remove: {name: 'remove', displayname: this.config.langLabels.remove, img: this.config.images.remove, confirm: this.config.langLabels.delConfirm, action: actionBind},
-            add: {name: 'add', displayname: this.config.langLabels.add, img: this.config.images.add,
+            edit: { name: 'edit', displayname: this.config.langLabels.edit, img: this.config.images.edit,action: actionBind },
+            remove: { name: 'remove', displayname: this.config.langLabels.remove, img: this.config.images.remove, confirm: this.config.langLabels.delConfirm, action: actionBind },
+            add: { name: 'add', displayname: this.config.langLabels.add, img: this.config.images.add,
                 action: {
-                    before: {name: 'before', displayname: this.config.langLabels.before,img: this.config.images.before,action: actionBind},
-                    after: {name: 'after', displayname: this.config.langLabels.after,img: this.config.images.after,action: actionBind},
-                    bottom: {name: 'bottom', displayname: this.config.langLabels.bottom,img: this.config.images.bottom, action: actionBind, disabled: addAsChildDisabled}
+                    before: { name: 'before', displayname: this.config.langLabels.before,img: this.config.images.before,action: actionBind },
+                    after: { name: 'after', displayname: this.config.langLabels.after,img: this.config.images.after,action: actionBind },
+                    bottom: { name: 'bottom', displayname: this.config.langLabels.bottom,img: this.config.images.bottom, action: actionBind, disabled: addAsChildDisabled }
                 }
             },
             s1: true,
             expand: expandItem,
-            toggle: {name: 'toggle', displayname: element.hasClassName(this.config.unactiveClass) ? this.config.langLabels.activate : this.config.langLabels.deactivate,img: element.hasClassName(this.config.unactiveClass) ? this.config.images.activate : this.config.images.deactivate , action: actionBind}
+            toggle: { name: 'toggle', displayname: element.hasClassName(this.config.unactiveClass) ? this.config.langLabels.activate : this.config.langLabels.deactivate,img: element.hasClassName(this.config.unactiveClass) ? this.config.images.activate : this.config.images.deactivate , action: actionBind }
         };
-        if(this.multilingual) {
+        if (this.multilingual) {
             Object.extend(menuItems,{
-                onoffs: {name: 'onoffs', displayname: this.config.langLabels.multitoggle, img: this.config.images.multitoggle,
+                onoffs: { name: 'onoffs', displayname: this.config.langLabels.multitoggle, img: this.config.images.multitoggle,
                     action: {
-                        on: {name: 'on', displayname: this.config.langLabels.multiactivate,img: this.config.images.multiactivate, action: actionBind},
-                        off: {name: 'off', displayname: this.config.langLabels.multideactivate,img: this.config.images.multideactivate, action: actionBind}
+                        on: { name: 'on', displayname: this.config.langLabels.multiactivate,img: this.config.images.multiactivate, action: actionBind },
+                        off: { name: 'off', displayname: this.config.langLabels.multideactivate,img: this.config.images.multideactivate, action: actionBind }
                     }
                 }
             });
         }
+
         return menuItems;
     },
-    menuAction: function(elementEvt,actionEvt) {
+    menuAction: function(elementEvt, actionEvt) {
         var action = actionEvt.element().tagName == 'LI' ? actionEvt.element()._name : actionEvt.element().up('li')._name,
             obj = elementEvt.element();
         switch (action) {
@@ -231,9 +235,9 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.drawNodes();
         this.unsaved = true;
     },
-    switchNode: function(obj,full,on) {
-        if(full) {
-            if(on) {
+    switchNode: function(obj, full, on) {
+        if (full) {
+            if (on) {
                 obj.up('li').select('a').invoke('removeClassName',this.config.unactiveClass);
             } else {
                 obj.up('li').select('a').invoke('addClassName',this.config.unactiveClass);
@@ -243,7 +247,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         }
         this.unsaved = true;
     },
-    getNodeData: function(node,index,forSerialize) {
+    getNodeData: function(node, index, forSerialize) {
         var link, nodeData = {}, prefix = forSerialize ? '' : 'link_';
         this.config.langs.each(function(lang) {
             link =  node.down('a[lang='+lang+']');
@@ -260,23 +264,23 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         }.bind(this));
         return nodeData;
     },
-    setNodeData: function(node,data) {
+    setNodeData: function(node, data) {
         var link;
         this.config.langs.each(function(lang) {
-            if(data[lang]) {
+            if (data[lang]) {
                 link =  node.down('a[lang='+lang+']');
                 link.update(data[lang].link_name.escapeHTML() || '');
                 link.writeAttribute('href',data[lang].link_href || null);
                 link.writeAttribute('title',data[lang].link_title ? data[lang].link_title.escapeHTML() : null);
                 link.writeAttribute('className',data[lang].link_className || null);
-                if(!data[lang].link_state) {
+                if (!data[lang].link_state) {
                     link.addClassName(this.config.unactiveClass);
                 }
                 link.writeAttribute('lang',data[lang].link_lang || this.defaultLang);
                 this.unsaved = true;
             }
         }.bind(this));
-        if(node.select('a').any(function(a) {
+        if (node.select('a').any(function(a) {
             return this.config.dynamicPattern(a.readAttribute('href'));
         }.bind(this))) {
             node.addClassName(this.config.dynamicClass);
@@ -285,31 +289,31 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.tree.fire("tree:item:save", { node: node });
     },
     addNode: function() {
-        var node = new Element('li',{id:this.config.nodeIdPrefix+this.genNextId()});
+        var node = new Element('li', { id: this.config.nodeIdPrefix + this.genNextId() });
         switch(this.formaction) {
             case 'new':
                 this.tree.insert(node);
                 break;
             case 'before':
-                this.referer.insert({before: node});
+                this.referer.insert({ before: node });
                 break;
             case 'after':
-                this.referer.insert({after: node});
+                this.referer.insert({ after: node });
                 break;
             case 'bottom':
                 var subnode = this.referer.down('ul');
-                if(subnode) {
-                    subnode.insert({bottom: node});
+                if (subnode) {
+                    subnode.insert({ bottom: node });
                     subnode.show();
                 } else {
                     this.referer.insert(new Element('ul').insert(node));
                 }
                 break;
         }
-        this.config.langs.each(function(lang){
-            var link = new Element('a',{lang:lang});
+        this.config.langs.each(function(lang) {
+            var link = new Element('a',{ lang: lang });
             node.insert(link);
-            if(!this.tmp[lang] || !this.tmp[lang].link_name) {
+            if (!this.tmp[lang] || !this.tmp[lang].link_name) {
                 var validlang = this.config.langs.find(function(n) {
                    return this.tmp[n].link_name;
                 }.bind(this))
@@ -324,12 +328,12 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
     },
     readNode: function(obj) {
         this.tmp = {};
-        if(obj && Object.isElement(obj)){
+        if (obj && Object.isElement(obj)) {
             obj = obj.tagName == 'LI' ? obj : obj.up('li');
             this.tmp = this.getNodeData(obj);
             var urls = [];
             var classnames = [];
-            this.config.langs.each(function(lang){
+            this.config.langs.each(function(lang) {
                 urls.push(this.tmp[lang].link_href);
                 classnames.push(this.tmp[lang].link_className);
             }.bind(this));
@@ -338,7 +342,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
                 link_className:  classnames.uniq().size() <= 1
             }
         } else {
-            this.config.langs.each(function(lang){
+            this.config.langs.each(function(lang) {
                 this.tmp[lang] = Object.extend({
                     link_state:  true,
                     link_lang:   lang
@@ -351,7 +355,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         }
     },
     newNode: function(data) {
-        if(data) {
+        if (data) {
             for (var item in data) {
                 data[item] = data[item].unescapeHTML();
             }
@@ -361,32 +365,32 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.showForm();
     },
     buildForm: function() {
-        if(!this.formDialog) {
+        if (!this.formDialog) {
             var options = {
                 title: $('menutree_form_container').title,
                 height: 400
             };
-            this.formDialog = new Zikula.UI.FormDialog($('menutree_form_container'),this.submitForm.bind(this),options);
+            this.formDialog = new Zikula.UI.FormDialog($('menutree_form_container'), this.submitForm.bind(this), options);
             this.form = this.formDialog.window.container.down('form');
 //            this.form = this.formDialog.form;
-            if($('link_lang')){
+            if ($('link_lang')) {
                 $('link_lang').observe('change',this.changeFormLang.bindAsEventListener(this));
             }
         }
     },
-    loadFormValues: function(lang,oldlang) {
+    loadFormValues: function(lang, oldlang) {
         lang = lang ? lang : this.cLang;
         this.formLang = lang;
         var data = this.tmp[lang],
             global = this.tmp.global;
-        if(oldlang && this.tmp.global.link_href) {
+        if (oldlang && this.tmp.global.link_href) {
             data.href = this.tmp[oldlang].link_href;
         }
-        if(oldlang && this.tmp.global.link_className) {
+        if (oldlang && this.tmp.global.link_className) {
             data.link_className = this.tmp[oldlang].link_className;
         }
-        this.form.getElements().each(function(element){
-            if(element.id.startsWith('global_')) {
+        this.form.getElements().each(function(element) {
+            if (element.id.startsWith('global_')) {
                 element.setValue(global[element.id.replace('global_','')]);
             } else {
                 element.setValue(data[element.id]);
@@ -397,7 +401,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.buildForm();
         this.form.reset();
         this.formLang = this.cLang;
-        if($('requiredInfo')) {
+        if ($('requiredInfo')) {
             $('requiredInfo').hide();
         }
         this.editedNode = Object.isElement(obj) ? obj.up('li').id : this.genNextId();
@@ -405,23 +409,23 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.formDialog.open();
     },
     submitForm: function(data) {
-        if(!data) {
+        if (!data) {
             delete this.tmp;
             return;
         }
         delete data.submit;
         this.tmp[this.formLang] = data;
-        if(this.tmp.global && (this.tmp.global.link_href || this.tmp.global.link_className)) {
-            this.config.langs.each(function(lang){
-                if(this.tmp.global.link_href) {
+        if (this.tmp.global && (this.tmp.global.link_href || this.tmp.global.link_className)) {
+            this.config.langs.each(function(lang) {
+                if (this.tmp.global.link_href) {
                     this.tmp[lang].link_href = data.link_href;
                 }
-                if(this.tmp.global.link_className) {
+                if (this.tmp.global.link_className) {
                     this.tmp[lang].link_className = data.link_className;
                 }
             }.bind(this));
         }
-        if(this.formaction == 'edit') {
+        if (this.formaction == 'edit') {
             this.setNodeData($(this.editedNode),this.tmp);
         } else {
             this.addNode();
@@ -440,18 +444,20 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         var maxId = this.tree.select('li').max(function(node) {
             return parseInt(this.getNodeId(node));
         }.bind(this));
+
         maxId = isNaN(maxId) ? 0 : maxId;
+
         return ++maxId;
     },
     beforeUnloadHandler: function (event) {
-        if(this.unsaved && this.config.langLabels.warnbeforeunload) {
+        if (this.unsaved && this.config.langLabels.warnbeforeunload) {
             return event.returnValue = this.config.langLabels.warnbeforeunload;
         }
         return false;
     }
 });
 Object.extend(Zikula.Menutree.Tree,{
-    add: function(element,config) {
+    add: function(element, config) {
         if (!this.inst) {
             // avaiable outside as Zikula.Menutree.Tree.inst
             this.inst = new Zikula.Menutree.Tree(element,config);
