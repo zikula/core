@@ -22,4 +22,41 @@
     {$menuTxt}
 </div>
 
+<div class="modal fade" id="categoryEditModal" tabindex="-1" role="dialog" aria-labelledby="categoryEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="{gt text='Close'}"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="categoryEditModalLabel">{gt text='Edit category'}</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" value="Submit" class="btn btn-primary">{gt text='Submit'}</button>
+                <button type="button" value="Cancel" class="btn btn-default" data-dismiss="modal">{gt text='Cancel'}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="categoryDeleteModal" tabindex="-1" role="dialog" aria-labelledby="categoryDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="{gt text='Close'}"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="categoryDeleteModalLabel">{gt text='Confirmation prompt'}</h4>
+            </div>
+            <div class="modal-body">
+                <p>{gt text='Do you really want to delete this category?'}
+                <p id="deleteWithSubCatInfo"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" value="Delete" class="leaf-node btn btn-primary">{gt text='Delete'}</button>
+                <button type="button" value="Delete" class="parent-node btn btn-primary">{gt text='Delete all sub-categories'}</button>
+                <button type="button" value="DeleteAndMoveSubs" class="parent-node btn btn-default">{gt text='Move all sub-categories'}</button>
+                <button type="button" value="Cancel" class="btn btn-default" data-dismiss="modal">{gt text='Cancel'}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {adminfooter}

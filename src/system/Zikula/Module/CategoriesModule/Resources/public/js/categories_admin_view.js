@@ -68,8 +68,8 @@ var ZikulaCategories = {};
             } else {
                 delete actions.activateItem;
             }
-            if (lastContextMenuClickEventTargetLink.parent('li').hasClass('leaf')/*
-                || lastContextMenuClickEventTargetLink.parent('li').hasClass('jstree-leaf')*/) {
+            if (lastContextMenuClickEventTargetLink.closest('li').hasClass('leaf')/*
+                || lastContextMenuClickEventTargetLink.closest('li').hasClass('jstree-leaf')*/) {
                 delete actions.addItemInto;
             }
         }
@@ -77,16 +77,11 @@ var ZikulaCategories = {};
         return actions;
     };
 
-    function categoriesAjaxIndicator() {
-        return '<img id="ajax_indicator" src="images/ajax/indicator_circle.gif" alt="ajax" />';
-    };
-
     function performCategoryContextMenuAction(node, action, extrainfo) {
         var allowedActions = ['edit', 'delete', 'deleteandmovesubs', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'];
         if (!$.inArray(action, allowedActions) == -1) {
             return false;
         }
-        //$(node).append(categoriesAjaxIndicator()); // TODO
 
         var pars = {
             cid: $(node).attr('id').replace('node_', '')
@@ -99,95 +94,257 @@ var ZikulaCategories = {};
                 pars.parent = extrainfo;
                 break;
             case 'copy':
-                pars.parent = $(node).parent('li').attr('id').replace('node_', '');
+                var parentId = treeElem.jstree('get_parent', node);
+                pars.parent = parentId.replace('node_', '');
                 break;
             case 'addafter':
                 pars.mode = 'new';
-                pars.parent = $(node).parent('li').attr('id').replace('node_', '');
+                var parentId = treeElem.jstree('get_parent', node);
+                pars.parent = parentId.replace('node_', '');
                 action = 'edit';
                 break;
             case 'addchild':
                 pars.mode = 'new';
-                pars.parent = $(node).attr('id').replace('node_', '');
+                var parentId = treeElem.jstree('get_parent', node);
+                pars.parent = parentId.replace('node_', '');
                 action = 'edit';
                 break;
         }
 
         $.ajax({
-            url: Routing.generate('zikulacategoriesmodule_ajax_' + action),
+            //url: Routing.generate('zikulacategoriesmodule_ajax_' + action),
+            url: 'index.php?module=Categories&type=ajax&func=' + action,
             data: pars
         }).success(function(result) {
             performCategoryContextMenuActionCallback(result.data);
         }).error(function(result) {
-            Zikula.showajaxerror(result.status + ': ' + result.statusText);
+            alert(result.status + ': ' + result.statusText);
         });
 
         return true;
     };
 
+    function performCategoryContextMenuActionCallback(data) {
+        var node = $('#node_' + data.cid);
+
+        switch (data.action) {
+            case 'delete':
+                treeElem.jsTree(true).delete_node(node);
+                //treeElem.jstree(true).redraw();
+                break;
+            case 'deleteandmovesubs':
+                treeElem.jsTree(true).delete_node(node);
+
+                var parentNodeId = 'node_' + data.parent;
+                $('#' + parentNodeId).replaceWith(data.node);
+                reinitTreeNode($(parentNodeId), data);
+                break;
+            case 'activate':
+                node.children('a').removeClass('z-tree-unactive');
+                treeElem.jsTree(true).enable_node(node);
+                break;
+            case 'deactivate':
+                node.children('a').addClass('z-tree-unactive');
+                treeElem.jsTree(true).disable_node(node);
+                break;
+            case 'copy':
+                var newNode = 'node_' + data.copycid;
+                $('#' + newNode).replaceWith(data.node);
+                reinitTreeNode($(newNode), data);
+                break;
+            case 'edit':
+            case 'add':
+                $('#categoryEditModal .modal-body').html(data.result);
+                openCategoryEditForm(data, function (event) {
+                    event.preventDefault();
+                    var mode = data.action;
+                    var buttonValue = $(this).val();
+
+                    if (buttonValue == 'Cancel') {
+                        closeCategoryEditForm();
+                        return false;
+                    }
+
+                    var pars = ZikulaCategories.Form.serialize(true);
+                    pars.mode = (mode == 'edit') ? 'edit' : 'new';
+
+                    $.ajax({
+                        url: Routing.generate('zikulacategoriesmodule_ajax_save'),
+                        data: pars
+                    }).success(function(result) {
+                        var data = result.data;
+
+                        if (data.validationErrors) {
+                            if (data && data.validationErrors) {
+                                updateCategoryEditForm(data.result);
+                            } else {
+                                closeCategoryEditForm();
+                            }
+                        } else {
+                            if (mode == 'edit') {
+                                var nodeId = 'node_' + data.cid;
+                                $('#' + nodeId).replaceWith(data.node);
+                                reinitTreeNode($('#' + nodeId), data);
+                            } else if (mode == 'add') {
+                                var relNode = $('#node_' + data.parent),
+                                    newParent = relNode.children('ul');
+                                if (!newParent) {
+                                    newParent = $('<ul>').attr({ class: 'tree' });
+                                    relNode.append(newParent);
+                                }
+                                newParent.append(data.node);
+                                var node = $('#node_' + data.cid);
+                                reinitTreeNode(node, data);
+                            }
+                            closeCategoryEditForm();
+                        }
+                    }).error(function(result) {
+                        alert(result.status + ': ' + result.statusText);
+                    });
+
+                    return true;
+                });
+                break;
+        }
+
+        return true;
+    };
+
     function getCategoryDeleteMenuAction(node) {
-        var subCats = lastContextMenuClickEventTargetLink.parent('li').children('ul'),
-            msg = $('<div>').attr({ id: 'dialogContent' }).append(
-                $('p').text(/*Zikula.__(*/'Do you really want to delete this category?'/*)*/)
-            ),
-            buttons = [
-                { name: 'Delete', value: 'Delete', label: /*Zikula.__(*/'Delete'/*)*/, 'class': 'btn btn-success' },
-                { name: 'Cancel', value: 'Cancel', label: /*Zikula.__(*/'Cancel'/*)*/, 'class': 'btn btn-danger' },
-            ];
-        subCats = subCats ? subCats.children().length : 0;
+        var subCats, msg;
+
+        subCats = $(node).find('> ul > li').length;
         if (subCats > 0) {
             var info = Zikula.__f('It contains %s direct sub-categories.', subCats)
                 + ' '
                 + /*Zikula.__(*/"Please also choose what to do with this category's sub-categories."/*)*/;
-            msg.append($('p').attr({ class: 'alert alert-info' }).text(info));
-            buttons = [
-                { name: 'Delete', value: 'Delete', label: /*Zikula.__(*/'Delete all sub-categories'/*)*/, 'class': 'btn btn-success' },
-                { name: 'Delete', value: 'DeleteAndMoveSubs', label: /*Zikula.__(*/'Move all sub-categories'/*)*/, 'class': 'btn btn-success', close: false },
-                { name: 'Cancel', value: 'Cancel', label: /*Zikula.__(*/'Cancel'/*)*/, 'class': 'btn btn-danger' },
-            ];
+            $('#deleteWithSubCatInfo').addClass('alert alert-info').text(info);
+        } else {
+            $('#deleteWithSubCatInfo').removeClass('alert alert-info').text('');
         }
-        ZikulaCategories.DeleteDialog = new Zikula.UI.Dialog(
-            msg,
-            buttons,
-            {title: /*Zikula.__(*/'Confirmation prompt'/*)*/, width: 500, callback: function(res) {
-                switch (res.value) {
-                    case 'Delete':
-                        performCategoryContextMenuAction(node, 'delete');
-                        ZikulaCategories.DeleteDialog.destroy();
-                        break;
-                    case 'DeleteAndMoveSubs':
-                        if (!$('#subcat_move').length) {
-                            $('#dialogContent').addClass('z-form');
-                            ZikulaCategories.DeleteDialog.window.indicator.appear({ to: 0.7, duration: 0.2 });
 
-                            $.ajax({
-                                url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),
-                                data: {
-                                    cid: $(node).attr('id').replace('node_', '')
-                                }
-                            }).success(function(result) {
-                                var subcat_move = result.data.result;
-                                $('#dialogContent').append(subcat_move);
-                                ZikulaCategories.DeleteDialog.container.morph('height: 250px');
-                                ZikulaCategories.DeleteDialog.window.indicator.fade({ duration: 0.2 });
-                            }).error(function(result) {
-                                Zikula.showajaxerror(result.status + ': ' + result.statusText);
-                            });
-                        } else {
-                            var parent = $('#category_parent_id_').val();
-                            if (parent) {
-                                performCategoryContextMenuAction(node, 'deleteandmovesubs', parent);
-                                ZikulaCategories.DeleteDialog.destroy();
+        if (subCats > 0) {
+            $('#categoryDeleteModal .modal-footer .leaf-node').hide();
+            $('#categoryDeleteModal .modal-footer .parent-node').show();
+        } else {
+            $('#categoryDeleteModal .modal-footer .leaf-node').show();
+            $('#categoryDeleteModal .modal-footer .parent-node').hide();
+        }
+
+        $('#categoryDeleteModal .modal-footer button').click(function(event) {
+            event.preventDefault();
+            var buttonValue = $(this).val();
+
+            switch (buttonValue) {
+                case 'Delete':
+                    performCategoryContextMenuAction(node, 'delete');
+                    $('#categoryDeleteModal').modal('hide');
+                    break;
+                case 'DeleteAndMoveSubs':
+                    if (!$('#subcat_move').length) {
+                        $.ajax({
+                            url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),
+                            data: {
+                                cid: $(node).attr('id').replace('node_', '')
                             }
+                        }).success(function(result) {
+                            var subcat_move = result.data.result;
+                            $('#categoryDeleteModal .modal-body').append(subcat_move);
+                        }).error(function(result) {
+                            alert(result.status + ': ' + result.statusText);
+                        });
+                    } else {
+                        var parent = $('#category_parent_id_').val();
+                        if (parent) {
+                            performCategoryContextMenuAction(node, 'deleteandmovesubs', parent);
+                            $('#categoryDeleteModal').modal('hide');
                         }
-                        break;
-                    default:
-                        ZikulaCategories.DeleteDialog.destroy();
-                }
-            }}
-        );
-        ZikulaCategories.DeleteDialog.open()
-        ZikulaCategories.DeleteDialog.container.children('button[name=Cancel]').focus();
+                    }
+                    break;
+                default:
+                    $('#categoryDeleteModal').modal('hide');
+            }
+        });
+
+        $('#categoryDeleteModal').modal();
+        $('#categoryDeleteModal .modal-footer button[value=Cancel]').focus();
+    };
+
+    function openCategoryEditForm(data, callback) {
+        $('#categories_ajax_form_container').show();
+        $('#categoryEditModal .modal-footer button').unbind('click').click(callback);
+
+        $('#categoryEditModal').modal();
+        $('#categoryEditModal .modal-footer button[value=Cancel]').focus();
+    };
+
+    function updateCategoryEditForm(data) {
+        $('#categories_ajax_form_container').replaceWith(data);
+        $('#categories_ajax_form_container').show();
+    };
+
+    function closeCategoryEditForm() {
+        $('#categoryEditModal').modal('hide');
+    };
+
+    var nodesDisabledForDrop = [];
+
+    function reinitTreeNode(node, data) {
+        treeElem.jstree(true).redraw();
+
+        if (data.leafstatus) {
+            if (data.leafstatus.leaf) {
+                // add elements
+                $.merge(nodesDisabledForDrop, data.leafstatus.leaf);
+            }
+            if (data.leafstatus.noleaf) {
+                // remove elements
+                nodesDisabledForDrop = $.grep(nodesDisabledForDrop, function(value) {
+                    return $.inArray(value, data.leafstatus.noleaf) < 0;
+                });
+            }
+        }
+    };
+
+    function resequenceCategories(event, data) {
+        var node = data.node;
+        var parentId = data.parent;
+        var parentNode = treeElem.jstree('get_node', parentId, false);
+
+        // do not allow inserts on root level
+        if ($(node).parent('li') === undefined) {
+            return false;
+        }
+        // do not allow inserts on forbidden leaf nodes
+        if ($.inArray($(node).attr('id'), nodesDisabledForDrop) > -1) {
+            return false;
+        }
+
+        var elements = [];
+        $('#categoryTreeContainer li').each(function(index) {
+            var elem = $(this);
+            var catId = elem.attr('id').replace('node_', '');
+
+            if (catId != '') {
+                elements[catId] = {
+                    lineno: index,
+                    parent: $(parentNode).attr('id').replace('node_', '')
+                };
+            }
+        });
+
+        $.ajax({
+            url: Routing.generate('zikulacategoriesmodule_ajax_resequence'),
+            data: {
+                'data': elements
+            }
+        }).success(function(result) {
+            var data = result.data;
+        }).error(function(result) {
+            alert(result.status + ': ' + result.statusText);
+        });
+
+        return true;
     };
 
     $(document).ready(function() {
@@ -197,7 +354,12 @@ var ZikulaCategories = {};
         treeElem.jstree({
             'core': {
                 'multiple': false,
-                'check_callback': true
+                'check_callback': function(operation, node, node_parent, node_position, more) {
+                    if (operation === 'move_node') {
+                        return ($.inArray($(node).attr('id'), nodesDisabledForDrop) == -1);
+                    }
+                    return true; // allow all other operations
+                }
             },
             'contextmenu': {
                 'items': getCategoryContextMenuActions
@@ -270,21 +432,7 @@ var ZikulaCategories = {};
         });
 
         // Drag & drop
-        /**
-         * TODO
-         *   - prevent drop on leafs marked as subcat
-         *          http://www.jstree.com/api/#/?q=%28&f=is_leaf%28obj%29
-         *   - handle events (ajax)
-         */
-//         tree.on('move_node.jstree', function (event, data) {
-//             var node = data.node;
-//             var parentId = data.parent;
-//             var parentNode = $tree.jstree('get_node', parentId, false);
-//
-//             Zikula.TreeSortable.trees.categoriesTree.config.onSave = ZikulaCategories.Resequence;
-//             CategoryTreeSave(node, parentNode, 'bottom');
-//         });
-
+        treeElem.on('move_node.jstree', resequenceCategories);
 
         // Tree interaction
         $('#catExpand').click(function(event) {
@@ -297,200 +445,11 @@ var ZikulaCategories = {};
         });
 
         // Tooltips
-        treeElem.on('hover_node.jstree', function (e, data) 
-        {
+        treeElem.on('hover_node.jstree', function(e, data) {
             $('#' + data.node.id + '_anchor').tooltip({
                 placement: 'right',
                 html: true
             });
         })
     });
-
-    /** TODO */
-    performCategoryContextMenuActionCallback = function(data) {
-        var node = $('#node_' + data.cid);
-
-        switch (data.action) {
-            case 'delete':
-                treeElem.jsTree(true).delete_node(node);
-                //treeElem.redraw();
-                break;
-            case 'deleteandmovesubs':
-                treeElem.jsTree(true).delete_node(node);
-
-                var parentNodeId = 'node_' + data.parent;
-                $('#' + parentNodeId).replaceWith(data.node);
-                ZikulaCategories.ReinitTreeNode($(parentNodeId), data);
-                break;
-            case 'activate':
-                node.children('a').removeClass('z-tree-unactive');
-                treeElem.jsTree(true).enable_node(node);
-                break;
-            case 'deactivate':
-                node.children('a').addClass('z-tree-unactive');
-                treeElem.jsTree(true).disable_node(node);
-                break;
-            case 'copy':
-                var newNode = 'node_' + data.copycid;
-                $('#' + newNode).replaceWith(data.node);
-                ZikulaCategories.ReinitTreeNode($(newNode), data);
-                break;
-            case 'edit':
-                $(document.body).append(data.result);
-                ZikulaCategories.OpenForm(data, ZikulaCategories.EditNode);
-                break;
-            case 'add':
-                $(document.body).append(data.result);
-                ZikulaCategories.OpenForm(data, ZikulaCategories.AddNode);
-                // http://www.jstree.com/api/#/?q=%28&f=create_node%28%5Bobj,%20node,%20pos,%20callback,%20is_loaded%5D%29
-                break;
-        }
-
-        return true;
-    };
-
-    /** TODO */
-    ZikulaCategories.OpenForm = function(data, callback) {
-        if (ZikulaCategories.Form) {
-            ZikulaCategories.Form.destroy();
-        }
-        ZikulaCategories.Form = new Zikula.UI.FormDialog($('#categories_ajax_form_container'), callback, {
-            title: $('#categories_ajax_form_container').title, 
-            width: 700, 
-            afterOpen: ZikulaCategories.InitEditView,
-            buttons: [
-                { label: /*Zikula.__(*/'Submit'/*)*/, type: 'submit', name: 'submit', value: 'submit', 'class': 'btn btn-success', close: false },
-                { label: /*Zikula.__(*/'Cancel'/*)*/, type: 'submit', name: 'cancel', value: false, 'class': 'btn btn-danger', close: true }
-            ]
-        });
-
-        return ZikulaCategories.Form.open();
-    };
-
-    /** TODO */
-    ZikulaCategories.CloseForm = function() {
-        ZikulaCategories.Form.destroy();
-        ZikulaCategories.Form = null;
-    };
-
-    /** TODO */
-    ZikulaCategories.UpdateForm = function(data) {
-        $('#categories_ajax_form_container').replaceWith(data);
-        ZikulaCategories.Form.window.indicator.fade({ duration: 0.2 });
-        $('#categories_ajax_form_container').show();
-        ZikulaCategories.InitEditView();
-    };
-
-    /** TODO */
-    ZikulaCategories.EditNode = function(res) {
-        if (!res || (res.hasOwnProperty('cancel') && res.cancel === false)) {
-            ZikulaCategories.CloseForm();
-            return false;
-        }
-        ZikulaCategories.Form.window.indicator.appear({ to: 0.7, duration: 0.2 });
-        var pars = ZikulaCategories.Form.serialize(true);
-        pars.mode = 'edit';
-        new Zikula.Ajax.Request(Routing.generate('zikulacategoriesmodule_ajax_save'), {
-            parameters: pars,
-            onComplete: function(req) {
-                var data = req.getData();
-                if (!req.isSuccess() || data.validationErrors) {
-                    Zikula.showajaxerror(req.getMessage());
-                    if (data && data.validationErrors) {
-                        ZikulaCategories.UpdateForm(data.result);
-                    } else {
-                        ZikulaCategories.CloseForm();
-                    }
-                } else {
-                    var nodeId = 'node_' + data.cid;
-                    $('#' + nodeId).replaceWith(data.node);
-                    ZikulaCategories.ReinitTreeNode($('#' + nodeId), data);
-                    ZikulaCategories.CloseForm();
-                }
-            }
-        });
-        return true;
-    };
-
-    /** TODO */
-    ZikulaCategories.AddNode = function(res) {
-        if (!res || (res.hasOwnProperty('cancel') && res.cancel === false)) {
-            ZikulaCategories.CloseForm();
-            return false;
-        }
-        ZikulaCategories.Form.window.indicator.appear({ to: 0.7, duration: 0.2 });
-        var pars = ZikulaCategories.Form.serialize(true);
-        pars.mode = 'new';
-        new Zikula.Ajax.Request(Routing.generate('zikulacategoriesmodule_ajax_save'), {
-            parameters: pars,
-            onComplete: function(req) {
-                var data = req.getData();
-                if (!req.isSuccess() || data.validationErrors) {
-                    Zikula.showajaxerror(req.getMessage());
-                    if (data && data.validationErrors) {
-                        ZikulaCategories.UpdateForm(data.result);
-                    } else {
-                        ZikulaCategories.CloseForm();
-                    }
-                } else {
-                    var relNode = $('#node_' + data.parent),
-                        newParent = relNode.children('ul');
-                    if (!newParent) {
-                        newParent = $('<ul>').attr({ class: 'tree' });
-                        relNode.append(newParent);
-                    }
-                    newParent.append(data.node);
-                    var node = $('#node_' + data.cid);
-                    ZikulaCategories.ReinitTreeNode(node, data);
-                    ZikulaCategories.CloseForm();
-                }
-            }
-        });
-
-        return true;
-    };
-
-    /** TODO */
-    ZikulaCategories.ReinitTreeNode = function(node, data) {
-        Zikula.TreeSortable.trees.categoriesTree.initNode(node);
-        var subNodes = node.find('li');
-        if (subNodes.length > 0) {
-            subNodes.each(Zikula.TreeSortable.trees.categoriesTree.initNode.bind(Zikula.TreeSortable.trees.categoriesTree));
-        }
-        treeElem.redraw();
-        // http://www.jstree.com/api/#/?q=%28&f=rename_node%28obj,%20val%29 (needed?)
-
-        if (data.leafstatus) {
-            if (data.leafstatus.leaf) {
-                Zikula.TreeSortable.trees.categoriesTree.config.disabledForDrop = Zikula.TreeSortable.trees.categoriesTree.config.disabledForDrop.concat(data.leafstatus.leaf);
-            }
-            if (data.leafstatus.noleaf) {
-                Zikula.TreeSortable.trees.categoriesTree.config.disabledForDrop = [].without.apply(Zikula.TreeSortable.trees.categoriesTree.config.disabledForDrop, data.leafstatus.noleaf);
-            }
-        }
-        Zikula.UI.Tooltips($(node).find('a'));
-    };
-
-    /** TODO */
-    ZikulaCategories.Resequence = function(node, params, data) {
-        // do not allow inserts on root level
-        if ($(node).parent('li') === undefined) {
-            return false;
-        }
-        var pars = {
-            'data': data
-        };
-        //$(node).append(categoriesAjaxIndicator()); // TODO
-
-        $.ajax({
-            url: Routing.generate('zikulacategoriesmodule_ajax_resequence'),
-            data: pars
-        }).success(function(result) {
-            var data = result.data;
-        }).error(function(result) {
-            Zikula.showajaxerror(result.status + ': ' + result.statusText);
-        });
-
-        return true;
-    };
 })(jQuery);
