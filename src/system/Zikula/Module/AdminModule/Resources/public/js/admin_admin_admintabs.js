@@ -1,24 +1,25 @@
 // Copyright Zikula Foundation 2013 - license GNU/LGPLv3 (or at your option, any later version).
 
-( function($) {$(document).ready(function() {
+( function($) {
+    $(document).ready(function() {
 
 /*******************************************************************************
- * Sort tabs 
-*******************************************************************************/
+ * Sort tabs
+ *******************************************************************************/
         
 $('#admintabs').sortable({
     cursor: 'move',
     containment: 'parent',
-    update: function( event, ui ) {
-       var tab = new Array();
-       $('#admintabs li').each( function() {
+    update: function(event, ui) {
+        var tab = new Array();
+        $('#admintabs li').each( function() {
            var catid = $(this).data('catid');
            if (catid !== undefined) {
                 tab.push($(this).data('catid'));
            }
-      });
+        });
 
-      $.ajax({
+        $.ajax({
             url: Routing.generate('zikulaadminmodule_ajax_sortcategories'),
             data: {admintabs: tab},
             error: function (response) {
@@ -38,20 +39,21 @@ $('.admintabs-add a').popover({
     html: true
 });
 
-$(document).on('click', '.admintabs-add a', function (e) {
+$(document).on('click', '.admintabs-add a', function(e) {
     e.preventDefault();
     $('#admintabs-add-name').focus();
 });
 
-$(document).on('click', '.admintabs-add .fa-times', function (e) {
+$(document).on('click', '.admintabs-add .fa-times', function(e) {
     $('.admintabs-add a').popover('hide');
 });
 
-$(document).on('click', '.admintabs-add .fa-check', function (e) {
+$(document).on('click', '.admintabs-add .fa-check', function(e) {
     $('.admintabs-add a').popover('hide')
     var name = $('#admintabs-add-name').val();
     if (name === '') {
         alert(('You must enter a name for the new category'));
+        return;
     }
     $.ajax({
         url: Routing.generate('zikulaadminmodule_ajax_addcategory'),
@@ -156,22 +158,22 @@ $('#modulelist').sortable('disable');
 
 /*******************************************************************************
  * Module functions dropdown
-*******************************************************************************/
+ *******************************************************************************/
 
 $('#modulelist .dropdown-toggle').click( function() {
     var container = $(this).parent().parent().parent().parent();
     var containerTop = container.position().top;
     var itemTop      = $(this).parent().position().top;
-    var avaibleHeight = container.height() - (itemTop-containerTop);
+    var availableHeight = container.height() - (itemTop-containerTop);
     var neededHeight = $(this).parent().find('ul').height()+10;
-    if (neededHeight > avaibleHeight) {
-        container.height(container.height() + neededHeight - avaibleHeight + 30);
+    if (neededHeight > availableHeight) {
+        container.height(container.height() + neededHeight - availableHeight + 30);
     }
 });
 
 /*******************************************************************************
  * Click and mouse over dropdown hack
-*******************************************************************************/
+ *******************************************************************************/
 
 /*$('#admintabs .fa-caret-down').click(
     function(e) {
@@ -184,7 +186,7 @@ $('#modulelist .dropdown-toggle').click( function() {
         });
     }
 );
-    
+
 /*$('ul.nav-mouseover li.dropdown').hover(function() {
     $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn();
 }, function() {
@@ -194,7 +196,7 @@ $('#modulelist .dropdown-toggle').click( function() {
     
 /*******************************************************************************
  * Lock/Unlock
-*******************************************************************************/
+ *******************************************************************************/
 
 $('#admintabs-locker a').click(
     function(e) {
@@ -218,7 +220,7 @@ $('#admintabs-locker a').click(
 
 /*******************************************************************************
  * Make category default action
-*******************************************************************************/
+ *******************************************************************************/
 
 $(document).on('click', '.admintabs-makedefault', function (e) {
     e.preventDefault();
@@ -239,7 +241,7 @@ $(document).on('click', '.admintabs-makedefault', function (e) {
 
 /*******************************************************************************
  * Delete category
-*******************************************************************************/
+ *******************************************************************************/
 
 $(document).on('click', '.admintabs-delete', function (e) {
     e.preventDefault();
@@ -259,7 +261,7 @@ $(document).on('click', '.admintabs-delete', function (e) {
     
 /*******************************************************************************
  * Rename category
-*******************************************************************************/
+ *******************************************************************************/
 
 var renameCategoryId = null;
 var renameTitleElement = null;
@@ -292,4 +294,5 @@ $('#admintabs-rename-category-modal .btn-primary').click(
 );
 
 
-});})(jQuery);
+    });
+})(jQuery);

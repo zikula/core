@@ -7,8 +7,8 @@
         <li>{$menuoptions.$currentcat.title|safetext}</li>
     {/if}
 
-    {if $func neq 'adminpanel'}
-        {foreach from=$menuoptions.$currentcat.items item='moditem'}
+    {if $func ne 'adminpanel'}
+        {foreach item='moditem' from=$menuoptions.$currentcat.items}
             {if $toplevelmodule eq $moditem.modname}
                 <li><a href="{modurl modname=$toplevelmodule type='admin' func='index'}">{$moditem.menutext|safetext}</a></li>
                 {break}

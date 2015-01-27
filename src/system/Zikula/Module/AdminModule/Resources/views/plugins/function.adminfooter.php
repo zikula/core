@@ -28,14 +28,16 @@ function smarty_function_adminfooter($params, \Zikula_View $view)
     $router = $view->getContainer()->get('router');
     $routeCollection = ($router instanceof \JMS\I18nRoutingBundle\Router\I18nRouter) ? $router->getOriginalRouteCollection() : $router->getRouteCollection();
     $route = $routeCollection->get('zikulaadminmodule_admin_adminfooter');
+
     if (isset($route)) {
         $path = array('_controller' => 'ZikulaAdminModule:Admin:adminfooter');
         $subRequest = $view->getRequest()->duplicate(array(), null, $path);
+
         return $view->getContainer()
             ->get('http_kernel')
             ->handle($subRequest, \Symfony\Component\HttpKernel\HttpKernelInterface::SUB_REQUEST)
             ->getContent();
-    } else {
-        return '';
     }
+
+    return '';
 }

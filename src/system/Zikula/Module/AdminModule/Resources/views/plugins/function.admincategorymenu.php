@@ -33,6 +33,7 @@ function smarty_function_admincategorymenu($params, \Zikula_View $view)
 
     $path = array('_controller' => 'ZikulaAdminModule:Admin:categorymenu', 'acid' => $acid);
     $subRequest = $view->getRequest()->duplicate(array(), null, $path);
+
     return $view->getContainer()
         ->get('http_kernel')
         ->handle($subRequest, \Symfony\Component\HttpKernel\HttpKernelInterface::SUB_REQUEST)

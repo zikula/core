@@ -1,11 +1,10 @@
 {pageaddvar name='javascript' value='system/Zikula/Module/AdminModule/Resources/public/js/admin_admin_admintabs.js'}
 {pageaddvar name='javascript' value='web/bootstrap-jqueryui/bootstrap-jqueryui.min.js'}
 
-
 <div class="admintabs-container" id="admintabs-container">
 
     <ul id="admintabs" class="nav nav-mouseover nav-tabs nav-tabs-admin">
-        {foreach from=$menuoptions name='menuoption' item='menuoption'}
+        {foreach name='menuoption' item='menuoption' from=$menuoptions}
         <li class="dropdown droppable nowrap{if $currentcat eq $menuoption.cid} active{/if}" data-catid="{$menuoption.cid}">
             <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-arrows admintabs-lock"></span>
             <span>{$menuoption.title|safetext}</span>
@@ -49,26 +48,24 @@
                     <span class="input-group-addon fa fa-check fa-green pointer"></span>
                 </div>
             </div>
-
         </li>
     </ul>
 </div>
 
-<!-- Modal -->
 <div class="modal fade" id="admintabs-rename-category-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">{gt text="Rename category"}</h4>
-      </div>
-      <div class="modal-body">
-          <input />
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{gt text='Rename category'}</h4>
+            </div>
+            <div class="modal-body">
+                <input />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{gt text='Close'}</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{gt text='Save changes'}</button>
+            </div>
+        </div>
+    </div>
+</div>

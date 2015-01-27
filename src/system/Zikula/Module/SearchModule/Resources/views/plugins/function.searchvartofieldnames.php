@@ -20,8 +20,7 @@
  *
  * - prefix: (optional) needed for recursion
  *
- * - data: the data that should be stored in hidden fields (nested arrays
- * allowed)
+ * - data: the data that should be stored in hidden fields (nested arrays allowed)
  *
  * Example
  *   {searchvartofieldnames assign='fnames'}
@@ -38,8 +37,8 @@ function smarty_function_searchvartofieldnames($params, $smarty)
         if (is_array($params['data'])) {
             foreach ($params['data'] as $key => $data) {
                 $tmp = smarty_function_searchvartofieldnames(array('data' => $data, 'prefix' => $prefix.'['.$key.']'), $smarty);
-                $arr = array_merge($arr,$tmp);
-            }//$html.=
+                $arr = array_merge($arr, $tmp);
+            }
         } else {
             $arr[$prefix] = $params['data'];
         }

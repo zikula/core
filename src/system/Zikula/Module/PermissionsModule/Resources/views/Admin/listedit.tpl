@@ -1,18 +1,15 @@
 {adminheader}
 
-{if $action eq "add"}
 <h3>
-    <span class="fa fa-plus"></span>
+    {if $action eq 'add'}
+        <span class="fa fa-plus"></span>
+    {else}
+        <span class="fa fa-pencil"></span>
+    {/if}
     {$title|safetext}
 </h3>
-{else}
-<h3>
-    <span class="fa fa-pencil"></span>
-    {$title|safetext}
-</h3>
-{/if}
 
-{if $action eq "insert" or $action eq "modify" or $action eq "add"}
+{if $action eq 'insert' || $action eq 'modify' || $action eq 'add'}
 <form class="form-horizontal" role="form" action="{$formurl|safetext}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -22,18 +19,18 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>{gt text="Sequence"}</th>
+                    <th>{gt text='Sequence'}</th>
                     <th>{$mlpermtype|safetext}</th>
-                    <th><a href="javascript:showinstanceinformation()">{gt text="Component"}</a></th>
-                    <th><a href="javascript:showinstanceinformation()">{gt text="Instance"}</a></th>
-                    <th>{gt text="Permission level"}</th>
+                    <th><a href="javascript:showinstanceinformation()">{gt text='Component'}</a></th>
+                    <th><a href="javascript:showinstanceinformation()">{gt text='Instance'}</a></th>
+                    <th>{gt text='Permission level'}</th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
-                {section name=permissions loop=$permissions}
+                {section name='permissions' loop=$permissions}
                 <tr>
-                    {if ($insseq eq $permissions[permissions].sequence) and ($action eq "insert")}
+                    {if $insseq eq $permissions[permissions].sequence && $action eq 'insert'}
                     <td>&nbsp;</td>
                     <td>
                         <select class="form-control" name="id">
@@ -58,7 +55,7 @@
                     <td>{$permissions[permissions].instance|safetext}</td>
                     <td>{$permissions[permissions].accesslevel|safetext}</td>
                     <td>&nbsp;</td>
-                    {elseif ($action eq "modify") and ($chgpid eq $permissions[permissions].pid)}
+                    {elseif $action eq 'modify' && $chgpid eq $permissions[permissions].pid}
                     <td>
                         <input type="text" class="form-control" name="seq" size="3" value="{$permissions[permissions].sequence|safetext}" />
                         <input type="hidden" name="oldseq" value="{$permissions[permissions].sequence}" />
@@ -89,8 +86,8 @@
                     {/if}
                 </tr>
                 {/section}
-                {if $action eq "add"}
-                <tr style="vertical-align:top;">
+                {if $action eq 'add'}
+                <tr style="vertical-align: top">
                     <td>&nbsp;</td>
                     <td>
                         <select class="form-control" name="id">
@@ -111,7 +108,7 @@
                 {/if}
             </tbody>
         </table>
-        {if $action eq "insert" or $action eq "modify" or $action eq "add"}
+        {if $action eq 'insert' || $action eq 'modify' || $action eq 'add'}
     </div>
 </form>
 {/if}
