@@ -147,7 +147,7 @@ class ZGettext
      */
     public function bindTextDomain($domain, $path)
     {
-        $codeset = ini_get('mbstring.internal_encoding');
+        $codeset = (version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset');
 
         $this->textDomains[$this->getLocale()][$this->getCategory()][$domain] = array('path' => "$path/", 'codeset' => $codeset, 'reader' => null);
     }
@@ -162,7 +162,7 @@ class ZGettext
      */
     public function bindTextDomainCodeset($domain, $codeset = null)
     {
-        $codeset = ini_get('mbstring.internal_encoding');
+        $codeset = (version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset');
 
         $this->textDomains[$this->getLocale()][$this->getCategory()][$domain]['codeset'] = $codeset;
     }
@@ -213,7 +213,7 @@ class ZGettext
         $locale = $_this->getLocale();
 
         if (!isset($_this->textDomains[$locale][$category][$domain])) {
-            $codeset = ini_get('mbstring.internal_encoding');
+            $codeset = (version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset');
             $_this->textDomains[$locale][$category][$domain] = array('path' => "locale/", 'codeset' => $codeset, 'reader' => null);
         }
         $textDomain = & $_this->textDomains[$locale][$category][$domain];
@@ -224,7 +224,7 @@ class ZGettext
             $path = realpath($textDomain['path']."$locale/LC_MESSAGES/$domain.mo");
             $reader = new StreamReader_CachedFile($path);
             $textDomain['reader'] = new ZMO($reader, $cache);
-            $codeset = (isset($textDomain['codeset']) ? $textDomain['codeset'] : ini_get('mbstring.internal_encoding'));
+            $codeset = (isset($textDomain['codeset'])) ? $textDomain['codeset'] : ((version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset'));
             $textDomain['reader']->setEncoding($codeset);
         }
 
