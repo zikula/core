@@ -35,7 +35,7 @@ function menutree_treecontrols_onload()
         Zikula.Menutree.Tree.inst.collapseAll();
     });
     //controls for lang changing
-    $$('.menutree_langcontrols').invoke('observe','click',menutree_onlangchange)
+    $$('.menutree_langcontrols').invoke('observe', 'click', menutree_onlangchange)
 }
 
 function menutree_linkclasses_onload()
@@ -51,7 +51,7 @@ function menutree_linkclasses_onload()
         //add new row in link classes list
         $('menutree_linkclass_add').observe('click', menutree_linkclass_add);
         //remove row in link classes list
-        $$('.menutree_linkclass_del').invoke('observe','click', menutree_linkclass_del);
+        $$('.menutree_linkclass_del').invoke('observe', 'click', menutree_linkclass_del);
     }
 }
 
@@ -96,14 +96,14 @@ function menutree_onlangchange(event)
     event.stop();
     var referer = event.element();
     Zikula.Menutree.Tree.inst.changeLang(referer.lang);
-    $$('.activelang').invoke('removeClassName','activelang')
+    $$('.activelang').invoke('removeClassName', 'activelang')
     $(referer).addClassName('activelang');
 }
 
 function menutree_stylehelper_onload()
 {
     if ($('menutree_tpl') && $('menutree_stylesheet_helper')) {
-        $('menutree_tpl').observe('change',menutree_stylehelper);
+        $('menutree_tpl').observe('change', menutree_stylehelper);
         $('menutree_stylesheet_helper').hide();
         menutree_stylehelper();
     }
@@ -142,14 +142,14 @@ function menutree_stylehelper(event)
             $('menutree_stylesheet')
                 .select('option')
                     .select(function(o) {
-                        return !(o.value.include('/'+tpl) || o.value == 'null');
+                        return !(o.value.include('/' + tpl) || o.value == 'null');
                     }).invoke('remove');
         } else {
             $('menutree_stylesheet')
                 .select('option')
                     .invoke('show')
                     .select(function(o) {
-                        return !(o.value.include('/'+tpl) || o.value == 'null');
+                        return !(o.value.include('/' + tpl) || o.value == 'null');
                     }).invoke('hide');
         }
         var first = $('menutree_stylesheet').select('option').find(function(o) {
@@ -160,7 +160,7 @@ function menutree_stylehelper(event)
         }
         if (hidden && !$('menutree_stylesheet_helper').visible()) {
             showeffect('menutree_stylesheet_helper');
-            $('menutree_stylesheet_helper').down('a').observe('click',menutree_stylehelper_reset)
+            $('menutree_stylesheet_helper').down('a').observe('click', menutree_stylehelper_reset)
         }
     }
 }
@@ -198,7 +198,7 @@ function hideeffect(id)
 {
     var obj = $(id);
 
-    if (typeof(Effect) != "undefined") {
+    if (typeof(Effect) != 'undefined') {
         Effect.BlindUp(obj);
     } else {
         obj.hide();
@@ -209,7 +209,7 @@ function showeffect(id)
 {
     var obj = $(id);
 
-    if (typeof(Effect) != "undefined") {
+    if (typeof(Effect) != 'undefined') {
         Effect.BlindDown(obj);
     } else {
         obj.show();

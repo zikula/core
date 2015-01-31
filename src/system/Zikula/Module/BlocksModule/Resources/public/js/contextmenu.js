@@ -52,32 +52,31 @@ var ContextMenu = Class.create({
     },
     observe: function() {
         if (this.config.trigger == 'contextmenu') {
-            $$(this.config.objs).invoke('observe',Prototype.Browser.Opera ? 'click' : 'contextmenu',this.showMenuBind);
+            $$(this.config.objs).invoke('observe', Prototype.Browser.Opera ? 'click' : 'contextmenu', this.showMenuBind);
         } else {
-            $$(this.config.objs).invoke('observe',this.config.trigger,this.showMenuBind);
+            $$(this.config.objs).invoke('observe', this.config.trigger, this.showMenuBind);
         }
     },
     add: function(obj) {
         if (this.config.trigger == 'contextmenu') {
-            $(obj).observe(Prototype.Browser.Opera ? 'click' : 'contextmenu',this.showMenuBind);
+            $(obj).observe(Prototype.Browser.Opera ? 'click' : 'contextmenu', this.showMenuBind);
         } else {
-            $(obj).observe(this.config.trigger,this.showMenuBind);
+            $(obj).observe(this.config.trigger, this.showMenuBind);
         }
     },
     destroy: function() {
         if (this.config.trigger == 'contextmenu') {
-            $$(this.config.objs).invoke('stopObserving',Prototype.Browser.Opera ? 'click' : 'contextmenu',this.showMenuBind);
+            $$(this.config.objs).invoke('stopObserving', Prototype.Browser.Opera ? 'click' : 'contextmenu', this.showMenuBind);
         } else {
-            $$(this.config.objs).invoke('stopObserving',this.config.trigger,this.showMenuBind);
+            $$(this.config.objs).invoke('stopObserving', this.config.trigger, this.showMenuBind);
         }
     },
     buildMenu: function(evt) {
-        //jesli dynamicznie- trzeba usuwac poprzednie menu
+        // if required remove the previous menu
         if (this.menu) {
             this.menu.remove();
         }
-        this.menu = new Element('div',{id:this.config.menuId, className:this.config.menuClassName}).hide();
-        //http://yura.thinkweb2.com/scripting/contextMenu/
+        this.menu = new Element('div', { id: this.config.menuId, className: this.config.menuClassName }).hide();
         if (this.ie6) {
             this.iframe = new Element('iframe', {
                 style: 'position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);',
@@ -99,14 +98,14 @@ var ContextMenu = Class.create({
     buildItem: function(item) {
         var li;
         if (item === true) {
-            li = new Element('li', {className:'separator'});
+            li = new Element('li', { className: 'separator' });
         }
         else if (item.action && item.action.constructor === Object) {
-            li = new Element('li',{className: item.disabled ? this.config.disabledClassName : this.config.subMenuClassName})
-                .insert(new Element('span',{title:item.title ? item.title : null})
+            li = new Element('li', { className: item.disabled ? this.config.disabledClassName : this.config.subMenuClassName })
+                .insert(new Element('span', { title:item.title ? item.title : null })
                     .appendText(item.displayname ? item.displayname : item.name)
-                    .setStyle(item.img ? {backgroundImage: 'url("'+this.config.imagesDir+item.img+'")'} : {}))
-                .observe('click',this.clickNodeBind);
+                    .setStyle(item.img ? { backgroundImage: 'url("' + this.config.imagesDir + item.img + '")' } : {}))
+                .observe('click', this.clickNodeBind);
             var ul = new Element('ul');
             if (this.ie6) {
                 ul.insert($(this.iframe.cloneNode()));
@@ -117,15 +116,15 @@ var ContextMenu = Class.create({
             li.insert(ul);
         } else {
             li = Object.extend(
-                    new Element('li',{className: item.disabled ? this.config.disabledClassName : null}),
+                    new Element('li', { className: item.disabled ? this.config.disabledClassName : null }),
                     {_action: item.action ? item.action : this.actionBind,
                      _confirm: item.confirm ? item.confirm : false,
                      _name: item.name})
-                        .insert(new Element('span',{title:item.title ? item.title : null})
-                            .setStyle(item.img ? {backgroundImage: 'url("'+this.config.imagesDir+item.img+'")'} : {})
+                        .insert(new Element('span', { title: item.title ? item.title : null })
+                            .setStyle(item.img ? { backgroundImage: 'url("' + this.config.imagesDir + item.img + '")' } : {})
                             .appendText(item.displayname ? item.displayname : item.name)
-                            .observe('click',this.clickNodeBind))
-                        .observe('click',this.clickNodeBind);
+                            .observe('click', this.clickNodeBind))
+                        .observe('click', this.clickNodeBind);
         }
         return li;
     },
@@ -147,14 +146,14 @@ var ContextMenu = Class.create({
         evt.stop();
         evt.ul = evt.li.down('ul');
         if (evt.ul.hasClassName(this.config.showMenuClassName)) {
-            evt.li.select('ul').invoke('removeClassName',this.config.showMenuClassName);
+            evt.li.select('ul').invoke('removeClassName', this.config.showMenuClassName);
         } else {
             var ancestors = evt.li.ancestors();
             this.menu.select('ul')
                 .select(function(item) {
                     return !ancestors.include(item);
                 })
-                .invoke('removeClassName',this.config.showMenuClassName);
+                .invoke('removeClassName', this.config.showMenuClassName);
             var menuSize = evt.ul.getDimensions(),
                 evtpos = {
                     x: evt.li.cumulativeOffset()[0] + evt.li.getWidth(),
@@ -186,7 +185,7 @@ var ContextMenu = Class.create({
             this.buildMenu(evt);
         } else {
             //otherwise use the existing one
-            this.menu.select('ul').invoke('removeClassName',this.config.showMenuClassName);
+            this.menu.select('ul').invoke('removeClassName', this.config.showMenuClassName);
         }
         var menuSize = this.menu.getDimensions(),
             viewportSize = document.viewport.getDimensions(),
@@ -200,13 +199,13 @@ var ContextMenu = Class.create({
         }
         $(this.menu).setStyle(pos).show();
         this.event = evt;
-        //oznacz element, dla ktorego wywolano menu jako aktywny
-        $$('.'+this.config.activeClassName).invoke('removeClassName',this.config.activeClassName);
+        // mark the item for which you accessed the menu as an active
+        $$('.' + this.config.activeClassName).invoke('removeClassName', this.config.activeClassName);
         this.event.element().addClassName(this.config.activeClassName);
         Event.observe(document, 'click', this.hideMenuBind);
     },
     hideMenu: function() {
-        this.menu.select('ul').invoke('removeClassName',this.config.showMenuClassName);
+        this.menu.select('ul').invoke('removeClassName', this.config.showMenuClassName);
         this.menu.hide();
         this.event.element().removeClassName(this.config.activeClassName);
         Event.stopObserving(document, 'click', this.hideMenuBind);
@@ -230,7 +229,6 @@ var ContextMenu = Class.create({
 });
 
 
-//http://www.prototypejs.org/2007/5/12/dom-builder#comment-15901
 //new Element('p').appendText('test');
 Element.addMethods({
     appendText: function(element, text) {

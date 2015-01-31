@@ -68,7 +68,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
         this.cLang = config.langs[0];
         this.defaultLang = config.langs[0];
 
-        $super(element,config);
+        $super(element, config);
 
         this.stripBaseURL();
         this.attachMenu();
@@ -238,9 +238,9 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
     switchNode: function(obj, full, on) {
         if (full) {
             if (on) {
-                obj.up('li').select('a').invoke('removeClassName',this.config.unactiveClass);
+                obj.up('li').select('a').invoke('removeClassName', this.config.unactiveClass);
             } else {
-                obj.up('li').select('a').invoke('addClassName',this.config.unactiveClass);
+                obj.up('li').select('a').invoke('addClassName', this.config.unactiveClass);
             }
         } else {
             obj.toggleClassName(this.config.unactiveClass);
@@ -250,7 +250,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
     getNodeData: function(node, index, forSerialize) {
         var link, nodeData = {}, prefix = forSerialize ? '' : 'link_';
         this.config.langs.each(function(lang) {
-            link =  node.down('a[lang='+lang+']');
+            link = node.down('a[lang=' + lang + ']');
             nodeData[lang] = {}
             nodeData[lang][prefix+'id'] = this.getNodeId(node);
             nodeData[lang][prefix+'name'] = link.innerHTML;
@@ -262,21 +262,22 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             nodeData[lang][prefix+'lineno'] = index || null;
             nodeData[lang][prefix+'parent'] = node.up('#'+this.tree.id+' li') ? this.getNodeId(node.up('#'+this.tree.id+' li')) : 0;
         }.bind(this));
+
         return nodeData;
     },
     setNodeData: function(node, data) {
         var link;
         this.config.langs.each(function(lang) {
             if (data[lang]) {
-                link =  node.down('a[lang='+lang+']');
+                link =  node.down('a[lang=' + lang + ']');
                 link.update(data[lang].link_name.escapeHTML() || '');
-                link.writeAttribute('href',data[lang].link_href || null);
-                link.writeAttribute('title',data[lang].link_title ? data[lang].link_title.escapeHTML() : null);
-                link.writeAttribute('className',data[lang].link_className || null);
+                link.writeAttribute('href', data[lang].link_href || null);
+                link.writeAttribute('title', data[lang].link_title ? data[lang].link_title.escapeHTML() : null);
+                link.writeAttribute('className', data[lang].link_className || null);
                 if (!data[lang].link_state) {
                     link.addClassName(this.config.unactiveClass);
                 }
-                link.writeAttribute('lang',data[lang].link_lang || this.defaultLang);
+                link.writeAttribute('lang', data[lang].link_lang || this.defaultLang);
                 this.unsaved = true;
             }
         }.bind(this));
@@ -286,7 +287,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             node.addClassName(this.config.dynamicClass);
         }
         this.save();
-        this.tree.fire("tree:item:save", { node: node });
+        this.tree.fire('tree:item:save', { node: node });
     },
     addNode: function() {
         var node = new Element('li', { id: this.config.nodeIdPrefix + this.genNextId() });
@@ -311,7 +312,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
                 break;
         }
         this.config.langs.each(function(lang) {
-            var link = new Element('a',{ lang: lang });
+            var link = new Element('a', { lang: lang });
             node.insert(link);
             if (!this.tmp[lang] || !this.tmp[lang].link_name) {
                 var validlang = this.config.langs.find(function(n) {
@@ -374,7 +375,7 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
             this.form = this.formDialog.window.container.down('form');
 //            this.form = this.formDialog.form;
             if ($('link_lang')) {
-                $('link_lang').observe('change',this.changeFormLang.bindAsEventListener(this));
+                $('link_lang').observe('change', this.changeFormLang.bindAsEventListener(this));
             }
         }
     },
@@ -465,7 +466,6 @@ Object.extend(Zikula.Menutree.Tree,{
     }
 });
 
-//http://www.prototypejs.org/2007/5/12/dom-builder#comment-15901
 //new Element('p').appendText('test');
 Element.addMethods({
     appendText: function(element, text) {
