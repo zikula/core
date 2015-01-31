@@ -201,24 +201,6 @@
         {/foreach}
     {/if}
 
-    <fieldset>
-        <legend>{gt text='Communication'}</legend>
-        <div class="form-group">
-            {usergetvar name='uid' assign='uid'}
-            {formlabel for='additionalNotificationRemarks' __text='Additional remarks' cssClass='col-lg-3 control-label'}
-            {gt text='Enter any additions about your changes' assign='fieldTitle'}
-            {if $mode eq 'create'}
-                {gt text='Enter any additions about your content' assign='fieldTitle'}
-            {/if}
-            {formtextinput group='route' id='additionalNotificationRemarks' mandatory=false title=$fieldTitle textMode='multiline' rows='6'}
-            {if $isModerator || $isSuperModerator}
-                <span class="help-block">{gt text='These remarks (like a reason for deny) are not stored, but added to any notification emails send to the creator.'}</span>
-            {elseif $isCreator}
-                <span class="help-block">{gt text='These remarks (like questions about conformance) are not stored, but added to any notification emails send to our moderators.'}</span>
-            {/if}
-        </div>
-    </fieldset>
-
     {* include return control *}
     {if $mode eq 'create'}
         <fieldset>
