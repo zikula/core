@@ -133,7 +133,7 @@ class Route extends BaseRoute
 
             $routeEntity->setName(strtolower($modname . "_$type" . "_$func" . $numericSuffix));
 
-            $workflowHelper->executeAction($routeEntity, 'approve');
+            $workflowHelper->executeAction($routeEntity, 'submit');
         }
     }
 
