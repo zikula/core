@@ -1,15 +1,12 @@
 {if $format eq 1}
-    <div style="text-align:center">
+    <div class="text-center">
         <div>{gt text='Preferred language' domain='zikula'}</div>
         {section name='lang' loop=$urls}
-        {if $urls[lang].flag neq ''}
-        <a href="{$urls[lang].url|safetext}">
-            <img src="{$urls[lang].flag|safetext}" title="{$urls[lang].name}" alt="{$urls[lang].name|safetext}" />
-        </a>
+        {if $urls[lang].flag ne ''}
+        <a href="{$urls[lang].url|safetext}"><img src="{$urls[lang].flag|safetext}" title="{$urls[lang].name}" alt="{$urls[lang].name|safetext}" /></a>
         {/if}
         {/section}
     </div>
-
 {elseif $format eq 2}
     {assign var='formid' value='thelang_'|cat:$bid}
     {pageaddvarblock}
@@ -36,7 +33,6 @@
         </select>
     </div>
     </form>
-
 {else}
     <div>{gt text='Preferred language' domain='zikula'}</div>
     <ul>
@@ -45,4 +41,3 @@
     {/section}
     </ul>
 {/if}
-

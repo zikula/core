@@ -1,20 +1,17 @@
 
+<div class="pull-right clearfix"><i class="fa fa-ambulance fa-lg text-danger"></i> <a data-toggle="modal" data-target="#help-box">{gt text='Help'}</a></div>
 
-<div class='pull-right clearfix'><i class='fa fa-ambulance fa-lg text-danger'></i> <a data-toggle="modal" data-target="#help-box">{gt text="Help"}</a></div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="help-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="help-box" tabindex="-1" role="dialog" aria-labelledby="menutreeHelpModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Block "Tree-like menu</h4>
+                <h4 class="modal-title" id="menutreeHelpModalLabel">{gt text='Block "Tree-like menu"'}</h4>
             </div>
             <div class="modal-body">
                 {gt text='Block "Tree-like menu (menutree)" allows you to create the extended menu with nested structure. Below you will find some basic information.'}
 
-                <h5>{gt text="How to start?"}</h5>
+                <h5>{gt text='How to start?'}</h5>
 
                 <p>
                     {gt text='To <strong>add the first item</strong> to the menu, click link "<strong>Add</strong>". You will get a form in which you must enter the name of the item and possibly other parameters (title, address, css class). At the top of the form you can find drop-down list with installed languages, which allows to switch between languages.'}
