@@ -12,7 +12,7 @@
     {if $lct eq 'admin'}
         <h3>
             <span class="fa fa-eye"></span>
-            {$templateTitle|notifyfilters:'zikularoutesmodule.filter_hooks.routes.filter'} <small>({$route.workflowState|zikularoutesmoduleObjectState:false|lower})</small>
+            {$templateTitle|notifyfilters:'zikularoutesmodule.filter_hooks.routes.filter'}
             {if count($route._actions) gt 0}
                 <div class="dropdown">
                     <a id="itemActions{$route.id}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> {gt text='Actions'} <span class="caret"></span></a>
@@ -38,7 +38,7 @@
         </h3>
     {else}
         <h2>
-            {$templateTitle|notifyfilters:'zikularoutesmodule.filter_hooks.routes.filter'} <small>({$route.workflowState|zikularoutesmoduleObjectState:false|lower})</small>
+            {$templateTitle|notifyfilters:'zikularoutesmodule.filter_hooks.routes.filter'}
             {if count($route._actions) gt 0}
                 <div class="dropdown">
                     <a id="itemActions{$route.id}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="dropdown-toggle"><i class="fa fa-tasks"></i> {gt text='Actions'} <span class="caret"></span></a>
@@ -65,8 +65,6 @@
     {/if}
 
     <dl>
-        <dt>{gt text='State'}</dt>
-        <dd>{$route.workflowState|zikularoutesmoduleGetListEntry:'route':'workflowState'|safetext}</dd>
         <dt>{gt text='Name'}</dt>
         <dd>{$route.name}</dd>
         <dt>{gt text='Bundle'}</dt>
@@ -107,7 +105,9 @@
         {* include display hooks *}
         {notifydisplayhooks eventname='zikularoutesmodule.ui_hooks.routes.display_view' id=$route.id urlobject=$currentUrlObject assign='hooks'}
         {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}
-            {$hook}
+            {if $providerArea ne 'provider.scribite.ui_hooks.editor'}{* fix for #664 *}
+                {$hook}
+            {/if}
         {/foreach}
     {/if}
 </div>

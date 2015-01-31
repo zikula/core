@@ -31,17 +31,17 @@ class SelectionApi extends Zikula_AbstractApi
     {
         $objectType = $this->determineObjectType($args, 'getIdFields');
         $entityClass = 'ZikulaRoutesModule:' . ucfirst($objectType) . 'Entity';
-
+    
         $meta = $this->entityManager->getClassMetadata($entityClass);
         if ($this->hasCompositeKeys($objectType)) {
             $idFields = $meta->getIdentifierFieldNames();
         } else {
             $idFields = array($meta->getSingleIdentifierFieldName());
         }
-
+    
         return $idFields;
     }
-
+    
     /**
      * Checks whether a certain entity type uses composite keys or not.
      *
@@ -52,10 +52,10 @@ class SelectionApi extends Zikula_AbstractApi
     protected function hasCompositeKeys($objectType)
     {
         $controllerHelper = $this->serviceManager->get('zikularoutesmodule.controller_helper');
-
+    
         return $controllerHelper->hasCompositeKeys($objectType);
     }
-
+    
     /**
      * Selects a single entity.
      *
@@ -73,16 +73,16 @@ class SelectionApi extends Zikula_AbstractApi
         }
         $objectType = $this->determineObjectType($args, 'getEntity');
         $repository = $this->getRepository($objectType);
-
+    
         $idValues = $args['id'];
         $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
         $slimMode = isset($args['slimMode']) ? ((bool) $args['slimMode']) : false;
-
+    
         $entity = $repository->selectById($idValues, $useJoins, $slimMode);
-
+    
         return $entity;
     }
-
+    
     /**
      * Selects a list of entities by different criteria.
      *
@@ -99,20 +99,20 @@ class SelectionApi extends Zikula_AbstractApi
     {
         $objectType = $this->determineObjectType($args, 'getEntities');
         $repository = $this->getRepository($objectType);
-
+    
         $idList = isset($args['idList']) && is_array($args['idList']) ? $args['idList'] : array();
         $where = isset($args['where']) ? $args['where'] : '';
         $orderBy = isset($args['orderBy']) ? $args['orderBy'] : '';
         $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
         $slimMode = isset($args['slimMode']) ? ((bool) $args['slimMode']) : false;
-
+    
         if (!empty($idList)) {
            return $repository->selectByIdList($idList, $useJoins, $slimMode);
         }
-
+    
         return $repository->selectWhere($where, $orderBy, $useJoins, $slimMode);
     }
-
+    
     /**
      * Selects a list of entities by different criteria.
      *
@@ -130,17 +130,17 @@ class SelectionApi extends Zikula_AbstractApi
     {
         $objectType = $this->determineObjectType($args, 'getEntitiesPaginated');
         $repository = $this->getRepository($objectType);
-
+    
         $where = isset($args['where']) ? $args['where'] : '';
         $orderBy = isset($args['orderBy']) ? $args['orderBy'] : '';
         $currentPage = isset($args['currentPage']) ? $args['currentPage'] : 1;
         $resultsPerPage = isset($args['resultsPerPage']) ? $args['resultsPerPage'] : 25;
         $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
         $slimMode = isset($args['slimMode']) ? ((bool) $args['slimMode']) : false;
-
+    
         return $repository->selectWherePaginated($where, $orderBy, $currentPage, $resultsPerPage, $useJoins, $slimMode);
     }
-
+    
     /**
      * Determines object type using controller util methods.
      *
@@ -157,10 +157,10 @@ class SelectionApi extends Zikula_AbstractApi
         if (!in_array($objectType, $controllerHelper->getObjectTypes('api', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('api', $utilArgs);
         }
-
+    
         return $objectType;
     }
-
+    
     /**
      * Returns repository instance for a certain object type.
      *
@@ -173,9 +173,9 @@ class SelectionApi extends Zikula_AbstractApi
         if (empty($objectType)) {
             throw new \InvalidArgumentException(__('Invalid object type received.'));
         }
-
+    
         $repository = $this->serviceManager->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
-
+    
         return $repository;
     }
 }

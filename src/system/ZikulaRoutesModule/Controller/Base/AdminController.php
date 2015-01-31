@@ -12,8 +12,6 @@
 
 namespace Zikula\RoutesModule\Controller\Base;
 
-use Zikula\RoutesModule\Form\Handler\Admin\ConfigHandler;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -101,27 +99,5 @@ class AdminController extends Zikula_AbstractController
                    ->assign('jcssConfig', JCSSUtil::getJSConfig());
         
         return new PlainResponse($this->view->display('Admin/inlineRedirectHandler.tpl'));
-    }
-
-    /**
-     * This method takes care of the application configuration.
-     *
-     * @return string Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function configAction()
-    {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-        
-        // Create new Form reference
-        $view = \FormUtil::newForm($this->name, $this);
-        
-        $templateName = 'Admin/config.tpl';
-        
-        // Execute form using supplied template and page event handler
-        return $this->response($view->execute($templateName, new ConfigHandler()));
     }
 }

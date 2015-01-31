@@ -30,7 +30,7 @@ class UserLogoutListener implements EventSubscriberInterface
             'module.users.ui.logout.succeeded' => array('succeeded', 5)
         );
     }
-
+    
     /**
      * Listener for the `module.users.ui.logout.succeeded` event.
      *

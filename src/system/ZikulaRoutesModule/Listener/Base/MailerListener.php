@@ -30,7 +30,7 @@ class MailerListener implements EventSubscriberInterface
             'module.mailer.api.sendmessage' => array('sendMessage', 5)
         );
     }
-
+    
     /**
      * Listener for the `module.mailer.api.sendmessage` event.
      *

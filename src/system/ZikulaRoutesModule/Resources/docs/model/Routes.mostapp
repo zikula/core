@@ -49,17 +49,12 @@ application Routes {
 		entity route leading {
 			nameMultiple routes
 			displayPattern "#path# (#sort#)"
-			workflow STANDARD
 			fields {
 				string name {
 					dbName route_name
 				},
-				string bundle {
-				
-				},
-				string "controller" {
-				
-				},
+				string bundle,
+				string "controller",
 				string "action" {
 					dbName route_action
 				},
@@ -86,7 +81,7 @@ application Routes {
 				},
 				string "condition" nullable {
 					dbName route_condition
-	 	 	 		mandatory false
+		 	 		mandatory false
 				},
 				string description nullable {
 					mandatory false
@@ -102,7 +97,7 @@ application Routes {
 					mandatory false
 				}
 			}
-		    	actions {
+			actions {
 				mainAction Main,
 				viewAction View,
 				editAction Edit,
@@ -110,7 +105,7 @@ application Routes {
 				deleteAction Delete,
 				customAction reload,
 				customAction renew
-		    	}
+			}
 		}
 	}
 	controllers {

@@ -15,6 +15,7 @@ namespace Zikula\RoutesModule\Controller;
 use Zikula\RoutesModule\Controller\Base\AdminController as BaseAdminController;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Admin controller class providing navigation and interaction functionality.
@@ -34,22 +35,6 @@ class AdminController extends BaseAdminController
     public function handleInlineRedirectAction($idPrefix, $commandName, $id = 0)
     {
         return parent::handleInlineRedirectAction($idPrefix, $commandName, $id);
-    }
-
-    /**
-     * This method takes care of the application configuration.
-     *
-     * @Route("/config",
-     *        methods = {"GET", "POST"}
-     * )
-     *
-     * @return string Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function configAction()
-    {
-        return parent::configAction();
     }
     // feel free to add your own controller methods here
 }

@@ -30,7 +30,7 @@ class UsersListener implements EventSubscriberInterface
             'module.users.config.updated' => array('configUpdated', 5)
         );
     }
-
+    
     /**
      * Listener for the `module.users.config.updated` event.
      *

@@ -31,7 +31,7 @@ class PageListener implements EventSubscriberInterface
             'system.outputfilter'    => array('systemOutputfilter', 5)
         );
     }
-
+    
     /**
      * Listener for the `pageutil.addvar_filter` event.
      *
@@ -46,7 +46,7 @@ class PageListener implements EventSubscriberInterface
     public function pageutilAddvarFilter(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `system.outputfilter` event.
      *

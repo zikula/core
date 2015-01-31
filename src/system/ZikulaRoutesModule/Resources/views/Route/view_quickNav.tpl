@@ -33,7 +33,6 @@
                 &nbsp;
                 <select id="sortBy" name="sort" class="form-control input-sm">
                     <option value="id"{if $sort eq 'id'} selected="selected"{/if}>{gt text='Id'}</option>
-                    <option value="workflowState"{if $sort eq 'workflowState'} selected="selected"{/if}>{gt text='Workflow state'}</option>
                     <option value="name"{if $sort eq 'name'} selected="selected"{/if}>{gt text='Name'}</option>
                     <option value="bundle"{if $sort eq 'bundle'} selected="selected"{/if}>{gt text='Bundle'}</option>
                     <option value="controller"{if $sort eq 'controller'} selected="selected"{/if}>{gt text='Controller'}</option>

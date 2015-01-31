@@ -42,15 +42,15 @@ class ModelUtil extends Zikula_AbstractBase
         if (!in_array($objectType, $controllerHelper->getObjectTypes('util', array('util' => 'model', 'action' => 'canBeCreated')))) {
             throw new \Exception('Error! Invalid object type received.');
         }
-
+    
         $result = false;
-
+    
         switch ($objectType) {
             case 'route':
                 $result = true;
                 break;
         }
-
+    
         return $result;
     }
 
@@ -67,9 +67,9 @@ class ModelUtil extends Zikula_AbstractBase
         if (!in_array($objectType, $controllerHelper->getObjectTypes('util', array('util' => 'model', 'action' => 'hasExistingInstances')))) {
             throw new \Exception('Error! Invalid object type received.');
         }
-
+    
         $repository = $this->serviceManager->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
-
+    
         return ($repository->selectCount() > 0);
     }
 }

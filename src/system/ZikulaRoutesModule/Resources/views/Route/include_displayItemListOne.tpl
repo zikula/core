@@ -4,8 +4,8 @@
     {assign var='lct' value='admin'}
 {/if}
 {if $lct ne 'admin'}
-    {checkpermission component='ZikulaRoutesModule:Route:' instance='::' level='ACCESS_COMMENT' assign='hasAdminPermission'}
-    {checkpermission component='ZikulaRoutesModule:Route:' instance='::' level='ACCESS_COMMENT' assign='hasEditPermission'}
+    {checkpermission component='ZikulaRoutesModule:Route:' instance='::' level='ACCESS_EDIT' assign='hasAdminPermission'}
+    {checkpermission component='ZikulaRoutesModule:Route:' instance='::' level='ACCESS_EDIT' assign='hasEditPermission'}
 {/if}
 {if !isset($nolink)}
     {assign var='nolink' value=false}

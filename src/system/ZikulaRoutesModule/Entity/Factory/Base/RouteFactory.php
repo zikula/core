@@ -65,7 +65,7 @@ class RouteFactory
     {
         return $this->className;
     }
-
+    
     /**
      * Set class name.
      *
@@ -77,7 +77,7 @@ class RouteFactory
     {
         $this->className = $className;
     }
-
+    
     /**
      * Get object manager.
      *
@@ -87,7 +87,7 @@ class RouteFactory
     {
         return $this->objectManager;
     }
-
+    
     /**
      * Set object manager.
      *
@@ -99,7 +99,7 @@ class RouteFactory
     {
         $this->objectManager = $objectManager;
     }
-
+    
     /**
      * Get repository.
      *
@@ -109,7 +109,7 @@ class RouteFactory
     {
         return $this->repository;
     }
-
+    
     /**
      * Set repository.
      *
@@ -121,5 +121,5 @@ class RouteFactory
     {
         $this->repository = $repository;
     }
-
+    
 }

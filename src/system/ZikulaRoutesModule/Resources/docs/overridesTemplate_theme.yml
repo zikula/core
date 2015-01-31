@@ -12,7 +12,4 @@ Resources/views/Route/inlineRedirectHandler.tpl: themes/YourTheme/templates/modu
 Resources/views/Helper/include_standardfields_display.tpl: themes/YourTheme/templates/modules/ZikulaRoutesModule/Helper/include_standardfields_display.tpl
 Resources/views/Helper/include_standardfields_edit.tpl: themes/YourTheme/templates/modules/ZikulaRoutesModule/Helper/include_standardfields_edit.tpl
 Resources/views/include_filterSyntaxDialog.tpl: themes/YourTheme/templates/modules/ZikulaRoutesModule/include_filterSyntaxDialog.tpl
-Resources/views/Admin/config.tpl: themes/YourTheme/templates/modules/ZikulaRoutesModule/Admin/config.tpl
-Resources/views/Email/notifyrouteCreator.tpl: themes/YourTheme/templates/modules/ZikulaRoutesModule/Email/notifyrouteCreator.tpl
-Resources/views/Email/notifyrouteModerator.tpl: themes/YourTheme/templates/modules/ZikulaRoutesModule/Email/notifyrouteModerator.tpl
 Resources/views/include_pdfheader.tpl: themes/YourTheme/templates/modules/ZikulaRoutesModule/include_pdfheader.tpl

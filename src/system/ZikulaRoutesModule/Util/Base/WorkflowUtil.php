@@ -33,9 +33,6 @@ class WorkflowUtil extends Zikula_AbstractBase
          $states[] = array('value' => 'initial',
                            'text' => $this->__('Initial'),
                            'ui' => 'danger');
-         $states[] = array('value' => 'waiting',
-                           'text' => $this->__('Waiting'),
-                           'ui' => 'warning');
          $states[] = array('value' => 'approved',
                            'text' => $this->__('Approved'),
                            'ui' => 'success');
@@ -80,7 +77,7 @@ class WorkflowUtil extends Zikula_AbstractBase
         $result = '';
         switch ($objectType) {
             case 'route':
-                $result = 'standard';
+                $result = 'none';
                 break;
         }
     
@@ -158,9 +155,6 @@ class WorkflowUtil extends Zikula_AbstractBase
                 break;
             case 'update':
                 $buttonClass = 'success';
-                break;
-            case 'approve':
-                $buttonClass = '';
                 break;
             case 'delete':
                 $buttonClass = 'danger';
@@ -256,28 +250,7 @@ class WorkflowUtil extends Zikula_AbstractBase
         $amounts = array();
         $modname = 'ZikulaRoutesModule';
     
-        $logger = $this->get('logger');
-    
-        // check if objects are waiting for approval
-        $state = 'waiting';
-        $objectType = 'route';
-        if (SecurityUtil::checkPermission($modname . ':' . ucfirst($objectType) . ':', '::', ACCESS_ADD)) {
-            $amount = $this->getAmountOfModerationItems($objectType, $state);
-            if ($amount > 0) {
-                $amounts[] = array(
-                    'aggregateType' => 'routesApproval',
-                    'description' => $this->__('Routes pending approval'),
-                    'amount' => $amount,
-                    'objectType' => $objectType,
-                    'state' => $state,
-                    'message' => $this->_fn('One route is waiting for approval.', '%s routes are waiting for approval.', $amount, array($amount))
-                );
-        
-                if ($amounts > 0) {
-                    $logger->info('{app}: There are {amount} {entities} waiting for approval.', array('app' => 'ZikulaRoutesModule', 'amount' => $amount, 'entities' => 'routes'));
-                }
-            }
-        }
+        // nothing required here as no entities use enhanced workflows including approval actions
     
         return $amounts;
     }

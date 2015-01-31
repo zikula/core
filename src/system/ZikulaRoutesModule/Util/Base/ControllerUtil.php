@@ -34,10 +34,10 @@ class ControllerUtil extends Zikula_AbstractBase
         if (!in_array($context, array('controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'))) {
             $context = 'controllerAction';
         }
-
+    
         $allowedObjectTypes = array();
         $allowedObjectTypes[] = 'route';
-
+    
         return $allowedObjectTypes;
     }
 
@@ -54,9 +54,9 @@ class ControllerUtil extends Zikula_AbstractBase
         if (!in_array($context, array('controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'))) {
             $context = 'controllerAction';
         }
-
+    
         $defaultObjectType = 'route';
-
+    
         return $defaultObjectType;
     }
 
@@ -112,7 +112,7 @@ class ControllerUtil extends Zikula_AbstractBase
                     $id = $defaultValue;
                 }
             }
-
+    
             // fallback if id has not been found yet
             if (!$id && $idField != 'id' && count($idFields) == 1) {
                 $defaultValue = isset($args['id']) && is_numeric($args['id']) ? $args['id'] : 0;
@@ -126,7 +126,7 @@ class ControllerUtil extends Zikula_AbstractBase
             }
             $idValues[$idField] = $id;
         }
-
+    
         return $idValues;
     }
 
@@ -142,13 +142,13 @@ class ControllerUtil extends Zikula_AbstractBase
         if (!count($idValues)) {
             return false;
         }
-
+    
         foreach ($idValues as $idField => $idValue) {
             if (!$idValue) {
                 return false;
             }
         }
-
+    
         return true;
     }
 
@@ -166,7 +166,7 @@ class ControllerUtil extends Zikula_AbstractBase
                             array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'),
                             $name);
         $name = DataUtil::formatPermalink($name);
-
+    
         return strtolower($name);
     }
 }

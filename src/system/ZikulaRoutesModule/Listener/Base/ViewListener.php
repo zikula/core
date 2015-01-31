@@ -31,7 +31,7 @@ class ViewListener implements EventSubscriberInterface
             'view.postfetch' => array('postFetch', 5)
         );
     }
-
+    
     /**
      * Listener for the `view.init` event.
      *
@@ -43,7 +43,7 @@ class ViewListener implements EventSubscriberInterface
     public function init(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `view.postfetch` event.
      *

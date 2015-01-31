@@ -33,15 +33,15 @@ class ListEntriesUtil extends Zikula_AbstractBase
         if (empty($value) || empty($objectType) || empty($fieldName)) {
             return $value;
         }
-
+    
         $isMulti = $this->hasMultipleSelection($objectType, $fieldName);
         if ($isMulti === true) {
             $value = $this->extractMultiList($value);
         }
-
+    
         $options = $this->getEntries($objectType, $fieldName);
         $result = '';
-
+    
         if ($isMulti === true) {
             foreach ($options as $option) {
                 if (!in_array($option['value'], $value)) {
@@ -61,10 +61,10 @@ class ListEntriesUtil extends Zikula_AbstractBase
                 break;
             }
         }
-
+    
         return $result;
     }
-
+    
 
     /**
      * Extract concatenated multi selection.
@@ -85,10 +85,10 @@ class ListEntriesUtil extends Zikula_AbstractBase
             // keys must start with 0, otherwise the dropdownlist form plugin gets confused
             array_shift($listValues);
         }
-
+    
         return $listValues;
     }
-
+    
 
     /**
      * Determine whether a certain dropdown field has a multi selection or not.
@@ -103,7 +103,7 @@ class ListEntriesUtil extends Zikula_AbstractBase
         if (empty($objectType) || empty($fieldName)) {
             return false;
         }
-
+    
         $result = false;
         switch ($objectType) {
             case 'route':
@@ -114,10 +114,10 @@ class ListEntriesUtil extends Zikula_AbstractBase
                 }
                 break;
         }
-
+    
         return $result;
     }
-
+    
 
     /**
      * Get entries for a certain dropdown field.
@@ -132,7 +132,7 @@ class ListEntriesUtil extends Zikula_AbstractBase
         if (empty($objectType) || empty($fieldName)) {
             return array();
         }
-
+    
         $entries = array();
         switch ($objectType) {
             case 'route':
@@ -143,11 +143,11 @@ class ListEntriesUtil extends Zikula_AbstractBase
                 }
                 break;
         }
-
+    
         return $entries;
     }
 
-
+    
     /**
      * Get 'workflow state' list entries.
      *
@@ -156,19 +156,9 @@ class ListEntriesUtil extends Zikula_AbstractBase
     public function getWorkflowStateEntriesForRoute()
     {
         $states = array();
-        $states[] = array('value'   => 'waiting',
-                          'text'    => $this->__('Waiting'),
-                          'title'   => $this->__('Content has been submitted and waits for approval.'),
-                          'image'   => '',
-                          'default' => false);
         $states[] = array('value'   => 'approved',
                           'text'    => $this->__('Approved'),
                           'title'   => $this->__('Content has been approved and is available online.'),
-                          'image'   => '',
-                          'default' => false);
-        $states[] = array('value'   => '!waiting',
-                          'text'    => $this->__('All except waiting'),
-                          'title'   => $this->__('Shows all items except these which are waiting'),
                           'image'   => '',
                           'default' => false);
         $states[] = array('value'   => '!approved',
@@ -176,7 +166,7 @@ class ListEntriesUtil extends Zikula_AbstractBase
                           'title'   => $this->__('Shows all items except these which are approved'),
                           'image'   => '',
                           'default' => false);
-
+    
         return $states;
     }
 }

@@ -11,7 +11,7 @@
  */
 
 /**
- * Permission check for workflow schema 'standard'.
+ * Permission check for workflow schema 'none'.
  * This function allows to calculate complex permission checks.
  * It receives the object the workflow engine is being asked to process and the permission level the action requires.
  *
@@ -22,11 +22,8 @@
  *
  * @return bool Whether the current user is allowed to execute the action or not.
  */
-function ZikulaRoutesModule_workflow_standard_permissioncheck($obj, $permLevel, $currentUser, $actionId)
+function ZikulaRoutesModule_workflow_none_permissioncheck($obj, $permLevel, $currentUser, $actionId)
 {
-    if (\System::isInstalling()) {
-        return true;
-    }
 
     // calculate the permission component
     $objectType = $obj['_objectType'];
@@ -52,16 +49,15 @@ function ZikulaRoutesModule_workflow_standard_permissioncheck($obj, $permLevel, 
 /**
  * This helper functions cares for including the strings used in the workflow into translation.
  */
-function ZikulaRoutesModule_workflow_standard_gettextstrings()
+function ZikulaRoutesModule_workflow_none_gettextstrings()
 {
     return array(
-        'title' => no__('Standard workflow (single approval)'),
-        'description' => no__('This is a two staged workflow with stages for untrusted submissions and finally approved publications. It does not allow corrections of non-editors to published pages.'),
+        'title' => no__('None workflow (no approval)'),
+        'description' => no__('This is like a non-existing workflow. Everything is online immediately after creation.'),
 
         // state titles
         'states' => array(
             no__('Initial') => no__('Pseudo-state for content which is just created and not persisted yet.'),
-            no__('Waiting') => no__('Content has been submitted and waits for approval.'),
             no__('Approved') => no__('Content has been approved and is available online.'),
             no__('Deleted') => no__('Pseudo-state for content which has been deleted from the database.')
         ),
@@ -69,14 +65,7 @@ function ZikulaRoutesModule_workflow_standard_gettextstrings()
         // action titles and descriptions for each state
         'actions' => array(
             'initial' => array(
-                no__('Submit') => no__('Submit content for acceptance by a moderator.'),
-                no__('Submit and Approve') => no__('Submit content and approve immediately.'),
-            )
-            ,
-            'waiting' => array(
-                no__('Update') => no__('Update content.'),
-                no__('Approve') => no__('Update content and approve for immediate publishing.'),
-                no__('Delete') => no__('Delete content permanently.')
+                no__('Submit') => no__('Submit content.'),
             )
             ,
             'approved' => array(

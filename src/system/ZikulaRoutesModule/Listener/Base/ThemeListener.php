@@ -34,7 +34,7 @@ class ThemeListener implements EventSubscriberInterface
             'theme.postfetch'   => array('postFetch', 5)
         );
     }
-
+    
     /**
      * Listener for the `theme.preinit` event.
      *
@@ -47,7 +47,7 @@ class ThemeListener implements EventSubscriberInterface
     public function preInit(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `theme.init` event.
      *
@@ -59,7 +59,7 @@ class ThemeListener implements EventSubscriberInterface
     public function init(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `theme.load_config` event.
      *
@@ -71,7 +71,7 @@ class ThemeListener implements EventSubscriberInterface
     public function loadConfig(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `theme.prefetch` event.
      *
@@ -84,7 +84,7 @@ class ThemeListener implements EventSubscriberInterface
     public function preFetch(GenericEvent $event)
     {
     }
-
+    
     /**
      * Listener for the `theme.postfetch` event.
      *

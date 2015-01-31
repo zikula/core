@@ -27,7 +27,7 @@ class ThemeListener extends BaseThemeListener
     {
         return parent::getSubscribedEvents();
     }
-
+    
     /**
      * Listener for the `theme.preinit` event.
      *
@@ -40,12 +40,12 @@ class ThemeListener extends BaseThemeListener
     public function preInit(GenericEvent $event)
     {
         parent::preInit($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -53,14 +53,14 @@ class ThemeListener extends BaseThemeListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * Listener for the `theme.init` event.
      *
@@ -72,12 +72,12 @@ class ThemeListener extends BaseThemeListener
     public function init(GenericEvent $event)
     {
         parent::init($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -85,14 +85,14 @@ class ThemeListener extends BaseThemeListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * Listener for the `theme.load_config` event.
      *
@@ -104,12 +104,12 @@ class ThemeListener extends BaseThemeListener
     public function loadConfig(GenericEvent $event)
     {
         parent::loadConfig($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -117,14 +117,14 @@ class ThemeListener extends BaseThemeListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * Listener for the `theme.prefetch` event.
      *
@@ -137,12 +137,12 @@ class ThemeListener extends BaseThemeListener
     public function preFetch(GenericEvent $event)
     {
         parent::preFetch($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -150,14 +150,14 @@ class ThemeListener extends BaseThemeListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * Listener for the `theme.postfetch` event.
      *
@@ -170,12 +170,12 @@ class ThemeListener extends BaseThemeListener
     public function postFetch(GenericEvent $event)
     {
         parent::postFetch($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -183,10 +183,10 @@ class ThemeListener extends BaseThemeListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }

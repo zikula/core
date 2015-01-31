@@ -102,15 +102,6 @@ class EditHandler extends BaseEditHandler
             $this->view->assign('formattedEntityTitle', $entity->getTitleFromDisplayPattern());
         }
     
-        $uid = UserUtil::getVar('uid');
-        $isCreator = $entity['createdUserId'] == $uid;
-        $groupArgs = array('uid' => $uid, 'gid' => $this->getVar('moderationGroupFor' . $this->objectTypeCapital, 2));
-        $isModerator = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', $groupArgs);
-    
-        $this->view->assign('isCreator', $isCreator)
-                   ->assign('isModerator', $isModerator)
-                   ->assign('isSuperModerator', false);
-    
         // everything okay, no initialization errors occured
         return true;
     }

@@ -45,12 +45,6 @@ class AdminApi extends Zikula_AbstractApi
                              'text' => $this->__('Routes'),
                              'title' => $this->__('Route list'));
         }
-        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => $this->serviceManager->get('router')->generate('zikularoutesmodule_admin_config'),
-                             'text' => $this->__('Configuration'),
-                             'title' => $this->__('Manage settings for this application'),
-                             'icon' => 'wrench');
-        }
 
         return $links;
     }

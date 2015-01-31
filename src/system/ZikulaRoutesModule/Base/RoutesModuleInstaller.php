@@ -55,9 +55,6 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
             return false;
         }
     
-        // set up all our vars with initial values
-        $this->setVar('moderationGroupForRoutes', 2);
-    
         $categoryRegistryIdsPerEntity = array();
     
         // create the default data
@@ -344,9 +341,6 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
         HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
         
     
-        // remove all module vars
-        $this->delVars();
-    
         // uninstallation successful
         return true;
     }
@@ -373,7 +367,7 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
      */
     protected function createDefaultData($categoryRegistryIdsPerEntity)
     {
-        $entityClass = 'ZikulaRoutesModule:RouteEntity';
+        $entityClass = 'Zikula\RoutesModule\Entity\RouteEntity';
         $this->entityManager->getRepository($entityClass)->truncateTable();
     }
 }

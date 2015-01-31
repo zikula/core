@@ -46,7 +46,7 @@
                         <ul>
                         {foreach item='route' from=$items}
                             <li>
-                                <a href="#" onclick="routes.finder.selectItem({$route.id})" onkeypress="routes.finder.selectItem({$route.id})">{$route->getTitleFromDisplayPattern()}</a>
+                                <a href="#" onclick="zikulaRoutesModule.finder.selectItem({$route.id})" onkeypress="zikulaRoutesModule.finder.selectItem({$route.id})">{$route->getTitleFromDisplayPattern()}</a>
                                 <input type="hidden" id="url{$route.id}" value="" />
                                 <input type="hidden" id="title{$route.id}" value="{$route->getTitleFromDisplayPattern()|replace:"\"":""}" />
                                 <input type="hidden" id="desc{$route.id}" value="{capture assign='description'}{if $route.name ne ''}{$route.name}{/if}

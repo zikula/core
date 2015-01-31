@@ -27,7 +27,7 @@ class PageListener extends BasePageListener
     {
         return parent::getSubscribedEvents();
     }
-
+    
     /**
      * Listener for the `pageutil.addvar_filter` event.
      *
@@ -42,19 +42,19 @@ class PageListener extends BasePageListener
     public function pageutilAddvarFilter(GenericEvent $event)
     {
         parent::pageutilAddvarFilter($event);
-
+    
         // Simply test with something like
         /*
             if (($key = array_search('system/Users/Resources/public/js/somescript.js', $event->data)) !== false) {
                 $event->data[$key] = 'config/javascript/myoverride.js';
             }
         */
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -62,14 +62,14 @@ class PageListener extends BasePageListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * Listener for the `system.outputfilter` event.
      *
@@ -80,12 +80,12 @@ class PageListener extends BasePageListener
     public function systemOutputFilter(GenericEvent $event)
     {
         parent::systemOutputFilter($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -93,10 +93,10 @@ class PageListener extends BasePageListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }

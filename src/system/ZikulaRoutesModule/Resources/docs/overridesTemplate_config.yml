@@ -12,7 +12,4 @@ Resources/views/Route/inlineRedirectHandler.tpl: config/templates/ZikulaRoutesMo
 Resources/views/Helper/include_standardfields_display.tpl: config/templates/ZikulaRoutesModule/Helper/include_standardfields_display.tpl
 Resources/views/Helper/include_standardfields_edit.tpl: config/templates/ZikulaRoutesModule/Helper/include_standardfields_edit.tpl
 Resources/views/include_filterSyntaxDialog.tpl: config/templates/ZikulaRoutesModule/include_filterSyntaxDialog.tpl
-Resources/views/Admin/config.tpl: config/templates/ZikulaRoutesModule/Admin/config.tpl
-Resources/views/Email/notifyrouteCreator.tpl: config/templates/ZikulaRoutesModule/Email/notifyrouteCreator.tpl
-Resources/views/Email/notifyrouteModerator.tpl: config/templates/ZikulaRoutesModule/Email/notifyrouteModerator.tpl
 Resources/views/include_pdfheader.tpl: config/templates/ZikulaRoutesModule/include_pdfheader.tpl

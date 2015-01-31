@@ -98,7 +98,7 @@
         <a href="{route name='zikularoutesmodule_route_view' lct=$lct all=1}" title="{$linkTitle}" class="fa fa-table">{$linkTitle}</a>
     {/if*}
 
-    {*include file='Route/view_quickNav.tpl' all=$all own=$own*}{* see template file for available options *}
+    {*include file='Route/view_quickNav.tpl' all=$all own=$own workflowStateFilter=false*}{* see template file for available options *}
 
     {if $lct eq 'admin'}
     <form action="{route name='zikularoutesmodule_route_handleselectedentries' lct=$lct}" method="post" id="routesViewForm" class="form-horizontal" role="form">
@@ -111,7 +111,6 @@
                 {if $lct eq 'admin'}
                     <col id="cSelect" />
                 {/if}
-                <col id="cWorkflowState" />
                 {*<col id="cName" />
                 <col id="cBundle" />
                 <col id="cController" />
@@ -133,9 +132,6 @@
                         <input type="checkbox" id="toggleRoutes" />
                     </th>
                 {/if}
-                    <th id="hWorkflowState" scope="col" class="text-left">
-                    {gt text='State'}{*sortlink __linktext='State' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='workflowState' sortdir=$sdir all=$all own=$own workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize userRoute=$userRoute lct=$lct*}
-                    </th>
                     <th id="hPath" scope="col" class="text-left">
                     {gt text='Path'}{*sortlink __linktext='Path' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='path' sortdir=$sdir all=$all own=$own workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize userRoute=$userRoute lct=$lct*}
                     </th>
@@ -180,9 +176,6 @@
                         <input type="checkbox" name="items[]" value="{$route.id}" class="routes-checkbox" />
                     </td>
                 {/if}
-                    <td headers="hWorkflowState" class="z-left nowrap">
-                        {$route.workflowState|zikularoutesmoduleObjectState}
-                    </td>
                     <td headers="hPath" class="z-left" title="{$route.name}">
                         {$route.path|zikularoutesmodulePathToString:$route}
                     </td>
@@ -225,7 +218,7 @@
                 {assign var='groupOld' value=$route.group}
         {foreachelse}
             <tr class="z-{if $lct eq 'admin'}admin{else}data{/if}tableempty">
-              <td class="text-left" colspan="{if $lct eq 'admin'}8{else}7{/if}">
+              <td class="text-left" colspan="{if $lct eq 'admin'}7{else}6{/if}">
             {gt text='No routes found.'}
               </td>
             </tr>

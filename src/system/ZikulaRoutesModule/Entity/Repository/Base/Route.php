@@ -723,8 +723,6 @@ class Route extends SortableRepository
         $where = '';
         if (!$fragmentIsNumeric) {
             $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.workflowState = \'' . $fragment . '\'';
-            $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.name LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.bundle LIKE \'%' . $fragment . '%\'';
@@ -743,8 +741,6 @@ class Route extends SortableRepository
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.group LIKE \'%' . $fragment . '%\'';
         } else {
-            $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.workflowState = \'' . $fragment . '\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.name LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');

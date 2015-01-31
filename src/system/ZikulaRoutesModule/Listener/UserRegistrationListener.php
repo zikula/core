@@ -27,7 +27,7 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     {
         return parent::getSubscribedEvents();
     }
-
+    
     /**
      * Listener for the `module.users.ui.registration.started` event.
      *
@@ -38,12 +38,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function started(GenericEvent $event)
     {
         parent::started($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -51,14 +51,14 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * Listener for the `module.users.ui.registration.succeeded` event.
      *
@@ -71,7 +71,7 @@ class UserRegistrationListener extends BaseUserRegistrationListener
      * If the registration record is a fully activated user, and the Users module is configured for automatic log-in,
      * then the system's next step (without any interaction from the user) will be the log-in process. All the customary
      * events that might fire during the log-in process could be fired at this point, including (but not limited to)
-     * `module.users.ui.login.veto` (which might result in the user having to perform some action in order to proceed with the
+     * `module.users.ui.login.veto` (which might result in the user having to perform some action in order to proceed with the 
      * log-in process), `module.users.ui.login.succeeded`, and/or `module.users.ui.login.failed`.
      *
      * The event's subject is set to the registration record (which might be a full user record).
@@ -84,20 +84,20 @@ class UserRegistrationListener extends BaseUserRegistrationListener
      * and second, if the record is a full user record then whether automatic log-in is enabled or not.
      *
      * If the result of the registration process is a registration request record, then the default action is to direct the
-     * user to a status display screen that informs him that the registration process has been completed, and also tells
+     * user to a status display screen that informs him that the registration process has been completed, and also tells 
      * him what next steps are required in order to convert that request into a full user record. (The steps to be
      * taken may be out of the user's control--for example, the administrator must approve the request. The steps to
      * be taken might be within the user's control--for example, the user must verify his e-mail address. The steps might
      * be some combination of both within and outside the user's control.
      *
-     * If the result of the registration process is a full user record, then one of two actions will happen by default. Either
+     * If the result of the registration process is a full user record, then one of two actions will happen by default. Either 
      * the user will be directed to the log-in screen, or the user will be automatically logged in. Which of these two occurs
      * is dependent on a module variable setting in the Users module. During the login process, one or more additional events may
      * fire.
      *
      * If a `'redirecturl'` is specified by any entity intercepting and processing the `module.users.ui.registration.succeeded` event, then
      * how that redirect URL is handled depends on whether the registration process produced a registration request or a full user
-     * account record, and if a full user account record was produced then it depends on whether automatic log-in is enabled or
+     * account record, and if a full user account record was produced then it depends on whether automatic log-in is enabled or 
      * not.
      *
      * If the result of the registration process is a registration request record, then by specifying a redirect URL on the event
@@ -109,20 +109,20 @@ class UserRegistrationListener extends BaseUserRegistrationListener
      *
      * If the result of the registration process is a full user account record and automatic log-in is enabled, then the user is
      * directed automatically into the log-in process. A redirect URL specified on the event will be passed to the log-in process
-     * as the default redirect URL to be used at the end of the log-in process. Note that the user has NOT been automatically
+     * as the default redirect URL to be used at the end of the log-in process. Note that the user has NOT been automatically 
      * redirected to the URL specified on the event. Also note that the log-in process issues its own events, and any one of them
      * could direct the user away from the log-in process and ultimately from the URL specified in this event. Note especially that
      * the log-in process issues its own `module.users.ui.login.succeeded` event that includes the opportunity to set a redirect URL.
      * The URL specified on this event, as mentioned previously, is passed to the log-in process as the default redirect URL, and
      * therefore is offered on the `module.users.ui.login.succeeded` event as the default. Any handler of that event, however, has
-     * the opportunity to change the redirect URL offered. A `module.users.ui.registration.succeeded` handler can reliably predict
-     * whether the user will be directed into the log-in process automatically by inspecting the Users module variable
+     * the opportunity to change the redirect URL offered. A `module.users.ui.registration.succeeded` handler can reliably predict 
+     * whether the user will be directed into the log-in process automatically by inspecting the Users module variable 
      * `Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN` (which evaluates to `'reg_autologin'`), and by inspecting the `'activated'`
      * status of the registration or user object received.
      *
-     * An event handler should carefully consider whether changing the `'redirecturl'` argument is appropriate. First, the user may
-     * be expecting to return to the log-in screen . Being redirected to a different page might be disorienting to the user. Second,
-     * all event handlers are being notified of this event. This is not a `notify()` event. An event handler that was notified
+     * An event handler should carefully consider whether changing the `'redirecturl'` argument is appropriate. First, the user may 
+     * be expecting to return to the log-in screen . Being redirected to a different page might be disorienting to the user. Second, 
+     * all event handlers are being notified of this event. This is not a `notify()` event. An event handler that was notified 
      * prior to the current handler may already have changed the `'redirecturl'`.
      *
      * @param GenericEvent $event The event instance.
@@ -130,12 +130,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function succeeded(GenericEvent $event)
     {
         parent::succeeded($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -143,14 +143,14 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * Listener for the `module.users.ui.registration.failed` event.
      *
@@ -179,12 +179,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function failed(GenericEvent $event)
     {
         parent::failed($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -192,18 +192,18 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * Listener for the `user.registration.create` event.
      *
-     * Occurs after a registration record is created, either through the normal user registration process, or through the
+     * Occurs after a registration record is created, either through the normal user registration process, or through the 
      * administration panel for the Users module. This event will not fire if the result of the registration process is a
      * full user record. Instead, a `user.account.create` event will fire.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
@@ -214,12 +214,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function create(GenericEvent $event)
     {
         parent::create($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -227,14 +227,14 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * Listener for the `user.registration.update` event.
      *
@@ -247,12 +247,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function update(GenericEvent $event)
     {
         parent::update($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -260,18 +260,18 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
-
+    
     /**
      * Listener for the `user.registration.delete` event.
      *
-     * Occurs after a registration record is deleted. This could occur as a result of the administrator deleting the record
+     * Occurs after a registration record is deleted. This could occur as a result of the administrator deleting the record 
      * through the approval/denial process, or it could happen because the registration request expired. This event
      * will not fire if a registration record is converted to a full user account record. Instead, a `user.account.create`
      * event will fire. This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
@@ -281,12 +281,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function delete(GenericEvent $event)
     {
         parent::delete($event);
-
+    
         // you can access general data available in the event
-
+        
         // the event name
         // echo 'Event: ' . $event->getName();
-
+        
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -294,10 +294,10 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-
+        
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-
+        
         // the currently handled request
         // $request = $event->getRequest();
     }
