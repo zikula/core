@@ -6,12 +6,8 @@ A very strong effort has been made to keep to the standards of [Semantic Version
 that BC must be maintained within each major version (1.0.0 until 2.0.0). Therefore, all Core-1.3.x modules and themes
 *should* continue to work as expected in Core-1.4.0.
 
-However, because of a necessary upgrade of the Symfony library and despite the development team's best efforts, a few
-BC breaks have still occurred:
-
-  1. [Gedmo (Doctrine Extensions)](#gedmo)
-  2. [Paginate (Doctrine Extensions)](#paginate)
-
+However, because of a necessary upgrade of the Symfony library and despite the development team's best efforts, one
+BC break has still occurred:
 
 <a name="gedmo" />
 Gedmo (Doctrine Extensions)
@@ -48,12 +44,17 @@ to:
     private $slug;
 ```
 
+Deprecations
+============
+Zikula Core 1.4.0 moves a lot of code to Symfony-based classes and methods. In this process, **many** original Zikula
+Core 1.3.x classes and methods have been deprecated and will be removed in Core 2.0.0. These classes are mostly marked
+as `@deprecated` in the code and PHPDoc headers. In addition, several libraries will be removed in Core 2.0.0 and
+therefore, developers should refactor their code for the suitable replacement.
+
 <a name="paginate" />
 Paginate (Doctrine Extensions)
 -----------------------------
 The Doctrine Extension Paginate is deprecated. If you are using it, you should refactor it to `Doctrine\ORM\Tools\Pagination\Paginator`.
-
-*note: is this a true BC-break?*
 
 
 Forward Compatibility Layer
