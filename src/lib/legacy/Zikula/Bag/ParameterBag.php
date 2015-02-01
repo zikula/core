@@ -1,12 +1,16 @@
 <?php
-
-/*
- * This file is part of the Symfony package.
+/**
+ * Copyright 2015 Zikula Foundation.
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ * @subpackage Zikula_Exception
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
@@ -20,26 +24,18 @@ class Zikula_Bag_ParameterBag extends \Symfony\Component\HttpFoundation\Paramete
      * @deprecated as of Core 1.4.0
      * @see \Symfony\Component\HttpFoundation\ParameterBag::filter
      *
+     * @param string $key     Key.
+     * @param mixed  $default Default = null.
+     * @param bool   $deep    Default = false.
+     * @param int    $filter  FILTER_* constant.
+     * @param mixed  $options Filter options.
+     *
      * @see http://php.net/manual/en/function.filter-var.php
      *
      * @return mixed
      */
-    public function filter()
+    public function filter($key, $default = null, $deep = false, $filter = FILTER_DEFAULT, $options = array())
     {
-        /**
-         * Args in order:
-         *  key
-         *  default = null
-         *  deep = false (missing in old signature)
-         *  filter = FILTER_DEFAULT
-         *  options = array()
-         */
-        $key = func_get_arg(0);
-        $default = func_get_arg(1) === false ? null : func_get_arg(2);
-        $deep = false;
-        $filter = FILTER_DEFAULT;
-        $options = array();
-
         if (func_num_args() > 2) {
             if (is_bool(func_get_arg(2))) {
                 // usage is compatible with normal ParameterBag
