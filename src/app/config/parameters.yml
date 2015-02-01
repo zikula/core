@@ -1,7 +1,7 @@
 parameters:
     installed:        false
-    env:              dev
-    debug:            true
+    env:              prod
+    debug:            false
     compat_layer:     true
     temp_dir:         %kernel.cache_dir%/ztemp
     datadir:          userdata
