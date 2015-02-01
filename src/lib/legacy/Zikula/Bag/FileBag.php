@@ -21,7 +21,7 @@ use Zikula_UploadedFile as UploadedFile;
  * @deprecated as of 1.4.0
  * @see \Symfony\Component\HttpFoundation\FileBag
  */
-class Zikula_FileBag extends \Symfony\Component\HttpFoundation\FileBag
+class Zikula_Bag_FileBag extends \Symfony\Component\HttpFoundation\FileBag
 {
     private static $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
 

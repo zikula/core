@@ -40,7 +40,9 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
     public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
     {
         parent::initialize($query, $request, $attributes, $cookies, $files, $server, $content);
-        $this->files = new Zikula_FileBag($files);
+        $this->query = new Zikula_Bag_ParameterBag($query);
+        $this->request = new Zikula_Bag_ParameterBag($request);
+        $this->files = new Zikula_Bag_FileBag($files);
     }
 
      /**
