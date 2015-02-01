@@ -19,18 +19,35 @@
  * @deprecated as of 1.4.0
  * @see \Symfony\Component\HttpFoundation\File\UploadedFile
  */
-class Zikula_UploadedFile extends \Symfony\Component\HttpFoundation\File\UploadedFile
+class Zikula_UploadedFile extends \Symfony\Component\HttpFoundation\File\UploadedFile implements \ArrayAccess
 {
     /**
-     * @deprecated as of 1.4.0
-     * @param $property
-     * @return int|null|string
+     * @deprecated at 1.4.0
+     * Whether a offset exists
+     * @param mixed $offset
+     * An offset to check for.
+     *
+     * @return boolean true on success or false on failure.
      */
-    public function __get($property)
+    public function offsetExists($offset)
     {
-        LogUtil::log('Array access to file properties is deprecated. Please use SPL methods.', E_USER_DEPRECATED);
+        $value = $this->offsetGet($offset);
 
-        switch ($property) {
+        return isset($value);
+    }
+
+    /**
+     * @deprecated at 1.4.0
+     * Offset to retrieve
+     * @param mixed $offset
+     * The offset to retrieve.
+     * @return mixed Can return all value types.
+     */
+    public function offsetGet($offset)
+    {
+        LogUtil::log('Array Access to file properties is deprecated. Please use SPL methods.', E_USER_DEPRECATED);
+
+        switch ($offset) {
             case 'name':
                 $value = $this->getClientOriginalName();
                 break;
@@ -51,5 +68,31 @@ class Zikula_UploadedFile extends \Symfony\Component\HttpFoundation\File\Uploade
         }
 
         return $value;
+    }
+
+    /**
+     * @deprecated at 1.4.0
+     * Offset to set
+     * @param mixed $offset
+     * The offset to assign the value to.
+     * @param mixed $value
+     * The value to set.
+     * @throws \Exception
+     */
+    public function offsetSet($offset, $value)
+    {
+        throw new \Exception("It is not possible to set values via Array Access. Please use SPL methods.");
+    }
+
+    /**
+     * @deprecated at 1.4.0
+     * Offset to unset
+     * @param mixed $offset
+     * The offset to unset.
+     * @throws \Exception
+     */
+    public function offsetUnset($offset)
+    {
+        throw new \Exception("It is not possible to unset values via Array Access. Please use SPL methods.");
     }
 }
