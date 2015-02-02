@@ -103,6 +103,11 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException($this->__('Error! Module URL is a required field, please enter a unique name.'));
         }
 
+        $path = realpath($this->getContainer()->get('kernel')->getRootDir(). '/../' . DataUtil::formatForOS($args['url']));
+        if (is_dir($path)) {
+            throw new \InvalidArgumentException($this->__('You have attempted to select an invalid name (it is a subdirectory).'));
+        }
+
         if (empty($args['displayname'])) {
             throw new \InvalidArgumentException($this->__('Error! Display name is a required field, please enter a unique name.'));
         }
