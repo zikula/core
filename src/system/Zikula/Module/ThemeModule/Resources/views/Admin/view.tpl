@@ -29,16 +29,16 @@
         {assign var='themeurl' value="`$homepageurl``$theme.name`"}
         {else}
         {if $homepageurl|strstr:"?"}
-        {assign var='themeurl' value="`$homepageurl`&theme=`$theme.name`"}
+        {assign var='themeurl' value="`$baseurl``$homepageurl`&theme=`$theme.name`"}
         {else}
-        {assign var='themeurl' value="`$homepageurl`?theme=`$theme.name`"}
+        {assign var='themeurl' value="`$baseurl``$homepageurl`?theme=`$theme.name`"}
         {/if}
         {/if}
         <tr {if $theme.name|strtolower eq $currenttheme|strtolower}class="success"{/if}>
             <td>
                 {if !$theme.structure}<strike>{/if}
                 {previewimage name=$theme.name assign='img'}
-                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}{if $theme.name|strtolower eq $currenttheme|strtolower} ({gt text='Default theme'}){/if}" class="marktooltip" data-trigger="hover" data-html="true" data-content='{$img|safehtml}'>
+                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}{if $theme.name|strtolower eq $currenttheme|strtolower} ({gt text='Default theme'}){/if}" class="marktooltip" data-trigger="hover" data-html="true" data-content='{$img|safehtml}' target="_blank">
                    {$theme.displayname|safetext}
                 </a>
                 {if !$theme.structure}</strike>{/if}
@@ -59,7 +59,7 @@
                 <a href="{route name='zikulathememodule_admin_setasdefault' themename=$theme.name}"><span class="fa fa-check tooltips" title="{$strSetDefaultTheme}"></span></a>
                 {/if}
                 {if $theme.structure}
-                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}"><span class="fa fa-eye tooltips" title="{$strPreviewTheme}"></span></a>
+                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}" target="_blank"><span class="fa fa-eye tooltips" title="{$strPreviewTheme}"></span></a>
                 <a href="{route name='zikulathememodule_admin_modify' themename=$theme.name}"><span class="fa fa-pencil tooltips" title="{$strEditTheme}"></span></a>
                 {/if}
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
