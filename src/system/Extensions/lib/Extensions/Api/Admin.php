@@ -543,21 +543,21 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                         $moddependencies = serialize(array());
                     }
                     //if (!isset($args['name'])) {
-                        $filemodules[$name] = array(
-                                'directory'       => $dir,
-                                'name'            => $name,
-                                'type'            => $moduletype,
-                                'displayname'     => $displayname,
-                                'url'             => $url,
-                                'oldnames'        => $oldnames,
-                                'version'         => $version,
-                                'capabilities'    => $capabilities,
-                                'description'     => $description,
-                                'securityschema'  => $securityschema,
-                                'dependencies'    => $moddependencies,
-                                'core_min'        => $core_min,
-                                'core_max'        => $core_max,
-                        );
+                    $filemodules[$name] = array(
+                            'directory'       => $dir,
+                            'name'            => $name,
+                            'type'            => $moduletype,
+                            'displayname'     => $displayname,
+                            'url'             => $url,
+                            'oldnames'        => $oldnames,
+                            'version'         => $version,
+                            'capabilities'    => $capabilities,
+                            'description'     => $description,
+                            'securityschema'  => $securityschema,
+                            'dependencies'    => $moddependencies,
+                            'core_min'        => $core_min,
+                            'core_max'        => $core_max,
+                    );
 
                     // important: unset modversion and modtype, otherwise the
                     // following modules will have some values not defined in
@@ -621,39 +621,43 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             if (isset($modinfo['oldnames']) && !empty($modinfo['oldnames'])) {
                 $tables = DBUtil::getTables();
                 foreach ($dbmodules as $dbname => $dbmodinfo) {
-                    if (in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
-                        // migrate its modvars
-                        $cols = $tables['module_vars_column'];
-                        $save = array('modname' => $modinfo['name']);
-                        DBUtil::updateObject($save, 'module_vars', "{$cols['modname']} = '$dbname'");
+                    if (isset($dbmodinfo['name'])) {
+                        if (in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
+                            // migrate its modvars
+                            $cols = $tables['module_vars_column'];
+                            $save = array('modname' => $modinfo['name']);
+                            DBUtil::updateObject($save, 'module_vars', "{$cols['modname']} = '$dbname'");
 
-                        // rename the module register
-                        $save = $dbmodules[$dbname];
-                        $save['name'] = $modinfo['name'];
-                        unset($dbmodules[$dbname]);
-                        $dbname = $modinfo['name'];
-                        $dbmodules[$dbname] = $save;
-                        DBUtil::updateObject($dbmodules[$dbname], 'modules');
+                            // rename the module register
+                            $save = $dbmodules[$dbname];
+                            $save['name'] = $modinfo['name'];
+                            unset($dbmodules[$dbname]);
+                            $dbname = $modinfo['name'];
+                            $dbmodules[$dbname] = $save;
+                            DBUtil::updateObject($dbmodules[$dbname], 'modules');
 
-                        // rename hooks in the hooks table.
-                        $hooksColumns = $tables['hooks_column'];
-                        $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[smodule] = '$save[name]'");
-                        if ($hooks) {
-                            foreach ($hooks as $hook) {
-                                $hook['smodule'] = $dbmodinfo['name'];
-                                DBUtil::updateObject($hook, 'hooks');
+                            // rename hooks in the hooks table.
+                            $hooksColumns = $tables['hooks_column'];
+                            $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[smodule] = '$save[name]'");
+                            if ($hooks) {
+                                foreach ($hooks as $hook) {
+                                    $hook['smodule'] = $dbmodinfo['name'];
+                                    DBUtil::updateObject($hook, 'hooks');
+                                }
                             }
-                        }
 
-                        $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[tmodule] = '$save[name]'");
-                        if ($hooks) {
-                            foreach ($hooks as $hook) {
-                                $hook['tmodule'] = $dbmodinfo['name'];
-                                DBUtil::updateObject($hook, 'hooks');
+                            $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[tmodule] = '$save[name]'");
+                            if ($hooks) {
+                                foreach ($hooks as $hook) {
+                                    $hook['tmodule'] = $dbmodinfo['name'];
+                                    DBUtil::updateObject($hook, 'hooks');
+                                }
                             }
-                        }
 
-                        DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
+                            DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
+                        }
+                    } else {
+
                     }
                 }
                 unset($tables);
@@ -689,9 +693,11 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 $maxok = version_compare($filemodules[$name]['core_max'], $coreVersion);
             }
 
-            if ($minok == -1 || $maxok == -1) {
-                $dbmodules[$name]['state'] = $dbmodules[$name]['state'] + 20;
-                $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => $dbmodules[$name]['state']));
+            if (isset($dbmodules[$name])) {
+                if ($minok == -1 || $maxok == -1) {
+                    $dbmodules[$name]['state'] = $dbmodules[$name]['state'] + 20;
+                    $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => $dbmodules[$name]['state']));
+                }
             }
             if (isset($dbmodules[$name]['state'])) {
                 $filemodules[$name]['state'] = $dbmodules[$name]['state'];
@@ -735,6 +741,15 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 if (!$modinfo['version']) {
                     $modinfo['state'] = ModUtil::STATE_INVALID;
                 }
+                if (!empty($modinfo['core_min'])) {
+                    $minok = version_compare($coreVersion, $modinfo['core_min']);
+                }
+                if (!empty($modinfo['core_max'])) {
+                    $maxok = version_compare($modinfo['core_max'], $coreVersion);
+                }
+                if ($minok == -1 || $maxok == -1) {
+                    $modinfo['state'] = $modinfo['state'] + 20;
+                }
                 if ($this->serviceManager['multisites.enabled'] == 1) {
                     // only the main site can regenerate the modules list
                     if (($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
@@ -753,10 +768,14 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     $modinfo = array_merge($modinfo, array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_UNINITIALISED));
                     DBUtil::updateObject($modinfo, 'modules');
                 }
-                if ($dbmodules[$name]['version'] != $modinfo['version']) {
-                    if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED &&
-                            $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
-                        $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_UPGRADED));
+                if (isset($dbmodinfo['version'])) {
+                    if ($dbmodules[$name]['version'] != $modinfo['version']) {
+                        if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED &&
+                                $dbmodules[$name]['state'] != ModUtil::STATE_INVALID &&
+                                $dbmodules[$name]['state'] != ModUtil::STATE_NOTALLOWED &&
+                                $dbmodules[$name]['state'] < 10) {
+                            $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_UPGRADED));
+                        }
                     }
                 }
             }
@@ -1185,52 +1204,52 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         if (SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'view'),
-                             'text' => $this->__('Modules list'),
-                             'class' => 'z-icon-es-view',
-                             'links' => array(
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'view'),
-                                                   'text' => $this->__('All')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_UNINITIALISED)),
-                                                   'text' => $this->__('Not installed')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_INACTIVE)),
-                                                   'text' => $this->__('Inactive')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_ACTIVE)),
-                                                   'text' => $this->__('Active')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_MISSING)),
-                                                   'text' => $this->__('Files missing')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_UPGRADED)),
-                                                   'text' => $this->__('New version uploaded')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_INVALID)),
-                                                   'text' => $this->__('Invalid structure'))
-                                               ));
+                    'text' => $this->__('Modules list'),
+                    'class' => 'z-icon-es-view',
+                    'links' => array(
+                                   array('url' => ModUtil::url('Extensions', 'admin', 'view'),
+                                         'text' => $this->__('All')),
+                                   array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_UNINITIALISED)),
+                                         'text' => $this->__('Not installed')),
+                                   array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_INACTIVE)),
+                                         'text' => $this->__('Inactive')),
+                                   array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_ACTIVE)),
+                                         'text' => $this->__('Active')),
+                                   array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_MISSING)),
+                                         'text' => $this->__('Files missing')),
+                                   array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_UPGRADED)),
+                                         'text' => $this->__('New version uploaded')),
+                                   array('url' => ModUtil::url('Extensions', 'admin', 'view', array('state'=>ModUtil::STATE_INVALID)),
+                                         'text' => $this->__('Invalid structure'))
+                    ));
 
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins'),
                              'text' => $this->__('Plugins list'),
                              'class' => 'z-icon-es-gears',
                              'links' => array(
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins'),
-                                                   'text' => $this->__('All')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('state'=>PluginUtil::NOTINSTALLED)),
-                                                   'text' => $this->__('Not installed')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('state'=>PluginUtil::DISABLED)),
-                                                   'text' => $this->__('Inactive')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('state'=>PluginUtil::ENABLED)),
-                                                   'text' => $this->__('Active'))
-                                               ));
-
+                                            array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins'),
+                                                  'text' => $this->__('All')),
+                                            array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('state'=>PluginUtil::NOTINSTALLED)),
+                                                  'text' => $this->__('Not installed')),
+                                            array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('state'=>PluginUtil::DISABLED)),
+                                                  'text' => $this->__('Inactive')),
+                                            array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('state'=>PluginUtil::ENABLED)),
+                                                  'text' => $this->__('Active'))
+                                            ));
+            
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true)),
                              'text' => $this->__('System Plugins'),
                              'class' => 'z-icon-es-gears',
                              'links' => array(
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true)),
-                                                   'text' => $this->__('All')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::NOTINSTALLED)),
-                                                   'text' => $this->__('Not installed')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::DISABLED)),
-                                                   'text' => $this->__('Inactive')),
-                                             array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::ENABLED)),
-                                                   'text' => $this->__('Active'))
-                                               ));
+                                            array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true)),
+                                                  'text' => $this->__('All')),
+                                            array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::NOTINSTALLED)),
+                                                  'text' => $this->__('Not installed')),
+                                            array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::DISABLED)),
+                                                  'text' => $this->__('Inactive')),
+                                            array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::ENABLED)),
+                                                  'text' => $this->__('Active'))
+                                            ));
 
             $legacyHooks = DBUtil::selectObjectArray('hooks');
             if (System::isLegacyMode() && $legacyHooks) {
@@ -1362,7 +1381,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         // do we need to check for duplicate oldnames as well?
         return array('errors_modulenames'  => $errors_modulenames,
-                     'errors_displaynames' => $errors_displaynames);
+                'errors_displaynames' => $errors_displaynames);
     }
 
     /**
@@ -1379,18 +1398,18 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         if (!isset($coreModules)) {
             $coreModules = array(
-                'Admin',
-                'Blocks',
-                'Categories',
-                'Errors',
-                'Groups',
-                'Mailer',
-                'Extensions',
-                'Permissions',
-                'SecurityCenter',
-                'Settings',
-                'Theme',
-                'Users',
+                    'Admin',
+                    'Blocks',
+                    'Categories',
+                    'Errors',
+                    'Groups',
+                    'Mailer',
+                    'Extensions',
+                    'Permissions',
+                    'SecurityCenter',
+                    'Settings',
+                    'Theme',
+                    'Users',
             );
         }
 
@@ -1434,7 +1453,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         // Delete hook regardless
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'
-                    AND $hookscolumn[tmodule] <> ''";
+        AND $hookscolumn[tmodule] <> ''";
 
         DBUtil::deleteWhere('hooks', $where);
 
@@ -1552,14 +1571,14 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         // Rename operation
         // Delete hooks regardless
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($args['callermodname']) . "'
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
+        AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
 
         if (!DBUtil::deleteWhere('hooks', $where)) {
             return false;
         }
 
         $where = "WHERE $hookscolumn[smodule] = ''
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
+        AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
 
         $objArray = DBUtil::selectObjectArray('hooks', $where, '', -1, -1, 'id');
         if (!$objArray) {
@@ -1611,8 +1630,8 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         // Delete hooks regardless
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($args['callermodname']) . "'
-                    AND $hookscolumn[stype]   = '" . DataUtil::formatForStore($args['calleritemtype']) . "'
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
+        AND $hookscolumn[stype]   = '" . DataUtil::formatForStore($args['calleritemtype']) . "'
+        AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
 
         return DBUtil::deleteWhere('hooks', $where);
     }
@@ -1644,7 +1663,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $hookscolumn = $dbtable['hooks_column'];
 
         $where = "WHERE $hookscolumn[smodule] = ''
-                     OR $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
+        OR $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
         $orderBy = "ORDER BY $hookscolumn[tmodule], $hookscolumn[smodule] DESC";
         $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
 
@@ -1766,7 +1785,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         // Delete hook regardless
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'
-                    AND $hookscolumn[tmodule] <> ''";
+        AND $hookscolumn[tmodule] <> ''";
 
         DBUtil::deleteWhere('hooks', $where);
 
