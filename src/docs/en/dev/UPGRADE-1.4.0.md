@@ -6,15 +6,8 @@ A very strong effort has been made to keep to the standards of [Semantic Version
 that BC must be maintained within each major version (1.0.0 until 2.0.0). Therefore, all Core-1.3.x modules and themes
 *should* continue to work as expected in Core-1.4.0.
 
-However, because of a necessary upgrade of the Symfony library and despite the development team's best efforts, a few
-BC breaks have still occurred:
-
-  1. [Gedmo (Doctrine Extensions)](#gedmo)
-  2. [$this->request->files](#requestfiles)
-  3. [$this->request->filter](#requestfilter)
-  4. [Paginate (Doctrine Extensions)](#paginate)
-  5. [Event removal](#eventremoval)
-
+However, because of a necessary upgrade of the Symfony library and despite the development team's best efforts, one
+BC break has still occurred:
 
 <a name="gedmo" />
 Gedmo (Doctrine Extensions)
@@ -51,50 +44,17 @@ to:
     private $slug;
 ```
 
-<a name="requestfiles" />
-$this->request->files
----------------------
-The format for this method is changed.
-
-`$this->request->files->get()` returns instances of `Symfony\Component\HttpFoundation\File\UploadedFile` now,
-before it returned plain arrays out of `$_FILES`.
-
-*note: there is still some question as to whether the old `->getFiles()` method might be able to maintain BC or
-to find another method of providing for BC in this case. (refs #1002, #1261)
-"one could replace the ParameterBag with a proxy class and magic methods for example.
-The request object is supposed to be created only once in the front controller btw"*
-
-<a name="requestfilter" />
-$this->request->filter
-----------------------
-The format for this method is changed.
-
-```
-$this->request->request/query->filter($key, $default=null, $filter=FILTER_DEFAULT, array $options=array())
-```
-has changed to
-```
-$this->request->request/query->filter(string $key, mixed $default = null, boolean $deep = false, integer $filter = FILTER_DEFAULT, mixed $options = array())
-```
-(note additional $deep parameter)
-
-*note: There may still be some effort to provide a BC layer here. (refs #1261)
-"if someone cares enough it might be possible to handle with a proxy"*
+Deprecations
+============
+Zikula Core 1.4.0 moves a lot of code to Symfony-based classes and methods. In this process, **many** original Zikula
+Core 1.3.x classes and methods have been deprecated and will be removed in Core 2.0.0. These classes are mostly marked
+as `@deprecated` in the code and PHPDoc headers. In addition, several libraries will be removed in Core 2.0.0 and
+therefore, developers should refactor their code for the suitable replacement.
 
 <a name="paginate" />
 Paginate (Doctrine Extensions)
 -----------------------------
 The Doctrine Extension Paginate is deprecated. If you are using it, you should refactor it to `Doctrine\ORM\Tools\Pagination\Paginator`.
-
-*note: is this a true BC-break?*
-
-<a name="eventremoval" />
-Event Removal
--------------
-
-The following events have been removed:
-
-  - `systemerror` - This was never actually implemented in the core and there is no replacement
 
 
 Forward Compatibility Layer

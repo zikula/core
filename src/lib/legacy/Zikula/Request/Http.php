@@ -22,6 +22,29 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class Zikula_Request_Http extends Zikula_Request_AbstractRequest
 {
+    public $files;
+
+    /**
+     * Constructor.
+     *
+     * @param array  $query      The GET parameters
+     * @param array  $request    The POST parameters
+     * @param array  $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array  $cookies    The COOKIE parameters
+     * @param array  $files      The FILES parameters
+     * @param array  $server     The SERVER parameters
+     * @param string $content    The raw body data
+     *
+     * @api
+     */
+    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
+    {
+        parent::initialize($query, $request, $attributes, $cookies, $files, $server, $content);
+        $this->query = new Zikula_Bag_ParameterBag($query);
+        $this->request = new Zikula_Bag_ParameterBag($request);
+        $this->files = new Zikula_Bag_FileBag($files);
+    }
+
      /**
      * Return the request method.
      *
@@ -37,7 +60,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      *
      * @deprecated use $request->query instead
      *
-     * @return Zikula_Request_Collection
+     * @return \Symfony\Component\HttpFoundation\ParameterBag
      */
     public function getGet()
     {
@@ -51,7 +74,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      *
      * @deprecated use $request->request instead
      *
-     * @return Zikula_Request_Collection
+     * @return \Symfony\Component\HttpFoundation\ParameterBag
      */
     public function getPost()
     {
@@ -63,11 +86,11 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
     /**
      * Getter for COOKIE.
      *
-     * @return Zikula_Request_Collection
+     * @return \Symfony\Component\HttpFoundation\ParameterBag
      */
     public function getCookie()
     {
-        return $this->cookie;
+        return $this->cookies;
     }
 
     /**
@@ -75,7 +98,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      *
      * @deprecated use $request->server instead
      *
-     * @return Zikula_Request_Collection
+     * @return \Symfony\Component\HttpFoundation\ServerBag
      */
     public function getServer()
     {
@@ -91,17 +114,19 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getEnv()
     {
-        return $this->env;
+        // this is not defined!
+        //return $this->env;
+        return null;
     }
 
     /**
      * Getter for args.
      *
-     * @return Zikula_Request_Collection
+     * @return \Symfony\Component\HttpFoundation\ParameterBag
      */
     public function getArgs()
     {
-        return $this->args;
+        return $this->attributes->all();
     }
 
     /**
@@ -109,7 +134,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      *
      * @deprecated use $request->files instead
      *
-     * @return Zikula_Request_Collection
+     * @return \Symfony\Component\HttpFoundation\FileBag
      */
     public function getFiles()
     {
