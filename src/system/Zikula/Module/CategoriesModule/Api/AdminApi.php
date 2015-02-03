@@ -26,20 +26,35 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array array of admin links.
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'view'), 'text' => $this->__('Categories list'), 'icon' => 'list');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulacategoriesmodule_admin_view'),
+                'text' => $this->__('Categories list'),
+                'icon' => 'list');
         }
         if (SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'newcat'), 'text' => $this->__('Create new category'), 'icon' => 'plus');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulacategoriesmodule_admin_newcat'),
+                'text' => $this->__('Create new category'),
+                'icon' => 'plus');
         }
         if (SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'editregistry'), 'text' => $this->__('Category registry'), 'icon' => 'archive');
-            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'config'), 'text' => $this->__('Rebuild paths'), 'icon' => 'refresh');
-            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'preferences'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulacategoriesmodule_admin_editregistry'),
+                'text' => $this->__('Category registry'),
+                'icon' => 'archive');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulacategoriesmodule_admin_config'),
+                'text' => $this->__('Rebuild paths'),
+                'icon' => 'refresh');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulacategoriesmodule_admin_preferences'),
+                'text' => $this->__('Settings'),
+                'icon' => 'wrench');
         }
 
         return $links;

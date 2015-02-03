@@ -2,11 +2,11 @@
 
 namespace Zikula\Core\Forms\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Doctrine\ORM\EntityRepository;
-use Zikula\Core\Forms\EventListener\CategoriesMergeCollectionListener;
 use Zikula\Core\Forms\DataTransformer\CategoriesCollectionTransformer;
+use Zikula\Core\Forms\EventListener\CategoriesMergeCollectionListener;
 
 class CategoriesType extends AbstractType
 {
@@ -45,4 +45,3 @@ class CategoriesType extends AbstractType
                      'entityCategoryClass' => $options['entityCategoryClass']);
     }
 }
-

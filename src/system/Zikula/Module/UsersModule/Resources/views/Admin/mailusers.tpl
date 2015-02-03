@@ -1,28 +1,11 @@
-{pageaddvar name='javascript' value='zikula.ui'}
-{strip}
-{pageaddvarblock}
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        $('select_all').observe('click', function(e){
-            Zikula.toggleInput('users_mailusers', true);
-            e.stop()
-        });
-        $('deselect_all').observe('click', function(e){
-            Zikula.toggleInput('users_mailusers', false);
-            e.stop()
-        });
-    });
-</script>
-{/pageaddvarblock}
-{/strip}
-
+{pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/ZikulaUsersModule.Admin.MailUsers.js'}
 {adminheader}
 <h3>
     <span class="fa fa-envelope"></span>
     {gt text="E-mail Users"}
 </h3>
 
-<form id="users_mailusers" class="form-horizontal" role="form" method="post" action="{modurl modname="Users" type="admin" func="mailUsers"}">
+<form id="users_mailusers" class="form-horizontal" role="form" method="post" action="{route name='zikulausersmodule_admin_mailusers'}">
     <div>
         <input type="hidden" id="users_mailusers_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_mailusers_formid" name="formid" value="users_mailusers" />
@@ -43,7 +26,7 @@
                     <tbody>
                         {section name=item loop=$items}
                         <tr>
-                            <td>{if ($items[item].uid != 1)}<input type="checkbox" name="userid[]" value="{$items[item].uid}" />{/if}</td>
+                            <td>{if ($items[item].uid != 1)}<input type="checkbox" class="user-checkboxes" name="userid[]" value="{$items[item].uid}" />{/if}</td>
                             <td>{$items[item].uname}</td>
                             {if $modvars.ZConfig.profilemodule}
                             <td>{usergetvar name='realname' uid=$items[item].uid}</td>
@@ -60,7 +43,7 @@
                     </tbody>
                 </table>
                 <p>
-                    <a href="#" id="select_all">{gt text="Select all"}</a> / <a href="#" id="deselect_all">{gt text="De-select all"}</a>
+                    <a href="#" id="select-all">{gt text="Select all"}</a> / <a href="#" id="deselect-all">{gt text="De-select all"}</a>
                 </p>
             </fieldset>
 
@@ -118,7 +101,7 @@
                     <button class="btn btn-success" type='submit' title="{gt text='Send e-mail to selected recipients'}">
                         {gt text="Send e-mail to selected recipients"}
                     </button>
-                    <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+                    <a class="btn btn-default" href="{route name='zikulausersmodule_admin_index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
                 </div>
             </div>
         </div>

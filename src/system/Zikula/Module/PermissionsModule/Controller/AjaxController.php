@@ -15,44 +15,51 @@ namespace Zikula\Module\PermissionsModule\Controller;
 
 use SecurityUtil;
 use ModUtil;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula_Response_Ajax;
+use Zikula\Core\Response\Ajax\AjaxResponse;
 use DataUtil;
 use UserUtil;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 
 /**
- * Ajax controllers for the search module
+ * @Route("/ajax")
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
+     * @Route("/update", options={"expose"=true})
+     * @Method("POST")
+     *
      * Updates a permission rule in the database
      *
-     * @param pid the permission id
-     * @param gid the group id
-     * @param seq the sequence
-     * @param component the permission component
-     * @param instance the permission instance
-     * @param level the permission level
+     * @param Request $request
+     *  pid the permission id
+     *  gid the group id
+     *  seq the sequence
+     *  component the permission component
+     *  instance the permission instance
+     *  level the permission level
      *
-     * @return \Zikula_Response_Ajax Ajax repsonse with updated permissions
+     * @return AjaxResponse Ajax repsonse with updated permissions
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function updatepermissionAction()
+    public function updateAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $pid       = (int)$this->request->request->get('pid');
-        $gid       = (int)$this->request->request->get('gid');
-        $seq       = (int)$this->request->request->get('seq', 9999);
-        $component = $this->request->request->get('comp', '.*');
-        $instance  = $this->request->request->get('inst', '.*');
-        $level     = (int)$this->request->request->get('level', 0);
+        $pid       = (int)$request->request->get('pid');
+        $gid       = (int)$request->request->get('gid');
+        $seq       = (int)$request->request->get('seq', 9999);
+        $component = $request->request->get('comp', '.*');
+        $instance  = $request->request->get('inst', '.*');
+        $level     = (int)$request->request->get('level', 0);
 
         if (preg_match("/[\n\r\t\x0B]/", $component)) {
             $component = trim(preg_replace("/[\n\r\t\x0B]/", "", $component));
@@ -90,30 +97,34 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 break;
 
             default:
-                $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
+                $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => false));
                 $permission['groupname'] = $group['name'];
         }
 
-        return new Zikula_Response_Ajax($permission);
+        return new AjaxResponse($permission);
     }
 
     /**
+     * @Route("/change-order", options={"expose"=true})
+     * @Method("POST")
+     *
      * Change the order of a permission rule
      *
-     * @param permorder array of sorted permissions (value = permission id)
+     * @param Request $request
+     *  permorder array of sorted permissions (value = permission id)
      *
-     * @return \Zikula_Response_Ajax ajax response containing true
+     * @return AjaxResponse ajax response containing true
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function changeorderAction()
+    public function changeorderAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $permorder = $this->request->request->get('permorder');
+        $permorder = $request->request->get('permorder');
 
         for($cnt = 0 ; $cnt < count($permorder) ; $cnt++) {
             $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $permorder[$cnt]);
@@ -122,31 +133,37 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $this->entityManager->flush();
 
-        return new Zikula_Response_Ajax(array('result' => true));
+        return new AjaxResponse(array('result' => true));
     }
 
     /**
-     * Create a blank permission and return it
+     * @Route("/create", options={"expose"=true})
+     * @Method("POST")
      *
-     * @return \Zikula_Response_Ajax array with new permission
+     * Create a new permission and return it
+     *
+     * @param Request $request
+     *
+     * @return AjaxResponse array with new permission
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     * @throws FatalErrorException if cannot create
      */
-    public function createpermissionAction()
+    public function createAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        // add a blank permission
+        // create a new permission array
         $dummyperm = array(
             'realm'     => 0,
-            'id'        => 0,
-            'component' => '.*',
-            'instance'  => '.*',
-            'level'     => ACCESS_NONE,
-            'insseq'    => -1
+            'id'        => $request->request->get('group', 0),
+            'component' => $request->request->get('component', '.*'),
+            'instance'  => $request->request->get('instance', '.*'),
+            'level'     => $request->request->get('level', ACCESS_NONE),
+            'insseq'    => $request->request->get('insseq'),
         );
 
         $newperm = ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'create', $dummyperm);
@@ -161,28 +178,32 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $newperm['levelname'] = $accesslevels[$newperm['level']];
         $newperm['groupname'] = $this->__('Unregistered');
 
-        return new Zikula_Response_Ajax($newperm);
+        return new AjaxResponse($newperm);
     }
 
     /**
+     * @Route("/delete", options={"expose"=true})
+     * @Method("POST")
+     *
      * Delete a permission
      *
-     * @return \Zikula_Response_Ajax Ajax response containing the id of the permission that has been deleted
+     * @param Request $request
+     *
+     * @return AjaxResponse Ajax response containing the id of the permission that has been deleted
      *
      * @throws FatalErrorException Thrown if the requested permission rule is the default admin rule or if
      *                                    if the permission rule couldn't be deleted
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function deletepermissionAction()
+    public function deleteAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
+        $pid = $request->request->get('pid');
 
-        $pid = (int)$this->request->request->get('pid');
-
-        // check if this is the overall admin permssion and return if this shall be deleted
+        // check if this is the overall admin permission and return if this shall be deleted
         $perm = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $pid);
         if ($perm['pid'] == 1 && $perm['level'] == ACCESS_ADMIN && $perm['component'] == '.*' && $perm['instance'] == '.*') {
             throw new FatalErrorException($this->__('Notice: You cannot delete the main administration permission rule.'));
@@ -194,30 +215,35 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 $this->setVar('lockadmin', false);
             }
 
-            return new Zikula_Response_Ajax(array('pid' => $pid));
+            return new AjaxResponse(array('pid' => $pid));
         }
 
         throw new FatalErrorException($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
     }
 
     /**
+     * @Route("/test", options={"expose"=true})
+     * @Method("POST")
+     *
      * Test a permission rule for a given username
      *
-     * @return \Zikula_Response_Ajax Ajax response containing string with test result for display
+     * @param Request $request
+     *
+     * @return AjaxResponse Ajax response containing string with test result for display
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function testpermissionAction()
+    public function testAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $uname = $this->request->request->get('test_user', '');
-        $comp  = $this->request->request->get('test_component', '.*');
-        $inst  = $this->request->request->get('test_instance', '.*');
-        $level = $this->request->request->get('test_level', ACCESS_READ);
+        $uname = $request->request->get('test_user', '');
+        $comp  = $request->request->get('test_component', '.*');
+        $inst  = $request->request->get('test_instance', '.*');
+        $level = $request->request->get('test_level', ACCESS_READ);
 
         $result = $this->__('Permission check result:') . ' ';
         if (empty($uname)) {
@@ -229,14 +255,16 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if ($uid === false) {
             $result .= '<span id="permissiontestinfored">' . $this->__('unknown user.') . '</span>';
         } else {
-            $result .= '<span id="permissiontestinfogreen">';
+            $granted = SecurityUtil::checkPermission($comp, $inst, $level, $uid);
+
+            $result .= '<span id="' . ($granted ? 'permissiontestinfogreen' : 'permissiontestinfored') . '">';
             if ($uid == 0) {
                 $result .= $this->__('unregistered user');
             } else {
                 $result .= $uname;
             }
             $result .= ': ';
-            if (SecurityUtil::checkPermission($comp, $inst, $level, $uid)) {
+            if ($granted) {
                 $result .= $this->__('permission granted.');
             } else {
                 $result .= $this->__('permission not granted.');
@@ -244,6 +272,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $result .= '</span>';
         }
 
-        return new Zikula_Response_Ajax(array('testresult' => $result));
+        return new AjaxResponse(array('testresult' => $result));
     }
 }

@@ -16,33 +16,56 @@ namespace Zikula\Module\SearchModule\Listener;
 use ModUtil;
 use PageUtil;
 use DataUtil;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\Routing\RouterInterface;
 use System;
 use SecurityUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class FrontControllerListener implements EventSubscriberInterface
 {
+    /**
+     * @var \Symfony\Component\Routing\RouterInterface
+     */
+    private $router;
+
     public static function getSubscribedEvents()
     {
         return array(
-            'frontcontroller.predispatch' => array('pageload'),
+            // Make sure to load the handler *every time* and *before* the routing listeners are running (32).
+            KernelEvents::REQUEST => array(array('pageload', 40)),
         );
     }
 
+    public function __construct(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+
     /**
-     * Handle page load event "frontcontroller.predispatch".
+     * Handle page load event KernelEvents::REQUEST.
      *
-     * @param GenericEvent $event
+     * @param GetResponseEvent $event
      *
      * @return void
      */
-    public function pageload(GenericEvent $event)
+    public function pageload(GetResponseEvent $event)
     {
-        if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+        if (\System::isInstalling()) {
+            return;
+        }
+        $openSearchEnabled = ModUtil::getVar('ZikulaSearchModule', 'opensearch_enabled');
+        if ($openSearchEnabled && SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             // The current user has the rights to search the page.
-            PageUtil::addVar('header', '<link rel="search" type="application/opensearchdescription+xml" title="' . DataUtil::formatForDisplay(System::getVar('sitename')) . '" href="/' . DataUtil::formatForDisplay(ModUtil::url('ZikulaSearchModule', 'user', 'opensearch')) . '" />');
+            PageUtil::addVar('header', '<link rel="search" type="application/opensearchdescription+xml" title="' .
+                DataUtil::formatForDisplay(System::getVar('sitename')) .
+                '" href="' . DataUtil::formatForDisplay($this->router->generate('zikulasearchmodule_user_opensearch')) .
+                '" />'
+            );
         }
     }
-
 }

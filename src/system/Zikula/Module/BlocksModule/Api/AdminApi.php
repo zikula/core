@@ -450,7 +450,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array array of admin links.
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
         $submenulinks = array();
@@ -461,25 +461,36 @@ class AdminApi extends \Zikula_AbstractApi
         // Create array for dropdown menu links
         foreach ($blockspositions as $blocksposition) {
             $filter['blockposition_id'] = $blocksposition['pid'];
-            $submenulinks[] = array('url' => ModUtil::url('ZikulaBlocksModule', 'admin', 'view', array('filter' => $filter)),
-                    'text' => $this->__f('Position "%s"', $blocksposition['name']));
+            $submenulinks[] = array(
+                'url' => $this->get('router')->generate('zikulablocksmodule_admin_view', array('filter' => $filter)),
+                'text' => $this->__f('Position "%s"', $blocksposition['name']));
         }
 
         if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
-            $links[] = array('url' => ModUtil::url('ZikulaBlocksModule', 'admin', 'view'),
-                    'text' => $this->__('Blocks list'),
-                    'icon' => 'table',
-                    'links' => $submenulinks);
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulablocksmodule_admin_view'),
+                'text' => $this->__('Blocks list'),
+                'icon' => 'table',
+                'links' => $submenulinks);
         }
 
         if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaBlocksModule', 'admin', 'newblock'), 'text' => $this->__('Create new block'), 'icon' => 'plus');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulablocksmodule_admin_newblock'),
+                'text' => $this->__('Create new block'),
+                'icon' => 'plus');
         }
         if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaBlocksModule', 'admin', 'newposition'), 'text' => $this->__('Create new block position'), 'icon' => 'plus');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulablocksmodule_admin_newposition'),
+                'text' => $this->__('Create new block position'),
+                'icon' => 'plus');
         }
         if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaBlocksModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulablocksmodule_admin_modifyconfig'),
+                'text' => $this->__('Settings'),
+                'icon' => 'wrench');
         }
 
         return $links;

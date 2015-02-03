@@ -15,36 +15,44 @@ namespace Zikula\Module\CategoriesModule\Controller;
 
 use SecurityUtil;
 use CategoryUtil;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zikula\Core\Response\Ajax\AjaxResponse;
 use FormUtil;
 use ZLanguage;
-use DBObject;
-use Zikula\Core\Response\Ajax\BadDataResponse;
 use Zikula_View;
-use Zikula\Module\CategoriesModuleGenericUtil;
+use Symfony\Component\HttpFoundation\Request;
+use Zikula\Core\Response\Ajax\AjaxResponse;
+use Zikula\Core\Response\Ajax\NotFoundResponse;
+use Zikula\Core\Response\Ajax\ForbiddenResponse;
+use Zikula\Core\Response\Ajax\BadDataResponse;
+use Zikula\Module\CategoriesModule\GenericUtil;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Symfony\Component\Routing\RouterInterface;
 
 /**
+ * @Route("/ajax")
+ *
  * Ajax controllers for the categories module
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
+     * @Route("/resequence", options={"expose"=true})
+     * @Method("POST")
+     * 
      * Resequence categories
+     * 
+     * @param Request $request
      *
-     * @return void
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the module
+     * @return AjaxResponse|ForbiddenResponse
      */
-    public function resequenceAction()
+    public function resequenceAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
+            return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $data  = json_decode($this->request->request->get('data'), true);
+        $data  = json_decode($request->request->get('data'), true);
         $cats = CategoryUtil::getSubCategories(1, true, true, true, true, true, '', 'id');
 
         foreach ($cats as $k => $cat) {
@@ -62,34 +70,36 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'response' => true
         );
 
+        return new AjaxResponse($result);
     }
 
     /**
+     * @Route("/edit", options={"expose"=true})
+     * @Method("POST")
+     *
      * Edit a category
      *
-     * @param mixed[] $args {
-     *      @type string $mode   the mode of operation (new or edit)
-     *      @type int    $cid    the category id
-     *      @type int    $parent the parent category id
+     *      string $mode   the mode of operation (new or edit)
+     *      int    $cid    the category id
+     *      int    $parent the parent category id
      *                       }
      *
-     * @return AjaxResponse ajax response object
+     * @param Request $request
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit or add (depending mode) access to the module
-     * @throws NotFoundHttpException Thrown if category cannot be found
+     * @return AjaxResponse|NotFoundResponse ajax response object
      */
-    public function editAction($args = array())
+    public function editAction(Request $request)
     {
         $this->checkAjaxToken();
 
-        $mode = isset($args['mode']) ? $args['mode'] : $this->request->request->get('mode', 'new');
+        $mode = $request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
-            throw new AccessDeniedException();
+            return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $cid = isset($args['cid']) ? $args['cid'] : $this->request->request->get('cid', 0);
-        $parent = isset($args['parent']) ? $args['parent'] : $this->request->request->get('parent', 1);
+        $cid = $request->request->get('cid', 0);
+        $parent = $request->request->get('parent', 1);
         $validationErrors = FormUtil::getValidationErrors();
         $editCat = '';
 
@@ -98,11 +108,12 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // indicates that we're editing
         if ($mode == 'edit') {
             if (!$cid) {
+
                 return new BadDataResponse($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
             }
             $editCat = CategoryUtil::getCategoryByID($cid);
             if (!$editCat) {
-                throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
+                return new NotFoundResponse($this->__('Sorry! No such item found.'));
             }
         } else {
             // someone just pressed 'new' -> populate defaults
@@ -129,25 +140,29 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if ($validationErrors) {
             return new BadDataResponse($validationErrors, $result);
         }
+
         return new AjaxResponse($result);
     }
 
     /**
+     * @Route("/copy", options={"expose"=true})
+     * @Method("POST")
+     *
      * Copy a category
      *
-     * @return AjaxResponse ajax response object
+     * @param Request $request
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have add access to the module
+     * @return AjaxResponse ajax response object
      */
-    public function copyAction()
+    public function copyAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedException();
+            return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $cid = $this->request->request->get('cid');
-        $parent = $this->request->request->get('parent');
+        $cid = $request->request->get('cid');
+        $parent = $request->request->get('parent');
 
         $cat = CategoryUtil::getCategoryByID($cid);
         CategoryUtil::copyCategoriesByPath($cat['ipath'], $parent);
@@ -182,24 +197,28 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'leafstatus' => $leafStatus,
             'result' => true
         );
+
         return new AjaxResponse($result);
     }
 
     /**
+     * @Route("/delete", options={"expose"=true})
+     * @Method("POST")
+     *
      * Delete a category
      *
-     * @return AjaxResponse ajax response object
+     * @param Request $request
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have delete access to the module
+     * @return AjaxResponse ajax response object
      */
-    public function deleteAction()
+    public function deleteAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
+            return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $cid = $this->request->request->get('cid');
+        $cid = $request->request->get('cid');
         $cat = CategoryUtil::getCategoryByID($cid);
 
         CategoryUtil::deleteCategoriesByPath($cat['ipath']);
@@ -209,25 +228,29 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'cid' => $cid,
             'result' => true
         );
+
         return new AjaxResponse($result);
     }
 
     /**
+     * @Route("/deleteandmove", options={"expose"=true})
+     * @Method("POST")
+     *
      * Delete a category and move any existing subcategories
      *
-     * @return AjaxResponse ajax response object
+     * @param Request $request
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have delete access to the module
+     * @return AjaxResponse ajax response object
      */
-    public function deleteandmovesubsAction()
+    public function deleteandmovesubsAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
+            return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $cid = $this->request->request->get('cid');
-        $parent = $this->request->request->get('parent');
+        $cid = $request->request->get('cid');
+        $parent = $request->request->get('parent');
 
         $cat = CategoryUtil::getCategoryByID($cid);
 
@@ -264,24 +287,28 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'leafstatus' => $leafStatus,
             'result' => true
         );
+
         return new AjaxResponse($result);
     }
 
     /**
+     * @Route("/deletedialog", options={"expose"=true})
+     * @Method("POST")
+     *
      * Display a dialog to get the category to move subcategories to once the parent has been deleted
      *
-     * @return AjaxResponse ajax response object
+     * @param Request $request
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have delete access to the module
+     * @return AjaxResponse ajax response object
      */
-    public function deletedialogAction()
+    public function deletedialogAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
+            return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $cid = $this->request->request->get('cid');
+        $cid = $request->request->get('cid');
 
         $allCats = CategoryUtil::getSubCategories(1, true, true, true, false, true, $cid);
         $selector = CategoryUtil::getSelector_Categories($allCats);
@@ -298,20 +325,23 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     }
 
     /**
+     * @Route("/activate", options={"expose"=true})
+     * @Method("POST")
+     *
      * Activate a category
      *
-     * @return AjaxResponse ajax response object
+     * @param Request $request
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the module
+     * @return AjaxResponse ajax response object
      */
-    public function activateAction()
+    public function activateAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
+            return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $cid = $this->request->request->get('cid');
+        $cid = $request->request->get('cid');
         $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $cid);
         $cat['status'] = 'A';
         $this->entityManager->flush();
@@ -321,24 +351,28 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'cid' => $cid,
             'result' => true
         );
+
         return new AjaxResponse($result);
     }
 
     /**
+     * @Route("/deactivate", options={"expose"=true})
+     * @Method("POST")
+     *
      * Deactivate a category
      *
-     * @return AjaxResponse ajax response object
+     * @param Request $request
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit access to the module
+     * @return AjaxResponse ajax response object
      */
-    public function deactivateAction()
+    public function deactivateAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
+            return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $cid = $this->request->request->get('cid');
+        $cid = $request->request->get('cid');
         $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $cid);
         $cat['status'] = 'I';
         $this->entityManager->flush();
@@ -348,28 +382,32 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'cid' => $cid,
             'result' => true
         );
+
         return new AjaxResponse($result);
     }
 
     /**
+     * @Route("/save", options={"expose"=true})
+     * @Method("POST")
+     *
      * Save a category
      *
-     * @return AjaxResponse ajax response object
+     * @param Request $request
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit or add (depending on mode) access to the module
+     * @return AjaxResponse ajax response object
      */
-    public function saveAction()
+    public function saveAction(Request $request)
     {
         $this->checkAjaxToken();
 
-        $mode = $this->request->request->get('mode', 'new');
+        $mode = $request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel)) {
-            throw new AccessDeniedException();
+            return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
         // get data from post
-        $data = $this->request->request->get('category', null);
+        $data = $request->request->get('category', null);
 
         if (!isset($data['is_locked'])) {
             $data['is_locked'] = 0;
@@ -388,6 +426,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 'parent' => $data['parent_id'],
                 'mode' => $mode
             );
+
             return $this->editAction($args);
         }
 
@@ -417,8 +456,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
-        $attrib_names = $this->request->request->get('attribute_name', array());
-        $attrib_values = $this->request->request->get('attribute_value', array());
+        $attrib_names = $request->request->get('attribute_name', array());
+        $attrib_values = $request->request->get('attribute_value', array());
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $this->entityManager->flush();

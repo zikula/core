@@ -16,8 +16,6 @@
 namespace Zikula\Core\Hook;
 
 use Zikula\Component\HookDispatcher\Hook;
-use Zikula\Core\Hook\ValidationProviders;
-use Zikula\Core\Hook\ValidationResponse;
 
 /**
  * Content validation hook.

@@ -150,7 +150,7 @@ class EventUtil
      *
      * @return void
      *
-     * @note If the exact same handler is already registered, this function does nothing.
+     * Note: If the exact same handler is already registered, this function does nothing.
      */
     public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight=10)
     {
@@ -168,7 +168,7 @@ class EventUtil
 
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
         $newHandler = array('eventname' => $eventName, 'callable' => $callable, 'weight' => $weight);
-        foreach($handlers as $handler) {
+        foreach ($handlers as $handler) {
             if ($handler == $newHandler) {
                 // The exact same handler exists already. Do nothing but display a warning.
                 if (System::isDevelopmentMode()) {
@@ -224,7 +224,7 @@ class EventUtil
      *
      * @return void
      *
-     * @note If the exact same handler is already registered, this function does nothing.
+     * Note: If the exact same handler is already registered, this function does nothing.
      */
     public static function registerPersistentEventHandlerClass($moduleName, $className)
     {
@@ -239,7 +239,7 @@ class EventUtil
 
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
         $newHandler = array('classname' => $className);
-        foreach($handlers as $handler) {
+        foreach ($handlers as $handler) {
             if ($handler == $newHandler) {
                 // The exact same handler exists already. Do nothing but display a warning.
                 if (System::isDevelopmentMode()) {

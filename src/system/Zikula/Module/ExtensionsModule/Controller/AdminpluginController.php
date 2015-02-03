@@ -13,14 +13,16 @@
 
 namespace Zikula\Module\ExtensionsModule\Controller;
 
-use LogUtil;
 use SecurityUtil;
 use PluginUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula_Plugin_ConfigurableInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 
 /**
+ * @Route("/adminplugin")
+ *
  * Extensions_Plugin controller.
  */
 class AdminpluginController extends \Zikula_AbstractController
@@ -50,6 +52,8 @@ class AdminpluginController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/dispatch")
+     *
      * Dispatch a module view request.
      *
      * @return mixed
@@ -100,6 +104,6 @@ class AdminpluginController extends \Zikula_AbstractController
             throw new NotFoundHttpException();
         }
 
-        return $this->pluginController->$action();
+        return $this->response($this->pluginController->$action());
     }
 }

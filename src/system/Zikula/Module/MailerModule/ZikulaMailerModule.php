@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2013 - Zikula Application Framework
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -16,7 +16,7 @@ namespace Zikula\Module\MailerModule;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
- * Base module definition for the pagelock module
+ * Base module definition for the Mailer module.
  */
 class ZikulaMailerModule extends AbstractCoreModule
 {

@@ -147,7 +147,7 @@ class ZGettext
      */
     public function bindTextDomain($domain, $path)
     {
-        $codeset = ini_get('mbstring.internal_encoding');
+        $codeset = (version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset');
 
         $this->textDomains[$this->getLocale()][$this->getCategory()][$domain] = array('path' => "$path/", 'codeset' => $codeset, 'reader' => null);
     }
@@ -162,7 +162,7 @@ class ZGettext
      */
     public function bindTextDomainCodeset($domain, $codeset = null)
     {
-        $codeset = ini_get('mbstring.internal_encoding');
+        $codeset = (version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset');
 
         $this->textDomains[$this->getLocale()][$this->getCategory()][$domain]['codeset'] = $codeset;
     }
@@ -192,6 +192,20 @@ class ZGettext
      */
     public static function getReader($domain=null, $category = null, $cache = true)
     {
+        // check if classes are included (which is not true for CLI commands)
+        if (!class_exists('StreamReader_Abstract')) {
+            if (file_exists('lib/StreamReader/Abstract.php')) {
+                include_once 'lib/StreamReader/Abstract.php';
+                include_once 'lib/StreamReader/String.php';
+                include_once 'lib/StreamReader/CachedFile.php';
+            } elseif (file_exists('src/lib/StreamReader/Abstract.php')) {
+                // true when calling composer
+                include_once 'src/lib/StreamReader/Abstract.php';
+                include_once 'src/lib/StreamReader/String.php';
+                include_once 'src/lib/StreamReader/CachedFile.php';
+            }
+        }
+
         $_this = self::getInstance();
         $domain = (isset($domain) ? $domain : $_this->defaultDomain);
         $category = isset($category) ? $category : $_this->getCategory();
@@ -199,7 +213,7 @@ class ZGettext
         $locale = $_this->getLocale();
 
         if (!isset($_this->textDomains[$locale][$category][$domain])) {
-            $codeset = ini_get('mbstring.internal_encoding');
+            $codeset = (version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset');
             $_this->textDomains[$locale][$category][$domain] = array('path' => "locale/", 'codeset' => $codeset, 'reader' => null);
         }
         $textDomain = & $_this->textDomains[$locale][$category][$domain];
@@ -210,7 +224,7 @@ class ZGettext
             $path = realpath($textDomain['path']."$locale/LC_MESSAGES/$domain.mo");
             $reader = new StreamReader_CachedFile($path);
             $textDomain['reader'] = new ZMO($reader, $cache);
-            $codeset = (isset($textDomain['codeset']) ? $textDomain['codeset'] : ini_get('mbstring.internal_encoding'));
+            $codeset = (isset($textDomain['codeset'])) ? $textDomain['codeset'] : ((version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset'));
             $textDomain['reader']->setEncoding($codeset);
         }
 

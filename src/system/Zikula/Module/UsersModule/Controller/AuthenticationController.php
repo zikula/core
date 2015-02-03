@@ -13,9 +13,9 @@
 
 namespace Zikula\Module\UsersModule\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula_View;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
  * Access to user-initiated authentication actions for the Users module.
@@ -43,11 +43,10 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      * - string $args['form_type'] An indicator of the type of form the form fields will appear on.
      * - string $args['method']    The authentication method for which a selector should be returned.
      *
-     * @param array $args The parameters for this function.
-     *
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if the $args array is invalid, or contains an invalid value.
+     * @throws NotFoundHttpException if template doesn't exist
      */
     public function getLoginFormFieldsAction(array $args)
     {
@@ -78,13 +77,14 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
                     if (!$this->view->template_exists($templateName)) {
                         $templateName = "Authentication/LoginFormFields/Default/Default.tpl";
                         if (!$this->view->template_exists($templateName)) {
-                            throw new FatalErrorException($this->__f('A form fields template was not found for the %1$s method using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
+                            throw new NotFoundHttpException($this->__f('A form fields template was not found for the %1$s method using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
                         }
                     }
                 }
             }
 
             $this->view->assign('authentication_method', $args['method']);
+
             return $this->response($this->view->fetch($templateName));
         }
     }
@@ -102,12 +102,10 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      *                                          log-in block, or some other equivalent control. For the Users module, it should
      *                                          contain the elements 'login_id' and 'pass'.
      *
-     * @param array $args The parameters for this function.
-     *
      * @return boolean True if the authentication information (the user's credentials) pass initial user-interface level validation;
      *                  otherwise false and an error status message is set.
      *
-     * @throws FatalErrorException Thrown if no authentication module name or method is specified, or if the module name or method
+     * @throws \InvalidArgumentException|\BadMethodCallException Thrown if no authentication module name or method is specified, or if the module name or method
      *                                  is invalid for this module.
      */
     public function validateAuthenticationInformationAction(array $args)
@@ -118,15 +116,15 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
         $authenticationInfo   = isset($args['authenticationInfo']) ? $args['authenticationInfo'] : array();
 
         if (!is_array($authenticationMethod) || empty($authenticationMethod) || !isset($authenticationMethod['modname'])) {
-            throw new FatalErrorException($this->__('The authentication module name was not specified during an attempt to validate user authentication information.'));
+            throw new \InvalidArgumentException($this->__('The authentication module name was not specified during an attempt to validate user authentication information.'));
         } elseif ($authenticationMethod['modname'] != 'ZikulaUsersModule') {
-            throw new FatalErrorException($this->__f('Attempt to validate authentication information with incorrect authentication module. Credentials should be validated with the \'%1$s\' module instead.', array($authenticationMethod['modname'])));
+            throw new \InvalidArgumentException($this->__f('Attempt to validate authentication information with incorrect authentication module. Credentials should be validated with the \'%1$s\' module instead.', array($authenticationMethod['modname'])));
         }
 
         if (!isset($authenticationMethod['method'])) {
-            throw new FatalErrorException($this->__('The authentication method name was not specified during an attempt to validate user authentication information.'));
+            throw new \BadMethodCallException($this->__('The authentication method name was not specified during an attempt to validate user authentication information.'));
         } elseif (($authenticationMethod['method'] != 'uname') && ($authenticationMethod['method'] != 'email') && ($authenticationMethod['method'] != 'unameoremail')) {
-            throw new FatalErrorException($this->__f('Unknown authentication method (\'%1$s\') while attempting to validate user authentication information in the Users module.', array($authenticationMethod['method'])));
+            throw new \BadMethodCallException($this->__f('Unknown authentication method (\'%1$s\') while attempting to validate user authentication information in the Users module.', array($authenticationMethod['method'])));
         }
 
         if (!is_array($authenticationInfo) || empty($authenticationInfo) || !isset($authenticationInfo['login_id'])
@@ -134,17 +132,17 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
                 ) {
             // This is an internal error that the user cannot recover from, and should not happen (it is an exceptional situation).
             if ($authenticationMethod['method'] == 'uname') {
-                throw new FatalErrorException($this->__('A user name was not specified, or the user name provided was invalid.'));
+                throw new \InvalidArgumentException($this->__('A user name was not specified, or the user name provided was invalid.'));
             } elseif ($authenticationMethod['method'] == 'email') {
-                throw new FatalErrorException($this->__('An e-mail address was not specified, or the e-mail address provided was invalid.'));
+                throw new \InvalidArgumentException($this->__('An e-mail address was not specified, or the e-mail address provided was invalid.'));
             } elseif ($authenticationMethod['method'] == 'unameoremail') {
-                throw new FatalErrorException($this->__('An user name / e-mail address was not specified, or the user name / e-mail address provided was invalid.'));
+                throw new \InvalidArgumentException($this->__('An user name / e-mail address was not specified, or the user name / e-mail address provided was invalid.'));
             }
         }
 
         if (!isset($authenticationInfo['pass']) || !is_string($authenticationInfo['pass'])) {
             // This is an internal error that the user cannot recover from, and should not happen (it is an exceptional situation).
-            throw new FatalErrorException($this->__('A password was not specified, or the password provided was invalid.'));
+            throw new \InvalidArgumentException($this->__('A password was not specified, or the password provided was invalid.'));
         }
 
         // No need to be too fancy or too specific here. If the login id (the uname or email) is not empty, then that's sufficient.
@@ -154,23 +152,23 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
             if (!empty($authenticationInfo['pass'])) {
                 $validates = true;
             } else {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a password.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide a password.'));
             }
         } elseif (empty($authenticationInfo['pass'])) {
             if ($authenticationMethod['method'] == 'uname') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name and password.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide a user name and password.'));
             } elseif ($authenticationMethod['method'] == 'email') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide an e-mail address and password.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide an e-mail address and password.'));
             } elseif ($authenticationMethod['method'] == 'unameoremail') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name / e-mail address and password.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide a user name / e-mail address and password.'));
             }
         } else {
             if ($authenticationMethod['method'] == 'uname') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide a user name.'));
             } elseif ($authenticationMethod['method'] == 'email') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide an e-mail address.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide an e-mail address.'));
             } elseif ($authenticationMethod['method'] == 'unameoremail') {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Please provide a user name / e-mail address.'));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__('Please provide a user name / e-mail address.'));
             }
         }
 

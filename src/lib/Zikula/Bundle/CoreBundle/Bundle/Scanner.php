@@ -21,6 +21,9 @@ class Scanner
         $finder = null === $finder ? new Finder() : $finder;
         $finder->files()
             ->in($paths)
+            ->notPath('docs')
+            ->notPath('vendor')
+            ->notPath('Resources')
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
             ->depth('<'.$depth)
@@ -45,6 +48,9 @@ class Scanner
     public function decode($file)
     {
         $base = str_replace('\\', '/', dirname($file));
+        $zkRoot = realpath(dirname(__FILE__) . '/../../../../../');
+        $base = substr($base, strlen($zkRoot) + 1);
+
         $json = json_decode($this->getFileContents($file), true);
         if (\JSON_ERROR_NONE === json_last_error() && true === $this->validateBasic($json)) {
             // add base-path for future use
@@ -80,19 +86,19 @@ class Scanner
         return file_get_contents($file);
     }
 
-    public function getModulesMetaData()
+    public function getModulesMetaData($indexByShortName = false)
     {
-        return $this->getMetaData('zikula-module');
+        return $this->getMetaData('zikula-module', $indexByShortName);
     }
 
-    public function getThemesMetaData()
+    public function getThemesMetaData($indexByShortName = false)
     {
-        return $this->getMetaData('zikula-theme');
+        return $this->getMetaData('zikula-theme', $indexByShortName);
     }
 
-    public function getPluginsMetaData()
+    public function getPluginsMetaData($indexByShortName = false)
     {
-        return $this->getMetaData('zikula-plugin');
+        return $this->getMetaData('zikula-plugin', $indexByShortName);
     }
 
     private function validateBasic($json)
@@ -121,12 +127,13 @@ class Scanner
         return true;
     }
 
-    private function getMetaData($type)
+    private function getMetaData($type, $indexByShortName)
     {
         $array = array();
         foreach ($this->jsons as $json) {
-            if ($json['type'] === $type && true) {
-                $array[$json['name']] = new MetaData($json);
+            if ($json['type'] === $type) {
+                $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];
+                $array[$indexField] = new MetaData($json);
             }
         }
 

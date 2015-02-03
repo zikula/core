@@ -14,7 +14,6 @@
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver;
 use Symfony\Component\DependencyInjection\ContainerAware;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -30,6 +29,7 @@ class ModUtil
     const STATE_UPGRADED = 5;
     const STATE_NOTALLOWED = 6;
     const STATE_INVALID = -1;
+    const INCOMPATIBLE_CORE_SHIFT = 20;
 
     const CONFIG_MODULE = 'ZConfig';
 
@@ -104,7 +104,7 @@ class ModUtil
         self::$modvars = new ArrayObject(array(
                 EventUtil::HANDLERS => array(),
                 ServiceUtil::HANDLERS => array(),
-                'ZikulaSettingsModule'          => array(),
+                'ZikulaSettingsModule' => array(),
         ));
 
         // don't init vars during the installer or upgrader
@@ -675,7 +675,9 @@ class ModUtil
                 $data = call_user_func($tablefuncOld);
             }
 
-            $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+            /** @var $connection Doctrine\DBAL\Connection */
+            $connection = $serviceManager->get('doctrine.dbal.default_connection');
+            $dbDriverName = $connection->getDriver()->getName();
 
             // Generate _column automatically from _column_def if it is not present.
             foreach ($data as $key => $value) {
@@ -1231,7 +1233,7 @@ class ModUtil
 
     private static function symfonyRoute($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang)
     {
-        /** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
+        /** @var \Symfony\Component\Routing\RouterInterface|\JMS\I18nRoutingBundle\Router\I18nRouter $router */
         $router = ServiceUtil::get('router');
 
         if (isset($args['lang'])) {
@@ -1249,7 +1251,8 @@ class ModUtil
 
         $foundRoute = false;
         foreach ($routeNames as $routeName) {
-            if ($router->getRouteCollection()->get($routeName) !== null) {
+            $routeCollection = ($router instanceof \JMS\I18nRoutingBundle\Router\I18nRouter) ? $router->getOriginalRouteCollection() : $router->getRouteCollection();
+            if ($routeCollection->get($routeName) !== null) {
                 $foundRoute = $routeName;
             }
         }
@@ -1340,7 +1343,8 @@ class ModUtil
         }
         
         $request = \ServiceUtil::get('request');
-        if ($request->attributes->has('_symfonyRouteMatched') && $request->attributes->get('_symfonyRouteMatched')) {
+        if ($request->attributes->has('_route_params')) {
+            // If this attribute is set, a Symfony route has been matched. We need to generate full urls in that case.
             $fqurl = true;
         }
 
@@ -1767,7 +1771,7 @@ class ModUtil
         }
 
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-        $osdir   = DataUtil::formatForOS($modinfo['directory']);
+        $osdir = DataUtil::formatForOS($modinfo['directory']);
         if (false === strpos($modinfo['directory'], '/')) {
             ZLoader::addAutoloader($moduleName, array(
                                    realpath("$modpath"),
@@ -1847,7 +1851,7 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), array('zikulaadminmodule', 'zikulablocksmodule', 'zikulacategoriesmodule', 'zikulaerrorsmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule'))) {
+        if (in_array(strtolower($moduleName), array('zikulaadminmodule', 'zikulablocksmodule', 'zikulacategoriesmodule', 'zikularoutesmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule'))) {
             $directory = 'system';
         } else {
             $directory = 'modules';
@@ -1868,7 +1872,7 @@ class ModUtil
      */
     public static function getModuleImagePath($moduleName)
     {
-        if($moduleName == '') {
+        if ($moduleName == '') {
             return false;
         }
 
@@ -1917,7 +1921,7 @@ class ModUtil
             'PageLock', 'Search', 'SecurityCenter', 'Settings', 'Theme', 'Users',
             'Categories', 'Admin'
         ))) {
-            $name = 'Zikula'.$name.'Module';
+            $name = 'Zikula' . $name . 'Module';
         }
 
         return $name;
@@ -1972,5 +1976,4 @@ class ModUtil
     {
         return ('system' === self::getModuleBaseDir($module)) ? true : false;
     }
-
 }

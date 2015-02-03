@@ -14,8 +14,8 @@
 
 namespace Zikula\Core\Doctrine\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * Base class of one-to-one association between any entity and metadata.

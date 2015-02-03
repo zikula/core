@@ -113,7 +113,7 @@
     </tbody>
 </table>
 
-{if !empty($pager)}{pager rowcount=$pager.rowcount limit=$pager.limit posvar=$pager.posvar}{/if}
+{if !empty($pager)}{pager rowcount=$pager.rowcount limit=$pager.limit posvar=$pager.posvar route='zikulausersmodule_admin_viewregistrations'}{/if}
 
 <p class="sub text-center bold">{gt text='Legend'}</p>
 <table class="table table-bordered table-striped">

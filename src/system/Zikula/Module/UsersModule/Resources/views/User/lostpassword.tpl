@@ -1,10 +1,8 @@
 {gt text='Lost password recovery' assign='templatetitle'}
-{modulelinks modname='ZikulaUsersModule' type='user'}
+
 {include file='User/menu.tpl'}
-
 <p class="alert alert-info">{gt text="Please enter EITHER your user name OR your e-mail address below and click the 'Submit' button. You will be e-mailed a confirmation code. Check your e-mail, and follow the given instructions."}</p>
-
-<form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='lostpassword'}" method="post">
+<form class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_lostpassword'}" method="post">
     <div>
         <input type="hidden" id="lostpasswordcsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>

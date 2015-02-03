@@ -1,31 +1,32 @@
 <?php
 
-/*
- * This file is part of the Symfony package.
+/**
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
-use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\RequestContextAwareInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
+use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RequestContextAwareInterface;
 
 /**
  * Initializes the context from the request and sets request attributes based on a matching route.
@@ -117,8 +118,6 @@ class RouterListener implements EventSubscriberInterface
             return;
         }
 
-        $request->getBasePath();
-
         // add attributes based on the request (routing)
         try {
             // matching a request is more powerful than matching a URL path + context, so try that first
@@ -135,6 +134,9 @@ class RouterListener implements EventSubscriberInterface
             $request->attributes->add($parameters);
             unset($parameters['_route']);
             unset($parameters['_controller']);
+            unset($parameters['_zkModule']);
+            unset($parameters['_zkType']);
+            unset($parameters['_zkFunc']);
             $request->attributes->set('_route_params', $parameters);
         } catch (ResourceNotFoundException $e) {
             $message = sprintf('No route found for "%s %s"', $request->getMethod(), $request->getPathInfo());
@@ -147,7 +149,7 @@ class RouterListener implements EventSubscriberInterface
         } catch (MethodNotAllowedException $e) {
             $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $request->getMethod(), $request->getPathInfo(), implode(', ', $e->getAllowedMethods()));
 
-            throw new MethodNotAllowedHttpException($e->getAllowedMethods(), $message, $e);
+            //throw new MethodNotAllowedHttpException($e->getAllowedMethods(), $message, $e);
         }
     }
 

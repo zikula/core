@@ -1312,6 +1312,10 @@ class DBUtil
         if (!strlen($orderby)) {
             return $orderby;
         }
+        
+        if (strpos($orderby, 'GROUP BY') === 0) {
+            return $orderby;
+        }
 
         if (!$table) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
@@ -1398,6 +1402,8 @@ class DBUtil
                             $hasMath = (bool)(strcmp($fullColumnName, str_replace($search, $replace, $fullColumnName)));
                             if ($hasMath) {
                                 $fullColumnName = "'$left'";
+                            } elseif (!$hasTablePrefix) {
+                                $fullColumnName = "tbl.$fullColumnName";
                             }
                         } else {
                             if (!$hasTablePrefix) {
@@ -1847,7 +1853,7 @@ class DBUtil
         $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
 
-        $where = $idFieldName . " = " . self::_typesafeQuotedValue ($table, $idfield, $id);
+        $where = $idFieldName . " = " . self::_typesafeQuotedValue ($tableName, $idfield, $id);
 
         return self::selectFieldArray($tableName, $field, $where, $orderby, $distinct, $assocKey, $limitOffset, $limitNumRows);
     }
@@ -1867,9 +1873,7 @@ class DBUtil
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
-        $fieldName = $columns[$field];
-
-        $field = isset($fieldName) ? $fieldName : $field;
+        $field = isset($columns[$field]) ? $columns[$field] : $field;
 
         $sql = "SELECT $option($field) FROM $tableName AS tbl";
         $where = self::_checkWhereClause($where);
@@ -3273,6 +3277,7 @@ class DBUtil
         $tablecol = $table . '_column';
         $tableopt = $table . '_constraints';
         $tables = self::getTables();
+        $constraints = '';
         if (array_key_exists($tableopt, $tables) && is_array($tables[$tableopt])) {
             foreach ($tables[$tableopt] as $fk_column => $fk_reference) {
                 $reference_table = $tables[$fk_reference['table']];

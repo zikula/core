@@ -4,8 +4,9 @@
     {gt text='Export users'}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='exporter'}" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" role="form" action="{route name='zikulausersmodule_admin_exporter'}" method="post" enctype="multipart/form-data">
     <div>
+	<input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmed" value="1" />
         <fieldset>
             <legend>Export Options</legend>
@@ -65,7 +66,7 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 {button class="btn btn-success" __alt='Export' __title='Export' __text='Export'}
-                <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+                <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>
         </div>
     </div>

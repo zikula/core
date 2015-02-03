@@ -4,21 +4,21 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+    translator:      { fallback: %locale% }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: %kernel.debug%
     form:            ~
     csrf_protection: ~
-    validation:      { enable_annotations: true }
+    validation:      { enabled: true, enable_annotations: true, api: auto }
     templating:
         engines: ['twig']
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
-        name: _zsid
+        name: %zikula.session.name%
         handler_id: session.handler.legacy
         storage_id: session.storage.legacy
     fragments:       ~
@@ -32,7 +32,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
+#    bundles:        [ ] #commenting this out automatically loads all presently loaded bundles
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -55,6 +55,7 @@ doctrine:
                 password: %database_password%
                 charset:  UTF8
                 path:     %database_path%
+                server_version: %database_server_version%
 
     orm:
         proxy_namespace: DoctrineProxy
@@ -74,6 +75,13 @@ doctrine:
                         prefix: Zikula\Core\Doctrine\Entity
                         dir: "%kernel.root_dir%/../lib/Zikula/Core/Doctrine/Entity"
                         alias: ZikulaCore # this one is optional and will default to the name set for the mapping
+                        is_bundle: false
+                    # hookstorage required in upgrade.php
+                    zikula_hookstorage:
+                        type: annotation
+                        prefix: Zikula\Component\HookDispatcher\Storage\Doctrine\Entity
+                        dir: "%kernel.root_dir%/../lib/Zikula/Component/HookDispatcher/Storage/Doctrine/Entity"
+                        alias: ZikulaHookStorage # this one is optional and will default to the name set for the mapping
                         is_bundle: false
                     gedmo_translatable:
                         type: annotation
@@ -111,43 +119,33 @@ stof_doctrine_extensions:
     orm:
         default:
             # if removed these values default to false
-            translatable: false
+            translatable: true
             timestampable: true
             blameable: true
             sluggable: true
             tree: true
             loggable: true
-            sortable: false
-            softdeleteable: false
-            uploadable: false
-            reference_integrity: false
-
-# Swiftmailer Configuration
-swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    spool:     { type: memory }
-
-cmf_routing:
-    dynamic:
-        enabled: true
-        route_provider_service_id: corebundle.route_provider
-    chain:
-        routers_by_id:
-            # enable the symfony default router with a higher priority.
-            router.default: 100
-
-            # enable the DynamicRouter with a low priority
-            # this way the non dynamic routes take precedence.
-            cmf_routing.dynamic_router: 20
+            sortable: true
+            softdeleteable: true
+            uploadable: true
+            reference_integrity: true
+    class:
+        translatable:         Gedmo\Translatable\TranslatableListener
+        timestampable:        Gedmo\Timestampable\TimestampableListener
+        blameable:            Gedmo\Blameable\BlameableListener
+        sluggable:            Gedmo\Sluggable\SluggableListener
+        tree:                 Gedmo\Tree\TreeListener
+        loggable:             Gedmo\Loggable\LoggableListener
+        sortable:             Gedmo\Sortable\SortableListener
+        softdeleteable:       Gedmo\SoftDeleteable\SoftDeleteableListener
+        uploadable:           Gedmo\Uploadable\UploadableListener
+        reference_integrity:  Gedmo\ReferenceIntegrity\ReferenceIntegrityListener
 
 parameters:
     # Append the 'web/' folder to any asset path, because the application kernel of Zikula is not located in
     # the 'web' folder.
     templating.asset.path_package.class: Zikula\Bundle\CoreBundle\Templating\Asset\PathPackage
-    # override stof BlameListener to set Zikula User
+    # override Stof\DoctrineExtensionsBundle\EventListener\BlameListener to set Zikula User
     stof_doctrine_extensions.event_listener.blame.class: Zikula\Bundle\CoreBundle\EventListener\BlameListener
     # zikula core stylesheet and javascript component locations
     zikula.stylesheet.bootstrap.min.path: web/bootstrap/css/bootstrap.min.css

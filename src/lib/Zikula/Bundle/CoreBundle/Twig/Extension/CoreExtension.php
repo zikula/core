@@ -37,7 +37,9 @@ class CoreExtension extends \Twig_Extension
             'showblockposition' => new \Twig_Function_Method($this, 'showBlockPosition'),
             'showblock' => new \Twig_Function_Method($this, 'showBlock'),
             'blockinfo' => new \Twig_Function_Method($this, 'getBlockInfo'),
-            'zasset' => new \Twig_Function_Method($this, 'getAssetPath')
+            'zasset' => new \Twig_Function_Method($this, 'getAssetPath'),
+            'showflashes' => new \Twig_Function_Method($this, 'showFlashes', array('is_safe' => array('html'))),
+            'array_unset' => new \Twig_Function_Method($this, 'arrayUnset'),
         );
     }
 
@@ -71,21 +73,27 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * @todo
-     * @return string
+     * Function to get the site's language.
+     * 
+     * Available parameters:
+     *     - fs:  safe for filesystem.
+     * @return string The language
      */
-    public function lang()
+    public function lang($fs = false)
     {
-        return 'en';
+        $result = ($fs ? \ZLanguage::transformFS(\ZLanguage::getLanguageCode()) : \ZLanguage::getLanguageCode());
+
+        return $result;
     }
 
     /**
-     * @todo
-     * @return string
+     * Function to get the language direction
+     * 
+     * @return string   the language direction
      */
     public function langDirection()
     {
-        return 'ltr';
+        return \ZLanguage::getDirection();
     }
 
     public function button()
@@ -101,6 +109,86 @@ class CoreExtension extends \Twig_Extension
     public function icon()
     {
 
+    }
+
+    /**
+     * Display flash messages in twig template. Defaults to bootstrap alert classes.
+     *
+     * <pre>
+     *  {{ showflashes() }}
+     *  {{ showflashes({'class': 'custom-class', 'tag': 'span'}) }}
+     * </pre>
+     *
+     * @param array $params
+     * @return string
+     */
+    public function showFlashes(array $params = array())
+    {
+        $result = '';
+
+        $total_messages = array();
+
+        $messageTypeMap = array(
+            \Zikula_Session::MESSAGE_ERROR => 'danger',
+            \Zikula_Session::MESSAGE_WARNING => 'warning',
+            \Zikula_Session::MESSAGE_STATUS => 'success',
+            'danger' => 'danger',
+            'success' => 'success',
+        );
+
+        foreach ($messageTypeMap as $messageType => $bootstrapClass) {
+            /**
+             * Get messages.
+             */
+            $messages = $this->container->get('session')->getFlashBag()->get($messageType);
+
+            if (count($messages) > 0) {
+                /**
+                 * Set class for the messages.
+                 */
+                $class = (!empty($params['class'])) ? $params['class'] : "alert alert-$bootstrapClass";
+
+                $total_messages = $total_messages + $messages;
+
+                /**
+                 * Build output of the messages.
+                 */
+                if (empty($params['tag']) || ($params['tag'] != 'span')) {
+                    $params['tag'] = 'div';
+                }
+
+                $result .= '<' . $params['tag'] . ' class="' . $class . '"';
+
+                if (!empty($params['style'])) {
+                    $result .= ' style="' . $params['style'] . '"';
+                }
+
+                $result .= '>';
+                $result .= implode('<hr />', $messages);
+                $result .= '</' . $params['tag'] . '>';
+            }
+        }
+
+        if (empty($total_messages)) {
+            return "";
+        }
+
+        return $result;
+    }
+
+    /**
+     * Delete a key of an array
+     *
+     * @param array  $array Source array
+     * @param string $key   The key to remove
+     *
+     * @return array
+     */
+    public function arrayUnset($array, $key)
+    {
+        unset($array[$key]);
+
+        return $array;
     }
 
     /**

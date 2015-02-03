@@ -1,0 +1,15 @@
+Resources/views/Route/index.tpl: config/templates/ZikulaRoutesModule/Route/index.tpl
+Resources/views/Route/view.tpl: config/templates/ZikulaRoutesModule/Route/view.tpl
+Resources/views/Route/view_quickNav.tpl: config/templates/ZikulaRoutesModule/Route/view_quickNav.tpl
+Resources/views/Route/display.tpl: config/templates/ZikulaRoutesModule/Route/display.tpl
+Resources/views/Route/delete.tpl: config/templates/ZikulaRoutesModule/Route/delete.tpl
+Resources/views/Route/include_displayItemListOne.tpl: config/templates/ZikulaRoutesModule/Route/include_displayItemListOne.tpl
+Resources/views/Route/include_displayItemListMany.tpl: config/templates/ZikulaRoutesModule/Route/include_displayItemListMany.tpl
+Resources/views/Admin/header.tpl: config/templates/ZikulaRoutesModule/Admin/header.tpl
+Resources/views/Admin/footer.tpl: config/templates/ZikulaRoutesModule/Admin/footer.tpl
+Resources/views/Route/edit.tpl: config/templates/ZikulaRoutesModule/Route/edit.tpl
+Resources/views/Route/inlineRedirectHandler.tpl: config/templates/ZikulaRoutesModule/Route/inlineRedirectHandler.tpl
+Resources/views/Helper/include_standardfields_display.tpl: config/templates/ZikulaRoutesModule/Helper/include_standardfields_display.tpl
+Resources/views/Helper/include_standardfields_edit.tpl: config/templates/ZikulaRoutesModule/Helper/include_standardfields_edit.tpl
+Resources/views/include_filterSyntaxDialog.tpl: config/templates/ZikulaRoutesModule/include_filterSyntaxDialog.tpl
+Resources/views/include_pdfheader.tpl: config/templates/ZikulaRoutesModule/include_pdfheader.tpl

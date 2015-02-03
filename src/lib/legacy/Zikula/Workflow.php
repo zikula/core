@@ -107,9 +107,20 @@ class Zikula_Workflow
                            'schemaname'   => $this->id,
                            'state'        => $stateID);
 
-        if (!DBUtil::insertObject($insertObj, 'workflows')) {
-            return false;
-        }
+        $entity = new Zikula\Core\Doctrine\Entity\WorkflowEntity();
+        $entity->setObjTable($insertObj['obj_table']);
+        $entity->setObjIdcolumn($insertObj['obj_idcolumn']);
+        $entity->setObjId($insertObj['obj_id']);
+        $entity->setModule($insertObj['module']);
+        $entity->setSchemaname($insertObj['schemaname']);
+        $entity->setState($insertObj['state']);
+
+        //get the entity manager
+        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em->persist($entity);
+        $em->flush();
+
+        $insertObj['id'] = $entity->getId();
 
         $this->workflowData = $insertObj;
         if ($obj instanceof Doctrine_Record) {
@@ -131,14 +142,27 @@ class Zikula_Workflow
      */
     public function updateWorkflowState($stateID, $debug = null)
     {
-        $obj = array('id'    => $this->workflowData['id'],
-                     'state' => $stateID);
+        //get the entity manager
+        $em = ServiceUtil::get('doctrine.entitymanager');
+
+        //create the dql query.
+        $qb = $em->createQueryBuilder()
+                 ->update('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+                 ->set('w.state', ':newState')
+                 ->setParameter('newState', $stateID);
 
         if (isset($debug)) {
-            $obj['debug'] = $debug;
+            $qb->set('w.debug', ':newDebug')
+               ->setParameter('newDebug', $debug);
         }
 
-        return (bool)DBUtil::updateObject($obj, 'workflows');
+        $query = $qb->where('w.id = :id')
+                    ->setParameter('id', $this->workflowData['id'])
+                    ->getQuery();
+
+        $result = $query->execute();
+
+        return true;
     }
 
     /**
@@ -207,7 +231,10 @@ class Zikula_Workflow
             $this->workflowData['state'] = $nextState;
             $obj->mapValue('__WORKFLOW__', $this->workflowData);
         } else {
-            $obj['__WORKFLOW__']['state'] = $nextState;
+            // use helper var to prevent indirect modification exception
+            $workflow = $obj['__WORKFLOW__'];
+            $workflow['state'] = $nextState;
+            $obj['__WORKFLOW__'] = $workflow;
         }
 
         // return result of all operations (possibly okay to just return true here)

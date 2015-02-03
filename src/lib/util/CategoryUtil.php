@@ -609,9 +609,9 @@ class CategoryUtil
         $em = ServiceUtil::get('doctrine.entitymanager');
 
         $dql = "
-        SELECT c
-        FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c
-        WHERE c.$pathField = :apath OR c.$pathField LIKE :apathwc";
+            SELECT c
+            FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c
+            WHERE c.$pathField = :apath OR c.$pathField LIKE :apathwc";
         $query = $em->createQuery($dql);
         $query->setParameter('apath', $apath);
         $query->setParameter('apathwc', "{$apath}/%");
@@ -932,6 +932,43 @@ class CategoryUtil
     }
 
     /**
+     * Get the java-script for the tree menu using jQuery.
+     *
+     * @param array   $cats             The categories array to represent in the tree.
+     * @param boolean $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
+     * @param boolean $sortable         Sets the zikula tree option sortable (optional) (default=false).
+     * @param array   $options          Options array for Zikula_Tree.
+     *
+     * @return string generated tree JS text.
+     */
+    public static function getCategoryTreeJqueryJS($cats, $doReplaceRootCat = true, $sortable = false, array $options = array())
+    {
+        $leafNodes = array();
+        foreach ($cats as $i => $c) {
+            if ($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
+                $c['name'] = __('Root category');
+            }
+            $cats[$i] = self::getCategoryTreeJSNode($c);
+            if ($c['is_leaf']) {
+                $leafNodes[] = $c['id'];
+            }
+        }
+
+        $tree = new Zikula_Tree();
+        $tree->setOption('id', 'categoriesTree');
+        $tree->setOption('sortable', $sortable);
+        // disable drag and drop for root category
+        $tree->setOption('disabled', array(1));
+        $tree->setOption('disabledForDrop', $leafNodes);
+        if (!empty($options)) {
+            $tree->setOptionArray($options);
+        }
+        $tree->loadArrayData($cats);
+
+        return $tree->getJqueryHtml();
+    }
+
+    /**
      * Prepare category for the tree menu.
      *
      * @param array $category Category data.
@@ -947,7 +984,7 @@ class CategoryUtil
         $url = ModUtil::url('ZikulaCategoriesModule', 'admin', 'edit', $params);
 
         $request = ServiceUtil::get('request');
-        if ($request->attributes->get('_type') == 'admin') {
+        if ($request->attributes->get('_zkType') == 'admin') {
             $url .= '#top';
         }
 
@@ -1156,7 +1193,7 @@ class CategoryUtil
             $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'admin', 'edit', $params));
 
             $request = ServiceUtil::get('request');
-            if ($request->attributes->get('_type') == 'admin') {
+            if ($request->attributes->get('_zkType') == 'admin') {
                 $url .= '#top';
             }
 
@@ -1529,26 +1566,22 @@ class CategoryUtil
     public static function hasCategoryAccess($categories, $module, $permLevel = ACCESS_OVERVIEW)
     {
         // Always allow access to content with no categories associated
-        if (count($categories) == 0) return true;
-
-        if (ModUtil::getVar('ZikulaCategoriesModule', 'permissionsall', 0)) {
-            // Access is required for all categories
-            $ok = true;
-            foreach ($categories as $propertyName => $cat) {
-                $ok = $ok && SecurityUtil::checkPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
-            }
-
-            return $ok;
-        } else {
-            // Access is required for at least one category
-            foreach ($categories as $propertyName => $cat) {
-                if (SecurityUtil::checkPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel))
-
-                        return true;
-            }
-
-            return false;
+        if (count($categories) == 0) {
+            return true;
         }
-    }
 
+        // Check if access is required for all categories or for at least one category
+        $accessAll = ModUtil::getVar('ZikulaCategoriesModule', 'permissionsall', 0);
+
+        foreach ($categories as $propertyName => $cat) {
+            $hasAccess = SecurityUtil::checkPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
+            if (!$accessAll && $hasAccess) {
+                break;
+            } elseif ($accessAll && !$hasAccess) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

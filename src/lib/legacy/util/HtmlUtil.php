@@ -92,10 +92,14 @@ class HtmlUtil
      * @param boolean $submit        Whether or not to auto-submit the selector.
      * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
+     * @param string  $id            The ID of the generated selector (optional).
+     * @param string  $class         The class of the generated selector (optional).
+     * @param boolean $required      Whether or not to disable selector (optional) (default=false).
+     * @param string  $title         The title of the generated selector (optional).
      *
      * @return The generated HTML for the selector.
      */
-    public static function getSelector_Generic($name = 'genericSelector', $data = array(), $selectedValue = null, $defaultValue = null, $defaultText = null, $allValue = null, $allText = null, $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class = null)
+    public static function getSelector_Generic($name = 'genericSelector', $data = array(), $selectedValue = null, $defaultValue = null, $defaultText = null, $allValue = null, $allText = null, $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class = null, $required = false, $title = null)
     {
         if (!$name) {
             return LogUtil::registerError(__f('Invalid %1$s [%2$s] passed to %3$s.', array('name', $name, 'HtmlUtil::getSelector_Generic')));
@@ -107,8 +111,10 @@ class HtmlUtil
         $multiple = $multipleSize > 1 ? 'multiple="multiple"' : '';
         $multipleSize = $multipleSize > 1 ? "size=\"$multipleSize\"" : '';
         $submit = $submit ? 'onchange="this.form.submit();"' : '';
+        $required = ($required) ? 'required="required" oninvalid="this.setCustomValidity(\''.__('Please select an item in the list.').'\');" onchange="this.setCustomValidity(\'\');" onblur="this.checkValidity();"' : '';
+        $title = (is_null($title)) ? '' : 'title="'.$title.'" x-moz-errormessage="'.$title.'"';
 
-        $html = "<select name=\"$name\" id=\"$id\" class=\"$class\" $multipleSize $multiple $submit $disabled>";
+        $html = "<select name=\"$name\" id=\"$id\" class=\"$class\" $multipleSize $multiple $submit $disabled $required $title>";
 
         if ($defaultText && !$selectedValue) {
             $sel = ((string)$defaultValue == (string)$selectedValue ? 'selected="selected"' : '');
@@ -955,15 +961,20 @@ class HtmlUtil
      * @param boolean $submit        Whether or not to auto-submit the selector.
      * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
+     * @param string  $id            The ID of the generated selector (optional).
+     * @param string  $class         The class of the generated selector (optional).
+     * @param string $required      Specifies that the user is required to select a value
+     *                               before submitting the form (optional).
+     * @param string  $title         The title of the generated selector (optional).
      *
      * @return The generated HTML for the selector.
      */
-    public static function getSelector_Countries($name = 'countries', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class = null)
+    public static function getSelector_Countries($name = 'countries', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $disabled = false, $multipleSize = 1, $id = null, $class = null, $required = false, $title = null)
     {
         $countries = ZLanguage::countryMap();
         asort($countries);
 
-        return self::getSelector_Generic($name, $countries, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize, $id, $class);
+        return self::getSelector_Generic($name, $countries, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize, $id, $class, $required, $title);
     }
 
     /**

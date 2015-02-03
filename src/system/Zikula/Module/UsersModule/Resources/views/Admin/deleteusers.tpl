@@ -6,7 +6,7 @@
 
 <p class="alert alert-warning">{gt text='Do you really want to delete this user account?' plural='Do you really want to delete these user accounts?' count=$users|@count}</p>
 
-<form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='deleteUsers'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulausersmodule_admin_deleteusers'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="process_delete" value="true" />
@@ -35,7 +35,7 @@
             <button class="btn btn-success" title="{$buttonText}">
                 {$buttonText}
             </button>
-            <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+            <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>
     </div>
 </form>

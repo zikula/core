@@ -39,7 +39,7 @@ class StringRegularExpression extends AbstractValidator
         parent::__construct($serviceManager, $errorMessage);
 
         if (!isset($regularExpression) || !is_string($regularExpression) || empty($regularExpression)) {
-            throw new \InvalidArgumentException($this->__('An invalid regular expression was recieved.'));
+            throw new \InvalidArgumentException($this->__('An invalid regular expression was received.'));
         }
 
         $this->regularExpression = $regularExpression;

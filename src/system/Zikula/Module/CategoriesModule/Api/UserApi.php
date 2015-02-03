@@ -50,7 +50,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \RuntimeException($this->__("Error! The root directory cannot be modified in 'user' mode"));
         }
 
-        $userCatName = $this->getusercategoryname();
+        $userCatName = $this->getusercategoryname(array());
         $thisUserRootCatPath = $userRoot . '/' . $userCatName;
         $thisUserRootCat = CategoryUtil::getCategoryByPath ($thisUserRootCatPath);
 
@@ -82,7 +82,7 @@ class UserApi extends \Zikula_AbstractApi
         $userRootCat = $this->getuserrootcat($args);
 
         if (!$userRootCat) {
-            throw new \RuntimeException($this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
+            throw new \RuntimeException($this->__('Error! The user root node seems to point towards an invalid category.'));
         }
 
         $relative = (isset($args['relative']) ? $args['relative'] : false);

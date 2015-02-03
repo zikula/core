@@ -30,6 +30,7 @@ class Util
      *
      * @param string $moduleName Module Name.
      * @param string $rootdir    Root directory of the module (default: modules).
+     * @param \Zikula\Core\AbstractModule|null $module injected bundle
      *
      * @throws \InvalidArgumentException Thrown if the version information cannot be obtained for the requested module or
      *                                          if the version class isn't of the correct type or
@@ -37,17 +38,19 @@ class Util
      *
      * @return Zikula_AbstractVersion|array
      */
-    public static function getVersionMeta($moduleName, $rootdir = 'modules')
+    public static function getVersionMeta($moduleName, $rootdir = 'modules', $module = null)
     {
         $modversion = array();
-        $module = ModUtil::getModule($moduleName);
-
+        if (null === $module) {
+            $module = ModUtil::getModule($moduleName);
+        }
         $class = null === $module ? "{$moduleName}_Version" : $module->getVersionClass();
+
         if (class_exists($class)) {
             try {
                 $modversion = new $class($module);
             } catch (\Exception $e) {
-                LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), \Monolog\Logger::CRIT);
+                LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), \Monolog\Logger::CRITICAL);
                 throw new \InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), 0, $e);
             }
             if (!$modversion instanceof Zikula_AbstractVersion) {
@@ -66,7 +69,7 @@ class Util
             $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
             if (!file_exists($legacyVersionPath)) {
 //                if (!System::isUpgrading()) {
-//                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), \Monolog\Logger::CRIT);
+//                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), \Monolog\Logger::CRITICAL);
 //                    throw new \InvalidArgumentException(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
 //                }
 //                $modversion = array(

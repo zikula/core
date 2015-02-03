@@ -22,19 +22,20 @@ use Zikula\Module\UsersModule\Helper\HashMethodListHelper;
 use Zikula\Module\UsersModule\Controller\FormData\Validator\StringInSet;
 use Zikula\Module\UsersModule\Controller\FormData\Validator\IntegerNumericInSet;
 use Zikula\Module\UsersModule\Controller\FormData\Validator\StringRegularExpression;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Contains and validates the data found on the Users module's configration form.
+ * Contains and validates the data found on the Users module's configuration form.
  */
 class ConfigForm extends AbstractFormData
 {
     /**
      * Create a new instance of the form data container, intializing the fields and validators.
      *
-     * @param string                 $formId         The id value to use for the form.
-     * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param string             $formId         The id value to use for the form.
+     * @param ContainerInterface $serviceManager The current service manager instance.
      */
-    public function __construct($formId, \Zikula_ServiceManager $serviceManager = null)
+    public function __construct($formId, ContainerInterface $serviceManager = null)
     {
         parent::__construct($formId, $serviceManager);
 
@@ -310,6 +311,17 @@ class ConfigForm extends AbstractFormData
 
         $this->addField(new Field(
                 $this,
+                UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED,
+                $modVars[UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED],
+                UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
+                $this->serviceManager))
+            ->setNullAllowed(false)
+            ->addValidator(new Validator\BooleanType(
+                    $this->serviceManager,
+                    $this->__('The value must be a boolean.')));
+
+        $this->addField(new Field(
+                $this,
                 UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY,
                 $modVars[UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY],
                 UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
@@ -329,10 +341,12 @@ class ConfigForm extends AbstractFormData
             ->addValidator(new Validator\StringType(
                 $this->serviceManager,
                 $this->__('The value must be a string.')))
-            ->addValidator(new Validator\StringRegularExpression(
+            ->addValidator(new Validator\FilterVar(
                 $this->serviceManager,
-                '/^(?:'.UsersConstant::EMAIL_VALIDATION_PATTERN.')?$/Ui',
-                $this->__('The value does not appear to be a properly formatted e-mail address.')));
+                FILTER_VALIDATE_EMAIL,
+                null,
+                true,
+                $this->__('The value entered does not appear to be a valid email address.')));
 
         $this->addField(new Field(
                 $this,

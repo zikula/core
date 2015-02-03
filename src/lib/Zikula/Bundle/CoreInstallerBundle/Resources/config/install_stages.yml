@@ -1,0 +1,26 @@
+stages:
+    notinstalled:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\NotInstalledStage
+        order: 1
+        default: true
+    locale:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\LocaleStage
+        order: 2
+    requirements:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\RequirementsStage
+        order: 3
+    dbcreds:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\DbCredsStage
+        order: 4
+    createadmin:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\CreateAdminStage
+        order: 5
+    ajaxinstaller:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage
+        order: 6
+    complete:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\CompleteStage
+        order: 7
+    installed:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\AlreadyInstalledStage
+        order: 8

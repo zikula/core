@@ -8,20 +8,22 @@ parameters:
     system.chmod_dir: 0777
 
     database_driver:   pdo_mysql
-    database_host:     127.0.0.1
+    database_host:     localhost
     database_port:     ~
-    database_name:     zikula
-    database_user:     root
+    database_name:     ~
+    database_user:     ~
     database_password: ~
     database_path:     ~
     database_socket:   ~
+    database_server_version: 5
+    # _actual_ server version doesn't matter here. Any value compensates for Doctrine Bug DBAL-1057
+    # see http://www.doctrine-project.org/jira/browse/DBAL-1057
+    # the actual value is written on install
 
     pagerendertime:    false
 
-    mailer_transport:  smtp
-    mailer_host:       127.0.0.1
-    mailer_user:       ~
-    mailer_password:   ~
-
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+    url_secret:        ~
+
+    zikula.session.name: _zsid

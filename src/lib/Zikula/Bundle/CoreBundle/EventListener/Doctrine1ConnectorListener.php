@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,15 +13,15 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use CacheUtil;
+use Doctrine_Core;
+use Doctrine_Manager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine_Manager,
-    Doctrine_Core,
-    CacheUtil,
-    Zikula_Event,
-    System;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use System;
 use Zikula\Core\Event\GenericEvent;
+use Zikula_Event;
 
 /**
  * Doctrine listeners.
@@ -55,7 +54,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
     }
 
     /**
-     * Inialise a Doctrine 1 connection.
+     * Initialise a Doctrine 1 connection.
      *
      * Listens for 'doctrine.init_connection' events.
      *

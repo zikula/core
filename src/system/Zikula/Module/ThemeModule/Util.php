@@ -15,7 +15,7 @@ namespace Zikula\Module\ThemeModule;
 
 use ModUtil;
 use FileUtil;
-use LogUtil;
+use ZLanguage;
 use ThemeUtil;
 use ServiceUtil;
 use Zikula\Module\ThemeModule\Entity\ThemeEntity;
@@ -29,14 +29,15 @@ class Util
 {
     /**
      * Regenerates the theme list
-     *
      * @return bool true
+     * @throws \Exception
      */
     public static function regenerate()
     {
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
         $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection(ServiceUtil::getManager()->get('kernel')));
 
+        // sync the filesystem and the bundles table
         $helper->load();
 
         // Get all themes on filesystem
@@ -50,6 +51,10 @@ class Util
             foreach ($theme->getPsr0() as $ns => $path) {
                 ZLoader::addPrefix($ns, $path);
             }
+            foreach ($theme->getPsr4() as $ns => $path) {
+                ZLoader::addPrefixPsr4($ns, $path);
+            }
+
             $class = $theme->getClass();
 
             /** @var $bundle \Zikula\Core\AbstractTheme */
@@ -65,6 +70,9 @@ class Util
             $directory = explode('/', $bundle->getRelativePath());
             array_shift($directory);
             $array['directory'] = implode('/', $directory);
+
+            // loads the gettext domain for theme
+            ZLanguage::bindThemeDomain($bundle->getName());
 
             $array['type'] = 3;
             $array['state'] = 1;
@@ -116,7 +124,15 @@ class Util
         foreach ($dbthemes as $name => $themeinfo) {
             if (empty($filethemes[$name])) {
                 // delete a running configuration
-                ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', array('themename' => $name));
+                try {
+                    ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', array('themename' => $name));
+                } catch (\Exception $e) {
+                    if (\System::isInstalling()) {
+                        // silent fail when installing or upgrading
+                    } else {
+                        throw $e;
+                    }
+                }
 
                 // delete item from db
                 $item = $entityManager->getRepository('ZikulaThemeModule:ThemeEntity')->findOneBy(array('name' => $name));

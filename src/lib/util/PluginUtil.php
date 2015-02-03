@@ -495,5 +495,4 @@ class PluginUtil
 
         return strtolower(str_replace('_', '.', $className));
     }
-
 }

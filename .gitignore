@@ -5,7 +5,10 @@
 /src/app/bootstrap.php.cache
 /src/app/cache/
 /src/app/config/custom_*.yml
+/src/app/config/dynamic/*
+!/src/app/config/dynamic/default.yml
 /src/app/logs/
+/src/config/locale/*
 /src/config/personal_config.php
 /src/config/multisites_config.php
 /src/modules/*
@@ -18,6 +21,7 @@
 !/src/themes/Zikula/Theme/PrinterTheme
 !/src/themes/Zikula/Theme/RssTheme
 !/src/themes/Zikula/Theme/SeaBreezeTheme
+!/src/themes/SeaBreezeTheme
 /src/app/Resources/locale/*
 !/src/app/Resources/locale/en
 !/src/app/Resources/locale/zikula.pot

@@ -15,11 +15,11 @@
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Component\HookDispatcher\Exception\LogicException;
-use Zikula\Component\HookDispatcher\StorageInterface;
-use Zikula\Component\HookDispatcher\ServiceFactory;
 use Zikula\Component\HookDispatcher\Hook;
-use Zikula\Component\HookDispatcher\SubscriberBundle;
 use Zikula\Component\HookDispatcher\ProviderBundle;
+use Zikula\Component\HookDispatcher\ServiceFactory;
+use Zikula\Component\HookDispatcher\StorageInterface;
+use Zikula\Component\HookDispatcher\SubscriberBundle;
 
 /**
  * HookDispatcher class.
@@ -304,17 +304,20 @@ class Zikula_HookDispatcher
     {
         $handlers = $this->storage->getRuntimeHandlers();
         foreach ($handlers as $handler) {
-            if ($handler['serviceid']) {
-                $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
-//                $this->dispatcher->addListenerService($handler['eventname'], $callable);
-                $o = $this->dispatcher->getContainer()->get($callable[0]);
-                $this->dispatcher->addListener($handler['eventname'], array($o, $handler['method']));
-            } else {
-                try {
-                    $callable = array($handler['classname'], $handler['method']);
-                    $this->dispatcher->addListener($handler['eventname'], $callable);
-                } catch (\InvalidArgumentException $e) {
-                    throw new \Zikula\Component\HookDispatcher\Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+            $callable = array($handler['classname'], $handler['method']);
+            if (is_callable($callable)) {
+                // some classes may not always be callable, for example, when upgrading.
+                if ($handler['serviceid']) {
+                    $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
+                    // $this->dispatcher->addListenerService($handler['eventname'], $callable);
+                    $o = $this->dispatcher->getContainer()->get($callable[0]);
+                    $this->dispatcher->addListener($handler['eventname'], array($o, $handler['method']));
+                } else {
+                    try {
+                        $this->dispatcher->addListener($handler['eventname'], $callable);
+                    } catch (\InvalidArgumentException $e) {
+                        throw new \Zikula\Component\HookDispatcher\Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                    }
                 }
             }
         }
@@ -364,7 +367,8 @@ class Zikula_HookDispatcher
 
     /**
      * Revert the provided hook to backward compatible hooktype
-     * Do not need to revert FilterHook and DisplayHook because they are already reverted in the template plugins
+     * Do not need to revert DisplayHook because it is already reverted in the template plugin
+     * FilterHook conversion is also done in template plugin but also needed here for Ajax calls
      *
      * @param Hook $hook
      * @return Hook
@@ -387,6 +391,10 @@ class Zikula_HookDispatcher
                     $newUrl = null;
                 }
                 return new \Zikula_ProcessHook($name, $hook->getId(), $newUrl);
+                break;
+            case 'Zikula\Core\Hook\FilterHook':
+                /** @var $hook \Zikula\Core\Hook\FilterHook */
+                return new \Zikula_FilterHook($name, $hook->getData());
                 break;
             default:
                 return $hook;

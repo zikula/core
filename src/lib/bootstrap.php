@@ -12,8 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Debug\Debug;
+use Symfony\Component\Yaml\Yaml;
+use Zikula\Core\Event\GenericEvent;
 
 $loader = require __DIR__.'/../app/autoload.php';
 ZLoader::register($loader);
@@ -36,6 +37,10 @@ $kernel->boot();
 $core = new Zikula_Core();
 $core->setKernel($kernel);
 $core->boot();
+
+// these two events are called for BC only. remove in 2.0.0
+$core->getDispatcher()->dispatch('bootstrap.getconfig', new GenericEvent($core));
+$core->getDispatcher()->dispatch('bootstrap.custom', new GenericEvent($core));
 
 foreach ($GLOBALS['ZConfig'] as $config) {
     $core->getContainer()->loadArguments($config);

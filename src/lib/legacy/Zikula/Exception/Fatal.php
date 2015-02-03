@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 
 /**
  * Zikula_Exception_Fatal class.

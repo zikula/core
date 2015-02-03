@@ -299,17 +299,20 @@ class HookDispatcher
     {
         $handlers = $this->storage->getRuntimeHandlers();
         foreach ($handlers as $handler) {
-            if ($handler['serviceid']) {
-                $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
-//                $this->dispatcher->addListenerService($handler['eventname'], $callable);
-                $o = $this->dispatcher->getContainer()->get($callable[0]);
-                $this->dispatcher->addListener($handler['eventname'], array($o, $handler['method']));
-            } else {
-                try {
-                    $callable = array($handler['classname'], $handler['method']);
-                    $this->dispatcher->addListener($handler['eventname'], $callable);
-                } catch (\InvalidArgumentException $e) {
-                    throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+            $callable = array($handler['classname'], $handler['method']);
+            if (is_callable($callable)) {
+                // some classes may not always be callable, for example, when upgrading.
+                if ($handler['serviceid']) {
+                    $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
+                    //                $this->dispatcher->addListenerService($handler['eventname'], $callable);
+                    $o = $this->dispatcher->getContainer()->get($callable[0]);
+                    $this->dispatcher->addListener($handler['eventname'], array($o, $handler['method']));
+                } else {
+                    try {
+                        $this->dispatcher->addListener($handler['eventname'], $callable);
+                    } catch (\InvalidArgumentException $e) {
+                        throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                    }
                 }
             }
         }
@@ -356,5 +359,4 @@ class HookDispatcher
             $this->dispatcher->removeListener($eventName, $listener);
         }
     }
-
 }

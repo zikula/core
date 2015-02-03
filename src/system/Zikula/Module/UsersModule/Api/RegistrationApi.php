@@ -110,22 +110,24 @@ class RegistrationApi extends \Zikula_AbstractApi
             }
 
             if (!$this->currentUserIsAdminOrSubAdmin()) {
-                if ((!isset($reginfo['passreminder']) || empty($reginfo['passreminder'])) && $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY)) {
-                    $passwordErrors['passreminder'] = $this->__('Please enter a password reminder.');
-                } else {
-                    $testPass = mb_strtolower(trim($reginfo['pass']));
-                    $testPassreminder = mb_strtolower(trim($reginfo['passreminder']));
-
-                    if (!empty($testPass) && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
-                        $passwordErrors['passreminder'] = $this->__('You cannot include your password in your password reminder.');
+                if ($this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
+                    if ((!isset($reginfo['passreminder']) || empty($reginfo['passreminder'])) && $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY)) {
+                        $passwordErrors['passreminder'] = $this->__('Please enter a password reminder.');
                     } else {
-                        // See if they included their password with extra character in the middle--only tests if they included non alpha-numerics in the middle.
-                        // Removes non-alphanumerics (mb-safe), and then checks to see that the strings are still of sufficient length to have a reasonable test.
-                        $testPass = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPass));
-                        $testPassreminder = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPassreminder));
-                        if (!empty($testPass) && !empty($testPassreminder) && (strlen($testPass) >= $minPasswordLength)
+                        $testPass = mb_strtolower(trim($reginfo['pass']));
+                        $testPassreminder = mb_strtolower(trim($reginfo['passreminder']));
+
+                        if (!empty($testPass) && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
+                            $passwordErrors['passreminder'] = $this->__('You cannot include your password in your password reminder.');
+                        } else {
+                            // See if they included their password with extra character in the middle--only tests if they included non alpha-numerics in the middle.
+                            // Removes non-alphanumerics (mb-safe), and then checks to see that the strings are still of sufficient length to have a reasonable test.
+                            $testPass = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPass));
+                            $testPassreminder = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPassreminder));
+                            if (!empty($testPass) && !empty($testPassreminder) && (strlen($testPass) >= $minPasswordLength)
                                 && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
-                            $passwordErrors['passreminder'] = $this->__('Your password reminder is too similar to your password.');
+                                $passwordErrors['passreminder'] = $this->__('Your password reminder is too similar to your password.');
+                            }
                         }
                     }
                 }
@@ -244,9 +246,10 @@ class RegistrationApi extends \Zikula_AbstractApi
     {
         $registrationErrors = array();
 
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        // we do not check permissions here (see #1874)
+        /*if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
-        }
+        }*/
 
         $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
@@ -391,9 +394,10 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function registerNewUser($args)
     {
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        // we do not check permissions here (see #1874)
+        /*if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
-        }
+        }*/
 
         $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
@@ -424,7 +428,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $adminNotification = isset($args['adminnotification']) ? $args['adminnotification'] : true;
 
         // Handle password
-        $sendPassword = $isAdminOrSubAdmin && isset($args['sendpass']) ? $args['sendpass'] : false;
+        $sendPassword = isset($args['sendpass']) ? $args['sendpass'] : false;
 
         if ($sendPassword) {
             // Function called by admin adding user/reg, administrator created the password; no approval needed, so must need verification.
@@ -987,8 +991,11 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function get($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
+        $isLoggedIn = UserUtil::isLoggedIn();
+
+        // we do not check permissions for guests here (see #1874)
+        if ((!$isLoggedIn/* && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)*/)
+                || ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             throw new AccessDeniedException();
         }
 
@@ -1397,8 +1404,12 @@ class RegistrationApi extends \Zikula_AbstractApi
         // In the future, it is possible we will add a feature to allow a newly registered user to resend
         // a new verification code to himself after doing a login-like process with information from  his
         // registration record, so allow not-logged-in plus READ, as well as moderator.
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
+
+        $isLoggedIn = UserUtil::isLoggedIn();
+
+        // we do not check permissions for guests here (see #1874)
+        if ((!$isLoggedIn/* && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)*/)
+                || ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             throw new AccessDeniedException();
         }
 
@@ -1506,8 +1517,11 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function getVerificationCode($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
+        $isLoggedIn = UserUtil::isLoggedIn();
+
+        // we do not check permissions for guests here (see #1874)
+        if ((!$isLoggedIn/* && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)*/)
+                || ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             throw new AccessDeniedException();
         }
 
@@ -1666,9 +1680,11 @@ class RegistrationApi extends \Zikula_AbstractApi
     public function activateUser($args)
     {
         // This function is an end-user function.
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+
+        // we do not check permissions here (see #1874)
+        /*if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             return false;
-        }
+        }*/
 
         // Preventing reactivation from same link !
         $newregdate = DateUtil::getDatetime(strtotime($args['regdate'])+1);

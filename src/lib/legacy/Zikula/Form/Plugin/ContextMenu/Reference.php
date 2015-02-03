@@ -66,7 +66,7 @@ class Zikula_Form_Plugin_ContextMenu_Reference extends Zikula_Form_AbstractPlugi
 
         $menuPlugin = $view->getPluginById($this->menuId);
         $menuId = $menuPlugin->id;
-        $html = "<img src=\"{$imageURL}\" alt=\"\" class=\"contextMenu\" onclick=\"Form.contextMenu.showMenu(event, '{$menuId}', '{$this->commandArgument}')\" />";
+        $html = "<img src=\"{$imageURL}\" alt=\"\" class=\"contextMenu\" onclick=\"FormContextMenu.showMenu(event, '{$menuId}', '{$this->commandArgument}')\" />";
 
         return $html;
     }

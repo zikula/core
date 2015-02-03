@@ -43,51 +43,52 @@ class UserApi extends \Zikula_AbstractApi
      *      @type bool   $ignoreEmptyLock  Ignore an empty lock name (optional) (default: false)
      *                      }
      *
-     * @returns bool true
+     * @return bool true
      */
     public function pageLock($args)
     {
         $lockName = $args['lockName'];
-        $returnUrl = (array_key_exists('returnUrl', $args) ? $args['returnUrl'] : null);
-        $ignoreEmptyLock = (array_key_exists('ignoreEmptyLock', $args) ? $args['ignoreEmptyLock'] : false);
-
-        $uname = UserUtil::getVar('uname');
+        $returnUrl = array_key_exists('returnUrl', $args) ? $args['returnUrl'] : null;
+        $ignoreEmptyLock = array_key_exists('ignoreEmptyLock', $args) ? $args['ignoreEmptyLock'] : false;
 
         $lockedHtml = '';
 
         if (!empty($lockName) || !$ignoreEmptyLock) {
-            PageUtil::AddVar('javascript', 'zikula.ui');
-            PageUtil::AddVar('javascript', 'system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js');
-            PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('pagelock'));
+            PageUtil::addVar('javascript', 'zikula.ui');
+            PageUtil::addVar('javascript', 'system/Zikula/Module/PageLockModule/Resources/public/js/PageLock.js');
+            PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('ZikulaPageLockModule'));
 
             $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',
-                    array('lockName'      => $lockName,
-                    'lockedByTitle' => $uname,
-                    'lockedByIPNo'  => $_SERVER['REMOTE_ADDR']));
+                array(
+                    'lockName'      => $lockName,
+                    'lockedByTitle' => UserUtil::getVar('uname'),
+                    'lockedByIPNo'  => $_SERVER['REMOTE_ADDR']
+                )
+            );
 
             $hasLock = $lockInfo['hasLock'];
 
             if (!$hasLock) {
                 $view = Zikula_View::getInstance('pagelock');
                 $view->assign('lockedBy', $lockInfo['lockedBy']);
-                $lockedHtml = $view->fetch('PageLock_lockedwindow.tpl');
+                $lockedHtml = $view->fetch('lockedWindow.tpl');
             }
         } else {
             $hasLock = true;
         }
 
         $html = "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
+        $html .= "( function($) {\n";
 
         if (!empty($lockName)) {
             if ($hasLock) {
-                $html .= "document.observe('dom:loaded', PageLock.UnlockedPage);\n";
+                $html .= "    $(document).ready(PageLock.UnlockedPage);\n";
             } else {
-                $html .= "document.observe('dom:loaded', PageLock.LockedPage);\n";
+                $html .= "    $(document).ready(PageLock.LockedPage);\n";
             }
         }
 
-        $lockedHtml = str_replace("\n", "", $lockedHtml);
-        $lockedHtml = str_replace("\r", "", $lockedHtml);
+        $html .= "})(jQuery);\n";
 
         // Use "self::PAGELOCKLIFETIME*2/3" to add a good margin to lock timeout when pinging
 
@@ -98,10 +99,10 @@ class UserApi extends \Zikula_AbstractApi
 PageLock.LockName = '$lockName';
 PageLock.ReturnUrl = '$returnUrl';
 PageLock.PingTime = " . (self::PAGELOCKLIFETIME*2/3) . ";
-PageLock.LockedHTML = '" . $lockedHtml . "';
  /* ]]> */</script>";
-
+ 
         PageUtil::addVar('header', $html);
+        PageUtil::addVar('footer', $lockedHtml);
 
         return true;
     }
@@ -114,7 +115,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
      *      @type string $sessionId  The ID of the session owning the lock (optional) (default: current session ID
      *                       }
      *
-     * @returns array('haslock' => true if this user has a lock, false otherwise,
+     * @return array('haslock' => true if this user has a lock, false otherwise,
      *                'lockedBy' => if 'haslock' is false then the user who has the lock, null otherwise)
      */
     public function requireLock($args)

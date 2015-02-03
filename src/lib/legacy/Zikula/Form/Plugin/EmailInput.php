@@ -47,6 +47,7 @@ class Zikula_Form_Plugin_EmailInput extends Zikula_Form_Plugin_TextInput
     public function create(Zikula_Form_View $view, &$params)
     {
         $this->maxLength = 100;
+        $params['textMode'] = 'email';
 
         parent::create($view, $params);
 

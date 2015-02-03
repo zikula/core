@@ -41,6 +41,10 @@
  *  posvar         Name of the variable that contains the position data, eg "letter"
  *  forwardvars    Comma- semicolon- or space-delimited list of POST and GET variables to forward in the pager links. If unset, all vars are forwarded.
  *  additionalvars Comma- semicolon- or space-delimited list of additional variable and value pairs to forward in the links. eg "foo=2,bar=4"
+ *  route          Name of a fixed route to use (optional, replaces modname / type / func)
+ *  modname        Fixed name of the module to page (optional)
+ *  type           Fixed value of the type url parameter (optional)
+ *  func           Fixed value of the function url parameter (optional)
  *  class          Class for the pager
  *  class_num      Class for the pager links (<a> tags)
  *  class_numon    Class for the active page
@@ -125,21 +129,34 @@ function smarty_function_pagerabc($params, Zikula_View $view)
     unset($params['names']);
     unset($params['values']);
 
-    if (isset($params['modname'])) {
-        $pager['module'] = $params['modname'];
+    if (!isset($params['route'])) {
+        if (isset($params['modname'])) {
+            $pager['module'] = $params['modname'];
+        } else {
+            $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+            $name   = FormUtil::getPassedValue('name', null, 'GETPOST', FILTER_SANITIZE_STRING);
+            $pager['module'] = !empty($module) ? $module : $name;
+        }
+
+        $pager['func'] = isset($params['func']) ? $params['func'] : FormUtil::getPassedValue('func', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
+        $pager['type'] = isset($params['type']) ? $params['type'] : FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
     } else {
-        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $name   = FormUtil::getPassedValue('name', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $pager['module'] = !empty($module) ? $module : $name;
+        $pager['route'] = $params['route'];
+        unset($params['route']);
     }
 
-    $pager['func'] = isset($params['func']) ? $params['func'] : FormUtil::getPassedValue('func', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
-    $pager['type'] = isset($params['type']) ? $params['type'] : FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
+    $pagerUrl = function ($pager) use ($view) {
+        if (!isset($pager['route'])) {
+            return ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']);
+        }
+        return $view->getContainer()->get('router')->generate($pager['route'], $pager['args']);
+    };
 
-    $allVars = array_merge($_POST, $_GET);
+
+    $allVars = array_merge($view->getRequest()->request->all(), $view->getRequest()->query->all(), $view->getRequest()->attributes->get('_route_params', array()));
 
     $pager['args'] = array();
-    if (empty($pager['module'])) {
+    if (empty($pager['module']) && empty($pager['route'])) {
         $pager['module'] = System::getVar('startpage');
         $starttype = System::getVar('starttype');
         $pager['type'] = !empty($starttype) ? $starttype : 'user';
@@ -204,7 +221,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
             }
         }
         $vars[$pager['posvar']] = '';
-        $urltemp = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']));
+        $urltemp = DataUtil::formatForDisplay($pagerUrl($pager));
         $output .= '<li '.$active.'><a '.$style.' href="'.$urltemp.'"> -'."\n</a></li>";
     }
     
@@ -222,7 +239,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
             }
         }
         $pager['args'][$pager['posvar']] = $pager['values'][$i];
-        $urltemp = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']));
+        $urltemp = DataUtil::formatForDisplay($pagerUrl($pager));
         $output .= '<li '.$active.'><a '.$style.' href="'.$urltemp.'">'.$pager['names'][$i]."</a></li>\n";
     }
     $output .= "</ul>\n";

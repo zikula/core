@@ -89,6 +89,18 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
      */
     public function load(Zikula_Form_View $view, &$params)
     {
+        if (is_array($this->selectedValue)) {
+            $selectedValue = array();
+            foreach ($this->selectedValue as $v) {
+                if (!is_array($v)) {
+                    $selectedValue[] = $v;
+                } elseif (isset($v['categoryId'])) {
+                    $selectedValue[] = $v['categoryId'];
+                }
+            }
+            $this->selectedValue = $selectedValue;
+        }
+
         Zikula_Form_Plugin_CategorySelector::loadParameters($this, false, $params);
 
         parent::load($view, $params);

@@ -13,8 +13,8 @@
 
 namespace Zikula\Core\Doctrine\Logger;
 
-use EventUtil;
 use Doctrine\DBAL\Logging\SQLLogger;
+use EventUtil;
 use Zikula\Core\Event\GenericEvent;
 
 /**

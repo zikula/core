@@ -11,6 +11,10 @@
  */
 ( function($) {
 
+    // use bootstrap noConflict. See http://getbootstrap.com/javascript/#js-noconflict
+    var bootstrapButton = $.fn.button.noConflict()
+    $.fn.bootstrapBtn = bootstrapButton
+
     /**
      * Confirmation modal
      * 
@@ -98,15 +102,13 @@
             });
         });
 
-        if ( typeof Prototype === "undefined" ) {
-            $('.tooltips').each(function() {
-                var placement = 'top';
-                if ($(this).hasClass('tooltips-bottom')) {
-                    placement = 'bottom';
-                }
-                $(this).tooltip({placement: placement, animation: false});
-            });
-        }
+        $('.tooltips').each(function() {
+            var placement = 'top';
+            if ($(this).hasClass('tooltips-bottom')) {
+                placement = 'bottom';
+            }
+            $(this).tooltip({placement: placement, animation: false});
+        });
     });
 
 

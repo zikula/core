@@ -1,4 +1,20 @@
 /******************************************************************************
+* Hypertext
+******************************************************************************/
+
+a {
+    cursor: pointer;
+}
+
+iframe + p {
+    margin-top: 1em;
+}
+
+p + iframe {
+    margin-top: 1em;
+}
+
+/******************************************************************************
 * Generic styles
 ******************************************************************************/
 
@@ -123,6 +139,10 @@ td.actions {
     text-align: right !important;
     white-space: nowrap !important;
     width: 1px;
+}
+
+td.actions .tooltip {
+    white-space: normal !important;
 }
 
 td.actions .fa {

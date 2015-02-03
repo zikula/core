@@ -6,9 +6,10 @@
 
     <parameters>
         <parameter key="zikula.theme_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
-        <parameter key="zikula.themeinit_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeInitListener</parameter>
-        <parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>
-        <parameter key="zikula.template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\TemplateOverrideYamlListener</parameter>
+        <!--<parameter key="zikula.themeinit_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeInitListener</parameter>-->
+        <!--<parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>-->
+        <parameter key="zikula.config_template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\ConfigTemplateOverrideYamlListener</parameter>
+        <parameter key="zikula.theme_template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeTemplateOverrideYamlListener</parameter>
 
         <parameter key="zikula.doctrine1_connector.class">Zikula\Bundle\CoreBundle\EventListener\Doctrine1ConnectorListener</parameter>
         <parameter key="zikula.doctrine_connector.class">Zikula\Bundle\CoreBundle\EventListener\DoctrineListener</parameter>
@@ -26,14 +27,16 @@
         <parameter key="markdown.class">Michelf\Markdown</parameter>
         <parameter key="markdown_extra.class">Michelf\MarkdownExtra</parameter>
 
-        <parameter key="zikula_core.class">Zikula\Core\Core</parameter>
-        <parameter key="zikula.core_init_listener.class">Zikula\Bundle\CoreBundle\EventListener\InitListener</parameter>
+        <!--<parameter key="zikula_core.class">Zikula\Core\Core</parameter>-->
+        <!--<parameter key="zikula.core_init_listener.class">Zikula\Bundle\CoreBundle\EventListener\InitListener</parameter>-->
 
         <parameter key="zikula.site_off_listener.class">Zikula\Bundle\CoreBundle\EventListener\SiteOffListener</parameter>
         <parameter key="zikula.session_expire_listener.class">Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener</parameter>
         <parameter key="zikula.legacy_route_listener.class">Zikula\Bundle\CoreBundle\EventListener\LegacyRouteListener</parameter>
-        <parameter key="zikula.theme_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
         <parameter key="router_listener.class">Zikula\Bundle\CoreBundle\EventListener\RouterListener</parameter>
+        <parameter key="zikula.exception_listener.class">Zikula\Bundle\CoreBundle\EventListener\ExceptionListener</parameter>
+        <parameter key="zikula.output_compression_listener.class">Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener</parameter>
+        <parameter key="zikula.strip_front_controller_listener.class">Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener</parameter>
     </parameters>
 
     <services>
@@ -42,7 +45,7 @@
         <!--</service>-->
 
         <service id="markdown_parser" class="%markdown.class%" />
-        <service id="markdown_extra_parser" class="%markdown.class%" />
+        <service id="markdown_extra_parser" class="%markdown_extra.class%" />
 
         <!--<service id="zikula.core_init" class="%zikula.core_init_listener.class%">-->
             <!--<tag name="zikula.event_subscriber" />-->
@@ -96,7 +99,11 @@
             <!--<argument type="service" id="service_container" />-->
         <!--</service>-->
 
-        <service id="zikula.template_override_listener" class="%zikula.template_override_listener.class%">
+        <service id="zikula.config_template_override_listener" class="%zikula.config_template_override_listener.class%">
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="zikula.theme_template_override_listener" class="%zikula.theme_template_override_listener.class%">
             <tag name="kernel.event_subscriber" />
         </service>
 
@@ -104,6 +111,14 @@
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
             <argument type="service" id="logger" on-invalid="ignore" />
+        </service>
+
+        <service id="zikula.site_off_listener" class="%zikula.site_off_listener.class%">
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="zikula.session_expire_listener" class="%zikula.session_expire_listener.class%">
+            <tag name="kernel.event_subscriber" />
         </service>
 
         <service id="zikula.theme_listener" class="%zikula.theme_listener.class%">
@@ -121,5 +136,24 @@
             <!--<argument type="service" id="service_container" />-->
             <!--<argument type="service" id="templating" />-->
         <!--</service>-->
+
+        <service id="zikula.exception_listener" class="%zikula.exception_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="request" />
+            <argument type="service" id="logger" on-invalid="ignore" />
+            <argument type="service" id="router" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="zikularoutesmodule.controller_helper" />
+            <argument type="service" id="zikula.cache_clearer" />
+        </service>
+
+        <service id="zikula.output_compression_listener" class="%zikula.output_compression_listener.class%">
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="zikula.strip_front_controller_listener" class="%zikula.strip_front_controller_listener.class%">
+            <tag name="kernel.event_subscriber" />
+        </service>
+
     </services>
 </container>

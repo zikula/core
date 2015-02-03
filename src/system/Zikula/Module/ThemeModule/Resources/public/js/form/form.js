@@ -1,78 +1,80 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-var Form = {};
+var FormContextMenu = {};
 
-/*========================================================================================
-  Context menu handling
-========================================================================================*/
-Form.contextMenu = {};
+( function($) {
+    FormContextMenu.visibleMenus = {};
 
-Form.contextMenu.visibleMenus = {};
+    FormContextMenu.getCommandArgument = function(menuId)
+    {
+        return $('#contentMenuArgument' + menuId).val();
+    };
 
+    // Called when activating a menu
+    FormContextMenu.showMenu = function(event, menuId, commandArgument)
+    {
+        event.preventDefault();
 
-Form.contextMenu.getCommandArgument = function(menuId)
-{
-  return $("contentMenuArgument"+menuId).value;
-}
+        FormContextMenu.hideMenu();
 
-// Called when activating a menu
-Form.contextMenu.showMenu = function(evt, menuId, commandArgument)
-{
-  Form.contextMenu.hideMenu();
+        var contextMenu = $('#' + menuId),
+            element = $(event.target);
 
-  var contextMenu = $(menuId),
-      element = Event.element(evt),
-      cursorPos = element.cumulativeOffset();
-  cursorPos.left += element.getWidth() + 10;
+        var cursorPos = element.offset();
+        cursorPos.left += element.width() + 10;
 
-  $("contentMenuArgument"+menuId).value = commandArgument;
-  Form.contextMenu.commandArgument = commandArgument;
-  Event.observe(document, 'click', function() {Form.contextMenu.hideMenu(menuId);});
-  Form.contextMenu.visibleMenus[menuId] = true;
+        $('#contentMenuArgument' + menuId).val(commandArgument);
+        FormContextMenu.commandArgument = commandArgument;
 
-  var offset;
-  // ugly hack for IE, in which getOffsetParent doesn't work,
-  if(Prototype.Browser.IE == true) {
-    $(document.body).insert(contextMenu);
-    offset = {left: 0, top: 0};
-  } else {
-    offset = contextMenu.getOffsetParent().positionedOffset();
-  }
+        var documentClickHandler = function(event) {
+            if ($(event.target).is(element)) {
+                return;
+            }
 
-  contextMenu.style.display = 'block';
-  contextMenu.style.position = 'absolute';
-  contextMenu.style.left = (cursorPos.left - offset.left) + 'px';
-  contextMenu.style.top = (cursorPos.top - offset.top) + 'px';
-  Event.stop(evt);
-}
+            // remove event handler
+            $(document).off('click', documentClickHandler);
 
+            FormContextMenu.hideMenu(menuId);
+        }
+        $(document).on('click', documentClickHandler);
 
-// Called when deactivating a menu
-Form.contextMenu.hideMenu = function()
-{
-  for (var vm in Form.contextMenu.visibleMenus)
-  {
-    contextMenu = $(vm);
-    if (contextMenu != null)
-      contextMenu.style.display = 'none';
-  }
+        FormContextMenu.visibleMenus[menuId] = true;
 
-  Form.contextMenu.visibleMenus = {};
-}
+        var offset = contextMenu.offsetParent().position();
 
+        contextMenu.css({
+            display: 'block',
+            position: 'absolute',
+            left: (cursorPos.left - offset.left) + 'px',
+            top: (cursorPos.top - offset.top) + 'px'
+        });
+    };
 
-// Called when clicking on a menu item with "commandScript" set
-Form.contextMenu.commandScript = function(commandArgumentId, script)
-{
-  var commandArgument = $(commandArgumentId).value;
-  script(commandArgument);
-}
+    // Called when deactivating a menu
+    FormContextMenu.hideMenu = function()
+    {
+        for (var vm in FormContextMenu.visibleMenus) {
+            contextMenu = $('#' + vm);
+            if (contextMenu != null) {
+                contextMenu.css('display', 'none');
+            }
+        }
 
+        FormContextMenu.visibleMenus = {};
+    }
 
-// Called when clicking on a menu item with "commandRedirect" set
-Form.contextMenu.redirect = function(commandArgumentId, url)
-{
-  var commandArgument = $(commandArgumentId).value;
-  url = url.replace(/\{commandArgument\}/, commandArgument);
-  window.location = url;
-}
+    // Called when clicking on a menu item with "commandScript" set
+    FormContextMenu.commandScript = function(commandArgumentId, script)
+    {
+        var commandArgument = $('#' + commandArgumentId).val();
+        script(commandArgument);
+    }
+
+    // Called when clicking on a menu item with "commandRedirect" set
+    FormContextMenu.redirect = function(commandArgumentId, url)
+    {
+        var commandArgument = $('#' + commandArgumentId).val();
+        url = url.replace(/\{commandArgument\}/, commandArgument);
+        window.location = url;
+    }
+})(jQuery);

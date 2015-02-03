@@ -17,13 +17,13 @@
     <div id="users_loginblock_waiting" class="text-center hide">
         {img modname='core' set='ajax' src='indicator_circle.gif'}
     </div>
-    <form id="users_loginblock_login_form" class="{if !$show_login_form} hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
+    <form id="users_loginblock_login_form" class="{if !$show_login_form} hide{/if}" action="{route name='zikulausersmodule_user_login'}" method="post">
         <div>
             <input type="hidden" id="users_loginblock_returnpage" name="returnpage" value="{$returnpage|safetext}" />
             <input type="hidden" id="users_loginblock_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" id="users_loginblock_event_type" name="event_type" value="login_block" />
-            <input type="hidden" id="users_loginblock_selected_authentication_module" name="authentication_method[modname]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|default:'false'}{/if}" />
-            <input type="hidden" id="users_loginblock_selected_authentication_method" name="authentication_method[method]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.method|default:'false'}{/if}" />
+            <input type="hidden" id="users_loginblock_selected_authentication_module" name="authentication_method[modname]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|safetext|default:'false'}{/if}" />
+            <input type="hidden" id="users_loginblock_selected_authentication_method" name="authentication_method[method]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.method|safetext|default:'false'}{/if}" />
             {if ($modvars.ZConfig.seclevel|lower == 'high')}
             <input id="users_loginblock_rememberme" type="hidden" name="rememberme" value="0" />
             {/if}
@@ -54,7 +54,7 @@
         </button>
     </form>
     <div id="users_loginblock_no_loginformfields"{if (!isset($selected_authentication_method) || !$selected_authentication_method) || (isset($selected_authentication_method) && $selected_authentication_method && isset($login_form_fields) && $login_form_fields)} class="hide"{/if}>
-        <h5>{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|default:''}{/if}</h5>
+        <h5>{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|safetext|default:''}{/if}</h5>
         <p class="alert alert-danger">
             {gt text='The log-in option you chose is not available at the moment.'}
             {if count($authentication_method_display_order) > 1}
@@ -78,7 +78,7 @@
 
     <h5>{gt text="Do you need to..."}</h5>
     {if $modvars.ZikulaUsersModule.reg_allowreg}
-    <a class="user-icon-adduser" style="display:block;" href="{modurl modname='ZikulaUsersModule' type='user' func='register'}">{gt text="Create an account?"}</a>
+    <a class="user-icon-adduser" style="display:block;" href="{route name='zikulausersmodule_user_register'}">{gt text="Create an account?"}</a>
     {/if}
-    <a class="user-icon-lostusername" style="display:block;" href="{modurl modname='ZikulaUsersModule' type='user' func='lostpwduname'}">{gt text="Recover your account information?"}</a>
+    <a class="user-icon-lostusername" style="display:block;" href="{route name='zikulausersmodule_user_lostpwduname'}">{gt text="Recover your account information?"}</a>
 </div>

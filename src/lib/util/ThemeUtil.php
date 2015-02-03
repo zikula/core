@@ -12,8 +12,8 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Module\ThemeModule\Entity\ThemeEntity;
 use Doctrine\ORM\Query;
+use Zikula\Module\ThemeModule\Entity\ThemeEntity;
 
 /**
  * ThemeUtil
@@ -113,8 +113,7 @@ class ThemeUtil
                 $qb->andWhere('t.type = :type')
                    ->setParameter('type', $type);
             }
-            switch ($filter)
-            {
+            switch ($filter) {
                 case self::FILTER_USER:
                     $qb->andWhere('t.user = 1');
                     break;

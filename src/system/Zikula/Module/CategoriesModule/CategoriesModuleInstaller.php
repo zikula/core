@@ -29,7 +29,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * initialise module
      *
-     * @return bool true if succesful, false otherwise
+     * @return bool true if successful, false otherwise
      */
     public function install()
     {
@@ -46,15 +46,31 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
-        // needed for legacy - remove @1.5.0
-        DBUtil::createTable('categories_mapobj');
+        /**
+         * This entity is only used to install the table and it
+         * is @deprecated as of 1.4.0 because the Objectdata paradigm
+         * is being removed at 2.0.0
+         */
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\CategoriesModule\Entity\CategoriesMapobj'));
+        } catch (\Exception $e) {
+            return false;
+        }
 
-        // insert some default data
-        $this->insertData_10();
+        /**
+         * explicitly set admin as user to be set as `lu_uid` and `cr_uid` fields. Normally this would be taken care of
+         * by the BlameListener but during installation from the CLI this listener is not available
+         */
+        $adminUserObj = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', 2);
+
+        // insert default data
+        $this->insertData_10($adminUserObj);
 
         // Set autonumber to 10000 (for DB's that support autonumber fields)
         $cat = new CategoryEntity;
-        $cat['id'] = 9999;
+        $cat->setId(9999);
+        $cat->setLu_uid($adminUserObj);
+        $cat->setCr_uid($adminUserObj);
         $this->entityManager->persist($cat);
         $this->entityManager->flush();
         $this->entityManager->remove($cat);
@@ -122,9 +138,11 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * insert default data
      *
+     * @param $adminUserObj
+     *
      * @return void
      */
-    public function insertData_10()
+    public function insertData_10($adminUserObj)
     {
         $objArray = array();
         $objArray[] = array(
@@ -693,6 +711,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             }
 
             $category->merge($obj);
+            // see note above about setting these fields during installation
+            $category->setCr_uid($adminUserObj);
+            $category->setLu_uid($adminUserObj);
             $this->entityManager->persist($category);
             $this->entityManager->flush();
             $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadataInfo::GENERATOR_TYPE_AUTO);

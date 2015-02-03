@@ -1,22 +1,6 @@
-{pageaddvar name='javascript' value='zikula.ui'}
-{strip}
-{pageaddvarblock}
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        {{if $deleteUsers}}
-        $('select_all').observe('click', function(e){
-            Zikula.toggleInput('users_searchresults', true);
-            e.stop()
-        });
-        $('deselect_all').observe('click', function(e){
-            Zikula.toggleInput('users_searchresults', false);
-            e.stop()
-        });
-        {{/if}}
-    });
-</script>
-{/pageaddvarblock}
-{/strip}
+{if $deleteUsers}
+{pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/ZikulaUsersModule.Admin.MailUsers.js'}
+{/if}
 
 {adminheader}
 <h3>
@@ -24,7 +8,7 @@
     {gt text="Search results"}
 </h3>
 
-<form id="users_searchresults" class="form-horizontal" role="form" method="post" action="{modurl modname="Users" type="admin" func="deleteUsers"}">
+<form id="users_searchresults" class="form-horizontal" role="form" method="post" action="{route name='zikulausersmodule_admin_deleteusers'}">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <table class="table table-bordered table-striped">
@@ -45,7 +29,7 @@
                 {section name=item loop=$items}
                 <tr>
                     {if $deleteUsers}
-                    <td>{if ($items[item].uid != 1) && ($items[item].uid != 2)}<input type="checkbox" name="userid[]" value="{$items[item].uid}" />{/if}</td>
+                    <td>{if ($items[item].uid != 1) && ($items[item].uid != 2)}<input type="checkbox" class="user-checkboxes" name="userid[]" value="{$items[item].uid}" />{/if}</td>
                     {/if}
                     <td>{$items[item].uname}</td>
                     {if $modvars.ZConfig.profilemodule}
@@ -69,7 +53,7 @@
 
         {if $deleteUsers}
         <p>
-            <a href="#" id="select_all">{gt text="Select all"}</a> / <a href="#" id="deselect_all">{gt text="De-select all"}</a>
+            <a href="#" id="select-all">{gt text="Select all"}</a> / <a href="#" id="deselect-all">{gt text="De-select all"}</a>
         </p>
         {/if}
 
@@ -78,7 +62,7 @@
             {if $deleteUsers}
                 {button type='submit' class="btn btn-warning"  __alt="Delete selected users" __title="Delete selected users" __text="Delete selected users"}
             {/if}
-                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Return to User Administration'}">{gt text='Return to User Administration'}</a>
+                <a class="btn btn-default" href="{route name='zikulausersmodule_admin_index'}" title="{gt text='Return to User Administration'}">{gt text='Return to User Administration'}</a>
             </div>
         </div>
     </div>

@@ -80,7 +80,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
         // template to use
         if (empty($vars['template'])) {
-            $vars['template'] = 'blocks_block_extmenu.tpl';
+            $vars['template'] = 'Block/Extmenu/extmenu.tpl';
         }
         // stylesheet to use
         if (empty($vars['stylesheet'])) {
@@ -175,7 +175,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
                 if (SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_ADMIN)) {
                     $menuitems[] = array('name'   => $this->__('--Installed modules--'),
-                                         'url'    => ModUtil::url('ZikulaBlocksModule', 'admin', 'modify', array('bid' => $blockinfo['bid'])),
+                                         'url'    => $this->get('router')->generate('zikulablocksmodule_admin_modify', array('bid' => $blockinfo['bid'])),
                                          'title'  => '',
                                          'level'  => 0,
                                          'parentid' => null,
@@ -260,7 +260,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
         // template to use
         if (empty($vars['template'])) {
-            $vars['template'] = 'blocks_block_extmenu.tpl';
+            $vars['template'] = 'Block/Extmenu/extmenu.tpl';
         }
 
         // create default block variables
@@ -366,7 +366,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                    ->assign('blockinfo', $blockinfo);
 
         // return the output
-        return $this->view->fetch('blocks_block_extmenu_modify.tpl');
+        return $this->view->fetch('Block/Extmenu/modify.tpl');
     }
 
     /**
@@ -393,7 +393,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         }
 
         if (empty($vars['template'])) {
-            $vars['template'] = 'blocks_block_extmenu.tpl';
+            $vars['template'] = 'Block/Extmenu/extmenu.tpl';
         }
 
         if (empty($vars['stylesheet'])) {

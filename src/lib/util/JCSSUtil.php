@@ -26,12 +26,13 @@ class JCSSUtil
     {
         $return = '';
         $config = array(
-            'entrypoint'  => System::getVar('entrypoint', 'index.php'),
-            'baseURL'     => System::getBaseUrl(),
-            'baseURI'     => System::getBaseUri() . '/',
-            'ajaxtimeout' => (int) System::getVar('ajaxtimeout', 5000),
-            'lang'        => ZLanguage::getLanguageCode(),
+            'entrypoint' => System::getVar('entrypoint', 'index.php'),
+            'baseURL' => System::getBaseUrl(),
+            'baseURI' => System::getBaseUri() . '/',
+            'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
+            'lang' => ZLanguage::getLanguageCode(),
             'sessionName' => session_name(),
+            'uid' => (int)UserUtil::getVar('uid')
         );
         $config = DataUtil::formatForDisplay($config);
         $return .= "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
@@ -56,16 +57,22 @@ class JCSSUtil
      *
      * @param bool   $combine   Should files be combined.
      * @param string $cache_dir Path to cache directory.
+     * @param array  $themeinfo array of info on current theme
+     * @param bool   $isAdminController
      *
      * @return array Array with two array containing the files to be embedded into HTML HEAD
      */
-    public static function prepareJCSS($combine = false, $cache_dir = null)
+    public static function prepareJCSS($combine = false, $cache_dir = null, $themeinfo = array(), $isAdminController = false)
     {
         $combine = $combine && is_writable($cache_dir);
-        $jcss = array();
+
         // get page vars
         $javascripts = PageUtil::getVar('javascript');
         $stylesheets = PageUtil::getVar('stylesheet');
+
+        // add html5shiv centrally
+        $javascripts[] = 'web/html5shiv/dist/html5shiv.js';
+
         if (System::isLegacyMode()) {
             $replaceLightbox = false;
             // check if we need to perform ligthbox replacement -- javascript
@@ -84,10 +91,10 @@ class JCSSUtil
                 }
             }
         }
-        $javascripts = self::prepareJavascripts($javascripts, $combine);
+        $javascripts = self::prepareJavascripts($javascripts);
         // update stylesheets as there might be some additions for js
         $stylesheets = array_merge((array) $stylesheets, (array) PageUtil::getVar('stylesheet'));
-        $stylesheets = self::prepareStylesheets($stylesheets, $combine);
+        $stylesheets = self::prepareStylesheets($stylesheets, $themeinfo, $isAdminController);
         if ($combine) {
             $javascripts = (array) self::save($javascripts, 'js', $cache_dir);
             $stylesheets = (array) self::save($stylesheets, 'css', $cache_dir);
@@ -109,10 +116,12 @@ class JCSSUtil
      * Procedure for managinig stylesheets.
      *
      * @param array $stylesheets List of demanded stylesheets.
+     * @param array  $themeinfo  array of info on current theme
+     * @param boolean $isAdminController
      *
      * @return array List of stylesheets
      */
-    public static function prepareStylesheets($stylesheets)
+    public static function prepareStylesheets($stylesheets, $themeinfo = array(), $isAdminController = false)
     {
         if (ThemeUtil::getVar('noCoreCss', false)) {
             $initStyle = null;
@@ -131,13 +140,22 @@ class JCSSUtil
         }
         // Add core stylesheet
         array_unshift($stylesheets, $coreStyle[0]);
-        // Add bootstrap stylesheet
-        $overrideBootstrapPath = ThemeUtil::getVar('bootstrapPath', ''); // allows for theme override of bootstrap css path
-        $bootstrapPath = !empty($overrideBootstrapPath) ? $overrideBootstrapPath : ServiceUtil::getManager()->getParameter('zikula.stylesheet.bootstrap.min.path');
-        array_unshift($stylesheets, $bootstrapPath);
-        // Add font-awesome
-        array_unshift($stylesheets, ServiceUtil::getManager()->getParameter('zikula.stylesheet.fontawesome.min.path'));
-        $stylesheets = array_unique(array_values($stylesheets));
+
+        // is theme a 1.4.0 type bundle?
+        $theme = null;
+        if (!empty($themeinfo)) {
+            $theme = ThemeUtil::getTheme($themeinfo['name']);
+        }
+
+        // Add bootstrap stylesheet only for 1.4.x type themes or if an admin controller is in use
+        if (isset($theme) || $isAdminController) {
+            $overrideBootstrapPath = ThemeUtil::getVar('bootstrapPath', ''); // allows for theme override of bootstrap css path
+            $bootstrapPath = !empty($overrideBootstrapPath) ? $overrideBootstrapPath : ServiceUtil::getManager()->getParameter('zikula.stylesheet.bootstrap.min.path');
+            array_unshift($stylesheets, $bootstrapPath);
+            // Add font-awesome
+            array_unshift($stylesheets, ServiceUtil::getManager()->getParameter('zikula.stylesheet.fontawesome.min.path'));
+            $stylesheets = array_unique(array_values($stylesheets));
+        }
         $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
         PageUtil::addVar('header', $iehack);
 
@@ -145,7 +163,7 @@ class JCSSUtil
     }
 
     /**
-     * Procedure for managinig javascript files.
+     * Procedure for managing javascript files.
      *
      * Verify demanded files, translate script aliases to real paths, resolve dependencies.
      * Check if gettext is needed and if so add to list file with translations.
@@ -156,8 +174,14 @@ class JCSSUtil
      */
     public static function prepareJavascripts($javascripts)
     {
-        array_unshift($javascripts, 'jquery', 'javascript/helpers/bootstrap-zikula.js');
-        array_unshift($javascripts, 'jquery', ServiceUtil::getManager()->getParameter('zikula.javascript.bootstrap.min.path'));
+        $sm = ServiceUtil::getManager();
+        array_unshift($javascripts, 'jquery', $sm->getParameter('zikula.javascript.bootstrap.min.path'), 'javascript/helpers/bootstrap-zikula.js');
+        if ($sm->getParameter('env') == 'prod' && file_exists(realpath('web/js/fos_js_routes.js'))) {
+            array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', 'web/js/fos_js_routes.js');
+        } else {
+            $routeScript = $sm->get('router')->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData'));
+            array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', $routeScript);
+        }
         // first resolve any dependencies
         $javascripts = self::resolveDependencies($javascripts);
         // set proper file paths for aliased scripts
@@ -344,7 +368,7 @@ class JCSSUtil
                 'require' => array('noconflict', 'jquery-migrate'),
             ),
             'jquery-ui'          => array(
-                'path'    => 'web/jquery-ui/ui/minified/jquery-ui.min.js',
+                'path'    => 'web/jquery-ui/jquery-ui.min.js',
                 'require' => array('jquery'),
             ),
             'noconflict'         => array(
@@ -483,7 +507,7 @@ class JCSSUtil
             );
             $jQueryUiUncompressed = array(
                 'jquery-ui' => array(
-                    'path'    => 'web/jquery-ui/ui/jquery-ui.js',
+                    'path'    => 'web/jquery-ui/jquery-ui.js',
                     'require' => array('jquery'),
                 ),
             );
@@ -510,7 +534,7 @@ class JCSSUtil
         $cachedFile = "{$cache_dir}/{$hash}_{$ext}.php";
         $cachedFileUri = "{$hash}_{$ext}.php";
         if (is_readable($cachedFile) && (filemtime($cachedFile) + $lifetime) > time()) {
-            return "jcss.php?f=$cachedFileUri";
+            return System::getBaseUri() . '/jcss.php?f=' . $cachedFileUri;
         }
         switch ($ext) {
             case 'css':
@@ -523,40 +547,43 @@ class JCSSUtil
                 $ctype = 'text/plain';
                 break;
         }
+        $includedFiles = array();
         $outputFiles = array();
         $contents = array();
         $dest = fopen($cachedFile, 'w');
-        $contents[] = "/* --- Combined file written: " . DateUtil::getDateTime() . " */\n\n";
-        $contents[] = "/* --- Combined files:\n" . implode("\n", $files) . "\n*/\n\n";
         foreach ($files as $file) {
             if (!empty($file)) {
                 // skip remote files from combining
                 if (is_file($file)) {
                     self::readfile($contents, $file, $ext);
+                    $includedFiles[] = $file;
                 } else {
                     $outputFiles[] = $file;
                 }
             }
         }
+
+        array_unshift($contents, "/* --- Combined file written: " . DateUtil::getDateTime() . " */\n\n");
+        array_unshift($contents, "/* --- Combined files:\n" . implode("\n", $includedFiles) . "\n*/\n\n");
+
         $contents = implode('', $contents);
         // optional minify
-        if ($themevars['cssjsminify']) {
-            if ($ext == 'css') {
-                // Remove comments.
-                $contents = trim(preg_replace('/\/\*.*?\*\//s', '', $contents));
-                // Compress whitespace.
-                $contents = preg_replace('/\s+/', ' ', $contents);
-                // Additional whitespace optimisation -- spaces around certain tokens is not required by CSS
-                $contents = preg_replace('/\s*(;|\{|\}|:|,)\s*/', '\1', $contents);
-            }
+        if ($themevars['cssjsminify'] && $ext == 'css') {
+            // Remove comments.
+            $contents = trim(preg_replace('/\/\*.*?\*\//s', '', $contents));
+            // Compress whitespace.
+            $contents = preg_replace('/\s+/', ' ', $contents);
+            // Additional whitespace optimisation -- spaces around certain tokens is not required by CSS
+            $contents = preg_replace('/\s*(;|\{|\}|:|,)\s*/', '\1', $contents);
         }
+
         global $ZConfig;
         $signingKey = md5(serialize($ZConfig['DBInfo']['databases']['default']));
         $signature = md5($contents . $ctype . $lifetime . $themevars['cssjscompress'] . $signingKey);
         $data = array('contents' => $contents, 'ctype' => $ctype, 'lifetime' => $lifetime, 'gz' => $themevars['cssjscompress'], 'signature' => $signature);
         fwrite($dest, serialize($data));
         fclose($dest);
-        $combined = "jcss.php?f=$cachedFileUri";
+        $combined = System::getBaseUri() . '/jcss.php?f=' . $cachedFileUri;
         array_unshift($outputFiles, $combined);
 
         return $outputFiles;
@@ -565,7 +592,7 @@ class JCSSUtil
     /**
      * Reads an file and add its contents to the $contents array.
      *
-     * This function includes the content of all @import statements (recursive).
+     * This function includes the content of all "@import" statements (recursive).
      *
      * @param array  &$contents Array to save content to.
      * @param string $file      Path to file.

@@ -10,7 +10,7 @@
 </div>
 {/if}
 
-<form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='import'}" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" role="form" action="{route name='zikulausersmodule_admin_import'}" method="post" enctype="multipart/form-data">
     <div>
         <input type="hidden" name="confirmed" value="1" />
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -37,7 +37,7 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 {button class="btn btn-success" __alt='Import' __title='Import' __text='Import'}
-                <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+                <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>
         </div>
     </div>

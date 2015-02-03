@@ -6,7 +6,7 @@
 
 <p class="alert alert-warning">{gt text="Warning! This will delete the registration from the database. It cannot be undone."}</p>
 
-<form id="users_denyregistration" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='denyRegistration'}" method="post">
+<form id="users_denyregistration" class="form-horizontal" role="form" action="{route name='zikulausersmodule_admin_denyregistration'}" method="post">
     
     {include file='Admin/includeregistration.tpl'}
 

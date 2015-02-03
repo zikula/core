@@ -14,8 +14,8 @@
 
 namespace Zikula\Core\Doctrine\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * Extension Entity.
@@ -82,7 +82,7 @@ class ExtensionEntity extends EntityAccess
     private $version;
 
     /**
-     * @ORM\Column(type="array", length=255)
+     * @ORM\Column(type="array")
      * @var array
      */
     private $capabilities;

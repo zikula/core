@@ -12,12 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Zikula_Request_Http as Request;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * Event handler to override templates.
  */
@@ -41,25 +35,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.preinit', 'initDB');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
-        $this->addHandlerDefinition('core.postinit', 'doctrineExtensions');
-    }
-
-    /**
-     * Event: 'frontcontroller.predispatch'.
-     *
-     * @param Zikula_Event $event
-     *
-     * @return void
-     */
-    public function sessionExpired(Zikula_Event $event)
-    {
-        if (SessionUtil::hasExpired()) {
-            // Session has expired, display warning
-            $response = new Response(ModUtil::apiFunc('ZikulaUsersModule', 'user', 'expiredsession', 403));
-            $response = Zikula_View_Theme::getInstance()->themefooter($response);
-            $response->send();
-            System::shutdown();
-        }
     }
 
     /**
@@ -112,8 +87,13 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function requireSession(Zikula_Event $event)
     {
         $session = $this->serviceManager->get('session');
-        $request = ServiceUtil::get('request');
-        $request->setSession($session);
+        try {
+            $request = ServiceUtil::get('request');
+            $request->setSession($session);
+        } catch (Exception $e) {
+            // ignore silently (for CLI)
+        }
+
         try {
             if (!$session->start()) {
                 throw new RuntimeException('Failed to start session');
@@ -129,7 +109,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Initialise DB connection.
      *
-     * Implements 'core.init' event when Zikula_Core::STAGE_DB.
+     * Implements 'core.preinit' event
      *
      * @param Zikula_Event $event The event handler.
      *
@@ -137,7 +117,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function initDB(Zikula_Event $event)
     {
+        // Doctrine 1 event
         $this->eventManager->dispatch('doctrine.init_connection', new \Zikula\Core\Event\GenericEvent(null, $event->getArgs()));
+        // Doctrine 2 event
         $this->eventManager->dispatch('doctrine.boot', new \Zikula\Core\Event\GenericEvent());
     }
 
@@ -238,7 +220,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function addHooksLink(Zikula_Event $event)
     {
         // check if this is for this handler
-        if (!($event['modfunc'][1] == 'getlinks' && $event['type'] == 'admin' && $event['api'] == true)) {
+        if (!($event['modfunc'][1] == 'getLinks' && $event['type'] == 'admin' && $event['api'] == true)) {
             return;
         }
 
@@ -270,7 +252,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function addServiceLink(Zikula_Event $event)
     {
         // check if this is for this handler
-        if (!($event['modfunc'][1] == 'getlinks' && $event['type'] == 'admin' && $event['api'] == true)) {
+        if (!($event['modfunc'][1] == 'getLinks' && $event['type'] == 'admin' && $event['api'] == true)) {
             return;
         }
 
@@ -309,38 +291,4 @@ class SystemListeners extends Zikula_AbstractEventHandler
         //header("X-Content-Security-Policy: frame-ancestors 'self'");
         header('X-XSS-Protection: 1');
     }
-
-    /**
-     * Adds Doctrine extensions.
-     *
-     * Implements 'core.postinit' event.
-     *
-     * @param Zikula_Event $event The event handler.
-     *
-     * @deprecated since 1.4.0
-     * @todo remove in 1.5.0
-     *
-     * @return void
-     */
-    public function doctrineExtensions(Zikula_Event $event)
-    {
-        $definition = new Definition('Doctrine\Common\Annotations\AnnotationReader');
-        $this->serviceManager->setDefinition('doctrine.annotation_reader', $definition);
-
-        $definition = new Definition('Doctrine\ORM\Mapping\Driver\AnnotationDriver', array(new Reference('doctrine.annotation_reader')));
-        $this->serviceManager->setDefinition('doctrine.annotation_driver', $definition);
-
-        $definition = new Definition('Doctrine\ORM\Mapping\Driver\DriverChain');
-        $this->serviceManager->setDefinition('doctrine.driver_chain', $definition);
-
-        $definition = new Definition('Zikula\Core\Doctrine\ExtensionsManager', array(new Reference('doctrine.eventmanager'), new Reference('service_container')));
-        $this->serviceManager->setDefinition('doctrine_extensions', $definition);
-
-        $types = array('Blameable', 'Exception', 'Loggable', 'Mapping', 'SoftDeleteable', 'Uploadable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
-        foreach ($types as $type) {
-            $definition = new Definition("Gedmo\\$type\\{$type}Listener");
-            $this->serviceManager->setDefinition(strtolower("doctrine_extensions.listener.$type"), $definition);
-        }
-    }
-
 }

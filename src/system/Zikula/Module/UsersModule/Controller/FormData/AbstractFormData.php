@@ -16,6 +16,7 @@ namespace Zikula\Module\UsersModule\Controller\FormData;
 use ServiceUtil;
 use ModUtil;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A form data container and validator.
@@ -46,12 +47,12 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
     /**
      * Construct a new form data container instance, initializing the id value.
      *
-     * @param string                 $formId         A value for the form's id attribute.
-     * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param string             $formId         A value for the form's id attribute.
+     * @param ContainerInterface $serviceManager The current service manager instance.
      *
      * @throws \InvalidArgumentException Thrown if the specified form id is not valid.
      */
-    public function __construct($formId, \Zikula_ServiceManager $serviceManager = null)
+    public function __construct($formId, ContainerInterface $serviceManager = null)
     {
         if (!isset($serviceManager)) {
             $serviceManager = ServiceUtil::getManager();
@@ -87,9 +88,9 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
         } elseif ($field->getFormContainer() !== $this) {
             throw new \InvalidArgumentException($this->__('Form container mismatch.'));
         } elseif (array_key_exists($field->fieldName, $this->formFields)) {
-            throw new \InvalidArgumentException($this->__f('Field defintion for the \'%1$s\' field is already defined.', array($field->fieldName)));
+            throw new \InvalidArgumentException($this->__f('Field definition for the \'%1$s\' field is already defined.', array($field->fieldName)));
         } elseif (array_key_exists($field->fieldId, $this->fieldIds)) {
-            throw new \InvalidArgumentException($this->__f('Field defintion duplicates the field id \'%1$s\' already claimed by the field \'%2$s\'.', array($field->fieldId, $this->fieldIds[$field->fieldId])));
+            throw new \InvalidArgumentException($this->__f('Field definition duplicates the field id \'%1$s\' already claimed by the field \'%2$s\'.', array($field->fieldId, $this->fieldIds[$field->fieldId])));
         }
 
         $this->formFields[$field->fieldName] = $field;

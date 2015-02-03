@@ -13,14 +13,14 @@
  * information regarding copyright and licensing.
  */
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\AbstractModule;
-use Symfony\Component\HttpKernel\Exception;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * AbstractBase class for module abstract controllers and apis.
@@ -146,7 +146,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return void
      */
-    protected function _configureBase($bundle)
+    protected function _configureBase($bundle = null)
     {
         $this->systemBaseDir = realpath('.');
 

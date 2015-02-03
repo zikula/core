@@ -2,11 +2,11 @@
 
 namespace Zikula\Core\Doctrine\StandardFields;
 
-use Doctrine\Common\Persistence\Proxy;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Gedmo\Mapping\MappedEventSubscriber;
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
+use Doctrine\Common\Persistence\Proxy;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Gedmo\Mapping\MappedEventSubscriber;
 
 /**
  * The StandardFields listener handles the update of

@@ -1,0 +1,3 @@
+zikulaextensionsmodule:
+    resource: "@ZikulaExtensionsModule/Controller"
+    type:     annotation

@@ -59,6 +59,14 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
     {
         $this->maxLength = 20;
         $params['width'] = '6em';
+        $params['textMode'] = 'number';
+
+        if (isset($this->minValue)) {
+            $this->attributes['min'] = $this->minValue;
+        }
+        if (isset($this->maxValue)) {
+            $this->attributes['max'] = $this->maxValue;
+        }
 
         parent::create($view, $params);
 

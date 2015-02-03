@@ -14,6 +14,7 @@
 namespace Zikula\Module\SearchModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\UrlInterface;
 
 /**
  * SearchResult
@@ -46,7 +47,7 @@ class SearchResultEntity
     /**
      * the matching search text
      *
-     * @var text $text
+     * @var string $text
      *
      * @ORM\Column(name="text", type="text", nullable=true)
      */
@@ -89,7 +90,7 @@ class SearchResultEntity
     private $found;
 
     /**
-     * Session id assoiciated
+     * Session id associated
      *
      * @var string $sesid
      *
@@ -97,6 +98,14 @@ class SearchResultEntity
      */
     private $sesid;
 
+    /**
+     * Url for found item
+     *
+     * @var UrlInterface
+     *
+     * @ORM\Column(type="object", nullable=true)
+     */
+    private $url;
 
     /**
      * Get id
@@ -134,7 +143,7 @@ class SearchResultEntity
     /**
      * Set text
      *
-     * @param text $text
+     * @param string $text
      * @return SearchResultEntity
      */
     public function setText($text)
@@ -147,7 +156,7 @@ class SearchResultEntity
     /**
      * Get text
      *
-     * @return text
+     * @return string
      */
     public function getText()
     {
@@ -267,5 +276,32 @@ class SearchResultEntity
     public function getSesid()
     {
         return $this->sesid;
+    }
+
+    /**
+     * @param UrlInterface $url
+     */
+    public function setUrl(UrlInterface $url)
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * @return UrlInterface
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    public function merge(array $result)
+    {
+        $this->title = isset($result['title']) ? $result['title'] : 'unknown';
+        $this->text = isset($result['text']) ? $result['text'] : null;
+        $this->extra = isset($result['extra']) ? $result['extra'] : null;
+        $this->module = isset($result['module']) ? $result['module'] : null;
+        $this->created = (isset($result['created']) && ($result['created'] instanceof \DateTime)) ? $result['created'] : new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->sesid = isset($result['sesid']) ? $result['sesid'] : null;
+        $this->url = (isset($result['url']) && ($result['url'] instanceof UrlInterface)) ? $result['url'] : null;
     }
 }

@@ -1,20 +1,21 @@
 {strip}
-{gt text='Password changer' assign='templatetitle'}
-{if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
-{pageaddvar name='javascript' value='prototype'}
-{pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
-{pageaddvarblock}
-<script type="text/javascript">
-    var passmeter = null;
-    document.observe("dom:loaded", function() {
-        passmeter = new Zikula.Users.PassMeter('newpassword', 'users_user_changepassword_passmeter',{
-            username:'usernamehidden',
-            minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
-        });
-    });
-</script>
-{/pageaddvarblock}
-{/if}
+    {gt text='Password changer' assign='templatetitle'}
+    {if $modvars.ZikulaUsersModule.use_password_strength_meter eq 1}
+        {pageaddvar name='javascript' value='jquery'}
+        {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
+        {pageaddvarblock}
+            <script type="text/javascript">
+                ( function($) {
+                    $(document).ready(function() {
+                        ZikulaUsersPassMeter.init('newpassword', 'users_user_changepassword_passmeter',{
+                            username: 'usernamehidden',
+                            minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                        });
+                    });
+                })(jQuery);
+            </script>
+        {/pageaddvarblock}
+    {/if}
 {/strip}
 {include file='User/menu.tpl'}
 
@@ -31,7 +32,7 @@
     {if $login}<p>{gt text='Once you have successfully changed your password, the log-in process will continue.'}</p>{/if}
 </div>
 
-<form id="users_user_changepassword" class="form-horizontal" role="form" action="{modurl modname="Users" type="user" func="updatePassword"}" method="post">
+<form id="users_user_changepassword" class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_updatepassword'}" method="post">
     <fieldset>
         <legend>{gt text="Change password"}</legend>
         <input type="hidden" id="changepassword_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -112,7 +113,7 @@
                 {gt text='Save'}
             </button>
             {/if}
-            <a href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text='Cancel'}" class="btn btn-danger">{gt text='Cancel'}</a>
+            <a href="{route name='zikulausersmodule_user_index'}" title="{gt text='Cancel'}" class="btn btn-danger">{gt text='Cancel'}</a>
         </div>
     </div>
 </form>

@@ -15,7 +15,6 @@
 
 namespace Zikula\Core\Token;
 
-use Zikula\Core\Token\Generator;
 use Zikula\Core\Token\Storage\StorageInterface;
 
 /**

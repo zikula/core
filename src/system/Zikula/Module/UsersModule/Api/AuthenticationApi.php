@@ -14,7 +14,6 @@
 namespace Zikula\Module\UsersModule\Api;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Debug\Exception\FatalErrorException;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper;
 use ModUtil;
@@ -235,7 +234,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *
      * @return array An array containing the authentication method requested.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     * @throws \InvalidArgumentException Thrown if invalid parameters are sent in $args.
      */
     public function getAuthenticationMethod(array $args)
     {
@@ -244,7 +243,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
         }
 
         if (!isset($this->authenticationMethods[($args['method'])])) {
-            throw new FatalErrorException($this->__f('The requested authentication method \'%1$s\' does not exist.', array($args['method'])));
+            throw new \InvalidArgumentException($this->__f('The requested authentication method \'%1$s\' does not exist.', array($args['method'])));
         }
 
         return $this->authenticationMethods[($args['method'])];
@@ -554,7 +553,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
         //
         // Note: the following is a bad example for custom modules because there no mapping table for the Users module.
         // A custom authentication module would look up a uid using its own mapping tables, not the users table or UserUtil.
-        if ($authenticationMethod['method'] == 'email' || ($authenticationMethod['method'] == 'unameoremail' && preg_match('/^'. UsersConstant::EMAIL_VALIDATION_PATTERN .'$/Di', $loginID))) {
+        if ($authenticationMethod['method'] == 'email' || ($authenticationMethod['method'] == 'unameoremail' && filter_var($loginID, FILTER_VALIDATE_EMAIL))) {
             $authenticatedUid = UserUtil::getIdFromEmail($loginID);
             if (!$authenticatedUid) {
                 // Might be a registration. Acting as an authenticationModule, we should not care at this point about the user's

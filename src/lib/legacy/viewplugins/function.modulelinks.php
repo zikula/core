@@ -22,7 +22,7 @@
  * Available parameters:
  *  links     Array with menulinks (text, url, title, id, class, disabled) (optional)
  *  modname   Module name to display links for (optional)
- *  type      Function type where the getlinks-function is located (optional)
+ *  type      Function type where the getLinks-function is located (optional)
  *  menuid    ID for the unordered list (optional)
  *  menuclass Class for the unordered list (optional)
  *  itemclass Array with menulinks (text, url, title, class, disabled) (optional)
@@ -60,7 +60,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
         $params['type'] = isset($params['type']) ? $params['type'] : 'admin';
 
         // get the links from the module API
-        $menuLinks = ModUtil::apiFunc($params['modname'], $params['type'], 'getlinks', $params);
+        $menuLinks = ModUtil::apiFunc($params['modname'], $params['type'], 'getLinks', $params);
     }
 
     // return if there are no links to print

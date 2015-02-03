@@ -20,7 +20,6 @@ use System;
 use DateTime;
 use DateTimeZone;
 use ServiceUtil;
-
 use DBUtil;
 use EventUtil;
 use HookUtil;
@@ -78,33 +77,52 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function upgrade($oldVersion)
     {
+    
         // Upgrade dependent on old version number
         switch ($oldVersion) {
-            case '2.2.0':
+            case '2.2.0': // version shipped with Core 1.3.5 -> current 1.3.x
+                // add new table
+                DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\UsersModule\Entity\UserAttributeEntity'));
                 $this->migrateAttributes();
             case '2.2.1':
                 // This is the current version: add 2.2.1 --> next when appropriate
 
-            $currentModVars = $this->getVars();
-            $defaultModVars = $this->getDefaultModvars();
+                $currentModVars = $this->getVars();
+                $defaultModVars = $this->getDefaultModvars();
 
-            // Remove modvars that are no longer defined.
-            foreach ($currentModVars as $modVar => $currentValue) {
-                if (!array_key_exists($modVar, $defaultModVars)) {
-                    $this->delVar($modVar);
+                // Remove modvars that are no longer defined.
+                foreach ($currentModVars as $modVar => $currentValue) {
+                    if (!array_key_exists($modVar, $defaultModVars)) {
+                        $this->delVar($modVar);
+                    }
                 }
-            }
 
-            // Add modvars that are new to the version
-            foreach ($defaultModVars as $modVar => $defaultValue) {
-                if (!array_key_exists($modVar, $currentModVars)) {
-                    $this->setVar($modVar, $defaultValue);
+                // Add modvars that are new to the version
+                foreach ($defaultModVars as $modVar => $defaultValue) {
+                    if (!array_key_exists($modVar, $currentModVars)) {
+                        $this->setVar($modVar, $defaultValue);
+                    }
                 }
-            }
-
-            // Update successful
-            return true;
+            case '2.2.2':
+                if ($this->getVar('gravatarimage', null) == 'gravatar.gif') {
+                    $this->setVar('gravatarimage', 'gravatar.jpg');
+                }
+            case '2.2.3':
+                // Nothing to do.
+            case '2.2.4':
+                $connection = $this->entityManager->getConnection();
+                $sql ="UPDATE users_attributes SET value='gravatar.jpg' WHERE value='gravatar.gif'";
+                $stmt = $connection->prepare($sql);
+                $stmt->execute();
+            case '2.2.5':
+                // current version
         }
+        
+        /**
+         * Update successful.
+         */
+        return true;
+
     }
 
     /**
@@ -153,6 +171,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS                  => UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS,
             UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH               => UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
             UsersConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => UsersConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
+            UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED             => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
             UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY           => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
             UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',
@@ -227,25 +246,26 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
     }
 
     /**
-     * Migrate attributes to user entity
-     *
-     * @return void
+     * migrate all data from the objectdata_attributes table to the users_attributes
+     * where object_type = 'users'
      */
     private function migrateAttributes()
     {
-        $dataset = DBUtil::selectObjectArray('users');
-        $em = $this->getEntityManager();
-        foreach ($dataset as $data) {
-            if (!isset($data['__ATTRIBUTES__'])) {
-                continue;
-            }
-
-            $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => $data['uid']));
-            foreach ($data['__ATTRIBUTES__'] as $name => $value) {
-                $user->setAttribute($name ,$value);
-            }
-
-            $em->flush();
+        $connection = $this->entityManager->getConnection();
+        $sqls = array();
+        // copy data from objectdata_attributes to users_attributes
+        $sqls[] = 'INSERT INTO users_attributes
+                    (user_id, name, value)
+                    SELECT object_id, attribute_name, value
+                    FROM objectdata_attributes
+                    WHERE object_type = \'users\'
+                    ORDER BY object_id, attribute_name';
+        // remove old data
+        $sqls[] = 'DELETE FROM objectdata_attributes
+                    WHERE object_type = \'users\'';
+        foreach ($sqls as $sql) {
+            $stmt = $connection->prepare($sql);
+            $stmt->execute();
         }
     }
 }

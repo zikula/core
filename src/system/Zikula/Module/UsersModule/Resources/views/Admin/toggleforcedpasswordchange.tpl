@@ -17,7 +17,7 @@
 <p class="alert alert-warning">{gt text='Do you want to force a password change during the next login attempt for %1$s?' tag1=$user_obj.uname|safetext}</p>
 {/if}
 
-<form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='toggleForcedPasswordChange'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulausersmodule_admin_toggleforcedpasswordchange'}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text='Confirmation prompt'}</legend>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -34,7 +34,7 @@
                         {gt text='Yes, force the change of password'}
                     </button>
                 {/if}
-                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='No'}">{gt text='No'}</a>
+                <a class="btn btn-default" href="{route name='zikulausersmodule_admin_view'}" title="{gt text='No'}">{gt text='No'}</a>
             </div>
         </div>
     </fieldset>

@@ -81,25 +81,31 @@ class RegistrationForm extends AbstractFormData
                 $this->serviceManager,
                 $this->__('The value must be a string.')));
 
-        $passReminderField = new Field(
+        if ((bool)$this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
+            $passReminderField = new Field(
                 $this,
                 'passreminder',
                 false,
                 false,
-                $this->serviceManager);
-        $passReminderField->setNullAllowed(false)
-            ->addValidator(new Validator\StringType(
+                $this->serviceManager
+            );
+            
+            $passReminderField->setNullAllowed(false)
+                ->addValidator(new Validator\StringType(
                     $this->serviceManager,
-                    $this->__('The value must be a string.')));
+                    $this->__('The value must be a string.')
+            ));
 
-        if (ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY) && !$passwordReminderNotMandatory) {
-            $passReminderField->addValidator(new Validator\StringMinimumLength(
-                $this->serviceManager,
-                1,
-                $this->__('A password reminder is required, and cannot be left blank.')));
+            if (((bool)$this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY)) && (!$passwordReminderNotMandatory)) {
+                $passReminderField->addValidator(new Validator\StringMinimumLength(
+                    $this->serviceManager,
+                    1,
+                    $this->__('A password reminder is required, and cannot be left blank.')
+                ));
+            }
+
+            $this->addField($passReminderField);
         }
-
-        $this->addField($passReminderField);
 
         $this->addField(new Field(
                 $this,
@@ -115,10 +121,12 @@ class RegistrationForm extends AbstractFormData
                 $this->serviceManager,
                 1,
                 $this->__('An e-mail address is required, and cannot be left blank.')))
-            ->addValidator(new Validator\StringRegularExpression(
+            ->addValidator(new Validator\FilterVar(
                 $this->serviceManager,
-                '/^'. UsersConstant::EMAIL_VALIDATION_PATTERN .'$/Di',
-                $this->__('The value entered does not appear to be a valid e-mail address.')));
+                FILTER_VALIDATE_EMAIL,
+                null,
+                false,
+                $this->__('The value entered does not appear to be a valid email address.')));
 
         $this->addField(new Field(
                 $this,
@@ -205,7 +213,7 @@ class RegistrationForm extends AbstractFormData
         $user = array(
             'uname'         => $this->getField('uname')->getData(),
             'pass'          => $this->getField('pass')->getData(),
-            'passreminder'  => $this->getField('passreminder')->getData(),
+            'passreminder'  => (((bool)$this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) ? $this->getField('passreminder')->getData() : ''),
             'email'         => $this->getField('email')->getData(),
         );
 

@@ -14,7 +14,6 @@
 namespace Zikula\Module\UsersModule\Api;
 
 use SecurityUtil;
-use LogUtil;
 use DataUtil;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use UserUtil;
@@ -25,6 +24,7 @@ use DateTimeZone;
 use DateTime;
 use Doctrine\ORM\AbstractQuery;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * The system-level and database-level functions for user-initiated actions for the Users module.
@@ -65,7 +65,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add clause for filtering letter
         if (isset($args['letter']) && !empty($args['letter'])) {
-            $qb->andWhere($qb->expr()->like('u.uname', $qb->expr()->literal($args['letter'] . '%')));
+            $qb->andWhere($qb->expr()->like('u.uname', ':uname'))->setParameter('uname', $args['letter'] . '%');
         }
 
         // add ordering
@@ -168,7 +168,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add clause for filtering letter
         if (isset($args['letter']) && !empty($args['letter'])) {
-            $qb->andWhere($qb->expr()->like('u.uname', $qb->expr()->literal($args['letter'] . '%')));
+            $qb->andWhere($qb->expr()->like('u.uname', ':uname'))->setParameter('uname', $args['letter'] . '%');
         }
 
         // convert querybuilder instance into a Query object
@@ -206,14 +206,14 @@ class UserApi extends \Zikula_AbstractApi
 
         $renderer->assign($templateArgs);
 
-        $templateName = "users_email_{$notificationType}_html.tpl";
+        $templateName = "Email/{$notificationType}_html.tpl";
         if ($renderer->template_exists($templateName)) {
             $mailerArgs['html'] = true;
             $mailerArgs['body'] = $renderer->fetch($templateName);
             $subject = trim($renderer->get_template_vars('subject'));
         }
 
-        $templateName = "users_email_{$notificationType}_txt.tpl";
+        $templateName = "Email/{$notificationType}_txt.tpl";
         if ($renderer->template_exists($templateName)) {
             if (isset($mailerArgs['body'])) {
                 $bodyType = 'altbody';
@@ -317,12 +317,12 @@ class UserApi extends \Zikula_AbstractApi
                 'authentication_methods'=> $authenticationMethods,
                 'sitename'              => System::getVar('sitename'),
                 'hostname'              => System::serverGetVar('REMOTE_ADDR'),
-                'url'                   => ModUtil::url($this->name, 'user', 'login', array(), null, null, true),
+                'url'                   => $this->getContainer()->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL),
                 'adminRequested'        => $adminRequested,
             );
             $view->assign($viewArgs);
-            $htmlBody = $view->fetch('users_email_lostuname_html.tpl');
-            $plainTextBody = $view->fetch('users_email_lostuname_txt.tpl');
+            $htmlBody = $view->fetch('Email/lostuname_html.tpl');
+            $plainTextBody = $view->fetch('Email/lostuname_txt.tpl');
 
             $subject = $this->__f('Account information for %s', $userObj['uname']);
 
@@ -403,8 +403,8 @@ class UserApi extends \Zikula_AbstractApi
 
                 if ($codeSaved) {
                     $urlArgs = array();
-                    $urlArgs['code'] = urlencode($confirmationCode);
-                    $urlArgs[$args['idfield']] = urlencode($args['id']);
+                    $urlArgs['code'] = $confirmationCode;
+                    $urlArgs[$args['idfield']] = $args['id'];
 
                     $view = Zikula_View::getInstance($this->name, false);
                     $viewArgs=array(
@@ -412,12 +412,12 @@ class UserApi extends \Zikula_AbstractApi
                         'sitename'      => System::getVar('sitename'),
                         'hostname'      => System::serverGetVar('REMOTE_ADDR'),
                         'code'          => $confirmationCode,
-                        'url'           => ModUtil::url($this->name, 'user', 'lostPasswordCode', $urlArgs, null, null, true),
+                        'url'           => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpasswordcode', $urlArgs, RouterInterface::ABSOLUTE_URL),
                         'adminRequested'=> $adminRequested,
                     );
                     $view->assign($viewArgs);
-                    $htmlBody = $view->fetch('users_email_lostpassword_html.tpl');
-                    $plainTextBody = $view->fetch('users_email_lostpassword_txt.tpl');
+                    $htmlBody = $view->fetch('Email/lostpassword_html.tpl');
+                    $plainTextBody = $view->fetch('Email/lostpassword_txt.tpl');
 
                     $subject = $this->__f('Confirmation code for %s', $user['uname']);
 
@@ -465,7 +465,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $user = UserUtil::getVars($args['id'], true, $args['idfield']);
+        $user = UserUtil::getVars(urldecode($args['id']), true, $args['idfield']);
 
         if (!$user) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -508,7 +508,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $view = Zikula_View::getInstance($this->name, false);
         $view->assign('returnpage', urlencode(System::getCurrentUri()));
-        return $view->fetch('users_userapi_expiredsession.tpl');
+        return $view->fetch('User/api_expiredsession.tpl');
     }
 
     /**
@@ -617,11 +617,11 @@ class UserApi extends \Zikula_AbstractApi
             'email'     => UserUtil::getVar('email'),
             'newemail'  => $args['newemail'],
             'sitename'  => System::getVar('sitename'),
-            'url'       =>  ModUtil::url($this->name, 'user', 'confirmChEmail', array('confirmcode' => $confirmCode), null, null, true),
+            'url'       => $this->getContainer()->get('router')->generate('zikulausersmodule_user_confirmchemail', array('confirmcode' => $confirmCode), RouterInterface::ABSOLUTE_URL),
         );
         $view->assign($viewArgs);
 
-        $message = $view->fetch('users_email_userverifyemail_html.tpl');
+        $message = $view->fetch('Email/userverifyemail_html.tpl');
         $sent = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', array(
             'toaddress' => $args['newemail'],
             'subject'   => $subject,
@@ -737,33 +737,111 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getLinks()
     {
-
-        $allowregistration = $this->getVar('reg_allowreg');
+        $messageModule = System::getVar('messagemodule', '');
+        $profileModule = System::getVar('profilemodule', '');
+        $isLoggedIn = UserUtil::isLoggedIn();
 
         $links = array();
 
-        if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        // we do not check permissions for guests here (see #1874)
+        if (!$isLoggedIn/* && SecurityUtil::checkPermission($this->name.'::', '::', ACCESS_READ)*/) {
             $links[] = array(
-                'url'   => ModUtil::url($this->name, 'user', 'login'),
-                'text'  => $this->__('Log in'),
                 'icon' => 'sign-in',
+                'text' => $this->__('Log in'),
+                'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_login')            
             );
+
             $links[] = array(
-                'url'   => ModUtil::url($this->name, 'user', 'lostPwdUname'),
-                'text'  => $this->__('Recover account information or password'),
                 'icon' => 'key',
+                'links' => array(
+                    array(
+                        'text' => $this->__('Recover Lost User Name'),
+                        'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostuname')
+                    ),
+                    array(
+                        'text' => $this->__('Recover Lost Password'),
+                        'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpassword')
+                    ),
+                    array(
+                        'text' => $this->__('Enter Password Recovery Code'),
+                        'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpasswordcode')
+                    )
+                ),
+                'text' => $this->__('Recover account information or password'),
+                'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpwduname'),
+            );
+
+            if ($this->getVar('reg_allowreg')) {
+                $links[] = array(
+                    'icon' => 'plus',
+                    'text'  => $this->__('New account'),
+                    'url'   => $this->getContainer()->get('router')->generate('zikulausersmodule_user_register')
+                );
+            }
+        }
+
+        if ($isLoggedIn && SecurityUtil::checkPermission($this->name.'::', '::', ACCESS_READ)) {
+            $links[] = array(
+                'icon' => 'wrench',
+                'text' => $this->__('Account Settings'),
+                'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_index')
             );
         }
 
-        if ($allowregistration) {
+        if ($isLoggedIn && !empty($profileModule) && ModUtil::available($profileModule) && SecurityUtil::checkPermission($profileModule . '::', '::', ACCESS_READ)) {
             $links[] = array(
-                'url'   => ModUtil::url($this->name, 'user', 'register'),
-                'text'  => $this->__('New account'),
-                'icon' => 'plus',
+                'text' => $this->__('Profile'),
+                'url' => ModUtil::url($profileModule, 'user', 'view'),
+                'icon' => 'user',
+                'links' => array(
+                    array(
+                        'text' => $this->__('Edit Profile'),
+                        'url' => ModUtil::url($profileModule, 'user', 'modify')
+                    ),
+                    array(
+                        'text' => $this->__('Change Email Address'),
+                        'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_changeemail')
+                    ),
+                    array(
+                        'text' => $this->__('Change Password'),
+                        'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_changepassword')
+                    )
+                )
             );
+        }
+
+        if ($isLoggedIn && !empty($messageModule) && ModUtil::available($messageModule) && SecurityUtil::checkPermission($messageModule . '::', '::', ACCESS_READ)) {
+            $links[] = array(
+                'icon' => 'envelope',
+                'text' => $this->__('Messages'),
+                'url' => ModUtil::url($messageModule, 'user', 'main') 
+            );  
+        }
+
+        if (!empty($profileModule) && ModUtil::available($profileModule) && SecurityUtil::checkPermission($profileModule . ':Members:', '::', ACCESS_READ)) {
+            $links[9999] = array(
+                'icon' => 'list',
+                'text' => $this->__('Registered Users'),
+                'url' => ModUtil::url($profileModule, 'user', 'viewmembers')                
+            );
+            
+            if (SecurityUtil::checkPermission($profileModule . ':Members:recent', '::', ACCESS_READ)) {
+                $links[9999]['links'][] = array(
+                    'text' => $this->__f('Last %s Registered Users', ModUtil::getVar($profileModule, 'recentmembersitemsperpage')),
+                    'url' => ModUtil::url($profileModule, 'user', 'recentmembers')      
+                );
+            }
+
+            if (SecurityUtil::checkPermission($profileModule . ':Members:online', '::', ACCESS_READ)) {
+                $links[9999]['links'][] = array(
+                    'text' => $this->__('Users Online'),
+                    'url' => ModUtil::url($profileModule, 'user', 'online')       
+                );
+            }
         }
 
         return $links;
+
     }
 
     /**

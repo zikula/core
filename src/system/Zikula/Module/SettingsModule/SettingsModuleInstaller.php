@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
-  *
+ *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -37,11 +37,11 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        // Set up an initial value for a module variable.  Note that all module
+        // Set up an initial value for a module variable. Note that all module
         // variables should be initialised with some value in this way rather
         // than just left blank, this helps the user-side code and means that
         // there doesn't need to be a check to see if the variable is set in
-        // the rest of the code as it always will be
+        // the rest of the code as it always will be.
         System::setVar('debug', '0');
         System::setVar('sitename', $this->__('Site name'));
         System::setVar('slogan', $this->__('Site description'));
@@ -74,7 +74,14 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('shorturls', false);
         System::setVar('shorturlstype', '0');
         System::setVar('shorturlsseparator', '-');
-        System::setVar('shorturlsstripentrypoint', true);
+
+        if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
+            // Only strip entry point if "mod_rewrite" is available.
+            System::setVar('shorturlsstripentrypoint', true);
+        } else {
+            System::setVar('shorturlsstripentrypoint', false);
+        }
+
         System::setVar('shorturlsdefaultmodule', '');
         System::setVar('profilemodule', ((ModUtil::available('ZikulaProfileModule')) ? 'ZikulaProfileModule' : ''));
         System::setVar('messagemodule', '');
@@ -85,7 +92,7 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         //! this is a comma-separated list of special characters to replace in permalinks
         System::setVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
 
-        System::setVar('language',ZLanguage::getLanguageCodeLegacy());
+        System::setVar('language', ZLanguage::getLanguageCodeLegacy());
         System::setVar('locale', ZLanguage::getLocale());
         System::setVar('language_i18n', ZLanguage::getlanguageCode());
 
@@ -100,15 +107,18 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
-        if (!DBUtil::createTable('objectdata_attributes')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('objectdata_log')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('objectdata_meta')) {
+        /**
+         * These entities are only used to install the tables and they
+         * are @deprecated as of 1.4.0 because the Objectdata paradigm
+         * is being removed at 2.0.0
+         */
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array(
+                'Zikula\Module\SettingsModule\Entity\ObjectdataAttributes',
+                'Zikula\Module\SettingsModule\Entity\ObjectdataLog',
+                'Zikula\Module\SettingsModule\Entity\ObjectdataMeta',
+            ));
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -136,6 +146,19 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\Module\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
             // future upgrade routines
             case '2.9.8':
+                $permasearch = System::getVar('permasearch');
+                if (empty($permasearch)) {
+                    System::setVar('permasearch',  $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+                }
+                $permareplace = System::getVar('permareplace');
+                if (empty($permareplace)) {
+                    System::setVar('permareplace',  $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+                }
+                $locale = System::getVar('locale');
+                if (empty($locale)) {
+                    System::setVar('locale',  ZLanguage::getLocale());
+                }
+            case '2.9.9':
                 // current version
         }
 

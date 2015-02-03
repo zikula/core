@@ -13,10 +13,10 @@
  */
 namespace Zikula\Component\FilterUtil;
 
-use Doctrine\ORM\Query\Expr\Base as BaseExpr;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 use Doctrine\ORM\Query\Expr\Orx;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

@@ -2,18 +2,18 @@
     {gt text='Create new user' assign='templatetitle'}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
     {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
-        {* TODO - Using ajaxheader here causes an error when the PassMeter is initialized. *}
-        {pageaddvar name='javascript' value='prototype'}
+        {pageaddvar name='javascript' value='jquery'}
         {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
-                var passmeter = null;
-                document.observe("dom:loaded", function() {
-                    passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
-                        username:'{{$formData->getFieldId('uname')}}',
-                        minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                ( function($) {
+                    $(document).ready(function() {
+                        ZikulaUsersPassMeter.init('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
+                            username: '{{$formData->getFieldId('uname')}}',
+                            minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                        });
                     });
-                });
+                })(jQuery);
             </script>
         {/pageaddvarblock}
     {/if}
@@ -53,7 +53,7 @@
 
 <p class="alert alert-warning">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='newUser'}" method="post">
+<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{route name='zikulausersmodule_admin_newuser'}" method="post">
     <div>
         <input type="hidden" id="{$formData->getFormId()}_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_user" />
@@ -201,10 +201,10 @@
             <p id="{$formData->getFormId()}_validmessage" class="hide sub">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-9">
-                    {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
+                    <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
                     {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' class='btn btn-success' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
                     {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='btn btn-warning' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                    <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}">{gt text='Cancel'}</a>
+                    <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}">{gt text='Cancel'}</a>
                 </div>
             </div>
         </div>

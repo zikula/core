@@ -2,20 +2,19 @@
 
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
+use Composer\Autoload\ClassLoader;
+use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Debug\DebugClassLoader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Yaml\Yaml;
 use Zikula\Bridge\DependencyInjection\PhpDumper;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Config\ConfigCache;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
 use Zikula\Core\AbstractTheme;
-use Composer\Autoload\ClassLoader;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 abstract class ZikulaKernel extends Kernel
 {
@@ -179,7 +178,12 @@ abstract class ZikulaKernel extends Kernel
         if (null === $this->autoloader) {
             $loaders = spl_autoload_functions();
             if ($loaders[0][0] instanceof DebugClassLoader) {
-                $this->autoloader = $loaders[0][0]->getClassLoader();
+                $classLoader = $loaders[0][0]->getClassLoader();
+                if (is_callable($classLoader) && is_object($classLoader[0])) {
+                    $this->autoloader = $classLoader[0];
+                } elseif (is_object($classLoader)) {
+                    $this->autoloader = $classLoader;
+                }
             } else {
                 $this->autoloader = $loaders[0][0];
             }
@@ -190,9 +194,12 @@ abstract class ZikulaKernel extends Kernel
 
     public function getConnectionConfig()
     {
-        $dir = is_readable($dir = $this->rootDir.'/config/custom_parameters.yml') ? $dir : $this->rootDir.'/config/parameters.yml';
+        $config = Yaml::parse(file_get_contents($this->rootDir . '/config/parameters.yml'));
+        if (is_readable($file = $this->rootDir . '/config/custom_parameters.yml')) {
+            $config = array_merge($config, Yaml::parse(file_get_contents($file)));
+        }
 
-        return Yaml::parse(file_get_contents($dir));
+        return $config;
     }
 
     public function isClassInBundle($class)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -19,19 +19,13 @@ use LogUtil;
 use ModUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\ModUrl;
-use ZLanguage;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Form handler for the mailer modules testconfig form
  */
 class TestConfigHandler extends \Zikula_Form_AbstractHandler
 {
-    /**
-     * @var array values for this form
-     */
-    private $formValues;
-
     /**
      * initialise the form
      *
@@ -47,11 +41,16 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
             throw new AccessDeniedException();
         }
 
+        $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
+        $params = $dumper->getConfiguration('swiftmailer');
+        $paramHtml = $dumper->getConfigurationForHtml('swiftmailer');
+        $view->assign('swiftmailerHtml', $paramHtml);
+
         $msgtype = $this->getVar('html') ? 'html' : 'text';
         $view->assign('msgtype', $msgtype);
 
         // assign all module vars
-        $this->view->assign($this->getVars());
+        $this->view->assign($params);
 
         return true;
     }
@@ -92,7 +91,19 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                     $altBody = '';
                 }
 
-                // set the email
+                // add swiftmailer config to message for testing
+                $dumper = $this->view->getContainer()->get('zikula.dynamic_config_dumper');
+                $swiftConfigHtml = "<h4>Swiftmailer Config:</h4>\n";
+                $swiftConfigHtml .= $dumper->getConfigurationForHtml('swiftmailer');
+
+                if ($html) {
+                    $msgBody .= $swiftConfigHtml;
+                    $altBody .= !empty($altBody) ? strip_tags($swiftConfigHtml) : '';
+                } else {
+                    $msgBody .= strip_tags($swiftConfigHtml);
+                }
+
+                // send the email
                 $result = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', array(
                     'toname' => $toname,
                     'toaddress' => $toaddress,
@@ -106,17 +117,11 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 if ($result === true) {
                     // Success
                     LogUtil::registerStatus($this->__('Done! Message sent.'));
-                } elseif ($result === false) {
-                    // Failiure
-                    LogUtil::registerError($this->__f('Error! Could not send message. %s', ''));
-                } else {
-                    // Failiure with error
-                    LogUtil::registerError($this->__f('Error! Could not send message. %s', $result));
                 }
 
                 break;
         }
 
-        return $view->redirect(new ModUrl($this->name, 'admin', 'testconfig', ZLanguage::getLanguageCode()));
+        return $view->redirect($view->getContainer()->get('router')->generate('zikulamailermodule_admin_testconfig', array(), RouterInterface::ABSOLUTE_URL));
     }
 }

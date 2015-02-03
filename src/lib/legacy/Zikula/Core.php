@@ -12,8 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula_Request_Http as Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Core\Event\GenericEvent;
+use Zikula_Request_Http as Request;
 
 // Defines for access levels
 define('ACCESS_INVALID', -1);
@@ -26,7 +27,19 @@ define('ACCESS_EDIT', 500);
 define('ACCESS_ADD', 600);
 define('ACCESS_DELETE', 700);
 define('ACCESS_ADMIN', 800);
-ini_set('mbstring.internal_encoding', 'UTF-8');
+
+/**
+ * mbstring.internal_encoding
+ *
+ * This feature has been deprecated as of PHP 5.6.0. Relying on this feature is highly discouraged.
+ * PHP 5.6 and later users should leave this empty and set default_charset instead.
+ *
+ * @link http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.internal-encoding
+ */
+if (version_compare(\PHP_VERSION, '5.6.0', '<')) {
+    ini_set('mbstring.internal_encoding', 'UTF-8'); 
+}
+
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
 
@@ -57,7 +70,7 @@ class Zikula_Core
     /**
      * The minimum required PHP version for this release of core.
      */
-    const PHP_MINIMUM_VERSION = '5.3.3';
+    const PHP_MINIMUM_VERSION = '5.3.8';
 
     const STAGE_NONE = 0;
     const STAGE_PRE = 1;
@@ -210,6 +223,27 @@ class Zikula_Core
     }
 
     /**
+     * Get current installed version number
+     *
+     * @param ContainerInterface $container
+     * @return string
+     * @throws \Exception
+     */
+    public static function defineCurrentInstalledCoreVersion($container)
+    {
+        $moduleTable = 'module_vars';
+        try {
+            $stmt = $container->get('doctrine.dbal.default_connection')->executeQuery("SELECT value FROM $moduleTable WHERE modname = 'ZConfig' AND name = 'Version_Num'");
+            $result = $stmt->fetch(\PDO::FETCH_NUM);
+            define('ZIKULACORE_CURRENT_INSTALLED_VERSION', unserialize($result[0]));
+        } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
+            throw new \Exception("ERROR: Could not find $moduleTable table. Maybe you forgot to copy it to your server, or you left a custom_parameters.yml file in place with installed: true in it.");
+        } catch (\Exception $e) {
+            // now what? @todo
+        }
+    }
+
+    /**
      * Boot Zikula.
      *
      * @throws LogicException If already booted.
@@ -244,7 +278,7 @@ class Zikula_Core
      */
     public function reboot()
     {
-        $event = new \Zikula\Core\Event\GenericEvent($this);
+        $event = new GenericEvent($this);
         $this->dispatcher->dispatch('shutdown', $event);
 
         // flush handlers
@@ -405,7 +439,7 @@ class Zikula_Core
     {
         $GLOBALS['__request'] = $request; // hack for pre 1.5.0 - drak
 
-        $coreInitEvent = new \Zikula\Core\Event\GenericEvent($this);
+        $coreInitEvent = new GenericEvent($this);
 
         // store the load stages in a global so other API's can check whats loaded
         $this->stage = $this->stage | $stage;
@@ -414,26 +448,59 @@ class Zikula_Core
             ModUtil::flushCache();
             System::flushCache();
             $args = !System::isInstalling() ? array('lazy' => true) : array();
-            $this->dispatcher->dispatch('core.preinit', new \Zikula\Core\Event\GenericEvent($this, $args));
+            $this->dispatcher->dispatch('core.preinit', new GenericEvent($this, $args));
         }
 
         // Initialise and load configuration
         if ($stage & self::STAGE_CONFIG) {
+            // for BC only. remove this code in 2.0.0
+            if (!System::isInstalling()) {
+                $this->dispatcher->dispatch('setup.errorreporting', new GenericEvent(null, array('stage' => $stage)));
+            }
+
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArgument('stage', self::STAGE_CONFIG);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
-        // Check that Zikula is installed before continuing
-        if (!$this->getContainer()->getParameter('installed') && !System::isInstalling()) {
-            $response = new RedirectResponse($request->getBasePath().'/install.php?notinstalled', 302);
+        // create several booleans to test condition of request regrading install/upgrade
+        $installed = $this->getContainer()->getParameter('installed');
+        if ($installed) {
+            self::defineCurrentInstalledCoreVersion($this->getContainer());
+        }
+        $requiresUpgrade = $installed && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, self::VERSION_NUM, '<');
+        // can't use $request->get('_route') to get any of the following
+        // all these routes are hard-coded in xml files
+        $uriContainsInstall = strpos($request->getRequestUri(), '/install') !== false;
+        $uriContainsUpgrade = strpos($request->getRequestUri(), '/upgrade') !== false;
+        $uriContainsWdt = strpos($request->getRequestUri(), '/_wdt') !== false;
+        $uriContainsProfiler = strpos($request->getRequestUri(), '/_profiler') !== false;
+        $uriContainsRouter = strpos($request->getRequestUri(), '/js/routing?callback=fos.Router.setData') !== false;
+        $doNotRedirect = $uriContainsProfiler || $uriContainsWdt || $uriContainsRouter || $request->isXmlHttpRequest();
+
+        // check if Zikula Core is not installed
+        if (!$installed && !$uriContainsInstall && !$doNotRedirect) {
+            $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
+            $url = $this->container->get('router')->generate('install');
+            $response = new RedirectResponse($url);
             $response->send();
             System::shutDown();
+        }
+        // check if Zikula Core requires upgrade
+        if ($requiresUpgrade && !$uriContainsUpgrade && !$doNotRedirect) {
+            $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
+            $url = $this->container->get('router')->generate('upgrade');
+            $response = new RedirectResponse($url);
+            $response->send();
+            System::shutDown();
+        }
+        if (!$installed || $requiresUpgrade || $this->getContainer()->hasParameter('upgrading')) {
+            System::setInstalling(true);
         }
 
         if ($stage & self::STAGE_DB) {
             try {
-                $dbEvent = new \Zikula\Core\Event\GenericEvent($this, array('stage' => self::STAGE_DB));
+                $dbEvent = new GenericEvent($this, array('stage' => self::STAGE_DB));
                 $this->dispatcher->dispatch('core.init', $dbEvent);
             } catch (PDOException $e) {
                 if (!System::isInstalling()) {
@@ -492,12 +559,9 @@ class Zikula_Core
         // end block
 
         if ($stage & self::STAGE_MODS) {
-            // Set compression on if desired
-            if (System::getVar('UseCompression') == 1) {
-                //ob_start("ob_gzhandler");
+            if (!System::isInstalling()) {
+                ModUtil::load('ZikulaSecurityCenterModule');
             }
-
-            ModUtil::load('ZikulaSecurityCenterModule');
 
             $coreInitEvent->setArgument('stage', self::STAGE_MODS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
@@ -515,12 +579,12 @@ class Zikula_Core
             PageUtil::registerVar('header', true);
             PageUtil::registerVar('footer', true);
 
-            $theme = Zikula_View_Theme::getInstance();
-
             // set some defaults
             // Metadata for SEO
-            $this->container['zikula_view.metatags']['description'] = System::getVar('defaultmetadescription');
-            $this->container['zikula_view.metatags']['keywords'] = System::getVar('metakeywords');
+            $this->container->setParameter('zikula_view.metatags', array(
+                'description' => System::getVar('defaultmetadescription'),
+                'keywords' => System::getVar('metakeywords')
+            ));
 
             $coreInitEvent->setArgument('stage', self::STAGE_THEME);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
@@ -540,7 +604,7 @@ class Zikula_Core
         }
 
         if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
-            $this->dispatcher->dispatch('core.postinit', new \Zikula\Core\Event\GenericEvent($this, array('stages' => $stage)));
+            $this->dispatcher->dispatch('core.postinit', new GenericEvent($this, array('stages' => $stage)));
         }
     }
 }

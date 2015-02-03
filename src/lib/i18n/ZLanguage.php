@@ -374,6 +374,39 @@ class ZLanguage
         $_this = self::getInstance();
         $locale = $_this->getLocale();
 
+        if (!$locale) {
+            // fallback solution to be replaced by proper routing
+            $defaultLocale = System::getVar('language_i18n', 'en');
+            if (System::getVar('shorturls')) {
+                // we need to extract the language code from current url, since it is not ensured
+                // that System::queryStringDecode() has been executed already
+                $customentrypoint = System::getVar('entrypoint');
+                $expectEntrypoint = !System::getVar('shorturlsstripentrypoint');
+                $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
+
+                // get base path to work out our current url
+                $parsedURL = parse_url(System::getCurrentUri());
+
+                $tobestripped = array(System::getBaseUri(), "$root");
+                $path = str_replace($tobestripped, '', $parsedURL['path']);
+                $path = trim($path, '/');
+
+                // split the path into a set of argument strings
+                $args = explode('/', rtrim($path, '/'));
+
+                // ensure that each argument is properly decoded
+                foreach ($args as $k => $v) {
+                    $args[$k] = urldecode($v);
+                }
+
+                if (isset($args[0]) && self::isLangParam($args[0]) && in_array($args[0], self::getInstalledLanguages())) {
+                    $defaultLocale = $args[0];
+                }
+            }
+            $_this->setLocale($defaultLocale);
+            $locale = $_this->getLocale();
+        }
+
         // exit if the language system hasnt yet fully initialised
         if (!$locale) {
             return false;

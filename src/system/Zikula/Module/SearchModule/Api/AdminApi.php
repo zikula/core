@@ -26,14 +26,14 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array array of admin links
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
 
-        $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'index'), 'text' => $this->__('Frontend'), 'icon' => 'search');
+        $links[] = array('url' => $this->get('router')->generate('zikulasearchmodule_user_form'), 'text' => $this->__('Frontend'), 'icon' => 'search');
 
         if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
+            $links[] = array('url' => $this->get('router')->generate('zikulasearchmodule_admin_modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
         }
 
         return $links;

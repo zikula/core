@@ -10,24 +10,24 @@
     {$nbuser}
     
     {if $canview eq true}
-        - <a href="{modurl modname="Groups" type="user" func="memberslist" gid=$gid}" title="{gt text="Members list"}">{gt text="Members list"}</a>
+        - <a href="{route name='zikulagroupsmodule_user_memberslist' gid=$gid}" title="{gt text='Members list'}">{gt text='Members list'}</a>
     {/if}
 </td>
 
 {if $nbumax eq false or $nbumax eq 0}
-    {gt text="Unlimited" assign=nbumax}
+    {gt text='Unlimited' assign='nbumax'}
 {/if}
 <td>{$nbumax}</td>
 
 {if $state gt 0}
     {if $status eq true}
-        <td><strong>{gt text="Pending"}</strong> | <a href="{modurl modname="Groups" type="user" func="membership" action="cancel" gid=$gid}" title="{gt text="Cancel"}">{gt text="Cancel"}</a></td>
+        <td><strong>{gt text='Pending'}</strong> | <a href="{route name='zikulagroupsmodule_user_membership' action="cancel" gid=$gid}" title="{gt text='Cancel'}">{gt text='Cancel'}</a></td>
     {else}
         {if $ismember eq true}
-            <td><a href="{modurl modname='ZikulaGroupsModule' type='user' func='membership' action='unsubscribe' gid=$gid}" title="{gt text="Resign"}">{gt text="Resign"}</a></td>
+            <td><a href="{route name='zikulagroupsmodule_user_membership' action='unsubscribe' gid=$gid}" title="{gt text='Resign'}">{gt text='Resign'}</a></td>
         {else}
-            {if $nbumax == 0 OR $nbumax gt $nbuser}
-                <td><a href="{modurl modname='ZikulaGroupsModule' type='user' func='membership' action='subscribe' gid=$gid}" title="{gt text="Apply"}">{gt text="Apply"}</a></td>
+            {if $nbumax eq 0 || $nbumax gt $nbuser}
+                <td><a href="{route name='zikulagroupsmodule_user_membership' action='subscribe' gid=$gid}" title="{gt text='Apply'}">{gt text='Apply'}</a></td>
             {else}
                 <td>{gt text='Group has reached its maximum capacity'}</td>
             {/if}

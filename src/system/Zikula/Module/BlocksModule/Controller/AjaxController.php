@@ -14,38 +14,47 @@
 namespace Zikula\Module\BlocksModule\Controller;
 
 use SecurityUtil;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Module\BlocksModule\Entity\BlockPlacementEntity;
-use Zikula_Response_Ajax;
+use Symfony\Component\HttpFoundation\Request;
+use Zikula\Core\Response\Ajax\AjaxResponse;
+use Zikula\Core\Response\Ajax\FatalResponse;
+use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use BlockUtil;
 use DataUtil;
 use ModUtil;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 
 /**
+ * @Route("/ajax")
+ * 
  * Ajax controllers for the blocks module
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
+     * @Route("/changeorder", options={"expose"=true})
+     * @Method("POST")
+     * 
      * Changeblockorder.
      *
-     * @param blockorder array of sorted blocks (value = block id)
-     * @param position int zone id
+     * @param Request $request
+     * 
+     *  blockorder array of sorted blocks (value = block id)
+     *  position int zone id
      *
-     * @return Zikula_Response_Ajax true or Ajax error
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     * @return AjaxResponse|ForbiddenResponse true or Ajax error
      */
-    public function changeblockorderAction()
+    public function changeblockorderAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
+
+            return new ForbiddenResponse($this->__('No permission for this action.'));
         }
 
-        $blockorder = $this->request->request->get('blockorder');
-        $position = $this->request->request->get('position');
+        $blockorder = $request->request->get('blockorder', array());
+        $position = $request->request->get('position');
 
         // remove all blocks from this position
         $query = $this->entityManager->createQueryBuilder()
@@ -66,39 +75,43 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
         $this->entityManager->flush();
 
-        return new Zikula_Response_Ajax(array('result' => true));
+        return new AjaxResponse(array('result' => true));
     }
 
     /**
+     * @Route("/toggle", options={"expose"=true})
+     * @Method("POST")
+     * 
      * Toggleblock.
      *
      * This function toggles active/inactive.
      *
-     * @param bid int id of block to toggle.
+     * @param Request $request
+     * 
+     *  bid int id of block to toggle.
      *
-     * @return Zikula_Response_Ajax true or Ajax error
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @throws FatalErrorException Thrown if no block id is supplied or
-     *                                     if the requested block isn't valid
+     * @return AjaxResponse|FatalResponse|ForbiddenResponse true or Ajax error
      */
-    public function toggleblockAction()
+    public function toggleblockAction(Request $request)
     {
         $this->checkAjaxToken();
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
+
+            return new ForbiddenResponse($this->__('No permission for this action.'));
         }
 
-        $bid = $this->request->request->get('bid', -1);
+        $bid = $request->request->get('bid', -1);
 
         if ($bid == -1) {
-            throw new FatalErrorException($this->__('No block ID passed.'));
+
+            return new FatalResponse($this->__('No block ID passed.'));
         }
 
         // read the block information
         $blockinfo = BlockUtil::getBlockInfo($bid);
         if ($blockinfo == false) {
-            throw new FatalErrorException($this->__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid)));
+
+            return new FatalResponse($this->__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid)));
         }
 
         if ($blockinfo['active'] == 1) {
@@ -107,6 +120,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'activate', array('bid' => $bid));
         }
 
-        return new Zikula_Response_Ajax(array('bid' => $bid));
+        return new AjaxResponse(array('bid' => $bid));
     }
 }

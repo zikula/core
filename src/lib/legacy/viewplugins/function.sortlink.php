@@ -29,6 +29,7 @@
  *   - modname:  Module name for the link
  *   - type:     Function type for the link (default: user)
  *   - func:     Function name for the link (default: main)
+ *   - route:   the routename
  *
  * Additional parameters will be passed to ModUtil::url directly.
  *
@@ -52,6 +53,7 @@ function smarty_function_sortlink($params, Zikula_View $view)
     $modname = isset($params['modname']) ? $params['modname'] : $view->getTopLevelModule();
     $type    = isset($params['type']) ? $params['type'] : 'user';
     $func    = isset($params['func']) ? $params['func'] : 'index';
+    $route   = isset($params['route']) ? $params['route'] : null;
 
     $text    = isset($params['linktext']) ? $params['linktext'] : '&nbsp;';
     $sortdir = isset($params['sortdir']) ? strtoupper($params['sortdir']) : 'ASC';
@@ -69,13 +71,17 @@ function smarty_function_sortlink($params, Zikula_View $view)
     }
 
     // unset non link parameters
-    $unsets = array('linktext', 'currentsort', 'assign', 'modname', 'type', 'func');
+    $unsets = array('linktext', 'currentsort', 'assign', 'modname', 'type', 'func', 'route');
     foreach ($unsets as $unset) {
         unset($params[$unset]);
     }
 
     // build the link output
-    $link = ModUtil::url($modname, $type, $func, $params);
+    if (!empty($route)) {
+        $link = $view->getContainer()->get('router')->generate($route, $params);
+    } else {
+        $link = ModUtil::url($modname, $type, $func, $params);
+    }
 
     $output = '<a class="' . DataUtil::formatForDisplay($cssclass) . '" href="' . DataUtil::formatForDisplay($link) . '">' . DataUtil::formatForDisplay($text) . '</a>';
 

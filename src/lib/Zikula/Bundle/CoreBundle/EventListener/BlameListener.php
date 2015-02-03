@@ -1,18 +1,32 @@
 <?php
 
+/**
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
+
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Gedmo\Loggable\LoggableListener;
+use Gedmo\Blameable\BlameableListener;
+use ServiceUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use UserUtil;
-use ServiceUtil;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-use Gedmo\Blameable\BlameableListener;
-use Zikula\Core\Event\GenericEvent;
-
+/**
+ * Class BlameListener overrides Stof\DoctrineExtensionsBundle\EventListener\BlameListener
+ *
+ * @package Zikula\Bundle\CoreBundle\EventListener
+ */
 class BlameListener implements EventSubscriberInterface
 {
     /**
@@ -26,24 +40,22 @@ class BlameListener implements EventSubscriberInterface
     }
 
     /**
-     * required method as result of implementation
-     *
      * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        // ...
-    }
-
-    public function onPostInit(GenericEvent $event)
-    {
-        if (\System::isInstalling()) {
-            return;
-        }
-
         $em = ServiceUtil::get('doctrine.entitymanager');
-        $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => UserUtil::getVar('uid')));
-        $this->blameableListener->setUserValue($user);
+        try {
+            if (\System::isInstalling()) {
+                $uid = 2;
+            } else {
+                $uid = UserUtil::getVar('uid');
+            }
+            $user = $em->getReference('ZikulaUsersModule:UserEntity', $uid);
+            $this->blameableListener->setUserValue($user);
+        } catch (\Exception $e) {
+            // silently fail - likely installing and tables not available
+        }
     }
 
     /**
@@ -54,8 +66,7 @@ class BlameListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            //KernelEvents::REQUEST => 'onKernelRequest',
-            'core.postinit' => 'onPostInit',
+            KernelEvents::REQUEST => 'onKernelRequest',
         );
     }
 }

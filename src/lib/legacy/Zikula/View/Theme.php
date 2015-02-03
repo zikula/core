@@ -13,7 +13,6 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Zikula_View_Theme class.
@@ -181,14 +180,6 @@ class Zikula_View_Theme extends Zikula_View
 
         EventUtil::attachCustomHandlers("themes/$themeName/EventHandlers");
         EventUtil::attachCustomHandlers("themes/$themeName/lib/$themeName/EventHandlers");
-        $themeBundle = ThemeUtil::getTheme($themeName);
-        if (null !== $themeBundle && is_readable($yaml = $themeBundle->getPath().'/Resources/config/overrides.yml')) {
-            $this->getDispatcher()->addListener('zikula_view.template_override', array($this, '_templateOverride'), 0);
-            $this->_overrideMap = Yaml::parse($yaml);
-        } else if (is_readable("themes/$themeName/templates/overrides.yml")) {
-            $this->getDispatcher()->addListener('zikula_view.template_override', array($this, '_templateOverride'), 0);
-            $this->_overrideMap = Yaml::parse("themes/$themeName/templates/overrides.yml");
-        }
 
         $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('theme.preinit', $event);
@@ -264,8 +255,21 @@ class Zikula_View_Theme extends Zikula_View
         $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('theme.init', $event);
 
-        // Start the output buffering to capture module output
-        ob_start();
+        $this->startOutputBuffering();
+    }
+
+    /**
+     * Starts the output buffering to capture module output.
+     */
+    protected function startOutputBuffering()
+    {
+        global $_pageVars;
+
+        // Start output buffer only if the theme is not already loaded
+        // (which happens after processing extensions); related to issue #1921
+        if (!isset($_pageVars) || !is_array($_pageVars) || !isset($_pageVars['title'])) {
+            ob_start();
+        }
     }
 
     /**
@@ -324,7 +328,7 @@ class Zikula_View_Theme extends Zikula_View
 
         // add the module wrapper
         if (!$this->themeinfo['system'] && (bool)$this->themeconfig['modulewrapper'] && $this->toplevelmodule) {
-            $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
+            $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-'.DataUtil::formatForDisplay(strtolower($this->toplevelmodule)).' '.$this->type.' '.$this->func.'">'.$maincontent.'</div>';
         }
 
         $event = new \Zikula\Core\Event\GenericEvent($this, array(), $maincontent);
@@ -754,12 +758,14 @@ class Zikula_View_Theme extends Zikula_View
                 // find any page configurations that match in a sub string comparison
                 $match = '';
                 $matchlength = 0;
-                foreach (array_keys($pageconfigurations) as $pageconfiguration) {
-                    if (stristr($customargs, $pageconfiguration) && $matchlength < strlen($pageconfiguration)) {
-                        $match = $pageconfiguration;
-                        $matchlength = strlen($match);
-                        if (isset($pageconfigurations[$pageconfiguration]['important']) && $pageconfigurations[$pageconfiguration]['important']) {
-                            break;
+                if (is_array($pageconfigurations)) {
+                    foreach (array_keys($pageconfigurations) as $pageconfiguration) {
+                        if (stristr($customargs, $pageconfiguration) && $matchlength < strlen($pageconfiguration)) {
+                            $match = $pageconfiguration;
+                            $matchlength = strlen($match);
+                            if (isset($pageconfigurations[$pageconfiguration]['important']) && $pageconfigurations[$pageconfiguration]['important']) {
+                                break;
+                            }
                         }
                     }
                 }

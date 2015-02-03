@@ -14,7 +14,6 @@
 namespace Zikula\Module\CategoriesModule\Controller;
 
 use Zikula_View;
-use ModUtil;
 use FormUtil;
 use SecurityUtil;
 use CategoryUtil;
@@ -24,11 +23,17 @@ use System;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
+ * @Route("/admin")
+ *
  * Administrative controllers for the categories module
  */
 class AdminController extends \Zikula_AbstractController
@@ -45,26 +50,47 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * Route not needed here because method is legacy-only
+     *
      * main admin function
+     *
+     * @deprecated since 1.4.0 see indexAction()
      *
      * @return RedirectResponse
      */
     public function mainAction()
     {
         // Security check will be done in view()
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
+     * @Route("")
+     *
+     * main admin function
+     *
+     * @return RedirectResponse
+     */
+    public function indexAction()
+    {
+        // Security check will be done in view()
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+    }
+
+    /**
+     * @Route("/view")
+     *
      * view categories
+     *
+     * @param Request $request
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to edit the category
      */
-    public function viewAction()
+    public function viewAction(Request $request)
     {
-        $root_id = $this->request->get('dr', 1);
+        $root_id = $request->get('dr', 1);
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$root_id", ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -75,7 +101,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $cats = CategoryUtil::getSubCategories($root_id, true, true, true, true, true);
-        $menuTxt = CategoryUtil::getCategoryTreeJS($cats, true, true);
+        $menuTxt = CategoryUtil::getCategoryTreeJqueryJS($cats, true, true);
 
         $this->view->assign('menuTxt', $menuTxt);
 
@@ -83,6 +109,9 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/config")
+     * @Method("GET")
+     *
      * display configure module page
      *
      * @return Response symfony response object
@@ -99,20 +128,22 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/edit/{cid}/{dr}/{mode}", requirements={"cid" = "^[1-9]\d*$", "dr" = "^[1-9]\d*$", "mode" = "edit|new"})
+     * @Method("GET")
+     *
      * edit category
+     *
+     * @param Request $request
+     * @param integer $cid
+     * @param integer $dr
+     * @param string $mode new|edit
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to edit or add the category
-     * @throws \RuntimeException Thrown if a valid category ID isn't supplied
-     * @throws NotFoundHttpException Thrown if the category isn't found 
      */
-    public function editAction()
+    public function editAction(Request $request, $cid = 0, $dr = 1, $mode = "new")
     {
-        $cid = $this->request->get('cid', 0);
-        $root_id = $this->request->get('dr', 1);
-        $mode = $this->request->get('mode', 'new');
-        $allCats = '';
         $editCat = '';
 
         $languages = ZLanguage::getInstalledLanguages();
@@ -124,14 +155,14 @@ class AdminController extends \Zikula_AbstractController
             }
 
             if (!$cid) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
-                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+                $request->getSession()->getFlashBag()->add('error', $this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
+                return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
             }
 
             $editCat = CategoryUtil::getCategoryByID($cid);
             if (!$editCat) {
-                $this->request->getSession()->getFlashbag()->add('error', $this->__('Sorry! No such item found.'));
-                return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+                $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! No such item found.'));
+                return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
             }
         } else {
             // new category creation
@@ -162,7 +193,7 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        $allCats = CategoryUtil::getSubCategories($root_id, true, true, true, false, true);
+        $allCats = CategoryUtil::getSubCategories($dr, true, true, true, false, true);
 
         // now remove the categories which are below $editCat ...
         // you should not be able to set these as a parent category as it creates a circular hierarchy (see bug #4992)
@@ -208,24 +239,29 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/editregistry")
+     * @Method("GET")
+     * 
      * edit category registry
+     * 
+     * @param Request $request
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
      */
-    public function editregistryAction()
+    public function editregistryAction(Request $request)
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $root_id = $this->request->get('dr', 1);
-        $id = $this->request->get('id', 0);
+        $root_id = $request->get('dr', 1);
+        $id = $request->get('id', 0);
 
         $obj = new CategoryRegistryEntity();
 
-        $category_registry = $this->request->query->get('category_registry', null);
+        $category_registry = $request->query->get('category_registry', null);
         if ($category_registry) {
             $obj->merge($category_registry);
             $obj = $obj->toArray();
@@ -242,19 +278,23 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/deleteregistry")
+     *
      * delete category registry
+     *
+     * @param Request $request
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permission to administrate the module
      */
-    public function deleteregistryAction()
+    public function deleteregistryAction(Request $request)
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $id = $this->request->get('id', 0);
+        $id = $request->get('id', 0);
 
         $obj = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $id);
         $data = $obj->toArray();
@@ -266,29 +306,39 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/new")
+     * @Method("GET")
+     *
      * display new category form
+     *
+     * @param Request $request
      *
      * @return Response symfony response object
      */
-    public function newcatAction()
+    public function newcatAction(Request $request)
     {
-        $_POST['mode'] = 'new';
-        $this->request->query->set('mode', 'new');
-        return $this->editAction();
+        $path = array('_controller' => 'ZikulaCategoriesModule:Admin:edit', 'mode' => 'new');
+        $subRequest = $request->duplicate($request->query->all(), $request->request->all(), $path);
+
+        return $this->get('http_kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }
 
     /**
+     * @Route("/op")
+     *
      * generic function to handle copy, delete and move operations
+     *
+     * @param Request $request
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have access to delete the category
      */
-    public function opAction()
+    public function opAction(Request $request)
     {
-        $cid = $this->request->get('cid', 1);
-        $root_id = $this->request->get('dr', 1);
-        $op = $this->request->get('op', 'NOOP');
+        $cid = $request->get('cid', 1);
+        $root_id = $request->get('dr', 1);
+        $op = $request->get('op', 'NOOP');
 
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$cid", ACCESS_DELETE)) {
             throw new AccessDeniedException();
@@ -307,6 +357,9 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/preferences")
+     * @Method("GET")
+     *
      * global module preferences
      *
      * @return Response symfony response object

@@ -4,7 +4,7 @@
 
 <h4>{gt text="Edit page configuration"} - {$filename|safetext}</h4>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Theme" type="admin" func="updatepageconfigtemplates"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulathememodule_admin_updatepageconfigtemplates'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="themename" value="{$themename|safetext}" />
@@ -130,7 +130,7 @@
 						{foreach name='blockpositions' from=$pageconfiguration.blockpositions key='position' item='template'}
 							{if !isset($blockpositions.$position)}
 								{assign var='undefinedblockposition' value=true}
-								<li><a href="{modurl modname="Blocks" type="admin" func="newposition" name=$position|safetext}">{$position|safetext}</a></li>
+								<li><a href="{route name='zikulathememodule_admin_newposition' name=$position|safetext}">{$position|safetext}</a></li>
 							{/if}
 						{/foreach}
 					</ul>
@@ -194,7 +194,7 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulathememodule_admin_pageconfigurations' themename=$themename}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

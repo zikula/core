@@ -165,7 +165,7 @@ class ZMO
         $this->total = $this->readint();
         $this->originals = $this->readint();
         $this->translations = $this->readint();
-        $this->encoding = ini_get('mbstring.internal_encoding');
+        $this->encoding = (version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset');
     }
 
     /**

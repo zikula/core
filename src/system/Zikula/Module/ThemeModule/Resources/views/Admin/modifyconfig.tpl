@@ -1,12 +1,12 @@
 {adminheader}
-{pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/theme_admin_modifyconfig.js'}
+{pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.ModifyConfig.js'}
 
 <h3>
     <span class="fa fa-wrench"></span>
     {gt text="Settings"}
 </h3>
 
-<form class="form-horizontal" role="form" action="{modurl modname="Theme" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulathememodule_admin_updateconfig'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -30,7 +30,7 @@
                         <option value="">{gt text="Use site's theme"}</option>
                         {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const filter='ThemeUtil::FILTER_ADMIN'|const selected=$admintheme}
                     </select>
-                    <em class="sub help-block">{gt text='This theme will be used in the admin interface of Zikula. This setting does not override the mobile theme setting in admin area.'}</em>
+                    <em class="sub help-block">{gt text='This theme will be used in the admin interface of Zikula.'}</em>
                 </div>
             </div>
             <div class="form-group">
@@ -50,37 +50,6 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend>{gt text="Mobile theme"}</legend>
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="mobile_theme_name">{gt text="Mobile theme"}</label>
-                <div class="col-lg-9">
-                    <select class="form-control" id="mobile_theme_name" name="mobile_theme_name">
-                        <option value="">{gt text="Use default mobile theme"}</option>
-                        {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$mobile_theme_name|default:''}
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="mobile_theme_domain">{gt text="Mobile theme domain"}</label>
-                <div class="col-lg-9">
-                    <input id="mobile_theme_domain" type="text" class="form-control" name="mobile_theme_domain" value="{$mobile_theme_domain|default:''|safetext}" size="50" />
-                    <em class="sub help-block">{gt text='This forces the mobile theme if your server is visited via the specified url, e.g. m.example.com'}</em>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="enable_mobile_theme">{gt text="Mobile device detection"}</label>
-                <div class="col-lg-9">
-                    <select class="form-control" id="enable_mobile_theme" name="enable_mobile_theme">
-                        <option value="0">{gt text="Disabled"}</option>
-                        <option value="1"{if $enable_mobile_theme == 1} selected="selected"{/if}>{gt text="Enabled: force for smartphones and tablets"}</option>
-                        <option value="2"{if $enable_mobile_theme == 2} selected="selected"{/if}>{gt text="Enabled: force for smartphones only"}</option>
-                        <option value="3"{if $enable_mobile_theme == 3} selected="selected"{/if}>{gt text="Enabled: force for tablets only"}</option>
-                    </select>
-                    <em class="sub help-block">{gt text='Here you can decide if you want to automatically enable the mobile theme for mobile devices.'}</em>
-                </div>
-            </div>
-        </fieldset>
-        <fieldset>
             <legend>{gt text="Compilation"}</legend>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="theme_compile_check">{gt text="Check for updated version of theme templates"}</label>
@@ -92,7 +61,7 @@
                 <label class="col-lg-3 control-label" for="theme_force_compile">{gt text="Force re-compilation of theme templates"}</label>
                 <div class="col-lg-9">
                     <input id="theme_force_compile" name="force_compile" type="checkbox" value="1" {if $force_compile eq 1}checked="checked"{/if} />
-                    <a class="zikulathememodule-indented" href="{modurl modname=Theme type=admin func=clear_compiled csrftoken=$csrftoken}">{gt text="Delete compiled theme templates"}</a>
+                    <a class="zikulathememodule-indented" href="{route name='zikulathememodule_admin_clearcompiled' csrftoken=$csrftoken}">{gt text="Delete compiled theme templates"}</a>
                 </div>
             </div>
             <div class="form-group">
@@ -113,7 +82,7 @@
                 <label class="col-lg-3 control-label" for="render_force_compile">{gt text="Force re-compilation of render templates"}</label>
                 <div class="col-lg-9">
                     <input id="render_force_compile" type="checkbox" name="render_force_compile" value="1"{if $render_force_compile} checked="checked"{/if} />
-                    <a class="zikulathememodule-indented" href="{modurl modname="Theme" type="admin" func="render_clear_compiled" csrftoken=$csrftoken}">{gt text="Delete compiled render templates"}</a>
+                    <a class="zikulathememodule-indented" href="{route name='zikulathememodule_admin_renderclearcompiled' csrftoken=$csrftoken}">{gt text="Delete compiled render templates"}</a>
                 </div>
             </div>
         </fieldset>
@@ -123,7 +92,7 @@
                 <label class="col-lg-3 control-label" for="enablecache">{gt text="Enable theme caching"}</label>
                 <div class="col-lg-9">
                     <input id="enablecache" name="enablecache" type="checkbox" value="1" {if $enablecache eq 1}checked="checked"{/if} />
-                    <a class="zikulathememodule-indented" href="{modurl modname=Theme type=admin func=clear_cache csrftoken=$csrftoken}">{gt text="Delete cached theme pages"}</a>
+                    <a class="zikulathememodule-indented" href="{route name='zikulathememodule_admin_clearcache' csrftoken=$csrftoken}">{gt text="Delete cached theme pages"}</a>
                 </div>
             </div>
             <div data-switch="enablecache" data-switch-value="1">
@@ -135,7 +104,7 @@
                         <span>
                             <input type="text" class="form-control" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|safetext}" size="6" tabindex="2" />
                             {gt text="seconds"}
-                            <a class="zikulathememodule-indented" href="{modurl modname=Theme type=admin func=clear_cache cacheid=homepage csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
+                            <a class="zikulathememodule-indented" href="{route name='zikulathememodule_admin_clearcache' cacheid=homepage csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
                         </span>
                     </div>
                 </div>
@@ -157,7 +126,7 @@
                             <div class="z-formlist">
                                 <input id="theme_nocache_{$modname|safetext}" type="checkbox" name="modulesnocache[]" value="{$modname|safetext}"{if isset($modulesnocache.$modname)} checked="checked"{/if} />
                                 <label for="theme_nocache_{$modname|safetext}">{$moddisplayname|safetext}</label>
-                                <a class="zikulathememodule-indented" href="{modurl modname=Theme type=admin func=clear_cache cacheid=$modname csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
+                                <a class="zikulathememodule-indented" href="{route name='zikulathememodule_admin_clearcache' cacheid=$modname csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
                             </div>
                             {/foreach}
                         </div>
@@ -176,7 +145,7 @@
                 <label class="col-lg-3 control-label" for="render_cache">{gt text="Enable render caching"}</label>
                 <div class="col-lg-9">
                     <input id="render_cache" type="checkbox" name="render_cache" value="1"{if $render_cache}checked="checked"{/if} />
-                    <a class="zikulathememodule-indented" href="{modurl modname="Theme" type="admin" func="render_clear_cache"  csrftoken=$csrftoken}">{gt text="Delete cached render pages"}</a>
+                    <a class="zikulathememodule-indented" href="{route name='zikulathememodule_admin_renderclearcache' csrftoken=$csrftoken}">{gt text="Delete cached render pages"}</a>
                 </div>
             </div>
             <div data-switch="render_cache" data-switch-value="1">
@@ -198,8 +167,8 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="cssjscombine">{gt text="Enable CSS/JS combination"}</label>
                 <div class="col-lg-9">
-                    <input id="cssjscombine" name="cssjscombine" type="checkbox" value="1" {if $cssjscombine eq 1}checked="checked"{ /if } />
-                    <a class="zikulathememodule-indented" href="{modurl modname=Theme type=admin func=clear_cssjscombinecache csrftoken=$csrftoken}">{gt text="Delete combination cache"}</a>
+                    <input id="cssjscombine" name="cssjscombine" type="checkbox" value="1" {if $cssjscombine eq 1}checked="checked"{/if} />
+                    <a class="zikulathememodule-indented" href="{route name='zikulathememodule_admin_clearcssjscombinecache' csrftoken=$csrftoken}">{gt text="Delete combination cache"}</a>
                 </div>
             </div>
             <div data-switch="cssjscombine" data-switch-value="1">
@@ -212,7 +181,7 @@
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="cssjsminify">{gt text="Minify CSS"}</label>
                     <div class="col-lg-9">
-                        <input id="cssjsminify" name="cssjsminify" type="checkbox" value="1" {if $cssjsminify eq 1}checked="checked"{ /if } />
+                        <input id="cssjsminify" name="cssjsminify" type="checkbox" value="1" {if $cssjsminify eq 1}checked="checked"{/if} />
                         <div data-switch="cssjsminify" data-switch-value="1">
                             <p class="alert alert-warning help-block">{gt text="The 'Minify CSS' option may require more PHP memory. If errors occur, you should increase the 'memory_limit' setting in your PHP installation's 'php.ini' configuration file. Alternatively, you should add the following entry to the '.htaccess' file in your site's web root (without the quotation marks): 'php_value memory_limit 64M'. 64M is just a suggested value. You should experiment to find the lowest value that resolves the problem."}</p>
                         </div>
@@ -232,7 +201,7 @@
         <fieldset>
             <legend>{gt text="Themes configurations"}</legend>
             <p class="help-block alert alert-info">{gt text="Notice: When edit the configuration of a Theme, the Theme Engine creates copies of its configuration files inside the Temporary folder when it cannot write on them directly. If you changed your mind and want to have your configuration inside your theme, make its .ini files writable and clear the temporary copies with the following link."}</p>
-            <a class="help-block" href="{modurl modname="Theme" type="admin" func="clear_config" csrftoken=$csrftoken}">{gt text="Delete theme configurations"}</a>
+            <a class="help-block" href="{route name='zikulathememodule_admin_clearconfig' csrftoken=$csrftoken}">{gt text="Delete theme configurations"}</a>
         </fieldset>
         <fieldset>
             <legend>{gt text="Filters"}</legend>
@@ -258,7 +227,7 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulathememodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

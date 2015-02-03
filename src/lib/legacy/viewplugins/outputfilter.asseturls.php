@@ -13,8 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpFoundation\Request;
-
 /**
  * Forward compatibility: Symfony uses {{ asset('path/to') }}
  *

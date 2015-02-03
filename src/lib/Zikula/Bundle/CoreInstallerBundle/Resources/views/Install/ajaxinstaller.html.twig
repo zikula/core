@@ -1,0 +1,54 @@
+{% extends '@ZikulaCoreInstaller/theme.html.twig' %}
+
+{% block childjavascripts %}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/zikulacoreinstaller/js/ajaxcommon.js') }}"></script>
+{% endblock %}
+{%  block childstylesheets %}
+    <link href="{{ asset('bundles/zikulacoreinstaller/css/ajaxinstaller.css') }}" rel="stylesheet" />
+{%  endblock %}
+
+{% block title __('Zikula is installing!') %}
+
+{% block content %}
+
+<div>
+    <div class="progress">
+        <div id="progress-bar" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+            <span class="sr-only">Progress bar</span>
+        </div>
+    </div>
+
+    <div><a href="#install-fieldset" id="begininstall" class="btn btn-lg btn-success">{{ __('Begin Installer') }}</a></div>
+
+    <fieldset id="install-fieldset">
+        <legend>{{  __("Installing Modules and Helpers") }}</legend>
+
+        <div class="row">
+            <ul id="ajaxlist" class="fa-ul text-left">
+                {% for stage in stages %}
+                <li id="{{ stage.name }}" class="text-muted col-md-5 col-md-offset-1 pull-left">
+                    <i class="fa-li fa fa-circle-o"></i>
+                    <span class="pre">{{ stage.pre }}</span>
+                    <span class="during" style="display:none;">{{ stage.during }} </span>
+                    <span class="success" style="display:none;">{{ stage.success }}</span>
+                    <span class="fail" style="display:none;">{{ stage.fail }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </fieldset>
+
+    <div><a href="{{ url('install', { 'stage': 'complete' }) }}" id="continuebutton" class="btn btn-lg btn-success" style="display:none;">{{ __('Finish') }} <i class="fa fa-angle-double-right"></i></a></div>
+</div>
+{# create a javascript array of all the stages #}
+<script>
+    var stages = [
+    {% for stage in stages %}
+        "{{ stage.name }}",
+    {% endfor %}
+    ];
+</script>
+{% endblock %}

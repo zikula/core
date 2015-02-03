@@ -3,15 +3,16 @@ var ZikulaUsersUtilCapsLock = {};
 
 (function($) {
     ZikulaUsersUtilCapsLock.capsLockChecker = function (inputElement, toggleElement) {
-        jQuery(inputElement).keypress(function(e) {
+        $(inputElement).keypress(function(e) {
             function isCapsLockPressed(e) {
                 if (!Boolean(window.chrome) && !Boolean(window.webkit)) {
-                    kc = e.keyCode?e.keyCode:e.which;
-                    sk = e.shiftKey?e.shiftKey:((kc == 16)?true:false);
-                    if ((((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk)))
+                    kc = e.keyCode ? e.keyCode : e.which;
+                    sk = e.shiftKey ? e.shiftKey : ((kc == 16) ? true : false);
+                    if ((((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk))) {
                         return true;
-                    else
+                    } else {
                         return false;
+                    }
                 } else {
                     e = (e) ? e : window.event;
 
@@ -48,5 +49,8 @@ var ZikulaUsersUtilCapsLock = {};
             }
         });
     };
-})(jQuery);
 
+    $(document).ready(function() {
+        ZikulaUsersUtilCapsLock.capsLockChecker('#users_login_pass', '#capsLok');
+    });
+})(jQuery);

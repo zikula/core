@@ -12,7 +12,7 @@
 {/if}
 {/if}
 
-<form id="users_approveregistration" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='approveRegistration'}" method="post">
+<form id="users_approveregistration" class="form-horizontal" role="form" action="{route name='zikulausersmodule_admin_approveregistration'}" method="post">
     {include file='Admin/includeregistration.tpl'}
     
     <div>

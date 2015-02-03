@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+    <title>None workflow (no approval)</title>
+    <description>This is like a non-existing workflow. Everything is online immediately after creation.</description>
+    <!-- define the available states -->
+    <states>
+        <state id="initial">
+            <title>Initial</title>
+            <description>Pseudo-state for content which is just created and not persisted yet.</description>
+        </state>
+        <state id="approved">
+            <title>Approved</title>
+            <description>Content has been approved and is available online.</description>
+        </state>
+        <state id="deleted">
+            <title>Deleted</title>
+            <description>Pseudo-state for content which has been deleted from the database.</description>
+        </state>
+    </states>
+    <!-- define actions and assign their availability to certain states -->
+    <!-- available permissions: overview, read, comment, moderate, edit, add, delete, admin -->
+    <actions>
+        <!-- From state: Initial -->
+        <action id="submit">
+            <title>Submit</title>
+            <description>Submit content.</description>
+            <permission>edit</permission>
+            <nextState>approved</nextState>
+        
+            <operation>update</operation>
+        </action>
+        
+        <!-- From state: Approved -->
+        <action id="update">
+            <title>Update</title>
+            <description>Update content.</description>
+            <permission>edit</permission>
+            <state>approved</state>
+        
+            <operation>update</operation>
+        </action>
+        
+        <!-- From state: Deleted -->
+    
+        <!-- Actions for destroying objects -->
+        <action id="delete">
+            <title>Delete</title>
+            <description>Delete content permanently.</description>
+            <permission>delete</permission>
+            <state>approved</state>
+        
+            <operation>delete</operation>
+        </action>
+        
+    </actions>
+</workflow>

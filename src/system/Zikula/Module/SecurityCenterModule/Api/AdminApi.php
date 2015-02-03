@@ -28,10 +28,10 @@ class AdminApi extends \Zikula_AbstractApi
      * This function gets all intrusions from the database.
      *
      * @param mixed[] $args {
-     *      @type array $where   parameters for the where clause
-     *      @type array $sorting parameters for the order by clause
-     *      @type array $limit   parameters for the limit clause
-     *      @type array $offset  parameters for the offset 
+     * @type array $where parameters for the where clause
+     * @type array $sorting parameters for the order by clause
+     * @type array $limit parameters for the limit clause
+     * @type array $offset parameters for the offset
      *                      }
      *
      * @return array array of items
@@ -48,7 +48,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('i')
-           ->from('ZikulaSecurityCenterModule:IntrusionEntity', 'i');
+            ->from('ZikulaSecurityCenterModule:IntrusionEntity', 'i');
 
         // add clause for user
         if (isset($args['where']['uid'])) {
@@ -58,14 +58,16 @@ class AdminApi extends \Zikula_AbstractApi
             if ($uid > 0) {
                 $qb->from('ZikulaUsersModule:UserEntity', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
-                $qb->andWhere($qb->expr()->eq('i.user', $qb->expr()->literal($uid)));
+                $qb->andWhere($qb->expr()->eq('i.user', ':uid'))->setParameter('uid', $uid);
             }
         }
 
         // add clauses for where
         if (isset($args['where'])) {
+            $i = 1;
             foreach ($args['where'] as $w_key => $w_value) {
-                $qb->andWhere($qb->expr()->eq('i.' . $w_key, $qb->expr()->literal($w_value)));
+                $qb->andWhere($qb->expr()->eq('i.' . $w_key, "?$i"))->setParameter($i, $w_value);
+                $i++;
             }
         }
 
@@ -123,7 +125,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('count(i.id)')
-           ->from('ZikulaSecurityCenterModule:IntrusionEntity', 'i');
+            ->from('ZikulaSecurityCenterModule:IntrusionEntity', 'i');
 
         // add clause for user
         if (isset($args['where']['uid'])) {
@@ -133,14 +135,16 @@ class AdminApi extends \Zikula_AbstractApi
             if ($uid > 0) {
                 $qb->from('ZikulaUsersModule:UserEntity', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
-                $qb->andWhere($qb->expr()->eq('i.user', $qb->expr()->literal($uid)));
+                $qb->andWhere($qb->expr()->eq('i.user', ':uid'))->setParameter('uid', $uid);
             }
         }
 
         // add clauses for where
         if (isset($args['where'])) {
+            $i = 1;
             foreach ($args['where'] as $w_key => $w_value) {
-                $qb->andWhere($qb->expr()->eq('i.' . $w_key, $qb->expr()->literal($w_value)));
+                $qb->andWhere($qb->expr()->eq('i.' . $w_key, "?$i"))->setParameter($i, $w_value);
+                $i++;
             }
         }
 
@@ -177,28 +181,34 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array array of admin links
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
-            $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'allowedhtml'), 'text' => $this->__('Allowed HTML settings'), 'icon' => 'list');
-            $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'viewidslog'),
-                             'text' => $this->__('View IDS Log'),
-                             'icon' => 'align-justify',
-                             'links' => array(
-                                             array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'viewidslog'),
-                                                   'text' => $this->__('View IDS Log')),
-                                             array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'exportidslog'),
-                                                   'text' => $this->__('Export IDS Log')),
-                                             array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'purgeidslog'),
-                                                   'text' => $this->__('Purge IDS Log'))
-                                               ));
+            $links[] = array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig'),
+                'text' => $this->__('Settings'),
+                'icon' => 'wrench');
+            $links[] = array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_allowedhtml'),
+                'text' => $this->__('Allowed HTML settings'),
+                'icon' => 'list');
+            $links[] = array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog'),
+                'text' => $this->__('View IDS Log'),
+                'icon' => 'align-justify',
+                'links' => array(
+                    array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog'),
+                        'text' => $this->__('View IDS Log')),
+                    array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_exportidslog'),
+                        'text' => $this->__('Export IDS Log')),
+                    array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_purgeidslog'),
+                        'text' => $this->__('Purge IDS Log'))
+                ));
 
             $outputfilter = System::getVar('outputfilter');
             if ($outputfilter == 1) {
-                $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'purifierconfig'), 'text' => $this->__('HTMLPurifier settings'), 'icon' => 'wrench');
+                $links[] = array('url' => $this->get('router')->generate('zikulasecuritycentermodule_admin_purifierconfig'),
+                    'text' => $this->__('HTMLPurifier settings'),
+                    'icon' => 'wrench');
             }
         }
 

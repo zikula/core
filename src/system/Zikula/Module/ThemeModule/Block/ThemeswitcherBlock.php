@@ -46,7 +46,7 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
         $switchThemeEnable = System::getVar('theme_change');
 
         if (!$switchThemeEnable) {
-            $requirement_message = $this->__f('Notice: This theme switcher block will not be displayed until you allow users to change themes. You can enable/disable this from the <a href="%s">settings</a> of the Theme module.', DataUtil::formatForDisplayHTML(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig')));
+            $requirement_message = $this->__f('Notice: This theme switcher block will not be displayed until you allow users to change themes. You can enable/disable this from the <a href="%s">settings</a> of the Theme module.', DataUtil::formatForDisplayHTML($this->get('router')->generate('zikulathememodule_admin_modifyconfig')));
         } else {
             $requirement_message = '';
         }
@@ -115,6 +115,8 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
         foreach ($themes as $themeinfo) {
             $themename = $themeinfo['name'];
             if (file_exists($themepic = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/images/preview_small.png')) {
+                $themeinfo['previewImage'] = $themepic;
+            } else if (file_exists($themepic = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/Resources/public/images/preview_small.png')) {
                 $themeinfo['previewImage'] = $themepic;
             } else {
                 $themeinfo['previewImage'] = 'system/Zikula/Module/ThemeModule/Resources/public/images/preview_small.png';

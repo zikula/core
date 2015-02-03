@@ -258,7 +258,7 @@ class DataUtil
         }
         if (!isset($outputfilter)) {
             if (ModUtil::available('ZikulaSecurityCenterModule') && !System::isInstalling()) {
-                $outputfilter = System::getVar('outputfilter');
+                $outputfilter = System::getVar('outputfilter', 0);
             } else {
                 $outputfilter = 0;
             }
@@ -318,7 +318,7 @@ class DataUtil
      *
      * This API is insanely unsafe. Always prepare and bind variables in SQL statements.
      *
-     * @return The formatted variable.
+     * @return string The formatted variable.
      */
     public static function formatForStore($var)
     {
@@ -352,56 +352,58 @@ class DataUtil
             foreach ($var as $k => $v) {
                 $var[$k] = self::formatForOS($v);
             }
-        } else {
-            static $cached;
-            if (null === $cached) {
-                $cached = array();
-            }
-            if (isset($cached[$var])) {
-                return $cached[$var];
-            }
-            $orgVar = $var;
-            $clean_array = array();
-            //Check if it is a windows absolute path beginning with "c:" or similar
-            $windowsAbsolutePath = preg_match("#^[A-Za-z]:#", $var);
-            //Check if it is a linux absolute path beginning "/"
-            $linuxAbsolutePath = (substr($var, 0, 1) == '/') ? true : false;
-            //if we're supporting absolute paths and the first charater is a slash and , then
-            //an absolute path is passed
-            $absolutepathused = ($absolute && ($linuxAbsolutePath || $windowsAbsolutePath));
-            // Split the path at possible path delimiters.
-            // Setting PREG_SPLIT_NOEMPTY eliminates double delimiters on the fly.
-            $dirty_array = preg_split('#[/\\\\]#', $var, -1, PREG_SPLIT_NO_EMPTY);
-            // now walk the path and do the relevant things
-            foreach ($dirty_array as $current) {
-                if ($current == '.') {
-                    // current path element is a dot, so we don't do anything
-                } elseif ($current == '..') {
-                    // current path element is .., so we remove the last path in case of relative paths
-                    if (!$absolutepathused) {
-                        array_pop($clean_array);
-                    }
-                } else {
-                    // current path element is valid, so we add it to the path
-                    $clean_array[] = $current;
-                }
-            }
-            // Build the path
-            // Rather than use DIRECTORY_SEPARATOR, normalise the $var because we cannot be sure what we got
-            // and since we cannot use realpath() because this will turn paths into absolute - for legacy reasons
-            // recipient's of the call may not be expecting absolute values (drak).
-            $var = str_replace('\\', '/', $var);
-            $var = implode('/', $clean_array);
-            // If an absolute linux path was passed to the function, we need to make it absolute again
-            // An absolute windows path is still absolute.
-            if ($absolutepathused && !$windowsAbsolutePath) {
-                $var = '/' . $var;
-            }
-            // Prepare var
-            // needed for magic_quotes_runtime = 0
-            $var = addslashes($var);
-            $cached[$orgVar] = $var;
+
+            return $var;
         }
+
+        static $cached;
+        if (null === $cached) {
+            $cached = array(0, 1);
+        }
+        if (isset($cached[(int)$absolute][$var])) {
+            return $cached[(int)$absolute][$var];
+        }
+        $orgVar = $var;
+        $clean_array = array();
+        //Check if it is a windows absolute path beginning with "c:" or similar
+        $windowsAbsolutePath = preg_match("#^[A-Za-z]:#", $var);
+        //Check if it is a linux absolute path beginning "/"
+        $linuxAbsolutePath = (substr($var, 0, 1) == '/') ? true : false;
+        //if we're supporting absolute paths and the first charater is a slash and , then
+        //an absolute path is passed
+        $absolutepathused = ($absolute && ($linuxAbsolutePath || $windowsAbsolutePath));
+        // Split the path at possible path delimiters.
+        // Setting PREG_SPLIT_NOEMPTY eliminates double delimiters on the fly.
+        $dirty_array = preg_split('#[/\\\\]#', $var, -1, PREG_SPLIT_NO_EMPTY);
+        // now walk the path and do the relevant things
+        foreach ($dirty_array as $current) {
+            if ($current == '.') {
+                // current path element is a dot, so we don't do anything
+            } elseif ($current == '..') {
+                // current path element is .., so we remove the last path in case of relative paths
+                if (!$absolutepathused) {
+                    array_pop($clean_array);
+                }
+            } else {
+                // current path element is valid, so we add it to the path
+                $clean_array[] = $current;
+            }
+        }
+        // Build the path
+        // Rather than use DIRECTORY_SEPARATOR, normalise the $var because we cannot be sure what we got
+        // and since we cannot use realpath() because this will turn paths into absolute - for legacy reasons
+        // recipient's of the call may not be expecting absolute values (drak).
+        $var = str_replace('\\', '/', $var);
+        $var = implode('/', $clean_array);
+        // If an absolute linux path was passed to the function, we need to make it absolute again
+        // An absolute windows path is still absolute.
+        if ($absolutepathused && !$windowsAbsolutePath) {
+            $var = '/' . $var;
+        }
+        // Prepare var
+        // needed for magic_quotes_runtime = 0
+        $var = addslashes($var);
+        $cached[$orgVar] = $var;
 
         return $var;
     }
@@ -428,12 +430,14 @@ class DataUtil
     public static function formatPermalink($var)
     {
         // replace all chars $permasearch with the one in $permareplace
-        $permasearch = explode(',', System::getVar('permasearch'));
-        $permareplace = explode(',', System::getVar('permareplace'));
-        foreach ($permasearch as $key => $value) {
-            $var = mb_ereg_replace($value, $permareplace[$key], $var);
+        $permaSearch = explode(',', System::getVar('permasearch'));
+        $permaReplace = explode(',', System::getVar('permareplace'));
+        foreach ($permaSearch as $key => $value) {
+            $var = mb_ereg_replace($value, $permaReplace[$key], $var);
         }
+
         $var = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($var));
+
         // final clean
         $permalinksseparator = System::getVar('shorturlsseparator');
         $var = mb_ereg_replace("[^a-z0-9_{$permalinksseparator}]", '', $var, "imsr");
@@ -454,10 +458,10 @@ class DataUtil
     {
         $strIsUpper = (strcmp($var, mb_strtoupper($var)) == 0);
         // replace all chars $permasearch with the one in $permareplace
-        $permasearch = explode(',', System::getVar('permasearch'));
-        $permareplace = explode(',', System::getVar('permareplace'));
-        foreach ($permasearch as $key => $value) {
-            $var = mb_ereg_replace($value, $permareplace[$key], $var);
+        $permaSearch = explode(',', System::getVar('permasearch'));
+        $permaReplace = explode(',', System::getVar('permareplace'));
+        foreach ($permaSearch as $key => $value) {
+            $var = mb_ereg_replace($value, $permaReplace[$key], $var);
         }
         if ($strIsUpper) {
             $var = mb_strtoupper($var);
@@ -537,11 +541,12 @@ class DataUtil
         if ($string == 'b:0;') {
             return true;
         }
+
         if ($checkmb) {
-            return (self::mb_unserialize($string) === false ? false : true);
-        } else {
-            return (@unserialize($string) === false ? false : true);
+            return self::mb_unserialize($string) === false ? false : true;
         }
+
+        return @unserialize($string) === false ? false : true;
     }
 
     /**
@@ -595,15 +600,17 @@ class DataUtil
             }
 
             return $return;
-        } elseif (is_string($input)) {
+        }
+
+        if (is_string($input)) {
             if (function_exists('mb_convert_encoding')) {
                 return mb_convert_encoding($input, 'UTF-8', strtoupper(ZLanguage::getEncoding()));
-            } else {
-                return utf8_encode($input);
             }
-        } else {
-            return $input;
+
+            return utf8_encode($input);
         }
+
+        return $input;
     }
 
     /**
@@ -622,15 +629,17 @@ class DataUtil
             }
 
             return $return;
-        } elseif (is_string($input)) {
+        }
+
+        if (is_string($input)) {
             if (function_exists('mb_convert_encoding')) {
                 return mb_convert_encoding($input, strtoupper(ZLanguage::getEncoding()), 'UTF-8');
-            } else {
-                return utf8_decode($input);
             }
-        } else {
-            return $input;
+
+            return utf8_decode($input);
         }
+
+        return $input;
     }
 
     /**

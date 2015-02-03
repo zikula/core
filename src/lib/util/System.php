@@ -13,6 +13,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
@@ -193,12 +194,14 @@ class System
         'config' => 1);
 
         // commented out some regexps until some useful and working ones are found
-        static $regexp = array(// 'mod'    => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
-        // 'func'   => '/[^0-9a-zA-Z_]/',
-        // 'api'    => '/[^0-9a-zA-Z_]/',
-        // 'theme'  => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
-        'email' => '/^(?:[^\s\000-\037\177\(\)<>@,;:\\"\[\]]\.?)+@(?:[^\s\000-\037\177\(\)<>@,;:\\\"\[\]]\.?)+\.[a-z]{2,6}$/Ui',
-        'url' => '/^([!#\$\046-\073=\077-\132_\141-\172~]|(?:%[a-f0-9]{2}))+$/i');
+        static $regexp = array(
+            //'mod' => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
+            //'func' => '/[^0-9a-zA-Z_]/',
+            //'api' => '/[^0-9a-zA-Z_]/',
+            //'theme' => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
+            //'email' => '/^(?:[^\s\000-\037\177\(\)<>@,;:\\"\[\]]\.?)+@(?:[^\s\000-\037\177\(\)<>@,;:\\\"\[\]]\.?)+\.[a-z]{2,6}$/Ui',
+            //'url' => '/^([!#\$\046-\073=\077-\132_\141-\172~]|(?:%[a-f0-9]{2}))+$/i'
+        );
 
         // special cases
         if ($type == 'mod' && $var == ModUtil::CONFIG_MODULE) {
@@ -222,11 +225,11 @@ class System
             // check for invalid characters
             if (!preg_match('/^[\p{L}\p{N}_\.\-]+$/uD', $var)) {
                 return false;
-            } else {
-                $lowerUname = mb_strtolower($var);
-                if ($lowerUname != $var) {
-                    return false;
-                }
+            }
+
+            $lowerUname = mb_strtolower($var);
+            if ($lowerUname != $var) {
+                return false;
             }
         }
 
@@ -264,12 +267,23 @@ class System
             self::$cache['baseuri.path'] = null;
         }
 
+        // obtain the uri from symfony container
+        $serviceManager = ServiceUtil::getManager();
+        try {
+            $requestBasePath = $serviceManager->has('request') ? $serviceManager->get('request')->getBasePath() : '';
+            if (!empty($requestBasePath)) {
+                self::$cache['baseuri.path'] = $requestBasePath;
+            }
+        } catch (\Exception $e) {
+            // silent fail
+            self::$cache['baseuri.path'] = null;
+        }
+
         if (!isset(self::$cache['baseuri.path'])) {
             $script_name = self::serverGetVar('SCRIPT_NAME');
             self::$cache['baseuri.path'] = substr($script_name, 0, strrpos($script_name, '/'));
         }
 
-        $serviceManager = ServiceUtil::getManager();
         if ($serviceManager['multisites.enabled'] == 1) {
             self::$cache['baseuri.path'] = $serviceManager['multisites.sitedns'];
         }
@@ -299,7 +313,7 @@ class System
 
         $path = self::getBaseUri();
 
-        return "$proto$server$path/";
+        return $proto . $server . $path . '/';
     }
 
     /**
@@ -339,11 +353,11 @@ class System
      * @param string  $redirecturl       URL to redirect to.
      * @param array   $additionalheaders Array of header strings to send with redirect.
      * @param integer $type              Number type of the redirect.
+     * @param mixed   $response          unused
      *
-     * @deprecated since 1.4.0 - from a controller, return RedirectResponse, or
-     * if necessary throw Zikula_Redirect_Exception.
+     * @deprecated since 1.4.0 - from a controller, return RedirectResponse
      *
-     * @return boolean True if redirect successful, false otherwise.
+     * @throws \Exception
      */
     public static function redirect($redirecturl, $additionalheaders = array(), $type = 302, $response = false)
     {
@@ -355,29 +369,21 @@ class System
                         '%0a'), '', $redirecturl);
 
         // check if the headers have already been sent
-        if (headers_sent ()) {
-            return false;
+        if (headers_sent()) {
+            throw new \Exception(__('Unable to redirect. Headers already sent.'));
         }
 
         // Always close session before redirect
         session_write_close();
 
-        // add any additional headers supplied
-        if (!empty($additionalheaders)) {
-            foreach ($additionalheaders as $additionalheader) {
-                header($additionalheader);
-            }
-        }
-
         $redirecturl = self::normalizeUrl($redirecturl);
 
-        if ($response) {
-            $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl);
-            $response->send();
-            return;
+        $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl, $type);
+        if (!empty($additionalheaders)) {
+            $response->headers->add($additionalheaders);
         }
-
-        throw new Zikula_Exception_Redirect($redirecturl, $type);
+        $response->send();
+        exit;
     }
 
     public static function normalizeUrl($url)
@@ -460,8 +466,9 @@ class System
         } else {
             $headers = array(); // change to empty array
         }
+        $from = System::getVar('adminmail');
 
-        return $mailer->send((array)$from, (array)$to, $subject, $body, 'text/plain', null, null, (array)$from, $altbody, $headers, $altBodyContentType, $failedRecipients);
+        return $mailer->send((array)$from, (array)$to, $subject, $message, 'text/plain', null, null, (array)$from, $altbody, $headers, $altBodyContentType, $failedRecipients);
     }
 
     /**
@@ -509,7 +516,7 @@ class System
             $server = self::serverGetVar('SERVER_NAME');
             $port = self::serverGetVar('SERVER_PORT');
             if ($port != '80') {
-                $server .= ":$port";
+                $server .= ':' . $port;
             }
         }
 
@@ -622,7 +629,7 @@ class System
     {
         $server = self::getHost();
         $protocol = self::serverGetProtocol();
-        $baseurl = "$protocol://$server";
+        $baseurl = $protocol . '://' . $server;
         $request = self::getCurrentUri($args);
 
         if (empty($request)) {
@@ -662,31 +669,52 @@ class System
         }
 
         // Try to match a route first.
-        /** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
+        // Make sure we have the correct request context.
+        $requestContext = ServiceUtil::get('router.request_context');
+        $requestContext->fromRequest($request);
+        /** @var \Symfony\Component\Routing\Matcher\RequestMatcherInterface $router */
         $router = ServiceUtil::get('router');
         try {
             $parameters = $router->matchRequest($request);
 
-            if (!isset($parameters['_module']) || !isset($parameters['_type']) || !isset($parameters['_func'])) {
+            if (!isset($parameters['_zkModule']) || !isset($parameters['_zkType']) || !isset($parameters['_zkFunc'])) {
                 // This might be the web profiler or another native bundle.
-            } else {
-                $request->attributes->set('_module', strtolower($parameters['_module']));
-                $request->attributes->set('_type', strtolower($parameters['_type']));
-                $request->attributes->set('_func', strtolower($parameters['_func']));
-                $request->query->set('module', strtolower($parameters['_module']));
-                $request->query->set('type', strtolower($parameters['_type']));
-                $request->query->set('func', strtolower($parameters['_func']));
-                $request->overrideGlobals();
-
-                $request->attributes->set('_symfonyRouteMatched', true);
-
                 return;
             }
+            // The following block is needed as long as not every url is a route. To be removed when all legacy routing
+            // is removed.
+            if ($parameters['_route'] == 'zikularoutesmodule_redirectingcontroller_removetrailingslash') {
+                $pathInfo = $request->getPathInfo();
+                $requestUri = $request->getRequestUri();
+
+                // Check if url without slash exists. If it doesn't exist, it will throw an exception which is caught
+                // by the try->catch below.
+                $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
+                $router->match($url);
+            }
+
+            $modname = strtolower($parameters['_zkModule']);
+            $type = strtolower($parameters['_zkType']);
+            $func = strtolower($parameters['_zkFunc']);
+
+            $request->attributes->set('_zkModule', $modname);
+            $request->attributes->set('_zkType', $type);
+            $request->attributes->set('_zkFunc', $func);
+            $request->query->set('module', $modname);
+            $request->query->set('type', $type);
+            $request->query->set('func', $func);
+            self::queryStringSetVar('module', $modname);
+            self::queryStringSetVar('type', $type);
+            self::queryStringSetVar('func', $func);
+
+            return;
 
         } catch (ResourceNotFoundException $e) {
             // This is an old style url.
         } catch (RouteNotFoundException $e) {
             // This is an old style url.
+        } catch (MethodNotAllowedException $e) {
+            // this is an old style url.
         }
 
         // get our base parameters to work out if we need to decode the url
@@ -695,7 +723,8 @@ class System
         $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
         // check if we need to decode the url
-        if (($shorturls = self::getVar('shorturls') && (empty($module) && empty($type) && empty($func)))) {
+        $shorturls = self::getVar('shorturls');
+        if ($shorturls && empty($module) && empty($type) && empty($func)) {
             // user language is not set at this stage
             $lang = self::getVar('language_i18n', '');
             $customentrypoint = self::getVar('entrypoint');
@@ -705,14 +734,14 @@ class System
             // check if we hit baseurl, e.g. domain.com/ and if we require the language URL
             // then we should redirect to the language URL.
             if (ZLanguage::isRequiredLangParam() && self::getCurrentUrl() == self::getBaseUrl()) {
-                $uri = $expectEntrypoint ? "$root/$lang" : "$lang";
+                $uri = $expectEntrypoint ? "$root/$lang" : $lang;
                 self::redirect(self::getBaseUrl() . $uri);
                 self::shutDown();
             }
 
             // check if entry point is part of the URL expectation.  If so throw error if it's not present
             // since this URL is technically invalid.
-            if (self::getCurrentUrl() != self::getBaseUrl() && $expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
+            if ($expectEntrypoint && self::getCurrentUrl() != self::getBaseUrl() && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
                 $protocol = self::serverGetVar('SERVER_PROTOCOL');
                 header("{$protocol} 404 Not Found");
                 echo __('The requested URL cannot be found');
@@ -877,16 +906,10 @@ class System
             $request->query->replace($_GET);
         }
 
-        foreach ($arguments as $key => $value) {
-            $request->attributes->set($key, $value);
-        }
-        //foreach ($_POST as $key => $value) {
-        //    $request->attributes->set($key, $value);
-        //}
-        $request->attributes->set('_module', strtolower($module)); // legacy - this is how they are received originally
-        $request->attributes->set('_type', strtolower($type)); // legacy - this is how they are received originally
-        $request->attributes->set('_func', strtolower($func)); // legacy - this is how they are received originally
-        $request->attributes->set('_args', $arguments);
+        $request->attributes->set('_zkModule', strtolower($module)); // legacy - this is how they are received originally
+        $request->attributes->set('_zkType', strtolower($type)); // legacy - this is how they are received originally
+        $request->attributes->set('_zkFunc', strtolower($func)); // legacy - this is how they are received originally
+        $request->attributes->set('_zkArgs', $arguments);
     }
 
     /**
@@ -1044,11 +1067,13 @@ class System
         $override = Zikula_View::getTemplateOverride($templatePath);
         if ($override !== false) {
             return $override;
-        } elseif (self::isLegacyMode() && file_exists("config/templates/$templateFile")) {
-            return "config/templates/$templateFile";
-        } else {
-            return $templatePath;
         }
+
+        if (self::isLegacyMode() && file_exists("config/templates/$templateFile")) {
+            return "config/templates/$templateFile";
+        }
+
+        return $templatePath;
     }
 
     /**
@@ -1060,6 +1085,6 @@ class System
      */
     public static function dump($var, $maxDepth = 2, $stripTags = true)
     {
-        echo "<pre style='text-align:left'>"; Doctrine\Common\Util\Debug::dump($var, $maxDepth = 2, $stripTags = true); echo "</pre>";
+        echo "<pre style='text-align:left'>"; Doctrine\Common\Util\Debug::dump($var, $maxDepth, $stripTags); echo "</pre>";
     }
 }

@@ -27,20 +27,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        $this->setVar('mailertype', 1);
-        $this->setVar('charset', ZLanguage::getEncoding());
-        $this->setVar('encoding', '8bit');
-        $this->setVar('html', false);
-        $this->setVar('wordwrap', 50);
-        $this->setVar('msmailheaders', false);
-        $this->setVar('sendmailpath', '/usr/sbin/sendmail');
-        $this->setVar('smtpauth', false);
-        $this->setVar('smtpserver', 'localhost');
-        $this->setVar('smtpport', 25);
-        $this->setVar('smtptimeout', 10);
-        $this->setVar('smtpusername', '');
-        $this->setVar('smtppassword', '');
-        $this->setVar('smtpsecuremethod', 'ssl');
+        $this->setVars($this->getDefaults());
 
         // Initialisation successful
         return true;
@@ -60,7 +47,52 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
             case '1.3.1':
                 $this->setVar('smtpsecuremethod', 'ssl');
             case '1.3.2':
-                // future upgrade routines
+                // clear old modvars
+                // use manual method because getVars() is not available during system upgrade
+                $modVarEntities = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findBy(array('modname' => $this->name));
+                $modVars = array();
+                foreach ($modVarEntities as $var) {
+                    $modVars[$var['name']] = $var['value'];
+                }
+                $this->delVars();
+                $this->setVarWithDefault('charset', $modVars['charset']);
+                $this->setVarWithDefault('encoding', $modVars['encoding']);
+                $this->setVarWithDefault('html', $modVars['html']);
+                $this->setVarWithDefault('wordwrap', $modVars['wordwrap']);
+                // new modvar for 1.4.0
+                $this->setVarWithDefault('enableLogging', false);
+
+                // write the config file
+                $mailerTypeConversion = array(
+                    1 => 'mail',
+                    2 => 'sendmail',
+                    3 => 'mail',
+                    4 => 'smtp',
+                    5 => 'test',
+                );
+                $config = array(
+                    'transport' => $mailerTypeConversion[$modVars['mailertype']],
+                    'username' => $modVars['smtpusername'],
+                    'password' => $modVars['smtppassword'],
+                    'host' => $modVars['smtpserver'],
+                    'port' => $modVars['smtpport'],
+                    'encryption' => (isset($modVars['smtpsecuremethod']) && in_array($modVars['smtpsecuremethod'], array('ssl', 'tls')) ? $modVars['smtpsecuremethod'] : 'ssl'),
+                    'auth_mode' => (!empty($modVars['auth'])) ? 'login' : null,
+                    'spool' => array('type' => 'memory'),
+                    'delivery_address' => null,
+                    'disable_delivery' => false,
+                );
+                $configDumper = $this->getContainer()->get('zikula.dynamic_config_dumper');
+                $configDumper->setConfiguration('swiftmailer', $config);
+
+            case '1.4.0':
+                $configDumper = $this->getContainer()->get('zikula.dynamic_config_dumper');
+                $config = $configDumper->getConfiguration('swiftmailer');
+                // remove spool parameter
+                unset($config['spool']);
+                $configDumper->setConfiguration('swiftmailer', $config);
+            case '1.4.1':
+            // future upgrade routines
         }
 
         // Update successful
@@ -79,5 +111,35 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
 
         // Deletion successful
         return true;
+    }
+
+    /**
+     * default module vars
+     * @return array
+     */
+    private function getDefaults()
+    {
+        return array(
+            'charset' => ZLanguage::getEncoding(),
+            'encoding' => '8bit',
+            'html' => false,
+            'wordwrap' => 50,
+            'enableLogging' => false,
+        );
+    }
+
+    /**
+     * set the module var but if it is not set, use the default instead.
+     *
+     * @param string $key
+     * @param null $value
+     */
+    private function setVarWithDefault($key, $value = null)
+    {
+        if (isset($value)) {
+            parent::setVar($key, $value);
+        }
+        $defaults = $this->getDefaults();
+        parent::setVar($key, $defaults[$key]);
     }
 }

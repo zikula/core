@@ -246,7 +246,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
 
         if (!$group) {
             return false;
@@ -293,7 +293,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
 
         if (!$group) {
             return false;
@@ -348,12 +348,12 @@ class AdminApi extends \Zikula_AbstractApi
            ->from('ZikulaGroupsModule:GroupEntity', 'g');
 
         // add clause for filtering name
-        $qb->andWhere($qb->expr()->eq('g.name', $qb->expr()->literal($args['name'])));
+        $qb->andWhere($qb->expr()->eq('g.name', ':gname'))->setParameter('gname', $args['name']);
 
         // Optional Where to use when modifying a group to check if there is
         // already another group by that name.
         if (isset($args['checkgid']) && is_numeric($args['checkgid'])) {
-            $qb->andWhere($qb->expr()->neq('g.gid', $qb->expr()->literal($args['checkgid'])));
+            $qb->andWhere($qb->expr()->neq('g.gid', ':ggid'))->setParameter('ggid', $args['checkgid']);
         }
 
         // convert querybuilder instance into a Query object
@@ -397,7 +397,7 @@ class AdminApi extends \Zikula_AbstractApi
            ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g');
 
         // add clause for filtering name
-        $qb->andWhere($qb->expr()->eq('g.gid', $qb->expr()->literal($args['gid'])));
+        $qb->andWhere($qb->expr()->eq('g.gid', ':ggid'))->setParameter('ggid', $args['gid']);
 
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
@@ -429,18 +429,20 @@ class AdminApi extends \Zikula_AbstractApi
         $items = array();
 
         foreach ($objArray as $obj) {
-            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $obj['gid']));
-            if ($group) {
-                if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
-                    $items[] = array(
-                        'app_id' => $obj['app_id'],
-                        'userid' => $obj['uid'],
-                        'username' => UserUtil::getVar('uname', $obj['uid']),
-                        'appgid' => $obj['gid'],
-                        'gname' => $group['name'],
-                        'application' => nl2br($obj['application']),
-                        'status' => $obj['status']);
-                }
+            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $obj['gid'], 'group_membership' => false));
+            if (!$group) {
+                continue;
+            }
+
+            if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
+                $items[] = array(
+                    'app_id' => $obj['app_id'],
+                    'userid' => $obj['uid'],
+                    'username' => UserUtil::getVar('uname', $obj['uid']),
+                    'appgid' => $obj['gid'],
+                    'gname' => $group['name'],
+                    'application' => nl2br($obj['application']),
+                    'status' => $obj['status']);
             }
         }
 
@@ -538,7 +540,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array array of admin links.
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
 

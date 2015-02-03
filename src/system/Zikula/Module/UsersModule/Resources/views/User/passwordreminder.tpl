@@ -21,7 +21,7 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 <p class="alert alert-success">{gt text="I remember my password now."}</p>
-                <a class="btn btn-success" href="{modurl modname='ZikulaUsersModule' type='user' func='login'}"><i class="fa fa-arrow-right"></i> {gt text="Go to log-in screen"}</a>
+                <a class="btn btn-success" href="{route name='zikulausersmodule_user_login'}"><i class="fa fa-arrow-right"></i> {gt text="Go to log-in screen"}</a>
             </div>
         </div>
     </fieldset>
@@ -39,7 +39,7 @@
 </div>
 {/if}
 
-<form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='lostPasswordCode'}" method="post">
+<form class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_lostpasswordcode'}" method="post">
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_uname" name="uname" value="{$uname}" />
@@ -69,7 +69,7 @@
             </div>
             <div class="col-lg-offset-3 col-lg-9">
                 <button class="btn btn-success" type="submit" name="Save">{gt text="Save"}</button>
-                <a class="btn btn-danger" href="{modurl modname=$module type='admin' func='view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulausersmodule_user_index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </fieldset>
     </div>

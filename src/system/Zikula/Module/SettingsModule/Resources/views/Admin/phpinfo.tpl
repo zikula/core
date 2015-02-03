@@ -2,7 +2,7 @@
 {adminheader}
 <h3>
     <span class="fa fa-info-circle"></span>
-    {gt text="PHP configuration"}
+    {gt text='PHP configuration'}
 </h3>
 
 <div id="phpinfo">

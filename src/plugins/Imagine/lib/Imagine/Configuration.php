@@ -40,8 +40,6 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
         );
 
         $this->getView()
-            ->assign('header', ModUtil::func('ZikulaAdminModule', 'admin', 'adminheader'))
-            ->assign('footer', ModUtil::func('ZikulaAdminModule', 'admin', 'adminfooter'))
             ->assign('vars', $modVars)
             ->assign('thumb_full_dir', CacheUtil::getLocalDir($modVars['thumb_dir']))
             ->assign('options', $options);

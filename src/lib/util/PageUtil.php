@@ -188,12 +188,13 @@ class PageUtil
 
         if (System::isLegacyMode()) {
             $sm = ServiceUtil::getManager();
+            $metaTags = $sm->getParameter('zikula_view.metatags');
             switch ($varname) {
                 case 'description':
-                    return $sm['zikula_view.metatags']['description'];
+                    return $metaTags['description'];
                     break;
                 case 'keywords':
-                    return $sm['zikula_view.metatags']['keywords'];
+                    return $metaTags['keywords'];
                     break;
                 case 'rawtext':
                     LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', array('rawtext', 'header')), E_USER_DEPRECATED);
@@ -251,14 +252,17 @@ class PageUtil
 
         if (System::isLegacyMode()) {
             $sm = ServiceUtil::getManager();
+            $metaTags = $sm->hasParameter('zikula_view.metatags') ? $sm->getParameter('zikula_view.metatags') : array();
             switch ($varname) {
                 case 'description':
-                    $sm['zikula_view.metatags']['description'] = $value;
+                    $metaTags['description'] = $value;
+                    $sm->setParameter('zikula_view.metatags', $metaTags);
 
                     return true;
                     break;
                 case 'keywords':
-                    $sm['zikula_view.metatags']['keywords'] = $value;
+                    $metaTags['keywords'] = $value;
+                    $sm->setParameter('zikula_view.metatags', $metaTags);
 
                     return true;
                     break;
@@ -305,9 +309,9 @@ class PageUtil
                 $return[$key] = self::fixJQueryThemesPath($value);
             }
             return $return;
-        } else {
-            return str_replace('javascript/jquery-ui/themes/', 'web/jquery-ui/themes/', $path);
         }
+
+        return str_replace('javascript/jquery-ui/themes/', 'web/jquery-ui/themes/', $path);
     }
 
     /**
@@ -349,10 +353,11 @@ class PageUtil
         if (is_array($value)) {
             $value = array_unique($value);
         }
-        
+
+        $value = self::resolveSymfonyAsset($value);
+
         // @todo Remove in 1.5.0.
         $value = self::fixJQueryThemesPath($value);
-
 
         $event = new \Zikula\Core\Event\GenericEvent($varname, array(), $value);
         $value = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event)->getData();
@@ -375,16 +380,35 @@ class PageUtil
     /**
      * Check if the current page is the homepage.
      *
-     * @return boolean true If it is the homepage, false if it is not the homepage.
+     * @return boolean true if it is the homepage, false if it is not the homepage.
      */
     public static function isHomepage()
     {
         $moduleGetName = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        if (empty($moduleGetName)) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return empty($moduleGetName) ? true : false;
     }
 
+    private static function resolveSymfonyAsset($path)
+    {
+        if (is_array($path)) {
+            $return = array();
+            foreach ($path as $key => $value) {
+                $return[$key] = self::resolveSymfonyAsset($value);
+            }
+            return $return;
+        }
+
+        if (substr($path, 0, 1) != "@") {
+            return $path;
+        }
+        $sm = \ServiceUtil::getManager();
+        $kernel = $sm->get('kernel');
+
+        $root = realpath($kernel->getRootDir() . "/../");
+        $fullPath = $kernel->locateResource($path);
+        $path = System::getBaseUri() . substr($fullPath, strlen($root));
+
+        return $path;
+    }
 }

@@ -30,14 +30,23 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array array of admin links
      */
-    public function getlinks()
+    public function getLinks()
     {
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaSettingsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Main settings'), 'icon' => 'fa fa-wrench');
-            $links[] = array('url' => ModUtil::url('ZikulaSettingsModule', 'admin', 'multilingual'), 'text' => $this->__('Localisation settings'), 'icon' => 'globe');
-            $links[] = array('url' => ModUtil::url('ZikulaSettingsModule', 'admin', 'phpinfo'), 'text' => $this->__('PHP configuration'), 'icon' => 'info-circle');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig'),
+                'text' => $this->__('Main settings'),
+                'icon' => 'fa fa-wrench');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulasettingsmodule_admin_multilingual'),
+                'text' => $this->__('Localisation settings'),
+                'icon' => 'globe');
+            $links[] = array(
+                'url' => $this->get('router')->generate('zikulasettingsmodule_admin_phpinfo'),
+                'text' => $this->__('PHP configuration'),
+                'icon' => 'info-circle');
         }
 
         return $links;

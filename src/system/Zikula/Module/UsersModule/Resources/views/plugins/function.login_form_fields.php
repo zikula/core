@@ -12,7 +12,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Debug\Exception\FatalErrorException;
+use Zikula\Core\Exception\FatalErrorException;
 
 /**
  * Display login fields for a given authentication method
@@ -21,11 +21,13 @@ use Symfony\Component\Debug\Exception\FatalErrorException;
  * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @return string Translation if it was available.
+ *
+ * @throws \InvalidArgumentException
  */
 function smarty_function_login_form_fields($params, $view)
 {
     if (!isset($params) || !is_array($params) || empty($params)) {
-        throw new FatalErrorException(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('$params', 'login_form_fields'), 'Zikula'));
+        throw new \InvalidArgumentException(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('$params', 'login_form_fields'), 'Zikula'));
     }
 
     if (isset($params['authentication_method'])
@@ -36,14 +38,14 @@ function smarty_function_login_form_fields($params, $view)
         $authenticationMethod = $params['authentication_method'];
 
         if (!isset($authenticationMethod['modname']) || empty($authenticationMethod['modname']) || !is_string($authenticationMethod['modname'])) {
-            throw new FatalErrorException(__f('An invalid authentication module was received by the template function \'%1$s\'.', array('login_form_fields'), 'Zikula'));
+            throw new \InvalidArgumentException(__f('An invalid authentication module was received by the template function \'%1$s\'.', array('login_form_fields'), 'Zikula'));
         }
 
         if (!isset($authenticationMethod['method']) || empty($authenticationMethod['method']) || !is_string($authenticationMethod['method'])) {
-            throw new FatalErrorException(__f('An invalid authentication method was received by the template function \'%1$s\'.', array('login_form_fields'), 'Zikula'));
+            throw new \InvalidArgumentException(__f('An invalid authentication method was received by the template function \'%1$s\'.', array('login_form_fields'), 'Zikula'));
         }
     } else {
-        throw new FatalErrorException(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('authentication_method', 'login_form_fields'), 'Zikula'));
+        throw new \InvalidArgumentException(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('authentication_method', 'login_form_fields'), 'Zikula'));
     }
 
     if (isset($params['form_type'])
@@ -52,14 +54,14 @@ function smarty_function_login_form_fields($params, $view)
             ) {
         $formType = $params['form_type'];
     } else {
-        throw new FatalErrorException(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('form_type', 'login_form_fields'), 'Zikula'));
+        throw new \InvalidArgumentException(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('form_type', 'login_form_fields'), 'Zikula'));
     }
 
     if (isset($params['assign'])) {
         if (!is_string($params['assign'])
                 || empty($params['assign'])
                 ) {
-            throw new FatalErrorException(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('assign', 'login_form_fields'), 'Zikula'));
+            throw new \InvalidArgumentException(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('assign', 'login_form_fields'), 'Zikula'));
         }
     }
 

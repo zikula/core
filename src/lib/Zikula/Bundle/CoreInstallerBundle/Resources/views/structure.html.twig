@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" xml:lang="{{ lang }}">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={{ charset }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Zikula Aplication Framework">
+        <meta name="author" content="Zikula Development Team">
+        <meta name="generator" content="Zikula Installer -- http://www.zikula.org" />
+        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        <title>{% block title __('Zikula Core Installer') %}</title>
+
+        {# always load bootstrap #}
+        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}" type="text/css" />
+        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap-theme.min.css') }}" type="text/css" />
+        {# always load font-awesome #}
+        <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.css') }}" type="text/css" />
+        {# allow child templates to load additional stylesheets #}
+        {% block stylesheets '' %}
+
+        {# always load jquery #}
+        <script type="text/javascript" src="{{ asset('jquery/jquery.min.js') }}"></script>
+        {# always load bootstrap #}
+        <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+        {# allow child templates to load additional scripts #}
+        {% block javascripts '' %}
+
+        {# allow child templates to add items to head #}
+        {% block head '' %}
+
+    </head>
+    <body>
+        {% block body '' %}
+    </body>
+</html>

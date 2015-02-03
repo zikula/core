@@ -16,7 +16,7 @@ class PathPackage extends BasePathPackage
      * @param string  $version The version
      * @param string  $format  The version format
      *
-     * @note Append the 'web/' folder, because the application kernel of Zikula is not located in
+     * Note: Append the 'web/' folder, because the application kernel of Zikula is not located in
      * the 'web' folder.
      */
     public function __construct(Request $request, $version = null, $format = null)

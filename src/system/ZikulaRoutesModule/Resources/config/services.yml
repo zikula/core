@@ -1,0 +1,144 @@
+parameters:
+    # Route parts
+    zikularoutesmodule.routing.ajax: ajax
+    zikularoutesmodule.routing.external: external
+    zikularoutesmodule.routing.view.suffix: view
+    zikularoutesmodule.routing.route.singular: route
+    zikularoutesmodule.routing.route.plural: routes
+    zikularoutesmodule.routing.formats.view: html|kml
+    zikularoutesmodule.routing.formats.display: html|kml|ics
+
+    # Entity factory classes
+    zikularoutesmodule.entity.factory.route.class: Zikula\RoutesModule\Entity\Factory\RouteFactory
+
+    # Listener classes
+    zikularoutesmodule.core_listener.class: Zikula\RoutesModule\Listener\CoreListener
+    zikularoutesmodule.kernel_listener.class: Zikula\RoutesModule\Listener\KernelListener
+    zikularoutesmodule.installer_listener.class: Zikula\RoutesModule\Listener\InstallerListener
+    zikularoutesmodule.moduledispatch_listener.class: Zikula\RoutesModule\Listener\ModuleDispatchListener
+    zikularoutesmodule.mailer_listener.class: Zikula\RoutesModule\Listener\MailerListener
+    zikularoutesmodule.page_listener.class: Zikula\RoutesModule\Listener\PageListener
+    zikularoutesmodule.theme_listener.class: Zikula\RoutesModule\Listener\ThemeListener
+    zikularoutesmodule.view_listener.class: Zikula\RoutesModule\Listener\ViewListener
+    zikularoutesmodule.userlogin_listener.class: Zikula\RoutesModule\Listener\UserLoginListener
+    zikularoutesmodule.userlogout_listener.class: Zikula\RoutesModule\Listener\UserLogoutListener
+    zikularoutesmodule.user_listener.class: Zikula\RoutesModule\Listener\UserListener
+    zikularoutesmodule.userregistration_listener.class: Zikula\RoutesModule\Listener\UserRegistrationListener
+    zikularoutesmodule.users_listener.class: Zikula\RoutesModule\Listener\UsersListener
+    zikularoutesmodule.group_listener.class: Zikula\RoutesModule\Listener\GroupListener
+
+    # Util classes
+    zikularoutesmodule.model_helper.class: Zikula\RoutesModule\Util\ModelUtil
+    zikularoutesmodule.controller_helper.class: Zikula\RoutesModule\Util\ControllerUtil
+    zikularoutesmodule.view_helper.class: Zikula\RoutesModule\Util\ViewUtil
+    zikularoutesmodule.workflow_helper.class: Zikula\RoutesModule\Util\WorkflowUtil
+    zikularoutesmodule.listentries_helper.class: Zikula\RoutesModule\Util\ListEntriesUtil
+
+    
+    # Log processor
+    zikularoutesmodule.log.processor.class: Monolog\Processor\PsrLogMessageProcessor
+
+services:
+    zikularoutesmodule.route_factory:
+        class: "%zikularoutesmodule.entity.factory.route.class%"
+        arguments:
+            objectManager: "@doctrine.orm.entity_manager"
+            className: Zikula\RoutesModule\Entity\RouteEntity
+    
+
+    zikularoutesmodule.core_listener:
+        class: "%zikularoutesmodule.core_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.kernel_listener:
+        class: "%zikularoutesmodule.kernel_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.installer_listener:
+        class: "%zikularoutesmodule.installer_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.moduledispatch_listener:
+        class: "%zikularoutesmodule.moduledispatch_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.mailer_listener:
+        class: "%zikularoutesmodule.mailer_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.page_listener:
+        class: "%zikularoutesmodule.page_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.theme_listener:
+        class: "%zikularoutesmodule.theme_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.view_listener:
+        class: "%zikularoutesmodule.view_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.userlogin_listener:
+        class: "%zikularoutesmodule.userlogin_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.userlogout_listener:
+        class: "%zikularoutesmodule.userlogout_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.user_listener:
+        class: "%zikularoutesmodule.user_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.userregistration_listener:
+        class: "%zikularoutesmodule.userregistration_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.users_listener:
+        class: "%zikularoutesmodule.users_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    zikularoutesmodule.group_listener:
+        class: "%zikularoutesmodule.group_listener.class%"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+
+    zikularoutesmodule.model_helper:
+        class: "%zikularoutesmodule.model_helper.class%"
+        arguments: ["@service_container", "@=service('kernel').getBundle('ZikulaRoutesModule')"]
+    
+    zikularoutesmodule.controller_helper:
+        class: "%zikularoutesmodule.controller_helper.class%"
+        arguments: ["@service_container", "@=service('kernel').getBundle('ZikulaRoutesModule')"]
+    
+    zikularoutesmodule.view_helper:
+        class: "%zikularoutesmodule.view_helper.class%"
+        arguments: ["@service_container", "@=service('kernel').getBundle('ZikulaRoutesModule')"]
+    
+    zikularoutesmodule.workflow_helper:
+        class: "%zikularoutesmodule.workflow_helper.class%"
+        arguments: ["@service_container", "@=service('kernel').getBundle('ZikulaRoutesModule')"]
+    
+    zikularoutesmodule.listentries_helper:
+        class: "%zikularoutesmodule.listentries_helper.class%"
+        arguments: ["@service_container", "@=service('kernel').getBundle('ZikulaRoutesModule')"]
+    
+
+    zikularoutesmodule.log.processor:
+        class: "%zikularoutesmodule.log.processor.class%"
+        tags:
+            - { name: monolog.processor }

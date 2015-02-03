@@ -40,4 +40,3 @@ interface StorageInterface
     public function getBindingsBetweenOwners($subscriberOwner, $providerOwner);
     public function getAreaId($areaName);
 }
-

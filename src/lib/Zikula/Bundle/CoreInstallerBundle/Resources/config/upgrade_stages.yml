@@ -1,0 +1,26 @@
+stages:
+    notupgraded:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\NotUpgradedStage
+        order: 1
+        default: true
+    init:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\InitStage
+        order: 2
+    locale:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\LocaleStage
+        order: 3
+    requirements:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\RequirementsStage
+        order: 4
+    login:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\LoginStage
+        order: 5
+    ajaxupgrader:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage
+        order: 6
+    complete:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\CompleteStage
+        order: 7
+    installed:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\AlreadyInstalledStage
+        order: 8

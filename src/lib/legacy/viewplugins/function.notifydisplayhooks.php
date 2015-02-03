@@ -13,8 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\ModUrl;
-
 /**
  * Zikula_View function notify display hooks.
  *
@@ -46,8 +44,8 @@ function smarty_function_notifydisplayhooks($params, Zikula_View $view)
     $eventname = $params['eventname'];
     $id = isset($params['id']) ? $params['id'] : null;
     $urlObject = isset($params['urlobject']) ? $params['urlobject'] : null;
-    if ($urlObject && !($urlObject instanceof Zikula_ModUrl) && !($urlObject instanceof ModUrl)) {
-        return trigger_error(__f('Error! "%1$s" must be an instance of %2$s', array('urlobject', 'Zikula_ModUrl or Zikula\Core\ModUrl')));
+    if ($urlObject && !($urlObject instanceof \Zikula\Core\UrlInterface)) {
+        return trigger_error(__f('Error! "%1$s" must be an instance of %2$s', array('urlobject', '\Zikula\Core\UrlInterface')));
     }
     $assign  = isset($params['assign']) ? $params['assign'] : false;
 

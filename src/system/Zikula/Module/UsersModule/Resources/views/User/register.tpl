@@ -1,41 +1,25 @@
 {strip}
     {gt text='New account registration' assign='templatetitle'}
-    {ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.NewUser.js'}
-    {if $modvars.ZikulaUsersModule.use_password_strength_meter && ($authentication_method.modname == 'ZikulaUsersModule')}
-        {pageaddvar name='javascript' value='prototype'}
+    {pageaddvar name="javascript" value="system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.Common.UserValidation.js"}
+    {if $modvars.ZikulaUsersModule.use_password_strength_meter && ($authentication_method.modname eq 'ZikulaUsersModule')}
+        {pageaddvar name='javascript' value='jquery'}
         {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
-                var passmeter = null;
-                document.observe("dom:loaded", function() {
-                    passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
-                        username:'{{$formData->getFieldId('uname')}}',
-                        minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                ( function($) {
+                    $(document).ready(function() {
+                        ZikulaUsersPassMeter.init('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter', {
+                            username: '{{$formData->getFieldId('uname')}}',
+                            minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
+                        });
                     });
-                });
+                })(jQuery);
             </script>
         {/pageaddvarblock}
     {/if}
-    {pageaddvarblock}
-        <script type="text/javascript">
-            Zikula.Users.NewUser.setup = function() {
-                Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
-
-                Zikula.Users.NewUser.fieldId = {
-                    submit:         '{{$formData->getFormId()}}_submitnewuser',
-                    checkUser:      '{{$formData->getFormId()}}_checkuserajax',
-                    checkMessage:   '{{$formData->getFormId()}}_checkmessage',
-                    validMessage:   '{{$formData->getFormId()}}_validmessage',
-
-                    userName:       '{{$formData->getFieldId('uname')}}',
-                    email:          '{{$formData->getFieldId('email')}}',
-                };
-            }
-        </script>
-    {/pageaddvarblock}
 {/strip}
 
-{include file="User/menu.tpl"}
+{include file='User/menu.tpl'}
 
 <p id="users_formtop">
     {gt text='Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.'}
@@ -65,21 +49,21 @@
 
 <p class="alert alert-warning">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='register'}" method="post">
+<form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_register'}" method="post">
     <fieldset>
         <legend>{gt text="Choose a user name"}</legend>
         <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_registration" />
-    <input id="{$formData->getFormId()}_registration_info" type="hidden" name="registration_info" value="1" />
-    <input id="{$formData->getFormId()}_authentication_method" type="hidden" name="authentication_method_ser" value="{$authentication_method|@serialize|safetext}" />
-    <input id="{$formData->getFormId()}_authentication_info" type="hidden" name="authentication_info_ser" value="{$authentication_info|@serialize|safetext}" />
-{capture name='uname'}
+        <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_registration" />
+        <input id="{$formData->getFormId()}_registration_info" type="hidden" name="registration_info" value="1" />
+        <input id="{$formData->getFormId()}_authentication_method" type="hidden" name="authentication_method_ser" value="{$authentication_method|@json_encode|safetext}" />
+        <input id="{$formData->getFormId()}_authentication_info" type="hidden" name="authentication_info_ser" value="{$authentication_info|@json_encode|safetext}" />
+        {capture name='uname'}
         <div class="form-group {if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='uname'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="User name"}<span class="required"></span></label>
             {assign var='fieldName' value='uname'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control to-lower-case" type="text" size="25" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" required="required"/>
                 <em class="help-block sub">{gt text='User names can contain letters, numbers, underscores, periods and/or dashes.'}</em>
 
                 {if ($authentication_method.modname != 'ZikulaUsersModule') || (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
@@ -99,7 +83,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="required"></span></label>
             {assign var='fieldName' value='pass'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password" class="form-control" size="25" maxlength="60" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password" class="form-control" size="25" maxlength="60" required="required" data-match="#users_register_passagain" data-match-error-message="The value entered does not match the password entered in the password field." data-min="{$modvars.ZikulaUsersModule.minpass}" data-min-error-message="{gt text='Passwords must be at least %s characters in length.' tag1=$modvars.ZikulaUsersModule.minpass}"/>
                 <em class="help-block sub">{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.ZikulaUsersModule.minpass}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 <div id="{$formData->getFormId()}_passmeter"></div>
@@ -110,22 +94,23 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your Password for verification"}<span class="required"></span></label>
             {assign var='fieldName' value='passagain'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="password" size="25" maxlength="60" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="password" size="25" maxlength="60" required="required" />
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
-        {assign var='modvar_password_reminder_mandatory' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_MANDATORY'|const}
+        {if isset($modvars.ZikulaUsersModule.password_reminder_enabled) && $modvars.ZikulaUsersModule.password_reminder_enabled}
         <div class="form-group{if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='passreminder'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}{if $modvars.ZikulaUsersModule.$modvar_password_reminder_mandatory}<span class="required"></span>{/if}</label>
+            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}{if ($modvars.ZikulaUsersModule.password_reminder_mandatory)}<span class="required"></span>{/if}</label>
             {assign var='fieldName' value='passreminder'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="128" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="128" value="{$formData->getFieldData($fieldName)|safetext}"{if ($modvars.ZikulaUsersModule.password_reminder_mandatory)} required="required"{/if} />
                 <div class="sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
                 <div class="help-block alert alert-info">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
+        {/if}
     </fieldset>
     {else}
         <input id="{$formData->getFieldId('pass')}" name="pass" type="hidden" value="{'Zikula\Module\UsersModule\Constant::PWD_NO_USERS_AUTHENTICATION'|const}" />
@@ -141,26 +126,24 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="required"></span></label>
             {assign var='fieldName' value='email'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
-
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control to-lower-case" type="email" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" data-match="#users_register_emailagain" data-match-error-message="{gt text='The value entered does not match the e-mail address entered in the e-mail address field.'}" />
                 {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
                 <em class="help-block sub">{gt text='You will use your e-mail address to identify yourself when you log in.'}</em>
                 {/if}
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
-        <div class="form-group{if isset ($fieldName) &&  isset($errorFields.$fieldName)} has-error{/if}">
+        <div class="form-group{if ((isset($fieldName)) && (isset($errorFields.$fieldName)))} has-error{/if}">
             {assign var='fieldName' value='emailagain'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your E-mail address for verification"}<span class="required"></span></label>
             {assign var='fieldName' value='emailagain'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control  to-lower-case" type="email" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" />
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
     </fieldset>
 {/capture}
-
     {* Order the fieldsets based on whether e-mail is the exclusive log-in id or not. *}
     {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
         {$smarty.capture.email}
@@ -171,12 +154,10 @@
         {$smarty.capture.pass}
         {$smarty.capture.email}
     {/if}
-
     {notifyevent eventname='module.users.ui.form_edit.new_registration' eventsubject=null id=null assign='eventData'}
     {foreach item='eventDisplay' from=$eventData}
         {$eventDisplay}
     {/foreach}
-
     {notifydisplayhooks eventname='users.ui_hooks.registration.form_edit' id=null assign='hooks'}
     {if is_array($hooks) && count($hooks)}
     <fieldset>
@@ -187,7 +168,6 @@
             {/foreach}
     </fieldset>
     {/if}
-
     {if !empty($modvars.ZikulaUsersModule.reg_question)}
     <fieldset>
         <legend>{gt text="Answer the security question"}</legend>
@@ -196,25 +176,18 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{$modvars.ZikulaUsersModule.reg_question|safehtml}<span class="required"></span></label>
             {assign var='fieldName' value='antispamanswer'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="has-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control{if isset($errorFields.$fieldName)} has-error"{/if}" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                 <em class="help-block sub">{gt text="Asking this question helps us prevent automated scripts from accessing private areas of the site."}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
     </fieldset>
     {/if}
-
-    <fieldset>
-        <legend>{gt text="Check your entries and submit your registration"}</legend>
-        <p id="{$formData->getFormId()}_checkmessage" class="sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit registration' to continue."}</p>
-        <p id="{$formData->getFormId()}_validmessage" class="hide">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
-        <div class="text-center z-buttons">
-            {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide' modname=core set='ajax' src='indicator_circle.gif' alt=''}
-            <button id="{$formData->getFormId()|cat:'_submitnewuser'}" type="submit" title="{gt text='Submit registration'}">
-                {gt text='Submit registration'}
-            <button id="{$formData->getFormId()|cat:'_checkuserajax'}" type="button" class="hide" title="{gt text='Check your entries'}">
-                {gt text='Check your entries'}
-            </button>
+    <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-9">
+            <input class="btn btn-success" type="submit" value="{gt text='Submit'}" />
+            <a class="btn btn-danger" href="{route name='zikulausersmodule_user_index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+            <input class="btn btn-default" type="reset" value="{gt text='Reset'}" />
         </div>
-    </fieldset>
+    </div>
 </form>

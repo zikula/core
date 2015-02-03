@@ -20,7 +20,11 @@ use ModUtil;
 use ObjectUtil;
 use Zikula\Module\CategoriesModule\GenericUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * User form controllers for the categories module
@@ -28,22 +32,26 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class UserformController extends \Zikula_AbstractController
 {
     /**
+     * @Route("/delete")
+     * 
      * delete category
+     * 
+     * @param Request $request
      *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the module
      * @throws \InvalidArgumentException Thrown if the category or document root aren't supplied or are invalid
      */
-    public function deleteAction()
+    public function deleteAction(Request $request)
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
 
-        $cid = (int)$this->request->get('cid', 0);
-        $dr = (int)$this->request->get('dr', 0);
-        $url = System::serverGetVar('HTTP_REFERER');
+        $cid = (int)$request->get('cid', 0);
+        $dr = (int)$request->get('dr', 0);
+        $url = $request->server->get('HTTP_REFERER');
 
         if (!$dr) {
             throw new \InvalidArgumentException($this->__('Error! The document root is invalid.'));
@@ -61,7 +69,7 @@ class UserformController extends \Zikula_AbstractController
 
         if ($category['is_locked']) {
             //! %1$s is the id, %2$s is the name
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $category['name'])), null, $url);
+            $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $category['name'])), null, $url);
             return new RedirectResponse(System::normalizeUrl($url));
         }
 
@@ -70,7 +78,12 @@ class UserformController extends \Zikula_AbstractController
     }
 
     /**
+     * @Route("/update")
+     * @Method("POST")
+     *
      * update category
+     *
+     * @param Request $request
      *
      * @return RedirectResponse
      *
@@ -78,7 +91,7 @@ class UserformController extends \Zikula_AbstractController
      * @throws \InvalidArgumentException Thrown if the document root is invalid or
      *                                          if the category id doesn't match a valid category
      */
-    public function editAction()
+    public function editAction(Request $request)
     {
         $this->checkCsrfToken();
 
@@ -86,18 +99,18 @@ class UserformController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-        $dr = (int)$this->request->request->get('dr', 0);
-        $ref = System::serverGetVar('HTTP_REFERER');
+        $dr = (int)$request->request->get('dr', 0);
+        $ref = $request->server->get('HTTP_REFERER');
 
         $returnfunc = strpos($ref, "useredit") !== false ? 'useredit' : 'edit';
-        $url = ModUtil::url('ZikulaCategoriesModule', 'user', $returnfunc, array('dr' => $dr));
+        $url = $this->get('router')->generate("zikulacategoriesmodule_user_$returnfunc", array('dr' => $dr), RouterInterface::ABSOLUTE_URL);
 
         if (!$dr) {
             throw new \InvalidArgumentException($this->__('Error! The document root is invalid.'));
         }
 
         // get data from post
-        $data = $this->request->request->get('category', null);
+        $data = $request->request->get('category', null);
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
@@ -122,7 +135,7 @@ class UserformController extends \Zikula_AbstractController
         }
 
         if ($category['is_locked']) {
-            $this->request->getSession()->getFlashbag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($data['id'], $category['name'])));
+            $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($data['id'], $category['name'])));
             return new RedirectResponse(System::normalizeUrl($url));
         }
 
@@ -139,8 +152,8 @@ class UserformController extends \Zikula_AbstractController
         $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
-        $attrib_names = $this->request->request->get('attribute_name', array());
-        $attrib_values = $this->request->request->get('attribute_value', array());
+        $attrib_names = $request->request->get('attribute_name', array());
+        $attrib_values = $request->request->get('attribute_value', array());
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $this->entityManager->flush();
@@ -150,43 +163,33 @@ class UserformController extends \Zikula_AbstractController
         }
 
         $msg = $this->__f('Done! Saved the %s category.', $category_old_name);
-        $this->request->getSession()->getFlashbag()->add('status', $msg);
+        $request->getSession()->getFlashBag()->add('status', $msg);
 
         return new RedirectResponse(System::normalizeUrl($url));
     }
 
     /**
+     * @Route("/move/{cid}/{dr}/{direction}", requirements={"cid" = "^[1-9]\d*$", "dr" = "^[1-9]\d*$", "direction" = "up|down"})
+     * @Method("GET")
+     *
      * move field
+     *
+     * @param Request $request
+     * @param integer $cid
+     * @param integer $dr
+     * @param string $direction
      *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
-     * @throws \InvalidArgumentException Thrown if the document root is invalid or
-     *                                          if the category id doesn't match a valid category or
-     *                                          if the direction is invalid
      */
-    public function moveFieldAction()
+    public function moveFieldAction(Request $request, $cid, $dr, $direction = null)
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
-        $cid = (int)$this->request->query->get('cid', 0);
-        $dir = $this->request->query->get('direction', null);
-        $dr = (int)$this->request->query->get('dr', 0);
-        $url = System::serverGetVar('HTTP_REFERER');
-
-        if (!$dr) {
-            throw new \InvalidArgumentException($this->__('Error! The document root is invalid.'));
-        }
-
-        if (!$cid) {
-            throw new \InvalidArgumentException($this->__('Error! The category ID is invalid.'));
-        }
-
-        if (!$dir) {
-            throw new \InvalidArgumentException($this->__f('Error! Invalid [%s] received.', 'direction'));
-        }
+        $url = $request->server->get('HTTP_REFERER');
 
         $cats1 = CategoryUtil::getSubCategories($dr, false, false, false, false);
         $cats2 = CategoryUtil::resequence($cats1, 10);
@@ -206,7 +209,7 @@ class UserformController extends \Zikula_AbstractController
 
         for ($i=0 ; $i < count($sort_values) ; $i++) {
             if ($sort_values[$i]['id'] == $cid) {
-                if ($dir == 'up') {
+                if ($direction == 'up') {
                     if ($sort_values[$i-1]['sort_value']) {
                         $obj['sort_value'] = $sort_values[$i-1]['sort_value'] - 1;
                     }
@@ -220,20 +223,23 @@ class UserformController extends \Zikula_AbstractController
 
         $this->entityManager->flush();
 
-        $url = System::serverGetVar('HTTP_REFERER');
-
         return new RedirectResponse(System::normalizeUrl($url));
     }
 
     /**
+     * @Route("/new")
+     * @Method("POST")
+     *
      * create category
+     *
+     * @param Request $request
      *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have add permissions to the module
      * @throws \InvalidArgumentException Thrown if the document root is invalid
      */
-    public function newcatAction()
+    public function newcatAction(Request $request)
     {
         $this->checkCsrfToken();
 
@@ -241,19 +247,19 @@ class UserformController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-        $dr = (int)$this->request->request->get('dr', 0);
-        $url = System::serverGetVar('HTTP_REFERER');
+        $dr = (int)$request->request->get('dr', 0);
+        $url = $request->server->get('HTTP_REFERER');
 
         if (!$dr) {
             throw new \InvalidArgumentException($this->__('Error! The document root is invalid.'));
         }
 
         // get data from post
-        $data = $this->request->request->get('category', null);
+        $data = $request->request->get('category', null);
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url('Categories', 'user', 'edit', array('dr' => $dr))));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_user_edit', array('dr' => $dr), RouterInterface::ABSOLUTE_URL));
         }
 
         // process name
@@ -280,37 +286,37 @@ class UserformController extends \Zikula_AbstractController
         $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
-        $attrib_names = $this->request->request->get('attribute_name', array());
-        $attrib_values = $this->request->request->get('attribute_value', array());
+        $attrib_names = $request->request->get('attribute_name', array());
+        $attrib_values = $request->request->get('attribute_value', array());
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $this->entityManager->flush();
 
         $msg = $this->__f('Done! Inserted the %s category.', $data['name']);
-        $this->request->getSession()->getFlashbag()->add('status', $msg);
+        $request->getSession()->getFlashBag()->add('status', $msg);
         return new RedirectResponse(System::normalizeUrl($url));
     }
 
     /**
+     * @Route("/resequence/{dr}", requirements={"dr" = "^[1-9]\d*$"})
+     * @Method("GET")
+     *
      * resequence categories
+     *
+     * @param Request $request
+     * @param integer $dr
      *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
-     * @throws \InvalidArgumentException Thrown if the document root isn't valid
      */
-    public function resequenceAction()
+    public function resequenceAction(Request $request, $dr)
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
-        $dr = (int)$this->request->query->get('dr', 0);
-        $url = System::serverGetVar('HTTP_REFERER');
-
-        if (!$dr) {
-            throw new \InvalidArgumentException($this->__('Error! The document root is invalid.'));
-        }
+        $url = $request->server->get('HTTP_REFERER');
 
         $cats1 = CategoryUtil::getSubCategories($dr, false, false, false, false);
         $cats2 = CategoryUtil::resequence($cats1, 10);

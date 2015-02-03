@@ -21,7 +21,6 @@ use UserUtil;
 use DateUtil;
 use ModUtil;
 use ServiceUtil;
-use Zikula_Exception_Forbidden;
 use Zikula\Module\SecurityCenterModule\Util as SecurityCenterUtil;
 use Zikula_Event;
 use Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity;

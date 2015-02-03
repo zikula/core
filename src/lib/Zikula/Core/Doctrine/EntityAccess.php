@@ -39,19 +39,29 @@ class EntityAccess implements \ArrayAccess
 
     public function offsetExists($key)
     {
-        return method_exists($this, "get" . ucfirst($key));
+        try {
+            $this->getGetterForProperty($key);
+            return true;
+        } catch (\RuntimeException $e) {
+            return false;
+        }
     }
 
     public function offsetGet($key)
     {
-        $method = "get" . ucfirst($key);
+        $method = $this->getGetterForProperty($key);
+
+        // see #1863
+        if (empty($method)) {
+            return null;
+        }
 
         return $this->$method();
     }
 
     public function offsetSet($key, $value)
     {
-        $method = "set" . ucfirst($key);
+        $method = $this->getSetterForProperty($key);
         $this->$method($value);
     }
 
@@ -60,6 +70,11 @@ class EntityAccess implements \ArrayAccess
         $this->offsetSet($key, null);
     }
 
+    /**
+     * Returns an array representation of this entity.
+     *
+     * @return array An array containing properties of this entity.
+     */
     public function toArray()
     {
         $r = $this->getReflection();
@@ -74,7 +89,7 @@ class EntityAccess implements \ArrayAccess
             'lazyPropertiesDefaults'
         );
 
-        while($r !== false) {
+        while ($r !== false) {
             $properties = $r->getProperties();
             $r = $r->getParentClass();
 
@@ -83,8 +98,10 @@ class EntityAccess implements \ArrayAccess
                     continue;
                 }
 
-                $method = "get" . ucfirst($property->name);
-                $array[$property->name] = $this->$method();
+                $method = $this->getGetterForProperty($property->name);
+                if (!empty($method)) {
+                    $array[$property->name] = $this->$method();
+                }
             }
         }
 
@@ -94,8 +111,45 @@ class EntityAccess implements \ArrayAccess
     public function merge(array $array)
     {
         foreach ($array as $key => $value) {
-            $method = "set" . ucfirst($key);
+            $method = $this->getSetterForProperty($key);
             $this->$method($value);
         }
+    }
+
+    /**
+     * Returns the accessor's method name for retrieving a certain property.
+     *
+     * @param string $name Name of property to be retrieved.
+     *
+     * @return string Name of method to be used as accessor for the given property.
+     */
+    private function getGetterForProperty($name)
+    {
+        $getMethod = 'get' . ucfirst($name);
+        if (method_exists($this, $getMethod)) {
+            return $getMethod;
+        }
+
+        $isMethod  = 'is' . ucfirst($name);
+        if (method_exists($this, $isMethod)) {
+            return $isMethod;
+        }
+
+        // see #1863
+        return '';
+
+        $class = get_class($this);
+        throw new \RuntimeException("Entity \"$class\" does not have a getter for property \"$name\". Please either add $getMethod() or $isMethod().");
+    }
+
+    private function getSetterForProperty($name)
+    {
+        $setMethod = 'set' . ucfirst($name);
+        if (method_exists($this, $setMethod)) {
+            return $setMethod;
+        }
+
+        $class = get_class($this);
+        throw new \RuntimeException("Entity \"$class\" does not have a setter for property \"$name\". Please add $setMethod().");
     }
 }

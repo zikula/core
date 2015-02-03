@@ -16,8 +16,7 @@
 namespace Zikula\Core\Hook;
 
 use Zikula\Component\HookDispatcher\Hook;
-use Zikula\Core\ModUrl;
-use Zikula\Core\Hook\DisplayHookResponse;
+use Zikula\Core\UrlInterface;
 
 /**
  * DisplayHook class.
@@ -34,11 +33,11 @@ class DisplayHook extends Hook
     /**
      * The return url.
      *
-     * @var ModUrl
+     * @var UrlInterface
      */
     private $url;
 
-    public function __construct($id, ModUrl $url = null)
+    public function __construct($id, UrlInterface $url = null)
     {
         $this->id = $id;
         $this->url = $url;
@@ -69,7 +68,7 @@ class DisplayHook extends Hook
     /**
      * Url getter.
      *
-     * @return ModUrl
+     * @return UrlInterface
      */
     public function getUrl()
     {

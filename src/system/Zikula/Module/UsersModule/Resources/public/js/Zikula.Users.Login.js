@@ -1,169 +1,160 @@
 // Copyright Zikula Foundation 2011 - license GNU/LGPLv3 (or at your option, any later version).
 
-// Create the Zikula.Users object if needed
-Zikula.define('Users');
+var ZikulaUsersLogin = {};
 
-// Create the Zikula.Users.ModifyConfig object
-Zikula.Users.Login =
-{
-    init: function()
+( function($) {
+
+    ZikulaUsersLogin.init = function()
     {
-        if ($('users_login_select_authentication_form_users_uname') != null) {
-            $('users_login_select_authentication_form_users_uname').observe('submit', function(event) { Zikula.Users.Login.onSubmitSelectAuthenticationMethod(event, 'users_login_select_authentication_form_users_uname'); });
+        if ($('#users_login_select_authentication_form_users_uname').length > 0) {
+            $('#users_login_select_authentication_form_users_uname').submit( function(event) {
+                ZikulaUsersLogin.onSubmitSelectAuthenticationMethod(event, 'users_login_select_authentication_form_users_uname');
+            });
         }
-        if ($('users_login_select_authentication_form_users_email') != null) {
-            $('users_login_select_authentication_form_users_email').observe('submit', function(event) { Zikula.Users.Login.onSubmitSelectAuthenticationMethod(event, 'users_login_select_authentication_form_users_email'); });
+        if ($('#users_login_select_authentication_form_users_email').length > 0) {
+            $('#users_login_select_authentication_form_users_email').submit( function(event) {
+                ZikulaUsersLogin.onSubmitSelectAuthenticationMethod(event, 'users_login_select_authentication_form_users_email');
+            });
         }
-        if ($('users_login_select_authentication_form_users_unameoremail') != null) {
-            $('users_login_select_authentication_form_users_unameoremail').observe('submit', function(event) { Zikula.Users.Login.onSubmitSelectAuthenticationMethod(event, 'users_login_select_authentication_form_users_unameoremail'); });
+        if ($('#users_login_select_authentication_form_users_unameoremail').length > 0) {
+            $('#users_login_select_authentication_form_users_unameoremail').submit( function(event) {
+                ZikulaUsersLogin.onSubmitSelectAuthenticationMethod(event, 'users_login_select_authentication_form_users_unameoremail');
+            });
         }
-    },
 
-    showAjaxInProgress: function()
+        if ($('#users_login_login_id').length > 0) {
+            $('#users_login_login_id').focus();
+        }
+    };
+
+    ZikulaUsersLogin.showAjaxInProgress = function()
     {
         // Hide login form
-        var elementChangingClass = $('users_login_login_form');
-        if (!elementChangingClass.hasClassName('hide')) {
-            elementChangingClass.addClassName('hide');
+        var elementChangingClass = $('#users_login_login_form');
+        if (!elementChangingClass.hasClass('hide')) {
+            elementChangingClass.addClass('hide');
         }
 
         // Hide error notice
-        elementChangingClass = $('users_login_no_loginformfields');
-        if (!elementChangingClass.hasClassName('hide')) {
-            elementChangingClass.addClassName('hide');
+        elementChangingClass = $('#users_login_no_loginformfields');
+        if (!elementChangingClass.hasClass('hide')) {
+            elementChangingClass.addClass('hide');
         }
 
         // Unhide heading used when no authentication module is chosen
-        elementChangingClass = $('users_login_h5_no_authentication_method');
-        if (elementChangingClass.hasClassName('hide')) {
-            elementChangingClass.removeClassName('hide');
+        elementChangingClass = $('#users_login_h5_no_authentication_method');
+        if (elementChangingClass.hasClass('hide')) {
+            elementChangingClass.removeClass('hide');
         }
 
         // Hide heading used when authentication module is chosen
-        elementChangingClass = $('users_login_h5_authentication_method');
-        if (!elementChangingClass.hasClassName('hide')) {
-            elementChangingClass.addClassName('hide');
+        elementChangingClass = $('#users_login_h5_authentication_method');
+        if (!elementChangingClass.hasClass('hide')) {
+            elementChangingClass.addClass('hide');
         }
 
         // Remove selected indicator from selectors
-        $$('.authentication_select_method_selected').invoke('removeClassName', 'authentication_select_method_selected');
+        $('.authentication_select_method_selected').removeClass('authentication_select_method_selected');
 
         // Unhide the waiting indicator
-        $('users_login_waiting').removeClassName('hide');
-    },
+        $('#users_login_waiting').removeClass('hide');
+    };
 
-    showAjaxComplete: function(isError)
+    ZikulaUsersLogin.showAjaxComplete = function(isError)
     {
         // Unhide waiting indicator
-        $('users_login_waiting').addClassName('hide');
+        $('#users_login_waiting').addClass('hide');
 
         var elementChangingClass;
         if (isError) {
             // Hide login form
-            elementChangingClass = $('users_login_login_form');
-            if (!elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.addClassName('hide');
+            elementChangingClass = $('#users_login_login_form');
+            if (!elementChangingClass.hasClass('hide')) {
+                elementChangingClass.addClass('hide');
             }
 
             // Unhide error notification
-            elementChangingClass = $('users_login_no_loginformfields');
-            if (elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.removeClassName('hide');
+            elementChangingClass = $('#users_login_no_loginformfields');
+            if (elementChangingClass.hasClass('hide')) {
+                elementChangingClass.removeClass('hide');
             }
 
             // Unhide heading used when there is no authentication method selected
-            elementChangingClass = $('users_login_h5_no_authentication_method');
-            if (elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.removeClassName('hide');
+            elementChangingClass = $('#users_login_h5_no_authentication_method');
+            if (elementChangingClass.hasClass('hide')) {
+                elementChangingClass.removeClass('hide');
             }
 
             // Hide heading used when authentication method selected
-            elementChangingClass = $('users_login_h5_authentication_method');
-            if (!elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.addClassName('hide');
+            elementChangingClass = $('#users_login_h5_authentication_method');
+            if (!elementChangingClass.hasClass('hide')) {
+                elementChangingClass.addClass('hide');
             }
         } else {
             // No error
 
             // Unhide login form
-            elementChangingClass = $('users_login_login_form');
-            if (elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.removeClassName('hide');
+            elementChangingClass = $('#users_login_login_form');
+            if (elementChangingClass.hasClass('hide')) {
+                elementChangingClass.removeClass('hide');
             }
 
             // Hide error notification
-            elementChangingClass = $('users_login_no_loginformfields');
-            if (!elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.addClassName('hide');
+            elementChangingClass = $('#users_login_no_loginformfields');
+            if (!elementChangingClass.hasClass('hide')) {
+                elementChangingClass.addClass('hide');
             }
 
             // Hide heading used when there is no authentication method selected
-            elementChangingClass = $('users_login_h5_no_authentication_method');
-            if (!elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.addClassName('hide');
+            elementChangingClass = $('#users_login_h5_no_authentication_method');
+            if (!elementChangingClass.hasClass('hide')) {
+                elementChangingClass.addClass('hide');
             }
 
             // Unhide heading used when authentication method selected
-            elementChangingClass = $('users_login_h5_authentication_method');
-            if (elementChangingClass.hasClassName('hide')) {
-                elementChangingClass.removeClassName('hide');
+            elementChangingClass = $('#users_login_h5_authentication_method');
+            if (elementChangingClass.hasClass('hide')) {
+                elementChangingClass.removeClass('hide');
             }
         }
-    },
+    };
 
-    onSubmitSelectAuthenticationMethod: function(event, formId)
+    ZikulaUsersLogin.onSubmitSelectAuthenticationMethod = function(event, formId)
     {
-        Zikula.Users.Login.showAjaxInProgress();
+        ZikulaUsersLogin.showAjaxInProgress();
 
-        var parameterObj = $(formId).serialize(true);
+        var temp = $('#' + formId).serializeArray();
+        var parameterObj = {};
+        $.each(temp, function(index, value) {
+            parameterObj[value.name] = value.value;
+        });
         parameterObj.form_type = 'loginscreen';
 
-        var r = new Zikula.Ajax.Request(
-            Zikula.Config.baseURL + 'index.php?module=Users&type=ajax&func=getLoginFormFields',
-            {
-                parameters: parameterObj,
-                onSuccess: Zikula.Users.Login.getSelectAuthenticationMethodResponse,
-                onFailure: Zikula.Users.Login.selectAuthenticationMethodResponseFailure
-            });
+        $.ajax({
+            url: Routing.generate('zikulausersmodule_ajax_getloginformfields'),
+            data: parameterObj
+        }).success(function(result) {
+            var data = result.data;
 
-        // Prevent form from sumitting itself. We just did it here.
-        event.stop();
-    },
-
-    getSelectAuthenticationMethodResponse: function(req)
-    {
-        var data = req.getData();
-
-        // Zikula.Ajax.Request calls onSuccess and onFailure if the AJAX operation times out.
-        if (data) {
-            // No timeout
-            Element.update('users_login_fields', data.content);
-            $('users_login_selected_authentication_module').setValue(data.modname);
-            $('users_login_selected_authentication_method').setValue(data.method);
+            $('#users_login_fields').html(data.content);
+            $('#users_login_selected_authentication_module').attr('value', data.modname);
+            $('#users_login_selected_authentication_method').attr('value', data.method);
 
             if (data.method !== false) {
                 // Hide the chosen authentication method in the list
-                $('users_login_select_authentication_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase() + '_submit').addClassName('authentication_select_method_selected');
+                $('#users_login_select_authentication_' + data.modname.toLowerCase() + '_' + data.method.toLowerCase() + '_submit').addClass('authentication_select_method_selected');
             }
+            ZikulaUsersLogin.showAjaxComplete((data.content == false) || (data.content == ''));
+        }).error(function(result) {
+            ZikulaUsersLogin.showAjaxComplete(true);
+            Zikula.showajaxerror(result.status + ': ' + result.statusText);
+        });
 
-            Zikula.Users.Login.showAjaxComplete((data.content == false) || (data.content == ''));
-        } else {
-            Zikula.Users.Login.showAjaxComplete(true);
-        }
-    },
+        // Prevent form from submitting itself. We just did it here.
+        event.preventDefault();
+    };
 
-    selectAuthenticationMethodResponseFailure: function(req)
-    {
-        // Zikula.Ajax.Request calls both onSuccess and onFailure if the AJAX operation times out.
-        Zikula.Users.Login.showAjaxComplete(true);
-        if (req.readyState != 0) {
-            // readyState 0: uninitialized. This is probably a timeout.
-            Zikula.showajaxerror(req.getStatus() + ': ' + req.getMessage());
-        }
-    }
-
-}
-
-// Load and execute the initialization when the DOM is ready.
-// This must be below the definition of the init function!
-//document.observe("dom:loaded", Zikula.Users.Login.init);
+    $(document).ready(function() {
+        ZikulaUsersLogin.init();
+    });
+})(jQuery);

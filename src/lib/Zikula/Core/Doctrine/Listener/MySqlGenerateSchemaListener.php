@@ -13,8 +13,8 @@
 
 namespace Zikula\Core\Doctrine\Listener;
 
-use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 use Doctrine\Common\EventManager;
+use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 
 /**
  * MySqlGenerateSchemaListener
@@ -37,5 +37,3 @@ class MySqlGenerateSchemaListener
         }
     }
 }
-
-

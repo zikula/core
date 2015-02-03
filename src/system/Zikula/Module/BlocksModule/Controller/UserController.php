@@ -19,8 +19,11 @@ use SecurityUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 
 /**
  * User controllers for the blocks module
@@ -29,40 +32,36 @@ class UserController extends \Zikula_AbstractController
 {
 
     /**
+     * @Route("")
+     *
      * The main blocks user function.
      *
      * @throws NotFoundHttpException Thrown when accessed to indicate this function isn't valid
      * @return void
      */
-    public function mainAction()
+    public function indexAction()
     {
         throw new NotFoundHttpException(__('Sorry! This module is not designed or is not currently configured to be accessed in the way you attempted.'));
     }
 
     /**
+     * @Route("/display")
+     *
      * Display a block if is active
      *
-     * @param mixed[] $args {
-     *      @type int  $bid          The id of the block
-     *      @type bool $showinactive Override active status of block
-     *                       }
+     *      int  $bid          The id of the block
+     *      bool $showinactive Override active status of block
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Throw if the user doesn't have edit permissions to the module
      */
-    public function displayAction($args)
+    public function displayAction()
     {
         // Block Id - if passed - display the block
-        // check both post and get
-        $bid = (int)$this->request->query->get('bid', null);
-        if (!$bid) {
-            $bid = (int)$this->request->request->get('bid', isset($args['bid']) ? $args['bid'] : null);
-        }
-        $showinactive = (int)$this->request->query->get('showinactive', null);
-        if (!$showinactive) {
-            $showinactive = (int)$this->request->request->get('showinactive', isset($args['showinactive']) ? $args['showinactive'] : null);
-        }
+        // check GET then POST
+        $bid = (int)$this->request->get('bid', null);
+        $showinactive = (int)$this->request->get('showinactive', null);
 
         // Security check for $showinactive only
         if ($showinactive && !SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
@@ -73,26 +72,30 @@ class UserController extends \Zikula_AbstractController
             // {block} function in template is not checking for active status, so let's check here
             $blockinfo = BlockUtil::getBlockInfo($bid);
             if ($blockinfo['active'] || $showinactive) {
-                $this->view->assign('args', $args);
                 $this->view->assign('bid', $bid);
 
-                return $this->view->fetch('blocks_user_display.tpl');
+                return new Response($this->view->fetch('User/display.tpl'));
             }
         }
 
-        return '';
+        return new Response();
     }
 
     /**
+     * @Route("/changestatus/{bid}", requirements={"bid" = "^[1-9]\d*$"})
+     * @Method("GET")
+     *
      * Change the status of a block.
+     *
+     * @param Request $request
+     * @param integer $bid
      *
      * Invert the status of a given block id (collapsed/uncollapsed).
      *
      * @return RedirectResponse
      */
-    public function changestatusAction()
+    public function changestatusAction(Request $request, $bid)
     {
-        $bid = $this->request->query->get('bid');
         $uid = UserUtil::getVar('uid');
 
         $entity = 'ZikulaBlocksModule:UserBlockEntity';
@@ -107,6 +110,6 @@ class UserController extends \Zikula_AbstractController
         $this->entityManager->flush();
 
         // now lets get back to where we came from
-        return new RedirectResponse(System::serverGetVar('HTTP_REFERER'));
+        return new RedirectResponse($request->server->get('HTTP_REFERER'));
     }
 }

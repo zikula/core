@@ -29,7 +29,7 @@ class DateUtil
      * @param string  $format          The format to use when formatting the date (optional).
      * @param boolean $translateFormat Whether the formatting should be translated or not (default = true).
      *
-     * @return datetime The datetime formatted according to the specified format.
+     * @return string The datetime formatted according to the specified format.
      */
     public static function getDatetime($time=null, $format=null, $translateFormat = true)
     {

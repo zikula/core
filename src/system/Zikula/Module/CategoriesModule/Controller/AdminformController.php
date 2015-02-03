@@ -14,7 +14,6 @@
 namespace Zikula\Module\CategoriesModule\Controller;
 
 use SecurityUtil;
-use ModUtil;
 use System;
 use CategoryUtil;
 use Zikula\Module\CategoriesModule\GenericUtil;
@@ -22,13 +21,21 @@ use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Symfony\Component\Routing\RouterInterface;
 
 /**
+ * @Route("/admin")
+ *
  * Form controller for the categories module
  */
 class AdminformController extends \Zikula_AbstractController
 {
     /**
+     * @Route("/edit")
+     * @Method("POST")
+     *
      * update category
      *
      * @return RedirectResponse
@@ -61,30 +68,31 @@ class AdminformController extends \Zikula_AbstractController
         if ($this->request->request->get('category_copy', null)) {
             $args['op'] = 'copy';
             $args['cid'] = (int)$data['id'];
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'op', $args)));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_op', $args, RouterInterface::ABSOLUTE_URL));
         }
 
         if ($this->request->request->get('category_move', null)) {
             $args['op'] = 'move';
             $args['cid'] = (int)$data['id'];
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'op', $args)));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_op', $args, RouterInterface::ABSOLUTE_URL));
         }
 
         if ($this->request->request->get('category_delete', null)) {
             $args['op'] = 'delete';
             $args['cid'] = (int)$data['id'];
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'op', $args)));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_op', $args, RouterInterface::ABSOLUTE_URL));
         }
 
         if ($this->request->request->get('category_user_edit', null)) {
             $_SESSION['category_referer'] = System::serverGetVar('HTTP_REFERER');
             $args['dr'] = (int)$data['id'];
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'edit', $args)));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_edit', $args, RouterInterface::ABSOLUTE_URL));
         }
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'edit', array('mode' => 'edit', 'cid' => (int)$data['id']))));
+            $args = array('mode' => 'edit', 'cid' => (int)$data['id']);
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_edit', $args, RouterInterface::ABSOLUTE_URL));
         }
 
         // process name
@@ -123,11 +131,14 @@ class AdminformController extends \Zikula_AbstractController
         }
 
         $msg = __f('Done! Saved the %s category.', $prevCategoryName);
-        $this->request->getSession()->getFlashbag()->add('status', $msg);
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+        $this->request->getSession()->getFlashBag()->add('status', $msg);
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
+     * @Route("/new")
+     * @Method("POST")
+     *
      * create category
      *
      * @return RedirectResponse
@@ -147,7 +158,7 @@ class AdminformController extends \Zikula_AbstractController
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'newcat')));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_newcat', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         // process name
@@ -178,11 +189,14 @@ class AdminformController extends \Zikula_AbstractController
         $this->entityManager->flush();
 
         $msg = __f('Done! Inserted the %s category.', $category['name']);
-        $this->request->getSession()->getFlashbag()->add('status', $msg);
-        $this->redirect(ModUtil::url('ZikulaCategoriesModule', 'admin', 'view') . '#top');
+        $this->request->getSession()->getFlashBag()->add('status', $msg);
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL) . '#top');
     }
 
     /**
+     * @Route("/delete")
+     * @Method("POST")
+     *
      * delete category
      *
      * @return RedirectResponse
@@ -198,7 +212,7 @@ class AdminformController extends \Zikula_AbstractController
         }
 
         if ($this->request->request->get('category_cancel', null)) {
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         $cid = $this->request->request->get('cid', null);
@@ -218,12 +232,15 @@ class AdminformController extends \Zikula_AbstractController
         }
 
         $msg = __f('Done! Deleted the %s category.', $cat['name']);
-        $this->request->getSession()->getFlashbag()->add('status', $msg);
+        $this->request->getSession()->getFlashBag()->add('status', $msg);
 
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
+     * @Route("/copy")
+     * @Method("POST")
+     *
      * copy category
      *
      * @return RedirectResponse
@@ -239,7 +256,7 @@ class AdminformController extends \Zikula_AbstractController
         }
 
         if ($this->request->request->get('category_cancel', null)) {
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         $cid = $this->request->request->get('cid', null);
@@ -250,12 +267,15 @@ class AdminformController extends \Zikula_AbstractController
         CategoryUtil::copyCategoriesByPath($cat['ipath'], $data['parent_id']);
 
         $msg = __f('Done! Copied the %s category.', $cat['name']);
-        $this->request->getSession()->getFlashbag()->add('status', $msg);
+        $this->request->getSession()->getFlashBag()->add('status', $msg);
 
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
+     * @Route("/move")
+     * @Method("POST")
+     *
      * move category
      *
      * @return RedirectResponse
@@ -271,7 +291,7 @@ class AdminformController extends \Zikula_AbstractController
         }
 
         if ($this->request->request->get('category_cancel', null)) {
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         $cid = $this->request->request->get('cid', null);
@@ -282,19 +302,21 @@ class AdminformController extends \Zikula_AbstractController
         CategoryUtil::moveCategoriesByPath($cat['ipath'], $data['parent_id']);
 
         $msg = __f('Done! Moved the %s category.', $cat['name']);
-        $this->request->getSession()->getFlashbag()->add('status', $msg);
+        $this->request->getSession()->getFlashBag()->add('status', $msg);
 
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
+     * @Route("/rebuild")
+     *
      * rebuild path structure
      *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public function rebuild_pathsAction()
+    public function rebuildPathsAction()
     {
         if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -303,12 +325,15 @@ class AdminformController extends \Zikula_AbstractController
         CategoryUtil::rebuildPaths('path', 'name');
         CategoryUtil::rebuildPaths('ipath', 'id');
 
-        $this->request->getSession()->getFlashbag()->add('status', __('Done! Rebuilt the category paths.'));
+        $this->request->getSession()->getFlashBag()->add('status', __('Done! Rebuilt the category paths.'));
 
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'view')));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
+     * @Route("/editregistry")
+     * @Method("POST")
+     *
      * edit category registry
      *
      * @return RedirectResponse
@@ -330,9 +355,9 @@ class AdminformController extends \Zikula_AbstractController
             $this->entityManager->remove($obj);
             $this->entityManager->flush();
 
-            $this->request->getSession()->getFlashbag()->add('status', __('Done! Deleted the category registry entry.'));
+            $this->request->getSession()->getFlashBag()->add('status', __('Done! Deleted the category registry entry.'));
 
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'editregistry')));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_editregistry', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         $args = array();
@@ -341,7 +366,7 @@ class AdminformController extends \Zikula_AbstractController
             // got here through selector auto-submit
             $data = $this->request->request->get('category_registry', null);
             $args['category_registry'] = $data;
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'editregistry', $args)));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_editregistry', $args, RouterInterface::ABSOLUTE_URL));
         }
 
         // get data from post
@@ -350,23 +375,23 @@ class AdminformController extends \Zikula_AbstractController
         // do some validation
         $valid = true;
         if (empty($data['modname'])) {
-            $this->request->getSession()->getFlashbag()->add('error', __('Error! You did not select a module.'));
+            $this->request->getSession()->getFlashBag()->add('error', __('Error! You did not select a module.'));
             $valid = false;
         }
         if (empty($data['entityname'])) {
-            $this->request->getSession()->getFlashbag()->add('error', __('Error! You did not select an entity.'));
+            $this->request->getSession()->getFlashBag()->add('error', __('Error! You did not select an entity.'));
             $valid = false;
         }
         if (empty($data['property'])) {
-            $this->request->getSession()->getFlashbag()->add('error', __('Error! You did not enter a property name.'));
+            $this->request->getSession()->getFlashBag()->add('error', __('Error! You did not enter a property name.'));
             $valid = false;
         }
         if ((int)$data['category_id'] == 0) {
-            $this->request->getSession()->getFlashbag()->add('error', __('Error! You did not select a category.'));
+            $this->request->getSession()->getFlashBag()->add('error', __('Error! You did not select a category.'));
             $valid = false;
         }
         if (!$valid) {
-            return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'editregistry')));
+            return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_editregistry', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         if (isset($data['id']) && (int)$data['id'] > 0) {
@@ -379,13 +404,16 @@ class AdminformController extends \Zikula_AbstractController
         $obj->merge($data);
         $this->entityManager->persist($obj);
         $this->entityManager->flush();
-        $this->request->getSession()->getFlashbag()->add('status', __('Done! Saved the category registry entry.'));
+        $this->request->getSession()->getFlashBag()->add('status', __('Done! Saved the category registry entry.'));
 
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'editregistry')));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_editregistry', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
-     * edit module perferences
+     * @Route("/preferences")
+     * @Method("POST")
+     *
+     * edit module preferences
      *
      * @return RedirectResponse
      *
@@ -419,8 +447,8 @@ class AdminformController extends \Zikula_AbstractController
         $permissionsall = (int)$this->request->get('permissionsall', 0);
         $this->setVar('permissionsall', $permissionsall);
 
-        $this->request->getSession()->getFlashbag()->add('status', __('Done! Saved module configuration.'));
+        $this->request->getSession()->getFlashBag()->add('status', __('Done! Saved module configuration.'));
 
-        return new RedirectResponse(System::normalizeUrl(ModUtil::url($this->name, 'admin', 'preferences')));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_preferences', array(), RouterInterface::ABSOLUTE_URL));
     }
 }

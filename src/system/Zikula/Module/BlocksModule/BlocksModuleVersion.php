@@ -33,7 +33,7 @@ class BlocksModuleVersion extends \Zikula_AbstractVersion
         $meta['displayname'] = $this->__('Blocks');
         $meta['description'] = $this->__('Block administration module.');
         $meta['url'] = $this->__('blocks');
-        $meta['version'] = '3.8.2';
+        $meta['version'] = '3.9.1';
         $meta['core_min'] = '1.4.0';
         $meta['capabilities'] = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
         $meta['securityschema'] = array('ZikulaBlocksModule::' => 'Block key:Block title:Block ID',

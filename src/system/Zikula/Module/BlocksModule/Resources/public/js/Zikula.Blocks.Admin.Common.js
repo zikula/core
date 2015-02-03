@@ -7,16 +7,18 @@
     $(document).ready(function() {
         $('.z-admin-content .label[data-bid]').click( function(e) {
             e.preventDefault();
-            var a = $(this)
+            var a = $(this);
+            var bid = a.data('bid');
+            a.after(' <i id="spin'+bid+'" class="fa fa-cog fa-spin"></i>');
             $.ajax({
-                url: 'index.php?module=ZikulaBlocksModule&type=ajax&func=toggleblock',
+                url: Routing.generate('zikulablocksmodule_ajax_toggleblock'),
                 data: {
-                    bid: a.data('bid')
+                    bid: bid
                 },
                 success: function(response) {
+                    $('#spin'+bid).remove();
                     // toggle label
                     a.parent().find('a').toggleClass('hide');
-
                 }
             });
         });
