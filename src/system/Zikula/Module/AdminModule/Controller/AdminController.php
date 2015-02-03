@@ -762,10 +762,10 @@ class AdminController extends \Zikula_AbstractController
             }
 
             foreach ($newVersionInfo as $version) {
-                if (!isset($version['prerelease'] || $version['prerelease']) {
+                if (!array_key_exists('prerelease', $version) || $version['prerelease']) {
                     continue;
                 }
-                if (isset($version['tag_name'])) {
+                if (array_key_exists('tag_name', $version)) {
                     if (version_compare($version['tag_name'], $onlineVersion) == 1) {
                         $onlineVersion = $version['tag_name'];
                     }
