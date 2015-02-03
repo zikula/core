@@ -35,6 +35,9 @@ class Blocks_Installer extends Zikula_AbstractInstaller
             return false;
         }
 
+        // register ui_hooks for HTML block editing
+        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+                
         // Set a default value for a module variable
         $this->setVar('collapseable', 0);
 

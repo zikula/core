@@ -764,11 +764,13 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 * Widths styles
 ******************************************************************************/
 
+.z-w100 { width: 100%; }
 .z-w90 { width: 90%; }
 .z-w85 { width: 85%; }
 .z-w80 { width: 80%; }
 .z-w75 { width: 75%; }
 .z-w70 { width: 70%; }
+.z-w68 { width: 68%; }
 .z-w66 { width: 66%; }
 .z-w60 { width: 60%; }
 .z-w50 { width: 50%; }
@@ -777,6 +779,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 .z-w40 { width: 40%; }
 .z-w35 { width: 35%; }
 .z-w33 { width: 33%; }
+.z-w32 { width: 32%; }
 .z-w30 { width: 30%; }
 .z-w25 { width: 25%; }
 .z-w22 { width: 22%; }

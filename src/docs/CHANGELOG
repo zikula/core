@@ -1,7 +1,30 @@
+CHANGELOG - ZIKULA 1.3.10
+-------------------------
+
+- Added missing hook area registration for HTML blocks
+- Show registration errors in current language
+- Improved language detection when using short urls
+- Fixed error messages with new module that is not compatible (#1641)
+
+CHANGELOG - ZIKULA 1.3.9
+------------------------
+
+- Added output sanitizing for authentication method module in login form error message
+
 CHANGELOG - ZIKULA 1.3.8
 ------------------------
 
-- Updated Smarty to v2.6.28
+- Enabled transactions (#796, #1729)
+- Updated Smarty to v2.6.28 (#1613)
+- Accept "0" as a non-empty value in ValidationUtil (#1627)
+- Added csrf token to user export function (#1630)
+- Fixed php strict message in admin panel (#1632)
+- Fixed spelling error in Imagine plugin (#1646)
+- Fixed conflict between Bootstrap and Prototype (#1723)
+- Added display hook area for html blocks (required for using Scribite) (#1726, #1743)
+- Fixed invalid output of useravatar plugin (#1734)
+- Fixed DBUtil regression bug introduced in 1.3.7 (#1810, #1815)
+- Added output sanitizing for authentication module/method in login form
 
 CHANGELOG - ZIKULA 1.3.7
 ------------------------
