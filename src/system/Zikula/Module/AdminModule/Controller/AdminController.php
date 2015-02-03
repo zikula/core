@@ -762,12 +762,20 @@ class AdminController extends \Zikula_AbstractController
             }
 
             foreach ($newVersionInfo as $version) {
-                if ($version['prerelease']) {
+                if (!isset($version['prerelease'] || $version['prerelease']) {
                     continue;
                 }
-                $onlineVersion = $version['tag_name'];
-                break;
+                if (isset($version['tag_name'])) {
+                    if (version_compare($version['tag_name'], $onlineVersion) == 1) {
+                        $onlineVersion = $version['tag_name'];
+                    }
+                }
             }
+
+            if ($onlineVersion == '') {
+                return array('update_show' => false);
+            }
+
             System::setVar('updateversion', $onlineVersion);
             System::setVar('updatelastchecked', (int)time());
         }
@@ -794,7 +802,7 @@ class AdminController extends \Zikula_AbstractController
         $data['devmode'] = $this->getContainer()->get('kernel')->getEnvironment() === 'dev';
 
         if ($data['devmode'] == true) {
-            $data['cssjscombine']                = $modvars['cssjscombine'];
+            $data['cssjscombine'] = $modvars['cssjscombine'];
 
             if ($modvars['render_compile_check']) {
                 $data['render']['compile_check'] = array('state' => $modvars['render_compile_check'],
