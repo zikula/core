@@ -55,6 +55,7 @@ class InitStage implements StageInterface, InjectContainerInterface
     private function init()
     {
         $conn = $this->container->get('doctrine.dbal.default_connection');
+        /** @var \ZikulaKernel $kernel */
         $kernel = $this->container->get('kernel');
 
         $res = $conn->executeQuery("SELECT name FROM modules WHERE name = 'ZikulaExtensionsModule'");
@@ -100,6 +101,16 @@ class InitStage implements StageInterface, InjectContainerInterface
 
         // update default theme name
         $conn->executeQuery("UPDATE module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
+
+        // confirm custom module urls are valid with new routes, reset if not
+        $modules = $conn->fetchAll("SELECT * FROM modules");
+        foreach ($modules as $module) {
+            $path = realpath($kernel->getRootDir() . '/../' . $module['url']);
+            if (is_dir($path)) {
+                $meta = \Zikula\Module\ExtensionsModule\Util::getVersionMeta($module['name']);
+                $conn->executeQuery("UPDATE modules SET url = '$meta[url]' WHERE id = $modules[id]");
+            }
+        }
 
         // install Bundles table
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
