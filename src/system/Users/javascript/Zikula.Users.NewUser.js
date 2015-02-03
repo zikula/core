@@ -172,10 +172,33 @@ Zikula.Users.NewUser = {
     callGetRegistrationErrors: function()
     {
         Zikula.Users.NewUser.showAjaxInProgress();
-        
-        var pars = $(Zikula.Users.NewUser.formId).serialize(true);
+
+        var getParams, languageCode, requestUrl, pars;
+
+        getParams = location.search.substr(1);
+        if (getParams != '') {
+            // normal query string
+            getParams.split("&").forEach(function(item) {
+                if (item.split('=')[0] == 'lang') {
+                    languageCode = item.split('=')[1];
+                }
+            });
+        } else {
+            // legacy short urls
+            getParams = window.location.href.replace('http://', '').replace('https://', '').split('/');
+            if (getParams[1].length == 2) {
+                languageCode = getParams[1];
+            }
+        }
+
+        requestUrl = Zikula.Config.baseURL + 'ajax.php?module=Users&func=getRegistrationErrors';
+        if (typeof languageCode != 'undefined') {
+            requestUrl += '&lang=' + languageCode;
+        }
+
+        pars = $(Zikula.Users.NewUser.formId).serialize(true);
         new Zikula.Ajax.Request(
-            Zikula.Config.baseURL + "ajax.php?module=Users&func=getRegistrationErrors",
+            requestUrl,
             {
                 parameters: pars,
                 onComplete: Zikula.Users.NewUser.getRegistrationErrorsResponse

@@ -59,6 +59,9 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
     if (isset($params['doctrine2']) && (boolean)$params['doctrine2'] == true) {
         if (count($params['categories']) > 0) {
             foreach ($params['categories'] as $category) {
+                if (!is_object($category) || !is_object($category->getCategory())) {
+                    continue;
+                }
                 $name = $category->getCategory()->getName();
                 $display_name = $category->getCategory()->getDisplayName();
 
