@@ -751,9 +751,22 @@ class AdminController extends \Zikula_AbstractController
             // dont get an update because TTL not expired yet
             $onlineVersion = $updateversion;
         } else {
-            $onlineVersion = trim($this->_zcurl("https://update.zikula.org/cgi-bin/engine/checkcoreversion13.cgi"));
-            if ($onlineVersion === false) {
+            $onlineVersion = '';
+            $newVersionInfo = trim($this->_zcurl('https://api.github.com/repos/zikula/core/releases'));
+            if ($newVersionInfo === '') {
                 return array('update_show' => false);
+            }
+            $newVersionInfo = json_decode($newVersionInfo, true);
+            if (!is_array($newVersionInfo)) {
+                return array('update_show' => false);
+            }
+
+            foreach ($newVersionInfo as $version) {
+                if ($version['prerelease']) {
+                    continue;
+                }
+                $onlineVersion = $version['tag_name'];
+                break;
             }
             System::setVar('updateversion', $onlineVersion);
             System::setVar('updatelastchecked', (int)time());
@@ -762,7 +775,7 @@ class AdminController extends \Zikula_AbstractController
         // if 1 then there is a later version available
         if (version_compare($onlineVersion, Zikula_Core::VERSION_NUM) == 1) {
             return array('update_show' => true,
-                    'update_version' => $onlineVersion);
+                         'update_version' => $onlineVersion);
         } else {
             return array('update_show' => false);
         }
