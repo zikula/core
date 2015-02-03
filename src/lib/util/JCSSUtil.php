@@ -135,6 +135,7 @@ class JCSSUtil
         }
         $stylesheets = array_unique(array_values($stylesheets));
 
+
         $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
         PageUtil::addVar('header', $iehack);
 
@@ -334,9 +335,18 @@ class JCSSUtil
     public static function scriptsMap()
     {
         $scripts = array(
+                'prototype' => array(
+                        'path' => 'javascript/ajax/proto_scriptaculous.combined.min.js',
+                        'require' => array('zikula'),
+                        'aliases' => array('prototype', 'scriptaculous'),
+                ),
                 'jquery' => array(
                         'path' => 'javascript/jquery/jquery-1.8.3.min.js',
                         'require' => array('noconflict'),
+                ),
+                'jquery-1.11.2' => array(
+                        'path' => 'javascript/jquery/jquery-1.11.2.min.js',
+                        'require' => array('jquery-migrate', 'noconflict'),
                 ),
                 'jquery-ui' => array(
                         'path' => 'javascript/jquery-ui/jquery-ui-1.9.1.custom.min.js',
@@ -345,11 +355,9 @@ class JCSSUtil
                 'noconflict' => array(
                         'path' => 'javascript/jquery/noconflict.js',
                 ),
-                'prototype' => array(
-                        'path' => 'javascript/ajax/proto_scriptaculous.combined.min.js',
-                        'require' => array('zikula'),
-                        'aliases' => array('prototype', 'scriptaculous'),
-                ),
+				'jquery-migrate' => array(
+					'path' => 'javascript/jquery/jquery-migrate-1.2.1.min.js',
+				),
                 'livepipe' => array(
                         'path' => 'javascript/livepipe/livepipe.combined.min.js',
                         'require' => array('prototype'),
@@ -465,6 +473,14 @@ class JCSSUtil
                             'path' => 'javascript/jquery/jquery-1.8.3.js',
                             'require' => array('noconflict'),
                     ),
+                    'jquery-1.11.2' => array(
+                            'path' => 'javascript/jquery/jquery-1.11.2.js',
+                            'require' => array('jquery-migrate', 'noconflict'),
+                    ),
+                    'jquery-migrate' => array(
+                            'path' => 'javascript/jquery/jquery-migrate-1.2.1.js',
+                            'require' => array('noconflict'),
+                    ),
                     'noconflict' => array(
                             'path' => 'javascript/jquery/noconflict.js',
                     ),
@@ -533,6 +549,7 @@ class JCSSUtil
         }
 
         $contents = implode('', $contents);
+
 
         // optional minify
         if ($themevars['cssjsminify']) {
