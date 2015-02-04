@@ -5,6 +5,8 @@ CHANGELOG - ZIKULA 1.3.10
 - Show registration errors in current language
 - Improved language detection when using short urls
 - Fixed error messages with new module that is not compatible (#1641)
+- Added optional loading of newer jQuery 1.11.2 with jquery-migrate (#2223)
+- Changed loading via pagevar to make sure prototype is always loaded before jQuery (#2170)
 
 CHANGELOG - ZIKULA 1.3.9
 ------------------------
