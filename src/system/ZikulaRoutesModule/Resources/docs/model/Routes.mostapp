@@ -42,7 +42,7 @@ application Routes {
 			Resources/views/Route/display.tpl,
 			Resources/views/Route/edit.tpl,
 			Util/ControllerUtil.php,
-			workflows/function.standard_permissioncheck.php
+			workflows/function.none_permissioncheck.php
 		"
 	}
 	entities {
