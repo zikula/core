@@ -363,6 +363,11 @@ class JCSSUtil
     public static function scriptsMap()
     {
         $scripts = array(
+            'prototype'          => array(
+                'path'    => 'javascript/ajax/proto_scriptaculous.combined.min.js',
+                'require' => array('zikula'),
+                'aliases' => array('prototype', 'scriptaculous'),
+            ),
             'jquery'             => array(
                 'path'    => 'web/jquery/jquery.min.js',
                 'require' => array('noconflict', 'jquery-migrate'),
@@ -376,11 +381,6 @@ class JCSSUtil
             ),
             'jquery-migrate'     => array(
                 'path' => 'web/jquery/jquery-migrate.min.js',
-            ),
-            'prototype'          => array(
-                'path'    => 'javascript/ajax/proto_scriptaculous.combined.min.js',
-                'require' => array('zikula'),
-                'aliases' => array('prototype', 'scriptaculous'),
             ),
             'livepipe'           => array(
                 'path'    => 'javascript/livepipe/livepipe.combined.min.js',
