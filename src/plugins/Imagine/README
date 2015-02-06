@@ -5,6 +5,8 @@ Imagine plugin usage
 Imagine plugin implements [Imagine image manipulation library](https://github.com/avalanche123/Imagine)
 and offers some standardised methods for managing thumbnails.
 
+There is one update in the Imagine plugin itself, see https://github.com/avalanche123/Imagine/pull/407
+
 # How it works
 
 The main idea of this plugin is to move the thumbnail generation process to the presentation layer.
@@ -19,8 +21,8 @@ Presets are described in separate section.
 
 The process of generating thumbnails as follows:
 - Request for image thumbnail occurs
-- Plugin checks if there is already a thumbnail for the image with given parameters
-- If there already exists a thumbnail - plugin returns the path to it
+- Plugin checks if there is already a thumbnail for the image with given parameters (width and height count here)
+- If there already exists a thumbnail - the plugin returns the path to it
 - If the thumbnail does not exist or the existing thumbnail expired
   (source image was modified after thumbnail was generated) - generate new thumbnail
 
@@ -49,20 +51,35 @@ where
 
 ## Thumbnail generation in templates
 
-To generate thumbnails in templates, use "thumb" plugin. It may return thumbnail path
- or full image tag ("img") for generated thumbnail.
+To generate thumbnails in templates, use "thumb" plugin. It may return the thumbnail path
+or a full image tag ("img") with all parameters for the generated thumbnail.
 
 Thumbnail options can be passed inline or via preset/manager object.
 
 ### Inline options
 
     {thumb image='path/to/image.png' width=100 height=100 mode='inset' extension='png'}
+	
+You specify a width and height or only a width or height, where the other dimension will be calculated from the image ratio.
+ * width can be a pixel width, specified as 'auto' or omitted in which case auto will be used
+ * height can be a pixel width, specified as 'auto' or omitted in which case auto will be used
+ * mode can be inset or outbound or omitted in which case the default of inset will be used
+   inset will scale the image to fit while keeping aspect ratio
+   outbound will scale to exact dimensions and will crop certain parts of the image
+   in outbound mode choosing width or height to auto will give inset behaviour
+ * extension can be jpg, png, gif or omitted to keep the original file type
+ * jpeg_quality specifies the jpeg quality from 0-100[%], were 100 is best quality
+ * png_compression_level specifies the png file compression from 0-9, where 0 is no compression
+
+Default values inside Imagine itself are 75 for Jpeg quality, 7 for Png compression level and 72 dpi for x/y-resolution.
 
 ### Options passed using preset
 
     {thumb image='path/to/image.png' objectid='123' preset=$preset}
-
-In this case "$preset" have to be initiated in module controller and passed to template.
+	
+In this case "$preset" has to be initiated in the module controller and passed to the template.
+"$preset" refers to the name of the preset set in the Imagine system plugin settings.
+In a Zikula Imagine preset you set: width, height, mode and the extension.
 
 ### Use custom instance of SystemPlugin_Imagine_Manager
 
@@ -74,7 +91,7 @@ In this case "$manager" have to be initiated in module controller and passed to 
 
     {thumb image='path/to/image.png' objectid='123' preset=$preset tag=true __img_alt='Alt text, gettext prefix may be used' img_class='image-class'}
 
-This will generate:
+This will generate (width and height from the preset):
 
     <img src="thumb/path" widht="100" height="100" alt="Alt text, gettext prefix may be used" class="image-class" />
 
@@ -221,8 +238,10 @@ Both types of presets are handled by SystemPlugin_Imagine_Preset class.
 Preset allows to define:
 - width - thumbnail width in pixels
 - height - thumbnail height in pixels
-- mode - "inset" or "outset"
+- mode - "inset" or "outbound"
 - extension - file extension for thumbnails (jpg, png, gif; null for original file type)
+- jpeg_quality - value between 0-100%, where 100% is best quality (default 75)
+- png_compression_level - value between 0-9, where 0 is no compression (default 7)
 
 There are also special options  which allows to store in preset additional settings for thumbnail manager:
 - __module - module name for preset
@@ -240,7 +259,7 @@ There are also special options  which allows to store in preset additional setti
     $data = array(
         'width' => 100,
         'heigth' => 100,
-        'mode' => 'outset',
+        'mode' => 'outbound',
         '__module' => 'Foo',
         '__transformation' => $your_custom_transformations
     );

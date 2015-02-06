@@ -35,7 +35,7 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
     {
         $modVars = $this->plugin->getVars();
         $options = array(
-            'mode' => array('inset', 'outset'),
+            'mode' => array('inset', 'outbound'),
             'extension' => array('jpg', 'png', 'gif'),
         );
 
@@ -72,6 +72,9 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
         $thumb_auto_cleanup = (bool)$this->request->getPost()->get('thumb_auto_cleanup');
         $this->plugin->setVar('thumb_auto_cleanup', $thumb_auto_cleanup);
 
+        $thumb_auto_cleanup_period = $this->request->getPost()->get('thumb_auto_cleanup_period');
+        $this->plugin->setVar('thumb_auto_cleanup_period', $thumb_auto_cleanup_period);
+
         $presets = $this->request->getPost()->get('presets', array());
 
         $presetsToSave = array();
@@ -84,7 +87,7 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
 
         $this->plugin->setVar('presets', $presetsToSave);
 
-        LogUtil::registerStatus($this->__('Done! Saved plugin configuration.'));
+        $this->registerStatus($this->__('Done! Saved plugin configuration.'));
 
         $this->redirect(ModUtil::url('Extensions', 'adminplugin', 'dispatch', array(
             '_plugin' => 'Imagine',
@@ -97,9 +100,15 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
      */
     public function cleanup()
     {
+		// check to see all thumbnails should be removed (force=true), or only when the source image is removed
+        $force = $this->request->query->filter('force', false, FILTER_VALIDATE_BOOLEAN);
         $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
-        $manager->cleanupThumbs();
-        $this->registerStatus($this->__('Done! Imagine thumbnails were cleanup!'));
+        $manager->cleanupThumbs($force);
+		if ($force) {
+			$this->registerStatus($this->__('Done! All Imagine thumbnails are removed and will be re-generated when requested again!'));
+		} else {
+			$this->registerStatus($this->__('Done! Imagine thumbnails are cleaned up of source images that were removed!'));
+		}
 
         $this->redirect(ModUtil::url('Extensions', 'adminplugin', 'dispatch', array(
             '_plugin' => 'Imagine',

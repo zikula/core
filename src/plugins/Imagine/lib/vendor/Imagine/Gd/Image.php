@@ -11,18 +11,27 @@
 
 namespace Imagine\Gd;
 
+use Imagine\Image\AbstractImage;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Box;
 use Imagine\Image\BoxInterface;
-use Imagine\Image\Color;
+use Imagine\Image\Metadata\MetadataBag;
+use Imagine\Image\Palette\Color\ColorInterface;
 use Imagine\Image\Fill\FillInterface;
 use Imagine\Image\Point;
 use Imagine\Image\PointInterface;
+use Imagine\Image\Palette\PaletteInterface;
+use Imagine\Image\Palette\Color\RGB as RGBColor;
+use Imagine\Image\ProfileInterface;
+use Imagine\Image\Palette\RGB;
 use Imagine\Exception\InvalidArgumentException;
 use Imagine\Exception\OutOfBoundsException;
 use Imagine\Exception\RuntimeException;
 
-final class Image implements ImageInterface
+/**
+ * Image implementation using the GD library
+ */
+final class Image extends AbstractImage
 {
     /**
      * @var resource
@@ -30,13 +39,26 @@ final class Image implements ImageInterface
     private $resource;
 
     /**
-     * Constructs a new Image instance using the result of
-     * imagecreatetruecolor()
-     *
-     * @param resource $resource
+     * @var Layers|null
      */
-    public function __construct($resource)
+    private $layers;
+
+    /**
+     * @var PaletteInterface
+     */
+    private $palette;
+
+    /**
+     * Constructs a new Image instance
+     *
+     * @param resource         $resource
+     * @param PaletteInterface $palette
+     * @param MetadataBag      $metadata
+     */
+    public function __construct($resource, PaletteInterface $palette, MetadataBag $metadata)
     {
+        $this->metadata = $metadata;
+        $this->palette = $palette;
         $this->resource = $resource;
     }
 
@@ -45,37 +67,47 @@ final class Image implements ImageInterface
      */
     public function __destruct()
     {
-        imagedestroy($this->resource);
+        if (is_resource($this->resource) && 'gd' === get_resource_type($this->resource)) {
+            imagedestroy($this->resource);
+        }
+    }
+
+    /**
+     * Returns Gd resource
+     *
+     * @return resource
+     */
+    public function getGdResource()
+    {
+        return $this->resource;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
     final public function copy()
     {
         $size = $this->getSize();
-
         $copy = $this->createImage($size, 'copy');
 
-        if (false === imagecopy($copy, $this->resource, 0, 0, 0,
-            0, $size->getWidth(), $size->getHeight())) {
+        if (false === imagecopy($copy, $this->resource, 0, 0, 0, 0, $size->getWidth(), $size->getHeight())) {
             throw new RuntimeException('Image copy operation failed');
         }
 
-        return new Image($copy);
+        return new Image($copy, $this->palette, $this->metadata);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
     final public function crop(PointInterface $start, BoxInterface $size)
     {
         if (!$start->in($this->getSize())) {
-            throw new OutOfBoundsException(
-                'Crop coordinates must start at minimum 0, 0 position from '.
-                'top  left corner, crop height and width must be positive '.
-                'integers and must not exceed the current image borders'
-            );
+            throw new OutOfBoundsException('Crop coordinates must start at minimum 0, 0 position from top  left corner, crop height and width must be positive integers and must not exceed the current image borders');
         }
 
         $width  = $size->getWidth();
@@ -83,8 +115,7 @@ final class Image implements ImageInterface
 
         $dest = $this->createImage($size, 'crop');
 
-        if (false === imagecopy($dest, $this->resource, 0, 0,
-            $start->getX(), $start->getY(), $width, $height)) {
+        if (false === imagecopy($dest, $this->resource, 0, 0, $start->getX(), $start->getY(), $width, $height)) {
             throw new RuntimeException('Image crop operation failed');
         }
 
@@ -97,29 +128,24 @@ final class Image implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
     final public function paste(ImageInterface $image, PointInterface $start)
     {
         if (!$image instanceof self) {
-            throw new InvalidArgumentException(sprintf(
-                'Gd\Image can only paste() Gd\Image instances, %s given',
-                get_class($image)
-            ));
+            throw new InvalidArgumentException(sprintf('Gd\Image can only paste() Gd\Image instances, %s given', get_class($image)));
         }
 
         $size = $image->getSize();
         if (!$this->getSize()->contains($size, $start)) {
-            throw new OutOfBoundsException(
-                'Cannot paste image of the given size at the specified '.
-                'position, as it moves outside of the current image\'s box'
-            );
+            throw new OutOfBoundsException('Cannot paste image of the given size at the specified position, as it moves outside of the current image\'s box');
         }
 
         imagealphablending($this->resource, true);
         imagealphablending($image->resource, true);
 
-        if (false === imagecopy($this->resource, $image->resource, $start->getX(), $start->getY(),
-            0, 0, $size->getWidth(), $size->getHeight())) {
+        if (false === imagecopy($this->resource, $image->resource, $start->getX(), $start->getY(), 0, 0, $size->getWidth(), $size->getHeight())) {
             throw new RuntimeException('Image paste operation failed');
         }
 
@@ -131,9 +157,15 @@ final class Image implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
-    final public function resize(BoxInterface $size)
+    final public function resize(BoxInterface $size, $filter = ImageInterface::FILTER_UNDEFINED)
     {
+        if (ImageInterface::FILTER_UNDEFINED !== $filter) {
+            throw new InvalidArgumentException('Unsupported filter type, GD only supports ImageInterface::FILTER_UNDEFINED filter');
+        }
+
         $width  = $size->getWidth();
         $height = $size->getHeight();
 
@@ -142,9 +174,7 @@ final class Image implements ImageInterface
         imagealphablending($this->resource, true);
         imagealphablending($dest, true);
 
-        if (false === imagecopyresampled($dest, $this->resource, 0, 0, 0, 0,
-            $width, $height, imagesx($this->resource), imagesy($this->resource)
-        )) {
+        if (false === imagecopyresampled($dest, $this->resource, 0, 0, 0, 0, $width, $height, imagesx($this->resource), imagesy($this->resource))) {
             throw new RuntimeException('Image resize operation failed');
         }
 
@@ -160,11 +190,12 @@ final class Image implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
-    final public function rotate($angle, Color $background = null)
+    final public function rotate($angle, ColorInterface $background = null)
     {
-        $color = $background ? $background : new Color('fff');
-
+        $color = $background ? $background : $this->palette->color('fff');
         $resource = imagerotate($this->resource, -1 * $angle, $this->getColor($color));
 
         if (false === $resource) {
@@ -172,7 +203,6 @@ final class Image implements ImageInterface
         }
 
         imagedestroy($this->resource);
-
         $this->resource = $resource;
 
         return $this;
@@ -180,12 +210,25 @@ final class Image implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
-    final public function save($path, array $options = array())
+    final public function save($path = null, array $options = array())
     {
-        $format = isset($options['format'])
-            ? $options['format']
-            : pathinfo($path, \PATHINFO_EXTENSION);
+        $path = null === $path ? (isset($this->metadata['filepath']) ? $this->metadata['filepath'] : $path) : $path;
+
+        if (null === $path) {
+            throw new RuntimeException('You can omit save path only if image has been open from a file');
+        }
+
+        if (isset($options['format'])) {
+            $format = $options['format'];
+        } elseif ('' !== $extension = pathinfo($path, \PATHINFO_EXTENSION)) {
+            $format = $extension;
+        } else {
+            $originalPath = isset($this->metadata['filepath']) ? $this->metadata['filepath'] : null;
+            $format = pathinfo($originalPath, \PATHINFO_EXTENSION);
+        }
 
         $this->saveOrOutput($format, $options, $path);
 
@@ -194,6 +237,8 @@ final class Image implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
     public function show($format, array $options = array())
     {
@@ -225,6 +270,8 @@ final class Image implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
     final public function flipHorizontally()
     {
@@ -234,8 +281,7 @@ final class Image implements ImageInterface
         $dest   = $this->createImage($size, 'flip');
 
         for ($i = 0; $i < $width; $i++) {
-            if (false === imagecopy($dest, $this->resource, $i, 0,
-                ($width - 1) - $i, 0, 1, $height)) {
+            if (false === imagecopy($dest, $this->resource, $i, 0, ($width - 1) - $i, 0, 1, $height)) {
                 throw new RuntimeException('Horizontal flip operation failed');
             }
         }
@@ -249,6 +295,8 @@ final class Image implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
     final public function flipVertically()
     {
@@ -258,8 +306,7 @@ final class Image implements ImageInterface
         $dest   = $this->createImage($size, 'flip');
 
         for ($i = 0; $i < $height; $i++) {
-            if (false === imagecopy($dest, $this->resource, 0, $i,
-                0, ($height - 1) - $i, $width, 1)) {
+            if (false === imagecopy($dest, $this->resource, 0, $i, 0, ($height - 1) - $i, $width, 1)) {
                 throw new RuntimeException('Vertical flip operation failed');
             }
         }
@@ -273,53 +320,13 @@ final class Image implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
     final public function strip()
     {
-        /**
-         * GD strips profiles and comment, so there's nothing to do here
-         */
-
+        // GD strips profiles and comment, so there's nothing to do here
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function thumbnail(BoxInterface $size, $mode = ImageInterface::THUMBNAIL_INSET)
-    {
-        if ($mode !== ImageInterface::THUMBNAIL_INSET &&
-            $mode !== ImageInterface::THUMBNAIL_OUTBOUND) {
-            throw new InvalidArgumentException('Invalid mode specified');
-        }
-
-        $width  = $size->getWidth();
-        $height = $size->getHeight();
-
-        $ratios = array(
-            $width / imagesx($this->resource),
-            $height / imagesy($this->resource)
-        );
-
-        $thumbnail = $this->copy();
-
-        if ($mode === ImageInterface::THUMBNAIL_INSET) {
-            $ratio = min($ratios);
-        } else {
-            $ratio = max($ratios);
-        }
-
-        $thumbnailSize = $thumbnail->getSize()->scale($ratio);
-        $thumbnail->resize($thumbnailSize);
-
-        if ($mode === ImageInterface::THUMBNAIL_OUTBOUND) {
-            $thumbnail->crop(new Point(
-                max(0, round(($thumbnailSize->getWidth() - $width) / 2)),
-                max(0, round(($thumbnailSize->getHeight() - $height) / 2))
-            ), $size);
-        }
-
-        return $thumbnail;
     }
 
     /**
@@ -348,6 +355,8 @@ final class Image implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
     public function applyMask(ImageInterface $mask)
     {
@@ -359,11 +368,7 @@ final class Image implements ImageInterface
         $maskSize = $mask->getSize();
 
         if ($size != $maskSize) {
-            throw new InvalidArgumentException(sprintf(
-                'The given mask doesn\'t match current image\'s size, Current '.
-                'mask\'s dimensions are %s, while image\'s dimensions are %s',
-                $maskSize, $size
-            ));
+            throw new InvalidArgumentException(sprintf('The given mask doesn\'t match current image\'s size, Current mask\'s dimensions are %s, while image\'s dimensions are %s', $maskSize, $size));
         }
 
         for ($x = 0, $width = $size->getWidth(); $x < $width; $x++) {
@@ -373,11 +378,7 @@ final class Image implements ImageInterface
                 $maskColor = $mask->getColorAt($position);
                 $round     = (int) round(max($color->getAlpha(), (100 - $color->getAlpha()) * $maskColor->getRed() / 255));
 
-                if (false === imagesetpixel(
-                    $this->resource,
-                    $x, $y,
-                    $this->getColor($color->dissolve($round - $color->getAlpha()))
-                )) {
+                if (false === imagesetpixel($this->resource, $x, $y, $this->getColor($color->dissolve($round - $color->getAlpha())))) {
                     throw new RuntimeException('Apply mask operation failed');
                 }
             }
@@ -388,6 +389,8 @@ final class Image implements ImageInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return ImageInterface
      */
     public function fill(FillInterface $fill)
     {
@@ -395,11 +398,7 @@ final class Image implements ImageInterface
 
         for ($x = 0, $width = $size->getWidth(); $x < $width; $x++) {
             for ($y = 0, $height = $size->getHeight(); $y < $height; $y++) {
-                if (false === imagesetpixel(
-                    $this->resource,
-                    $x, $y,
-                    $this->getColor($fill->getColor(new Point($x, $y))))
-                ) {
+                if (false === imagesetpixel($this->resource, $x, $y, $this->getColor($fill->getColor(new Point($x, $y))))) {
                     throw new RuntimeException('Fill operation failed');
                 }
             }
@@ -445,21 +444,76 @@ final class Image implements ImageInterface
     public function getColorAt(PointInterface $point)
     {
         if (!$point->in($this->getSize())) {
-            throw new RuntimeException(sprintf(
-                'Error getting color at point [%s,%s]. The point must be inside the image of size [%s,%s]',
-                $point->getX(), $point->getY(), $this->getSize()->getWidth(), $this->getSize()->getHeight()
-            ));
+            throw new RuntimeException(sprintf('Error getting color at point [%s,%s]. The point must be inside the image of size [%s,%s]', $point->getX(), $point->getY(), $this->getSize()->getWidth(), $this->getSize()->getHeight()));
         }
+
         $index = imagecolorat($this->resource, $point->getX(), $point->getY());
         $info  = imagecolorsforindex($this->resource, $index);
 
-        return new Color(array(
-                $info['red'],
-                $info['green'],
-                $info['blue'],
-            ),
-            (int) round($info['alpha'] / 127 * 100)
+        return $this->palette->color(array($info['red'], $info['green'], $info['blue']), max(min(100 - (int) round($info['alpha'] / 127 * 100), 100), 0));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function layers()
+    {
+        if (null === $this->layers) {
+            $this->layers = new Layers($this, $this->palette, $this->resource);
+        }
+
+        return $this->layers;
+    }
+
+    /**
+     * {@inheritdoc}
+     **/
+    public function interlace($scheme)
+    {
+        static $supportedInterlaceSchemes = array(
+            ImageInterface::INTERLACE_NONE      => 0,
+            ImageInterface::INTERLACE_LINE      => 1,
+            ImageInterface::INTERLACE_PLANE     => 1,
+            ImageInterface::INTERLACE_PARTITION => 1,
         );
+
+        if (!array_key_exists($scheme, $supportedInterlaceSchemes)) {
+            throw new InvalidArgumentException('Unsupported interlace type');
+        }
+
+        imageinterlace($this->resource, $supportedInterlaceSchemes[$scheme]);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function palette()
+    {
+        return $this->palette;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function profile(ProfileInterface $profile)
+    {
+        throw new RuntimeException('GD driver does not support color profiles');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function usePalette(PaletteInterface $palette)
+    {
+        if (!$palette instanceof RGB) {
+            throw new RuntimeException('GD driver only supports RGB palette');
+        }
+
+        $this->palette = $palette;
+
+        return $this;
     }
 
     /**
@@ -476,35 +530,48 @@ final class Image implements ImageInterface
      */
     private function saveOrOutput($format, array $options, $filename = null)
     {
+        $format = $this->normalizeFormat($format);
 
         if (!$this->supported($format)) {
-            throw new InvalidArgumentException(sprintf(
-                'Saving image in "%s" format is not supported, please use one '.
-                'of the following extension: "%s"', $format,
-                implode('", "', $this->supported())
-            ));
+            throw new InvalidArgumentException(sprintf('Saving image in "%s" format is not supported, please use one of the following extensions: "%s"', $format, implode('", "', $this->supported())));
         }
 
         $save = 'image'.$format;
         $args = array(&$this->resource, $filename);
 
-        if (($format === 'jpeg' || $format === 'png') &&
-            isset($options['quality'])) {
-            // Png compression quality is 0-9, so here we get the value from percent.
-            // Beaware that compression level for png works the other way around.
-            // For PNG 0 means no compression and 9 means highest compression level.
-            if ($format === 'png') {
-                $options['quality'] = round((100 - $options['quality']) * 9 / 100);
+        // Preserve BC until version 1.0
+        if (isset($options['quality']) && !isset($options['png_compression_level'])) {
+            $options['png_compression_level'] = round((100 - $options['quality']) * 9 / 100);
+        }
+        if (isset($options['filters']) && !isset($options['png_compression_filter'])) {
+            $options['png_compression_filter'] = $options['filters'];
+        }
+
+        $options = $this->updateSaveOptions($options);
+
+        if ($format === 'jpeg' && isset($options['jpeg_quality'])) {
+            $args[] = $options['jpeg_quality'];
+        }
+
+        if ($format === 'png') {
+            if (isset($options['png_compression_level'])) {
+                if ($options['png_compression_level'] < 0 || $options['png_compression_level'] > 9) {
+                    throw new InvalidArgumentException('png_compression_level option should be an integer from 0 to 9');
+                }
+                $args[] = $options['png_compression_level'];
+            } else {
+                $args[] = -1; // use default level
             }
-            $args[] = $options['quality'];
+
+            if (isset($options['png_compression_filter'])) {
+                if (~PNG_ALL_FILTERS & $options['png_compression_filter']) {
+                    throw new InvalidArgumentException('png_compression_filter option should be a combination of the PNG_FILTER_XXX constants');
+                }
+                $args[] = $options['png_compression_filter'];
+            }
         }
 
-        if ($format === 'png' && isset($options['filters'])) {
-            $args[] = $options['filters'];
-        }
-
-        if (($format === 'wbmp' || $format === 'xbm') &&
-            isset($options['foreground'])) {
+        if (($format === 'wbmp' || $format === 'xbm') && isset($options['foreground'])) {
             $args[] = $options['foreground'];
         }
 
@@ -538,8 +605,7 @@ final class Image implements ImageInterface
             throw new RuntimeException('Image '.$operation.' failed');
         }
 
-        if (false === imagealphablending($resource, false) ||
-            false === imagesavealpha($resource, true)) {
+        if (false === imagealphablending($resource, false) || false === imagesavealpha($resource, true)) {
             throw new RuntimeException('Image '.$operation.' failed');
         }
 
@@ -559,28 +625,46 @@ final class Image implements ImageInterface
      *
      * Generates a GD color from Color instance
      *
-     * @param Color $color
+     * @param ColorInterface $color
      *
-     * @return resource
+     * @return integer A color identifier
      *
      * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
-    private function getColor(Color $color)
+    private function getColor(ColorInterface $color)
     {
-        $index = imagecolorallocatealpha(
-            $this->resource, $color->getRed(), $color->getGreen(),
-            $color->getBlue(), round(127 * $color->getAlpha() / 100)
-        );
+        if (!$color instanceof RGBColor) {
+            throw new InvalidArgumentException('GD driver only supports RGB colors');
+        }
+
+        $index = imagecolorallocatealpha($this->resource, $color->getRed(), $color->getGreen(), $color->getBlue(), round(127 * (100 - $color->getAlpha()) / 100));
 
         if (false === $index) {
-            throw new RuntimeException(sprintf(
-                'Unable to allocate color "RGB(%s, %s, %s)" with transparency '.
-                'of %d percent', $color->getRed(), $color->getGreen(),
-                $color->getBlue(), $color->getAlpha()
-            ));
+            throw new RuntimeException(sprintf('Unable to allocate color "RGB(%s, %s, %s)" with transparency of %d percent', $color->getRed(), $color->getGreen(), $color->getBlue(), $color->getAlpha()));
         }
 
         return $index;
+    }
+
+    /**
+     * Internal
+     *
+     * Normalizes a given format name
+     *
+     * @param string $format
+     *
+     * @return string
+     */
+    private function normalizeFormat($format)
+    {
+        $format = strtolower($format);
+
+        if ('jpg' === $format || 'pjpeg' === $format) {
+            $format = 'jpeg';
+        }
+
+        return $format;
     }
 
     /**
@@ -592,7 +676,7 @@ final class Image implements ImageInterface
      *
      * @return Boolean
      */
-    private function supported(&$format = null)
+    private function supported($format = null)
     {
         $formats = array('gif', 'jpeg', 'png', 'wbmp', 'xbm');
 
@@ -600,27 +684,17 @@ final class Image implements ImageInterface
             return $formats;
         }
 
-        $format  = strtolower($format);
-
-        if ('jpg' === $format || 'pjpeg' === $format) {
-            $format = 'jpeg';
-        }
-
         return in_array($format, $formats);
     }
 
     private function setExceptionHandler()
     {
-        set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontext) {
-
+        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
             if (0 === error_reporting()) {
                 return;
             }
 
-            throw new RuntimeException(
-                $errstr, $errno,
-                new \ErrorException($errstr, 0, $errno, $errfile, $errline)
-            );
+            throw new RuntimeException($errstr, $errno, new \ErrorException($errstr, 0, $errno, $errfile, $errline));
         }, E_WARNING | E_NOTICE);
     }
 
@@ -642,13 +716,14 @@ final class Image implements ImageInterface
      */
     private function getMimeType($format)
     {
+        $format = $this->normalizeFormat($format);
+
         if (!$this->supported($format)) {
             throw new RuntimeException('Invalid format');
         }
 
         static $mimeTypes = array(
             'jpeg' => 'image/jpeg',
-            'jpg'  => 'image/jpeg',
             'gif'  => 'image/gif',
             'png'  => 'image/png',
             'wbmp' => 'image/vnd.wap.wbmp',

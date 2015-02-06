@@ -11,8 +11,9 @@
 
 namespace Imagine\Exception;
 
-use OutOfBoundsException as BaseOutOfBoundsException;
-
-class OutOfBoundsException extends BaseOutOfBoundsException implements Exception
+/**
+ * Imagine-specific out of bounds exception
+ */
+class OutOfBoundsException extends \OutOfBoundsException implements Exception
 {
 }

@@ -11,8 +11,9 @@
 
 namespace Imagine\Image;
 
-use Imagine\Image\PointInterface;
-
+/**
+ * Interface for a box
+ */
 interface BoxInterface
 {
     /**
