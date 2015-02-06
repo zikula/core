@@ -666,11 +666,31 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             // dont get an update because TTL not expired yet
             $onlineVersion = $updateversion;
         } else {
-            $s = (extension_loaded('openssl') ? 's' : '');
-            $onlineVersion = trim($this->_zcurl("http$s://update.zikula.org/cgi-bin/engine/checkcoreversion13.cgi"));
-            if ($onlineVersion === false) {
+            $onlineVersion = '';
+            $newVersionInfo = trim($this->_zcurl('https://api.github.com/repos/zikula/core/releases'));
+            if ($newVersionInfo === '') {
                 return array('update_show' => false);
             }
+            $newVersionInfo = json_decode($newVersionInfo, true);
+            if (!is_array($newVersionInfo)) {
+                return array('update_show' => false);
+            }
+
+            foreach ($newVersionInfo as $version) {
+                if (!array_key_exists('prerelease', $version) || $version['prerelease']) {
+                    continue;
+                }
+                if (array_key_exists('tag_name', $version)) {
+                    if (version_compare($version['tag_name'], $onlineVersion) == 1) {
+                        $onlineVersion = $version['tag_name'];
+                    }
+                }
+            }
+
+            if ($onlineVersion == '') {
+                return array('update_show' => false);
+            }
+
             System::setVar('updateversion', $onlineVersion);
             System::setVar('updatelastchecked', (int)time());
         }
@@ -678,7 +698,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         // if 1 then there is a later version available
         if (version_compare($onlineVersion, Zikula_Core::VERSION_NUM) == 1) {
             return array('update_show' => true,
-                    'update_version' => $onlineVersion);
+                         'update_version' => $onlineVersion);
         } else {
             return array('update_show' => false);
         }
@@ -696,10 +716,10 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         $modvars = ModUtil::getVar('Theme');
 
         $data = array();
-        $data['devmode']                     = (bool) $ZConfig['System']['development'];
+        $data['devmode'] = (bool) $ZConfig['System']['development'];
 
         if ($data['devmode'] == true) {
-            $data['cssjscombine']                = $modvars['cssjscombine'];
+            $data['cssjscombine'] = $modvars['cssjscombine'];
 
             if ($modvars['render_compile_check']) {
                 $data['render']['compile_check'] = array('state' => $modvars['render_compile_check'],
