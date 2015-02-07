@@ -6,8 +6,8 @@ A very strong effort has been made to keep to the standards of [Semantic Version
 that BC must be maintained within each major version (1.0.0 until 2.0.0). Therefore, all Core-1.3.x modules and themes
 *should* continue to work as expected in Core-1.4.0.
 
-However, because of a necessary upgrade of the Symfony library and despite the development team's best efforts, one
-BC break has still occurred:
+However, because of a necessary upgrade of the Symfony library and despite the development team's best efforts, a few
+BC breaks have still occurred:
 
 <a name="gedmo" />
 Gedmo (Doctrine Extensions)
@@ -43,6 +43,12 @@ to:
      */
     private $slug;
 ```
+
+Additional Breaks
+-----------------
+- the interactive installer functionality has been removed.
+- Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.
+
 
 Deprecations
 ============

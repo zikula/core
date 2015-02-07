@@ -1,6 +1,18 @@
 CHANGELOG - ZIKULA 1.4.0
 ------------------------
 
+BC Breaks:
+- Removed interactive installer from module specification.
+- Gedmo Doctrine Extensions Sluggable has changed. See dev docs for changes
+- Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.
+
+Deprecated:
+- DoctrineExtensions Paginator has superseded by Doctrine ORM paginator
+  http://docs.doctrine-project.org/en/latest/tutorials/pagination.html
+- Deprecated `Zikula_EventManager` for Symfony2 EventDispatcher component
+- Deprecated `Zikula_ServiceManager` for Symfony2 Dependency Injection component
+- Many items shown at code level
+
 Fixes:
 - Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category
 - Fixed not working password recovery process if using your email adress
@@ -25,58 +37,50 @@ Fixes:
 - Several minor bugfixes.
 
 Features:
-- Symfony has been updated to the 2.6 version (#1755, #2076)
-- Show an error message if version number of a module is incorrect.
-- jQuery is used as primary scripting framework (makes Prototype obsolete) (#844, #1043, #1214, #1752, others)
-- Switched to Symfony2 routing, including JS routes, multilingual routes and more (#1788, #1789, #1793, others)
-- Added FontAwesome (#359, #1351)
-- Complete adaption of Bootstrap for frontend (#845, #1036, #1052, #1073, #1092, #1123, #1149, #1230, #1378, #1706, #1751, #1759, others)
-- Added garbage collection to CSRF token generator
-- The mailer module uses SwiftMailer instead of PHPMailer (#1717)
-- Introduced Symfony2 Forms plugin offering integration helpers like a form type for Zikula categories.
+- Symfony (2.6 version) set as primary library for Zikula
+  - Switched to Symfony2 routing, including JS routes, multilingual routes and more (#1788, #1789, #1793, others)
+  - Introduced Symfony Forms plugin offering integration helpers like a form type for Zikula categories.
+  - Switched to Symfony error handling.
+  - Switched to HttpKernel request cycle.
+  - [FORWARD COMPAT] Added forward compatibility layer with Symfony2 HttpFoundation
 
-- Controller methods need to be suffixed with the word 'Action'. Old methods will continue to work.
-- Deprecated `Zikula_EventManager` for Symfony2 EventDispatcher component
-- Deprecated `Zikula_ServiceManager` for Symfony2 Dependency Injection component
+    - `$request->isGet/Post()` should be replaced with `$request->isMethod('GET/POST')`.
+    - The GET request is available from `$request->query->get()` and POST from
+      `$request->request->get()`.
+    - The routing request can be retrieved with `$request->attributes->get($key)`
+      using the keys `_controller`, `_zkModule`, `_zkType`, and `_zkFunc`. You MUST NOT rely on `_zkModule`, `_zkType`,
+      and `_zkFunc`. They are for core internals only and can be changed or removed at any time.
+  - Removed DebugToolbar and replaced with Symfony Debug and Profile Toolbar
+- jQuery is used as primary scripting framework (makes Prototype obsolete) (#844, #1043, #1214, #1752, others)
+  - jQuery and jQuery UI are now outsourced to their own bundles.
+- Bootstrap set as primary library for frontend (#845, #1036, #1052, #1073, #1092, #1123, #1149, #1230, #1378, #1706, #1751, #1759, others)
+- Added FontAwesome (#359, #1351)
+- The mailer module uses SwiftMailer instead of PHPMailer (#1717)
+- [FORWARD COMPAT] New module structure.
 - Switched to Composer dependency manager see http://getcomposer.org/ which causes
   dependencies now being managed in a file named `composer.json`
-- [FORWARD COMPAT] Added forward compatibility layer with Symfony2 HttpFoundation
-
-  - `$request->isGet/Post()` should be replaced with `$request->isMethod('GET/POST')`.
-  - The GET request is available from `$request->query->get()` and POST from
-    `$request->request->get()`.
-  - The routing request can be retrieved with `$request->attributes->get($key)`
-    using the keys `_controller`, `_zkModule`, `_zkType`, and `_zkFunc`. You MUST NOT rely on `_zkModule`, `_zkType`,
-    and `_zkFunc`. They are for core internals only and can be changed or removed at any time.
+- Update Smarty to 2.6.28
+- Update Mapstraction to 3.0.0
+- Show an error message if version number of a module is incorrect.
+- Added garbage collection to CSRF token generator
+- Controller methods need to be suffixed with the word 'Action'. Old methods will continue to work.
 
 - [FORWARD COMPAT] Merged `ajax.php` front controller into `index.php` - please use
   index.php?module=<modname>&type=ajax&func=<func> in AJAX calls.
-- [FORWARD COMPAT] New module structure.
-- Added ability to configure a mobile viewing URL, like m.example.com
-- Update jQuery-UI to 1.9.2
 - Zikula Form - automatically set proper form enctype when upload input is used
 - Added ModUtil::getModuleImagePath() for getting the admin image of a module
-- Update Smarty to 2.6.27
 - Give possibility to set a global timezone_adjust default value.
 - Theme settings: mobile theme different then default; mobile domain; alternative site view
   theme and domain; set admin theme in theme settings section.
-- Select if the mobile theme shall be applied for smartphones, tablets or both of them.
 - Give the profile module the possibility to change the profilelink.
 - Added viewplugin `nl2html`.
 - Added hook to Blocks module to allow for use with Html Block (only).
-- [BC BREAK] DoctrineExtensions Paginator has been removed, use Doctrine ORM paginator
-  instead http://docs.doctrine-project.org/en/latest/tutorials/pagination.html
 - Blocks: added display function and preview button in blocks list.
-- [BC BREAK] Removed interactive installer from module specification.
-- Update JqueryMobile to 1.3.0
-- Update Mapstraction to 3.0.0
-- Mobile Theme now has an configurable block position for startpage.
 - Dont send an welcome email to new users function added (#731).
 - The password reminder can be turned off now.
 - The password reminder is turned off if a third-party auth-module is used.
 - 1.2.x to 1.3.x migration script converted to pure php script.
 - Reset start page module to static frontpage if it is deactivated (#104).
-- jQuery and jQuery UI are now outsourced to their own bundles.
 - Added events if a module is activated and if a module is deactivated.
 - Implemented OpenSearch.
 - Added "hybrid" login option. The user can either provide his email address or user name and will be logged in.
@@ -92,16 +96,11 @@ Features:
 - Moved Categories to Doctrine2 and moved entities to module. Updated CategoryUtil & CategoryRegistryUtil to use new
 - Copy all category attributes data from `objectdata_attributes` to new `category_attributes` table and adjust
   internal methods to pull from new data source.
-- Removed DebugToolbar and replaced with Symfony Debug and Profile Toolbar
-- Switched to Symfony error handling.
-- Switched to HttpKernel request cycle.
 - Removed Errors module, since error handling is now done using Symfony2 mechanisms.
 - Removed support for old function based controllers and APIs (pre-1.3.x style).
-- Removed events: systemerror, setup.errorreporting, frontcontroller.exception.
 - Development mode is now controlled by editing app/config/kernel.yml `kernel = dev` or `kernel = prod`
-- Removed old legacy (Smarty plugins, hooks etc, old module types).
+- Removed old 1.2.x legacy (Smarty plugins, hooks etc, old module types).
 - Made it possible to hide the email adress field during registration for external auth modules.
-- [BC BREAK] Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.
 - Login provider now can specify the path to an icon or the name of a FontAwesome icon to display in the login buttons.
 - Added functionality for authentication modules to redirect the user to the registration screen if the given login
   information does not match an existing user account.
