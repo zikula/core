@@ -110,8 +110,10 @@ class SystemPlugin_Imagine_Preset extends ArrayObject
             'height' => 100,
             'mode' => 'inset',
             'extension' => null,
-			'jpeg_quality' => 75,
-			'png_compression_level' => 7,
+            'options' => array(
+                'jpeg_quality' => 75,
+                'png_compression_level' => 7
+            ),
             '__module' => null,
             '__imagine' => null,
             '__transformation' => null

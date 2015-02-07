@@ -8,24 +8,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-17 16:17-0500\n"
+"POT-Creation-Date: 2015-02-07 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib/Imagine/Configuration.php:68
-msgid "Error! Could not change thumbnails storage directory."
+#: Plugin.php:31
+msgid "Imagine"
 msgstr ""
 
-#: lib/Imagine/Configuration.php:87
-msgid "Done! Saved plugin configuration."
+#: Plugin.php:32
+msgid "Provides Imagine image manipulation library"
 msgstr ""
 
-#: lib/Imagine/Configuration.php:102
-msgid "Done! Imagine thumbnails were cleanup!"
+#: templates/plugins/function.thumb.php:68
+#, php-format
+msgid "Error! in %1$s: the %2$s parameter must be specified."
 msgstr ""
 
 #. ! %1$s is source image path, %2$s is error message
@@ -36,17 +38,23 @@ msgid ""
 "%2$s"
 msgstr ""
 
-#: Plugin.php:31
-msgid "Imagine"
+#: lib/Imagine/Configuration.php:68
+msgid "Error! Could not change thumbnails storage directory."
 msgstr ""
 
-#: Plugin.php:32
-msgid "Provides Imagine image manipulation library"
+#: lib/Imagine/Configuration.php:97
+msgid "Done! Saved plugin configuration."
 msgstr ""
 
-#: templates/plugins/function.thumb.php:85
-#, php-format
-msgid "Error! in %1$s: the %2$s parameter must be specified."
+#: lib/Imagine/Configuration.php:115
+msgid ""
+"Done! All Imagine thumbnails are removed and will be re-generated when "
+"requested again!"
+msgstr ""
+
+#: lib/Imagine/Configuration.php:117
+msgid ""
+"Done! Imagine thumbnails are cleaned up of source images that were removed!"
 msgstr ""
 
 #: templates/configuration.tpl:6
@@ -75,87 +83,151 @@ msgstr ""
 
 #: templates/configuration.tpl:25
 msgid ""
-"When checked, thumbnail cleanup routine is automatically invoked once a day "
-"and unnecessary thumbnails are removed."
+"When checked, thumbnail cleanup routine is automatically invoked with the "
+"specified period below and unnecessary thumbnails are removed."
 msgstr ""
 
 #: templates/configuration.tpl:29
-msgid "Clear thumb"
+msgid "Automatic cleanup period"
 msgstr ""
 
-#: templates/configuration.tpl:29
-msgid "Cleanup thumbnails now"
-msgstr ""
-
-#: templates/configuration.tpl:34
-msgid "Presets"
+#: templates/configuration.tpl:31
+msgid ""
+"This gives the period used for automatic cleanup of thumbnails. It is based "
+"on PHP DateInterval, so e.g. P1D is 1 day and P1W is 1 week."
 msgstr ""
 
 #: templates/configuration.tpl:35
-msgid "Presets allow to define ready to use sets of thumbnail options."
+msgid "Clear thumbnails"
+msgstr ""
+
+#: templates/configuration.tpl:35
+msgid "Cleanup thumbnails now (only when source image is removed)"
+msgstr ""
+
+#: templates/configuration.tpl:38
+msgid "Remove all thumbnails"
+msgstr ""
+
+#: templates/configuration.tpl:38
+msgid "Remove all thumbnails now (of all images)"
 msgstr ""
 
 #: templates/configuration.tpl:43
+msgid "Presets"
+msgstr ""
+
+#: templates/configuration.tpl:44
+msgid "Presets allow to define ready to use sets of thumbnail options."
+msgstr ""
+
+#: templates/configuration.tpl:52
 msgid "Preset name"
 msgstr ""
 
-#: templates/configuration.tpl:45
+#: templates/configuration.tpl:54
 msgid ""
 "Preset name can contain letters, numbers, underscores, periods, or dashes."
 msgstr ""
 
-#: templates/configuration.tpl:49
+#: templates/configuration.tpl:58
 msgid "Width"
 msgstr ""
 
-#: templates/configuration.tpl:51 templates/configuration.tpl:58
+#: templates/configuration.tpl:60 templates/configuration.tpl:68
 msgid "pixels"
 msgstr ""
 
-#: templates/configuration.tpl:56
+#: templates/configuration.tpl:62
+msgid ""
+"Width is a number for a pixel width or \"auto\" for scaling to ratio from "
+"the height."
+msgstr ""
+
+#: templates/configuration.tpl:66
 msgid "Height"
 msgstr ""
 
-#: templates/configuration.tpl:63
+#: templates/configuration.tpl:70
+msgid ""
+"Height can contain numbers for a pixel height or \"auto\" for scaling to "
+"ratio from the width."
+msgstr ""
+
+#: templates/configuration.tpl:74
 msgid "Mode"
 msgstr ""
 
-#: templates/configuration.tpl:71
+#: templates/configuration.tpl:82
 msgid "Thumbnail generation mode."
 msgstr ""
 
-#: templates/configuration.tpl:72
-msgid "Inset mode - thumbnails are scale down to not exceed dimensions."
+#: templates/configuration.tpl:83
+msgid ""
+"Inset mode - thumbnails are scaled down (preserving ratio) to not exceed "
+"dimensions"
 msgstr ""
 
-#: templates/configuration.tpl:73
-msgid "Outset mode - thumbnails are cut out to exactly fit dimmensions."
+#: templates/configuration.tpl:84
+msgid ""
+"Outbound mode - thumbnails are cut out to exactly fit dimensions (auto width "
+"or height does not make sense here)."
 msgstr ""
 
-#: templates/configuration.tpl:78
+#: templates/configuration.tpl:89
 msgid "Extension"
 msgstr ""
 
-#: templates/configuration.tpl:80
+#: templates/configuration.tpl:91
 msgid "Same as source image"
 msgstr ""
 
-#: templates/configuration.tpl:90
+#: templates/configuration.tpl:100
+msgid "JPEG Quality"
+msgstr ""
+
+#: templates/configuration.tpl:104
+msgid ""
+"JPEG Quality for sized images is specified from 0-100%, where 100% is best "
+"quality."
+msgstr ""
+
+#: templates/configuration.tpl:108
+msgid "PNG Compression level"
+msgstr ""
+
+#: templates/configuration.tpl:112
+msgid ""
+"PNG Compression level for sized images is specified from 0-9, where 0 is no "
+"compression."
+msgstr ""
+
+#: templates/configuration.tpl:116
+msgid "Module"
+msgstr ""
+
+#: templates/configuration.tpl:123
+msgid ""
+"If a module is selected, thumbnails will be stored in \"thumb-dir/moduleName/"
+"\" subfolder. Otherwise the default \"thumb-dir/zikula/\" will be used."
+msgstr ""
+
+#: templates/configuration.tpl:127
 msgid "Copy"
 msgstr ""
 
-#: templates/configuration.tpl:91
+#: templates/configuration.tpl:128
 msgid "Delete"
 msgstr ""
 
-#: templates/configuration.tpl:96
+#: templates/configuration.tpl:133
 msgid "Add new preset"
 msgstr ""
 
-#: templates/configuration.tpl:101
+#: templates/configuration.tpl:138
 msgid "Save"
 msgstr ""
 
-#: templates/configuration.tpl:102
+#: templates/configuration.tpl:139
 msgid "Cancel"
 msgstr ""

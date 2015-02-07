@@ -22,7 +22,7 @@
             <div class="z-formrow">
                 <label for="thumb_auto_cleanup">{gt text='Cleanup automatically'}</label>
                 <input type="checkbox" id="thumb_auto_cleanup" name="thumb_auto_cleanup"  value="1" {if $vars.thumb_auto_cleanup} checked="checked"{/if} />
-                <p class="z-formnote z-sub">{gt text='When checked, thumbnail cleanup routine is automatically invoked once a day and unnecessary thumbnails are removed.'}</p>
+                <p class="z-formnote z-sub">{gt text='When checked, thumbnail cleanup routine is automatically invoked with the specified period below and unnecessary thumbnails are removed.'}</p>
             </div>
 
             <div class="z-formrow" id="imagine_thumb_auto_cleanup_period">
@@ -32,10 +32,10 @@
             </div>
 
             <div class="z-formbuttons">
-                <a class="z-action-icon z-icon-es-regenerate" href="{modurl modname='Extensions' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup' force=false}" title="{gt text='Clear thumb'}">{gt text='Cleanup thumbnails now (only when source image is removed)'}</a>
+                <a class="z-action-icon z-icon-es-regenerate" href="{modurl modname='Extensions' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup' force=false}" title="{gt text='Clear thumbnails'}">{gt text='Cleanup thumbnails now (only when source image is removed)'}</a>
             </div>
             <div class="z-formbuttons">
-                <a class="z-action-icon z-icon-es-regenerate" href="{modurl modname='Extensions' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup' force=true}" title="{gt text='Clear thumb'}">{gt text='Remove all thumbnails now (of all images)'}</a>
+                <a class="z-action-icon z-icon-es-regenerate" href="{modurl modname='Extensions' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup' force=true}" title="{gt text='Remove all thumbnails'}">{gt text='Remove all thumbnails now (of all images)'}</a>
             </div>
         </fieldset>
 
@@ -99,17 +99,17 @@
                     <div class="z-formrow preset-jpeg_quality">
                         <label for="presets-{$index}-jpeg_quality">{gt text='JPEG Quality'}</label>
                         <div>
-                            <input type="text" id="presets-{$index}-jpeg_quality" name="presets[{$index}][jpeg_quality]" size="4" value="{$preset.jpeg_quality|safetext}" /> %
+                            <input type="text" id="presets-{$index}-jpeg_quality" name="presets[{$index}][options][jpeg_quality]" size="4" value="{$preset.options.jpeg_quality|safetext}" /> %
                         </div>
-                        <p class="z-formnote z-sub">{gt text='JPEG Quality is specified from 0-100%, where 100% is best quality.'}</p>
+                        <p class="z-formnote z-sub">{gt text='JPEG Quality for sized images is specified from 0-100%, where 100% is best quality.'}</p>
                     </div>
 
                     <div class="z-formrow preset-png_compression_level">
                         <label for="presets-{$index}-png_compression_level">{gt text='PNG Compression level'}</label>
                         <div>
-                            <input type="text" id="presets-{$index}-png_compression_level" name="presets[{$index}][png_compression_level]" size="4" value="{$preset.png_compression_level|safetext}" />
+                            <input type="text" id="presets-{$index}-png_compression_level" name="presets[{$index}][options][png_compression_level]" size="4" value="{$preset.options.png_compression_level|safetext}" />
                         </div>
-                        <p class="z-formnote z-sub">{gt text='PNG Compression level is specified from 0-9, where 0 is no compression.'}</p>
+                        <p class="z-formnote z-sub">{gt text='PNG Compression level for sized images is specified from 0-9, where 0 is no compression.'}</p>
                     </div>
 					
                     <div class="z-formrow preset-module">

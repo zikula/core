@@ -69,16 +69,23 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
             }
         }
 
-        $thumb_auto_cleanup = (bool)$this->request->getPost()->get('thumb_auto_cleanup');
+        $thumb_auto_cleanup = (bool)$this->request->request->get('thumb_auto_cleanup');
         $this->plugin->setVar('thumb_auto_cleanup', $thumb_auto_cleanup);
 
-        $thumb_auto_cleanup_period = $this->request->getPost()->get('thumb_auto_cleanup_period');
+        $thumb_auto_cleanup_period = $this->request->request->get('thumb_auto_cleanup_period');
         $this->plugin->setVar('thumb_auto_cleanup_period', $thumb_auto_cleanup_period);
 
         $presets = $this->request->getPost()->get('presets', array());
 
         $presetsToSave = array();
         foreach ($presets as $preset) {
+            // validate jpeg qual and png_compression
+            if (!is_numeric($preset['options']['jpeg_quality']) || $preset['options']['jpeg_quality'] < 0 || $preset['options']['jpeg_quality'] > 100) {
+                $preset['options']['jpeg_quality'] = 75; // default 75%
+            }
+            if (!is_numeric($preset['options']['png_compression_level']) || $preset['options']['png_compression_level'] < 0 || $preset['options']['png_compression_level'] > 9) {
+                $preset['options']['png_compression_level'] = 7; // default 7
+            }
             $name = $preset['name'];
             if (!empty($name)) {
                 $presetsToSave[$name] = new SystemPlugin_Imagine_Preset($name, $preset);

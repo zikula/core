@@ -20,8 +20,11 @@
  *                                  In outbound mode auto width or height gives the same effect as inset
  *  - extension     (string)        File extension for thumbnails: jpg, png, gif; null for original file type
  *                                  (optional, default value based on 'default' preset)
- *  - jpeg_quality  (int)           Thumbnail jpeg quality in % [0-100], where 100% is best quality (optional, default value based on 'default' preset)
- *  - png_compression_level (int)   Thumbnail png compression level [0-9], where 0 is no compression (optional, default value based on 'default' preset)
+ *  - options       (array)         Options array given to the thumbnail Imagine method call.
+ *  - options[jpeg_quality]          
+ *                  (int)           Thumbnail jpeg quality in % [0-100], where 100% is best quality (optional, default value based on 'default' preset)
+ *  - options[png_compression_level] 
+ *                  (int)           Thumbnail png compression level [0-9], where 0 is no compression (optional, default value based on 'default' preset)
  *  - objectid      (string)        Unique signature for object, which owns this thumbnail (optional)
  *  - preset        (string|object) Name of preset defined in Imagine or custom preset passed as instance of
  *                                  SystemPlugin_Imagine_Preset; if given inline options ('width', 'heigth', 'mode'
@@ -85,8 +88,7 @@ function smarty_function_thumb($params, Zikula_View $view)
         $preset['height'] = isset($params['height']) ? $params['height'] : 'auto';
         $preset['mode'] = isset($params['mode']) ? $params['mode'] : null;
         $preset['extension'] = isset($params['extension']) ? $params['extension'] : null;
-        $preset['jpeg_quality'] = isset($params['jpeg_quality']) ? $params['jpeg_quality'] : null;
-        $preset['png_compression_level'] = isset($params['png_compression_level']) ? $params['png_compression_level'] : null;
+        $preset['options'] = isset($params['options']) ? $params['options'] : array();
         $preset = array_filter($preset);
     }
 

@@ -412,17 +412,6 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
             $mode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
         }
 
-		if (isset($preset['jpeg_quality']) && is_numeric($preset['jpeg_quality']) && $preset['jpeg_quality'] >= 0 && $preset['jpeg_quality'] <= 100) {
-			$jpeg_quality = $preset['jpeg_quality'];
-		} else {
-			$jpeg_quality = 75; // default 75%
-		}
-		if (isset($preset['png_compression_level']) && is_numeric($preset['png_compression_level']) && $preset['png_compression_level'] >= 0 && $preset['png_compression_level'] <= 9) {
-			$png_compression_level = $preset['png_compression_level'];
-		} else {
-			$png_compression_level = 7; // default 7
-		}
-		
 		// check for w/h autoscaling and scale to ratio
 		if ($preset['height']=='auto') {
 			$imageSize = @getimagesize($image->getRealPath());
@@ -439,7 +428,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
             $this->getTransformation()
                 ->apply($this->getImagine()->open($image->getRealPath()))
                 ->thumbnail($size, $mode)
-                ->save($image->getThumbRealPath(), array('jpeg_quality' => $jpeg_quality, 'png_compression_level' => $png_compression_level));
+                ->save($image->getThumbRealPath(), $preset['options']);
         } catch (Exception $exception) {
             throw $exception;
         }
