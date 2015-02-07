@@ -5,7 +5,8 @@ Imagine plugin usage
 Imagine plugin implements [Imagine image manipulation library](https://github.com/avalanche123/Imagine)
 and offers some standardised methods for managing thumbnails.
 
-There is one update in the Imagine plugin itself, see https://github.com/avalanche123/Imagine/pull/407
+There is one update done in the Imagine plugin itself, see https://github.com/avalanche123/Imagine/pull/407.
+Until that one is Pulled into the offical version this needs to be applied.
 
 # How it works
 
@@ -70,7 +71,7 @@ You specify a width and height or only a width or height, where the other dimens
    outbound will scale to exact dimensions and will crop certain parts of the image
    in outbound mode choosing width or height to auto will give inset behaviour
 * extension can be jpg, png, gif or omitted to keep the original file type
-* options an array to specify scaling of the images
+* options is an array to specify how to operate on the the images
    * options[jpeg_quality] specifies the jpeg quality from 0-100[%], were 100 is best quality (default 75)
    * options[png_compression_level] specifies the png file compression from 0-9, where 0 is no compression (default 7)
    * options[resolution-x] specifies the DPI value in x-direction e.g. 150 (default is 72)
