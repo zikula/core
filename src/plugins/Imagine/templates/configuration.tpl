@@ -25,13 +25,27 @@
                 <label class="col-lg-3 control-label" for="thumb_auto_cleanup">{gt text='Cleanup automatically'}</label>
                 <div class="col-lg-9">
                     <input type="checkbox" id="thumb_auto_cleanup" name="thumb_auto_cleanup"  value="1" {if $vars.thumb_auto_cleanup} checked="checked"{/if} />
-                    <p class="help-block sub">{gt text='When checked, thumbnail cleanup routine is automatically invoked once a day and unnecessary thumbnails are removed.'}</p>
+                    <p class="help-block sub">{gt text='When checked, thumbnail cleanup routine is automatically invoked with the specified period below and unnecessary thumbnails are removed.'}</p>
+                </div>
+            </div>
+
+            <div class="form-group" id="imagine_thumb_auto_cleanup_period">
+                <label class="col-lg-3 control-label" for="thumb_auto_cleanup_period">{gt text='Automatic cleanup period'}</label>
+                <div class="col-lg-9">
+                    <input type="text" id="thumb_auto_cleanup_period" class="form-control" name="thumb_auto_cleanup_period" size="8" value="{$vars.thumb_auto_cleanup_period|safetext}" />
+                    <p class="help-block sub">{gt text='This gives the period used for automatic cleanup of thumbnails. It is based on PHP DateInterval, so e.g. P1D is 1 day and P1W is 1 week.'}</p>
                 </div>
             </div>
 
             <div class="form-group">  
                 <div class="col-lg-offset-3 col-lg-9">
-                    <a class="z-action-icon smallicon smallicon-regenerate" href="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup'}" title="{gt text='Clear thumb'}">{gt text='Cleanup thumbnails now'}</a>
+                    <a class="z-action-icon smallicon smallicon-regenerate" href="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup'}" title="{gt text='Clear thumbnails'}">{gt text='Cleanup thumbnails now (only when source image is removed)'}</a>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-lg-offset-3 col-lg-9">
+                    <a class="z-action-icon smallicon smallicon-regenerate" href="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup' force=true}" title="{gt text='Remove all thumbnails'}">{gt text='Remove all thumbnails now (of all images)'}</a>
                 </div>
             </div>
         </fieldset>
@@ -58,6 +72,7 @@
                         <input type="text" id="presets-{$index}-width" class="form-control" name="presets[{$index}][width]" size="4" value="{$preset.width|safetext}" />
                         <span class="input-group-addon">{gt text='pixels'}</span>
                     </div>
+                    <p class="help-block sub">{gt text='Width is a number for a pixel width or "auto" for scaling to ratio from the height.'}</p>
                 </div>
             </div>
 
@@ -68,6 +83,7 @@
                         <input type="text" id="presets-{$index}-height" class="form-control" name="presets[{$index}][height]" size="4" value="{$preset.height|safetext}" />
                         <span class="input-group-addon">{gt text='pixels'}</span>
                     </div>
+                    <p class="help-block sub">{gt text='Height is a number for a pixel width or "auto" for scaling to ratio from the width.'}</p>
                 </div>
             </div>
 
@@ -82,8 +98,8 @@
                     </select>
                     <p class="help-block sub">
                         {gt text='Thumbnail generation mode.'}<br />
-                        {gt text='Inset mode - thumbnails are scale down to not exceed dimensions.'}<br />
-                        {gt text='Outbound mode - thumbnails are cut out to exactly fit dimmensions.'}
+                        {gt text='Inset mode - thumbnails are scaled down (preserving ratio) to not exceed dimensions'}<br />
+                        {gt text='Outbound mode - thumbnails are cut out to exactly fit dimensions (auto width or height does not make sense here).'}
                     </p>
                 </div>
             </div>
@@ -100,6 +116,33 @@
                         {/foreach}
                     </select>
                 </div>
+            </div>
+
+            <div class="form-group preset-jpeg_quality">
+                <label class="col-lg-3 control-label" for="presets-{$index}-jpeg_quality">{gt text='JPEG Quality'}</label>
+                <div class="col-lg-9">
+                    <input type="text" id="presets-{$index}-jpeg_quality" class="form-control" name="presets[{$index}][options][jpeg_quality]" size="4" value="{$preset.options.jpeg_quality|safetext}" /> %
+                </div>
+                <p class="help-block sub">{gt text='JPEG Quality for sized images is specified from 0-100%, where 100% is best quality.'}</p>
+            </div>
+
+            <div class="form-group preset-png_compression_level">
+                <label class="col-lg-3 control-label" for="presets-{$index}-png_compression_level">{gt text='PNG Compression level'}</label>
+                <div class="col-lg-9">
+                    <input type="text" id="presets-{$index}-png_compression_level" class="form-control" name="presets[{$index}][options][png_compression_level]" size="4" value="{$preset.options.png_compression_level|safetext}" />
+                </div>
+                <p class="help-block sub">{gt text='PNG Compression level for sized images is specified from 0-9, where 0 is no compression.'}</p>
+            </div>
+            
+            <div class="form-group preset-module">
+                <label class="col-lg-3 control-label" for="presets-{$index}-module">{gt text='Module'}</label>
+                <div class="col-lg-9">
+                    <select id="presets-{$index}-module" class="form-control" name="presets[{$index}][__module]" >
+                    <option value="" label="" >&nbsp;</option>
+                    {html_select_modules selected=$preset.__module}
+                    </select>
+                </div>
+                <p class="help-block sub">{gt text='If a module is selected, thumbnails will be stored in "thumb-dir/moduleName/" subfolder. Otherwise the default "thumb-dir/zikula/" will be used.'}</p>
             </div>
 
             <div class="form-group">

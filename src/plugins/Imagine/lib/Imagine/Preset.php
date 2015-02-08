@@ -87,6 +87,12 @@ class SystemPlugin_Imagine_Preset extends ArrayObject
      */
     private function prepare($data)
     {
+		if (!isset($data['width']) || $data['width'] == '') {
+			$data['width'] = 'auto';
+		}
+		if (!isset($data['height']) || $data['height'] == '') {
+			$data['height'] = 'auto';
+		}
         $array = array_merge($this->getEmptyPreset(), (array)$data);
 
         return $array;
@@ -102,7 +108,7 @@ class SystemPlugin_Imagine_Preset extends ArrayObject
         return array(
             'width' => 100,
             'height' => 100,
-            'mode' => null,
+            'mode' => 'inset',
             'extension' => null,
             'options' => array(
                 'jpeg_quality' => 75,

@@ -9,7 +9,16 @@ Zikula.Imagine.init = function() {
     form.on('click', 'a.add-preset', Zikula.Imagine.addPreset);
     form.on('click', 'a.copy-preset', Zikula.Imagine.copyPreset);
     form.on('click', 'a.delete-preset', Zikula.Imagine.deletePreset);
+    $('thumb_auto_cleanup').observe('change', thumb_auto_cleanup_onchange);
+    if (!$('thumb_auto_cleanup').checked) {
+        $('imagine_thumb_auto_cleanup_period').hide();
+    }    
 };
+
+function thumb_auto_cleanup_onchange()
+{
+    Zikula.checkboxswitchdisplaystate('thumb_auto_cleanup', 'imagine_thumb_auto_cleanup_period', true);
+}
 
 Zikula.Imagine.addPreset = function(event, element) {
     event.preventDefault();
