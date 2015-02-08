@@ -13,6 +13,9 @@ namespace Imagine\Image;
 
 use Imagine\Exception\InvalidArgumentException;
 
+/**
+ * The point class
+ */
 final class Point implements PointInterface
 {
     /**
@@ -36,9 +39,7 @@ final class Point implements PointInterface
     public function __construct($x, $y)
     {
         if ($x < 0 || $y < 0) {
-            throw new InvalidArgumentException(
-                'A coordinate cannot be positioned outside of a bounding box'
-            );
+            throw new InvalidArgumentException(sprintf('A coordinate cannot be positioned outside of a bounding box (x: %s, y: %s given)', $x, $y));
         }
 
         $this->x = $x;

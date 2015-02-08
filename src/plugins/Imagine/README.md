@@ -1,9 +1,12 @@
 Imagine plugin usage
-----------------------------------------
+--------------------
 
 # Overview
 Imagine plugin implements [Imagine image manipulation library](https://github.com/avalanche123/Imagine)
 and offers some standardised methods for managing thumbnails.
+
+There is one update done in the Imagine plugin itself, see https://github.com/avalanche123/Imagine/pull/407.
+Until that one is Pulled into the offical version this needs to be applied.
 
 # How it works
 
@@ -19,8 +22,8 @@ Presets are described in separate section.
 
 The process of generating thumbnails as follows:
 - Request for image thumbnail occurs
-- Plugin checks if there is already a thumbnail for the image with given parameters
-- If there already exists a thumbnail - plugin returns the path to it
+- Plugin checks if there is already a thumbnail for the image with given parameters (width and height count here)
+- If there already exists a thumbnail - the plugin returns the path to it
 - If the thumbnail does not exist or the existing thumbnail expired
   (source image was modified after thumbnail was generated) - generate new thumbnail
 
@@ -49,53 +52,87 @@ where
 
 ## Thumbnail generation in templates
 
-To generate thumbnails in templates, use "thumb" plugin. It may return thumbnail path
- or full image tag ("img") for generated thumbnail.
+To generate thumbnails in templates, use "thumb" plugin. It may return the thumbnail path
+or a full image tag ("img") with all parameters for the generated thumbnail.
 
 Thumbnail options can be passed inline or via preset/manager object.
 
 ### Inline options
 
+```
     {thumb image='path/to/image.png' width=100 height=100 mode='inset' extension='png'}
+```
+	
+You specify a width and height or only a width or height, where the other dimension will be calculated from the image ratio.
+* width can be a pixel width, specified as 'auto' or omitted in which case auto will be used
+* height can be a pixel width, specified as 'auto' or omitted in which case auto will be used
+* mode can be inset or outbound or omitted in which case the default of inset will be used
+   inset will scale the image to fit while keeping aspect ratio
+   outbound will scale to exact dimensions and will crop certain parts of the image
+   in outbound mode choosing width or height to auto will give inset behaviour
+* extension can be jpg, png, gif or omitted to keep the original file type
+* options is an array to specify how to operate on the the images
+   * options[jpeg_quality] specifies the jpeg quality from 0-100[%], were 100 is best quality (default 75)
+   * options[png_compression_level] specifies the png file compression from 0-9, where 0 is no compression (default 7)
+   * options[resolution-x] specifies the DPI value in x-direction e.g. 150 (default is 72)
+   * options[resolution-y] specifies the DPI value in the y-direction e.g. 150 (default is 72)
+   * options[flatten] boolean to indicate if multi-layer images (animated gif) should be flattened (default true)
+   * options[resampling-filter] specifies which filter to use for the operations
 
 ### Options passed using preset
 
+```
     {thumb image='path/to/image.png' objectid='123' preset=$preset}
+```
 
-In this case "$preset" have to be initiated in module controller and passed to template.
+In this case "$preset" has to be initiated in the module controller and passed to the template.
+"$preset" refers to the name of the preset set in the Imagine system plugin settings.
+In a Zikula Imagine preset you set: width, height, mode and the extension.
 
 ### Use custom instance of SystemPlugin_Imagine_Manager
 
+```
     {thumb image='path/to/image.png' objectid='123' manager=$manager}
+```
 
 In this case "$manager" have to be initiated in module controller and passed to template.
 
 ### Generate full image tag
 
+```
     {thumb image='path/to/image.png' objectid='123' preset=$preset tag=true __img_alt='Alt text, gettext prefix may be used' img_class='image-class'}
+```
 
-This will generate:
+This will generate (width and height from the preset):
 
+```
     <img src="thumb/path" widht="100" height="100" alt="Alt text, gettext prefix may be used" class="image-class" />
+```
 
 ## Thumbnail generation in PHP code
 
 Imagine plugin exposes "manager" (SystemPlugin_Imagine_Manager) class as registered service.
 To access it simply call:
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
+```
 
 or
 
+```
     $manager = ServiceUtil::getManager()->getService('systemplugin.imagine.manager');
+```
 
 ### Simple usage - default settings
 
 In the simplest form the only required param for Imagine is source image path. 
 All other settings are taken from "default" preset.
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
     $thumb = $manager->getThumb('path/to/image.png');
+```
 
 Generated thumbnail will have fallowing path:
 
@@ -106,9 +143,11 @@ Generated thumbnail will have fallowing path:
 
 Best way for customising thumb settings is using predefined presets:
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
     $manager->setPreset('my_preset');
     $thumb = $manager->getThumb('path/to/image.png');
+```
 
 Generated thumbnail will have fallowing path:
 
@@ -121,10 +160,12 @@ See Presets section to learn about defining presets.
 Thumbnails generated by Imagine can be grouped by module and object ids (this can be numeric ID
 or ony other unique signature). 
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
     $manager->setModule('News'); // module name can be stored in preset
     $manager->setPreset($preset); // $preset should be instance of SystemPlugin_Imagine_Preset
     $thumb = $manager->getThumb('path/to/image.png', 123);
+```
 
 Generated thumbnail will have fallowing path:
 
@@ -140,6 +181,7 @@ It is possible to apply for thumbnails custom image transformations, supported b
 This can be archived by adding transformation to preset (see Presets section) or applying
 transformation inline:
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
     $transformation = new Imagine\Filter\Transformation();
     $transformation->flipVertically()->flipHorizontally();
@@ -148,6 +190,7 @@ transformation inline:
         ->setTransformation($transformation)
         ->setPreset('my_preset');
     $thumb = $manager->getThumb('path/to/image.png');
+```
 
 ### Imagine engines
 
@@ -159,6 +202,7 @@ By default Imagine plugin automatically selects first accessible engine (first I
 It's possible to force Imagine plugin to use selected one by defining Imagine object inside preset
 (see Preset section) or setting it inline:
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
     $imagine = new \\Imagine\\Gmagick\\Imagine();
 
@@ -166,6 +210,7 @@ It's possible to force Imagine plugin to use selected one by defining Imagine ob
         ->setImagine($imagine)
         ->setPreset('my_preset');
     $thumb = $manager->getThumb('path/to/image.png');
+```
 
 ## Thumbnail cache management
 
@@ -176,40 +221,50 @@ When "cleanup" term is used it means removing thumbnails, which source image was
 
 This routine is used internally for removing outdated thumbs for given image and preset.
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
     $manager->setModule('News');
     $manager->removePresetThumbs($imagePath, $objectId);
+```
 
 ### All thumbs for image
 
 This routine allows to remove all thumbs for given image (for example when image is deleted)
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
     $manager->setModule('News');
     $manager->removeImageThumbs($imagePath, $objectId); // module
+```
 
 ### All thumbs for object
 
 This routine allows to remove all thumbs for object (for example when object is deleted)
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
     $manager->setModule('News');
     $manager->removeObjectThumbs($objectId); // module
+```
 
 ### All thumbs for module
 
 This routine allows to perform "cleanup" for module thumbs
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
     $manager->setModule('News');
     $manager->cleanupModuleThumbs($force);
+```
 
 ### All thumbs
 
 This routine performs "cleanup" for all thumbs generated by Imagine
 
+```
     $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
     $manager->cleanupThumbs($force)
+```
 
 ## Presets
 
@@ -221,8 +276,10 @@ Both types of presets are handled by SystemPlugin_Imagine_Preset class.
 Preset allows to define:
 - width - thumbnail width in pixels
 - height - thumbnail height in pixels
-- mode - "inset" or "outset"
+- mode - "inset" or "outbound"
 - extension - file extension for thumbnails (jpg, png, gif; null for original file type)
+- options[jpeg_quality] - value between 0-100%, where 100% is best quality (default 75)
+- options[png_compression_level] - value between 0-9, where 0 is no compression (default 7)
 
 There are also special options  which allows to store in preset additional settings for thumbnail manager:
 - __module - module name for preset
@@ -236,15 +293,17 @@ There are also special options  which allows to store in preset additional setti
 
 ### Define own preset
 
+```
     $name = 'my_preset';
     $data = array(
         'width' => 100,
         'heigth' => 100,
-        'mode' => 'outset',
+        'mode' => 'outbound',
         '__module' => 'Foo',
         '__transformation' => $your_custom_transformations
     );
     $preset = new SystemPlugin_Imagine_Preset($name, $data);
+```
 
 Custom module preset should be stored inside module (presets are serializable).
 
