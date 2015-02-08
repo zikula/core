@@ -1,3 +1,7 @@
+# ----------------------------------------------------------------------
+# Purpose of file: block any web access to not allowed files
+#                  stored under the imagine thumbnails directory
+# ----------------------------------------------------------------------
 deny from all
 <FilesMatch "(?i)\.(png|gif|jpg|jpeg)$">
 order allow,deny

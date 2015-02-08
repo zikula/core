@@ -14,11 +14,17 @@
 /**
  * Available params:
  *  - image         (string)        Path to source image (required)
- *  - width         (int)           Thumbnail width in pixels (optional, default value based on 'default' preset)
- *  - height        (int)           Thumbnail width in pixels (optional, default value based on 'default' preset)
+ *  - width         (int)           Thumbnail width in pixels or 'auto' (optional, default value based on 'default' preset)
+ *  - height        (int)           Thumbnail width in pixels or 'auto' (optional, default value based on 'default' preset)
  *  - mode          (string)        Thumbnail mode; 'inset' or 'outbound' (optional, default 'inset')
+ *                                  In outbound mode auto width or height gives the same effect as inset
  *  - extension     (string)        File extension for thumbnails: jpg, png, gif; null for original file type
  *                                  (optional, default value based on 'default' preset)
+ *  - options       (array)         Options array given to the thumbnail Imagine method call.
+ *  - options[jpeg_quality]          
+ *                  (int)           Thumbnail jpeg quality in % [0-100], where 100% is best quality (optional, default value based on 'default' preset)
+ *  - options[png_compression_level] 
+ *                  (int)           Thumbnail png compression level [0-9], where 0 is no compression (optional, default value based on 'default' preset)
  *  - objectid      (string)        Unique signature for object, which owns this thumbnail (optional)
  *  - preset        (string|object) Name of preset defined in Imagine or custom preset passed as instance of
  *                                  SystemPlugin_Imagine_Preset; if given inline options ('width', 'heigth', 'mode'
@@ -33,7 +39,9 @@
  * Examples
  *
  * Basic usage with inline options:
- *  {thumb image='path/to/image.png' width=100 height=100 mode='inset' extension='jpg'}
+ *  {thumb image='path/to/image.png' width='100' height='100' mode='inset' extension='jpg'}
+ *  {thumb image='path/to/image.png' width='150' height='auto' mode='inset' extension='png'}
+ *  {thumb image='path/to/image.jpg' width='150' 'jpeg_quality'=50}
  *
  * Using preset define in Imagine plugin
  *  {thumb image='path/to/image.png' objectid='123' preset='my_preset'}
@@ -76,8 +84,8 @@ function smarty_function_thumb($params, Zikula_View $view)
         $preset = $manager->getPlugin()->getPreset($params['preset']);
     } else {
         $preset = array();
-        $preset['width'] = isset($params['width']) ? $params['width'] : null;
-        $preset['height'] = isset($params['height']) ? $params['height'] : null;
+        $preset['width'] = isset($params['width']) ? $params['width'] : 'auto';
+        $preset['height'] = isset($params['height']) ? $params['height'] : 'auto';
         $preset['mode'] = isset($params['mode']) ? $params['mode'] : null;
         $preset['extension'] = isset($params['extension']) ? $params['extension'] : null;
         $preset['options'] = isset($params['options']) ? $params['options'] : array();

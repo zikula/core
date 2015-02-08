@@ -30,7 +30,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
         return array(
             'displayname' => $this->__('Imagine'),
             'description' => $this->__('Provides Imagine image manipulation library'),
-            'version'     => '1.0.0'
+            'version'     => '0.6.2'
         );
     }
 
@@ -109,7 +109,12 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
         if ($event['modinfo']['name'] == 'ZikulaAdminModule') {
             // check thumb validity
             $lastCleanup = new DateTime($this->getVar('last_cleanup'));
-            $nextCleanup = $lastCleanup->setTime(0,0,0)->add(new DateInterval('P1D'));
+            $thumb_auto_cleanup_period = $this->getVar('thumb_auto_cleanup_period', 'P1D');
+            try {
+                $nextCleanup = $lastCleanup->setTime(0,0,0)->add(new DateInterval($thumb_auto_cleanup_period));
+            } catch (Exception $exception) {
+                throw $exception;
+            }
             $now = new DateTime('now');
             if ($now > $nextCleanup) {
                 $this->setVar('last_cleanup', $now->setTime(0,0,0)->format('Y-m-d H:i:s'));
@@ -167,6 +172,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
             'version' => $this->getMetaVersion(),
             'thumb_dir' => $this->getServiceId(),
             'thumb_auto_cleanup' => false,
+            'thumb_auto_cleanup_period' => 'P1D',
             'presets' => array(
                 'default' => new SystemPlugin_Imagine_Preset('default', array(
                     'width' => 100,

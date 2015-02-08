@@ -415,13 +415,24 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
         } else {
             $mode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
         }
+
+		// check for w/h autoscaling and scale to ratio
+		if ($preset['height']=='auto') {
+			$imageSize = @getimagesize($image->getRealPath());
+			$preset['height'] = round($imageSize[1]/$imageSize[0]*$preset['width']);
+		}
+		if ($preset['width']=='auto') {
+			$imageSize = @getimagesize($image->getRealPath());
+			$preset['width'] = round($imageSize[0]/$imageSize[1]*$preset['height']);
+		}
+		
         $size = new \Imagine\Image\Box($preset['width'], $preset['height']);
 
         try {
             $this->getTransformation()
                 ->apply($this->getImagine()->open($image->getRealPath()))
                 ->thumbnail($size, $mode)
-                ->save($image->getThumbRealPath(), $preset['options']);
+                ->save($image->getThumbRealPath(), $options);
         } catch (Exception $exception) {
             throw $exception;
         }

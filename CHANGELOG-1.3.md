@@ -4,7 +4,11 @@ CHANGELOG - ZIKULA 1.3.10
 - Added missing hook area registration for HTML blocks.
 - Show registration errors in current language.
 - Improved language detection when using short urls.
+- Fixed error messages with new module that is not compatible (#1641)
 - Corrected behaviour of CategorySelector if no category is selected.
+- Added optional loading of newer jQuery 1.11.2 with jquery-migrate (#2223)
+- Changed loading via pagevar to make sure prototype is always loaded before jQuery (#2170)
+- Updated Imagine lib to 0.6.2 and plugin is enhanced with width/height autoscale and jpg/png quality (#2174, #1644)
 
 CHANGELOG - ZIKULA 1.3.9
 ------------------------
