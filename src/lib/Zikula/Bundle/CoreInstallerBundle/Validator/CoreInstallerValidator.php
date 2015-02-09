@@ -33,7 +33,7 @@ class CoreInstallerValidator
                 "SHOW TABLES FROM $object[database_name] LIKE '%'";
             $tables = $dbh->query($sql);
             if ($tables->rowCount() > 0) {
-                $context->buildViolation(__('Error! The database exists and contain tables. Please delete all tables before proceeding or select a new database.'))
+                $context->buildViolation(__('Error! The database exists and contains tables. Please delete all tables before proceeding or select a new database.'))
                     ->addViolation()
                 ;
             }
