@@ -412,15 +412,8 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         if (is_array($linksorder) && !empty($linksorder)) {
             foreach ((array)$vars['links'] as $lang => $langlinks) {
                 foreach ($langlinks as $linkid => $link) {
-                    if (isset($linksorder[$linkid]['parentid']) && $linksorder[$linkid]['haschildren']) {
-                        // existing links
-                        $vars['links'][$lang][$linkid]['parentid'] = $linksorder[$linkid]['parentid'];
-                        $vars['links'][$lang][$linkid]['haschildren'] = $linksorder[$linkid]['haschildren'];
-                    } else {
-                        // set defaults for new links
-                        $vars['links'][$lang][$linkid]['parentid'] = null;
-                        $vars['links'][$lang][$linkid]['haschildren'] = false;
-                    }
+                    $vars['links'][$lang][$linkid]['parentid'] = isset($linksorder[$linkid]['parentid']) ? $linksorder[$linkid]['parentid'] : null;
+                    $vars['links'][$lang][$linkid]['haschildren'] = is_bool($linksorder[$linkid]['haschildren']) ? $linksorder[$linkid]['haschildren'] : false;
                 }
             }
         }

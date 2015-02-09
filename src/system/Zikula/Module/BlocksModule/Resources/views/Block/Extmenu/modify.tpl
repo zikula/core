@@ -102,7 +102,7 @@
             <span class="z-itemcell z-w10">
                 <input type="checkbox" id="links_{$thislanguage}_{$itemid}_active" name="links[{$thislanguage}][{$itemid}][active]"{if isset($item.active) && $item.active} checked="checked"{/if} value="1" />
                 {if $thislanguage eq $userlanguage}
-                    <button type="button" class="imagebutton-nofloat buttondelete" id="buttondelete_menuitemlist_{$itemid}">{img src='14_layer_deletelayer.png' modname='core' set='icons/extrasmall' __alt='Delete' __title='Delete'}</button>
+                    <button type="button" class="imagebutton-nofloat buttondelete" id="buttondelete_menuitemlist_{$itemid}"><i class="fa fa-trash-o fa-lg" title="{gt text='delete'}"></i></button>
                     (<span class="itemid">{$itemid}</span>)
                 {/if}
             </span>
@@ -141,7 +141,7 @@
             <span class="z-itemcell z-w10">
                 <input class="listinput" type="checkbox" id="links_{$thislanguage}_X_active" name="dummy[]" checked="checked" value="1" />
                 {if $thislanguage eq $userlanguage}
-                    <button type="button" class="imagebutton-nofloat buttondelete" id="buttondelete_menuitemlist_X">{img src='14_layer_deletelayer.png' modname='core' set='icons/extrasmall' __alt='Delete' __title='Delete'}</button>
+                    <button type="button" class="imagebutton-nofloat buttondelete" id="buttondelete_menuitemlist_X"><i class="fa fa-trash-o fa-lg" title="{gt text='delete'}"></i></button>
                     (<span class="itemid"></span>)
                 {/if}
             </span>
