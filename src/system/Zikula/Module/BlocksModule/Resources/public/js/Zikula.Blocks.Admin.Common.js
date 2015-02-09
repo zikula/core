@@ -9,14 +9,16 @@
             e.preventDefault();
             var a = $(this);
             var bid = a.data('bid');
-            a.after(' <i id="spin'+bid+'" class="fa fa-cog fa-spin"></i>');
+
+            a.after('<i id="spin' + bid + '" class="fa fa-cog fa-spin"></i>');
+
             $.ajax({
                 url: Routing.generate('zikulablocksmodule_ajax_toggleblock'),
                 data: {
                     bid: bid
                 },
                 success: function(response) {
-                    $('#spin'+bid).remove();
+                    $('#spin' + bid).remove();
                     // toggle label
                     a.parent().find('a').toggleClass('hide');
                 }
