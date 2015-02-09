@@ -994,8 +994,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $isLoggedIn = UserUtil::isLoggedIn();
 
         // we do not check permissions for guests here (see #1874)
-        if ((!$isLoggedIn/* && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)*/)
-                || ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
+        if ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
 
@@ -1408,8 +1407,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $isLoggedIn = UserUtil::isLoggedIn();
 
         // we do not check permissions for guests here (see #1874)
-        if ((!$isLoggedIn/* && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)*/)
-                || ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
+        if ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
 
@@ -1520,8 +1518,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $isLoggedIn = UserUtil::isLoggedIn();
 
         // we do not check permissions for guests here (see #1874)
-        if ((!$isLoggedIn/* && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)*/)
-                || ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
+        if ($isLoggedIn && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
 
@@ -1580,7 +1577,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         if (!empty($reginfo['approved_by'])) {
             // The registration is now both verified and approved, time to make an honest user out of him.
-            $reginfo = $this->createUser($reginfo);
+            $reginfo = $this->createUser($reginfo, true, false);
         }
 
         return $reginfo;
@@ -1657,7 +1654,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         }
 
         if ($reginfo['isverified']) {
-            $reginfo = $this->createUser($reginfo);
+            $reginfo = $this->createUser($reginfo, true, false);
         }
 
         return $reginfo;
