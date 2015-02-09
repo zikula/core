@@ -413,7 +413,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
             foreach ((array)$vars['links'] as $lang => $langlinks) {
                 foreach ($langlinks as $linkid => $link) {
                     $vars['links'][$lang][$linkid]['parentid'] = isset($linksorder[$linkid]['parentid']) ? $linksorder[$linkid]['parentid'] : null;
-                    $vars['links'][$lang][$linkid]['haschildren'] = is_bool($linksorder[$linkid]['haschildren']) ? $linksorder[$linkid]['haschildren'] : false;
+                    $vars['links'][$lang][$linkid]['haschildren'] = isset($linksorder[$linkid]['haschildren']) && is_bool($linksorder[$linkid]['haschildren']) ? $linksorder[$linkid]['haschildren'] : false;
                 }
             }
         }
