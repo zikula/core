@@ -1,4 +1,7 @@
 jQuery.noConflict();
+/*
+ Fix provided by http://softec.lu/site/DevelopersCorner/BootstrapPrototypeConflict
+ */
 if (Prototype.BrowserFeatures.ElementExtensions) {
     var disablePrototypeJS = function (method, pluginsToDisable) {
             var handler = function (event) {
