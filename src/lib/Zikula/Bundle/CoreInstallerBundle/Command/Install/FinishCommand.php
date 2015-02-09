@@ -16,11 +16,10 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command\Install;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use \Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
-use Zikula_Request_Http as Request;
 
-class FinishCommand extends ContainerAwareCommand
+class FinishCommand extends AbstractCoreInstallerCommand
 {
     /**
      * {@inheritdoc}
@@ -40,7 +39,7 @@ class FinishCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->bootstrap();
+        $this->bootstrap(false);
         $output->writeln("*** INSTALLING ***");
         // install!
         $ajaxInstallerStage = new AjaxInstallerStage();
@@ -51,17 +50,5 @@ class FinishCommand extends ContainerAwareCommand
             $message = $status ? "<info>" . $stage[AjaxInstallerStage::SUCCESS] . "</info>" : "<error>" . $stage[AjaxInstallerStage::FAIL] . "</error>";
             $output->writeln($message);
         }
-    }
-
-    private function bootstrap()
-    {
-        $kernel = $this->getContainer()->get('kernel');
-        $loader = require($kernel->getRootDir() . '/autoload.php');
-        \ZLoader::register($loader);
-        define('_ZINSTALLVER', \Zikula_Core::VERSION_NUM);
-
-        // Fake request
-        $request = Request::create('http://localhost/install');
-        $this->getContainer()->set('request', $request);
     }
 }
