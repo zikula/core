@@ -51,7 +51,7 @@
                 </div>
 
                 <div id="block_placement_advanced" style="display: none">
-                    <p class="alert alert-info">{gt text='To restrict the block's visibility to certain modules and module functions, you can create filter(s) and select the module, function type, function name and function arguments that you want to apply to the filter. All fields are optional. If you omit a field, it will act as an *. '}</p>
+                    <p class="alert alert-info">{gt text='To restrict the block\'s visibility to certain modules and module functions, you can create filter(s) and select the module, function type, function name and function arguments that you want to apply to the filter. All fields are optional. If you omit a field, it will act as an *. '}</p>
                     <p><a id="appendfilter" class="fa fa-plus" href="javascript:void(0);">{gt text='Create new filter'}</a></p>
                     <div>
                         <ol id="placementfilterslist" class="z-itemlist">
