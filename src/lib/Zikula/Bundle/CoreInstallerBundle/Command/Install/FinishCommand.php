@@ -40,6 +40,12 @@ class FinishCommand extends AbstractCoreInstallerCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->bootstrap(false);
+
+        if ($this->getContainer()->getParameter('installed') == true) {
+            $output->writeln("<error>" . __('Zikula already appears to be installed.') . "</error>");
+            return;
+        }
+
         $output->writeln("*** INSTALLING ***");
         // install!
         $ajaxInstallerStage = new AjaxInstallerStage();
