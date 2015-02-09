@@ -91,6 +91,23 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
         // test the DB connection works or just set lazy
         try {
             if ($lazyConnect) {
+                $replaceValues = array(
+                    ":" => "%3a",
+                    "/" => "%2f",
+                    "@" => "%40",
+                    "+" => "%2b",
+                    "(" => "%28",
+                    ")" => "%29",
+                    "?" => "%3f",
+                    "=" => "%3d",
+                    "&" => "%26"
+                );
+                $connectionInfo['dbdriver'] = strtr($connectionInfo['dbdriver'], $replaceValues);
+                $connectionInfo['user']     = strtr($connectionInfo['user'], $replaceValues);
+                $connectionInfo['password'] = strtr($connectionInfo['password'], $replaceValues);
+                $connectionInfo['host']     = strtr($connectionInfo['host'], $replaceValues);
+                $connectionInfo['dbname']   = strtr($connectionInfo['dbname'], $replaceValues);
+
                 $dsn = "$connectionInfo[dbdriver]://$connectionInfo[user]:$connectionInfo[password]@$connectionInfo[host]/$connectionInfo[dbname]";
                 $connection = Doctrine_Manager::connection($dsn, $name);
             } else {
