@@ -511,7 +511,7 @@ class JCSSUtil
                     'require' => array('jquery'),
                 ),
             );
-            $scripts = array_merge($jQueryUncompressed, $jQueryUiUncompressed, $prototypeUncompressed, $livepipeUncompressed, array_slice($scripts, 5));
+            $scripts = array_merge($prototypeUncompressed, $jQueryUncompressed, $jQueryUiUncompressed, $livepipeUncompressed, array_slice($scripts, 5));
         }
 
         return $scripts;
