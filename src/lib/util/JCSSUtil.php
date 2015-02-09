@@ -235,7 +235,7 @@ class JCSSUtil
             }
             $params = http_build_query($params, '', '&');
 
-            return 'mo2json.php?' . $params;
+            return System::getBaseUri() . '/mo2json.php?' . $params;
         }
 
         return false;
