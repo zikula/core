@@ -112,8 +112,8 @@ var ZikulaCategories = {};
         }
 
         $.ajax({
-            //url: Routing.generate('zikulacategoriesmodule_ajax_' + action),
-            url: 'index.php?module=Categories&type=ajax&func=' + action,
+            type: "POST",
+            url: Routing.generate('zikulacategoriesmodule_ajax_' + action),
             data: pars
         }).success(function(result) {
             performCategoryContextMenuActionCallback(result.data);
@@ -165,10 +165,14 @@ var ZikulaCategories = {};
                         return false;
                     }
 
-                    var pars = ZikulaCategories.Form.serialize(true);
+                    var pars = {};
+                    $.each($(":input, :hidden").serializeArray(), function(i, field) {
+                        pars[field.name] = field.value;
+                    });
                     pars.mode = (mode == 'edit') ? 'edit' : 'new';
 
                     $.ajax({
+                        type: "POST",
                         url: Routing.generate('zikulacategoriesmodule_ajax_save'),
                         data: pars
                     }).success(function(result) {
@@ -243,6 +247,7 @@ var ZikulaCategories = {};
                 case 'DeleteAndMoveSubs':
                     if (!$('#subcat_move').length) {
                         $.ajax({
+                            type: "POST",
                             url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),
                             data: {
                                 cid: $(node).attr('id').replace('node_', '')
@@ -334,6 +339,7 @@ var ZikulaCategories = {};
         });
 
         $.ajax({
+            type: "POST",
             url: Routing.generate('zikulacategoriesmodule_ajax_resequence'),
             data: {
                 'data': elements
@@ -384,7 +390,7 @@ var ZikulaCategories = {};
                 'default': {
                     'icon': 'fa fa-folder'
                 }
-            },
+            }
         });
 
         treeElem.find('li.leaf i.jstree-icon.jstree-themeicon')
