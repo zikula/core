@@ -1,7 +1,5 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-var ZikulaCategories = {};
-
 ( function($) {
 
     var treeElem;
@@ -75,7 +73,7 @@ var ZikulaCategories = {};
         }
 
         return actions;
-    };
+    }
 
     function performCategoryContextMenuAction(node, action, extrainfo) {
         var allowedActions = ['edit', 'delete', 'deleteandmovesubs', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'];
@@ -122,7 +120,7 @@ var ZikulaCategories = {};
         });
 
         return true;
-    };
+    }
 
     function performCategoryContextMenuActionCallback(data) {
         var node = $('#node_' + data.cid);
@@ -212,7 +210,7 @@ var ZikulaCategories = {};
         }
 
         return true;
-    };
+    }
 
     function getCategoryDeleteMenuAction(node) {
         var subCats, msg;
@@ -273,7 +271,7 @@ var ZikulaCategories = {};
 
         $('#categoryDeleteModal').modal();
         $('#categoryDeleteModal .modal-footer button[value=Cancel]').focus();
-    };
+    }
 
     function openCategoryEditForm(data, callback) {
         $('#categories_ajax_form_container').show();
@@ -281,16 +279,16 @@ var ZikulaCategories = {};
 
         $('#categoryEditModal').modal();
         $('#categoryEditModal .modal-footer button[value=Cancel]').focus();
-    };
+    }
 
     function updateCategoryEditForm(data) {
         $('#categories_ajax_form_container').replaceWith(data);
         $('#categories_ajax_form_container').show();
-    };
+    }
 
     function closeCategoryEditForm() {
         $('#categoryEditModal').modal('hide');
-    };
+    }
 
     var nodesDisabledForDrop = [];
 
@@ -309,12 +307,10 @@ var ZikulaCategories = {};
                 });
             }
         }
-    };
+    }
 
     function resequenceCategories(event, data) {
         var node = data.node;
-        var parentId = data.parent;
-        var parentNode = treeElem.jstree('get_node', parentId, false);
 
         // do not allow inserts on root level
         if ($(node).parent('li') === undefined) {
@@ -326,15 +322,11 @@ var ZikulaCategories = {};
         }
 
         var elements = [];
-        $('#categoryTreeContainer li').each(function(index) {
-            var elem = $(this);
-            var catId = elem.attr('id').replace('node_', '');
-
-            if (catId != '') {
-                elements[catId] = {
-                    lineno: index,
-                    parent: $(parentNode).attr('id').replace('node_', '')
-                };
+        // iterate all the nodes and prepare for POST
+        $.each(treeElem.jstree('get_json', '#', {'flat':true}), function (index, node) {
+            elements[node.id.replace('node_', '')] = {
+                lineno: index,
+                parent: node.parent.replace('node_', '') != '#' ? node.parent.replace('node_', '') : null
             }
         });
 
@@ -342,7 +334,7 @@ var ZikulaCategories = {};
             type: "POST",
             url: Routing.generate('zikulacategoriesmodule_ajax_resequence'),
             data: {
-                'data': elements
+                tree: elements
             }
         }).success(function(result) {
             var data = result.data;
@@ -351,7 +343,7 @@ var ZikulaCategories = {};
         });
 
         return true;
-    };
+    }
 
     $(document).ready(function() {
         treeElem = $('#categoryTreeContainer .treewraper');

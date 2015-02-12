@@ -52,16 +52,17 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $data  = json_decode($request->request->get('data'), true);
-        $cats = CategoryUtil::getSubCategories(1, true, true, true, true, true, '', 'id');
+        $tree = $request->request->get('tree');
 
-        foreach ($cats as $k => $cat) {
-            $cid = $cat['id'];
-            if (isset($data[$cid])) {
-                $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
-                $category['sort_value'] = $data[$cid]['lineno'];
-                $category['parent'] = $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $data[$cid]['parent']);
+        foreach ($tree as $catId => $catData) {
+            if (empty($catData)) {
+                continue;
             }
+            /** @var \Zikula\Module\CategoriesModule\Entity\CategoryEntity $category */
+            $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catId);
+            $category->setSort_value($catData['lineno']);
+            $parent = !empty($catData['parent']) ? $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $catData['parent']) : null;
+            $category->setParent($parent);
         }
 
         $this->entityManager->flush();
