@@ -343,7 +343,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         $cid = $request->request->get('cid');
-        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $cid);
+        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
         $cat['status'] = 'A';
         $this->entityManager->flush();
 
@@ -374,7 +374,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         $cid = $request->request->get('cid');
-        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $cid);
+        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
         $cat['status'] = 'I';
         $this->entityManager->flush();
 
