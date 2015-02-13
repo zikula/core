@@ -1021,6 +1021,9 @@ class CategoryUtil
         } else {
             $category['class'][] = 'z-tree-fixedparent';
         }
+        if (!$category['active']) {
+            $category['class'][] = 'z-tree-unactive';
+        }
         $category['class'] = implode(' ', $category['class']);
 
         if (!$category['is_leaf']) {
