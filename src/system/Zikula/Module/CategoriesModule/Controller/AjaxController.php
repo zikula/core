@@ -473,7 +473,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'nullParent' => $category['parent']->getId(),
             'withWraper' => false,
         );
-        $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
+        $node = CategoryUtil::getCategoryTreeJqueryJS((array)$categories, true, true, $options);
 
         $leafStatus = array(
             'leaf' => array(),
