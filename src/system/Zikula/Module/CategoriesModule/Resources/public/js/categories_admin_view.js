@@ -430,10 +430,12 @@
 
         // Tooltips
         treeElem.on('hover_node.jstree', function(e, data) {
-            $('#' + data.node.id + '_anchor').tooltip({
+            var anchor = $('#' + data.node.id + '_anchor');
+            anchor.tooltip({
                 placement: 'right',
                 html: true
             });
+            anchor.tooltip('show');
         })
     });
 })(jQuery);
