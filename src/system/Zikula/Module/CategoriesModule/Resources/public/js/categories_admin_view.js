@@ -3,7 +3,6 @@
 ( function($) {
 
     var treeElem;
-    var lastContextMenuClickEventTargetLink;
 
     function getCategoryContextMenuActions(node) {
         var actions = {
@@ -59,17 +58,12 @@
             }
         };
 
-        // remove unwanted actions dynamically
-        if (lastContextMenuClickEventTargetLink !== null && typeof lastContextMenuClickEventTargetLink != 'undefined') {
-            if (lastContextMenuClickEventTargetLink.hasClass('z-tree-unactive')) {
-                delete actions.deactivateItem;
-            } else {
-                delete actions.activateItem;
-            }
-            if (lastContextMenuClickEventTargetLink.closest('li').hasClass('leaf')/*
-                || lastContextMenuClickEventTargetLink.closest('li').hasClass('jstree-leaf')*/) {
-                delete actions.addItemInto;
-            }
+        var currentNode = treeElem.jstree('get_node', node, true);
+        // disable unwanted context menu items
+        if (currentNode.closest('li').hasClass('z-tree-unactive') || currentNode.hasClass('z-tree-unactive')) {
+            actions.deactivateItem._disabled = true;
+        } else {
+            actions.activateItem._disabled = true;
         }
 
         return actions;
@@ -138,12 +132,12 @@
                 reinitTreeNode($(parentNodeId), data);
                 break;
             case 'activate':
-                node.children('a').removeClass('z-tree-unactive');
-                treeElem.jsTree(true).enable_node(node);
+                node.removeClass('z-tree-unactive');
+                //treeElem.jsTree(true).enable_node(node);
                 break;
             case 'deactivate':
-                node.children('a').addClass('z-tree-unactive');
-                treeElem.jsTree(true).disable_node(node);
+                node.addClass('z-tree-unactive');
+                //treeElem.jsTree(true).disable_node(node);
                 break;
             case 'copy':
                 var newNode = 'node_' + data.copycid;
@@ -419,14 +413,6 @@
                 var v = $('#categoryTreeSearchTerm').val();
                 treeElem.jstree(true).search(v);
             }, 250);
-        });
-
-        // Context menu
-        treeElem.on('show_contextmenu.jstree', function(event, node, x, y) {
-            lastContextMenuClickEventTargetLink = $(event.target).closest('a');
-            if (!lastContextMenuClickEventTargetLink.length) {
-                event.stopPropagation();
-            }
         });
 
         // Drag & drop
