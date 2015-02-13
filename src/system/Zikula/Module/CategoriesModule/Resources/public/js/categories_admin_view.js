@@ -121,11 +121,11 @@
 
         switch (data.action) {
             case 'delete':
-                treeElem.jsTree(true).delete_node(node);
-                //treeElem.jstree(true).redraw();
+                treeElem.jstree("delete_node", node);
+                treeElem.jstree("redraw");
                 break;
             case 'deleteandmovesubs':
-                treeElem.jsTree(true).delete_node(node);
+                treeElem.jstree("delete_node", node);
 
                 var parentNodeId = 'node_' + data.parent;
                 $('#' + parentNodeId).replaceWith(data.node);
@@ -133,11 +133,9 @@
                 break;
             case 'activate':
                 node.removeClass('z-tree-unactive');
-                //treeElem.jsTree(true).enable_node(node);
                 break;
             case 'deactivate':
                 node.addClass('z-tree-unactive');
-                //treeElem.jsTree(true).disable_node(node);
                 break;
             case 'copy':
                 var newNode = 'node_' + data.copycid;
@@ -287,7 +285,7 @@
     var nodesDisabledForDrop = [];
 
     function reinitTreeNode(node, data) {
-        treeElem.jstree(true).redraw();
+        treeElem.jstree("redraw");
 
         if (data.leafstatus) {
             if (data.leafstatus.leaf) {
