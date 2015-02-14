@@ -97,8 +97,7 @@
                 break;
             case 'addchild':
                 pars.mode = 'new';
-                var parentId = treeElem.jstree('get_parent', node);
-                pars.parent = parentId.replace('node_', '');
+                pars.parent = pars.cid;
                 action = 'edit';
                 break;
         }
@@ -118,6 +117,7 @@
 
     function performCategoryContextMenuActionCallback(data) {
         var node = $('#node_' + data.cid);
+        var parentNodeId = 'node_' + data.parent;
 
         switch (data.action) {
             case 'delete':
@@ -126,8 +126,6 @@
                 break;
             case 'deleteandmovesubs':
                 treeElem.jstree("delete_node", node);
-
-                var parentNodeId = 'node_' + data.parent;
                 $('#' + parentNodeId).replaceWith(data.node);
                 reinitTreeNode($(parentNodeId), data);
                 break;
