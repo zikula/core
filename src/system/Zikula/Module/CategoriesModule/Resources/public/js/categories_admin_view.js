@@ -302,10 +302,6 @@
     function resequenceCategories(event, data) {
         var node = data.node;
 
-        // do not allow inserts on root level
-        if ($(node).parent('li') === undefined) {
-            return false;
-        }
         // do not allow inserts on forbidden leaf nodes
         if ($.inArray($(node).attr('id'), nodesDisabledForDrop) > -1) {
             return false;
@@ -314,10 +310,12 @@
         var elements = [];
         // iterate all the nodes and prepare for POST
         $.each(treeElem.jstree('get_json', '#', {'flat':true}), function (index, node) {
-            elements[node.id.replace('node_', '')] = {
+            elements.push({
+                id: node.id.replace('node_', ''),
+                name: node.text, // present for debugging purposes
                 lineno: index,
                 parent: node.parent.replace('node_', '') != '#' ? node.parent.replace('node_', '') : null
-            }
+            });
         });
 
         $.ajax({

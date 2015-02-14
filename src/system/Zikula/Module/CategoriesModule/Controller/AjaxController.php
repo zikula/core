@@ -54,15 +54,23 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $tree = $request->request->get('tree');
 
-        foreach ($tree as $catId => $catData) {
+        foreach ($tree as $catData) {
             if (empty($catData)) {
                 continue;
             }
             /** @var \Zikula\Module\CategoriesModule\Entity\CategoryEntity $category */
-            $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catId);
+            $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catData['id']);
             $category->setSort_value($catData['lineno']);
-            $parent = !empty($catData['parent']) ? $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $catData['parent']) : null;
-            $category->setParent($parent);
+            if (!empty($catData['parent'])) {
+                /** @var \Zikula\Module\CategoriesModule\Entity\CategoryEntity $parent */
+                $parent = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catData['parent']);
+                $category->setParent($parent);
+                // reset paths
+                $category->setPath(GenericUtil::processCategoryPath($parent->getPath(), $category->getName()));
+                $category->setIPath(GenericUtil::processCategoryIPath($parent->getIPath(), $category->getId()));
+            } else {
+                $category->setParent(null);
+            }
         }
 
         $this->entityManager->flush();
