@@ -71,6 +71,7 @@
 
     function performCategoryContextMenuAction(node, action, extrainfo) {
         var allowedActions = ['edit', 'delete', 'deleteandmovesubs', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'];
+        var parentId;
         if (!$.inArray(action, allowedActions) == -1) {
             return false;
         }
@@ -86,12 +87,12 @@
                 pars.parent = extrainfo;
                 break;
             case 'copy':
-                var parentId = treeElem.jstree('get_parent', node);
+                parentId = treeElem.jstree('get_parent', node);
                 pars.parent = parentId.replace('node_', '');
                 break;
             case 'addafter':
                 pars.mode = 'new';
-                var parentId = treeElem.jstree('get_parent', node);
+                parentId = treeElem.jstree('get_parent', node);
                 pars.parent = parentId.replace('node_', '');
                 action = 'edit';
                 break;
@@ -226,11 +227,12 @@
         $('#categoryDeleteModal .modal-footer button').click(function(event) {
             event.preventDefault();
             var buttonValue = $(this).val();
+            var deleteModal = $('#categoryDeleteModal');
 
             switch (buttonValue) {
                 case 'Delete':
                     performCategoryContextMenuAction(node, 'delete');
-                    $('#categoryDeleteModal').modal('hide');
+                    deleteModal.modal('hide');
                     break;
                 case 'DeleteAndMoveSubs':
                     if (!$('#subcat_move').length) {
@@ -255,7 +257,7 @@
                     }
                     break;
                 default:
-                    $('#categoryDeleteModal').modal('hide');
+                    deleteModal.modal('hide');
             }
         });
 
@@ -272,8 +274,7 @@
     }
 
     function updateCategoryEditForm(data) {
-        $('#categories_ajax_form_container').replaceWith(data);
-        $('#categories_ajax_form_container').show();
+        $('#categories_ajax_form_container').replaceWith(data).show();
     }
 
     function closeCategoryEditForm() {
@@ -373,15 +374,23 @@
             }
         });
 
-        treeElem.find('li.leaf i.jstree-icon.jstree-themeicon')
-                .removeClass('fa-folder').addClass('fa-leaf')
-                .hide();
+        treeElem.on('ready.jstree', function(e) {
+            treeElem
+                // hide folder icons for leaf nodes
+                .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
+                // use folder-open icon for already open nodes
+                .find('li.jstree-open > a.z-tree-fixedparent > i.fa-folder').removeClass('fa-folder').addClass('fa-folder-open');
+        });
         treeElem.on('open_node.jstree', function(e, data) {
             if (data.instance.is_leaf(data.node)) {
                 return;
             }
-            $('#' + data.node.id).find('i.jstree-icon.jstree-themeicon').first()
-                .removeClass('fa-folder').addClass('fa-folder-open');
+            $('#' + data.node.id)
+                // hide the folder icons
+                .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
+                // replace folder with folder-open
+                .find('i.jstree-icon.jstree-themeicon').first()
+                    .removeClass('fa-folder').addClass('fa-folder-open');
         });
         treeElem.on('close_node.jstree', function(e, data) {
             if (data.instance.is_leaf(data.node)) {
