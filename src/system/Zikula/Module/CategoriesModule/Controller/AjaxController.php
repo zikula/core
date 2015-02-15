@@ -52,15 +52,24 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             return new ForbiddenResponse($this->__('No permission for this action'));
         }
 
-        $data  = json_decode($request->request->get('data'), true);
-        $cats = CategoryUtil::getSubCategories(1, true, true, true, true, true, '', 'id');
+        $tree = $request->request->get('tree');
 
-        foreach ($cats as $k => $cat) {
-            $cid = $cat['id'];
-            if (isset($data[$cid])) {
-                $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
-                $category['sort_value'] = $data[$cid]['lineno'];
-                $category['parent'] = $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $data[$cid]['parent']);
+        foreach ($tree as $catData) {
+            if (empty($catData)) {
+                continue;
+            }
+            /** @var \Zikula\Module\CategoriesModule\Entity\CategoryEntity $category */
+            $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catData['id']);
+            $category->setSort_value($catData['lineno']);
+            if (!empty($catData['parent'])) {
+                /** @var \Zikula\Module\CategoriesModule\Entity\CategoryEntity $parent */
+                $parent = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $catData['parent']);
+                $category->setParent($parent);
+                // reset paths
+                $category->setPath(GenericUtil::processCategoryPath($parent->getPath(), $category->getName()));
+                $category->setIPath(GenericUtil::processCategoryIPath($parent->getIPath(), $category->getId()));
+            } else {
+                $category->setParent(null);
             }
         }
 
@@ -342,7 +351,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         $cid = $request->request->get('cid');
-        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $cid);
+        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
         $cat['status'] = 'A';
         $this->entityManager->flush();
 
@@ -373,7 +382,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         $cid = $request->request->get('cid');
-        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryRegistryEntity', $cid);
+        $cat = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
         $cat['status'] = 'I';
         $this->entityManager->flush();
 
@@ -472,7 +481,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'nullParent' => $category['parent']->getId(),
             'withWraper' => false,
         );
-        $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
+        $node = CategoryUtil::getCategoryTreeJqueryJS((array)$categories, true, true, $options);
 
         $leafStatus = array(
             'leaf' => array(),
