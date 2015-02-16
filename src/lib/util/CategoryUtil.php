@@ -968,6 +968,33 @@ class CategoryUtil
         return $tree->getJqueryHtml();
     }
 
+    public static function getJsTreeNodeFromCategory(\Zikula\Module\CategoriesModule\Entity\CategoryEntity $category)
+    {
+        return array(
+            'id' => 'node_' . $category->getId(),
+            'text'=> $category->getDisplay_name(ZLanguage::getLanguageCode()),
+            'icon' => $category->getIs_leaf() ? false : 'fa fa-folder',
+            'state' => array(
+                'open' => false,
+                'disabled' => false,
+                'selected' => false,
+            ),
+            'children' => self::getJsTreeNodeFromCategoryArray($category->getChildren()),
+            'li_attr' => array(),
+            'a_attr' => array()
+        );
+    }
+
+    public static function getJsTreeNodeFromCategoryArray(array $categories)
+    {
+        $result = array();
+        foreach ($categories as $category) {
+            $result[] = self::getJsTreeNodeFromCategory($category);
+        }
+
+        return $result;
+    }
+
     /**
      * Prepare category for the tree menu.
      *
