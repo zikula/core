@@ -129,7 +129,7 @@
         switch (data.action) {
             case 'delete':
                 treeElem.jstree("delete_node", node);
-                treeElem.jstree("redraw");
+                //treeElem.jstree("redraw");
                 break;
             case 'deleteandmovesubs':
                 treeElem.jstree("delete_node", node);
@@ -207,8 +207,8 @@
                                     newParent = $('<ul>').attr({ class: 'tree' });
                                     relNode.append(newParent);
                                 }
-                                newParent.append(data.node);
-                                var node = $('#node_' + data.cid);
+                                var newNode = treeElem.jstree(true).create_node(newParent, data.node[0]);
+                                var node = $('#'+newNode);
                                 reinitTreeNode(node, data);
                             }
                             closeCategoryEditForm();
@@ -308,8 +308,6 @@
     var nodesDisabledForDrop = [];
 
     function reinitTreeNode(node, data) {
-        treeElem.jstree("redraw");
-
         if (data.leafstatus) {
             if (data.leafstatus.leaf) {
                 // add elements
