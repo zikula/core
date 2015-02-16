@@ -155,6 +155,7 @@
                     }
 
                     var pars = {};
+                    // @todo this is not working for the attribute name/value arrays
                     $.each($(":input, :hidden").serializeArray(), function(i, field) {
                         pars[field.name] = field.value;
                     });
@@ -267,6 +268,7 @@
 
     function openCategoryEditForm(data, callback) {
         $('#categories_ajax_form_container').show();
+        ZikulaCategories.init();
         $('#categoryEditModal .modal-footer button').unbind('click').click(callback);
 
         $('#categoryEditModal').modal();

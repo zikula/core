@@ -10,13 +10,13 @@
         <tr>
             <td><input type="text" name="attribute_name[]" id="new_attribute_name" value="" /></td>
             <td><input type="text" name="attribute_value[]" id="new_attribute_value" value="" size="50" /></td>
-            <td><input type="image" id="category_attributes_add" title="{gt text='Add'}" src="{$baseurl}images/icons/extrasmall/edit_add.png"/></td>
+            <td><a href="#" id="category_attributes_add" title="{gt text='Add'}"><i class="fa fa-plus-square fa-lg text-success"></i></a></td>
         </tr>
         {foreach key='name' item='value' from=$attributes}
         <tr>
             <td><input type="text" name="attribute_name[]" value="{$name}" /></td>
             <td><input type="text" name="attribute_value[]" value="{$value}" size="50" /></td>
-            <td><input type="image" class="category_attributes_remove" title="{gt text='Delete'}" src="{$baseurl}images/icons/extrasmall/edit_remove.png"/></td>
+            <td><a href="#" class="category_attributes_remove" title="{gt text='Delete'}"><i class="fa fa-minus-square fa-lg text-danger"></i></a></td>
         </tr>
         {/foreach}
     </tbody>

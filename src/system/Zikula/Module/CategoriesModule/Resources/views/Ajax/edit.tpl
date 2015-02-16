@@ -92,15 +92,15 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend><a class="categories_collapse_control" href="#">{gt text='Attributes'}</a></legend>
-            <div class="categories_collapse_details">
+            <legend><a href="#category-attributes" data-toggle="collapse">{gt text='Attributes'} <i class="fa fa-expand"></i></a></legend>
+            <div class="collapse" id="category-attributes">
                 {include file='editattributes.tpl'}
             </div>
         </fieldset>
         {if $mode eq 'edit'}
         <fieldset>
-            <legend><a class="categories_collapse_control" href="#">{gt text='Meta data'}</a></legend>
-            <div class="categories_collapse_details">
+            <legend><a href="#category-metadata" data-toggle="collapse">{gt text='Meta data'} <i class="fa fa-expand"></i></a></legend>
+            <div class="collapse" id="category-metadata">
                 <div class="form-group">
                     <label class="col-lg-3 control-label">{gt text='Internal ID'}</label>
                     <div class="col-lg-9">

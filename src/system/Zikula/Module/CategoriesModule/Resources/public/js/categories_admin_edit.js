@@ -5,35 +5,23 @@ var ZikulaCategories = {};
 ( function($) {
 
     $(document).ready(function() {
+        ZikulaCategories.init();
+    });
+
+    ZikulaCategories.init = function() {
         if ($('#category_attributes_add').length > 0) {
             ZikulaCategories.InitAttributes();
         }
-        ZikulaCategories.InitCollapse();
-    });
-
-    ZikulaCategories.InitCollapse = function() {
-        $('.categories_collapse_control')
-            .click(ZikulaCategories.ClickCollapse)
-            .addClass('z-toggle-link')
-            .each(function(index) {
-                var details = $(this).parent('legend').next('.categories_collapse_details');
-                if (details && details.is(':visible')) {
-                    details.removeClass('z-toggle-link-open').hide();
-                }
-            });
+        $('a[data-toggle]').click(ZikulaCategories.categoriesToggleHandler);
     };
 
-    ZikulaCategories.ClickCollapse = function(event) {
-        event.preventDefault();
-        var collapse, details;
-
-        collapse = $(event.target);
-        details = collapse.parent('legend').next('.categories_collapse_details');
-
-        if (details.hasClass('z-toggle-link-open')) {
-            details.removeClass('z-toggle-link-open').hide();
-        } else {
-            details.addClass('z-toggle-link-open').show();
+    ZikulaCategories.categoriesToggleHandler = function(e) {
+        e.preventDefault();
+        var icon = $(this).children('i');
+        if (icon.hasClass('fa-expand')) {
+            icon.removeClass('fa-expand').addClass('fa-compress');
+        } else if (icon.hasClass('fa-compress')) {
+            icon.removeClass('fa-compress').addClass('fa-expand');
         }
     };
 
@@ -44,11 +32,13 @@ var ZikulaCategories = {};
 
     ZikulaCategories.AddAttribute = function(event) {
         event.preventDefault();
-        if ($('#new_attribute_name').val() == '' || $('#new_attribute_value').val() == '') {
+        var newAttrName = $('#new_attribute_name');
+        var newAttrValue = $('#new_attribute_value');
+        if (newAttrName.val() == '' || newAttrValue.val() == '') {
             return false;
         }
 
-        var table, tr, tbody, newRow;
+        var tr, tbody, newRow;
 
         tr = $(event.target).parent('tr');
         tbody = tr.parent('tbody');
@@ -56,21 +46,22 @@ var ZikulaCategories = {};
 
         var newTd1 = $('<td>')
             .append($('<input>')
-                .attr({ name: 'attribute_name[]', value: $('#new_attribute_name').val() })
+                .attr({ name: 'attribute_name[]', value: newAttrName.val() })
             );
-        $('#new_attribute_name').val('');
+        newAttrName.val('');
         newRow.append(newTd1);
 
         var newTd2 = $('<td>')
             .append($('<input>')
-                .attr({ name: 'attribute_value[]', value: $('#new_attribute_value').val(), size: 50 })
+                .attr({ name: 'attribute_value[]', value: newAttrValue.val(), size: 50 })
             );
-        $('#new_attribute_value').val('');
+        newAttrValue.val('');
         newRow.append(newTd2);
 
         var newTd3 = $('<td>')
-            .append($('<input>')
-                .attr({ type: 'image', class: 'category_attributes_remove', src: Zikula.Config.baseURL + 'images/icons/extrasmall/edit_remove.png' })
+            .append($('<a>')
+                .attr({ href: '#', class: 'category_attributes_remove', title: /*Zikula.__(*/'Delete'/*)*/ })
+                .html('<i class="fa fa-minus-square fa-lg text-danger"></i>')
             );
         newRow.append(newTd3);
 
@@ -80,12 +71,13 @@ var ZikulaCategories = {};
         // reinitialise delete buttons
         $('.category_attributes_remove').unbind('click').click(ZikulaCategories.RemoveAttribute);
 
-        $('#new_attribute_name').focus();
+        newAttrName.focus();
 
         return true;
     };
 
     ZikulaCategories.RemoveAttribute = function(event) {
-        $(this).parent().parent().remove();
+        event.preventDefault();
+        $(this).closest('tr').remove();
     };
 })(jQuery);
