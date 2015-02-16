@@ -394,7 +394,7 @@
             }
         });
 
-        treeElem.on('ready.jstree redraw.jstree create_node.jstree delete_node.jstree', function(e) {
+        treeElem.on('ready.jstree redraw.jstree create_node.jstree changed.jstree', function(e) {
             treeElem
                 // hide folder icons for leaf nodes
                 .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
