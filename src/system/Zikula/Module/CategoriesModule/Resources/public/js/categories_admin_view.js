@@ -16,7 +16,6 @@
             deleteItem: {
                 label: /*Zikula.__(*/'Delete'/*)*/,
                 action: function (obj) {
-                    //this.remove(obj);
                     getCategoryDeleteMenuAction(node);
                 },
                 icon: 'fa fa-remove'
@@ -129,7 +128,6 @@
         switch (data.action) {
             case 'delete':
                 treeElem.jstree("delete_node", node);
-                //treeElem.jstree("redraw");
                 break;
             case 'deleteandmovesubs':
                 treeElem.jstree("delete_node", node);
@@ -396,7 +394,7 @@
             }
         });
 
-        treeElem.on('ready.jstree create_node.jstree', function(e) {
+        treeElem.on('ready.jstree redraw.jstree create_node.jstree delete_node.jstree', function(e) {
             treeElem
                 // hide folder icons for leaf nodes
                 .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
