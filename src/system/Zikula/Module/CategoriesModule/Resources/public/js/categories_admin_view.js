@@ -76,8 +76,12 @@
             return false;
         }
 
+        var nodeId = $(node).attr('id');
+        // append spinner
+        $('#'+nodeId).find('a').first().after("<i id='temp-spinner' class='fa fa-spinner fa-spin fa-lg text-primary'></i>");
+
         var pars = {
-            cid: $(node).attr('id').replace('node_', '')
+            cid: nodeId.replace('node_', '')
         };
         switch (action) {
             case 'edit':
@@ -111,6 +115,8 @@
             performCategoryContextMenuActionCallback(result.data);
         }).error(function(result) {
             alert(result.status + ': ' + result.statusText);
+        }).always(function() {
+            $('#temp-spinner').remove();
         });
 
         return true;
