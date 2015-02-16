@@ -980,7 +980,9 @@ class CategoryUtil
                 'selected' => false,
             ),
             'children' => self::getJsTreeNodeFromCategoryArray($category->getChildren()),
-            'li_attr' => array(),
+            'li_attr' => array(
+                'class' => $category->getStatus() == 'I' ? 'z-tree-unactive' : '',
+            ),
             'a_attr' => array()
         );
     }
