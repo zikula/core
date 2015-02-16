@@ -9,7 +9,7 @@
     {gt text='Categories list'}
 </h3>
 
-<p class="alert alert-info">{gt text='You can arrange categories list using drag and drop - just grab page or folder icon and drag it to the new position. New order will be saved automatically.<br />Right click on selected category to open context menu.'}</p>
+<p class="alert alert-info">{gt text='You can arrange categories list using drag and drop. New order will be saved automatically.<br />Right click on selected category to open context menu.'}</p>
 
 <p>
     <label for="categoryTreeSearchTerm">{gt text='Quick search'}:</label>

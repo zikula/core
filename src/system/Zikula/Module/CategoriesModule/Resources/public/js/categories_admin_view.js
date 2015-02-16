@@ -143,7 +143,7 @@
                 break;
             case 'edit':
             case 'add':
-                $('#categoryEditModal .modal-body').html(data.result);
+                $('#categoryEditModal').find('.modal-body').html(data.result);
                 openCategoryEditForm(data, function (event) {
                     event.preventDefault();
                     var mode = data.action;
@@ -155,11 +155,26 @@
                     }
 
                     var pars = {};
-                    // @todo this is not working for the attribute name/value arrays
+                    // fetch each input and hidden field and store the value to POST
                     $.each($(":input, :hidden").serializeArray(), function(i, field) {
                         pars[field.name] = field.value;
                     });
                     pars.mode = (mode == 'edit') ? 'edit' : 'new';
+                    pars.attribute_name = [];
+                    pars.attribute_value = [];
+                    // special handling of potential array values
+                    $("input[name='attribute_name[]']").each(function() {
+                        if ($(this).val() == "") {
+                            return true;
+                        }
+                        pars.attribute_name.push($(this).val());
+                    });
+                    $("input[name='attribute_value[]']").each(function() {
+                        if ($(this).val() == "") {
+                            return true;
+                        }
+                        pars.attribute_value.push($(this).val());
+                    });
 
                     $.ajax({
                         type: "POST",
@@ -216,19 +231,19 @@
         } else {
             $('#deleteWithSubCatInfo').removeClass('alert alert-info').text('');
         }
+        var deleteModal = $('#categoryDeleteModal');
 
         if (subCats > 0) {
-            $('#categoryDeleteModal .modal-footer .leaf-node').hide();
-            $('#categoryDeleteModal .modal-footer .parent-node').show();
+            deleteModal.find('.modal-footer .leaf-node').hide();
+            deleteModal.find('.modal-footer .parent-node').show();
         } else {
-            $('#categoryDeleteModal .modal-footer .leaf-node').show();
-            $('#categoryDeleteModal .modal-footer .parent-node').hide();
+            deleteModal.find('.modal-footer .leaf-node').show();
+            deleteModal.find('.modal-footer .parent-node').hide();
         }
 
-        $('#categoryDeleteModal .modal-footer button').click(function(event) {
+        deleteModal.find('.modal-footer button').click(function(event) {
             event.preventDefault();
             var buttonValue = $(this).val();
-            var deleteModal = $('#categoryDeleteModal');
 
             switch (buttonValue) {
                 case 'Delete':
@@ -245,7 +260,7 @@
                             }
                         }).success(function(result) {
                             var subcat_move = result.data.result;
-                            $('#categoryDeleteModal .modal-body').append(subcat_move);
+                            deleteModal.find('.modal-body').append(subcat_move);
                         }).error(function(result) {
                             alert(result.status + ': ' + result.statusText);
                         });
@@ -262,17 +277,18 @@
             }
         });
 
-        $('#categoryDeleteModal').modal();
-        $('#categoryDeleteModal .modal-footer button[value=Cancel]').focus();
+        deleteModal.modal();
+        deleteModal.find('.modal-footer button[value=Cancel]').focus();
     }
 
     function openCategoryEditForm(data, callback) {
         $('#categories_ajax_form_container').show();
         ZikulaCategories.init();
-        $('#categoryEditModal .modal-footer button').unbind('click').click(callback);
+        var editModal = $('#categoryEditModal');
+        editModal.find('.modal-footer button').unbind('click').click(callback);
 
-        $('#categoryEditModal').modal();
-        $('#categoryEditModal .modal-footer button[value=Cancel]').focus();
+        editModal.modal();
+        editModal.find('.modal-footer button[value=Cancel]').focus();
     }
 
     function updateCategoryEditForm(data) {
@@ -357,7 +373,7 @@
                 'copy': false,
                 'is_draggable': function(node) {
                     // disable drag and drop for root category
-                    return $(node).attr('id') != 'node_1' ? true : false;
+                    return ($(node).attr('id') != 'node_1');
                 },
                 'inside_pos': 'last'
             },

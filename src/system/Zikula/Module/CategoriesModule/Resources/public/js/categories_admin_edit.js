@@ -46,14 +46,14 @@ var ZikulaCategories = {};
 
         var newTd1 = $('<td>')
             .append($('<input>')
-                .attr({ name: 'attribute_name[]', value: newAttrName.val() })
+                .attr({ name: 'attribute_name[]', class: 'form-control input-sm', value: newAttrName.val() })
             );
         newAttrName.val('');
         newRow.append(newTd1);
 
         var newTd2 = $('<td>')
             .append($('<input>')
-                .attr({ name: 'attribute_value[]', value: newAttrValue.val(), size: 50 })
+                .attr({ name: 'attribute_value[]', class: 'form-control input-sm', value: newAttrValue.val(), size: 50 })
             );
         newAttrValue.val('');
         newRow.append(newTd2);
