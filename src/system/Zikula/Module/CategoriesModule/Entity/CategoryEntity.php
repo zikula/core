@@ -269,7 +269,7 @@ class CategoryEntity extends EntityAccess
      *
      * @param array $children the child categories
      */
-    public function setChildren(array $children)
+    public function setChildren($children)
     {
         $this->children = $children;
     }
