@@ -1572,7 +1572,7 @@ class CategoryUtil
             $em = \ServiceUtil::get('doctrine.entitymanager');
 
             foreach ($cats as $k => $v) {
-                if (isset($v[$field]) && isset($paths[$k][$field]) && ($v[$field] != $paths[$k][$field])) {
+                if (isset($v[$field]) && isset($paths[$k]) && ($v[$field] != $paths[$k])) {
                     $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.$field = :path WHERE c.id = :id";
                     $query = $em->createQuery($dql);
                     $query->setParameter('path', $paths[$k]);
