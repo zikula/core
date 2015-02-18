@@ -13,6 +13,9 @@
 
 namespace Zikula\Module\MailerModule;
 
+use HookUtil;
+use Zikula\Component\HookDispatcher\SubscriberBundle;
+
 /**
  * Version information for the mailer module
  */
@@ -30,11 +33,22 @@ class MailerModuleVersion extends \Zikula_AbstractVersion
         $meta['description']    = $this->__('Mailer module, provides mail API and mail setting administration.');
         //! module name that appears in URL
         $meta['url']            = $this->__('mailer');
-        $meta['version']        = '1.4.1';
+        $meta['version']        = '1.4.2';
         $meta['core_min']       = '1.4.0';
-
+        $meta['capabilities']   = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
         $meta['securityschema'] = array('ZikulaMailerModule::' => '::');
 
         return $meta;
+    }
+
+    /**
+     * Set up hook subscriber bundle
+     */
+    protected function setupHookBundles()
+    {
+        // This enables Scribite 5 connection to HTML e-mail test
+        $bundle = new SubscriberBundle($this->name, 'subscriber.mailer.ui_hooks.htmlmail', 'ui_hooks', $this->__('HTML mail hook'));
+        $bundle->addEvent('form_edit', 'mailer.ui_hooks.htmlmail.form_edit');
+        $this->registerHookSubscriberBundle($bundle);
     }
 }
