@@ -122,28 +122,33 @@
     }
 
     function performCategoryContextMenuActionCallback(data) {
-        var node = $('#node_' + data.cid);
-        var parentNodeId = 'node_' + data.parent;
+        var originalNode = $('#node_' + data.cid);
+        var parentNode = $('#node_' + data.parent);
 
         switch (data.action) {
             case 'delete':
-                treeElem.jstree("delete_node", node);
+                treeElem.jstree("delete_node", originalNode);
                 break;
             case 'deleteandmovesubs':
-                treeElem.jstree("delete_node", node);
-                $('#' + parentNodeId).replaceWith(data.node);
-                reinitTreeNode($(parentNodeId), data);
+                treeElem.jstree("delete_node", originalNode);
+                parentNode.replaceWith(data.node);
+                reinitTreeNode(parentNode, data);
                 break;
             case 'activate':
-                node.removeClass('z-tree-unactive');
+                originalNode.removeClass('z-tree-unactive');
                 break;
             case 'deactivate':
-                node.addClass('z-tree-unactive');
+                originalNode.addClass('z-tree-unactive');
                 break;
             case 'copy':
-                var newNode = 'node_' + data.copycid;
-                $('#' + newNode).replaceWith(data.node);
-                reinitTreeNode($(newNode), data);
+                var indexOfOriginalNode = originalNode.parent().children().index(originalNode[0]);
+                var newNodeId = treeElem.jstree(true).create_node(parentNode, data.node, indexOfOriginalNode);
+                var anchor = $('#'+newNodeId);
+                //anchor.tooltip('destroy');
+                //anchor.tooltip({
+                //    placement: 'right',
+                //    html: true
+                //});
                 break;
             case 'edit':
             case 'add':

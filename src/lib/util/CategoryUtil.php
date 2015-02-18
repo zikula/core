@@ -366,7 +366,7 @@ class CategoryUtil
      * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value').
      * @param array   $columnArray The list of columns to fetch (optional) (default=null).
      *
-     * @return The resulting folder object array
+     * @return array the resulting folder object array
      */
     public static function getSubCategories($cid, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
     {
@@ -968,11 +968,18 @@ class CategoryUtil
         return $tree->getJqueryHtml();
     }
 
+    /**
+     * create a JSON formatted object compatible with jsTree node structure for one category (includes children)
+     *
+     * @param \Zikula\Module\CategoriesModule\Entity\CategoryEntity $category
+     * @return array
+     */
     public static function getJsTreeNodeFromCategory(\Zikula\Module\CategoriesModule\Entity\CategoryEntity $category)
     {
+        $lang = ZLanguage::getLanguageCode();
         return array(
             'id' => 'node_' . $category->getId(),
-            'text'=> $category->getDisplay_name(ZLanguage::getLanguageCode()),
+            'text'=> $category->getDisplay_name($lang),
             'icon' => $category->getIs_leaf() ? false : 'fa fa-folder',
             'state' => array(
                 'open' => false,
@@ -983,11 +990,19 @@ class CategoryUtil
             'li_attr' => array(
                 'class' => $category->getStatus() == 'I' ? 'z-tree-unactive' : '',
             ),
-            'a_attr' => array()
+            'a_attr' => array(
+                'title' => self::createTitleAttribute($category->toArray(), $category->getDisplay_name($lang), $lang)
+            )
         );
     }
 
-    public static function getJsTreeNodeFromCategoryArray(array $categories)
+    /**
+     * create a JSON formatted object compatible with jsTree node structure from an array of categories
+     *
+     * @param $categories
+     * @return array
+     */
+    public static function getJsTreeNodeFromCategoryArray($categories)
     {
         $result = array();
         foreach ($categories as $category) {
@@ -1024,23 +1039,10 @@ class CategoryUtil
             $name = DataUtil::formatForDisplay($category['name']);
             $displayName = '';
         }
-
+        $category['name'] = $name;
         $category['active'] = $category['status'] == 'A' ? true : false;
         $category['href'] = $url;
-
-        $category['title'] = array();
-        $category['title'][] = __('ID') . ": " . $category['id'];
-        $category['title'][] = __('Name') . ": " . DataUtil::formatForDisplay($category['name']);
-        $category['title'][] = __('Display name') . ": " . $displayName;
-        $category['title'][] = __('Description') . ": " . (isset($category['display_desc'][$lang]) ? DataUtil::formatForDisplay($category['display_desc'][$lang]) : '');
-        $category['title'][] = __('Value') . ": " . $category['value'];
-        $category['title'][] = __('Active') . ": " . ($category['status'] == 'A' ? 'Yes' : 'No');
-        $category['title'][] = __('Leaf') . ": " . ($category['is_leaf'] ? 'Yes' : 'No');
-        $category['title'][] = __('Locked') . ": " . ($category['is_locked'] ? 'Yes' : 'No');
-        $category['title'] = implode('&lt;br /&gt;', $category['title']);
-
-        $category['name'] = $name;
-
+        $category['title'] = self::createTitleAttribute($category, $displayName, $lang);
         $category['class'] = array();
         if ($category['is_locked']) {
             $category['class'][] = 'locked';
@@ -1060,6 +1062,29 @@ class CategoryUtil
         }
 
         return $category;
+    }
+
+    /**
+     * create and format a string suitable for use as title attribute in anchor tag
+     *
+     * @param $category
+     * @param $displayName
+     * @param $lang
+     * @return string
+     */
+    private static function createTitleAttribute($category, $displayName, $lang)
+    {
+        $title = array();
+        $title[] = __('ID') . ": " . $category['id'];
+        $title[] = __('Name') . ": " . DataUtil::formatForDisplay($category['name']);
+        $title[] = __('Display name') . ": " . $displayName;
+        $title[] = __('Description') . ": " . (isset($category['display_desc'][$lang]) ? DataUtil::formatForDisplay($category['display_desc'][$lang]) : '');
+        $title[] = __('Value') . ": " . $category['value'];
+        $title[] = __('Active') . ": " . ($category['status'] == 'A' ? 'Yes' : 'No');
+        $title[] = __('Leaf') . ": " . ($category['is_leaf'] ? 'Yes' : 'No');
+        $title[] = __('Locked') . ": " . ($category['is_locked'] ? 'Yes' : 'No');
+
+        return implode('&lt;br /&gt;', $title);
     }
 
     /**
