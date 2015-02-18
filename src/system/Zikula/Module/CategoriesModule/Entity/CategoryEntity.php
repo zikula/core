@@ -393,7 +393,7 @@ class CategoryEntity extends EntityAccess
      *
      * @param array $display_name the category display name array
      */
-    public function setDisplay_name(array $display_name)
+    public function setDisplay_name($display_name)
     {
         $this->display_name = $display_name;
     }
@@ -417,7 +417,7 @@ class CategoryEntity extends EntityAccess
      *
      * @param array $display_desc the category display description
      */
-    public function setDisplay_desc(array $display_desc)
+    public function setDisplay_desc($display_desc)
     {
         $this->display_desc = $display_desc;
     }
