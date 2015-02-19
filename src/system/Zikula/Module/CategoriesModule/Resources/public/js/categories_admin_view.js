@@ -130,8 +130,9 @@
                 treeElem.jstree("delete_node", originalNode);
                 break;
             case 'deleteandmovesubs':
+                var workingNode = treeElem.jstree("get_node", originalNode.attr('id'));
+                treeElem.jstree("copy_node", workingNode.children, parentNode, "last"); // use copy here to avoid move_node event
                 treeElem.jstree("delete_node", originalNode);
-                parentNode.replaceWith(data.node);
                 reinitTreeNode(parentNode, data);
                 break;
             case 'activate':
@@ -236,11 +237,9 @@
         var deleteModal = $('#categoryDeleteModal');
 
         if (subCats > 0) {
-            deleteModal.find('.modal-footer .leaf-node').hide();
-            deleteModal.find('.modal-footer .parent-node').show();
-        } else {
-            deleteModal.find('.modal-footer .leaf-node').show();
-            deleteModal.find('.modal-footer .parent-node').hide();
+            deleteModal.find('#cat_delete').hide();
+            deleteModal.find('#cat_delete_all').show();
+            deleteModal.find('#cat_delete_move').show();
         }
         $('#subcat_move').remove();
 
@@ -255,6 +254,7 @@
                     break;
                 case 'DeleteAndMoveSubs':
                     if (!$('#subcat_move').length) {
+                        // present dialog to determine new parent
                         $(this).prepend("<i id='button-spinner' class='fa fa-gear fa-spin fa-lg text-danger'></i> ");
                         $.ajax({
                             type: "POST",
@@ -265,16 +265,19 @@
                         }).success(function(result) {
                             var subcat_move = result.data.result;
                             deleteModal.find('.modal-body').append(subcat_move);
+                            deleteModal.find('#cat_delete_move').hide();
+                            deleteModal.find('#cat_delete_move_action').show();
                         }).error(function(result) {
                             alert(result.status + ': ' + result.statusText);
                         }).always(function() {
                             $('#button-spinner').remove();
                         });
                     } else {
+                        // utilize new parent to perform delete and move operation
                         var parent = $('#category_parent_id_').val();
                         if (parent) {
                             performCategoryContextMenuAction(node, 'deleteandmovesubs', parent);
-                            $('#categoryDeleteModal').modal('hide');
+                            deleteModal.modal('hide');
                         }
                     }
                     break;
@@ -284,6 +287,15 @@
         });
 
         deleteModal.modal();
+        deleteModal.on('hidden.bs.modal', function (e) {
+            // reset modal to initial state
+            deleteModal.find('#cat_delete').show();
+            deleteModal.find('#cat_delete_all').hide();
+            deleteModal.find('#cat_delete_move').hide();
+            deleteModal.find('#cat_delete_move_action').hide();
+            $('#button-spinner').remove();
+            $('#subcat_move').remove();
+        });
         deleteModal.find('.modal-footer button[value=Cancel]').focus();
     }
 
@@ -396,7 +408,7 @@
             }
         });
 
-        treeElem.on('ready.jstree redraw.jstree create_node.jstree changed.jstree', function(e) {
+        treeElem.on('ready.jstree redraw.jstree create_node.jstree changed.jstree delete_node.jstree', function(e) {
             treeElem
                 // hide folder icons for leaf nodes
                 .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
@@ -461,6 +473,6 @@
                 html: true
             });
             anchor.tooltip('show');
-        })
+        });
     });
 })(jQuery);

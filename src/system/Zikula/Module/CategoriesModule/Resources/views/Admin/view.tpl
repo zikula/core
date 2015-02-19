@@ -50,10 +50,11 @@
                 <p id="deleteWithSubCatInfo"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" value="Delete" class="leaf-node btn btn-primary">{gt text='Delete'}</button>
-                <button type="button" value="Delete" class="parent-node btn btn-primary">{gt text='Delete all sub-categories'}</button>
-                <button type="button" value="DeleteAndMoveSubs" class="parent-node btn btn-default">{gt text='Move all sub-categories'}</button>
-                <button type="button" value="Cancel" class="btn btn-default" data-dismiss="modal">{gt text='Cancel'}</button>
+                <button type="button" id='cat_delete' value="Delete" class="btn btn-primary">{gt text='Delete'}</button>
+                <button type="button" id='cat_delete_all' value="Delete" class="btn btn-primary" style="display:none;">{gt text='Delete all sub-categories'}</button>
+                <button type="button" id='cat_delete_move' value="DeleteAndMoveSubs" class="btn btn-default" style="display:none;">{gt text='Move all sub-categories'}</button>
+                <button type="button" id='cat_delete_move_action' value="DeleteAndMoveSubs" class="btn btn-success" style="display:none;">{gt text='Move and delete'}</button>
+                <button type="button" id='cat_cancel' value="Cancel" class="btn btn-default" data-dismiss="modal">{gt text='Cancel'}</button>
             </div>
         </div>
     </div>
