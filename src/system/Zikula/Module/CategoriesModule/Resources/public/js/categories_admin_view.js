@@ -223,16 +223,15 @@
     }
 
     function getCategoryDeleteMenuAction(node) {
-        var subCats, msg;
-
-        subCats = $(node).find('> ul > li').length;
+        var subCats = node.children.length;
         if (subCats > 0) {
-            var info = Zikula.__f('It contains %s direct sub-categories.', subCats)
+            //var info = Zikula.__f('It contains %s direct sub-categories.', subCats)
+            var info = "It contains " + subCats + " direct sub-categories."
                 + ' '
-                + /*Zikula.__(*/"Please also choose what to do with this category's sub-categories."/*)*/;
-            $('#deleteWithSubCatInfo').addClass('alert alert-info').text(info);
+                + /*Zikula.__(*/"Please choose what to do with this category's sub-categories."/*)*/;
+            $('#deleteWithSubCatInfo').addClass('alert alert-warning').text(info);
         } else {
-            $('#deleteWithSubCatInfo').removeClass('alert alert-info').text('');
+            $('#deleteWithSubCatInfo').removeClass('alert alert-warning').text('');
         }
         var deleteModal = $('#categoryDeleteModal');
 
