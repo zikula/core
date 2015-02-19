@@ -50,6 +50,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
             case '1.3.1':
                 $this->setVar('smtpsecuremethod', 'ssl');
             case '1.3.2':
+            case '1.3.3':
                 // clear old modvars
                 // use manual method because getVars() is not available during system upgrade
                 $modVarEntities = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findBy(array('modname' => $this->name));
@@ -95,6 +96,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                 unset($config['spool']);
                 $configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.1':
+                HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
             case '1.4.2':
             // future upgrade routines
