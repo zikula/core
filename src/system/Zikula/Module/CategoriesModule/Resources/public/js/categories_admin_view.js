@@ -244,7 +244,7 @@
         }
         $('#subcat_move').remove();
 
-        deleteModal.find('.modal-footer button').click(function(event) {
+        deleteModal.find('.modal-footer button').one('click', function(event) {
             event.preventDefault();
             var buttonValue = $(this).val();
 
