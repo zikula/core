@@ -242,6 +242,9 @@
             deleteModal.find('.modal-footer .leaf-node').show();
             deleteModal.find('.modal-footer .parent-node').hide();
         }
+        if ($('#subcat_move')) {
+            $('#subcat_move').remove();
+        }
 
         deleteModal.find('.modal-footer button').click(function(event) {
             event.preventDefault();
@@ -253,8 +256,8 @@
                     deleteModal.modal('hide');
                     break;
                 case 'DeleteAndMoveSubs':
-                    $(this).prepend("<i id='button-spinner' class='fa fa-gear fa-spin fa-lg text-danger'></i> ");
                     if (!$('#subcat_move').length) {
+                        $(this).prepend("<i id='button-spinner' class='fa fa-gear fa-spin fa-lg text-danger'></i> ");
                         $.ajax({
                             type: "POST",
                             url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),
@@ -267,7 +270,7 @@
                         }).error(function(result) {
                             alert(result.status + ': ' + result.statusText);
                         }).always(function() {
-                            $('#button-spinner').hide();
+                            $('#button-spinner').remove();
                         });
                     } else {
                         var parent = $('#category_parent_id_').val();

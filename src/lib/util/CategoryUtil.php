@@ -1285,7 +1285,7 @@ class CategoryUtil
      * @param integer      $multipleSize     If > 1, a multiple selector box is built, otherwise a normal/single selector box is build (optional) (default=1).
      * @param boolean      $fieldIsAttribute True if the field is attribute (optional) (default=false).
      *
-     * @return The HTML selector code for the given category hierarchy
+     * @return string The HTML selector code for the given category hierarchy
      */
     public static function getSelector_Categories($cats, $field = 'id', $selectedValue = '0', $name = 'category[parent_id]', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1, $fieldIsAttribute = false, $cssClass = '', $lang = null)
     {
