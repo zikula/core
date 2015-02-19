@@ -142,13 +142,7 @@
                 break;
             case 'copy':
                 var indexOfOriginalNode = originalNode.parent().children().index(originalNode[0]);
-                var newNodeId = treeElem.jstree(true).create_node(parentNode, data.node, indexOfOriginalNode);
-                var anchor = $('#'+newNodeId);
-                //anchor.tooltip('destroy');
-                //anchor.tooltip({
-                //    placement: 'right',
-                //    html: true
-                //});
+                treeElem.jstree(true).create_node(parentNode, data.node, indexOfOriginalNode);
                 break;
             case 'edit':
             case 'add':

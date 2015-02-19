@@ -1084,7 +1084,7 @@ class CategoryUtil
         $title[] = __('Leaf') . ": " . ($category['is_leaf'] ? 'Yes' : 'No');
         $title[] = __('Locked') . ": " . ($category['is_locked'] ? 'Yes' : 'No');
 
-        return implode('&lt;br /&gt;', $title);
+        return implode('<br />', $title);
     }
 
     /**
