@@ -242,9 +242,7 @@
             deleteModal.find('.modal-footer .leaf-node').show();
             deleteModal.find('.modal-footer .parent-node').hide();
         }
-        if ($('#subcat_move')) {
-            $('#subcat_move').remove();
-        }
+        $('#subcat_move').remove();
 
         deleteModal.find('.modal-footer button').click(function(event) {
             event.preventDefault();
