@@ -32,14 +32,14 @@
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'activate');
                 },
-                icon: 'fa fa-check-circle'
+                icon: 'fa fa-check-square-o'
             },
             deactivateItem: {
                 label: /*Zikula.__(*/'Deactivate'/*)*/,
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'deactivate');
                 },
-                icon: 'fa fa-times-circle'
+                icon: 'fa fa-square-o'
             },
             addItemAfter: {
                 label: /*Zikula.__(*/'Add category (after selected)'/*)*/,
@@ -53,7 +53,7 @@
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'addchild');
                 },
-                icon: 'fa fa-level-up fa-rotate-90'
+                icon: 'fa fa-long-arrow-right'
             }
         };
 
@@ -157,8 +157,8 @@
                         return false;
                     }
 
-                    var pars = {};
                     // fetch each input and hidden field and store the value to POST
+                    var pars = {};
                     $.each($(":input, :hidden").serializeArray(), function(i, field) {
                         pars[field.name] = field.value;
                     });
@@ -194,17 +194,17 @@
                             }
                         } else {
                             if (mode == 'edit') {
-                                var nodeId = 'node_' + data.cid;
-                                $('#' + nodeId).replaceWith(data.node);
-                                reinitTreeNode($('#' + nodeId), data);
+                                var editedNode = $('#node_' + data.cid);
+                                editedNode.replaceWith(data.node);
+                                reinitTreeNode(editedNode, data);
                             } else if (mode == 'add') {
-                                var relNode = $('#node_' + data.parent),
-                                    newParent = relNode.children('ul');
-                                if (!newParent) {
-                                    newParent = $('<ul>').attr({ class: 'tree' });
-                                    relNode.append(newParent);
+                                var parentLi = $('#node_' + data.parent),
+                                    parentUl = parentLi.children('ul');
+                                if (!parentUl) {
+                                    parentUl = $('<ul>').attr({ class: 'tree' });
+                                    parentLi.append(parentUl);
                                 }
-                                var newNode = treeElem.jstree(true).create_node(newParent, data.node[0]);
+                                var newNode = treeElem.jstree(true).create_node(parentUl, data.node[0]);
                                 var node = $('#'+newNode);
                                 reinitTreeNode(node, data);
                             }
