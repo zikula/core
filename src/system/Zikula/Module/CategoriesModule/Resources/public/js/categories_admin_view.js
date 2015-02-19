@@ -253,6 +253,7 @@
                     deleteModal.modal('hide');
                     break;
                 case 'DeleteAndMoveSubs':
+                    $(this).prepend("<i id='button-spinner' class='fa fa-gear fa-spin fa-lg text-danger'></i> ");
                     if (!$('#subcat_move').length) {
                         $.ajax({
                             type: "POST",
@@ -265,6 +266,8 @@
                             deleteModal.find('.modal-body').append(subcat_move);
                         }).error(function(result) {
                             alert(result.status + ': ' + result.statusText);
+                        }).always(function() {
+                            $('#button-spinner').hide();
                         });
                     } else {
                         var parent = $('#category_parent_id_').val();

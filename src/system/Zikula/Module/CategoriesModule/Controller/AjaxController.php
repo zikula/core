@@ -327,7 +327,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $cid = $request->request->get('cid');
 
         $allCats = CategoryUtil::getSubCategories(1, true, true, true, false, true, $cid);
-        $selector = CategoryUtil::getSelector_Categories($allCats);
+        $selector = CategoryUtil::getSelector_Categories($allCats, 'id', '0', 'category[parent_id]', 0, '', 0, '', false, false, true, 1, false, 'form-control');
 
         $this->setView();
         $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
