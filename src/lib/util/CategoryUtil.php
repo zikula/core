@@ -628,7 +628,7 @@ class CategoryUtil
         if ($includeRoot) {
             $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.id = :pid";
         } else {
-            $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.parent :pid";
+            $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.parent = :pid";
         }
         $query = $em->createQuery($dql);
         $query->setParameter('newparent', $newparent_id);
