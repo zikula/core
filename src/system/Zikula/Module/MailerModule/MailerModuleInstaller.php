@@ -14,6 +14,7 @@
 namespace Zikula\Module\MailerModule;
 
 use ZLanguage;
+use HookUtil;
 
 /**
  * Installation and upgrade routines for the mailer module
@@ -28,6 +29,8 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
     public function install()
     {
         $this->setVars($this->getDefaults());
+
+        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
 
         // Initialisation successful
         return true;
@@ -92,6 +95,8 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                 unset($config['spool']);
                 $configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.1':
+                HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+            case '1.4.2':
             // future upgrade routines
         }
 
@@ -108,6 +113,9 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
     {
         // Delete any module variables
         $this->delVars();
+
+        // Remove hooks
+        HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
 
         // Deletion successful
         return true;
