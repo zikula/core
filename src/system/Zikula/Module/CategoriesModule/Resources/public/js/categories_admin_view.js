@@ -195,20 +195,19 @@
                             }
                         } else {
                             if (mode == 'edit') {
-                                var editedNode = $('#node_' + data.cid);
-                                editedNode.replaceWith(data.node);
-                                reinitTreeNode(editedNode, data);
-                            } else if (mode == 'add') {
-                                var parentLi = $('#node_' + data.parent),
-                                    parentUl = parentLi.children('ul');
-                                if (!parentUl) {
-                                    parentUl = $('<ul>').attr({ class: 'tree' });
-                                    parentLi.append(parentUl);
-                                }
-                                var newNode = treeElem.jstree(true).create_node(parentUl, data.node[0]);
-                                var node = $('#'+newNode);
-                                reinitTreeNode(node, data);
+                                // delete the existing node and replace with edited version
+                                var editedNode = treeElem.jstree("get_node", 'node_' + data.cid);
+                                treeElem.jstree('delete_node', editedNode);
                             }
+                            var parentLi = $('#node_' + data.parent),
+                                parentUl = parentLi.children('ul');
+                            if (!parentUl) {
+                                parentUl = $('<ul>').attr({ class: 'tree' });
+                                parentLi.append(parentUl);
+                            }
+                            var newNode = treeElem.jstree(true).create_node(parentUl, data.node[0]);
+                            var node = $('#'+newNode);
+                            reinitTreeNode(node, data);
                             closeCategoryEditForm();
                         }
                     }).error(function(result) {
