@@ -116,6 +116,7 @@
             alert(result.status + ': ' + result.statusText);
         }).always(function() {
             $('#temp-spinner').remove();
+            redrawTree(treeElem);
         });
 
         return true;
@@ -333,6 +334,14 @@
         }
     }
 
+    function redrawTree(treeElem) {
+        treeElem
+            // hide folder icons for leaf nodes
+            .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
+            // use folder-open icon for already open nodes
+            .find('li.jstree-open > a.z-tree-fixedparent > i.fa-folder').removeClass('fa-folder').addClass('fa-folder-open');
+    }
+
     function resequenceCategories(event, data) {
         var node = data.node;
 
@@ -408,11 +417,7 @@
         });
 
         treeElem.on('ready.jstree redraw.jstree create_node.jstree changed.jstree delete_node.jstree', function(e) {
-            treeElem
-                // hide folder icons for leaf nodes
-                .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
-                // use folder-open icon for already open nodes
-                .find('li.jstree-open > a.z-tree-fixedparent > i.fa-folder').removeClass('fa-folder').addClass('fa-folder-open');
+            redrawTree(treeElem);
         });
         treeElem.on('open_node.jstree', function(e, data) {
             if (data.instance.is_leaf(data.node)) {
