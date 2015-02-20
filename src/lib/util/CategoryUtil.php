@@ -366,7 +366,7 @@ class CategoryUtil
      * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value').
      * @param array   $columnArray The list of columns to fetch (optional) (default=null).
      *
-     * @return The resulting folder object array
+     * @return array the resulting folder object array
      */
     public static function getSubCategories($cid, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
     {
@@ -628,7 +628,7 @@ class CategoryUtil
         if ($includeRoot) {
             $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.id = :pid";
         } else {
-            $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.parent :pid";
+            $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.parent = :pid";
         }
         $query = $em->createQuery($dql);
         $query->setParameter('newparent', $newparent_id);
@@ -969,6 +969,50 @@ class CategoryUtil
     }
 
     /**
+     * create a JSON formatted object compatible with jsTree node structure for one category (includes children)
+     *
+     * @param \Zikula\Module\CategoriesModule\Entity\CategoryEntity $category
+     * @return array
+     */
+    public static function getJsTreeNodeFromCategory(\Zikula\Module\CategoriesModule\Entity\CategoryEntity $category)
+    {
+        $lang = ZLanguage::getLanguageCode();
+        return array(
+            'id' => 'node_' . $category->getId(),
+            'text'=> $category->getDisplay_name($lang),
+            'icon' => $category->getIs_leaf() ? false : 'fa fa-folder',
+            'state' => array(
+                'open' => false,
+                'disabled' => false,
+                'selected' => false,
+            ),
+            'children' => self::getJsTreeNodeFromCategoryArray($category->getChildren()),
+            'li_attr' => array(
+                'class' => $category->getStatus() == 'I' ? 'z-tree-unactive' : '',
+            ),
+            'a_attr' => array(
+                'title' => self::createTitleAttribute($category->toArray(), $category->getDisplay_name($lang), $lang)
+            )
+        );
+    }
+
+    /**
+     * create a JSON formatted object compatible with jsTree node structure from an array of categories
+     *
+     * @param $categories
+     * @return array
+     */
+    public static function getJsTreeNodeFromCategoryArray($categories)
+    {
+        $result = array();
+        foreach ($categories as $category) {
+            $result[] = self::getJsTreeNodeFromCategory($category);
+        }
+
+        return $result;
+    }
+
+    /**
      * Prepare category for the tree menu.
      *
      * @param array $category Category data.
@@ -995,23 +1039,10 @@ class CategoryUtil
             $name = DataUtil::formatForDisplay($category['name']);
             $displayName = '';
         }
-
+        $category['name'] = $name;
         $category['active'] = $category['status'] == 'A' ? true : false;
         $category['href'] = $url;
-
-        $category['title'] = array();
-        $category['title'][] = __('ID') . ": " . $category['id'];
-        $category['title'][] = __('Name') . ": " . DataUtil::formatForDisplay($category['name']);
-        $category['title'][] = __('Display name') . ": " . $displayName;
-        $category['title'][] = __('Description') . ": " . (isset($category['display_desc'][$lang]) ? DataUtil::formatForDisplay($category['display_desc'][$lang]) : '');
-        $category['title'][] = __('Value') . ": " . $category['value'];
-        $category['title'][] = __('Active') . ": " . ($category['status'] == 'A' ? 'Yes' : 'No');
-        $category['title'][] = __('Leaf') . ": " . ($category['is_leaf'] ? 'Yes' : 'No');
-        $category['title'][] = __('Locked') . ": " . ($category['is_locked'] ? 'Yes' : 'No');
-        $category['title'] = implode('&lt;br /&gt;', $category['title']);
-
-        $category['name'] = $name;
-
+        $category['title'] = self::createTitleAttribute($category, $displayName, $lang);
         $category['class'] = array();
         if ($category['is_locked']) {
             $category['class'][] = 'locked';
@@ -1031,6 +1062,29 @@ class CategoryUtil
         }
 
         return $category;
+    }
+
+    /**
+     * create and format a string suitable for use as title attribute in anchor tag
+     *
+     * @param $category
+     * @param $displayName
+     * @param $lang
+     * @return string
+     */
+    private static function createTitleAttribute($category, $displayName, $lang)
+    {
+        $title = array();
+        $title[] = __('ID') . ": " . $category['id'];
+        $title[] = __('Name') . ": " . DataUtil::formatForDisplay($category['name']);
+        $title[] = __('Display name') . ": " . $displayName;
+        $title[] = __('Description') . ": " . (isset($category['display_desc'][$lang]) ? DataUtil::formatForDisplay($category['display_desc'][$lang]) : '');
+        $title[] = __('Value') . ": " . $category['value'];
+        $title[] = __('Active') . ": " . ($category['status'] == 'A' ? 'Yes' : 'No');
+        $title[] = __('Leaf') . ": " . ($category['is_leaf'] ? 'Yes' : 'No');
+        $title[] = __('Locked') . ": " . ($category['is_locked'] ? 'Yes' : 'No');
+
+        return implode('<br />', $title);
     }
 
     /**
@@ -1231,7 +1285,7 @@ class CategoryUtil
      * @param integer      $multipleSize     If > 1, a multiple selector box is built, otherwise a normal/single selector box is build (optional) (default=1).
      * @param boolean      $fieldIsAttribute True if the field is attribute (optional) (default=false).
      *
-     * @return The HTML selector code for the given category hierarchy
+     * @return string The HTML selector code for the given category hierarchy
      */
     public static function getSelector_Categories($cats, $field = 'id', $selectedValue = '0', $name = 'category[parent_id]', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1, $fieldIsAttribute = false, $cssClass = '', $lang = null)
     {
@@ -1543,7 +1597,7 @@ class CategoryUtil
             $em = \ServiceUtil::get('doctrine.entitymanager');
 
             foreach ($cats as $k => $v) {
-                if (isset($v[$field]) && isset($paths[$k][$field]) && ($v[$field] != $paths[$k][$field])) {
+                if (isset($v[$field]) && isset($paths[$k]) && ($v[$field] != $paths[$k])) {
                     $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.$field = :path WHERE c.id = :id";
                     $query = $em->createQuery($dql);
                     $query->setParameter('path', $paths[$k]);

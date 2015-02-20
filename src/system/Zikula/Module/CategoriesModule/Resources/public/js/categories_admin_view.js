@@ -16,7 +16,6 @@
             deleteItem: {
                 label: /*Zikula.__(*/'Delete'/*)*/,
                 action: function (obj) {
-                    //this.remove(obj);
                     getCategoryDeleteMenuAction(node);
                 },
                 icon: 'fa fa-remove'
@@ -33,14 +32,14 @@
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'activate');
                 },
-                icon: 'fa fa-check-circle'
+                icon: 'fa fa-check-square-o'
             },
             deactivateItem: {
                 label: /*Zikula.__(*/'Deactivate'/*)*/,
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'deactivate');
                 },
-                icon: 'fa fa-times-circle'
+                icon: 'fa fa-square-o'
             },
             addItemAfter: {
                 label: /*Zikula.__(*/'Add category (after selected)'/*)*/,
@@ -54,7 +53,7 @@
                 action: function (obj) {
                     performCategoryContextMenuAction(node, 'addchild');
                 },
-                icon: 'fa fa-level-up fa-rotate-90'
+                icon: 'fa fa-long-arrow-right'
             }
         };
 
@@ -123,29 +122,28 @@
     }
 
     function performCategoryContextMenuActionCallback(data) {
-        var node = $('#node_' + data.cid);
-        var parentNodeId = 'node_' + data.parent;
+        var originalNode = $('#node_' + data.cid);
+        var parentNode = $('#node_' + data.parent);
 
         switch (data.action) {
             case 'delete':
-                treeElem.jstree("delete_node", node);
-                treeElem.jstree("redraw");
+                treeElem.jstree("delete_node", originalNode);
                 break;
             case 'deleteandmovesubs':
-                treeElem.jstree("delete_node", node);
-                $('#' + parentNodeId).replaceWith(data.node);
-                reinitTreeNode($(parentNodeId), data);
+                var workingNode = treeElem.jstree("get_node", originalNode.attr('id'));
+                treeElem.jstree("copy_node", workingNode.children, parentNode, "last"); // use copy here to avoid move_node event
+                treeElem.jstree("delete_node", originalNode);
+                reinitTreeNode(parentNode, data);
                 break;
             case 'activate':
-                node.removeClass('z-tree-unactive');
+                originalNode.removeClass('z-tree-unactive');
                 break;
             case 'deactivate':
-                node.addClass('z-tree-unactive');
+                originalNode.addClass('z-tree-unactive');
                 break;
             case 'copy':
-                var newNode = 'node_' + data.copycid;
-                $('#' + newNode).replaceWith(data.node);
-                reinitTreeNode($(newNode), data);
+                var indexOfOriginalNode = originalNode.parent().children().index(originalNode[0]);
+                treeElem.jstree(true).create_node(parentNode, data.node, indexOfOriginalNode);
                 break;
             case 'edit':
             case 'add':
@@ -160,8 +158,8 @@
                         return false;
                     }
 
-                    var pars = {};
                     // fetch each input and hidden field and store the value to POST
+                    var pars = {};
                     $.each($(":input, :hidden").serializeArray(), function(i, field) {
                         pars[field.name] = field.value;
                     });
@@ -197,20 +195,19 @@
                             }
                         } else {
                             if (mode == 'edit') {
-                                var nodeId = 'node_' + data.cid;
-                                $('#' + nodeId).replaceWith(data.node);
-                                reinitTreeNode($('#' + nodeId), data);
-                            } else if (mode == 'add') {
-                                var relNode = $('#node_' + data.parent),
-                                    newParent = relNode.children('ul');
-                                if (!newParent) {
-                                    newParent = $('<ul>').attr({ class: 'tree' });
-                                    relNode.append(newParent);
-                                }
-                                newParent.append(data.node);
-                                var node = $('#node_' + data.cid);
-                                reinitTreeNode(node, data);
+                                // delete the existing node and replace with edited version
+                                var editedNode = treeElem.jstree("get_node", 'node_' + data.cid);
+                                treeElem.jstree('delete_node', editedNode);
                             }
+                            var parentLi = $('#node_' + data.parent),
+                                parentUl = parentLi.children('ul');
+                            if (!parentUl) {
+                                parentUl = $('<ul>').attr({ class: 'tree' });
+                                parentLi.append(parentUl);
+                            }
+                            var newNode = treeElem.jstree(true).create_node(parentUl, data.node[0]);
+                            var node = $('#'+newNode);
+                            reinitTreeNode(node, data);
                             closeCategoryEditForm();
                         }
                     }).error(function(result) {
@@ -226,28 +223,26 @@
     }
 
     function getCategoryDeleteMenuAction(node) {
-        var subCats, msg;
-
-        subCats = $(node).find('> ul > li').length;
+        var subCats = node.children.length;
         if (subCats > 0) {
-            var info = Zikula.__f('It contains %s direct sub-categories.', subCats)
+            //var info = Zikula.__f('It contains %s direct sub-categories.', subCats)
+            var info = "It contains " + subCats + " direct sub-categories."
                 + ' '
-                + /*Zikula.__(*/"Please also choose what to do with this category's sub-categories."/*)*/;
-            $('#deleteWithSubCatInfo').addClass('alert alert-info').text(info);
+                + /*Zikula.__(*/"Please choose what to do with this category's sub-categories."/*)*/;
+            $('#deleteWithSubCatInfo').addClass('alert alert-warning').text(info);
         } else {
-            $('#deleteWithSubCatInfo').removeClass('alert alert-info').text('');
+            $('#deleteWithSubCatInfo').removeClass('alert alert-warning').text('');
         }
         var deleteModal = $('#categoryDeleteModal');
 
         if (subCats > 0) {
-            deleteModal.find('.modal-footer .leaf-node').hide();
-            deleteModal.find('.modal-footer .parent-node').show();
-        } else {
-            deleteModal.find('.modal-footer .leaf-node').show();
-            deleteModal.find('.modal-footer .parent-node').hide();
+            deleteModal.find('#cat_delete').hide();
+            deleteModal.find('#cat_delete_all').show();
+            deleteModal.find('#cat_delete_move').show();
         }
+        $('#subcat_move').remove();
 
-        deleteModal.find('.modal-footer button').click(function(event) {
+        deleteModal.find('.modal-footer button').one('click', function(event) {
             event.preventDefault();
             var buttonValue = $(this).val();
 
@@ -258,6 +253,8 @@
                     break;
                 case 'DeleteAndMoveSubs':
                     if (!$('#subcat_move').length) {
+                        // present dialog to determine new parent
+                        $(this).prepend("<i id='button-spinner' class='fa fa-gear fa-spin fa-lg text-danger'></i> ");
                         $.ajax({
                             type: "POST",
                             url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),
@@ -267,14 +264,19 @@
                         }).success(function(result) {
                             var subcat_move = result.data.result;
                             deleteModal.find('.modal-body').append(subcat_move);
+                            deleteModal.find('#cat_delete_move').hide();
+                            deleteModal.find('#cat_delete_move_action').show();
                         }).error(function(result) {
                             alert(result.status + ': ' + result.statusText);
+                        }).always(function() {
+                            $('#button-spinner').remove();
                         });
                     } else {
+                        // utilize new parent to perform delete and move operation
                         var parent = $('#category_parent_id_').val();
                         if (parent) {
                             performCategoryContextMenuAction(node, 'deleteandmovesubs', parent);
-                            $('#categoryDeleteModal').modal('hide');
+                            deleteModal.modal('hide');
                         }
                     }
                     break;
@@ -284,6 +286,15 @@
         });
 
         deleteModal.modal();
+        deleteModal.on('hidden.bs.modal', function (e) {
+            // reset modal to initial state
+            deleteModal.find('#cat_delete').show();
+            deleteModal.find('#cat_delete_all').hide();
+            deleteModal.find('#cat_delete_move').hide();
+            deleteModal.find('#cat_delete_move_action').hide();
+            $('#button-spinner').remove();
+            $('#subcat_move').remove();
+        });
         deleteModal.find('.modal-footer button[value=Cancel]').focus();
     }
 
@@ -308,8 +319,6 @@
     var nodesDisabledForDrop = [];
 
     function reinitTreeNode(node, data) {
-        treeElem.jstree("redraw");
-
         if (data.leafstatus) {
             if (data.leafstatus.leaf) {
                 // add elements
@@ -398,7 +407,7 @@
             }
         });
 
-        treeElem.on('ready.jstree', function(e) {
+        treeElem.on('ready.jstree redraw.jstree create_node.jstree changed.jstree delete_node.jstree', function(e) {
             treeElem
                 // hide folder icons for leaf nodes
                 .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
@@ -463,6 +472,6 @@
                 html: true
             });
             anchor.tooltip('show');
-        })
+        });
     });
 })(jQuery);

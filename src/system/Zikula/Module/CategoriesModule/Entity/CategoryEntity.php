@@ -261,7 +261,7 @@ class CategoryEntity extends EntityAccess
      */
     public function getChildren()
     {
-        return $this->children;
+        return !empty($this->children) ? $this-> children : array();
     }
 
     /**
@@ -376,18 +376,22 @@ class CategoryEntity extends EntityAccess
 
     /**
      * get the category display name
+     * @param $lang
      *
-     * @return string the category display name
+     * @return array the category display name
      */
-    public function getDisplay_name()
+    public function getDisplay_name($lang = null)
     {
+        if (!empty($lang)) {
+            return $this->display_name[$lang];
+        }
         return $this->display_name;
     }
 
     /**
      * set the category display name
      *
-     * @param string $display_name the category display name
+     * @param array $display_name the category display name array
      */
     public function setDisplay_name($display_name)
     {
@@ -396,18 +400,22 @@ class CategoryEntity extends EntityAccess
 
     /**
      * get the category display description
+     * @param $lang
      *
      * @return string the category display description
      */
-    public function getDisplay_desc()
+    public function getDisplay_desc($lang = null)
     {
+        if (!empty($lang)) {
+            return $this->display_desc[$lang];
+        }
         return $this->display_desc;
     }
 
     /**
      * set the category display description
      *
-     * @param string $display_desc the category display description
+     * @param array $display_desc the category display description
      */
     public function setDisplay_desc($display_desc)
     {

@@ -179,12 +179,19 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $copyParent = CategoryUtil::getCategoryByID($cat['parent_id']);
 
         $categories = CategoryUtil::getSubCategories($copyParent['id'], true, true, true, true, true);
-        $options = array(
-            'nullParent' => $copyParent['parent_id'],
-            'withWraper' => false,
-        );
 
-        $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
+        // get the last added category in the parent
+        $qb = $this->entityManager->createQueryBuilder();
+        $category = $qb->select('c')
+            ->from('Zikula\Module\CategoriesModule\Entity\CategoryEntity', 'c')
+            ->where('c.parent = :parent_id')
+            ->setParameter('parent_id', $parent)
+            ->orderBy('c.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult();
+        // create jsTree node
+        $node = CategoryUtil::getJsTreeNodeFromCategory($category);
 
         $leafStatus = array(
             'leaf' => array(),
@@ -201,7 +208,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'action' => 'copy',
             'cid' => $cid,
             'copycid' => $copyParent['id'],
-            'parent' => $copyParent['parent_id'],
+            'parent' => $category->getParent()->getId(),
             'node' => $node,
             'leafstatus' => $leafStatus,
             'result' => true
@@ -270,11 +277,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $newParent = CategoryUtil::getCategoryByID($parent);
 
         $categories = CategoryUtil::getSubCategories($newParent['id'], true, true, true, true, true);
-        $options = array(
-            'nullParent' => $newParent['parent_id'],
-            'withWraper' => false,
-        );
-        $node = CategoryUtil::getCategoryTreeJS((array)$categories, true, true, $options);
 
         $leafStatus = array(
             'leaf' => array(),
@@ -292,7 +294,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'action' => 'deleteandmovesubs',
             'cid' => $cid,
             'parent' => $newParent['id'],
-            'node' => $node,
             'leafstatus' => $leafStatus,
             'result' => true
         );
@@ -320,7 +321,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $cid = $request->request->get('cid');
 
         $allCats = CategoryUtil::getSubCategories(1, true, true, true, false, true, $cid);
-        $selector = CategoryUtil::getSelector_Categories($allCats);
+        $selector = CategoryUtil::getSelector_Categories($allCats, 'id', '0', 'category[parent_id]', 0, '', 0, '', false, false, true, 1, false, 'form-control');
 
         $this->setView();
         $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
@@ -477,11 +478,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         $categories = CategoryUtil::getSubCategories($category['id'], true, true, true, true, true);
-        $options = array(
-            'nullParent' => $category['parent']->getId(),
-            'withWraper' => false,
-        );
-        $node = CategoryUtil::getCategoryTreeJqueryJS((array)$categories, true, true, $options);
+        $node = CategoryUtil::getJsTreeNodeFromCategoryArray(array(0 => $category));
 
         $leafStatus = array(
             'leaf' => array(),
