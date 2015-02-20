@@ -27,8 +27,9 @@ class DefaultRouteExclusionStrategy extends BaseDefaultRouteExclusionStrategy
     {
         $exclude = parent::shouldExcludeRoute($routeName, $route);
 
-        if (!$exclude && isset($GLOBALS['translation_extract_routes_bundle'])) {
-            return $route->getDefault('_zkModule') !== $GLOBALS['translation_extract_routes_bundle'];
+        $module = $route->getDefault('_zkModule');
+        if (!$exclude && $module !== null && isset($GLOBALS['translation_extract_routes_bundle'])) {
+            return $module !== $GLOBALS['translation_extract_routes_bundle'];
         }
 
         return $exclude;

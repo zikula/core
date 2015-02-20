@@ -143,7 +143,7 @@ class AjaxInstallController extends AbstractController
     }
 
     /**
-     * @public because called by AjaxUpgradeController also
+     * public because called by AjaxUpgradeController also
      * @param $moduleName
      * @return bool
      */
@@ -258,7 +258,7 @@ class AjaxInstallController extends AbstractController
     }
 
     /**
-     * @public because called by AjaxUpgradeController also
+     * public because called by AjaxUpgradeController also
      * @return bool
      */
     public function loginAdmin()
@@ -311,7 +311,7 @@ class AjaxInstallController extends AbstractController
     }
 
     /**
-     * @public because called by AjaxUpgradeController also
+     * public because called by AjaxUpgradeController also
      * @return bool
      */
     public function reloadRoutes()
