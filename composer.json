@@ -56,7 +56,7 @@
         "symfony/assetic-bundle": "2.6.*",
         "symfony/swiftmailer-bundle": "2.3.*",
         "symfony/monolog-bundle": "2.7.*",
-        "jms/i18n-routing-bundle": "dev-master*",
+        "jms/i18n-routing-bundle": "dev-master",
         "twig/extensions": "1.2.*",
         "zikula/generator-bundle": "dev-master",
         "zikula/filesystem": "dev-master",
