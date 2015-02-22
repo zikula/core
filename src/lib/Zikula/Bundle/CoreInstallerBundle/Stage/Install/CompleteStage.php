@@ -55,7 +55,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
     public function getResponse(Request $request)
     {
         $admin = \UserUtil::getVars(2);
-        if ($this->sendEmailToAdmin($admin)) {
+        if ($this->sendEmailToAdmin($request, $admin)) {
             $request->getSession()->getFlashBag()->add('success', __('Congratulations! Zikula has been successfully installed.'));
             return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', array(), RouterInterface::ABSOLUTE_URL));
         } else {
@@ -64,15 +64,16 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         }
     }
 
-    private function sendEmailToAdmin($admin)
+    private function sendEmailToAdmin(Request $request, $admin)
     {
-        $baseUrl = $this->container->get('request')->getBasePath();
+        $url = $request->getSchemeAndHttpHost() . $request->getBasePath();
+
         $body = <<<EOF
 <html>
 <head></head>
 <body>
 <h1>Hi $admin[uname]!</h1>
-<p>Zikula has been successfully installed at <a href="$baseUrl">$baseUrl</a>. If you have further questions,
+<p>Zikula has been successfully installed at <a href="$url">$url</a>. If you have further questions,
 visit <a href="http://zikula.org">zikula.org</a></p>
 </body>
 EOF;
