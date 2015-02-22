@@ -81,6 +81,7 @@ EOF;
             ->setFrom(\System::getVar('adminmail'))
             ->setTo($admin['email'])
             ->setBody($body)
+            ->setContentType('text/html')
         ;
         /**
          * @var Swift_Mailer $mailer
