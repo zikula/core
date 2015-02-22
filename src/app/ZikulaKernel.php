@@ -25,8 +25,13 @@ class ZikulaKernel extends Kernel
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
             new JMS\TranslationBundle\JMSTranslationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle(),
         );
+        // only add SymfonyConsoleFormBundle if PHP >= 5.4.0 @todo remove this check for 2.0.0 and include
+        $x = explode('.', str_replace('-', '.', phpversion()));
+        $phpVersion = "$x[0].$x[1].$x[2]";
+        if (version_compare($phpVersion, '5.4.0', ">=")) {
+           $bundles[] = new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle();
+        }
 
         $this->registerCoreModules($bundles);
 
