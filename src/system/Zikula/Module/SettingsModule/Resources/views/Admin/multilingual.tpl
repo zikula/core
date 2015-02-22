@@ -85,6 +85,7 @@
                         <input id="idnnamesno" type="radio" name="idnnames" value="0"{if $modvars.ZConfig.idnnames ne 1} checked="checked"{/if} />
                         <label for="idnnamesno">{gt text='No'}</label>
                     </div>
+                    <div class="help-block sub italic">{gt text='This only applies to legacy variable validation. The system itself has native IDN support.'}</div>
                     <div class="help-block sub italic">{gt text='Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs.'}</div>
                 </div>
             </div>
