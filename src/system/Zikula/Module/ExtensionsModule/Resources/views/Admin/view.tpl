@@ -1,5 +1,5 @@
 {gt text="Extensions database" assign=extdbtitle}
-{assign value="<strong><a href=\"http://go.zikula.org/inappstore\">`$extdbtitle`</a></strong>" var=extdblink}
+{assign value="<strong><a href=\"http://zikula.org/library/\">`$extdbtitle`</a></strong>" var=extdblink}
 
 {adminheader}
 <h3>
