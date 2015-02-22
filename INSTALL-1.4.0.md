@@ -61,7 +61,7 @@ or `.tgz` file) to your server and then `unzip` them there. (This is faster and 
 files and directories to your webroot (typically `public_html` or `httpdocs`).
 
 Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
-to the server check if your longest path lenght is longer than Windows/FTP-Software allows.
+to the server check if your longest path length is longer than Windows/FTP-Software allows.
 
 
 ###Set file permissions (Critical)
