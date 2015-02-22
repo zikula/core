@@ -86,20 +86,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $accesslevels = SecurityUtil::accesslevelnames();
         $permission['levelname'] = $accesslevels[$permission['level']];
-
-        switch($permission['gid']) {
-            case -1:
-                $permission['groupname'] = $this->__('All groups');
-                break;
-
-            case 0:
-                $permission['groupname'] = $this->__('Unregistered');
-                break;
-
-            default:
-                $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => false));
-                $permission['groupname'] = $group['name'];
-        }
+        $permission['groupname'] = $this->determineGroupName($permission['gid']);
 
         return new AjaxResponse($permission);
     }
@@ -176,7 +163,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $newperm['instance']  = DataUtil::formatForDisplay($newperm['instance']);
         $newperm['component'] = DataUtil::formatForDisplay($newperm['component']);
         $newperm['levelname'] = $accesslevels[$newperm['level']];
-        $newperm['groupname'] = $this->__('Unregistered');
+        $newperm['groupname'] = $this->determineGroupName($newperm['gid']);
 
         return new AjaxResponse($newperm);
     }
@@ -273,5 +260,30 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         return new AjaxResponse(array('testresult' => $result));
+    }
+
+    /**
+     * determine the group name from ID
+     *
+     * @param $gid
+     * @return string
+     */
+    private function determineGroupName($gid)
+    {
+        switch($gid) {
+            case -1:
+                $name = $this->__('All groups');
+                break;
+
+            case 0:
+                $name = $this->__('Unregistered');
+                break;
+
+            default:
+                $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => false));
+                $name = $group['name'];
+        }
+
+        return $name;
     }
 }
