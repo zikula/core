@@ -60,6 +60,10 @@ If you obtained Zikula Core from zikula.org or the CI server, then you can uploa
 or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable). Copy all the
 files and directories to your webroot (typically `public_html` or `httpdocs`).
 
+Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
+to the server check if your longest path lenght is longer than Windows/FTP-Software allows.
+
+
 ###Set file permissions (Critical)
 
 If you installed from a `.zip` archive, the permissions for the `app/cache` and `app/logs` must be reset so
