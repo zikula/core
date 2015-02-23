@@ -5,6 +5,9 @@
     var treeElem;
 
     function getCategoryContextMenuActions(node) {
+        if (node.id == 'node_1') {
+            return {};
+        }
         var actions = {
             editItem: {
                 label: /*Zikula.__(*/'Edit'/*)*/,
@@ -82,6 +85,11 @@
         var pars = {
             cid: nodeId.replace('node_', '')
         };
+        if (nodeId == 'node_1') {
+            // do not allow editing of root category
+            $('#temp-spinner').remove();
+            return false;
+        }
         switch (action) {
             case 'edit':
                 pars.mode = 'edit';
@@ -438,9 +446,12 @@
                 .removeClass('fa-folder-open').addClass('fa-folder');
         });
 
-        // allow redirecting if a linked has been clicked
+        // allow redirecting if a link has been clicked
         treeElem.find('ul').on('click', 'li.jstree-node a', function(e) {
             treeElem.jstree('save_state');
+            if ($(this).attr('id') == 'node_1_anchor') {
+                return true;
+            }
             document.location.href = $(this).attr('href');
         });
 
