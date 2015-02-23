@@ -38,7 +38,7 @@ class DbCredsType extends AbstractType
                 'choices' => array(
                     'innodb' => __('InnoDB'),
                     'myisam' => __('MyISAM')),
-                'data' => 'myisam'))
+                'data' => 'innodb'))
             ->add('database_host', 'text', array(
                 'label' => __('Host'),
                 'label_attr' => array('class' => 'col-lg-5'),
