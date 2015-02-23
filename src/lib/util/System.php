@@ -221,6 +221,39 @@ class System
             return false;
         }
 
+        if ($type == 'email' || $type == 'url') {
+            // CSRF protection for email and url
+            $var = str_replace(array(
+                            '\r',
+                            '\n',
+                            '%0d',
+                            '%0a'), '', $var);
+
+            if (self::getVar('idnnames')) {
+                // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
+                require_once 'lib/legacy/idn/idna_convert.class.php';
+                $IDN = new idna_convert();
+                $var = $IDN->encode(DataUtil::convertToUTF8($var));
+            }
+            // all characters must be 7 bit ascii
+            $length = strlen($var);
+            $idx = 0;
+            while ($length--) {
+                $c = $var[$idx++];
+                if (ord($c) > 127) {
+                    return false;
+                }
+            }
+        }
+
+        if ($type == 'url') {
+            // check for url
+            $url_array = @parse_url($var);
+            if (!empty($url_array) && empty($url_array['scheme'])) {
+                return false;
+            }
+        }
+
         if ($type == 'uname') {
             // check for invalid characters
             if (!preg_match('/^[\p{L}\p{N}_\.\-]+$/uD', $var)) {

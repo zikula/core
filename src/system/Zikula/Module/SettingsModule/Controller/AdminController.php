@@ -238,7 +238,8 @@ class AdminController extends \Zikula_AbstractController
                 'mlsettings_multilingual' => 'multilingual',
                 'mlsettings_language_detect' => 'language_detect',
                 'mlsettings_languageurl' => 'languageurl',
-                'mlsettings_timezone_adjust' => 'tzadjust');
+                'mlsettings_timezone_adjust' => 'tzadjust',
+                'idnnames' => 'idnnames');
 
         // we can't detect language if multilingual feature is off so reset this to false
         if ($request->request->get('mlsettings_multilingual', null) == 0) {
