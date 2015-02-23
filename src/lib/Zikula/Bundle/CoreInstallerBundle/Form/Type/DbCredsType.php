@@ -33,7 +33,7 @@ class DbCredsType extends AbstractType
                 'choices' => $this->getDbTypes(),
                 'data' => 'mysql'))
             ->add('dbtabletype', 'choice', array(
-                'label' => __('Storage Engine'),
+                'label' => __('Database table type (MySQL only)'),
                 'label_attr' => array('class' => 'col-lg-5'),
                 'choices' => array(
                     'innodb' => __('InnoDB'),
