@@ -133,13 +133,15 @@ class UserApi extends \Zikula_AbstractApi
             }
 
             $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy($gmFilterParameters, array(), $args['numitems'], $args['startnum']);
-            if (!$groupmembership) {
-                return false;
-            }
 
-            foreach ($groupmembership as $gm) {
-                $gm = $gm->toArray();
-                $uidsArray[$gm['uid']] = $gm;
+            if (is_array($groupmembership)) {
+                foreach ($groupmembership as $gm) {
+                    $gm = $gm->toArray();
+                    $uidsArray[$gm['uid']] = $gm;
+                }
+            } else {
+                // An error getting data from the database
+                return false;
             }
         }
 
