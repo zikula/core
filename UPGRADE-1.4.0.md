@@ -79,6 +79,8 @@ The following process should be followed for all upgrades even small point relea
     `personal_config.php`
   - Before uploading the new files, delete **all files** in your web root (typically `public_html` or `httpdocs`).
   - Upload the new package.
+    - Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
+to the server check if your longest path length is longer than Windows/FTP-Software allows (more than 256 characters).
   - Copy your new `config/config.php` to `config/personal_config.php` and update
     `config/personal_config.php` with your database settings.
   - Copy `app/config/parameters.yml` to `app/config/custom_parameters.yml` and update
