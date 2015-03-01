@@ -431,7 +431,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $usepath = "$modpath/" . $view->module[$module]['directory'] . '/templates/config';
             $usemod_confs = array();
             $usemod_confs[] = "$usepath/usemodules.txt";
-            $usemod_confs[] = "$usepath/usemodules"; // backward compat for < 1.2 // TODO A depreciate from 1.4
             // load the config file
             foreach ($usemod_confs as $usemod_conf) {
                 if (is_readable($usemod_conf) && is_file($usemod_conf)) {
