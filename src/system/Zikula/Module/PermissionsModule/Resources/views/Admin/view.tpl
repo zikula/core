@@ -32,10 +32,10 @@
                 {/foreach}
             </select>
         </span>
-        <span class="nowrap"">
+        <span class="nowrap">
             <button id="reset-filter" type="reset"><i class="fa fa-times"></i> {gt text='Reset'}</button>
         </span>
-        <span class="nowrap no-script"">
+        <span class="nowrap no-script">
             <button name="permgroupfiltersubmit" type="submit"><i class="fa fa-filter"></i> {gt text='Filter'}</button>
         </span>
     </fieldset>
@@ -93,12 +93,12 @@
             <td id="permission-level-{$permission.permid}" data-id="{$permission.accesslevelid}">{$permission.accesslevel|safetext}</td>
 
             <td class="actions">
-                <a class="fa fa-plus pointer insertBefore create-new-permission tooltips" href="{$permission.inserturl|safetext}" title="{gt text='Insert permission rule before %s' tag1=$permission.permid}"></a>
+                <a class="pointer insertBefore create-new-permission tooltips" href="{$permission.inserturl|safetext}" title="{gt text='Insert permission rule before %s' tag1=$permission.permid}"><i class="fa fa-plus"></i></a>
                 {if !$lockadmin || $adminid ne $permission.permid}
-                <a class="fa fa-pencil pointer edit-permission tooltips" href="{$permission.editurl|safetext}" title="{gt text='Edit permission %s' tag1=$permission.permid}"></a>
-                <a class="fa fa-trash-o delete-permission tooltips" href="{$permission.deleteurl|safetext}" title="{gt text='Delete permission %s' tag1=$permission.permid}"></a>
+                <a class="pointer edit-permission tooltips" href="{$permission.editurl|safetext}" title="{gt text='Edit permission %s' tag1=$permission.permid}"><i class="fa fa-pencil"></i></a>
+                <a class="delete-permission tooltips" href="{$permission.deleteurl|safetext}" title="{gt text='Delete permission %s' tag1=$permission.permid}"><i class="fa fa-trash-o"></i></a>
                 {/if}
-                <i class="fa fa-key test-permission pointer ajax hidden tooltips" title="{gt text='Check a users permission'}"></i>
+                <i class="test-permission pointer ajax hidden tooltips" title="{gt text='Check a users permission'}"><i class="fa fa-key"></i></i>
             </td>
         </tr>
         {/foreach}

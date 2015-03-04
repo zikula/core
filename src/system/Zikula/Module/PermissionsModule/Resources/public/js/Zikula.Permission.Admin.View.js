@@ -83,7 +83,7 @@ var currentDelete, currentInsertBefore;
         /* Open modal to edit permission */
         $(document).on('click', '.edit-permission', function (event) {
             event.preventDefault();
-            $(this).addClass('fa-spin');
+            $(this).find('.fa').addClass('fa-spin');
             var id = $(this).parent().parent().data('id');
             $('#permission-id').val(id);
             $('#permission-component').val($('#permission-component-' + id).text());
@@ -132,7 +132,7 @@ var currentDelete, currentInsertBefore;
         /* Open modal  */
         $(document).on('click', '.delete-permission', function (event) {
             event.preventDefault();
-            $(this).addClass('fa-spin');
+            $(this).find('.fa').addClass('fa-spin');
             currentDelete = $(this).parent().parent();
             $('#deleteModal').modal();
         });
@@ -162,7 +162,7 @@ var currentDelete, currentInsertBefore;
         /* Open modal */
         $('.create-new-permission').click(function (event) {
             event.preventDefault();
-            $(this).addClass('fa-spin');
+            $(this).find('.fa').addClass('fa-spin');
             currentInsertBefore = $(this).hasClass('insertBefore') ? $(this).parent().parent() : null;
             $('#save-permission-changes').hide();
             $('#save-new-permission').show();
