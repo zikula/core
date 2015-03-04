@@ -68,6 +68,24 @@
 <script>
     $(document).ready(function() {
         $('form:first *:input:text:first').focus();
+        
+        var value = $('#dbcreds_database_driver').val();
+        
+        if (value == 'mysql') {
+            $('#dbcreds_dbtabletype').parent().parent().show();
+        } else {
+            $('#dbcreds_dbtabletype').parent().parent().hide();
+        }
+            
+        $('#dbcreds_database_driver').on('change', function() {
+            var value = $(this).val();
+            
+            if (value == 'mysql') {
+                $('#dbcreds_dbtabletype').parent().parent().slideDown('slow');
+            } else {
+                $('#dbcreds_dbtabletype').parent().parent().slideUp('slow');
+            }
+        });
     });
 </script>
 {% endblock %}
