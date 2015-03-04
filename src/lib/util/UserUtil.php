@@ -1864,6 +1864,10 @@ class UserUtil
             // BC support (see #2051 for example)
             $type = $legacyType;
         }
+        if (null === $type) {
+            // routing preventing type from being set, get from request attributes
+            $type = $request->get('_zkType');
+        }
 
         // Page-specific theme
         $qstring = System::serverGetVar('QUERY_STRING');
