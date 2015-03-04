@@ -46,8 +46,9 @@ to:
 
 Additional Breaks
 -----------------
-- the interactive installer functionality has been removed.
+- The interactive installer functionality has been removed.
 - Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.
+- If a module uses Smarty plugins of another modules the file must be named `modules/Foo/templates/config/usemodules.txt`. In 1.3.x both `usemodules.` and `usemodules.txt` work whereby `usemodules.` has been deprecated since 1.2 and was now removed in 1.4.0 (see #2304 for the details).
 
 
 Deprecations
