@@ -1426,10 +1426,10 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
             if (!$reginfo || empty($reginfo)) {
-                throw new \RuntimeException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+                throw new \RuntimeException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $args['uid']));
             }
             if (!isset($reginfo['email'])) {
-                throw new \InvalidArgumentException($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
+                throw new \InvalidArgumentException($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $args['uid']));
             }
         }
 
