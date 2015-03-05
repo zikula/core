@@ -138,6 +138,23 @@ class ModUtil
     }
 
     /**
+     * Init variables multilingual dependent.
+     *
+     * @return boolean True
+     */
+    public static function setupMultilingual()
+    {
+        $lang = ZLanguage::getLanguageCode();
+        LogUtil::registerStatus('ModUtil: '.$lang);
+        $items = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
+        foreach ($items as $item) {
+            self::$modvars['ZConfig'][$item] = isset(self::$modvars['ZConfig'][$item . '_' . $lang]) ? self::$modvars['ZConfig'][$item . '_' . $lang] : '';
+        }
+
+        return true;
+    }
+
+    /**
      * Checks to see if a module variable is set.
      *
      * @param string $modname The name of the module.
