@@ -145,7 +145,6 @@ class ModUtil
     public static function setupMultilingual()
     {
         $lang = ZLanguage::getLanguageCode();
-        LogUtil::registerStatus('ModUtil: '.$lang);
         $items = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
         foreach ($items as $item) {
             self::$modvars['ZConfig'][$item] = isset(self::$modvars['ZConfig'][$item . '_' . $lang]) ? self::$modvars['ZConfig'][$item . '_' . $lang] : '';
