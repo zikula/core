@@ -177,7 +177,7 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 System::delVar('defaultpagetitle');
                 System::delVar('defaultmetadescription');
 
-            case '3.0.0':
+            case '2.9.10':
                 // current version
         }
 
