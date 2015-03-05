@@ -195,7 +195,7 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
                 ZLanguage::setLocale($currentlanguage);
             }
         }
-        usort($urls, '_blocks_thelangblock_sort');
+        usort($urls, array($this, '_blocks_thelangblock_sort'));
 
         $this->view->assign('urls', $urls);
 
@@ -309,23 +309,23 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
                             'flag' => $img ? "images/flags/flag-$code.png" : '');
         }
 
-        usort($list, '_blocks_thelangblock_sort');
+        usort($list, array($this, '_blocks_thelangblock_sort'));
 
         return $list;
     }
-}
 
-/**
- * Callback function to assist in sorting languages
- *
- * @param string $a the first language
- * @param string $b the second language
- *
- * @see LangBlock::getAvailableLanguages
- *
- * @return int <0 if $a < $b, >0 otherwise
- */
-function _blocks_thelangblock_sort($a, $b)
-{
-    return strcmp($a['name'], $b['name']);
+    /**
+     * Callback function to assist in sorting languages
+     *
+     * @param string $a the first language
+     * @param string $b the second language
+     *
+     * @see LangBlock::getAvailableLanguages
+     *
+     * @return int <0 if $a < $b, >0 otherwise
+     */
+    function _blocks_thelangblock_sort($a, $b)
+    {
+        return strcmp($a['name'], $b['name']);
+    }
 }
