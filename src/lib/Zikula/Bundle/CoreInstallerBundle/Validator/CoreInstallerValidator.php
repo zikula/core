@@ -26,6 +26,12 @@ class CoreInstallerValidator
      */
     public static function validatePdoConnection($object, ExecutionContextInterface $context)
     {
+        if ($object['database_host'] == '' || $object['database_name'] == '' || $object['database_user'] == '') {
+            $context->buildViolation(__('Error! Please enter your database credentials.'))
+                    ->addViolation();
+            return;
+        }
+
         try {
             $dbh = new \PDO("$object[database_driver]:host=$object[database_host];dbname=$object[database_name]", $object['database_user'], $object['database_password']);
             $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
