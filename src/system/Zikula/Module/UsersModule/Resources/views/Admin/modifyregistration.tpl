@@ -1,24 +1,3 @@
-{strip}
-{ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
-{pageaddvarblock}
-<script type="text/javascript">
-    Zikula.Users.NewUser.setup = function() {
-        Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
-
-        Zikula.Users.NewUser.fieldId = {
-            submit:         '{{$formData->getFormId()}}_submitnewuser',
-            checkUser:      '{{$formData->getFormId()}}_checkuserajax',
-            checkMessage:   '{{$formData->getFormId()}}_checkmessage',
-            validMessage:   '{{$formData->getFormId()}}_validmessage',
-
-            userName:       '{{$formData->getFieldId('uname')}}',
-            email:          '{{$formData->getFieldId('email')}}',
-        };
-    }
-</script>
-{/pageaddvarblock}
-{/strip}
-
 <div id="{$formData->getFormId()}_errormsgs" class="alert alert-danger{if empty($errorMessages)} hide{/if}">
     {if isset($errorMessages)}
     {foreach from=$errorMessages item='message' name='errorMessages'}
@@ -59,7 +38,7 @@
                 <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='E-mail address'}<span class="required"></span></label>
                 {assign var='fieldName' value='email'}
                 <div class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="email" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
             </div>
@@ -68,7 +47,7 @@
                 <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat e-mail address for verification'}<span class="required"></span></label>
                 {assign var='fieldName' value='emailagain'}
                 <div class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)}form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)}form-error{/if}" type="email" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
             </div>
@@ -93,19 +72,12 @@
 
         {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=$formData->getFieldData('uid')}
 
-        <fieldset>
-            <legend>{gt text="Check your entries and submit your updates"}</legend>
-            <p id="{$formData->getFormId()}_checkmessage" class="sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Save' to continue."}</p>
-            <p id="{$formData->getFormId()}_validmessage" class="hide sub">{gt text="Your entries seem to be OK. Please click on 'Save' when you are ready to continue."}</p>
-            <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-9">
-                        <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
-                        {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' class='btn btn-success' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
-                        {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='btn btn-warning' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                        <a class="btn btn-default" href="{if $restoreview == 'view'}{route name='zikulausersmodule_admin_viewregistrations' restoreview=true}{else}{route name='zikulausersmodule_admin_displayregistration' uid=$formData->getFieldData('uid')}{/if}">{gt text='Cancel'}</a>
-                </div>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                    {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' class='btn btn-success' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
+                    <a class="btn btn-default" href="{if $restoreview == 'view'}{route name='zikulausersmodule_admin_viewregistrations' restoreview=true}{else}{route name='zikulausersmodule_admin_displayregistration' uid=$formData->getFieldData('uid')}{/if}">{gt text='Cancel'}</a>
             </div>
-        </fieldset>
+        </div>
     </div>
 </form>
 {adminfooter}

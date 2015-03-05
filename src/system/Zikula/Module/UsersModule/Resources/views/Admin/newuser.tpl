@@ -1,6 +1,5 @@
 {strip}
     {gt text='Create new user' assign='templatetitle'}
-    {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
     {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
         {pageaddvar name='javascript' value='jquery'}
         {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
@@ -17,23 +16,6 @@
             </script>
         {/pageaddvarblock}
     {/if}
-    {pageaddvarblock}
-        <script type="text/javascript">
-            Zikula.Users.NewUser.setup = function() {
-                Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
-
-                Zikula.Users.NewUser.fieldId = {
-                    submit:         '{{$formData->getFormId()}}_submitnewuser',
-                    checkUser:      '{{$formData->getFormId()}}_checkuserajax',
-                    checkMessage:   '{{$formData->getFormId()}}_checkmessage',
-                    validMessage:   '{{$formData->getFormId()}}_validmessage',
-
-                    userName:       '{{$formData->getFieldId('uname')}}',
-                    email:          '{{$formData->getFieldId('email')}}',
-                };
-            }
-        </script>
-    {/pageaddvarblock}
 {/strip}
 
 {adminheader}
@@ -74,7 +56,7 @@
                 <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='E-mail address'}<span class="required"></span></label>
                 {assign var='fieldName' value='email'}
                 <div class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error"{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="email" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
             </div>
@@ -83,7 +65,7 @@
                 <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat e-mail address for verification'}<span class="required"></span></label>
                 {assign var='fieldName' value='emailagain'}
                 <div class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="email" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
             </div>
@@ -195,20 +177,12 @@
         
         {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=null}
 
-        <fieldset>
-            <legend>{gt text="Check your entries and submit your registration"}</legend>
-            <p id="{$formData->getFormId()}_checkmessage" class="sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit new user' to continue."}</p>
-            <p id="{$formData->getFormId()}_validmessage" class="hide sub">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
-            <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-9">
-                    <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
-                    {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' class='btn btn-success' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
-                    {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='btn btn-warning' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                    <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}">{gt text='Cancel'}</a>
-                </div>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' class='btn btn-success' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
+                <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}">{gt text='Cancel'}</a>
             </div>
         </div>
-        </fieldset>
     </div>
 </form>
 {adminfooter}
