@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use ZLanguage;
 
 /**
  * @Route("/admin")
@@ -83,6 +84,7 @@ class AdminController extends \Zikula_AbstractController
         $zlibExtensionEnabled = extension_loaded('zlib');
 
         $this->view->assign('pagetitle', $pagetitle)
+                   ->assign('languages', ZLanguage::getInstalledLanguageNames())
                    ->assign('zlibEnabled', $zlibExtensionEnabled);
 
         return new Response($this->view->fetch('Admin/modifyconfig.tpl'));

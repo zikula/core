@@ -43,11 +43,6 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         // there doesn't need to be a check to see if the variable is set in
         // the rest of the code as it always will be.
         System::setVar('debug', '0');
-        System::setVar('sitename', $this->__('Site name'));
-        System::setVar('slogan', $this->__('Site description'));
-        System::setVar('metakeywords', $this->__('zikula, portal, portal web, open source, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework'));
-        System::setVar('defaultpagetitle', $this->__('Site name'));
-        System::setVar('defaultmetadescription', $this->__('Site description'));
         System::setVar('startdate', date('m/Y', time()));
         System::setVar('adminmail', 'example@example.com');
         System::setVar('Default_Theme', 'ZikulaAndreas08Theme');
@@ -74,6 +69,14 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('shorturls', false);
         System::setVar('shorturlstype', '0');
         System::setVar('shorturlsseparator', '-');
+        // Multilingual support
+        foreach (ZLanguage::getInstalledLanguages() as $lang) {
+            System::setVar('sitename_' . $lang, $this->__('Site name'));
+            System::setVar('slogan_' . $lang, $this->__('Site description'));
+            System::setVar('metakeywords_' . $lang, $this->__('zikula, portal, open source, web site, website, weblog, blog, content management system, cms, application framework'));
+            System::setVar('defaultpagetitle_' . $lang, $this->__('Site name'));
+            System::setVar('defaultmetadescription_' . $lang, $this->__('Site description'));
+        }
 
         if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
             // Only strip entry point if "mod_rewrite" is available.
@@ -144,7 +147,7 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         switch ($oldversion) {
             case '2.9.7':
                 EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\Module\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
-            // future upgrade routines
+
             case '2.9.8':
                 $permasearch = System::getVar('permasearch');
                 if (empty($permasearch)) {
@@ -158,7 +161,23 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 if (empty($locale)) {
                     System::setVar('locale',  ZLanguage::getLocale());
                 }
+
             case '2.9.9':
+                // Multilingual support
+                foreach (ZLanguage::getInstalledLanguages() as $lang) {
+                    System::setVar('sitename_' . $lang, $sitename = System::getVar('sitename'));
+                    System::setVar('slogan_' . $lang, $sitename = System::getVar('slogan'));
+                    System::setVar('metakeywords_' . $lang, $sitename = System::getVar('metakeywords'));
+                    System::setVar('defaultpagetitle_' . $lang, $sitename = System::getVar('defaultpagetitle'));
+                    System::setVar('defaultmetadescription_' . $lang, $sitename = System::getVar('defaultmetadescription'));
+                }
+                System::delVar('sitename');
+                System::delVar('slogan');
+                System::delVar('metakeywords');
+                System::delVar('defaultpagetitle');
+                System::delVar('defaultmetadescription');
+
+            case '3.0.0':
                 // current version
         }
 

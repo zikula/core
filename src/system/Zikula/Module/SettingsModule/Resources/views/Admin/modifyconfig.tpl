@@ -9,18 +9,42 @@
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
             <legend>{gt text='Main info'}</legend>
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="settings_sitename">{gt text='Site name'}</label>
-                <div class="col-lg-9">
-                    <input id="settings_sitename" type="text" class="form-control" name="settings[sitename]" value="{$modvars.ZConfig.sitename|safetext}" size="50" maxlength="100" />
+            {if $modvars.ZConfig.multilingual}
+                {foreach from=$languages key='code' item='language'}
+                <fieldset>
+                    <legend>{$language}</legend>
+                    {assign var='varname' value='sitename_'|cat:$code}
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Site name'}</label>
+                        <div class="col-lg-9">
+                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="100" />
+                        </div>
+                    </div>
+                    {assign var='varname' value='slogan_'|cat:$code}
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Description line'}</label>
+                        <div class="col-lg-9">
+                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="100" />
+                        </div>
+                    </div>
+                </fieldset>
+                {/foreach}
+            {else}
+                {assign var='varname' value='sitename_'|cat:$lang}
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Site name'}</label>
+                    <div class="col-lg-9">
+                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="100" />
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="settings_slogan">{gt text='Description line'}</label>
-                <div class="col-lg-9">
-                    <input id="settings_slogan" type="text" class="form-control" name="settings[slogan]" value="{$modvars.ZConfig.slogan|safetext}" size="50" maxlength="100" />
+                {assign var='varname' value='slogan_'|cat:$lang}
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Description line'}</label>
+                    <div class="col-lg-9">
+                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="100" />
+                    </div>
                 </div>
-            </div>
+            {/if}
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="settings_pagetitle">{gt text='Page title structure'}</label>
                 <div class="col-lg-9">
@@ -56,26 +80,56 @@
         </fieldset>
         <fieldset>
             <legend>{gt text='Meta tag settings'}</legend>
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="settings_defaultpagetitle">{gt text='Default page title'}</label>
-                <div class="col-lg-9">
-                    <input id="settings_defaultpagetitle" type="text" class="form-control" name="settings[defaultpagetitle]" value="{$modvars.ZConfig.defaultpagetitle|safetext}" size="50" maxlength="255" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label" for="settings_defaultmetadescription">{gt text='Default meta description'}</label>
-                <div class="col-lg-9">
-                    <input id="settings_defaultmetadescription" type="text" class="form-control" name="settings[defaultmetadescription]" value="{$modvars.ZConfig.defaultmetadescription|safetext}" size="50" maxlength="255" />
-                </div>
-            </div>
-            <div id="settings_keywords_container">
+            {if $modvars.ZConfig.multilingual}
+                {foreach from=$languages key='code' item='language'}
+                <fieldset>
+                    <legend>{$language}</legend>
+                    {assign var='varname' value='defaultpagetitle_'|cat:$code}
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default page title'}</label>
+                        <div class="col-lg-9">
+                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                        </div>
+                    </div>
+                    {assign var='varname' value='defaultmetadescription_'|cat:$code}
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default meta description'}</label>
+                        <div class="col-lg-9">
+                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                        </div>
+                    </div>
+                    {assign var='varname' value='metakeywords_'|cat:$code}
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default meta keywords'}</label>
+                        <div class="col-lg-9">
+                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                        </div>
+                    </div>
+                </fieldset>
+                {/foreach}
+            {else}
+                {assign var='varname' value='defaultpagetitle_'|cat:$lang}
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="settings_metakeywords">{gt text='Default meta keywords'}</label>
+                    <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default page title'}</label>
                     <div class="col-lg-9">
-                        <textarea class="form-control" id="settings_metakeywords" name="settings[metakeywords]" cols="60" rows="5">{$modvars.ZConfig.metakeywords|safetext}</textarea>
+                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
                     </div>
                 </div>
-            </div>
+                {assign var='varname' value='defaultmetadescription_'|cat:$lang}
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default meta description'}</label>
+                    <div class="col-lg-9">
+                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                    </div>
+                </div>
+                {assign var='varname' value='metakeywords_'|cat:$lang}
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default meta keywords'}</label>
+                    <div class="col-lg-9">
+                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                    </div>
+                </div>
+            {/if}
         </fieldset>
         <fieldset>
             <legend>{gt text='Start page settings'}</legend>
