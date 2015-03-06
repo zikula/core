@@ -116,3 +116,4 @@ Features:
   - Includes CLI-based installer and upgrader
   - Auto-creates `custom_parameters.yml` and `personal_config.php`
 - Include Zikula/Wizard - a library to assist in multi-stage user interaction (used in installer)
+- Added multilingual support for site name, site description and site meta tags (#2316).

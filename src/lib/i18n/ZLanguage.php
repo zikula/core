@@ -160,6 +160,7 @@ class ZLanguage
         $this->detectLanguage();
         $this->validate();
         $this->fixLanguageToSession();
+        ModUtil::setupMultilingual();
         $this->setLocale($this->languageCode);
         $request->setLocale($this->languageCode);
         $request->setDefaultLocale($this->languageCode);
