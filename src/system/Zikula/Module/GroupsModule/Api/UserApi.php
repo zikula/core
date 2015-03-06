@@ -89,6 +89,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type int  $startnum         Record number to start get from (group membership)
      *      @type int  $numitems         Number of items to get (group membership)
      *      @type bool $group_membership Whether to select group memberships also (defaults to true for BC)
+     *      @type int  $uid              ID of user
      *                     }
      *
      * @return array|bool item array, or false on failure.
@@ -134,13 +135,13 @@ class UserApi extends \Zikula_AbstractApi
 
             $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy($gmFilterParameters, array(), $args['numitems'], $args['startnum']);
 
-            if (is_array($groupmembership)) {
+            if (is_array($groupmembership) && count($groupmembership) > 0) {
                 foreach ($groupmembership as $gm) {
                     $gm = $gm->toArray();
                     $uidsArray[$gm['uid']] = $gm;
                 }
             } else {
-                // An error getting data from the database
+                // No matching groups
                 return false;
             }
         }
