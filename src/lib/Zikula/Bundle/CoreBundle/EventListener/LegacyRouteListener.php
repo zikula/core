@@ -85,14 +85,8 @@ class LegacyRouteListener implements EventSubscriberInterface
             }
 
             // call the requested/homepage module
-            try {
-                ModUtil::getModule($module);
-                $newType = true;
-            } catch (\Exception $e) {
-                $newType = false;
-            }
-
-            if ($newType) {
+            $moduleBundle = ModUtil::getModule($module);
+            if (null !== $moduleBundle) {
                 $return = ModUtil::func($modinfo['name'], $type, $func);
             } else {
                 $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
