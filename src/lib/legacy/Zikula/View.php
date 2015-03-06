@@ -391,6 +391,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     {
         if (is_null($module)) {
             $module = ModUtil::getName();
+            if ($module === false) {
+                // fallback if no module is given or called (see #2303)
+                $module = ModUtil::CONFIG_MODULE;
+            }
         }
 
         $serviceManager = ServiceUtil::getManager();
