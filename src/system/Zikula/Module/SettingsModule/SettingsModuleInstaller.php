@@ -165,11 +165,11 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
             case '2.9.9':
                 // Multilingual support
                 foreach (ZLanguage::getInstalledLanguages() as $lang) {
-                    System::setVar('sitename_' . $lang, $sitename = System::getVar('sitename'));
-                    System::setVar('slogan_' . $lang, $sitename = System::getVar('slogan'));
-                    System::setVar('metakeywords_' . $lang, $sitename = System::getVar('metakeywords'));
-                    System::setVar('defaultpagetitle_' . $lang, $sitename = System::getVar('defaultpagetitle'));
-                    System::setVar('defaultmetadescription_' . $lang, $sitename = System::getVar('defaultmetadescription'));
+                    System::setVar('sitename_' . $lang, System::getVar('sitename'));
+                    System::setVar('slogan_' . $lang, System::getVar('slogan'));
+                    System::setVar('metakeywords_' . $lang, System::getVar('metakeywords'));
+                    System::setVar('defaultpagetitle_' . $lang, System::getVar('defaultpagetitle'));
+                    System::setVar('defaultmetadescription_' . $lang, System::getVar('defaultmetadescription'));
                 }
                 System::delVar('sitename');
                 System::delVar('slogan');
