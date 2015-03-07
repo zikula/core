@@ -232,3 +232,15 @@ input:invalid, select:invalid, textarea:invalid, .form-error {
     content: "\002A";
     color: red;
 }
+
+/******************************************************************************
+* Bootstrap Overrides
+******************************************************************************/
+
+.help-block {
+    margin-bottom: 0;
+}
+
+.help-block ul.list-unstyled {
+    margin-bottom: 0;  
+}
