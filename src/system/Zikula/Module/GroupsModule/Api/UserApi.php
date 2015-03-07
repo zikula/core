@@ -135,13 +135,13 @@ class UserApi extends \Zikula_AbstractApi
 
             $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy($gmFilterParameters, array(), $args['numitems'], $args['startnum']);
 
-            if (is_array($groupmembership) && count($groupmembership) > 0) {
+            if (is_array($groupmembership)) {
                 foreach ($groupmembership as $gm) {
                     $gm = $gm->toArray();
                     $uidsArray[$gm['uid']] = $gm;
                 }
             } else {
-                // No matching groups
+                // An error getting data from the database
                 return false;
             }
         }
@@ -769,7 +769,8 @@ class UserApi extends \Zikula_AbstractApi
         // Get group and check if the user exists in this group.
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => true, 'uid' => $args['uid']));
 
-        if (!$group) {
+        if (!$group || !array_key_exists($args['uid'], $group['members'])) {
+            // either group does not exist or the requested uid is not a member of the group
             return false;
         }
 
