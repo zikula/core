@@ -34,7 +34,7 @@ class CoreInstallerValidator
 
         try {
             $dbh = new \PDO("$object[database_driver]:host=$object[database_host];dbname=$object[database_name]", $object['database_user'], $object['database_password']);
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $sql = ($object['database_driver'] == 'mysql' || $object['database_driver'] == 'mysqli') ?
                 "SHOW TABLES FROM `$object[database_name]` LIKE '%'" :
                 "SHOW TABLES FROM $object[database_name] LIKE '%'";
