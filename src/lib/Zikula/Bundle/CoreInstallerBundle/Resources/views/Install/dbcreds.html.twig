@@ -50,10 +50,10 @@
             {{ form_label(form.database_name) }}
             <div class="col-lg-7 col-sm-10">
                 {{ form_widget(form.database_name) }}
-                {{ form_errors(form.database_name) }}
                 <em class="text-danger">
                     {{ __('Ensure the database is in UTF8 format.') }}
                 </em>
+                {{ form_errors(form.database_name) }}
             </div>
         </div>
         <div class="form-group">
