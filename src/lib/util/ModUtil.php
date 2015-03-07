@@ -127,7 +127,7 @@ class ModUtil
          }
 
          // Init multilingual variables here, just to have values, even with default site language (page language is set later)
-         self::function setupMultilingual()
+         self::setupMultilingual()
 
          // Pre-load the module variables array with empty arrays for known modules that
          // do not define any module variables to prevent unnecessary SQL queries to
