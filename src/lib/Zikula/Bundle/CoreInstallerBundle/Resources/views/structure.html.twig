@@ -21,6 +21,14 @@
         <script type="text/javascript" src="{{ asset('jquery/jquery.min.js') }}"></script>
         {# always load bootstrap #}
         <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="/javascript/js-webshim/minified/polyfiller.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $.webshims.setOptions('basePath', '/javascript/js-webshim/minified/shims/'); 
+                $.webshims.activeLang('{{ lang }}');
+                $.webshims.polyfill('forms');
+            });
+        </script>
         {# allow child templates to load additional scripts #}
         {% block javascripts '' %}
 
