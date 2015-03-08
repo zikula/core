@@ -1893,10 +1893,10 @@ class UserUtil
      */
     public static function getTheme($force = false)
     {
-        static $theme;
+        static $pagetheme;
 
-        if (isset($theme) && !$force) {
-            return $theme;
+        if (isset($pagetheme) && !$force) {
+            return $pagetheme;
         }
             
         if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('Theme', 'enable_mobile_theme', false)) {
@@ -1917,7 +1917,8 @@ class UserUtil
         if (!empty($pagetheme)) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($pagetheme));
             if ($themeinfo['state'] == ThemeUtil::STATE_ACTIVE && ($themeinfo['user'] || $themeinfo['system'] || ($themeinfo['admin'] && ($type == 'admin'))) && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                return self::_getThemeFilterEvent($themeinfo['name'], 'page-specific');
+                $pagetheme = self::_getThemeFilterEvent($themeinfo['name'], 'page-specific');
+                return $pagetheme;
             }
         }
 
@@ -1927,7 +1928,8 @@ class UserUtil
             if (!empty($admintheme)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
                 if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                    return self::_getThemeFilterEvent($themeinfo['name'], 'admin-theme');
+                    $pagetheme = self::_getThemeFilterEvent($themeinfo['name'], 'admin-theme');
+                    return $pagetheme;
                 }
             }
         }
@@ -1943,7 +1945,8 @@ class UserUtil
                     SessionUtil::setVar('theme', $newtheme);
                 }
 
-                return self::_getThemeFilterEvent($themeinfo['name'], 'new-theme');
+                $pagetheme = self::_getThemeFilterEvent($themeinfo['name'], 'new-theme');
+                return $pagetheme;
             }
         }
 
@@ -1956,7 +1959,8 @@ class UserUtil
             }
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($usertheme));
             if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                return self::_getThemeFilterEvent($themeinfo['name'], 'user-theme');
+                $pagetheme = self::_getThemeFilterEvent($themeinfo['name'], 'user-theme');
+                return $pagetheme;
             }
         }
 
@@ -1964,7 +1968,8 @@ class UserUtil
         $defaulttheme = System::getVar('Default_Theme');
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($defaulttheme));
         if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-            return self::_getThemeFilterEvent($themeinfo['name'], 'default-theme');
+            $pagetheme = self::_getThemeFilterEvent($themeinfo['name'], 'default-theme');
+            return $pagetheme;
         }
 
         if (!System::isInstalling()) {
