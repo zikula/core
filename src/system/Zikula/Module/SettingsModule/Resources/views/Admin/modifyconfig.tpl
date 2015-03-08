@@ -143,7 +143,7 @@
                     <em class="help-block">{gt text="('index.php' points to this)"}</em>
                 </div>
             </div>    
-            <div id="settings_startpage_container" style="overflow: none">
+            <div id="settings_startpage_container" style="overflow: hidden">
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_starttype">{gt text='Start function type (required)'}</label>
                     <div class="col-lg-9">
@@ -238,6 +238,7 @@
         </fieldset>
         <fieldset>
             <legend>{gt text='Short URL settings'}</legend>
+            <p class="alert alert-warning">{gt text="Notice: This feature is deprecated in favor of Symfony routing. This site may have a mixture of modules of both types; those capable of using the old functionality, and those using routing."}</p>
             <input type="hidden" id="settings_shorturlstype_directory" name="settings[shorturlstype]" value="0" />
             <div class="form-group">
                 <label class="col-lg-3 control-label">{gt text='Enable directory-based short URLs'}</label>
@@ -269,8 +270,9 @@
                     <div class="col-lg-9">
                         <select class="form-control" id="settings_shorturls_defaultmodule" name="settings[shorturlsdefaultmodule]">
                             <option value="">{gt text='(disabled)'}</option>
-                            {html_select_modules selected=$modvars.ZConfig.shorturlsdefaultmodule type='user'}
+                            {html_options options=$modulesList selected=$modvars.ZConfig.shorturlsdefaultmodule|default:null}
                         </select>
+                        <p class="help-block alert alert-info">{gt text='Routed modules cannot utilize this feature. Edit the routes directly instead.'}</p>
                     </div>
                 </div>
             </div>
