@@ -83,9 +83,24 @@ class AdminController extends \Zikula_AbstractController
 
         $zlibExtensionEnabled = extension_loaded('zlib');
 
+        // generate module list for shorturlsdefaultmodule option @deprecated @todo remove
+        $modules = ModUtil::getModulesCapableOf('user');
+        $modulesList = array();
+        $installerArray = array('ZikulaBlocksModule', 'ZikulaErrorsModule', 'ZikulaPermissionsModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', 'ZikulaUsersModule', 'ZikulaSearchModule');
+        if (!empty($modules)) {
+            foreach ($modules as $module) {
+                $moduleBundle = ModUtil::getModule($module['name']);
+                if (!(System::isInstalling() && in_array($module['name'], $installerArray)) && is_null($moduleBundle)) {
+                    $modulesList[$module['name']] = $module['displayname'];
+                }
+            }
+        }
+        natcasesort($modulesList);
+
         $this->view->assign('pagetitle', $pagetitle)
                    ->assign('languages', ZLanguage::getInstalledLanguageNames())
-                   ->assign('zlibEnabled', $zlibExtensionEnabled);
+                   ->assign('zlibEnabled', $zlibExtensionEnabled)
+                   ->assign('modulesList', $modulesList);
 
         return new Response($this->view->fetch('Admin/modifyconfig.tpl'));
     }
