@@ -167,7 +167,8 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 foreach (array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription') as $variable) {
                     foreach (ZLanguage::getInstalledLanguages() as $langcode) {
                         $variable_ml = $variable . '_' . $langcode;
-                        if (!isset(System::getVar($variable_ml)) || empty(System::getVar($variable_ml))) {
+                        $value_ml = System::getVar($variable_ml);
+                        if (!isset($value_ml) || empty($value_ml)) {
                             System::setVar($variable_ml, System::getVar($variable));
                         }
                     }
