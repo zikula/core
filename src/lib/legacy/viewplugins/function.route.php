@@ -33,7 +33,7 @@
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
  *
- * @return string The route.
+ * @return string The route or empty.
  */
 function smarty_function_route($params, Zikula_View $view)
 {
@@ -46,7 +46,12 @@ function smarty_function_route($params, Zikula_View $view)
 
     /** @var $router \JMS\I18nRoutingBundle\Router\I18nRouter */
     $router = $view->getContainer()->get('router');
-    $route = $router->generate($name, $params, $absolute);
+    $originalRouteCollection = $router->getOriginalRouteCollection()->all();
+    if (array_key_exists($name, $originalRouteCollection)) {
+        $route = $router->generate($name, $params, $absolute);
+    } else {
+        $route = ''; // route does not exist
+    }
 
     if ($assign) {
         $view->assign($assign, $route);
