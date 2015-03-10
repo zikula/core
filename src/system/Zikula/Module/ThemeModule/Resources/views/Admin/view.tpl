@@ -23,16 +23,10 @@
     <tbody>
         {foreach from=$themes item=theme}
         {homepage assign='homepageurl'}
-        {if $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint neq 1}
-        {assign var='themeurl' value="`$homepageurl`/`$theme.name`"}
-        {elseif $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint eq 1}
-        {assign var='themeurl' value="`$homepageurl``$theme.name`"}
-        {else}
         {if $homepageurl|strstr:"?"}
-        {assign var='themeurl' value="`$baseurl``$homepageurl`&theme=`$theme.name`"}
+            {assign var='themeurl' value=$homepageurl|cat:"&theme="|cat:$theme.name}
         {else}
-        {assign var='themeurl' value="`$baseurl``$homepageurl`?theme=`$theme.name`"}
-        {/if}
+            {assign var='themeurl' value=$homepageurl|cat:"?theme="|cat:$theme.name}
         {/if}
         <tr {if $theme.name|strtolower eq $currenttheme|strtolower}class="success"{/if}>
             <td>
