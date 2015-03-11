@@ -102,7 +102,7 @@
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default meta keywords'}</label>
                         <div class="col-lg-9">
-                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                            <textarea class="form-control" id="settings_{$varname}" name="settings[{$varname}]" cols="60" rows="3">{$modvars.ZConfig.$varname|safetext}</textarea>
                         </div>
                     </div>
                 </fieldset>
@@ -126,7 +126,7 @@
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default meta keywords'}</label>
                     <div class="col-lg-9">
-                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                        <textarea class="form-control" id="settings_{$varname}" name="settings[{$varname}]" cols="60" rows="3">{$modvars.ZConfig.$varname|safetext}</textarea>
                     </div>
                 </div>
             {/if}
