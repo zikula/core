@@ -21,8 +21,8 @@
         </tr>
     </thead>
     <tbody>
-        {foreach from=$themes item=theme}
         {homepage assign='homepageurl'}
+        {foreach from=$themes item=theme}
         {if $homepageurl|strstr:"?"}
             {assign var='themeurl' value=$homepageurl|cat:"&theme="|cat:$theme.name}
         {else}

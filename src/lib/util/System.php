@@ -360,7 +360,7 @@ class System
         $shorturls = self::getVar('shorturls', false);
         $langRequired = ZLanguage::isRequiredLangParam();
         $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
-        $entryPoint = self::getVar('entrypoint');
+        $entryPoint = self::getVar('entrypoint', 'index.php');
 
         if ($shorturls) {
             $result = self::getBaseUrl();
@@ -371,8 +371,8 @@ class System
                 $result .= (preg_match('#/$#', $result) ? '' : '/') . ZLanguage::getLanguageCode();
             }
         } else {
-            $result = self::getVar('entrypoint', 'index.php');
-            if (ZLanguage::isRequiredLangParam()) {
+            $result = self::getBaseUrl() . "$entryPoint";
+            if ($langRequired) {
                 $result .= '?lang=' . ZLanguage::getLanguageCode();
             }
         }
