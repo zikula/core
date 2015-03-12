@@ -146,9 +146,12 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '2.9.7':
-                EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\Module\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
+                // Entry point for upgrade from Zikula 1.3.5 - 1.3.9
 
             case '2.9.8':
+                // Entry point for upgrade from Zikula 1.3.10
+                EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\Module\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
+
                 $permasearch = System::getVar('permasearch');
                 if (empty($permasearch)) {
                     System::setVar('permasearch',  $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
