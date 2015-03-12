@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 
 /**
  * Module Util.
@@ -1950,16 +1951,43 @@ class ModUtil
      * Gets the object associated with a given module name 
      *
      * @param $moduleName
+     * @param $force = false Force load the module into the kernel and add autoloaders
      *
      * @return null|\Zikula\Core\AbstractModule
      */
-    public static function getModule($moduleName)
+    public static function getModule($moduleName, $force = false)
     {
         /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
         $kernel = ServiceUtil::getManager()->get('kernel');
         try {
             return $kernel->getModule($moduleName);
         } catch (\InvalidArgumentException $e) {
+        }
+
+        if ($force) {
+            $modinfo = self::getInfo(self::getIdFromName($moduleName));
+            $osdir = DataUtil::formatForOS($modinfo['directory']);
+            $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? "system" : "modules";
+            $scanner = new Scanner();
+            $scanner->scan(array("$modpath/$osdir"), 1);
+            $modules = $scanner->getModulesMetaData(true);
+            /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
+            $moduleMetaData = $modules[$modinfo['name']];
+            $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+            $boot->addAutoloaders($kernel, $moduleMetaData->getAutoload());
+            $bootstrap = "$modpath/$osdir/bootstrap.php";
+            if (file_exists($bootstrap)) {
+                include_once $bootstrap;
+            }
+            if ($modinfo['type'] == self::TYPE_MODULE) {
+                if (is_dir("modules/$osdir/Resources/locale") || is_dir("modules/$osdir/locale")) {
+                    ZLanguage::bindModuleDomain($modinfo['name']);
+                }
+            }
+            $moduleClass = $moduleMetaData->getClass();
+            /** @var $module Zikula\Core\AbstractModule */
+
+            return new $moduleClass;
         }
 
         return null;
