@@ -150,7 +150,7 @@ class ExtensionDependencyEntity extends EntityAccess
     {
         if ($this->reason === false) {
             $modinfo = ModUtil::getInfo($this->getModid());
-            $bundle = ModUtil::getModule($modinfo['name']);
+            $bundle = ModUtil::getModule($modinfo['name'], true);
 
             if (null !== $bundle) {
                 $versionClass =  $bundle->getVersionClass();
