@@ -17,14 +17,16 @@
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Site name'}</label>
                         <div class="col-lg-9">
-                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="100" />
+                            {if isset($modvars.ZConfig.$varname)}{assign var='varvalue' value=$modvars.ZConfig.$varname}{else}{assign var='varvalue' value=''}{/if}
+                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$varvalue|safetext}" size="50" maxlength="100" />
                         </div>
                     </div>
                     {assign var='varname' value='slogan_'|cat:$code}
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Description line'}</label>
                         <div class="col-lg-9">
-                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="100" />
+                            {if isset($modvars.ZConfig.$varname)}{assign var='varvalue' value=$modvars.ZConfig.$varname}{else}{assign var='varvalue' value=''}{/if}
+                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$varvalue|safetext}" size="50" maxlength="100" />
                         </div>
                     </div>
                 </fieldset>
@@ -34,14 +36,16 @@
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Site name'}</label>
                     <div class="col-lg-9">
-                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="100" />
+                        {if isset($modvars.ZConfig.$varname)}{assign var='varvalue' value=$modvars.ZConfig.$varname}{else}{assign var='varvalue' value=''}{/if}
+                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$varvalue|safetext}" size="50" maxlength="100" />
                     </div>
                 </div>
                 {assign var='varname' value='slogan_'|cat:$lang}
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Description line'}</label>
                     <div class="col-lg-9">
-                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="100" />
+                        {if isset($modvars.ZConfig.$varname)}{assign var='varvalue' value=$modvars.ZConfig.$varname}{else}{assign var='varvalue' value=''}{/if}
+                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$varvalue|safetext}" size="50" maxlength="100" />
                     </div>
                 </div>
             {/if}
@@ -88,21 +92,24 @@
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default page title'}</label>
                         <div class="col-lg-9">
-                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                            {if isset($modvars.ZConfig.$varname)}{assign var='varvalue' value=$modvars.ZConfig.$varname}{else}{assign var='varvalue' value=''}{/if}
+                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$varvalue|safetext}" size="50" maxlength="255" />
                         </div>
                     </div>
                     {assign var='varname' value='defaultmetadescription_'|cat:$code}
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default meta description'}</label>
                         <div class="col-lg-9">
-                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                            {if isset($modvars.ZConfig.$varname)}{assign var='varvalue' value=$modvars.ZConfig.$varname}{else}{assign var='varvalue' value=''}{/if}
+                            <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$varvalue|safetext}" size="50" maxlength="255" />
                         </div>
                     </div>
                     {assign var='varname' value='metakeywords_'|cat:$code}
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default meta keywords'}</label>
                         <div class="col-lg-9">
-                            <textarea class="form-control" id="settings_{$varname}" name="settings[{$varname}]" cols="60" rows="3">{$modvars.ZConfig.$varname|safetext}</textarea>
+                            {if isset($modvars.ZConfig.$varname)}{assign var='varvalue' value=$modvars.ZConfig.$varname}{else}{assign var='varvalue' value=''}{/if}
+                            <textarea class="form-control" id="settings_{$varname}" name="settings[{$varname}]" cols="60" rows="3">{$varvalue|safetext}</textarea>
                         </div>
                     </div>
                 </fieldset>
@@ -112,21 +119,24 @@
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default page title'}</label>
                     <div class="col-lg-9">
-                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                        {if isset($modvars.ZConfig.$varname)}{assign var='varvalue' value=$modvars.ZConfig.$varname}{else}{assign var='varvalue' value=''}{/if}
+                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$varvalue|safetext}" size="50" maxlength="255" />
                     </div>
                 </div>
                 {assign var='varname' value='defaultmetadescription_'|cat:$lang}
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default meta description'}</label>
                     <div class="col-lg-9">
-                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|safetext}" size="50" maxlength="255" />
+                        {if isset($modvars.ZConfig.$varname)}{assign var='varvalue' value=$modvars.ZConfig.$varname}{else}{assign var='varvalue' value=''}{/if}
+                        <input id="settings_{$varname}" type="text" class="form-control" name="settings[{$varname}]" value="{$varvalue|safetext}" size="50" maxlength="255" />
                     </div>
                 </div>
                 {assign var='varname' value='metakeywords_'|cat:$lang}
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_{$varname}">{gt text='Default meta keywords'}</label>
                     <div class="col-lg-9">
-                        <textarea class="form-control" id="settings_{$varname}" name="settings[{$varname}]" cols="60" rows="3">{$modvars.ZConfig.$varname|safetext}</textarea>
+                        {if isset($modvars.ZConfig.$varname)}{assign var='varvalue' value=$modvars.ZConfig.$varname}{else}{assign var='varvalue' value=''}{/if}
+                        <textarea class="form-control" id="settings_{$varname}" name="settings[{$varname}]" cols="60" rows="3">{$varvalue|safetext}</textarea>
                     </div>
                 </div>
             {/if}
