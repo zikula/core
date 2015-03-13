@@ -355,6 +355,7 @@ class AdminApi extends \Zikula_AbstractApi
                 break;
         }
 
+        $module = null;
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
@@ -364,17 +365,7 @@ class AdminApi extends \Zikula_AbstractApi
         if ($oomod && (false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
-            $scanDir = "modules/$osdir";
-            if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-                $scanDir = "system/$osdir";
-            }
-            $scanner = new Scanner();
-            $scanner->scan(array($scanDir), 1);
-            $modules = $scanner->getModulesMetaData(true);
-            /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
-            $moduleMetaData = $modules[$modinfo['name']];
-            $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
-            $boot->addAutoloaders($this->getContainer()->get('kernel'), $moduleMetaData->getAutoload());
+            $module = ModUtil::getModule($modinfo['name'], true);
         }
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -382,22 +373,8 @@ class AdminApi extends \Zikula_AbstractApi
             include_once $bootstrap;
         }
 
-        if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/Resources/locale") || is_dir("modules/$osdir/locale")) {
-                ZLanguage::bindModuleDomain($modinfo['name']);
-            }
-        }
-
         // Get module database info
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
-
-        if (isset($moduleMetaData)) {
-            $moduleClass = $moduleMetaData->getClass();
-            /** @var $module Zikula\Core\AbstractModule */
-            $module = new $moduleClass;
-        } else {
-            $module = ModUtil::getModule($modinfo['name']);
-        }
 
         $version = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath, $module);
 
@@ -980,7 +957,7 @@ class AdminApi extends \Zikula_AbstractApi
                 }
         }
 
-        // Get module database info
+        $module = null;
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
@@ -989,36 +966,12 @@ class AdminApi extends \Zikula_AbstractApi
         if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
-            $scanDir = "modules/$osdir";
-            if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-                $scanDir = "system/$osdir";
-            }
-            $scanner = new Scanner();
-            $scanner->scan(array($scanDir), 1);
-            $modules = $scanner->getModulesMetaData(true);
-            /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
-            $moduleMetaData = $modules[$modinfo['name']];
-            $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
-            $boot->addAutoloaders($this->getContainer()->get('kernel'), $moduleMetaData->getAutoload());
+            $module = ModUtil::getModule($modinfo['name'], true);
         }
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
-        }
-
-        if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/Resources/locale") || is_dir("modules/$osdir/locale")) {
-                ZLanguage::bindModuleDomain($modinfo['name']);
-            }
-        }
-
-        if (isset($moduleMetaData)) {
-            $moduleClass = $moduleMetaData->getClass();
-            /** @var $module Zikula\Core\AbstractModule */
-            $module = new $moduleClass;
-        } else {
-            $module = ModUtil::getModule($modinfo['name']);
         }
 
         if (null === $module) {
@@ -1104,6 +1057,7 @@ class AdminApi extends \Zikula_AbstractApi
                 }
         }
 
+        $module = null;
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
@@ -1112,37 +1066,11 @@ class AdminApi extends \Zikula_AbstractApi
         if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         } else {
-            $scanDir = "modules/$osdir";
-            if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-                $scanDir = "system/$osdir";
-            }
-            $scanner = new Scanner();
-            $scanner->scan(array($scanDir), 1);
-            $modules = $scanner->getModulesMetaData(true);
-            /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
-            $moduleMetaData = $modules[$modinfo['name']];
-            $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
-            $boot->addAutoloaders($this->getContainer()->get('kernel'), $moduleMetaData->getAutoload());
+            $module = ModUtil::getModule($modinfo['name'], true);
         }
-
-
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
-        }
-
-        if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/Resources/locale") || is_dir("modules/$osdir/locale")) {
-                ZLanguage::bindModuleDomain($modinfo['name']);
-            }
-        }
-
-        if (isset($moduleMetaData)) {
-            $moduleClass = $moduleMetaData->getClass();
-            /** @var $module Zikula\Core\AbstractModule */
-            $module = new $moduleClass;
-        } else {
-            $module = ModUtil::getModule($modinfo['name']);
         }
 
         if (null === $module) {
