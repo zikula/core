@@ -1950,8 +1950,8 @@ class ModUtil
     /**
      * Gets the object associated with a given module name 
      *
-     * @param $moduleName
-     * @param $force = false Force load the module into the kernel and add autoloaders
+     * @param string $moduleName
+     * @param boolean $force = false Force load a module and add autoloaders
      *
      * @return null|\Zikula\Core\AbstractModule
      */
@@ -1965,29 +1965,30 @@ class ModUtil
         }
 
         if ($force) {
-            $modinfo = self::getInfo(self::getIdFromName($moduleName));
-            $osdir = DataUtil::formatForOS($modinfo['directory']);
-            $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? "system" : "modules";
+            $modInfo = self::getInfo(self::getIdFromName($moduleName));
+            if (empty($modInfo)) {
+                throw new \RuntimeException(__('Error! No such module exists.'));
+            }
+            $osDir = DataUtil::formatForOS($modInfo['directory']);
+            $modPath = ($modInfo['type'] == self::TYPE_SYSTEM) ? "system" : "modules";
             $scanner = new Scanner();
-            $scanner->scan(array("$modpath/$osdir"), 1);
+            $scanner->scan(array("$modPath/$osDir"), 1);
             $modules = $scanner->getModulesMetaData(true);
             /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
-            $moduleMetaData = $modules[$modinfo['name']];
-            $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
-            $boot->addAutoloaders($kernel, $moduleMetaData->getAutoload());
-            $bootstrap = "$modpath/$osdir/bootstrap.php";
-            if (file_exists($bootstrap)) {
-                include_once $bootstrap;
-            }
-            if ($modinfo['type'] == self::TYPE_MODULE) {
-                if (is_dir("modules/$osdir/Resources/locale") || is_dir("modules/$osdir/locale")) {
-                    ZLanguage::bindModuleDomain($modinfo['name']);
+            $moduleMetaData = $modules[$modInfo['name']];
+            if (null !== $moduleMetaData) {
+                // moduleMetaData only exists for bundle-type modules
+                $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+                $boot->addAutoloaders($kernel, $moduleMetaData->getAutoload());
+                if ($modInfo['type'] == self::TYPE_MODULE) {
+                    if (is_dir("modules/$osDir/Resources/locale")) {
+                        ZLanguage::bindModuleDomain($modInfo['name']);
+                    }
                 }
-            }
-            $moduleClass = $moduleMetaData->getClass();
-            /** @var $module Zikula\Core\AbstractModule */
+                $moduleClass = $moduleMetaData->getClass();
 
-            return new $moduleClass;
+                return new $moduleClass;
+            }
         }
 
         return null;
