@@ -355,19 +355,16 @@ class AdminApi extends \Zikula_AbstractApi
                 break;
         }
 
-        $module = null;
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         $oomod = ModUtil::isOO($modinfo['name']);
 
-        // add autoloaders for module
+        // add autoloaders for 1.3-type modules
         if ($oomod && (false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
-        } else {
-            $module = ModUtil::getModule($modinfo['name'], true);
         }
-
+        $module = ModUtil::getModule($modinfo['name'], true);
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
@@ -957,18 +954,15 @@ class AdminApi extends \Zikula_AbstractApi
                 }
         }
 
-        $module = null;
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        // add autoloaders for module
+        // add autoloaders for 1.3-type modules
         if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
-        } else {
-            $module = ModUtil::getModule($modinfo['name'], true);
         }
-
+        $module = ModUtil::getModule($modinfo['name'], true);
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
@@ -1057,17 +1051,15 @@ class AdminApi extends \Zikula_AbstractApi
                 }
         }
 
-        $module = null;
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        // add autoloaders for module
+        // add autoloaders for 1.3-type modules
         if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
-        } else {
-            $module = ModUtil::getModule($modinfo['name'], true);
         }
+        $module = ModUtil::getModule($modinfo['name'], true);
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
