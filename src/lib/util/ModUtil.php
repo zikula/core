@@ -120,6 +120,9 @@ class ModUtil
             }
          }
 
+         // Init multilingual variables here, just to have values, even with default site language (page language is set later)
+         self::setupMultilingual();
+
          // Pre-load the module variables array with empty arrays for known modules that
          // do not define any module variables to prevent unnecessary SQL queries to
          // the module_vars table.
@@ -129,6 +132,22 @@ class ModUtil
                  self::$modvars[$mod['name']] = array();
              }
          }
+    }
+
+    /**
+     * Init variables multilingual dependent.
+     *
+     * @return boolean True
+     */
+    public static function setupMultilingual()
+    {
+        $lang = ZLanguage::getLanguageCode();
+        $items = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
+        foreach ($items as $item) {
+            self::$modvars['ZConfig'][$item] = isset(self::$modvars['ZConfig'][$item . '_' . $lang]) ? self::$modvars['ZConfig'][$item . '_' . $lang] : (isset(self::$modvars['ZConfig'][$item]) ? self::$modvars['ZConfig'][$item] : '');
+        }
+
+        return true;
     }
 
     /**
