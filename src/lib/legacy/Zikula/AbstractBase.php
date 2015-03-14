@@ -231,7 +231,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Get name.
      *
-     * @return $string Name.
+     * @return string Name.
      */
     public function getName()
     {
@@ -305,7 +305,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      */
     public function getBaseDir()
     {
-        return $this->baseDir();
+        return $this->baseDir;
     }
 
     /**
@@ -392,7 +392,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * Used to immediately halt execution.
      *
      * @param string       $message Default ''.
-     * @param string       $code    Default 0.
+     * @param integer       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
      * @throws Exception\NotFoundHttpException exception.
@@ -412,7 +412,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @param bool         $condition Condition.
      * @param string       $message   Default ''.
-     * @param string       $code      Default 0.
+     * @param integer       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
      * @throws Exception\NotFoundHttpException Exception.
@@ -433,7 +433,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @param bool         $condition Condition.
      * @param string       $message   Default ''.
-     * @param string       $code      Default 0.
+     * @param integer       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
      * @throws Exception\NotFoundHttpException Exception.
@@ -454,7 +454,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * Used to immediately halt execution.
      *
      * @param string       $message Default ''.
-     * @param string       $code    Default 0.
+     * @param integer       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
      * @throws AccessDeniedException Exception.
@@ -474,7 +474,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @param bool         $condition Condition.
      * @param string       $message   Default ''.
-     * @param string       $code      Default 0.
+     * @param integer       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
      * @throws AccessDeniedException Exception.
@@ -495,7 +495,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @param bool         $condition Condition.
      * @param string       $message   Default ''.
-     * @param string       $code      Default 0.
+     * @param integer       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
      * @throws AccessDeniedException Exception.
