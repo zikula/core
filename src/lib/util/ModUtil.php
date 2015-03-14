@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 
 /**
  * Module Util.
@@ -1949,17 +1950,45 @@ class ModUtil
     /**
      * Gets the object associated with a given module name 
      *
-     * @param $moduleName
+     * @param string $moduleName
+     * @param boolean $force = false Force load a module and add autoloaders
      *
      * @return null|\Zikula\Core\AbstractModule
      */
-    public static function getModule($moduleName)
+    public static function getModule($moduleName, $force = false)
     {
         /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
         $kernel = ServiceUtil::getManager()->get('kernel');
         try {
             return $kernel->getModule($moduleName);
         } catch (\InvalidArgumentException $e) {
+        }
+
+        if ($force) {
+            $modInfo = self::getInfo(self::getIdFromName($moduleName));
+            if (empty($modInfo)) {
+                throw new \RuntimeException(__('Error! No such module exists.'));
+            }
+            $osDir = DataUtil::formatForOS($modInfo['directory']);
+            $modPath = ($modInfo['type'] == self::TYPE_SYSTEM) ? "system" : "modules";
+            $scanner = new Scanner();
+            $scanner->scan(array("$modPath/$osDir"), 1);
+            $modules = $scanner->getModulesMetaData(true);
+            /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
+            $moduleMetaData = $modules[$modInfo['name']];
+            if (null !== $moduleMetaData) {
+                // moduleMetaData only exists for bundle-type modules
+                $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+                $boot->addAutoloaders($kernel, $moduleMetaData->getAutoload());
+                if ($modInfo['type'] == self::TYPE_MODULE) {
+                    if (is_dir("modules/$osDir/Resources/locale")) {
+                        ZLanguage::bindModuleDomain($modInfo['name']);
+                    }
+                }
+                $moduleClass = $moduleMetaData->getClass();
+
+                return new $moduleClass;
+            }
         }
 
         return null;
