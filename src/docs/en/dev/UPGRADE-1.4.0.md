@@ -85,7 +85,7 @@ Module Specification from Zikula Core 1.4.0
   7. [Controller Methods](#controllermethods)
   8. [Controller Method Parameters](#controllermethodparameters)
   9. [Controller Response](#controllerresponse)
-  10 [Routing](#routing)
+  10. [Routing](#routing)
   11. [Service Manager](#servicemanager)
   12. [Events](#events)
   13. [Event Names](#eventnames)
