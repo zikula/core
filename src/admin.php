@@ -18,4 +18,7 @@ include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
 $core->init(Zikula_Core::STAGE_ALL, $request);
-System::redirect(ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'));
+$url = $core->getContainer()->get('router')->generate('zikulaadminmodule_admin_adminpanel', array(), \Symfony\Component\Routing\RouterInterface::ABSOLUTE_URL);
+$url = str_replace('/admin.php', '', $url);
+$response = new \Symfony\Component\HttpFoundation\RedirectResponse($url);
+$response->send();
