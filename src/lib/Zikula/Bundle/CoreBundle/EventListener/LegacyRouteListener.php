@@ -73,7 +73,22 @@ class LegacyRouteListener implements EventSubscriberInterface
         if (!$module) {
             // module could not be filtered from url.
             $path = $event->getRequest()->getPathInfo();
-            if ($path == "" || $path == "/") {
+            if ($path == '' || $path == '/') {
+                $isAllowedNonModulePage = true;
+            } else {
+                $customentrypoint = System::getVar('entrypoint');
+                $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
+                // get base path to work out our current url
+                $parsedURL = parse_url($request->getRequestUri());
+                // strip any unwanted content from the provided URL
+                $toBeStripped = array($request->getBasePath(), "$root");
+                $path = str_replace($toBeStripped, '', $parsedURL['path']);
+                $path = trim($path, '/');
+                $args = explode('/', rtrim($path, '/'));
+                // if only arg is a lang param, then allow this Uri
+                $isAllowedNonModulePage = ((count($args) == 1) && \ZLanguage::isLangParam($args[0]) && in_array($args[0], \ZLanguage::getInstalledLanguages()));
+            }
+            if ($isAllowedNonModulePage) {
                 // we have a static homepage
                 $this->setResponse($event, new Response(''));
             } else {
