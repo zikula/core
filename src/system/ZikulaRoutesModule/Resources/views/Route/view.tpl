@@ -177,7 +177,7 @@
                     </td>
                 {/if}
                     <td headers="hPath" class="z-left" title="{$route.name}">
-                        {$route.path|zikularoutesmodulePathToString:$route}
+                        {$route.path|zikularoutesmodulePathToString:$route}{if count($route.methods) > 0} <span class="small">[{foreach from=$route.methods item='method' name='methods'}{$method}{if !$smarty.foreach.methods.last}, {/if}{/foreach}</span>]{/if}
                     </td>
                     <td headers="hHost" class="z-left">
                         {$route.host}
