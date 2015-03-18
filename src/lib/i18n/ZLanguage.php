@@ -156,6 +156,7 @@ class ZLanguage
         $this->detectLanguage();
         $this->validate();
         $this->fixLanguageToSession();
+        ModUtil::setupMultilingual();
         $this->setLocale($this->languageCode);
         $this->bindCoreDomain();
         $this->processErrors();

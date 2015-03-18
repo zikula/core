@@ -34,11 +34,6 @@ class Settings_Installer extends Zikula_AbstractInstaller
         // there doesn't need to be a check to see if the variable is set in
         // the rest of the code as it always will be
         System::setVar('debug', '0');
-        System::setVar('sitename', $this->__('Site name'));
-        System::setVar('slogan', $this->__('Site description'));
-        System::setVar('metakeywords', $this->__('zikula, portal, portal web, open source, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework'));
-        System::setVar('defaultpagetitle', $this->__('Site name'));
-        System::setVar('defaultmetadescription', $this->__('Site description'));
         System::setVar('startdate', date('m/Y', time()));
         System::setVar('adminmail', 'example@example.com');
         System::setVar('Default_Theme', 'Andreas08');
@@ -75,6 +70,15 @@ class Settings_Installer extends Zikula_AbstractInstaller
         System::setVar('permasearch',  $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
         //! this is a comma-separated list of special characters to replace in permalinks
         System::setVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+
+        // Multilingual support
+        foreach (ZLanguage::getInstalledLanguages() as $lang) {
+            System::setVar('sitename_' . $lang, $this->__('Site name'));
+            System::setVar('slogan_' . $lang, $this->__('Site description'));
+            System::setVar('metakeywords_' . $lang, $this->__('zikula, portal, open source, web site, website, weblog, blog, content management system, cms, application framework'));
+            System::setVar('defaultpagetitle_' . $lang, $this->__('Site name'));
+            System::setVar('defaultmetadescription_' . $lang, $this->__('Site description'));
+        }
 
         System::setVar('language',ZLanguage::getLanguageCodeLegacy());
         System::setVar('locale', ZLanguage::getLocale());
@@ -146,15 +150,19 @@ class Settings_Installer extends Zikula_AbstractInstaller
 
             case '2.8':
                 System::delVar('dyn_keywords');
+
             case '2.9':
+
             case '2.9.1':
                 System::delVar('timezone_info');
+
             case '2.9.2':
                 $tables = DBUtil::getTables();
                 $modulesTable = $tables['modules'];
                 $name = $tables['modules_column']['name'];
                 $sql = "DELETE FROM $modulesTable WHERE $name = 'ObjectData' OR $name = 'Workflow'";
                 DBUtil::executeSQL($sql);
+
             case '2.9.3':
                 // This may have been set by the Users module upgrade already, so only set it if it does not exist.
                 $systemIdnSetting = System::getVar('idnnames', null);
@@ -165,14 +173,19 @@ class Settings_Installer extends Zikula_AbstractInstaller
                     System::setVar('idnnames', isset($usersIdnSetting) ? (bool)$usersIdnSetting : true);
                 }
                 System::delVar('language_bc');
+
             case '2.9.4':
                 System::setVar('defaultpagetitle', $this->__('Site name'));
                 System::setVar('defaultmetadescription', $this->__('Site description'));
+
             case '2.9.5':
                 System::delVar('shorturlsext');
+
             case '2.9.6':
                 DBUtil::changeTable('objectdata_attributes');
-                // future upgrade routines
+
+            case '2.9.7':
+                // current version
         }
 
         // Update successful
