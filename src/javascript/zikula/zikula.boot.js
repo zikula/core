@@ -93,13 +93,4 @@
             });
         });
     });
-
-    // Setup dom related stuff
-    $(document).ready(function() {
-        // Fix buttons for IE 7 and older
-        if ($.browser.msie && Number($.browser.version) < 8) {
-            $('form').zFixButtons();
-        }
-    });
-
 })(jQuery);
