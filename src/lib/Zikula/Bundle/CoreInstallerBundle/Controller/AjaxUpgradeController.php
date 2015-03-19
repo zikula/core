@@ -113,7 +113,7 @@ class AjaxUpgradeController extends AbstractController
         }
         $category = __('System');
         $destinationCategoryId = isset($modscat[$category]) ? $modscat[$category] : \ModUtil::getVar('ZikulaAdminModule', 'defaultcategory');
-        \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', array('module' => $routeModuleName, 'category' => $destinationCategoryId));
+        \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', array('module' => $routeModuleName, 'category' => (int)$destinationCategoryId));
 
         return true;
     }
