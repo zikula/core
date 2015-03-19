@@ -12,16 +12,8 @@
 ******************************************************************************/
 
 .z-clearfix {
-    display: inline-block;
-}
-/* Hides from IE-mac \*/
-* html .z-clearfix {
-    height: 1px;
-}
-.z-clearfix {
     display: block;
 }
-/* End hide from IE-mac */
 
 /******************************************************************************
 * Overflow-Method to clear float environments
@@ -37,18 +29,8 @@
 
 div.z-formrow,
 div.z-formbuttons {
-    display: inline-block;
-}
-/* Hides from IE-mac \*/
-* html div.z-formrow,
-* html div.z-formbuttons {
-    height: 1px;
-}
-div.z-formrow,
-div.z-formbuttons {
     display: block;
 }
-/* End hide from IE-mac */
 
 /******************************************************************************
 * Generic Form Style: z-form
@@ -62,7 +44,6 @@ div.z-formbuttons {
 
 .z-form fieldset,
 .z-form .z-fieldset {
-    /* padding: 0 5px; */
     padding-top: 1em;
     padding-bottom: 0.5em;
     margin-top: 1.5em;
@@ -73,7 +54,6 @@ div.z-formbuttons {
 .z-form legend {
     position: absolute;
     top: -.5em;
-    *left: 0;
 }
 
 div.z-formrow,
@@ -87,63 +67,10 @@ div.z-formlist {
     overflow: hidden;
 }
 
-/* Adjust width for IE 5 and IE6 */
-* html .z-form div.z-formrow input,
-* html .z-form div.z-formrow textarea,
-* html .z-form div.z-formrow select {
-    width: auto;
-}
-
-/******************************************************************************
-* IE-fixes for Fieldset/Legend
-******************************************************************************/
-
-/* IE5.x, IE6, IE7 */
-.z-form legend {
-    *padding: 0 5px;
-}
-.z-form fieldset {
-    *padding-top: 1.5em;
-}
-/* IE5.x, IE6 */
-* html .z-form {
-    padding-top: 10px;
-}
-
 /******************************************************************************
 * Fixes offset of Ajax Autocompleter popup box (e.g. Users module)
 ******************************************************************************/
 
 #liveusersearch fieldset {
-    position: static\9; /* IE6, IE7, IE8 */
-    *position: relative; /* IE6, IE7 */
-    *padding-top: 0.5em; /* we don't need to fix the offset of LEGEND here */
-}
-
-/******************************************************************************
-* Zikula buttons for IE browsers
-******************************************************************************/
-
-.z-buttons button { /* IE6 */
-    padding: 4px 10px 3px 10px;
-}
-
-*:first-child+html button[type] { /* IE7 */
-    padding: 4px 10px 3px 10px;
-}
-
-*:first-child+html .z-buttons input { /* IE7 */
-    padding-top: 4px;
-    padding-bottom: 4px;
-}
-
-/******************************************************************************
-* IE inherited margin bug: Form elements and hasLayout
-* http://www.positioniseverything.net/explorer/inherited_margin.html
-* http://blog.netscraps.com/bugs/ie6-ie7-margin-inheritance-bug.html
-******************************************************************************/
-
-*:first-child+html div.z-formbuttons { /* IE7 */
-    margin-left: 0;
-    padding-left: 30%;
+    position: static\9; /* IE8 */
 }

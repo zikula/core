@@ -177,15 +177,6 @@ dd {
     background-color: inherit;
     color: #ffffff;
 }
-* html #theme_navigation_bar a {
-    width: 1%;
-}
-/* this hack targets IE<7 */
-#theme_navigation_bar .selected, #theme_navigation_bar a:hover {
-    background: #80b0da;
-    color: #ffffff;
-    text-decoration: none;
-}
 
 .z-blockposition-search #theme_search{
     background: #27587F;
