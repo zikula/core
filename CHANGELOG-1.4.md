@@ -6,6 +6,7 @@ BC Breaks:
 - Gedmo Doctrine Extensions Sluggable has changed. See dev docs for changes
 - Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.
 - Sessions can no longer be stored in a file. This functionality may return in a later version.
+- Support for IE 7 and below has been removed.
 
 Deprecated:
 - DoctrineExtensions Paginator has superseded by Doctrine ORM paginator
