@@ -111,13 +111,7 @@ ul {
 
 .clearfix {display: inline-table;}
 
-/* Hides from IE-mac \*/
-* html .clearfix {height: 1%;}
-.clearfix {display: block;}
-/* End hide from IE-mac */
-
 /* Overflow-Method to clear float environments */
 .z-floatbox {
     overflow:hidden;
 }
-
