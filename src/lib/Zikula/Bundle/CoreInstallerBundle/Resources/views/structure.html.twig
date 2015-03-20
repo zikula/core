@@ -21,10 +21,10 @@
         <script type="text/javascript" src="{{ asset('jquery/jquery.min.js') }}"></script>
         {# always load bootstrap #}
         <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
-        <script type="text/javascript" src="/javascript/js-webshim/minified/polyfiller.js"></script>
+        <script type="text/javascript" src="{{ app.request.getBasePath() }}/javascript/js-webshim/minified/polyfiller.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-                $.webshims.setOptions('basePath', '/javascript/js-webshim/minified/shims/'); 
+                $.webshims.setOptions('basePath', '{{ app.request.getBasePath() }}/javascript/js-webshim/minified/shims/'); 
                 $.webshims.activeLang('{{ lang }}');
                 $.webshims.polyfill('forms');
             });
