@@ -53,7 +53,8 @@ class Settings_Controller_Admin extends Zikula_AbstractController
         $pagetitle = str_replace('%pagetitle%', $this->__('%pagetitle%'), $pagetitle);
         $pagetitle = str_replace('%sitename%', $this->__('%sitename%'), $pagetitle);
         $pagetitle = str_replace('%modulename%', $this->__('%modulename%'), $pagetitle);
-        $this->view->assign('pagetitle', $pagetitle);
+        $this->view->assign('pagetitle', $pagetitle)
+                   ->assign('languages', ZLanguage::getInstalledLanguageNames());
 
         return $this->view->fetch('settings_admin_modifyconfig.tpl');
     }

@@ -10,14 +10,38 @@
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
             <legend>{gt text="Main info"}</legend>
-            <div class="z-formrow">
-                <label for="settings_sitename">{gt text="Site name"}</label>
-                <input id="settings_sitename" type="text" name="settings[sitename]" value="{$modvars.ZConfig.sitename|safetext}" size="50" maxlength="100" />
-            </div>
-            <div class="z-formrow">
-                <label for="settings_slogan">{gt text="Description line"}</label>
-                <input id="settings_slogan" type="text" name="settings[slogan]" value="{$modvars.ZConfig.slogan|safetext}" size="50" maxlength="100" />
-            </div>
+            {if $modvars.ZConfig.multilingual}
+                {foreach from=$languages key='code' item='language'}
+                <fieldset>
+                    <legend>{$language}</legend>
+                    {assign var='varname' value='sitename_'|cat:$code}
+                    {assign var='defaultvalue' value=$modvars.ZConfig.sitename|default:''}
+                    <div class="z-formrow">
+                        <label for="settings_{$varname}">{gt text='Site name'}</label>
+                        <input id="settings_{$varname}" type="text" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|default:$defaultvalue|safetext}" size="50" maxlength="100" />
+                    </div>
+                    {assign var='varname' value='slogan_'|cat:$code}
+                    {assign var='defaultvalue' value=$modvars.ZConfig.slogan|default:''}
+                    <div class="z-formrow">
+                        <label for="settings_{$varname}">{gt text='Description line'}</label>
+                        <input id="settings_{$varname}" type="text" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|default:$defaultvalue|safetext}" size="50" maxlength="100" />
+                    </div>
+                </fieldset>
+                {/foreach}
+            {else}
+                {assign var='varname' value='sitename_'|cat:$code}
+                {assign var='defaultvalue' value=$modvars.ZConfig.sitename|default:''}
+                <div class="z-formrow">
+                    <label for="settings_{$varname}">{gt text='Site name'}</label>
+                    <input id="settings_{$varname}" type="text" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|default:$defaultvalue|safetext}" size="50" maxlength="100" />
+                </div>
+                {assign var='varname' value='slogan_'|cat:$code}
+                {assign var='defaultvalue' value=$modvars.ZConfig.slogan|default:''}
+                <div class="z-formrow">
+                    <label for="settings_{$varname}">{gt text='Description line'}</label>
+                    <input id="settings_{$varname}" type="text" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|default:$defaultvalue|safetext}" size="50" maxlength="100" />
+                </div>
+            {/if}
             <div class="z-formrow">
                 <label for="settings_pagetitle">{gt text="Page title structure"}</label>
                 <input id="settings_pagetitle" type="text" name="settings[pagetitle]" value="{$pagetitle|safetext}" size="50" maxlength="100" />
@@ -45,20 +69,50 @@
         </fieldset>
         <fieldset>
             <legend>{gt text="Meta tag settings"}</legend>
-            <div class="z-formrow">
-                <label for="settings_defaultpagetitle">{gt text="Default page title"}</label>
-                <input id="settings_defaultpagetitle" type="text" name="settings[defaultpagetitle]" value="{$modvars.ZConfig.defaultpagetitle|safetext}" size="50" maxlength="255" />
-            </div>
-            <div class="z-formrow">
-                <label for="settings_defaultmetadescription">{gt text="Default meta description"}</label>
-                <input id="settings_defaultmetadescription" type="text" name="settings[defaultmetadescription]" value="{$modvars.ZConfig.defaultmetadescription|safetext}" size="50" maxlength="255" />
-            </div>
-            <div id="settings_keywords_container">
+            {if $modvars.ZConfig.multilingual}
+                {foreach from=$languages key='code' item='language'}
+                <fieldset>
+                    <legend>{$language}</legend>
+                    {assign var='varname' value='defaultpagetitle_'|cat:$code}
+                    {assign var='defaultvalue' value=$modvars.ZConfig.defaultpagetitle|default:''}
+                    <div class="z-formrow">
+                        <label for="settings_{$varname}">{gt text='Default page title'}</label>
+                        <input id="settings_{$varname}" type="text" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|default:$defaultvalue|safetext}" size="50" maxlength="255" />
+                    </div>
+                    {assign var='varname' value='defaultmetadescription_'|cat:$code}
+                    {assign var='defaultvalue' value=$modvars.ZConfig.defaultmetadescription|default:''}
+                    <div class="z-formrow">
+                        <label for="settings_{$varname}">{gt text='Default meta description'}</label>
+                        <input id="settings_{$varname}" type="text" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|default:$defaultvalue|safetext}" size="50" maxlength="255" />
+                    </div>
+                    {assign var='varname' value='metakeywords_'|cat:$code}
+                    {assign var='defaultvalue' value=$modvars.ZConfig.metakeywords|default:''}
+                    <div class="z-formrow">
+                        <label for="settings_{$varname}">{gt text='Default meta keywords'}</label>
+                        <textarea id="settings_{$varname}" name="settings[{$varname}]" cols="60" rows="3">{$modvars.ZConfig.$varname|default:$defaultvalue|safetext}</textarea>
+                    </div>
+                </fieldset>
+                {/foreach}
+            {else}
+                {assign var='varname' value='defaultpagetitle_'|cat:$code}
+                {assign var='defaultvalue' value=$modvars.ZConfig.defaultpagetitle|default:''}
                 <div class="z-formrow">
-                    <label for="settings_metakeywords">{gt text="Default meta keywords"}</label>
-                    <textarea id="settings_metakeywords" name="settings[metakeywords]" cols="60" rows="5">{$modvars.ZConfig.metakeywords|safetext}</textarea>
+                    <label for="settings_{$varname}">{gt text='Default page title'}</label>
+                    <input id="settings_{$varname}" type="text" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|default:$defaultvalue|safetext}" size="50" maxlength="255" />
                 </div>
-            </div>
+                {assign var='varname' value='defaultmetadescription_'|cat:$code}
+                {assign var='defaultvalue' value=$modvars.ZConfig.defaultmetadescription|default:''}
+                <div class="z-formrow">
+                    <label for="settings_{$varname}">{gt text='Default meta description'}</label>
+                    <input id="settings_{$varname}" type="text" name="settings[{$varname}]" value="{$modvars.ZConfig.$varname|default:$defaultvalue|safetext}" size="50" maxlength="255" />
+                </div>
+                {assign var='varname' value='metakeywords_'|cat:$code}
+                {assign var='defaultvalue' value=$modvars.ZConfig.metakeywords|default:''}
+                <div class="z-formrow">
+                    <label for="settings_{$varname}">{gt text='Default meta keywords'}</label>
+                    <textarea id="settings_{$varname}" name="settings[{$varname}]" cols="60" rows="3">{$modvars.ZConfig.$varname|default:$defaultvalue|safetext}</textarea>
+                </div>
+            {/if}
         </fieldset>
         <fieldset>
             <legend>{gt text="Start page settings"}</legend>
