@@ -718,10 +718,10 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // build a list of found modules and dependencies
-        $module_names = array();
+        $fileModuleNames = array();
         $moddependencies = array();
         foreach ($filemodules as $modinfo) {
-            $module_names[] = $modinfo['name'];
+            $fileModuleNames[] = $modinfo['name'];
             if (isset($modinfo['dependencies']) && !empty($modinfo['dependencies'])) {
                 $moddependencies[$modinfo['name']] = unserialize($modinfo['dependencies']);
             }
@@ -804,14 +804,16 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // See if we have lost any modules since last regeneration
+        $systemIsUpgrading = $this->getContainer()->hasParameter('upgrading') && $this->getContainer()->getParameter('upgrading');
         foreach ($dbmodules as $name => $modinfo) {
-            if (!in_array($name, $module_names)) {
+            if (!in_array($name, $fileModuleNames)) {
                 $lostModule = $this->entityManager->getRepository(self::EXTENSION_ENTITY)->findOneBy(array('name' => $name));
                 if (!$lostModule) {
                     throw new \RuntimeException($this->__f('Error! Could not load data for module %s.', array($name)));
                 }
                 $lostModuleState = $lostModule->getState();
-                if (($lostModuleState == ModUtil::STATE_INVALID) || ($lostModuleState = ModUtil::STATE_INVALID + ModUtil::INCOMPATIBLE_CORE_SHIFT)) {
+                if (!$systemIsUpgrading && (($lostModuleState == ModUtil::STATE_INVALID) || ($lostModuleState = ModUtil::STATE_INVALID + ModUtil::INCOMPATIBLE_CORE_SHIFT))) {
+                    // system is not upgrading and
                     // module was invalid and subsequently removed from file system,
                     // or module was incompatible with core and subsequently removed, delete it
                     $this->entityManager->remove($lostModule);
