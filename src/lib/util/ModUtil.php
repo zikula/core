@@ -1975,7 +1975,7 @@ class ModUtil
             $scanner->scan(array("$modPath/$osDir"), 1);
             $modules = $scanner->getModulesMetaData(true);
             /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
-            $moduleMetaData = $modules[$modInfo['name']];
+            $moduleMetaData = !empty($modules[$modInfo['name']]) ? $modules[$modInfo['name']] : null;
             if (null !== $moduleMetaData) {
                 // moduleMetaData only exists for bundle-type modules
                 $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
