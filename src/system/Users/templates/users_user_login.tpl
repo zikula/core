@@ -6,7 +6,6 @@
 {/if}
 {/foreach}
 {gt text='User log-in' assign='templatetitle'}
-{modulelinks modname='Users' type='user'}
 {include file='users_user_menu.tpl'}
 {if (count($authentication_method_display_order) > 1)}
 <div>

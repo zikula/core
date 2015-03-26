@@ -17,7 +17,6 @@
     {/if}
 {/strip}
             
-{modulelinks modname='Users' type='user'}
 {include file='users_user_menu.tpl'}
 
 {if !empty($errormessages)}

@@ -1,5 +1,4 @@
 {gt text='Account information recovery' assign='templatetitle'}
-{modulelinks modname='Users' type='user'}
 {include file='users_user_menu.tpl'}
 
 <p class="z-informationmsg">{gt text="Please enter your e-mail address below and click the 'Submit' button. You will be sent an e-mail with your account information."}</p>

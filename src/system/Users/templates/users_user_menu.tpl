@@ -1,8 +1,4 @@
 {if $templatetitle|default:'' eq ''}
     {gt text='My account' assign='templatetitle'}
 {/if}
-{pagesetvar name='title' value=$templatetitle}
-
-<h2>{$templatetitle}</h2>
-
-{insert name='getstatusmsg'}
+{moduleheader modname='Users' type='user' title=$templatetitle setpagetitle=true insertstatusmsg=true}
