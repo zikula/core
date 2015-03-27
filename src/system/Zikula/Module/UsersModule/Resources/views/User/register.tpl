@@ -69,7 +69,7 @@
                 {if ($authentication_method.modname != 'ZikulaUsersModule') || (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
                 <em class="help-block sub">{gt text='Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.'}</em>
                 {/if}
-                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger validation-error{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
     </fieldset>
@@ -85,7 +85,7 @@
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password" class="form-control" size="25" maxlength="60" required="required" data-match="#users_register_passagain" data-match-error-message="The value entered does not match the password entered in the password field." data-min="{$modvars.ZikulaUsersModule.minpass}" data-min-error-message="{gt text='Passwords must be at least %s characters in length.' tag1=$modvars.ZikulaUsersModule.minpass}"/>
                 <em class="help-block sub">{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.ZikulaUsersModule.minpass}</em>
-                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger validation-error{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 <div id="{$formData->getFormId()}_passmeter"></div>
             </div>
         </div>
@@ -95,7 +95,7 @@
             {assign var='fieldName' value='passagain'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="password" size="25" maxlength="60" required="required" />
-                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger validation-error{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
         {if isset($modvars.ZikulaUsersModule.password_reminder_enabled) && $modvars.ZikulaUsersModule.password_reminder_enabled}
@@ -107,7 +107,7 @@
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="128" value="{$formData->getFieldData($fieldName)|safetext}"{if ($modvars.ZikulaUsersModule.password_reminder_mandatory)} required="required"{/if} />
                 <div class="sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
                 <div class="help-block alert alert-info">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
-                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger validation-error{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
         {/if}
@@ -130,7 +130,7 @@
                 {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
                 <em class="help-block sub">{gt text='You will use your e-mail address to identify yourself when you log in.'}</em>
                 {/if}
-                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger validation-error{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
         <div class="form-group{if ((isset($fieldName)) && (isset($errorFields.$fieldName)))} has-error{/if}">
@@ -139,7 +139,7 @@
             {assign var='fieldName' value='emailagain'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control  to-lower-case" type="email" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" />
-                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger validation-error{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
     </fieldset>
@@ -187,6 +187,7 @@
         <div class="col-lg-offset-3 col-lg-9">
             <input class="btn btn-success" type="submit" value="{gt text='Submit'}" />
             <a class="btn btn-danger" href="{route name='zikulausersmodule_user_index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+            <button type="button" class="btn btn-default validate" data-loading-text="{gt text='Checking...'}">{gt text='Check your entries'}</button>
             <input class="btn btn-default" type="reset" value="{gt text='Reset'}" />
         </div>
     </div>

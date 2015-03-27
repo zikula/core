@@ -1,6 +1,39 @@
 // Copyright Zikula Foundation 2014 - license GNU/LGPLv3 (or at your option, any later version).
 
 ( function($) {
+
+    function displayErrors(data) {
+        var errorMessages = $('#users_register_errormsgs');
+        // hide error containers in case this is subsequent request
+        errorMessages.addClass('hide');
+        $('#users_register').find('.validation-error').addClass('hide');
+
+        // display error messages
+        if (data.errorMessages) {
+            errorMessages.html(data.errorMessages.join('<br />')).removeClass('hide');
+        }
+        if (data.errorFields) {
+            $.each(data.errorFields, function(key, value) {
+                $('#users_register_' + key + '_error').html(value).removeClass('hide');
+            })
+        }
+    }
+
+    function validateEntries(event) {
+        event.preventDefault();
+        $('button.validate').bootstrapBtn('loading');
+        $.ajax({
+            url: Routing.generate('zikulausersmodule_ajax_getregistrationerrors'),
+            type: 'POST',
+            data: $('#users_register').serializeArray()
+        }).always(function(response, status, xhr) {
+            $('button.validate').bootstrapBtn('reset');
+            if (response && response.data && response.data.errorFieldsCount > 0) {
+                displayErrors(response.data);
+            }
+        })
+    }
+
     $(document).ready(function() {
 
         // set username and email input to lower case
@@ -42,5 +75,7 @@
             };
             $this[0].addEventListener('change', checkMinLengthValidity, false);
         });
+
+        $('button.validate').on('click', validateEntries);
     });
 })(jQuery);
