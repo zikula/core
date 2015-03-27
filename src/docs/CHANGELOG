@@ -10,6 +10,7 @@ CHANGELOG - ZIKULA 1.3.10
 - Updated Imagine lib to 0.6.2 and plugin is enhanced with width/height autoscale and jpg/png quality (#2174, #1644)
 - New view plugin {langchange} for switching language, also function with shorturls enabled (#2356)
 - Multilingual site name, site description and site meta tags (#2358)
+- Added view plugin {moduleheader} to unify module headers and make styling at one place - moduleheader.tpl (#2371).
 
 CHANGELOG - ZIKULA 1.3.9
 ------------------------

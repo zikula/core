@@ -1,5 +1,4 @@
 {gt text='Account information and password recovery' assign='templatetitle'}
-{modulelinks modname='Users' type='user'}
 {include file='users_user_menu.tpl'}
 
 <p>{gt text="Please select one of the following:"}</p>
