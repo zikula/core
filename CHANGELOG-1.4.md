@@ -119,3 +119,4 @@ Features:
 - Include Zikula/Wizard - a library to assist in multi-stage user interaction (used in installer)
 - Added multilingual support for site name, site description and site meta tags (#2316).
 - Added view plugin {langchange} for switching language, function with shorturls enabled (#2364)
+- Added view plugin {moduleheader} to unify module headers and make styling at one place - moduleheader.tpl (#2372).
