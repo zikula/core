@@ -18,7 +18,6 @@
     {/if}
 {/strip}
             
-{modulelinks modname='ZikulaUsersModule' type='user'}
 {include file='User/menu.tpl'}
 
 {if !empty($errormessages)}
