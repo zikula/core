@@ -1,5 +1,4 @@
 {gt text='Lost password recovery' assign='templatetitle'}
-{modulelinks modname='ZikulaUsersModule' type='user'}
 {include file='User/menu.tpl'}
 
 {if !empty($passreminder)}
