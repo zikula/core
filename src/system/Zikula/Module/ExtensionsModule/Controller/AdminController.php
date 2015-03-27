@@ -461,10 +461,10 @@ class AdminController extends \Zikula_AbstractController
                     default:
                         if ($mod['state'] > 10) {
                             $status = $this->__('Incompatible');
-                            $statusclass = "default";
+                            $statusclass = "info";
                         } else {
                             $status = $this->__('Not installed');
-                            $statusclass = "danger";
+                            $statusclass = "primary";
                         }
                         break;
                 }

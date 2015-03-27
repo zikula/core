@@ -1,4 +1,4 @@
-<meta http-equiv="Content-Type" content="text/html; charset={charset}" />
+<meta charset="{charset}" />
 <title>{pagegetvar name='title'}</title>
 <meta name="description" content="{$metatags.description}" />
 <meta name="keywords" content="{$metatags.keywords}" />
