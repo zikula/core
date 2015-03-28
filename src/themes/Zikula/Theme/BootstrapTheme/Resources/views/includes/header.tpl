@@ -21,6 +21,39 @@
           <a class="navbar-brand" href="{homepage}">{$modvars.ZConfig.sitename}</a>
         </div>
         <div class="navbar-collapse collapse">
+        {if $pagetype eq 'admin'}
+          <ul class="nav navbar-nav">
+            <li><a href="{homepage}">{gt text='Home'}</a></li>
+            {checkpermission component='ZikulaSettingsModule::' instance='::' level='ACCESS_ADMIN' assign='okAccess'}
+            {if $okAccess}
+            <li><a href="{modurl modname='ZikulaSettingsModule' type='admin' func='index'}">{gt text="Settings"}</a></li>
+            {/if}
+            {checkpermission component='ZikulaExtensionsModule::' instance='::' level='ACCESS_ADMIN' assign='okAccess'}
+            {if $okAccess}
+            <li><a href="{modurl modname='ZikulaExtensionsModule' type='admin' func='index'}">{gt text="Extensions"}</a></li>
+            {/if}
+            {checkpermission component='ZikulaBlocksModule::' instance='::' level='ACCESS_EDIT' assign='okAccess'}
+            {if $okAccess}
+            <li><a href="{modurl modname='ZikulaBlocksModule' type='admin' func='index'}">{gt text="Blocks"}</a></li>
+            {/if}
+            {checkpermission component='ZikulaUsersModule::' instance='::' level='ACCESS_MODERATE' assign='okAccess'}
+            {if $okAccess}
+            <li><a href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}">{gt text="Users"}</a></li>
+            {/if}
+            {checkpermission component='ZikulaGroupsModule::' instance='::' level='ACCESS_EDIT' assign='okAccess'}
+            {if $okAccess}
+            <li><a href="{modurl modname='ZikulaGroupsModule' type='admin' func='index'}">{gt text="Groups"}</a></li>
+            {/if}
+            {checkpermission component='ZikulaPermissionsModule::' instance='::' level='ACCESS_ADMIN' assign='okAccess'}
+            {if $okAccess}
+            <li><a href="{modurl modname='ZikulaPermissionsModule' type='admin' func='index'}">{gt text="Permission rules"}</a></li>
+            {/if}
+            {checkpermission component='ZikulaThemeModule::' instance='::' level='ACCESS_EDIT' assign='okAccess'}
+            {if $okAccess}
+            <li><a href="{modurl modname='ZikulaThemeModule' type='admin' func='index'}">{gt text="Themes"}</a></li>
+            {/if}
+          </ul>
+        {else}
           <ul class="nav navbar-nav">
             <li class="active"><a href="{homepage}" title="{gt text="Go to the site's home page"}">{gt text='Home'}</a></li>
             <li><a href="{modurl modname='ZikulaUsersModule' type='user' func='main'}" title="{gt text='Go to your account panel'}">{gt text="My Account"}</a></li>
@@ -47,6 +80,7 @@
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
           </form>
+        {/if}
         </div><!--/.navbar-collapse -->
       </div>
     </div>
