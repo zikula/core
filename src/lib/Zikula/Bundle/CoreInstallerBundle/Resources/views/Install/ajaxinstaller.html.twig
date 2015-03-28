@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <div><a href="#install-fieldset" id="begininstall" class="btn btn-lg btn-success">{{ __('Begin Installer') }}</a></div>
+    <div class="text-center"><a href="#install-fieldset" id="begininstall" class="btn btn-lg btn-success">{{ __('Begin Installer') }}</a></div>
 
     <fieldset id="install-fieldset">
         <legend>{{  __("Installing Modules and Helpers") }}</legend>
@@ -41,7 +41,7 @@
 
     </fieldset>
 
-    <div><a href="{{ url('install', { 'stage': 'complete' }) }}" id="continuebutton" class="btn btn-lg btn-success" style="display:none;">{{ __('Finish') }} <i class="fa fa-angle-double-right"></i></a></div>
+    <div class="text-center"><a href="{{ url('install', { 'stage': 'complete' }) }}" id="continuebutton" class="btn btn-lg btn-success" style="display:none;">{{ __('Finish') }} <i class="fa fa-angle-double-right"></i></a></div>
 </div>
 {# create a javascript array of all the stages #}
 <script>
