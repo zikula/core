@@ -189,7 +189,7 @@ class JCSSUtil
             $routeScript = $sm->get('router')->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData'));
             array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', $routeScript);
         }
-        // first resolve any dependencies                        
+        // first resolve any dependencies
         $javascripts = self::resolveDependencies($javascripts);
         // set proper file paths for aliased scripts
         $coreScripts = self::scriptsMap();
