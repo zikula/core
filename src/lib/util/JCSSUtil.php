@@ -195,8 +195,8 @@ class JCSSUtil
         $coreScripts = self::scriptsMap();
         $styles = array();
         $gettext = false;
-        foreach ($javascripts as $i => $script) {            
-            if (array_key_exists($script, $coreScripts)) {  
+        foreach ($javascripts as $i => $script) {
+            if (array_key_exists($script, $coreScripts)) {
                 $javascripts[$i] = $coreScripts[$script]['path'];
                 if (isset($coreScripts[$script]['styles'])) {
                     $styles = array_merge($styles, (array) $coreScripts[$script]['styles']);
