@@ -1,47 +1,55 @@
-// Copyright Zikula Foundation 2014 - license GNU/LGPLv3 (or at your option, any later version).
-
+/**
+ * Copyright Zikula Foundation 2014 - license GNU/LGPLv3 (or at your option, any later version).
+ */
 (function($) {
     function displayErrors(data) {
         var errorMessages = $('#users_register_errormsgs');
-        // hide error containers in case this is subsequent request
+        
+        /**
+         * Hide error containers, in case this is a subsequent request.
+         */
         errorMessages.addClass('hide');
         $('#users_register').find('.validation-error').addClass('hide');
 
-        // display error messages
+        /**
+         * Display error messages.
+         */
         if (data.errorMessages) {
             errorMessages.html(data.errorMessages.join('<br />')).removeClass('hide');
         }
+
         if (data.errorFields) {
             $.each(data.errorFields, function(key, value) {
-                $('#users_register_' + key + '_error').html(value).removeClass('hide');
-            })
+                $('#users_register_'+key+'_error').html(value).removeClass('hide').fadeIn('fast');
+            });
         }
     }
 
     function validateEntries(event) {
         event.preventDefault();
-        $('button.validate').bootstrapBtn('loading');
-        $.ajax({
-            url: Routing.generate('zikulausersmodule_ajax_getregistrationerrors'),
-            type: 'POST',
-            data: $('#users_register').serializeArray()
-        }).always(function(response, status, xhr) {
-            $('button.validate').bootstrapBtn('reset');
-            if (response && response.data && response.data.errorFieldsCount > 0) {
-                displayErrors(response.data);
-            }
-        })
+
+        $('#users_register .help-block').fadeOut('fast', function() {
+            $.ajax({
+                data: $('#users_register').serializeArray(),
+                type: 'POST',
+                url: Routing.generate('zikulausersmodule_ajax_getregistrationerrors')
+            }).always(function(response, status, xhr) {                
+                if (response && response.data && response.data.errorFieldsCount > 0) {
+                    displayErrors(response.data);
+                }
+            });
+        });
     }
 
     $(document).ready(function() {
         /**
          * Force "User Name" and "Email Address" to lowercase.
          */
-        $('.to-lower-case').blur(function() {
+        $('#users_register .to-lower-case').blur(function() {
             $(this).val($(this).val().toLowerCase());
         });
 
-        $('.z-module-zikulausersmodule input[data-match]').each(function() {
+        $('#users_register input[data-match]').each(function() {
             var $this = $(this);
             var match = $this.data('match');
 
@@ -63,6 +71,6 @@
             e2.addEventListener('paste', checkMatch, false);
         });
 
-        $('button.validate').on('submit', validateEntries);
+        $('#users_register').on('submit', validateEntries);
     });
 })(jQuery);
