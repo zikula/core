@@ -62,9 +62,9 @@
             var e2 = document.getElementById(match.substr(1));
             var checkMatch = function() {
                 if (e1.value != e2.value) {
-                    e2.setCustomValidity($this.data('match-error-message'));
+                    $(e2).callProp('setCustomValidity', [$this.data('match-error-message')]);
                 } else {
-                    e2.setCustomValidity('');
+                    $(e2).callProp('setCustomValidity', ['']);
                 }
             };
 
