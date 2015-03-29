@@ -231,7 +231,7 @@ class AjaxInstallController extends AbstractController
     private function updateAdmin()
     {
         $em = $this->container->get('doctrine.entitymanager');
-        $params = $this->yamlManager->getParameters();
+        $params = $this->decodeParameters($this->yamlManager->getParameters());
 
         // create the password hash
         $password = \UserUtil::getHashedPassword($params['password'], \UserUtil::getPasswordHashMethodCode(UsersConstant::DEFAULT_HASH_METHOD));
@@ -264,7 +264,7 @@ class AjaxInstallController extends AbstractController
     public function loginAdmin()
     {
         $this->container->get('session')->start();
-        $params = $this->yamlManager->getParameters();
+        $params = $this->decodeParameters($this->yamlManager->getParameters());
 
         // login as admin using provided credentials
         $authenticationInfo = array(
@@ -282,7 +282,7 @@ class AjaxInstallController extends AbstractController
 
     private function finalizeParameters()
     {
-        $params = $this->yamlManager->getParameters();
+        $params = $this->decodeParameters($this->yamlManager->getParameters());
 
         \System::setVar('language_i18n', $params['locale']);
         // Set the System Identifier as a unique string.
@@ -308,6 +308,21 @@ class AjaxInstallController extends AbstractController
         $this->container->get('zikula.cache_clearer')->clear('symfony.config');
 
         return true;
+    }
+
+    /**
+     * remove base64 encoding for admin params
+     *
+     * @param $params
+     * @return mixed
+     */
+    private function decodeParameters($params)
+    {
+        $params['password'] = base64_decode($params['password']);
+        $params['username'] = base64_decode($params['username']);
+        $params['email'] = base64_decode($params['email']);
+
+        return $params;
     }
 
     /**
