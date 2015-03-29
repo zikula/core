@@ -106,7 +106,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             } elseif (isset($reginfo['uname']) && !empty($reginfo['uname']) && ($reginfo['pass'] == $reginfo['uname'])) {
                 $passwordErrors['pass'] = $this->__('The password cannot be the same as the user name. Please choose a different password.');
             } elseif (!isset($passwordAgain) || empty($passwordAgain) || ($reginfo['pass'] !== $passwordAgain)) {
-                $passwordErrors['passagain'] = $this->__('You did not enter the same password in each password field. Please enter the same password once in each password field (this is required for verification).');
+                $passwordErrors['passagain'] = $this->__('The value entered does not match the password entered in the &quot;Password&quot; field.');
             }
 
             if (!$this->currentUserIsAdminOrSubAdmin()) {
