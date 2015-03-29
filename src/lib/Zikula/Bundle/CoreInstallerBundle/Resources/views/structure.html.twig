@@ -23,11 +23,9 @@
         <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ app.request.getBasePath() }}/javascript/js-webshim/minified/polyfiller.js"></script>
         <script type="text/javascript">
-            $(document).ready(function() {
-                $.webshims.setOptions('basePath', '{{ app.request.getBasePath() }}/javascript/js-webshim/minified/shims/'); 
-                $.webshims.activeLang('{{ lang }}');
-                $.webshims.polyfill('forms');
-            });
+            $.webshims.setOptions('basePath', '{{ app.request.getBasePath() }}/javascript/js-webshim/minified/shims/'); 
+            $.webshims.activeLang('{{ lang }}');
+            $.webshims.polyfill('forms');
         </script>
         {# allow child templates to load additional scripts #}
         {% block javascripts '' %}
