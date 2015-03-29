@@ -216,7 +216,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         if (!isset($emailAgain) || empty($emailAgain)) {
             $emailErrors['emailagain'] = $this->__('You did not repeat the e-mail address for verification. Please enter the same e-mail address once in each field.');
         } elseif (isset($reginfo['email']) && !empty($reginfo['email']) && ($reginfo['email'] !== $emailAgain)) {
-            $emailErrors['emailagain'] = $this->__('You did not enter the same e-mail address in each e-mail address field. Please enter the same e-mail address once in each field (this is required for verification).');
+            $emailErrors['emailagain'] = $this->__('The value entered does not match the email address entered in the &quot;Email Address&quot; field.');
         }
 
         return $emailErrors;
