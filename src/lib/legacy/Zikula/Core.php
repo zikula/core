@@ -569,6 +569,7 @@ class Zikula_Core
 
         if ($stage & self::STAGE_THEME) {
             // register default page vars
+            PageUtil::registerVar('polyfill_features', true);
             PageUtil::registerVar('title');
             PageUtil::setVar('title', System::getVar('defaultpagetitle'));
             PageUtil::registerVar('keywords', true);

@@ -34,6 +34,13 @@ class JCSSUtil
             'sessionName' => session_name(),
             'uid' => (int)UserUtil::getVar('uid')
         );
+        
+        $polyfill_features = PageUtil::getVar('polyfill_features');
+        
+        if (!empty($polyfill_features)) {
+            $config['polyfillFeatures'] = implode(' ', $polyfill_features);
+        }
+
         $config = DataUtil::formatForDisplay($config);
         $return .= "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
         if (System::isLegacyMode()) {
@@ -182,14 +189,14 @@ class JCSSUtil
             $routeScript = $sm->get('router')->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData'));
             array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', $routeScript);
         }
-        // first resolve any dependencies
+        // first resolve any dependencies                        
         $javascripts = self::resolveDependencies($javascripts);
         // set proper file paths for aliased scripts
         $coreScripts = self::scriptsMap();
         $styles = array();
         $gettext = false;
-        foreach ($javascripts as $i => $script) {
-            if (array_key_exists($script, $coreScripts)) {
+        foreach ($javascripts as $i => $script) {            
+            if (array_key_exists($script, $coreScripts)) {  
                 $javascripts[$i] = $coreScripts[$script]['path'];
                 if (isset($coreScripts[$script]['styles'])) {
                     $styles = array_merge($styles, (array) $coreScripts[$script]['styles']);
@@ -417,6 +424,13 @@ class JCSSUtil
                 'path'    => 'javascript/ajax/validation.min.js',
                 'require' => array('prototype'),
             ),
+            'polyfill'          => array(
+                'path'    => 'javascript/js-webshim/minified/polyfiller.js',
+                'require' => array('jquery', 'polyfill.init'),
+            ),
+            'polyfill.init'     => array(
+                'path' => 'javascript/js-webshim/minified/polyfiller.init.js',
+            ),
         );
         if (System::isDevelopmentMode()) {
             $prototypeUncompressed = array(
@@ -511,7 +525,17 @@ class JCSSUtil
                     'require' => array('jquery'),
                 ),
             );
-            $scripts = array_merge($prototypeUncompressed, $jQueryUncompressed, $jQueryUiUncompressed, $livepipeUncompressed, array_slice($scripts, 5));
+            $polyfillUncompressed = array(
+                'polyfill' => array(
+                    'path' => 'javascript/js-webshim/dev/polyfiller.js',
+                    'require' => array('jquery', 'polyfill.init')
+                ),
+                'polyfill.init' => array(
+                    'path' => 'javascript/js-webshim/dev/polyfiller.init.js',
+                ),
+            );
+
+            $scripts = array_merge($prototypeUncompressed, $jQueryUncompressed, $jQueryUiUncompressed, $livepipeUncompressed, array_slice($scripts, 5), $polyfillUncompressed);
         }
 
         return $scripts;
