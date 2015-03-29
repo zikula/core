@@ -264,9 +264,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $totalErrors += $errorInfo['errorFieldsCount'];
         }
         if ($totalErrors > 0) {
-            $returnValue['errorMessages'][] = $this->_fn('There was an error with one of the fields, below. Please review the message, and correct your entry.',
-                    'There were errors with %1$d of the fields, below. Please review the messages, and correct your entries.',
-                    $totalErrors, array($totalErrors));
+            $returnValue['errorMessages'][] = $this->_fn('There was an error with one of the fields below. Please review the message, and correct your entry.', 'There were errors with %1$d of the fields below. Please review the messages, and correct your entries.', $totalErrors, array($totalErrors));
             $returnValue['errorMessagesCount']++;
         }
 

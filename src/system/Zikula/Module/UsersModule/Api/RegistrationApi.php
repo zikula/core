@@ -207,7 +207,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 }
 
                 if ($emailUsageCount) {
-                    $emailErrors['email'] = $this->__('The e-mail address you entered has already been registered.');
+                    $emailErrors['email'] = $this->__('The email address you entered has already been registered.');
                     $tempValid = false;
                 }
             }
