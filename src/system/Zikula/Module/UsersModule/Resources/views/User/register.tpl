@@ -1,9 +1,9 @@
 {strip}
     {gt text='New account registration' assign='templatetitle'}
     {pageaddvar name='javascript' value='polyfill'}
-    {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.Common.UserValidation.js'}
+    {pageaddvar name='javascript' value='@ZikulaUsersModule/Resources/public/js/Zikula.Users.Common.UserValidation.js'}
     {if $modvars.ZikulaUsersModule.use_password_strength_meter && ($authentication_method.modname eq 'ZikulaUsersModule')}
-        {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
+        {pageaddvar name='javascript' value='@ZikulaUsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
                 (function($) {
