@@ -1,7 +1,6 @@
 // Copyright Zikula Foundation 2014 - license GNU/LGPLv3 (or at your option, any later version).
 
-( function($) {
-
+(function($) {
     function displayErrors(data) {
         var errorMessages = $('#users_register_errormsgs');
         // hide error containers in case this is subsequent request
@@ -35,9 +34,10 @@
     }
 
     $(document).ready(function() {
-
-        // set username and email input to lower case
-        $('.to-lower-case').blur( function() {
+        /**
+         * Force "User Name" and "Email Address" to lowercase.
+         */
+        $('.to-lower-case').blur(function() {
             $(this).val($(this).val().toLowerCase());
         });
 
@@ -45,7 +45,9 @@
             var $this = $(this);
             var match = $this.data('match');
 
-            // check if fields match
+            /**
+             * Check if fields match.
+             */
             var e1 = $this[0];
             var e2 = document.getElementById(match.substr(1));
             var checkMatch = function() {
@@ -55,27 +57,12 @@
                     e2.setCustomValidity('');
                 }
             };
+
             e1.addEventListener('change', checkMatch, false);
             e2.addEventListener('keyup', checkMatch, false);
             e2.addEventListener('paste', checkMatch, false);
         });
 
-        $('.z-module-zikulausersmodule input[data-min]').each(function() {
-            var $this = $(this);
-
-            var checkMinLengthValidity = function() {
-                var length = $this.val().length;
-                if ($this.attr('required') !== "required" && length === 0) {
-                    $this[0].setCustomValidity('');
-                } else if (length < $this.data('min')) {
-                    $this[0].setCustomValidity($this.data('min-error-message'));
-                } else {
-                    $this[0].setCustomValidity('');
-                }
-            };
-            $this[0].addEventListener('change', checkMinLengthValidity, false);
-        });
-
-        $('button.validate').on('click', validateEntries);
+        $('button.validate').on('submit', validateEntries);
     });
 })(jQuery);
