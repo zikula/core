@@ -36,6 +36,8 @@
             }).always(function(response, status, xhr) {                
                 if (response && response.data && response.data.errorFieldsCount > 0) {
                     displayErrors(response.data);
+                } else {
+                    $('#users_register').unbind('submit').submit();
                 }
             });
         });
