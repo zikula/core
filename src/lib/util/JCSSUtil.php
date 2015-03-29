@@ -424,11 +424,11 @@ class JCSSUtil
                 'path'    => 'javascript/ajax/validation.min.js',
                 'require' => array('prototype'),
             ),
-            'polyfill'          => array(
+            'polyfill'           => array(
                 'path'    => 'javascript/js-webshim/minified/polyfiller.js',
                 'require' => array('jquery', 'polyfill.init'),
             ),
-            'polyfill.init'     => array(
+            'polyfill.init'      => array(
                 'path' => 'javascript/js-webshim/minified/polyfiller.init.js',
             ),
         );
