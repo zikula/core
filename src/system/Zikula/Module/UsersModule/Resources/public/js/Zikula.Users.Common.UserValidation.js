@@ -15,12 +15,20 @@
          * Display error messages.
          */
         if (data.errorMessages) {
-            errorMessages.html(data.errorMessages.join('<br />')).removeClass('hide');
+            errorMessages.html(data.errorMessages.join('<br />')).removeClass('hide').fadeIn('fast');
         }
 
         if (data.errorFields) {
             $.each(data.errorFields, function(key, value) {
-                $('#users_register_'+key+'_error').html(value).removeClass('hide').fadeIn('fast');
+                $('#users_register_'+key).callProp('setCustomValidity', [value]);
+                
+                $('#users_register_'+key).on('change keyup paste', function() {
+                    $('#users_register_errormsgs').fadeOut('fast', function() {
+                        $(this).addClass('hide');
+                    });
+
+                    $(this).callProp('setCustomValidity', ['']);   
+                });
             });
         }
     }
