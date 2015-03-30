@@ -66,7 +66,6 @@ Features:
 - Show an error message if version number of a module is incorrect.
 - Added garbage collection to CSRF token generator
 - Controller methods need to be suffixed with the word 'Action'. Old methods will continue to work.
-
 - [FORWARD COMPAT] Merged `ajax.php` front controller into `index.php` - please use
   index.php?module=<modname>&type=ajax&func=<func> in AJAX calls.
 - Zikula Form - automatically set proper form enctype when upload input is used
@@ -90,7 +89,7 @@ Features:
 - Params delivery from zikula html_select_* to smarty_function_html_options (#1031).
 - Added a third level of warning messages: LogUtil::registerWarning(). These override status messages and are
   overridden by error messages.
-- Added a `reason` key to module dependendies array in module version file.
+- Added a `reason` key to module dependencies array in module version file.
 - add 'moduleBundle' template variable for 1.4.0-type modules (is NULL for legacy mods)
   instance of `\Zikula\Core\AbstractModule` for current module
 - add 'themeBundle' template variable for 1.4.0-type themes (is NULL for legacy mods)
@@ -120,3 +119,4 @@ Features:
 - Added multilingual support for site name, site description and site meta tags (#2316).
 - Added view plugin {langchange} for switching language, function with shorturls enabled (#2364)
 - Added view plugin {moduleheader} to unify module headers and make styling at one place - moduleheader.tpl (#2372).
+- Added support Webshim, which is a polyfill library that enables you to reliably use HTML5 features across browsers, even if native support is lacking. (#2377)
