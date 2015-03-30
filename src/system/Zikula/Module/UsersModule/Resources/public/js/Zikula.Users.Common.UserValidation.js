@@ -30,6 +30,18 @@
                     $(this).callProp('setCustomValidity', ['']);   
                 });
             });
+            
+            /**
+             * Simulate the form submission, so that the first invalid message appears.
+             */
+            $('#users_register input[type="submit"]').trigger('click', function(event) {
+                event.preventDefault();
+            });
+            
+            /**
+             * Focus on the first invalid field.
+             */
+            $('#users_register').find(':invalid:first').focus();
         }
     }
 
@@ -42,7 +54,7 @@
                 type: 'POST',
                 url: Routing.generate('zikulausersmodule_ajax_getregistrationerrors')
             }).always(function(response, status, xhr) {                
-                if (response && response.data && response.data.errorFieldsCount > 0) {
+                if ((response) && (response.data) && (response.data.errorFieldsCount > 0)) {
                     displayErrors(response.data);
                 } else {
                     $('#users_register').off('submit').submit();
