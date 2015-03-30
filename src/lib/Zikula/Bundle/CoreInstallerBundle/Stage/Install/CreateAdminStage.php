@@ -71,7 +71,11 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
 
     public function handleFormResult(FormInterface $form)
     {
-        $this->writeParams($form->getData());
+        $data = $form->getData();
+        foreach ($data as $k => $v) {
+            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+        }
+        $this->writeParams($data);
     }
 
     private function writeParams($data)
