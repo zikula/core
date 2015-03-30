@@ -65,7 +65,7 @@ class Zikula_Core
     /**
      * The version sub-ID.
      */
-    const VERSION_SUB = 'vai';
+    const VERSION_SUB = 'Overture'; // 2.0.0 to be named 'Concerto'
 
     /**
      * The minimum required PHP version for this release of core.
