@@ -320,13 +320,14 @@ class PageUtil
      * Adds a new vaule to a page variable. In the case of a single
      * page variable, this functions acts exactly like PageUtil::setVar.
      *
-     * @param string $varname The name of the page variable.
-     * @param mixed  $value   The new value.
+     * @param string $varname  The name of the page variable.
+     * @param mixed  $value    The new value.
+     * @param string $features The feature(s) to load via polyfill.
      *
      * @see    PageUtil::setVar
      * @return boolean true On success, false of the page variable is not registered.
      */
-    public static function addVar($varname, $value)
+    public static function addVar($varname, $value, $features = 'forms')
     {
         global $_pageVars;
 
@@ -364,7 +365,17 @@ class PageUtil
 
         if ($_pageVars[$varname]['multivalue']) {
             if (is_array($value)) {
-                $_pageVars[$varname]['contents'] = array_merge($_pageVars[$varname]['contents'], $value);
+                if (in_array('polyfill', $value)) {
+                    $features = explode(' ', $features);
+
+                    foreach ($features as $feature) {
+                        PageUtil::addVar('polyfill_features', $feature);
+			        }
+			    
+                    $_pageVars[$varname]['contents'] = array_merge($_pageVars[$varname]['contents'], $value);
+                } else {
+                    $_pageVars[$varname]['contents'] = array_merge($_pageVars[$varname]['contents'], $value);
+                }
             } else {
                 $_pageVars[$varname]['contents'][] = $value;
             }

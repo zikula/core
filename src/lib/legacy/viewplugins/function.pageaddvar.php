@@ -19,10 +19,12 @@
  * This function obtains a page-specific variable from the Zikula system.
  *
  * Available parameters:
- *   - name:     The name of the page variable to set
- *   - value:    The value of the page variable to set, comma separated list is possible
- *               for stylesheet and javascript variables
- *   - raw:      If raw is set to true then value is treated as a single string and not split (Default: false)
+ *   - name: The name of the page variable to set.
+ *   - value: The value of the page variable to set, comma separated list is possible
+ *      for stylesheet and javascript variables.
+ *   - raw: If raw is set to true then value is treated as a single string and not split (Default: false).
+ *   - lang: The laguage code to set via polyfill.
+ *   - features: The feature(s) to load via polyfill.
  *
  * Zikula doesn't impose any restriction on the page variable's name except for duplicate
  * and reserved names. As of this writing, the list of reserved names consists of
@@ -44,7 +46,7 @@
  *   {pageaddvar name='javascript' value='jquery'}
  *   {pageaddvar name='javascript' value='path/to/myscript.js'}
  *   {pageaddvar name='javascript' value='path/to/myscript.js,path/to/another/script.js'}
- *   {pageaddvar name="jsgettext" value="module_news_js:News"}
+ *   {pageaddvar name='jsgettext' value='module_news_js:News'}
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -53,9 +55,15 @@
  */
 function smarty_function_pageaddvar($params, Zikula_View $view)
 {
-    $name  = isset($params['name'])  ? $params['name']  : null;
+    $name = isset($params['name']) ? $params['name'] : null;
     $value = isset($params['value']) ? $params['value'] : null;
-    $raw   = isset($params['raw'])   ? $params['raw']   : false;
+    $raw = isset($params['raw']) ? $params['raw'] : false;
+    
+    if ($value == 'polyfill') {
+        $features = isset($params['features']) ? $params['features'] : 'forms';
+    } else {
+        $features = null;
+    }
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pageaddvar', 'name')));
@@ -73,5 +81,5 @@ function smarty_function_pageaddvar($params, Zikula_View $view)
         $value = explode(',', $value);
     }
 
-    PageUtil::addVar($name, $value);
+    PageUtil::addVar($name, $value, $features);
 }

@@ -106,7 +106,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             } elseif (isset($reginfo['uname']) && !empty($reginfo['uname']) && ($reginfo['pass'] == $reginfo['uname'])) {
                 $passwordErrors['pass'] = $this->__('The password cannot be the same as the user name. Please choose a different password.');
             } elseif (!isset($passwordAgain) || empty($passwordAgain) || ($reginfo['pass'] !== $passwordAgain)) {
-                $passwordErrors['passagain'] = $this->__('You did not enter the same password in each password field. Please enter the same password once in each password field (this is required for verification).');
+                $passwordErrors['passagain'] = $this->__('The value entered does not match the password entered in the &quot;Password&quot; field.');
             }
 
             if (!$this->currentUserIsAdminOrSubAdmin()) {
@@ -207,7 +207,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 }
 
                 if ($emailUsageCount) {
-                    $emailErrors['email'] = $this->__('The e-mail address you entered has already been registered.');
+                    $emailErrors['email'] = $this->__('The email address you entered has already been registered.');
                     $tempValid = false;
                 }
             }
@@ -216,7 +216,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         if (!isset($emailAgain) || empty($emailAgain)) {
             $emailErrors['emailagain'] = $this->__('You did not repeat the e-mail address for verification. Please enter the same e-mail address once in each field.');
         } elseif (isset($reginfo['email']) && !empty($reginfo['email']) && ($reginfo['email'] !== $emailAgain)) {
-            $emailErrors['emailagain'] = $this->__('You did not enter the same e-mail address in each e-mail address field. Please enter the same e-mail address once in each field (this is required for verification).');
+            $emailErrors['emailagain'] = $this->__('The value entered does not match the email address entered in the &quot;Email Address&quot; field.');
         }
 
         return $emailErrors;

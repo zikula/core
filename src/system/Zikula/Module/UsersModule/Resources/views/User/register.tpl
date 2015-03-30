@@ -1,12 +1,12 @@
 {strip}
     {gt text='New account registration' assign='templatetitle'}
-    {pageaddvar name="javascript" value="system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.Common.UserValidation.js"}
+    {pageaddvar name='javascript' value='polyfill'}
+    {pageaddvar name='javascript' value='@ZikulaUsersModule/Resources/public/js/Zikula.Users.Common.UserValidation.js'}
     {if $modvars.ZikulaUsersModule.use_password_strength_meter && ($authentication_method.modname eq 'ZikulaUsersModule')}
-        {pageaddvar name='javascript' value='jquery'}
-        {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
+        {pageaddvar name='javascript' value='@ZikulaUsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
-                ( function($) {
+                (function($) {
                     $(document).ready(function() {
                         ZikulaUsersPassMeter.init('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter', {
                             username: '{{$formData->getFieldId('uname')}}',
@@ -48,7 +48,6 @@
 </div>
 
 <p class="alert alert-warning">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
-
 <form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_register'}" method="post">
     <fieldset>
         <legend>{gt text="Choose a user name"}</legend>
@@ -83,7 +82,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="required"></span></label>
             {assign var='fieldName' value='pass'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password" class="form-control" size="25" maxlength="60" required="required" data-match="#users_register_passagain" data-match-error-message="The value entered does not match the password entered in the password field." data-min="{$modvars.ZikulaUsersModule.minpass}" data-min-error-message="{gt text='Passwords must be at least %s characters in length.' tag1=$modvars.ZikulaUsersModule.minpass}"/>
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password" class="form-control" size="25" maxlength="60" required="required" data-match="#users_register_passagain" data-match-error-message="{gt text='The value entered does not match the password entered in the &quot;Password&quot; field.'}" minlength="{$modvars.ZikulaUsersModule.minpass}" />
                 <em class="help-block sub">{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.ZikulaUsersModule.minpass}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 <div id="{$formData->getFormId()}_passmeter"></div>
@@ -126,7 +125,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="required"></span></label>
             {assign var='fieldName' value='email'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control to-lower-case" type="email" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" data-match="#users_register_emailagain" data-match-error-message="{gt text='The value entered does not match the e-mail address entered in the e-mail address field.'}" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control to-lower-case" type="email" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" data-match="#users_register_emailagain" data-match-error-message="{gt text='The value entered does not match the email address entered in the &quot;Email Address&quot; field.'}" />
                 {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
                 <em class="help-block sub">{gt text='You will use your e-mail address to identify yourself when you log in.'}</em>
                 {/if}
@@ -138,7 +137,7 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your E-mail address for verification"}<span class="required"></span></label>
             {assign var='fieldName' value='emailagain'}
             <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control  to-lower-case" type="email" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" />
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control to-lower-case" type="email" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required" />
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
