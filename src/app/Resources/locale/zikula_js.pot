@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-20 09:51-0500\n"
+"POT-Creation-Date: 2015-03-30 11:30-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,11 +112,11 @@ msgstr ""
 msgid "Image #{index} of #{total}"
 msgstr ""
 
-#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:231
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:240
 msgid "Please choose what to do with this category's sub-categories."
 msgstr ""
 
-#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:10
+#: system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js:13
 #: system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js:32
 msgid "Edit"
 msgstr ""
