@@ -3,51 +3,18 @@
  */
 (function($) {
     function displayErrors(data) {
-        var errorMessages = $('#users_register_errormsgs');
-        
-        /**
-         * Hide error containers, in case this is a subsequent request.
-         */
-        errorMessages.addClass('hide');
-        $('#users_register').find('.validation-error').addClass('hide');
-
-        /**
-         * Display error messages.
-         */
-        if (data.errorMessages) {
-            errorMessages.html(data.errorMessages.join('<br />')).removeClass('hide').fadeIn('fast');
-        }
-
         if (data.errorFields) {
             $.each(data.errorFields, function(key, value) {
                 $('#users_register_'+key).callProp('setCustomValidity', [value]);
                 
                 $('#users_register_'+key).on('change keyup paste', function() {
-                    $('#users_register_errormsgs').fadeOut('fast', function() {
-                        $(this).addClass('hide');
-                    });
-
                     $(this).callProp('setCustomValidity', ['']);   
                 });
             });
-            
-            /**
-             * Simulate the form submission, so that the first invalid message appears.
-             */
-            $('#users_register input[type="submit"]').trigger('click', function(event) {
-                event.preventDefault();
-            });
-            
-            /**
-             * Focus on the first invalid field.
-             */
-            $('#users_register').find(':invalid:first').focus();
         }
     }
 
-    function validateEntries(event) {
-        event.preventDefault();
-
+    function validateEntries() {
         $('#users_register .help-block').fadeOut('fast', function() {
             $.ajax({
                 data: $('#users_register').serializeArray(),
@@ -56,8 +23,6 @@
             }).always(function(response, status, xhr) {                
                 if ((response) && (response.data) && (response.data.errorFieldsCount > 0)) {
                     displayErrors(response.data);
-                } else {
-                    $('#users_register').off('submit').submit();
                 }
             });
         });
@@ -92,7 +57,7 @@
             e2.addEventListener('keyup', checkMatch, false);
             e2.addEventListener('paste', checkMatch, false);
         });
-
-        $('#users_register').on('submit', validateEntries);
+        
+        $('#users_register_uname, #users_register_email').on('blur', validateEntries);
     });
 })(jQuery);
