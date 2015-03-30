@@ -61,7 +61,7 @@ function smarty_modifier_profilelinkbyuid($uid, $class = '', $image = '', $maxLe
         }
 
         if (!empty($image)) {
-            $userDisplayName = $DataUtil::formatForDisplay($userDisplayName);
+            $userDisplayName = DataUtil::formatForDisplay($userDisplayName);
             if (is_array($image)) {
                 // if it is an array we assume that it is an pnimg array
                 $show = '<img src="' . DataUtil::formatForDisplay($image['src']) . '" alt="' . DataUtil::formatForDisplay($image['alt']) . '" width="' . DataUtil::formatForDisplay($image['width']) . '" height="' . DataUtil::formatForDisplay($image['height']) . '" />';
