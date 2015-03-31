@@ -284,7 +284,6 @@ class AjaxInstallController extends AbstractController
     {
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
-        \System::setVar('language_i18n', $params['locale']);
         // Set the System Identifier as a unique string.
         \System::setVar('system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
         // add admin email as site email
