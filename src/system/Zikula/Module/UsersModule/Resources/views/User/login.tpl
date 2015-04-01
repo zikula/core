@@ -1,4 +1,5 @@
 {* @todo - handle re-display of display hooks when AJAX changes log-in method. For now, disable AJAX switching of login method and use URL fallback. *}
+{pageaddvar name='javascript' value='polyfill'}
 {ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.Login.js'}
 {ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.Util.CapsLock.js'}
 {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}

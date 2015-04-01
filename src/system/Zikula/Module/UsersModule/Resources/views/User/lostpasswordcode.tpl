@@ -1,3 +1,5 @@
+{pageaddvar name='javascript' value='polyfill'}
+
 {gt text='Enter confirmation code' assign='templatetitle'}
 
 {include file='User/menu.tpl'}
@@ -20,7 +22,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="users_email">{gt text='E-mail address'}</label>
                 <div class="col-lg-9">
-                    <input id="users_email" type="text" class="form-control" name="email" size="40" maxlength="60" value="{$email}" />
+                    <input id="users_email" type="email" class="form-control" name="email" size="40" maxlength="60" value="{$email}" />
                 </div>
             </div>
             {/if}
@@ -29,7 +31,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="users_code">{gt text='Confirmation code'}</label>
                 <div class="col-lg-9">
-                    <input id="users_code" type="text" class="form-control" name="code" size="5" value="{$code}" />
+                    <input id="users_code" type="text" class="form-control" name="code" size="5" value="{$code}" required="required" />
                 </div>
             </div>
         </fieldset>
