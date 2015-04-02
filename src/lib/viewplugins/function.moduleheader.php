@@ -62,7 +62,7 @@ function smarty_function_moduleheader($params, $view)
     $renderer = Zikula_View::getInstance('Theme');
     $renderer->setCaching(Zikula_View::CACHE_DISABLED);
 
-    $renderer->assign('themename', UserUtil::getTheme());
+    $renderer->assign('userthemename', UserUtil::getTheme());
     $renderer->assign('modname', $params['modname']);
     $renderer->assign('type', $params['type']);
     $renderer->assign('title', $params['title']);
