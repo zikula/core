@@ -55,7 +55,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     {
         $patterns = array();
         foreach ($route->getOption('i18n_locales') ?: $this->locales as $locale) {
-            // Check if translation exists in the translation catalogue to avoid errors being logged by 
+            // Check if translation exists in the translation catalogue to avoid errors being logged by
             // the new LoggingTranslator of Symfony 2.6. However, the LoggingTranslator did not implement
             // the interface until Symfony 2.6.5, so an extra check is needed.
             if ($this->translator instanceof TranslatorBagInterface || $this->translator instanceof LoggingTranslator) {
@@ -74,15 +74,21 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
                 }
             }
 
+            ///////////////////////////////////////
+            // Begin customizations
+
             // prefix with zikula module url if requested
             if (self::STRATEGY_PREFIX === $this->strategy
-                || (self::STRATEGY_PREFIX_EXCEPT_DEFAULT === $this->strategy && $this->defaultLocale !== $locale)) {
+                || (self::STRATEGY_PREFIX_EXCEPT_DEFAULT === $this->strategy)) {
                 $zkNoBundlePrefix = $route->getOption('zkNoBundlePrefix');
                 if (!isset($zkNoBundlePrefix) || !$zkNoBundlePrefix) {
                     $modinfo = \ModUtil::getInfoFromName($route->getDefault('_zkModule'));
                     $i18nPattern = "/" . $modinfo["url"] . $i18nPattern;
                 }
             }
+
+            // End customizations
+            ///////////////////////////////////////
 
             // prefix with locale if requested
             if (self::STRATEGY_PREFIX === $this->strategy
