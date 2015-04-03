@@ -267,8 +267,8 @@ class ModUtil
         }
 
         $em = ServiceUtil::get('doctrine.entitymanager');
-        if (self::hasVar($modname, $name)) {
-            $entities = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findBy(array('modname' => $modname, 'name' => $name));
+        $entities = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findBy(array('modname' => $modname, 'name' => $name));
+        if (count($entities) > 0) {
             foreach($entities as $entity) {
                 // possible duplicates exist. update all (refs #2385)
                 $entity->setValue($value);
