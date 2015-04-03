@@ -27,24 +27,24 @@
                 <legend>{gt text='Permissions'}</legend>
                 <p class="help-block alert alert-info">{gt text='You can restrict the access to certain settings higher than the default ("Edit") permissions level. Below is a list of these options.'}</p>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="menutree_titlesperms">{gt text='Block titles'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="menutree_titlesperms">{gt text='Block titles'}</label>
+                    <div class="col-sm-9">
                         <select id="menutree_titlesperms" name="menutree[titlesperms]" class="form-control">
                             {html_options options=$permlevels selected=$menutree_titlesperms}
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="menutree_displayperms">{gt text='Block display settings'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="menutree_displayperms">{gt text='Block display settings'}</label>
+                    <div class="col-sm-9">
                         <select id="menutree_displayperms" name="menutree[displayperms]" class="form-control">
                             {html_options options=$permlevels selected=$menutree_displayperms}
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="menutree_settingsperms">{gt text='Block editing settings'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="menutree_settingsperms">{gt text='Block editing settings'}</label>
+                    <div class="col-sm-9">
                         <select id="menutree_settingsperms" name="menutree[settingsperms]" class="form-control">
                             {html_options options=$permlevels selected=$menutree_settingsperms}
                         </select>
@@ -59,8 +59,8 @@
                 <p class="help-block alert alert-info">{gt text='You can specify a different a block title for each language. If left blank, the default block title will be displayed.'}</p>
                 {foreach key='langCode' item='langName' from=$languages}
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="menutree_titles_{$langCode}">{$langName}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="menutree_titles_{$langCode}">{$langName}</label>
+                    <div class="col-sm-9">
                         <input id="menutree_titles_{$langCode}" type="text" name="menutree[titles][{$langCode}]" value="{$menutree_titles.$langCode|safehtml}" size="40" maxlength="255" class="form-control" />
                     </div>
                 </div>
@@ -75,16 +75,16 @@
                     <p class="help-block alert alert-info">{gt text='<strong>Note</strong>: some templates and/or stylesheets are found only in certain themes. These templates and stylesheets have been included in the "Only in some themes" group. Choosing a template or a stylesheet from this group you must take into account the fact that it might not be available in certain theme - in such situation default template and style ("Block/Menutree/default.tpl") is used.'}</p>
                 {/if}
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="menutree_tpl">{gt text='Template'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="menutree_tpl">{gt text='Template'}</label>
+                    <div class="col-sm-9">
                         <select id="menutree_tpl" name="menutree[tpl]" class="form-control">
                             {html_options options=$tpls selected=$menutree_tpl}
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="menutree_stylesheet">{gt text='Stylesheet'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="menutree_stylesheet">{gt text='Stylesheet'}</label>
+                    <div class="col-sm-9">
                         <select id="menutree_stylesheet" name="menutree[stylesheet]" class="form-control">
                             <option value="null">{gt text='Choose stylesheet'}</option>
                             {html_options options=$styles selected=$menutree_stylesheet}
@@ -93,8 +93,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="menutree_editlinks">{gt text='Show editing links'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="menutree_editlinks">{gt text='Show editing links'}</label>
+                    <div class="col-sm-9">
                         <input id="menutree_editlinks" type="checkbox" name="menutree[editlinks]" class="form-control"{if $menutree_editlinks} checked="checked"{/if} />
                         <em class="sub">{gt text='Display the links: "Add current URL" and "Edit this block".'}</em>
                     </div>
@@ -106,8 +106,8 @@
             <fieldset>
                 <legend>{gt text='Block editing settings'}</legend>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="menutree_stripbaseurl">{gt text='Strip base url from links'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="menutree_stripbaseurl">{gt text='Strip base url from links'}</label>
+                    <div class="col-sm-9">
                         <span>
                             <input id="menutree_stripbaseurl" type="checkbox" name="menutree[stripbaseurl]" class="form-control"{if $menutree_stripbaseurl} checked="checked"{/if} />
                             <em class="sub">{gt text='Base URL which will be removed: %s.' tag1=$baseurl}</em>
@@ -120,8 +120,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="menutree_maxdepth">{gt text='Maximum depth of tree'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="menutree_maxdepth">{gt text='Maximum depth of tree'}</label>
+                    <div class="col-sm-9">
                         <span>
                             <input id="menutree_maxdepth" type="text" name="menutree[maxdepth]" value="{$menutree_maxdepth|safehtml}" size="2" maxlength="2" class="form-control" />
                             <em class="sub">{gt text='Zero means no limit.'}</em>
@@ -129,8 +129,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="menutree_linkclass">{gt text='Construct class list for links'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="menutree_linkclass">{gt text='Construct class list for links'}</label>
+                    <div class="col-sm-9">
                         <input id="menutree_linkclass" type="checkbox" name="menutree[linkclass]" class="form-control"{if $menutree_linkclass} checked="checked"{/if} />
                         <p class="help-block alert alert-info">{gt text='You can assign a CSS class for each link in the menu. This option allows you to prepare a list of classes, from which you will be able to select for application.'}</p>
                     </div>

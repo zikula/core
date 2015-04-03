@@ -25,9 +25,9 @@
             <legend>{gt text='Account information'}</legend>
             <div class="form-group">
                 {assign var='fieldName' value='uname'}
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User name'}<span class="required"></span></label>
+                <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User name'}<span class="required"></span></label>
                 {assign var='fieldName' value='uname'}
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)}form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
                     <em class="help-block">{gt text='User names can contain letters, numbers, underscores, periods, or dashes.'}</em>
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
@@ -35,27 +35,27 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='email'}
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='E-mail address'}<span class="required"></span></label>
+                <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='E-mail address'}<span class="required"></span></label>
                 {assign var='fieldName' value='email'}
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="email" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='emailagain'}
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat e-mail address for verification'}<span class="required"></span></label>
+                <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat e-mail address for verification'}<span class="required"></span></label>
                 {assign var='fieldName' value='emailagain'}
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)}form-error{/if}" type="email" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='theme'}
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Theme'}</label>
+                <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Theme'}</label>
                 {assign var='fieldName' value='theme'}
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <select id="{$formData->getFieldId($fieldName)}" class="form-control" name="{$fieldName}">
                         <option value="">{gt text="Site's default theme"}</option>
                         {html_select_themes selected=$formData->getFieldData($fieldName) state=ThemeUtil::STATE_ACTIVE filter=ThemeUtil::FILTER_USER}
@@ -73,7 +73,7 @@
         {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=$formData->getFieldData('uid')}
 
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                     {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' class='btn btn-success' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
                     <a class="btn btn-default" href="{if $restoreview == 'view'}{route name='zikulausersmodule_admin_viewregistrations' restoreview=true}{else}{route name='zikulausersmodule_admin_displayregistration' uid=$formData->getFieldData('uid')}{/if}">{gt text='Cancel'}</a>
             </div>

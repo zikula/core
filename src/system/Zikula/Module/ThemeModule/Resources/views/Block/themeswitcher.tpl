@@ -1,9 +1,9 @@
 {if $format eq 1}
-{pageaddvar name="javascript" value="system/Zikula/Module/ThemeModule/Resources/public/js/themeswitcher.js"}
+{pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/themeswitcher.js'}
 <img src="{$currentthemepic}" id="preview" alt="{$currenttheme.displayname}" title="{$currenttheme.description|default:$currenttheme.displayname}" />
 <form id="themeform" action="" method="get" enctype="application/x-www-form-urlencoded">
     <div>
-        {foreach from=$themes item=theme}
+        {foreach from=$themes item='theme'}
         {/foreach}
         <select id="newtheme" name="newtheme">
             {foreach from=$themes item=theme}
@@ -15,7 +15,7 @@
 </form>
 {else}
 <ul>
-    {foreach from=$themes item=theme}
+    {foreach from=$themes item='theme'}
     <li><a href="?newtheme={$theme.name}">{$theme.displayname}</a></li>
     {/foreach}
 </ul>

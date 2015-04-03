@@ -59,20 +59,20 @@
                 {/if}
             </legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="theme_newvariablename">{gt text="Name"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="theme_newvariablename">{gt text="Name"}</label>
+                <div class="col-sm-9">
                     <input id="theme_newvariablename" type="text" class="form-control" name="newvariablename" size="30" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="theme_newvariablevalue">{gt text="Value"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="theme_newvariablevalue">{gt text="Value"}</label>
+                <div class="col-sm-9">
                     <input id="theme_newvariablevalue" type="text" class="form-control" name="newvariablevalue" size="30" />
                 </div>
             </div>
         </fieldset>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
                 <a class="btn btn-danger" href="{route name='zikulathememodule_admin_pageconfigurations' themename=$themename}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>

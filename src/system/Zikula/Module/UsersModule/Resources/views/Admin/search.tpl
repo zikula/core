@@ -21,20 +21,20 @@
         <fieldset>
             <legend>{gt text="Find users"}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="users_uname">{gt text="User name"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="users_uname">{gt text="User name"}</label>
+                <div class="col-sm-9">
                     <input id="users_uname" class="form-control" type="text" name="uname" size="40" maxlength="40" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="users_email">{gt text="E-mail address"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="users_email">{gt text="E-mail address"}</label>
+                <div class="col-sm-9">
                     <input id="users_email" class="form-control" type="text" name="email" size="40" maxlength="255" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="users_ugroup">{gt text="Group membership"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="users_ugroup">{gt text="Group membership"}</label>
+                <div class="col-sm-9">
                     <select id="users_ugroup" class="form-control" name="ugroup">
                         <option value="0" selected="selected">{gt text="Any group"}</option>
                         {section name=group loop=$groups}
@@ -44,14 +44,14 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="users_regdateafter">{gt text="Registration date after (yyyy-mm-dd)"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="users_regdateafter">{gt text="Registration date after (yyyy-mm-dd)"}</label>
+                <div class="col-sm-9">
                     <input id="users_regdateafter" class="form-control" type="text" name="regdateafter" size="40" maxlength="10" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="users_regdatebefore">{gt text="Registration date before (yyyy-mm-dd)"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="users_regdatebefore">{gt text="Registration date before (yyyy-mm-dd)"}</label>
+                <div class="col-sm-9">
                     <input id="users_regdatebefore" class="form-control" type="text" name="regdatebefore" size="40" maxlength="10" />
                 </div>
             </div>
@@ -68,7 +68,7 @@
         {/foreach}
 
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-success" title="{gt text="Search"}">
                     {gt text='Search'}
                 </button>

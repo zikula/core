@@ -109,33 +109,33 @@
     <fieldset>
         <legend>{gt text='User permission check'}</legend>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="test_user">{gt text='User name'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="test_user">{gt text='User name'}</label>
+            <div class="col-sm-9">
                 <input class="form-control" type="text" size="40" maxlength="50" name="test_user" id="test_user" value="{$testuser|safetext}" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="test_component">{gt text='Component to check'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="test_component">{gt text='Component to check'}</label>
+            <div class="col-sm-9">
                 <input class="form-control" type="text" size="40" maxlength="50" name="test_component" id="test_component" value="{$testcomponent|safetext}" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="test_instance">{gt text='Instance to check'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="test_instance">{gt text='Instance to check'}</label>
+            <div class="col-sm-9">
                 <input class="form-control" type="text" size="40" maxlength="50" name="test_instance" id="test_instance" value="{$testinstance|safetext}" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="test_level">{gt text='Permission level'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="test_level">{gt text='Permission level'}</label>
+            <div class="col-sm-9">
                 <select name="test_level" id="test_level" class="form-control" >
                     {html_options options=$permissionlevels selected=$testlevel}
                 </select>
             </div>
         </div>
         <div class="form-group">
-            <div class="help-block col-lg-offset-3 col-lg-9" id="permission-test-info" data-testing="{gt text='Testing permission...'}">
+            <div class="help-block col-sm-offset-3 col-sm-9" id="permission-test-info" data-testing="{gt text='Testing permission...'}">
                 {if $testresult ne ''}
                     {gt text='Permission check result:'} {$testresult}
                 {else}
@@ -144,7 +144,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-default" id="test-permission" title="{gt text='Check permission'}">{gt text='Check permission'}</button>
                 <button class="btn btn-danger" type="reset" title="{gt text='Reset'}">{gt text='Reset'}</button>
             </div>

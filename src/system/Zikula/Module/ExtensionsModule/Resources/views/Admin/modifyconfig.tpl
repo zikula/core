@@ -12,14 +12,14 @@
     <fieldset>
         <legend>{gt text='General settings'}</legend>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="modules_itemsperpage">{gt text='Items per page'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="modules_itemsperpage">{gt text='Items per page'}</label>
+            <div class="col-sm-9">
                 <input id="modules_itemsperpage" type="text" class="form-control" name="itemsperpage" size="3" value="{$itemsperpage|safetext}" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label">{gt text='Module defaults'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label">{gt text='Module defaults'}</label>
+            <div class="col-sm-9">
                 <div class="form-control-static">
                     <a id="restoreDefaults" href="{route name='zikulaextensionsmodule_admin_view' defaults=true csrftoken=$csrftoken}">{gt text='Hard module regenerate to reset displayname, url and description to defaults'}</a>
                 </div>
@@ -28,7 +28,7 @@
     </fieldset>
 
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
+        <div class="col-sm-offset-3 col-sm-9">
             <button class="btn btn-success" title="{gt text='Save'}">{gt text='Save'}</button>
             <a class="btn btn-danger" href="{route name='zikulaextensionsmodule_admin_view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>
@@ -39,7 +39,7 @@
 <script type="text/javascript">
     (function ($) {
         $(document).ready(function() {
-            $('#restoreDefaults').click( function(event) {
+            $('#restoreDefaults').click(function(event) {
                 event.preventDefault();
                 if (confirm(Zikula.__('Do you really want to reset displayname, url and description to defaults? This may break your existing indexed URLs.')) == false) {
                     return;

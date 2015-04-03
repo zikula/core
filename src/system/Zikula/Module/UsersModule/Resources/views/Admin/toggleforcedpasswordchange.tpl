@@ -24,7 +24,7 @@
         <input type="hidden" name="userid" value="{$user_obj.uid|safetext}" />
         <input type="hidden" name="user_must_change_password" value="{if $user_must_change_password}0{else}1{/if}" />
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 {if $user_must_change_password}
                     <button class="btn btn-danger" title="{gt text='Yes, cancel the change of password'}">
                         {gt text='Yes, cancel the change of password'}

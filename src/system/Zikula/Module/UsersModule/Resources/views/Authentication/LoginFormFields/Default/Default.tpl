@@ -23,7 +23,7 @@
 {/if}
 
 <div class="form-group">
-    <label class="col-lg-3 control-label required" for="users_login_login_id">{strip}
+    <label class="col-sm-3 control-label required" for="users_login_login_id">{strip}
         {if $authentication_method eq 'email'}
             {gt text='Email address'}
         {elseif $authentication_method eq 'uname'}
@@ -32,7 +32,7 @@
             {gt text='User name or e-mail address'}
         {/if}
     {/strip}</label>
-    <div class="col-lg-9">
+    <div class="col-sm-9">
         <div class="input-group">
             {if $authentication_method eq 'email'}
                 <i class="fa fa-fw fa-envelope input-group-addon"></i>
@@ -45,8 +45,8 @@
 </div>
 
 <div class="form-group">
-    <label class="col-lg-3 control-label required" for="users_login_pass">{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}</label>
-    <div class="col-lg-9">
+    <label class="col-sm-3 control-label required" for="users_login_pass">{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}</label>
+    <div class="col-sm-9">
         <div class="input-group">
             <i class="fa fa-fw fa-asterisk input-group-addon"></i>
             <input id="users_login_pass" class="form-control" type="password" name="authentication_info[pass]" size="25" maxlength="60" required="required" />
@@ -57,8 +57,8 @@
 
 {if isset($change_password) && $change_password}
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="users_newpass">{gt text="New password"}</label>
-    <div class="col-lg-9">
+    <label class="col-sm-3 control-label" for="users_newpass">{gt text="New password"}</label>
+    <div class="col-sm-9">
         <input type="password" class="form-control" id="users_login_newpass" name="authentication_info[new_pass]" size="20" maxlength="20" value="" />
     </div>
 </div>
@@ -68,15 +68,15 @@
 {/if}
 
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="users_login_confirm_new_pass">{gt text="New password (repeat for verification)"}</label>
-    <div class="col-lg-9">
+    <label class="col-sm-3 control-label" for="users_login_confirm_new_pass">{gt text="New password (repeat for verification)"}</label>
+    <div class="col-sm-9">
         <input id="users_login_confirm_new_pass" class="form-control"  type="password" name="authentication_info[confirm_new_pass]" size="20" maxlength="20" />
     </div>
 </div>
 
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="users_login_pass_reminder">{gt text="New password reminder"}</label>
-    <div class="col-lg-9">
+    <label class="col-sm-3 control-label" for="users_login_pass_reminder">{gt text="New password reminder"}</label>
+    <div class="col-sm-9">
         <input type="text" class="form-control" id="users_login_pass_reminder" name="authentication_info[pass_reminder]" value="" size="25" maxlength="128" />
         <div class="sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
         <div class="help-block alert alert-warning">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>

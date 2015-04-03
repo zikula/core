@@ -11,7 +11,7 @@
         <legend>{gt text='Confirmation prompt'}</legend>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 {button class='btn btn-success' __alt='Rebuild paths' __title='Rebuild paths' __text='Rebuild paths'}
                 <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_admin_index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>

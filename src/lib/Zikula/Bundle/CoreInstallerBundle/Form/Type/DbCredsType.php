@@ -29,37 +29,37 @@ class DbCredsType extends AbstractType
         $builder
             ->add('database_driver', 'choice', array(
                 'label' => __('Database type'),
-                'label_attr' => array('class' => 'col-lg-5'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'choices' => $this->getDbTypes(),
                 'data' => 'mysql'))
             ->add('dbtabletype', 'choice', array(
                 'label' => __('Storage Engine'),
-                'label_attr' => array('class' => 'col-lg-5'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'choices' => array(
                     'innodb' => __('InnoDB'),
                     'myisam' => __('MyISAM')),
                 'data' => 'innodb'))
             ->add('database_host', 'text', array(
                 'label' => __('Host'),
-                'label_attr' => array('class' => 'col-lg-5'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'data' => __('localhost'),
                 'constraints' => array(
                     new NotBlank(),
                 )))
             ->add('database_user', 'text', array(
                 'label' => __('Database Username'),
-                'label_attr' => array('class' => 'col-lg-5'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'constraints' => array(
                     new NotBlank(),
                 )))
             ->add('database_password', 'password', array(
                 'label' => __('Database Password'),
-                'label_attr' => array('class' => 'col-lg-5'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'required' => false
             ))
             ->add('database_name', 'text', array(
                 'label' => __('Database Name'),
-                'label_attr' => array('class' => 'col-lg-5'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'constraints' => array(
                     new NotBlank(),
                     new Length(array('max' => 64)),

@@ -15,7 +15,7 @@
         <input type="hidden" name="bid" value="{$block.bid|safetext}" />
         
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-success" title="{gt text='Delete'}">{gt text='Delete'}</button>
                 <a class="btn btn-danger" href="{route name='zikulablocksmodule_admin_view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>

@@ -55,9 +55,9 @@
         <input id="{$formData->getFieldId($fieldName)}" type="hidden" name="{$fieldName}" value="{$formData->getFieldData($fieldName)|safetext}" />
         <div class="form-group">
             {assign var='fieldName' value='uname'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User name'}<span class="required"></span></label>
+            <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User name'}<span class="required"></span></label>
             {assign var='fieldName' value='uname'}
-            <div class="col-lg-9">
+            <div class="col-sm-9">
                 <input id="{$formData->getFieldId($fieldName)}"  class=" to-lower-case form-control{if isset($errorFields.$fieldName)}form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" required="required"/>
                 <em class="help-block sub">{gt text='User names can contain letters, numbers, underscores, periods, or dashes.'}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
@@ -65,27 +65,27 @@
         </div>
         <div class="form-group">
             {assign var='fieldName' value='email'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='E-mail address'}<span class="required"></span></label>
+            <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='E-mail address'}<span class="required"></span></label>
             {assign var='fieldName' value='email'}
-            <div class="col-lg-9">
+            <div class="col-sm-9">
                 <input id="{$formData->getFieldId($fieldName)}" class="form-control to-lower-case{if isset($errorFields.$fieldName)} form-error{/if}" type="email" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" data-match="#users_modify_emailagain" data-match-error-message="{gt text='The value entered does not match the e-mail address entered in the e-mail address field.'}" required="required"/>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
         <div class="form-group">
             {assign var='fieldName' value='emailagain'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat e-mail address for verification'}<span class="required"></span></label>
+            <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat e-mail address for verification'}<span class="required"></span></label>
             {assign var='fieldName' value='emailagain'}
-            <div class="col-lg-9">
+            <div class="col-sm-9">
                 <input id="{$formData->getFieldId($fieldName)}" class="form-control to-lower-case{if isset($errorFields.$fieldName)} form-error{/if}" type="email" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" required="required"/>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
         <div class="form-group">
             {assign var='fieldName' value='activated'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User status'}</label>
+            <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User status'}</label>
             {assign var='fieldName' value='activated'}
-            <div class="col-lg-9">
+            <div class="col-sm-9">
                 {if $editingSelf}
                 <input type="hidden" name="{$fieldName}" value="{$formData->getFieldData($fieldName)}" />
                 {/if}
@@ -98,11 +98,11 @@
         </div>
         <div class="form-group">
             {assign var='fieldName' value='theme'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">
+            <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">
                 {gt text='Theme'}
             </label>
             {assign var='fieldName' value='theme'}
-            <div class="col-lg-9">
+            <div class="col-sm-9">
                 <select id="{$formData->getFieldId($fieldName)}" class="form-control" name="{$fieldName}">
                     <option value="">{gt text="Site's default theme"}</option>
                     {html_select_themes selected=$formData->getFieldData($fieldName) state=ThemeUtil::STATE_ACTIVE filter=ThemeUtil::FILTER_USER}
@@ -133,7 +133,7 @@
         </p>
 
         <div id="{$formData->getFieldId($fieldName)}_wrap" class="form-group">
-            <label class="col-lg-3 control-label">
+            <label class="col-sm-3 control-label">
                 {if $usersAuth}
                 {gt text="Change the user's password?"}
                 {else}
@@ -143,7 +143,7 @@
 
 
             {assign var='fieldName' value='setpass'}
-            <div id="{$formData->getFieldId($fieldName)}_wrap" class="col-lg-9">
+            <div id="{$formData->getFieldId($fieldName)}_wrap" class="col-sm-9">
                 <div id="{$formData->getFieldId($fieldName)}">
                     <input id="{$formData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1"{if $formData->getFieldData($fieldName)} checked="checked"{/if} />
                     <label for="{$formData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
@@ -156,7 +156,7 @@
         <div id="{$formData->getFieldId('pass')}_wrap">
             {assign var='fieldName' value='pass'}
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">
+                <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">
                     {if $usersAuth}
                     {gt text='New password'}
                     {else}
@@ -164,7 +164,7 @@
                     {/if}
                     <span class="required"></span>
                 </label>
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" data-match="#users_modify_passagain" data-match-error-message="The value entered does not match the password entered in the password field." data-min="{$modvars.ZikulaUsersModule.minpass}" data-min-error-message="{gt text='Passwords must be at least %s characters in length.' tag1=$modvars.ZikulaUsersModule.minpass}"/>
                     <em class="sub help-block">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.ZikulaUsersModule.minpass}</em>
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">
@@ -175,9 +175,9 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='passagain'}
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat password for verification'}<span class="required"></span></label>
+                <label class="col-sm-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat password for verification'}<span class="required"></span></label>
                 {assign var='fieldName' value='passagain'}
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">
                         {if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}
@@ -233,7 +233,7 @@
     {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=$formData->getFieldData('uid')}
 
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
+        <div class="col-sm-offset-3 col-sm-9">
             <div id="{$formData->getFormId()|cat:'_ajax_indicator'}" class="btn btn-warning hide"><i class="fa fa-spinner fa-spin"></i>&nbsp;{gt text="Checking"}</div>
             <button id="{$formData->getFormId()|cat:'_submit'}" class="btn btn-success" type="submit" title="{gt text='Save'}">
                 {gt text='Save'}
@@ -249,7 +249,7 @@
 </h3>
 
 <div class="form-group">
-    <div class="col-lg-offset-3 col-lg-9">
+    <div class="col-sm-offset-3 col-sm-9">
         {if !$editingSelf}
         <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_deleteusers' userid=$formData->getFieldData('uid')}">{gt text='Delete'}</a>
         {/if}

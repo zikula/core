@@ -56,7 +56,7 @@
         {/if}
 
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
             {if !$fataldependency}
                 {button class='btn btn-success' __alt='Accept' __title='Accept' __text='Accept'}
             {/if}

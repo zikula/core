@@ -21,12 +21,12 @@
                     {if $modvars.ZConfig.profilemodule}
                     <th>{gt text="Internal name"}</th>
                     {/if}
-                    <th>{gt text="E-mail address"}</th>
+                    <th>{gt text="Email address"}</th>
                     <th class="text-right">{gt text="Actions"}</th>
                 </tr>
             </thead>
             <tbody>
-                {section name=item loop=$items}
+                {section name='item' loop=$items}
                 <tr>
                     {if $deleteUsers}
                     <td>{if ($items[item].uid != 1) && ($items[item].uid != 2)}<input type="checkbox" class="user-checkboxes" name="userid[]" value="{$items[item].uid}" />{/if}</td>
@@ -58,7 +58,7 @@
         {/if}
 
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
             {if $deleteUsers}
                 {button type='submit' class="btn btn-warning"  __alt="Delete selected users" __title="Delete selected users" __text="Delete selected users"}
             {/if}

@@ -43,7 +43,7 @@
         </fieldset>
 
         <div class="form-group">
-            <button class="btn btn-success col-lg-offset-3" title="{gt text='Continue registration'}">
+            <button class="btn btn-success col-sm-offset-3" title="{gt text='Continue registration'}">
                 <i class="fa fa-arrow-right"></i>
                 {gt text='Continue registration'}
             </button>

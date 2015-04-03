@@ -1,14 +1,14 @@
 <h4>{gt text='CSS styling'}</h4>
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="blocks_menu_stylesheet">{gt text='Style sheet' domain='zikula'}</label>
-    <div class="col-lg-9">
+    <label class="col-sm-3 control-label" for="blocks_menu_stylesheet">{gt text='Style sheet' domain='zikula'}</label>
+    <div class="col-sm-9">
         <input id="blocks_menu_stylesheet" class="form-control" type="text" name="stylesheet" size="20" value="{$stylesheet|safetext}" />
     </div>
 </div>
 <h4>{gt text='Visibility within block'}</h4>
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="blocks_menu_modules">{gt text='Modules manager' domain='zikula'}</label>
-    <div class="col-lg-9">
+    <label class="col-sm-3 control-label" for="blocks_menu_modules">{gt text='Modules manager' domain='zikula'}</label>
+    <div class="col-sm-9">
         <input id="blocks_menu_modules" type="checkbox" value="1" name="displaymodules"{if $displaymodules} checked="checked"{/if} />
     </div>
 </div>

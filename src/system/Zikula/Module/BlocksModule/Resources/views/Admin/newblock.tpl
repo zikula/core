@@ -10,20 +10,20 @@
         <fieldset>
             <legend>{gt text='New block'}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_title">{gt text='Title'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_title">{gt text='Title'}</label>
+                <div class="col-sm-9">
                     <input id="blocks_title" name="block[title]" value="{$block.title|default:''}" type="text" class="form-control" size="40" maxlength="255" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_description">{gt text='Description'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_description">{gt text='Description'}</label>
+                <div class="col-sm-9">
                     <input id="blocks_description" name="block[description]" value="{$block.description|default:''}" type="text" class="form-control" size="40" maxlength="255" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_blockid">{gt text='Block'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_blockid">{gt text='Block'}</label>
+                <div class="col-sm-9">
                     <select class="form-control" id="blocks_blockid" name="block[blockid]"{if $block.blockid eq 'error'} class="form-error"{/if}>
                         <option value="" label="{gt text='Choose one'}">{gt text='Choose one'}</option>
                         {html_options options=$blockids selected=$block.blockid|default:''}
@@ -31,8 +31,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_language">{gt text='Language'} </label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_language">{gt text='Language'} </label>
+                <div class="col-sm-9">
                     {html_select_locales id='blocks_language' class='form-control' name='block[language]' installed=true all=true selected=$block.language|default:''}
                 </div>
             </div>
@@ -40,8 +40,8 @@
         <fieldset>
             <legend>{gt text='Block placement filtering'}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_position">{gt text='Position(s)'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_position">{gt text='Position(s)'}</label>
+                <div class="col-sm-9">
                     <div>
                         {assign var='selectsize' value=$block_positions|@count}{if $selectsize gt 20}{assign var='selectsize' value=20}{/if}{if $selectsize lt 4}{assign var='selectsize' value=4}{/if}
                         <select class="form-control" id="blocks_position" name="block[positions][]" multiple="multiple" size="{$selectsize}">
@@ -55,8 +55,8 @@
             <fieldset>
                 <legend>{gt text='Collapsibility'}</legend>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="blocks_collapsable">{gt text='Collapsible'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="blocks_collapsable">{gt text='Collapsible'}</label>
+                    <div class="col-sm-9">
                         <div id="blocks_collapsable">
                             <label for="blocks_collapsable_yes">{gt text='Yes'}</label>
                             <input id="blocks_collapsable_yes" name="block[collapsable]" type="radio" value="1"{if $block.collapsable|default:0 eq 1} checked="checked"{/if} />
@@ -66,8 +66,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="blocks_defaultstate">{gt text='Default state'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="blocks_defaultstate">{gt text='Default state'}</label>
+                    <div class="col-sm-9">
                         <div id="blocks_defaultstate">
                             <label for="blocks_defaultstate_expanded">{gt text='Expanded'}</label>
                             <input id="blocks_defaultstate_expanded" name="block[defaultstate]" type="radio" value="1"{if $block.defaultstate|default:1 eq 1} checked="checked"{/if} />
@@ -80,7 +80,7 @@
         {/if}
 
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-success" title="{gt text='Save'}">{gt text='Save'}</button>
                 <a class="btn btn-danger" href="{route name='zikulablocksmodule_admin_view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>

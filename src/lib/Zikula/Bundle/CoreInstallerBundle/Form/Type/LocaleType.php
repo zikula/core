@@ -25,7 +25,7 @@ class LocaleType extends AbstractType
         $builder
             ->add('locale', 'choice', array(
                 'label' => __('Select your default language'),
-                'label_attr' => array('class' => 'col-lg-3'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'choices' => \ZLanguage::getInstalledLanguageNames(),
                 'data' => \ZLanguage::getLanguageCode()
             ));

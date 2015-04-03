@@ -15,8 +15,8 @@
     <fieldset>
         <input type="hidden" name="userid[{$key}]" value="{$user.uid|safetext}" />
         <div class="form-group">
-            <label class="col-lg-3 control-label">{gt text='User name'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label">{gt text='User name'}</label>
+            <div class="col-sm-9">
                 <div class="form-control-static">
                     <strong>{$user.uname|safetext}</strong>
                 </div>
@@ -30,7 +30,7 @@
     </fieldset>
     {/foreach}
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
+        <div class="col-sm-offset-3 col-sm-9">
             {gt text='Delete user account' plural='Delete user accounts' count=$users|@count assign='buttonText'}
             <button class="btn btn-success" title="{$buttonText}">
                 {$buttonText}

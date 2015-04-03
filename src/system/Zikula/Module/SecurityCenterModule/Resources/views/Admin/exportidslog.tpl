@@ -18,20 +18,20 @@
         <input type="hidden" name="confirmed" value="1" />
         <legend>{gt text='Export Options'}</legend>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="securitycenter_export_titles">{gt text='Export Title Row'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="securitycenter_export_titles">{gt text='Export Title Row'}</label>
+            <div class="col-sm-9">
                 <input id="securitycenter_export_titles" type="checkbox" name="exportTitles" value="1" checked="checked" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="securitycenter_export_file">{gt text='CSV filename'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="securitycenter_export_file">{gt text='CSV filename'}</label>
+            <div class="col-sm-9">
                 <input id="securitycenter_export_file" type="text" class="form-control" name="exportFile" size="30" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="securitycenter_export_delimiter">{gt text='CSV delimiter'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="securitycenter_export_delimiter">{gt text='CSV delimiter'}</label>
+            <div class="col-sm-9">
                 <select class="form-control" id="securitycenter_export_delimiter" name="delimiter">
                     <option value="1">{gt text='Comma'} (,)</option>
                     <option value="2">{gt text='Semicolon'} (;)</option>
@@ -42,7 +42,7 @@
         </div>
     </fieldset>
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
+        <div class="col-sm-offset-3 col-sm-9">
             <button class="btn btn-success" title="{gt text='Export'}">{gt text='Export'}</button>
             <a class="btn btn-default" href="{route name='zikulasecuritycentermodule_admin_viewidslog'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>

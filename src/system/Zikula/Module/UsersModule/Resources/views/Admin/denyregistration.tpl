@@ -18,8 +18,8 @@
         <fieldset>
             <legend>{gt text='Applicant notification'}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="users_usernotify">{gt text="Notify the applicant via e-mail?"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="users_usernotify">{gt text="Notify the applicant via e-mail?"}</label>
+                <div class="col-sm-9">
                 <div id="users_usernotify">
                     <input id="users_usernotifyyes" type="radio" name="usernotify" value="1" />
                     <label for="users_usernotifyyes">{gt text="Yes"}</label>
@@ -29,15 +29,15 @@
             </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="users_reason">{gt text="Reason"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="users_reason">{gt text="Reason"}</label>
+                <div class="col-sm-9">
                 <textarea id="users_reason" class="form-control" name="reason" cols="50" rows="6"></textarea>
                 <div class="help-block">{gt text='Note: The reason is sent in the user notification e-mail. All formatting, including extra spaces and blank lines are ignored.'}</div>
             </div>
         </div>
         </fieldset>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-danger" id='confirm' type='submit' title="{gt text='Delete registration'}">
                     {gt text='Delete registration'}
                 </button>

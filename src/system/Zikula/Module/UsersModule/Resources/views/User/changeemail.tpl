@@ -1,4 +1,4 @@
-{gt text='E-mail address manager' assign='templatetitle'}
+{gt text='Email address manager' assign='templatetitle'}
 
 {include file='User/menu.tpl'}
 <p class="alert alert-info">
@@ -7,23 +7,23 @@
 </p>
 <form id="changeemail" class="form-horizontal" role="form" action="{route name='zikulausersmodule_user_updateemail'}" method="post">
     <fieldset>
-        <legend>{gt text="Update e-mail address"}</legend>
+        <legend>{gt text="Update email address"}</legend>
         <input type="hidden" id="changeemailcsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="users_newemail">{gt text="New e-mail address"}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="users_newemail">{gt text="New e-mail address"}</label>
+            <div class="col-sm-9">
                 <input id="users_newemail" class="form-control" type="text" name="newemail" value="" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="users_newemailagain">{gt text="New e-mail address again (for verification)"}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="users_newemailagain">{gt text="New e-mail address again (for verification)"}</label>
+            <div class="col-sm-9">
                 <input id="users_newemailagain" class="form-control" type="text" name="newemailagain" value="" />
             </div>
         </div>
     </fieldset>
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
+        <div class="col-sm-offset-3 col-sm-9">
             <button class="btn btn-success" title="{gt text="Save"}">
                 {gt text='Save'}
             </button>

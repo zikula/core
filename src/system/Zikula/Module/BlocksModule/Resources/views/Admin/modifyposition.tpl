@@ -15,20 +15,20 @@
         <input type="hidden" id="position" name="position[pid]" value="{$pid|safetext}" />
         
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="blocks_positionname">{gt text='Name'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="blocks_positionname">{gt text='Name'}</label>
+            <div class="col-sm-9">
                 <input type="text" id="blocks_positionname" class="form-control" name="position[name]" value="{$name|safetext}" size="50" maxlength="255" />
                 <em class="sub help-block">{gt text='Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_).'}</em>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="blocks_positiondescription">{gt text='Description'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="blocks_positiondescription">{gt text='Description'}</label>
+            <div class="col-sm-9">
                 <textarea name="position[description]" id="blocks_positiondescription" class="form-control" rows="5" cols="30">{$description|safehtml}</textarea>
             </div>
         </div>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-success" title="{gt text='Save'}">{gt text='Save'}</button>
                 <a class="btn btn-danger" href="{route name='zikulablocksmodule_admin_view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>

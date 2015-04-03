@@ -27,14 +27,14 @@ class LoginType extends AbstractType
         $builder
             ->add('username', 'text', array(
                 'label' => __('User Name'),
-                'label_attr' => array('class' => 'col-md-5'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'data' => __('admin'),
                 'constraints' => array(
                     new NotBlank(),
                 )))
             ->add('password', 'password', array(
                 'label' => __('Password'),
-                'label_attr' => array('class' => 'col-md-5'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'constraints' => array(
                     new NotBlank(),
                 )));

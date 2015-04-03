@@ -6,8 +6,8 @@
     <fieldset>
         <legend>{gt text="Change language"}</legend>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="user_changelang">{gt text="New language"}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="user_changelang">{gt text="New language"}</label>
+            <div class="col-sm-9">
                 <select id="user_changelang" name="setsessionlanguage" class="form-control">
                     {foreach key='code' item='language' from=$languages}
                     {if $code eq $usrlang}
@@ -21,7 +21,7 @@
         </div>
     </fieldset>
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
+        <div class="col-sm-offset-3 col-sm-9">
             <button class="btn btn-success" title="{gt text="Save"}">
                 {gt text="Save"}
             </button>

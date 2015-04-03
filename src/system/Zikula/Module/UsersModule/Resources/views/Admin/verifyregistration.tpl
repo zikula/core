@@ -14,7 +14,7 @@
         <input type="hidden" id="users_restoreview" name="restoreview" value="{$restoreview}" />
         <input type="hidden" id="users_confirmed" name="confirmed" value="true" />
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
             {strip}
             {gt assign='titleIfSent' text='Resend verification code'}
             {gt assign='titleIfNotSent' text='Send verification code'}
