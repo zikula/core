@@ -30,7 +30,7 @@ class CreateAdminType extends AbstractType
         $builder
             ->add('username', 'text', array(
                 'label' => __('Admin User Name'),
-                'label_attr' => array('class' => 'col-md-5'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'data' => __('admin'),
                 'constraints' => array(
                     new NotBlank(),
@@ -44,7 +44,7 @@ class CreateAdminType extends AbstractType
                 'type' => 'password',
                 'invalid_message' => 'The password fields must match.',
                 'options' => array(
-                    'label_attr' => array('class' => 'col-md-5'),
+                    'label_attr' => array('class' => 'col-sm-3'),
                     'constraints' => array(
                         new NotBlank(),
                         new Length(array('min' => 7, 'max' => 40))
@@ -56,7 +56,7 @@ class CreateAdminType extends AbstractType
                 ))
             ->add('email', 'email', array(
                 'label' => __('Admin Email Address'),
-                'label_attr' => array('class' => 'col-md-5'),
+                'label_attr' => array('class' => 'col-sm-3'),
                 'constraints' => array(
                     new NotBlank(),
                     new Email(),
