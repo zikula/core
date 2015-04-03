@@ -27,6 +27,13 @@
             $.webshims.activeLang('{{ lang }}');
             $.webshims.polyfill('forms');
         </script>
+        <script type="text/javascript">
+            (function($) {
+                $(document).ready(function() {
+                    $('label.control-label').removeClass('col-sm-2');
+                });
+            })(jQuery);
+        </script>
         {# allow child templates to load additional scripts #}
         {% block javascripts '' %}
 
