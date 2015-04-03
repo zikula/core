@@ -12,7 +12,7 @@
         <legend>{gt text='HTML entities'}</legend>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <div class="form-group" id="securitycenter_htmlentities">
-            <div class="col-lg-12">
+            <div class="col-sm-12">
                 <label>{gt text='Translate embedded HTML entities into real characters'}</label>
                 <input id="securitycenter_htmlentities_yes" type="radio" name="xhtmlentities" value="1"{if $htmlentities eq 1} checked="checked"{/if} />
                 <label for="securitycenter_htmlentities_yes">{gt text='Yes'}</label>
@@ -60,7 +60,7 @@
         </table>
     </fieldset>
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
+        <div class="col-sm-offset-3 col-sm-9">
             <button class="btn btn-success" title="{gt text='Save'}">{gt text='Save'}</button>
             <a class="btn btn-danger" href="{route name='zikulasecuritycentermodule_admin_index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>

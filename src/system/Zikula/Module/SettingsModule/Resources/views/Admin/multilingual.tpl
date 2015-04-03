@@ -11,8 +11,8 @@
         <fieldset>
             <legend>{gt text='Language system'}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text='Activate multi-lingual features'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Activate multi-lingual features'}</label>
+                <div class="col-sm-9">
                     <span id="mlsettings_multilingual">
                         <input id="multilingual1" type="radio" name="mlsettings_multilingual" value="1"{if $modvars.ZConfig.multilingual eq 1} checked="checked"{/if} />
                         <label for="multilingual1">{gt text='Yes'}</label>
@@ -22,8 +22,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text='Prepend language to URL'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Prepend language to URL'}</label>
+                <div class="col-sm-9">
                     <span id="mlsettings_languageurl">
                         <input id="languageurl0" type="radio" name="mlsettings_languageurl" value="1"{if $modvars.ZConfig.languageurl eq 1} checked="checked"{/if} />
                         <label for="languageurl0">{gt text='Always'}</label>
@@ -36,8 +36,8 @@
         <fieldset>
             <legend>{gt text='Browser'}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text='Automatically detect language from browser settings'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Automatically detect language from browser settings'}</label>
+                <div class="col-sm-9">
                     <span>
                         <input id="language_detect1" type="radio" name="mlsettings_language_detect" value="1"{if $modvars.ZConfig.language_detect eq 1} checked="checked"{/if} />
                         <label for="language_detect1">{gt text='Yes'}</label>
@@ -53,22 +53,22 @@
         <fieldset>
             <legend>{gt text='Server'}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="mlsettings_language_i18n">{gt text='Default language to use for this site'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="mlsettings_language_i18n">{gt text='Default language to use for this site'}</label>
+                <div class="col-sm-9">
                     {html_select_locales id='mlsettings_language_i18n' name='mlsettings_language_i18n' selected=$modvars.ZConfig.language_i18n installed=1 all=false class='form-control'}
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="mlsettings_timezone_offset">{gt text='Time zone for anonymous guests'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="mlsettings_timezone_offset">{gt text='Time zone for anonymous guests'}</label>
+                <div class="col-sm-9">
                     <select class="form-control" id="mlsettings_timezone_offset" size="1" name="mlsettings_timezone_offset">
                         {timezoneselect selected=$modvars.ZConfig.timezone_offset class='form-control'}
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text='Server time zone'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Server time zone'}</label>
+                <div class="col-sm-9">
                     <div class="form-control-static">{$timezone_server_abbr}</div>
                     <input type="hidden" name="mlsettings_timezone_server" value="{$timezone_server|default:0}" />
                 </div>
@@ -77,8 +77,8 @@
         <fieldset>
             <legend>{gt text='Variable validation'}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text='Allow IDN domain names'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Allow IDN domain names'}</label>
+                <div class="col-sm-9">
                     <div>
                         <input id="idnnamesyes" type="radio" name="idnnames" value="1"{if $modvars.ZConfig.idnnames eq 1} checked="checked"{/if} />
                         <label for="idnnamesyes">{gt text='Yes'}</label>
@@ -91,7 +91,7 @@
             </div>
         </fieldset>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-success" title="{gt text='Save'}">{gt text='Save'}</button>
                 <a class="btn btn-danger" href="{route name='zikulasettingsmodule_admin_index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>

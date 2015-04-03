@@ -16,28 +16,28 @@
         <fieldset>
             <legend>{$templatetitle}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text='User name'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='User name'}</label>
+                <div class="col-sm-9">
                     <span>{usergetvar name="uname" uid=$userid|safetext}</span>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text='Membership application'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Membership application'}</label>
+                <div class="col-sm-9">
                     <span>{$application|safehtml}</span>
                 </div>
             </div>
             {if $action eq 'deny'}
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="groups_reason">{gt text='Reason'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="groups_reason">{gt text='Reason'}</label>
+                    <div class="col-sm-9">
                         <textarea class="form-control" id="groups_reason" name="reason" cols="50" rows="8">{gt text='Sorry! This is a message to inform you with regret that your application for membership of the aforementioned private group has been rejected.'}</textarea>
                     </div>
                 </div>
             {/if}
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="groups_sendtag">{gt text='Notification type'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="groups_sendtag">{gt text='Notification type'}</label>
+                <div class="col-sm-9">
                     <select class="form-control" id="groups_sendtag" name="sendtag">
                         {html_options options=$sendoptions}
                     </select>
@@ -46,7 +46,7 @@
         </fieldset>
 
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
             {if $action eq 'deny'}
             <button type="submit">{img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt='Deny' __title='Deny'} {gt text='Deny'}</button>
             {else}

@@ -1,6 +1,6 @@
 {pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.View.js'}
-{gt text="Extension database" assign=extdbtitle}
-{assign value="<strong><a href=\"https://github.com/zikula-modules\">`$extdbtitle`</a></strong>" var=extdblink}
+{gt text="Extension database" assign='extdbtitle'}
+{assign value="<strong><a href=\"https://github.com/zikula-modules\">`$extdbtitle`</a></strong>" var='extdblink'}
 
 {adminheader}
 <h3>
@@ -10,7 +10,7 @@
 
 <p class="alert alert-info">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
 
-{pagerabc posvar="startlet" forwardvars='' printempty=true route='zikulathememodule_admin_view'}
+{pagerabc posvar='startlet' forwardvars='' printempty=true route='zikulathememodule_admin_view'}
 
 <table class="table table-bordered table-striped">
     <thead>

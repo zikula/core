@@ -26,24 +26,24 @@
 
 <h4>{gt text='Template' domain='zikula'}</h4>
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="blocks_menu_template">{gt text='Template for this block'}</label>
-    <div class="col-lg-9">
+    <label class="col-sm-3 control-label" for="blocks_menu_template">{gt text='Template for this block'}</label>
+    <div class="col-sm-9">
         <input id="blocks_menu_template" class="form-control" type="text" name="template" size="30" maxlength="60" value="{$template|safetext}" />
     </div>
 </div>
 
 <h4>{gt text='CSS styling' domain='zikula'}</h4>
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="blocks_menu_stylesheet">{gt text='Style sheet' domain='zikula'}</label>
-    <div class="col-lg-9">
+    <label class="col-sm-3 control-label" for="blocks_menu_stylesheet">{gt text='Style sheet' domain='zikula'}</label>
+    <div class="col-sm-9">
         <input id="blocks_menu_stylesheet" class="form-control" type="text" name="stylesheet" size="20" value="{$stylesheet|safetext}" />
     </div>
 </div>
 
 <h4>{gt text='Visibility within block'}</h4>
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="blocks_menu_modules">{gt text='Display links to installed modules'}</label>
-    <div class="col-lg-9">
+    <label class="col-sm-3 control-label" for="blocks_menu_modules">{gt text='Display links to installed modules'}</label>
+    <div class="col-sm-9">
         <input id="blocks_menu_modules" type="checkbox" value="1" name="displaymodules"{if $displaymodules} checked="checked"{/if} />
     </div>
 </div>
@@ -53,8 +53,8 @@
 
 {foreach key='lang' item='blocktitle' from=$blocktitles}
 <div class="form-group">
-    <label class="col-lg-3 control-label" for="blocktitle_{$lang}">{$lang}:</label>
-    <div class="col-lg-9">
+    <label class="col-sm-3 control-label" for="blocktitle_{$lang}">{$lang}:</label>
+    <div class="col-sm-9">
         <input class="form-control" type="text" id="blocktitle_{$lang}" name="blocktitles[{$lang}]" size="30" maxlength="60" value="{$blocktitle}" />
     </div>
 </div>

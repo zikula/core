@@ -12,7 +12,7 @@
     <div>{gt text='The maximal version of the core that this module supports is %s' tag1=$moduleInfo.core_max}</div>
 {/if}
 <div class="form-group">
-    <div class="col-lg-offset-3 col-lg-9">
+    <div class="col-sm-offset-3 col-sm-9">
         <a class="btn btn-danger" href="{route name='zikulaextensionsmodule_admin_view' startnum=$startnum letter=$letter state=$state}"><i class="fa fa-check"></i> {gt text='Ok'}</a>
     </div>
 </div>

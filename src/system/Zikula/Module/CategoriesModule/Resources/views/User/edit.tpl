@@ -40,22 +40,22 @@
         <input type="hidden" name="category[ipath]" value="{$category.ipath|safetext}" />
         {/if}
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="category_name">{gt text='Name'}<span class="required"></span></label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="category_name">{gt text='Name'}<span class="required"></span></label>
+            <div class="col-sm-9">
                 {array_field assign='catName' array='category' field='name'}
                 <input id="category_name" name="category[name]" value="{$catName|safetext}" type="text" class="form-control" size="32" maxlength="255" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="category_value">{gt text='Value'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="category_value">{gt text='Value'}</label>
+            <div class="col-sm-9">
                 {array_field assign='catValue' array='category' field='value'}
                 <input id="category_value" name="category[value]" value="{$catValue|safetext}" type="text" class="form-control" size="16" maxlength="255" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="category_status">{gt text='Active'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="category_status">{gt text='Active'}</label>
+            <div class="col-sm-9">
                 {array_field assign='catStatus' array='category' field='status'}
                 <input id="category_status" name="category[status]" value="A" type="checkbox"{if $catStatus eq 'A'} checked="checked"{/if} />
             </div>
@@ -64,8 +64,8 @@
     <fieldset>
         <legend>{gt text='Localised output'}</legend>
         <div class="form-group">
-            <label class="col-lg-3 control-label">{gt text='Name'}<span class="required"></span></label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label">{gt text='Name'}<span class="required"></span></label>
+            <div class="col-sm-9">
                 {array_field assign='displayNames' array='category' field='display_name'}
                 {if ($displayNames || !$catID)}
                 {foreach item='language' from=$languages}
@@ -79,8 +79,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label">{gt text='Description'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label">{gt text='Description'}</label>
+            <div class="col-sm-9">
                 {array_field assign='displayDescs' array='category' field='display_desc'}
                 {if ($displayDescs || !$catID)}
                 {foreach item='language' from=$languages}
@@ -102,27 +102,27 @@
     <fieldset>
         <legend>{gt text='Category system information'}</legend>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="category_id">{gt text='Internal ID'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="category_id">{gt text='Internal ID'}</label>
+            <div class="col-sm-9">
                 <span id="category_id">{$category.id|safetext}</span>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="category_path">{gt text='Path'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="category_path">{gt text='Path'}</label>
+            <div class="col-sm-9">
                 <span id="category_path">{$category.path|safetext}</span>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="category_ipath">{gt text='I-path'}</label>
-            <div class="col-lg-9">
+            <label class="col-sm-3 control-label" for="category_ipath">{gt text='I-path'}</label>
+            <div class="col-sm-9">
                 <span id="category_ipath">{$category.ipath|safetext}</span>
             </div>
         </div>
     </fieldset>
     {/if}
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
+        <div class="col-sm-offset-3 col-sm-9">
         {if $category}
             <button class="btn btn-success" title="{gt text='Save'}">{gt text='Save'}</button>
             <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_user_edit' dr=$rootCat.id}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>

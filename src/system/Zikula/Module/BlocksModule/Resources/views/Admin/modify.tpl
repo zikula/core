@@ -18,20 +18,20 @@
         <fieldset>
             <legend>{$modtitle|safetext}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_title">{gt text='Title'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_title">{gt text='Title'}</label>
+                <div class="col-sm-9">
                     <input id="blocks_title" name="title" class="form-control" type="text" size="40" maxlength="255" value="{$title|safetext}" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_description">{gt text='Description'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_description">{gt text='Description'}</label>
+                <div class="col-sm-9">
                     <input id="blocks_description" name="description" class="form-control" type="text" size="40" maxlength="255" value="{$description|safetext}" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_language">{gt text='Language'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_language">{gt text='Language'}</label>
+                <div class="col-sm-9">
                     {html_select_locales id='blocks_language' class='form-control' name='language' selected=$language installed=true all=true}
                 </div>
             </div>
@@ -39,8 +39,8 @@
         <fieldset>
             <legend>{gt text='Block placement filtering'}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_position">{gt text='Position(s)'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_position">{gt text='Position(s)'}</label>
+                <div class="col-sm-9">
                     <span>
                         {assign var='selectsize' value=$block_positions|@count}{if $selectsize gt 20}{assign var='selectsize' value=20}{/if}{if $selectsize lt 4}{assign var='selectsize' value=4}{/if}
                         <select id="blocks_position" class="form-control" name="positions[]" multiple="multiple" size="{$selectsize}">
@@ -114,8 +114,8 @@
         <fieldset>
             <legend>{gt text='Collapsibility'}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_collapsable">{gt text='Collapsible'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_collapsable">{gt text='Collapsible'}</label>
+                <div class="col-sm-9">
                     <div id="blocks_collapsable">
                         <label for="blocks_collapsable_yes">{gt text='Yes'}</label><input id="blocks_collapsable_yes" name="collapsable" type="radio" value="1"{if $collapsable eq 1} checked="checked"{/if} />
                         <label for="blocks_collapsable_no">{gt text='No'}</label><input id="blocks_collapsable_no" name="collapsable" type="radio" value="0"{if $collapsable ne 1} checked="checked"{/if} />
@@ -123,8 +123,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_defaultstate">{gt text='Default state'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_defaultstate">{gt text='Default state'}</label>
+                <div class="col-sm-9">
                     <div id="blocks_defaultstate">
                         <label for="blocks_defaultstate_expanded">{gt text='Expanded'}</label><input id="blocks_defaultstate_expanded" name="defaultstate" type="radio" value="1"{if $defaultstate eq 1} checked="checked"{/if} />
                         <label for="blocks_defaultstate_collapsed">{gt text='Collapsed'}</label><input id="blocks_defaultstate_collapsed" name="defaultstate" type="radio" value="0"{if $defaultstate ne 1} checked="checked"{/if} />
@@ -138,8 +138,8 @@
             <fieldset>
                 <legend>{gt text='Customisation'}</legend>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="blocks_content">{gt text='Content'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="blocks_content">{gt text='Content'}</label>
+                    <div class="col-sm-9">
                         <textarea id="blocks_content" class="form-control" name="content" cols="50" rows="10">{$content|safetext}</textarea>
                     </div>
                 </div>
@@ -164,8 +164,8 @@
 
         <fieldset>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="blocks_refresh">{gt text='Block refresh interval'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="blocks_refresh">{gt text='Block refresh interval'}</label>
+                <div class="col-sm-9">
                     <select id="blocks_refresh" class="form-control" name="refresh">
                         {html_options options=$blockrefreshtimes selected=$refresh}
                     </select>
@@ -180,7 +180,7 @@
         {/if}
 
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-success" title="{gt text='Save'}">{gt text='Save'}</button>
                 <a class="btn btn-danger" href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>

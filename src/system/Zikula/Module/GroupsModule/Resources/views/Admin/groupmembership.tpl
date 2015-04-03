@@ -50,8 +50,8 @@
             <input type="hidden" name="gid" value="{$group.gid|safetext}" />
             <fieldset>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="groups_uid">{gt text='Users to add'}</label>
-                    <div class="col-lg-9">
+                    <label class="col-sm-3 control-label" for="groups_uid">{gt text='Users to add'}</label>
+                    <div class="col-sm-9">
                         <select class="form-control" id="groups_uid" name="uid[]" multiple="multiple" size="10" placeholder="{gt text='Select...'}">
                             {html_options options=$uids}
                         </select>
@@ -59,7 +59,7 @@
                 </div>
             </fieldset>
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-9">
+                <div class="col-sm-offset-3 col-sm-9">
                     {button class='btn btn-success' __alt='Add' __title='Add' __text='Add'}
                 </div>
             </div>

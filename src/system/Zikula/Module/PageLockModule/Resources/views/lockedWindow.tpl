@@ -1,4 +1,3 @@
-
 <div class="modal fade" id="pageLockModal" tabindex="-1" role="dialog" aria-labelledby="pageLockModalLabel" aria-hidden="true">
     <div class="modal-dialog text-left">
         <div class="modal-content">

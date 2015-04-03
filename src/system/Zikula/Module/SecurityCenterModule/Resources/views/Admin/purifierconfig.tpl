@@ -32,10 +32,10 @@
 
             {if $directive.allowNull}
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="purifierConfig_div_{$directive.key}">
+                <label class="col-sm-3 control-label" for="purifierConfig_div_{$directive.key}">
                     {$directiveName|safetext} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{$directive.key|urlencode}">(?)</a>
                 </label>
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <div id="purifierConfig_div_{$directive.key}">
                         <input id="purifierConfig_Null_{$directive.key}" name="purifierConfig[Null_{$directive.key}]" type="checkbox" value="1"{if is_null($directive.value)} checked="checked"{/if} onclick="{if ($directive.type != $purifierTypes.bool)}toggleWriteability('{$idVal}', checked);{else}toggleWriteability('{$idVal}_Yes', checked); toggleWriteability('{$idVal}_No', checked);{/if}" />
                         <label for="purifierConfig_Null_{$directive.key}">{gt text='Use default value (if checked) or override value'}</label>
@@ -43,16 +43,16 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="{$idVal}">&nbsp;</label>
+                <label class="col-sm-3 control-label" for="{$idVal}">&nbsp;</label>
             {else}
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="{$idVal}">{$directiveName|safetext} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{$directive.key|urlencode}">(?)</a></label>
+                <label class="col-sm-3 control-label" for="{$idVal}">{$directiveName|safetext} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{$directive.key|urlencode}">(?)</a></label>
             {/if}
 
                 {if is_null($directive.value)}{assign var='disabledVal' value=' disabled="disabled"'}{else}{assign var='disabledVal' value=''}{/if}
 
                 {if isset($directive.allowedValues)}
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <select id="{$idVal}" class="form-control" name="{$nameVal}"{$disabledVal} style="min-width: 5em;">
                         {foreach from=$directive.allowedValues item='allowedVal'}
                         <option value="{$allowedVal}"{if ($directive.value == $allowedVal)} selected="selected"{/if}>{$allowedVal|safetext}</option>
@@ -60,7 +60,7 @@
                     </select>
                 </div>
                 {elseif (($directive.type eq $purifierTypes.text) || ($directive.type eq $purifierTypes.itext) || ($directive.type eq $purifierTypes.list) || ($directive.type eq $purifierTypes.hash) || ($directive.type == $purifierTypes.lookup))}
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <textarea id="{$idVal}" class="form-control" name="{$nameVal}" cols="50" rows="8"{$disabledVal}>{$directive.value|safetext}</textarea>
 
                     {if (($directive.type eq $purifierTypes.list) || ($directive.type eq $purifierTypes.lookup))}
@@ -70,18 +70,18 @@
                     {/if}
                 </div>
                 {elseif (($directive.type eq $purifierTypes.string) || ($directive.type eq $purifierTypes.istring) || ($directive.type eq $purifierTypes.int) || ($directive.type eq $purifierTypes.float))}
-                <div class="col-lg-9">  
+                <div class="col-sm-9">  
                     <input id="{$idVal}" name="{$nameVal}" class="form-control" type="text" value="{$directive.value}"{$disabledVal} />
                 </div>
                 {elseif ($directive.type eq $purifierTypes.bool)}
-                <div id="{$idVal}" class="col-lg-9"> 
+                <div id="{$idVal}" class="col-sm-9"> 
                     <input id="{$idVal}_Yes" name="{$nameVal}" type="radio" value="1"{if $directive.value === true} checked="checked"{/if}{$disabledVal} />
                     <label for="{$idVal}_Yes">{gt text='Yes'}</label>
                     <input id="{$idVal}_No" name="{$nameVal}" type="radio" value="0"{if $directive.value === false} checked="checked"{/if}{$disabledVal} />
                     <label for="{$idVal}_No">{gt text='No'}</label>
                 </div>
                 {else}
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <em class="help-block sub">{gt text='(Modification not supported.)'} {gt text='Value:'} {$directive.value|serialize|safetext}</em>
                 </div>
                 {/if}
@@ -92,7 +92,7 @@
     {/foreach}
 
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-9">
+        <div class="col-sm-offset-3 col-sm-9">
             <button class="btn btn-success" title="{gt text='Save'}">{gt text='Save'}</button>
             <a class="btn btn-danger" href="{route name='zikulasecuritycentermodule_admin_index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             <a class="btn btn-danger" href="{route name='zikulasecuritycentermodule_admin_purifierconfig' reset='default'}" title="{gt text='Reset to default values'}">{gt text='Reset to default values'}</a>

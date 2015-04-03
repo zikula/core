@@ -17,15 +17,15 @@
         <fieldset>
             <legend>{gt text="Select the CSV file"}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="users_import">{gt text="CSV file (Max. %s)" tag1=$post_max_size}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="users_import">{gt text="CSV file (Max. %s)" tag1=$post_max_size}</label>
+                <div class="col-sm-9">
                 <input id="users_import" type="file" name="importFile" size="30" />
                 <em class="help-block sub">{gt text='The file must be utf8 encoded.'}</em>
             </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="users_import_delimiter">{gt text="CSV delimiter"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="users_import_delimiter">{gt text="CSV delimiter"}</label>
+                <div class="col-sm-9">
                 <select class="form-control" id="users_import_delimiter" name="delimiter">
                     <option value="1">Comma (,)</option>
                     <option value="2">Semicolon (;)</option>
@@ -35,7 +35,7 @@
         </div>
         </fieldset>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 {button class="btn btn-success" __alt='Import' __title='Import' __text='Import'}
                 <a class="btn btn-danger" href="{route name='zikulausersmodule_admin_view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>

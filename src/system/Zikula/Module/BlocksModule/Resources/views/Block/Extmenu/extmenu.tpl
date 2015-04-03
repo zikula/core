@@ -10,7 +10,7 @@
         </a>
     </li>
     {else}
-    <li style="list-style: none; background: none">&nbsp;</li>
+    <li style="list-style: none; background: none;">&nbsp;</li>
     {/if}
     {/menu}
     {if $access_edit}

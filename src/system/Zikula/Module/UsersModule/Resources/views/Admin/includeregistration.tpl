@@ -1,16 +1,16 @@
 <fieldset>
     <legend>{gt text='Account Information'}</legend>
     <div class="form-group">
-        <label class="col-lg-3 control-label">{gt text='User name:'}</label>
-        <div class="col-lg-9">
+        <label class="col-sm-3 control-label">{gt text='User name:'}</label>
+        <div class="col-sm-9">
             <div class="form-control-static">
                 {$reginfo.uname}
             </div>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-lg-3 control-label">{gt text='E-mail address:'}</label>
-        <div class="col-lg-9">
+        <label class="col-sm-3 control-label">{gt text='E-mail address:'}</label>
+        <div class="col-sm-9">
             <div class="form-control-static">
                 {if !empty($reginfo.email)}
                 <a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>
@@ -41,8 +41,8 @@
 <fieldset>
     <legend>{gt text='Registration Status'}</legend>
     <div class="form-group">
-        <label class="col-lg-3 control-label">{gt text='Expires:'}</label>
-        <div class="col-lg-9">
+        <label class="col-sm-3 control-label">{gt text='Expires:'}</label>
+        <div class="col-sm-9">
             <div class="alert alert-info">
                 {gt text='Because a password is not set for this registration, the e-mail verification process cannot be skipped. It must be completed so that the user can establish a password before the user account is created.'}
             </div>
@@ -60,13 +60,13 @@
 <fieldset>
     <legend>{gt text='Registration Status'}</legend>
     <div class="form-group">
-        <div class="col-lg-9">
+        <div class="col-sm-9">
             <span>{if $reginfo.isverified}{gt text='Never, registration is verified'}{elseif empty($reginfo.verificationsent)}{gt text='Expiration date will be set when the verification e-mail is sent'}{elseif !isset($reginfo.validuntil) || empty($reginfo.validuntil)}{gt text='Never'}{else}{$reginfo.validuntil}{/if}</span>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-lg-3 control-label">{gt text='E-mail verification:'}</label>
-        <div class="col-lg-9">
+        <label class="col-sm-3 control-label">{gt text='E-mail verification:'}</label>
+        <div class="col-sm-9">
             <div class="form-control-static">
                 {if !isset($reginfo.isverified) || empty($reginfo.isverified) || !$reginfo.isverified}
                 {if !isset($reginfo.verificationsent) || empty($reginfo.verificationsent)}
@@ -84,8 +84,8 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-lg-3 control-label">{gt text='Administrator approval:'}</label>
-        <div class="col-lg-9">
+        <label class="col-sm-3 control-label">{gt text='Administrator approval:'}</label>
+        <div class="col-sm-9">
             <div class="form-control-static">
                 {if !isset($reginfo.isapproved) || empty($reginfo.isapproved) || !$reginfo.isapproved}
                 <span class="fa fa-times fa-fw fa-red"></span>

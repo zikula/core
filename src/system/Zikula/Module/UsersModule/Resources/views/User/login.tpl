@@ -40,7 +40,7 @@
             </div>
             {if ($modvars.ZConfig.seclevel|lower != 'high')}
             <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-9">
+                <div class="col-sm-offset-3 col-sm-9">
                     <input id="users_login_rememberme" type="checkbox" name="rememberme" value="1" />
                     <label for="users_login_rememberme">{gt text='Keep me logged in on this computer'}</label>
                 </div>
@@ -74,7 +74,7 @@
         {/if}
 
         <div>
-            <button class="btn btn-success col-lg-offset-3" title="{gt text='Log in'}">
+            <button class="btn btn-success col-sm-offset-3" title="{gt text='Log in'}">
                 <i class="fa fa-arrow-right"></i>
                 {gt text='Log in'}
             </button>

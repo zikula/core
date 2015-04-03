@@ -77,7 +77,7 @@
             </tbody>
         </table>
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button id="category_submit" name="category_submit" value="1" class="btn btn-success" title="{gt text='Save'}">{gt text='Save'}</button>
                 <a class="btn btn-danger" href="{route name='zikulacategoriesmodule_admin_editregistry'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>

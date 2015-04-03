@@ -53,8 +53,8 @@
             <legend>{gt text="General settings"}</legend>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_ANONYMOUS_DISPLAY_NAME'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Name displayed for anonymous user'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Name displayed for anonymous user'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safehtml}" size="20" maxlength="20" />
                     <em class="help-block sub">{gt text='Anonymous users are visitors to your site who have not logged in.'}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
@@ -62,8 +62,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_ITEMS_PER_PAGE'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Number of items displayed per page'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Number of items displayed per page'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" size="3" value="{$configData->getFieldData($fieldName)|safetext}" />
                     <em class="help-block sub">{gt text="When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
@@ -71,16 +71,16 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_AVATAR_IMAGE_PATH'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="Path to user's avatar images"}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="Path to user's avatar images"}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safetext}" size="50" maxlength="255" />
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_GRAVATARS_ENABLED'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Allow globally recognized avatars'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Allow globally recognized avatars'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div id="{$configData->getFieldId($fieldName)}">
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
@@ -92,8 +92,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_GRAVATAR_IMAGE'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Default gravatar image'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Default gravatar image'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safetext}" size="50" maxlength="255" />
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
@@ -104,8 +104,8 @@
             <legend>{gt text="Account page settings"}</legend>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS'|const}
-                <label class="col-lg-3 control-label">{gt text="Display graphics on user's account page"}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text="Display graphics on user's account page"}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div id="{$configData->getFieldId($fieldName)}">
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)}checked="checked" {/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
@@ -117,32 +117,32 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Path to account page images'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Path to account page images'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safetext}" size="50" maxlength="255" />
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_ACCOUNT_ITEMS_PER_PAGE'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Number of links per page'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Number of links per page'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" size="3" value="{$configData->getFieldData($fieldName)|safetext}" />
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_ACCOUNT_ITEMS_PER_ROW'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Number of links per row'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Number of links per row'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" size="3" value="{$configData->getFieldData($fieldName)|safetext}" />
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_MANAGE_EMAIL_ADDRESS'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Users module handles e-mail address maintenance'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Users module handles e-mail address maintenance'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div id="{$configData->getFieldId($fieldName)}">
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
@@ -158,8 +158,8 @@
             <legend>{gt text="User credential settings"}</legend>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_LOGIN_METHOD'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Credential required for user log-in'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Credential required for user log-in'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div id="{$configData->getFieldId($fieldName)}">
                         <input id="{$configData->getFieldId($fieldName)}_username" type="radio" name="{$fieldName}" value="{'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_UNAME'|const}" {if ($configData->getFieldData($fieldName) < constant('Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL')) || ($configData->getFieldData($fieldName) > constant('Zikula\Module\UsersModule\Constant::LOGIN_METHOD_ANY'))}checked="checked" {/if}/>
                         <label for="{$configData->getFieldId($fieldName)}_username">{gt text="User name"}</label>
@@ -175,8 +175,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REQUIRE_UNIQUE_EMAIL'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='New e-mail addresses must be unique'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='New e-mail addresses must be unique'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div id="{$configData->getFieldId($fieldName)}">
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
@@ -190,8 +190,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_MINIMUM_LENGTH'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="Minimum length for user passwords"}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="Minimum length for user passwords"}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safehtml}" size="2" maxlength="2" />
                     <em class="help-block sub">{gt text="This affects both passwords created during registration, as well as passwords modified by users or administrators."} {gt text="Enter an integer greater than zero."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
@@ -199,8 +199,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_HASH_METHOD'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="Password hashing method"}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="Password hashing method"}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <select class="form-control" id="{$configData->getFieldId($fieldName)}" name="{$fieldName}">
                         <option value="sha1" {if $configData->getFieldData($fieldName) == 'sha1'} selected="selected"{/if}>SHA1</option>
                         <option value="sha256" {if $configData->getFieldData($fieldName) == 'sha256'} selected="selected"{/if}>SHA256</option>
@@ -211,8 +211,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="Show password strength meter"}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="Show password strength meter"}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div id="{$configData->getFieldId($fieldName)}">
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)}checked="checked" {/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
@@ -224,8 +224,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="E-mail address verifications expire in"}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="E-mail address verifications expire in"}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div class="input-group">
                         <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />
                         <span class="input-group-addon">{gt text="days"}</span>
@@ -237,8 +237,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Password reset requests expire in'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Password reset requests expire in'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div class="input-group">                    
                         <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />
                         <span class="input-group-addon">{gt text='days'}</span>
@@ -254,9 +254,9 @@
             <legend>{gt text="Registration settings"}</legend>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ENABLED'|const}
-                <label class="col-lg-3 control-label">{gt text="Allow new user account registrations"}<span class="required"></span></label>
+                <label class="col-sm-3 control-label">{gt text="Allow new user account registrations"}<span class="required"></span></label>
                 {assign var='registrationEnabledFieldName' value=$fieldName}
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <div id="{$configData->getFieldId($fieldName)}">
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text='Yes'}</label>
@@ -268,16 +268,16 @@
             </div>
             <div class="form-group" data-switch="{$registrationEnabledFieldName}" data-switch-value="0">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_DISABLED_REASON'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="Statement displayed if registration disabled"}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="Statement displayed if registration disabled"}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <textarea class="form-control" id="{$configData->getFieldId($fieldName)}" name="{$fieldName}" cols="45" rows="10">{$configData->getFieldData($fieldName)|safehtml}</textarea>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="E-mail address to notify of registrations"}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text="E-mail address to notify of registrations"}</label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}" type="email" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safetext}" size="50" maxlength="255" />
                     <em class="help-block sub">{gt text='A notification is sent to this e-mail address for each registration. Leave blank for no notifications.'}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
@@ -285,8 +285,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_ENABLED'|const}
-                <label class="col-lg-3 control-label">{gt text='Password reminder is enabled'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Password reminder is enabled'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div id="{$configData->getFieldId($fieldName)}">
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1"{if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text='Yes'}</label>
@@ -298,8 +298,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_MANDATORY'|const}
-                <label class="col-lg-3 control-label">{gt text='Password reminder is mandatory'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Password reminder is mandatory'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div id="{$configData->getFieldId($fieldName)}">
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1"{if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text='Yes'}</label>
@@ -311,8 +311,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED'|const}
-                <label class="col-lg-3 control-label">{gt text='User registration is moderated'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='User registration is moderated'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div id="{$configData->getFieldId($fieldName)}">
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1"{if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text='Yes'}</label>
@@ -324,8 +324,8 @@
             </div>
             {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_VERIFICATION_MODE'|const}
             <div class="form-group" id="{$configData->getFieldId($fieldName)}">
-                <label class="col-lg-3 control-label">{gt text="Verify e-mail address during registration"}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text="Verify e-mail address during registration"}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div>
                         <input id="{$configData->getFieldId($fieldName)}_{'Zikula\Module\UsersModule\Constant::VERIFY_USERPWD'|const}" type="radio" name="{$fieldName}" value="{'Zikula\Module\UsersModule\Constant::VERIFY_USERPWD'|const}" {if ($configData->getFieldData($fieldName) == constant('Zikula\Module\UsersModule\Constant::VERIFY_USERPWD')) || $configData->getFieldData($fieldName) == constant('Zikula\Module\UsersModule\Constant::VERIFY_SYSTEMPWD')} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_{'Zikula\Module\UsersModule\Constant::VERIFY_USERPWD'|const}">{gt text='Yes. User chooses password, then activates account via e-mail'}</label>
@@ -339,8 +339,8 @@
             </div>
             {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_AUTO_LOGIN'|const}
             <div class="form-group" id="{$configData->getFieldId($fieldName)}_wrap">
-                <label class="col-lg-3 control-label">{gt text='Log in new registrations automatically?'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Log in new registrations automatically?'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div class="z-formlist">
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1"{if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text='Newly registered users are logged in automatically.'}</label>
@@ -356,8 +356,8 @@
             </div>
             {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE'|const}
             <div class="form-group" id="{$configData->getFieldId($fieldName)}_wrap">
-                <label class="col-lg-3 control-label">{gt text='Order that approval and verification occur'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Order that approval and verification occur'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div class="z-formlist">
                         <input id="{$configData->getFieldId($fieldName)}_{'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const}" type="radio" name="{$fieldName}" value="{'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const}"{if $configData->getFieldData($fieldName) == constant('Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE')} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_{'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const}">{gt text="Registration applications must be approved before users verify their e-mail address."}</label>
@@ -375,8 +375,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_EXPIRE_DAYS_REGISTRATION'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Registrations pending verification expire in'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Registrations pending verification expire in'}<span class="required"></span></label>
+                <div class="col-sm-9">
                     <div class="input-group">
                         <input id="{$configData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />      
                         <span class="input-group-addon">{gt text='days'}</span>
@@ -390,8 +390,8 @@
 
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Spam protection question'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Spam protection question'}</label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}" class="form-control" tpye="text" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safehtml}" size="50" maxlength="255" />
                     <em class="help-block sub">{gt text="You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
@@ -399,8 +399,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Spam protection answer'}<span id="{$configData->getFieldId($fieldName)}_mandatory" class="required hide"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Spam protection answer'}<span id="{$configData->getFieldId($fieldName)}_mandatory" class="required hide"></span></label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safehtml}" size="50" maxlength="255" />
                     <em class="help-block sub">{gt text="Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
@@ -408,8 +408,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Reserved user names'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Reserved user names'}</label>
+                <div class="col-sm-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safetext}" size="50" maxlength="255" />
                     <em class="help-block sub">
                         {gt text='Separate each user name with a comma.'}<br />
@@ -420,8 +420,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ILLEGAL_AGENTS'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Banned user agents'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Banned user agents'}</label>
+                <div class="col-sm-9">
                     <textarea class="form-control" id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} name="{$fieldName}" cols="45" rows="2">{$configData->getFieldData($fieldName)|safehtml}</textarea>
                     <em class="help-block sub">
                         {gt text='Separate each user agent string with a comma.'}<br />
@@ -432,8 +432,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS'|const}
-                <label class="col-lg-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Banned e-mail address domains'}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Banned e-mail address domains'}</label>
+                <div class="col-sm-9">
                     <textarea class="form-control" id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} name="{$fieldName}" cols="45" rows="2">{$configData->getFieldData($fieldName)|safehtml}</textarea>
                     <em class="help-block sub">
                         {gt text='Separate each domain with a comma.'}<br />
@@ -448,8 +448,8 @@
             <legend>{gt text="User log-in settings"}</legend>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_LOGIN_WCAG_COMPLIANT'|const}
-                <label class="col-lg-3 control-label">{gt text='WCAG-compliant log-in and log-out'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='WCAG-compliant log-in and log-out'}<span class="required"></span></label>
+                <div class="col-sm-9">
                 <div id="{$configData->getFieldId($fieldName)}">
                     <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)}checked="checked" {/if}/>
                     <label for="{$configData->getFieldId($fieldName)}_yes">{gt text='Yes'}</label>
@@ -462,8 +462,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS'|const}
-                <label class="col-lg-3 control-label">{gt text='Failed login displays inactive status'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Failed login displays inactive status'}<span class="required"></span></label>
+                <div class="col-sm-9">
                 <div class="z-formlist">
                     <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                     <label for="{$configData->getFieldId($fieldName)}_yes">{gt text='Yes. The log-in error message will indicate that the user account is inactive.'}</label>
@@ -477,8 +477,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS'|const}
-                <label class="col-lg-3 control-label">{gt text='Failed login displays verification status'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Failed login displays verification status'}<span class="required"></span></label>
+                <div class="col-sm-9">
                 <div class="z-formlist">
                     <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                     <label for="{$configData->getFieldId($fieldName)}_yes">{gt text='Yes. The log-in error message will indicate that the registration is pending verification.'}</label>
@@ -492,8 +492,8 @@
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS'|const}
-                <label class="col-lg-3 control-label">{gt text='Failed login displays approval status'}<span class="required"></span></label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{gt text='Failed login displays approval status'}<span class="required"></span></label>
+                <div class="col-sm-9">
                 <div class="z-formlist">
                     <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                     <label for="{$configData->getFieldId($fieldName)}_yes">{gt text='Yes. The log-in error message will indicate that the registration is pending approval.'}</label>
@@ -508,7 +508,7 @@
         </fieldset>
 
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-success" title="{gt text='Save'}">
                     {gt text="Save"}
                 </button>
