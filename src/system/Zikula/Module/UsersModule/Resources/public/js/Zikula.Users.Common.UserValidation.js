@@ -15,16 +15,14 @@
     }
 
     function validateEntries() {
-        $('#users_register .help-block').fadeOut('fast', function() {
-            $.ajax({
-                data: $('#users_register').serializeArray(),
-                type: 'POST',
-                url: Routing.generate('zikulausersmodule_ajax_getregistrationerrors')
-            }).always(function(response, status, xhr) {                
-                if ((response) && (response.data) && (response.data.errorFieldsCount > 0)) {
-                    displayErrors(response.data);
-                }
-            });
+        $.ajax({
+            data: $('#users_register').serializeArray(),
+            type: 'POST',
+            url: Routing.generate('zikulausersmodule_ajax_getregistrationerrors')
+        }).always(function(response, status, xhr) {                
+            if ((response) && (response.data) && (response.data.errorFieldsCount > 0)) {
+                displayErrors(response.data);
+            }
         });
     }
 
