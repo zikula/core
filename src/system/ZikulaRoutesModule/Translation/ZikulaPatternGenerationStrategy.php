@@ -78,8 +78,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
             // Begin customizations
 
             // prefix with zikula module url if requested
-            if (self::STRATEGY_PREFIX === $this->strategy
-                || (self::STRATEGY_PREFIX_EXCEPT_DEFAULT === $this->strategy)) {
+            if ($route->hasDefault('_zkModule')) {
                 $zkNoBundlePrefix = $route->getOption('zkNoBundlePrefix');
                 if (!isset($zkNoBundlePrefix) || !$zkNoBundlePrefix) {
                     $modinfo = \ModUtil::getInfoFromName($route->getDefault('_zkModule'));

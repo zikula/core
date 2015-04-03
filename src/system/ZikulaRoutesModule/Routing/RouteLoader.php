@@ -65,7 +65,7 @@ class RouteLoader implements LoaderInterface
                 $defaults['_zkFunc'] = $func;
 
                 $route = new Route(
-                    !isset($GLOBALS['translation_extract_routes']) ? $dbRoute->getPathWithBundlePrefix($this->container) : $dbRoute->getPath(),
+                    $dbRoute->getPath(),
                     $defaults,
                     $dbRoute->getRequirements(),
                     $dbRoute->getOptions(),

@@ -64,7 +64,7 @@ class AdminApi extends BaseAdminApi
         );
 
         $cacheClearer = $this->get('zikula.cache_clearer');
-        $cacheClearer->clear('symfony.config');
+        $cacheClearer->clear('symfony');
 
         return true;
     }
