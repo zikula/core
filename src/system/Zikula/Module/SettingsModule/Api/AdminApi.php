@@ -67,6 +67,9 @@ class AdminApi extends \Zikula_AbstractApi
         Zikula_View::getInstance()->clear_all_cache();
         Zikula_View::getInstance()->clear_compiled();
 
+        $cacheClearer = $this->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony');
+
         return true;
     }
 

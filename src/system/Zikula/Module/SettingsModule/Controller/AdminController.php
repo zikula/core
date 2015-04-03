@@ -27,6 +27,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use ZLanguage;
+use Zikula\Bundle\CoreBundle\YamlDumper;
 
 /**
  * @Route("/admin")
@@ -246,7 +247,7 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-        $url = $this->get('router')->generate('zikulasettingsmodule_admin_multilingual', array(), RouterInterface::ABSOLUTE_URL);
+        $locale = $request->request->get('mlsettings_language_i18n', 'en');
 
         $settings = array('mlsettings_language_i18n' => 'language_i18n',
                 'mlsettings_timezone_offset' => 'timezone_offset',
@@ -271,7 +272,6 @@ class AdminController extends \Zikula_AbstractController
         if (isset($deleteLangUrl)) {
             // reset language settings
             SessionUtil::delVar('language');
-            $url = $this->get('router')->generate('zikulasettingsmodule_admin_multilingual', array('_locale' => \System::getVar('language_i18n')), RouterInterface::ABSOLUTE_URL);
         }
 
         // Write the vars
@@ -282,6 +282,9 @@ class AdminController extends \Zikula_AbstractController
                 System::setVar($varname, $newvalue);
             }
         }
+        // update the custom_parameters.yml file
+        $yamlManager = new YamlDumper($this->get('kernel')->getRootDir() .'/config');
+        $yamlManager->setParameter('locale', $locale);
 
         // Reload multilingual routing settings.
         ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
@@ -291,6 +294,7 @@ class AdminController extends \Zikula_AbstractController
 
         // all done successfully
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved localisation settings.'));
+        $url = $this->get('router')->generate('zikulasettingsmodule_admin_multilingual', RouterInterface::ABSOLUTE_URL);
 
         return new RedirectResponse($url);
     }
