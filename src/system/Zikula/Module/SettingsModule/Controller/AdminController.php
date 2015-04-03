@@ -203,9 +203,10 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/ml")
+     * @Route("/ml", options={"i18n"=false})
      * @Method("GET")
      *
+     * i18n = false so route can be found when changing languages
      * display the ML settings form
      *
      * @return Response symfony response object
