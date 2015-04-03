@@ -39,7 +39,7 @@ class Application extends BaseApplication
         if ($this->kernel->getContainer()->getParameter('installed') === true) {
             // don't attempt to login if the Core needs an upgrade
             \Zikula_Core::defineCurrentInstalledCoreVersion($this->kernel->getContainer());
-            if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, \Zikula_Core::VERSION_NUM, '==')) {
+            if (defined('ZIKULACORE_CURRENT_INSTALLED_VERSION') && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, \Zikula_Core::VERSION_NUM, '==')) {
                 try {
                     $this->loginAsAdministrator();
                 } catch (\Exception $e) {
