@@ -99,13 +99,13 @@ class ModUtil
      *
      * @return void
      */
-    public static function initCoreVars($force=false)
+    public static function initCoreVars($force = false)
     {
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
         self::$modvars = new ArrayObject(array(
-                EventUtil::HANDLERS => array(),
-                ServiceUtil::HANDLERS => array(),
-                'ZikulaSettingsModule' => array(),
+            EventUtil::HANDLERS => array(),
+            ServiceUtil::HANDLERS => array(),
+            'ZikulaSettingsModule' => array(),
         ));
 
         // don't init vars during the installer or upgrader
@@ -125,20 +125,20 @@ class ModUtil
             } else {
                 self::$modvars[$var['modname']][$var['name']] = $var['value'];
             }
-         }
+        }
 
-         // Init multilingual variables here, just to have values, even with default site language (page language is set later)
-         self::setupMultilingual();
+        // Init multilingual variables here, just to have values, even with default site language (page language is set later)
+        self::setupMultilingual();
 
-         // Pre-load the module variables array with empty arrays for known modules that
-         // do not define any module variables to prevent unnecessary SQL queries to
-         // the module_vars table.
-         $knownModules = self::getAllMods();
-         foreach ($knownModules as $key => $mod) {
-             if (!array_key_exists($mod['name'], self::$modvars)) {
-                 self::$modvars[$mod['name']] = array();
-             }
-         }
+        // Pre-load the module variables array with empty arrays for known modules that
+        // do not define any module variables to prevent unnecessary SQL queries to
+        // the module_vars table.
+        $knownModules = self::getAllMods();
+        foreach ($knownModules as $key => $mod) {
+            if (!array_key_exists($mod['name'], self::$modvars)) {
+                self::$modvars[$mod['name']] = array();
+            }
+        }
     }
 
     /**
@@ -269,7 +269,7 @@ class ModUtil
         $em = ServiceUtil::get('doctrine.entitymanager');
         $entities = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findBy(array('modname' => $modname, 'name' => $name));
         if (count($entities) > 0) {
-            foreach($entities as $entity) {
+            foreach ($entities as $entity) {
                 // possible duplicates exist. update all (refs #2385)
                 $entity->setValue($value);
             }
@@ -674,7 +674,7 @@ class ModUtil
         // Load the database definition if required
         $files = array();
         if ($module = self::getModule($moduleName)) {
-            $files[] = $module->getPath().'/tables.php';
+            $files[] = $module->getPath() . '/tables.php';
         }
 
         $files[] = "$modpath/$directory/tables.php";
@@ -922,10 +922,10 @@ class ModUtil
 
         if ($module = self::getModule($modname)) {
             $ns = $module->getNamespace();
-            $className = ($api) ? $ns.'\\Api\\'.ucwords($type).'Api' : $ns.'\\Controller\\'.ucwords($type).'Controller';
+            $className = ($api) ? $ns . '\\Api\\' . ucwords($type) . 'Api' : $ns . '\\Controller\\' . ucwords($type) . 'Controller';
         } else {
-            $className = ($api) ? ucwords($modname).'\\Api\\'.ucwords($type).'Api' : ucwords($modname).'\\Controller\\'.ucwords($type).'Controller';
-            $classNameOld = ($api) ? ucwords($modname).'_Api_'.ucwords($type) : ucwords($modname).'_Controller_'.ucwords($type);
+            $className = ($api) ? ucwords($modname) . '\\Api\\' . ucwords($type) . 'Api' : ucwords($modname) . '\\Controller\\' . ucwords($type) . 'Controller';
+            $classNameOld = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname) . '_Controller_' . ucwords($type);
             $className = class_exists($className) ? $className : $classNameOld;
         }
 
@@ -1041,8 +1041,8 @@ class ModUtil
 
         $object = self::getObject($className, $modname);
         $action = $api ? '' : 'Action';
-        if (is_callable(array($object, $func.$action))) {
-            return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func.$action));
+        if (is_callable(array($object, $func . $action))) {
+            return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func . $action));
         }
 
         return false;
@@ -1142,7 +1142,7 @@ class ModUtil
                                 // We still didn't get a valid method. Do not use argument resolving.
                                 $newType = false;
                             }
-                        } catch(\RuntimeException $e) {
+                        } catch (\RuntimeException $e) {
                             // Something went wrong. Check if the method still uses the old non-Symfony $args array.
                             if ($modfunc[0] instanceof \Zikula_AbstractBase) {
                                 $r = new \ReflectionMethod($modfunc[0], $modfunc[1]);
@@ -1322,7 +1322,7 @@ class ModUtil
      *
      * @return string Absolute URL for call.
      */
-    public static function url($modname, $type = null, $func = null, $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
+    public static function url($modname, $type = null, $func = null, $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang = false)
     {
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
@@ -1364,7 +1364,7 @@ class ModUtil
         if ($url !== false) {
             return $url;
         }
-        
+
         $request = \ServiceUtil::get('request');
         if ($request->attributes->has('_route_params')) {
             // If this attribute is set, a Symfony route has been matched. We need to generate full urls in that case.
@@ -1468,7 +1468,7 @@ class ModUtil
             }
 
             if ($modinfo && $shorturlsdefaultmodule && $shorturlsdefaultmodule == $modinfo['name']) {
-                $pattern = '/^'.preg_quote($modinfo['url'], '/').'\//';
+                $pattern = '/^' . preg_quote($modinfo['url'], '/') . '\//';
                 $url = preg_replace($pattern, '', $url);
             }
             if (isset($theme)) {
@@ -1506,19 +1506,19 @@ class ModUtil
                                 if (is_array($w)) {
                                     foreach ($w as $m => $n) {
                                         if (is_numeric($n) || !empty($n)) {
-                                            $n    = strpos($n, '%') !== false ? $n : urlencode($n);
+                                            $n = strpos($n, '%') !== false ? $n : urlencode($n);
                                             $url .= "&$key" . "[$l][$m]=$n";
                                         }
                                     }
                                 } else {
-                                    $w    = strpos($w, '%') !== false ? $w : urlencode($w);
+                                    $w = strpos($w, '%') !== false ? $w : urlencode($w);
                                     $url .= "&$key" . "[$l]=$w";
                                 }
                             }
                         }
                     } elseif (is_numeric($value) || !empty($value)) {
                         // we suppress '', but allow 0 as value (see #193)
-                        $w    = strpos($value, '%') !== false ? $value : urlencode($value);
+                        $value = strpos($value, '%') !== false ? $value : urlencode($value);
                         $url .= "&$key=$value";
                     }
                 }
@@ -1603,7 +1603,7 @@ class ModUtil
                     self::$cache['modgetname'] = System::getVar('startpage');
                 }
             }
-            
+
             if (empty(self::$cache['modgetname'])) {
                 self::$cache['modgetname'] = false;
             }
@@ -1625,6 +1625,9 @@ class ModUtil
     {
         return false;
     }
+     */
+
+    /**
      * Register all autoloaders for all modules in /modules containing a lib subdir
      * modules in /system should be Symfony structure based, so no manual autoloading needed
      *
@@ -1743,7 +1746,7 @@ class ModUtil
      *
      * @return array The resulting module object array.
      */
-    public static function getModules($where=array(), $sort='displayname')
+    public static function getModules($where = array(), $sort = 'displayname')
     {
         // get entityManager
         $sm = ServiceUtil::getManager();
@@ -1766,7 +1769,7 @@ class ModUtil
      *
      * @return array The resulting module object array.
      */
-    public static function getModulesByState($state=self::STATE_ACTIVE, $sort='displayname')
+    public static function getModulesByState($state = self::STATE_ACTIVE, $sort = 'displayname')
     {
         $sm = ServiceUtil::getManager();
         $entityManager = $sm->get('doctrine.entitymanager');
@@ -1797,8 +1800,8 @@ class ModUtil
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         if (false === strpos($modinfo['directory'], '/')) {
             ZLoader::addAutoloader($moduleName, array(
-                                   realpath("$modpath"),
-                                   realpath("$modpath/$osdir/lib"),
+                    realpath("$modpath"),
+                    realpath("$modpath/$osdir/lib"),
                 )
             );
         }
@@ -1907,9 +1910,9 @@ class ModUtil
 
         $paths = array();
         if ($modulePath) {
-            $paths[] = $modulePath.'/Resources/public/images/admin.png';
-            $paths[] = $modulePath.'/Resources/public/images/admin.jpg';
-            $paths[] = $modulePath.'/Resources/public/images/admin.gif';
+            $paths[] = $modulePath . '/Resources/public/images/admin.png';
+            $paths[] = $modulePath . '/Resources/public/images/admin.jpg';
+            $paths[] = $modulePath . '/Resources/public/images/admin.gif';
         }
 
         $paths[] = $modpath . '/' . $osmoddir . '/images/admin.png';
@@ -1951,7 +1954,7 @@ class ModUtil
     }
 
     /**
-     * Gets the object associated with a given module name 
+     * Gets the object associated with a given module name
      *
      * @param string $moduleName
      * @param boolean $force = false Force load a module and add autoloaders
@@ -2019,7 +2022,7 @@ class ModUtil
     /**
      * Checks if a module is a core (i.e. located in system/) module
      *
-     * @param $modName
+     * @param $module
      *
      * @return bool|mixed False or path
      */

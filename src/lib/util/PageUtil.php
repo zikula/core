@@ -302,7 +302,8 @@ class PageUtil
      *
      * @todo Remove in 1.5.0.
      */
-    private static function fixJQueryThemesPath($path) {
+    private static function fixJQueryThemesPath($path)
+    {
         if (is_array($path)) {
             $return = array();
             foreach ($path as $key => $value) {
@@ -370,8 +371,8 @@ class PageUtil
 
                     foreach ($features as $feature) {
                         PageUtil::addVar('polyfill_features', $feature);
-			        }
-			    
+                    }
+
                     $_pageVars[$varname]['contents'] = array_merge($_pageVars[$varname]['contents'], $value);
                 } else {
                     $_pageVars[$varname]['contents'] = array_merge($_pageVars[$varname]['contents'], $value);

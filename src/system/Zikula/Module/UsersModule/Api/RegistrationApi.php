@@ -632,7 +632,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
                 $rendererArgs = array();
                 $rendererArgs['sitename'] = System::getVar('sitename');
-                $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl)-1);
+                $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl) - 1);
                 $rendererArgs['reginfo'] = $reginfo;
                 $rendererArgs['createdpassword'] = $passwordCreatedForUser;
                 $rendererArgs['admincreated'] = $createdByAdminOrSubAdmin;
@@ -658,10 +658,10 @@ class RegistrationApi extends \Zikula_AbstractApi
                     $userObj['verificationsent'] = $verificationSent;
                 } elseif (($userNotification && $reginfo['isapproved']) || !empty($passwordCreatedForUser)) {
                     $notificationSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification',
-                                            array('toAddress'         => $reginfo['email'],
-                                                  'notificationType'  => 'welcome',
-                                                  'templateArgs'      => $rendererArgs
-                    ));
+                        array('toAddress' => $reginfo['email'],
+                            'notificationType' => 'welcome',
+                            'templateArgs' => $rendererArgs
+                        ));
 
                     if (!$notificationSent) {
                         $regErrors[] = $this->__('Warning! The welcoming email for the new registration could not be sent.');
@@ -680,9 +680,9 @@ class RegistrationApi extends \Zikula_AbstractApi
                     $notificationEmail = $this->getVar('reg_notifyemail', '');
                     if (!empty($notificationEmail)) {
                         $notificationSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification',
-                                                array('toAddress'         => $notificationEmail,
-                                                      'notificationType'  => 'regadminnotify',
-                                                      'templateArgs'      => $rendererArgs));
+                            array('toAddress' => $notificationEmail,
+                                'notificationType' => 'regadminnotify',
+                                'templateArgs' => $rendererArgs));
 
                         if (!$notificationSent) {
                             $regErrors[] = $this->__('Warning! The notification email for the new registration could not be sent.');
@@ -899,13 +899,13 @@ class RegistrationApi extends \Zikula_AbstractApi
             $regErrors = array();
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
-                $sitename  = System::getVar('sitename');
-                $siteurl   = System::getBaseUrl();
+                $sitename = System::getVar('sitename');
+                $siteurl = System::getBaseUrl();
                 $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
 
                 $rendererArgs = array();
                 $rendererArgs['sitename'] = $sitename;
-                $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl)-1);
+                $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl) - 1);
                 $rendererArgs['reginfo'] = $reginfo;
                 $rendererArgs['createdpassword'] = $passwordCreatedForUser;
                 $rendererArgs['admincreated'] = $createdByAdminOrSubAdmin;
@@ -914,9 +914,9 @@ class RegistrationApi extends \Zikula_AbstractApi
 
                 if ($userNotification || !empty($passwordCreatedForUser)) {
                     $notificationSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification',
-                                            array('toAddress'         => $userObj['email'],
-                                                  'notificationType'  => 'welcome',
-                                                  'templateArgs'      => $rendererArgs));
+                        array('toAddress' => $userObj['email'],
+                            'notificationType' => 'welcome',
+                            'templateArgs' => $rendererArgs));
 
                     if (!$notificationSent) {
                         $loggedErrorMessages = $this->request->getSession()->getMessages(Zikula_Session::MESSAGE_ERROR);
@@ -937,10 +937,10 @@ class RegistrationApi extends \Zikula_AbstractApi
                         $subject = $this->__f('New registration: %s', $userObj['uname']);
 
                         $notificationSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification',
-                                                array('toAddress'         => $notificationEmail,
-                                                      'notificationType'  => 'regadminnotify',
-                                                      'templateArgs'      => $rendererArgs,
-                                                      'subject'           => $subject));
+                            array('toAddress' => $notificationEmail,
+                                'notificationType' => 'regadminnotify',
+                                'templateArgs' => $rendererArgs,
+                                'subject' => $subject));
 
                         if (!$notificationSent) {
                             $loggedErrorMessages = $this->request->getSession()->getMessages(Zikula_Session::MESSAGE_ERROR);
@@ -979,7 +979,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      *                          more than once; required if id and uname are not specified, otherwise not allowed.
      *                       }
      *
-     * Either id, uname, or email must be specified, but no more than one of those three, and email is not allowed 
+     * Either id, uname, or email must be specified, but no more than one of those three, and email is not allowed
      * if the system allows an email address to be registered more than once.
      *
      * @return array|boolean An array containing the record, or false on error.
@@ -1005,9 +1005,10 @@ class RegistrationApi extends \Zikula_AbstractApi
         // - uname is set with email
         // - email is set but the system allows multiple registrations per email
         if ((!isset($args['uid']) && !isset($args['uname']) && !isset($args['email']))
-                || (isset($args['uid']) && (isset($args['uname']) || isset($args['email'])))
-                || (isset($args['uname']) && isset($args['email']))
-                || (isset($args['email']) && !$uniqueEmails)) {
+            || (isset($args['uid']) && (isset($args['uname']) || isset($args['email'])))
+            || (isset($args['uname']) && isset($args['email']))
+            || (isset($args['email']) && !$uniqueEmails)
+        ) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -1064,8 +1065,8 @@ class RegistrationApi extends \Zikula_AbstractApi
         foreach ($filter as $field => $value) {
             if (!is_array($value)) {
                 $value = array(
-                    'operator'  => '=',
-                    'operand'   => $value,
+                    'operator' => '=',
+                    'operand' => $value,
                 );
             }
 
@@ -1247,8 +1248,8 @@ class RegistrationApi extends \Zikula_AbstractApi
             if ($users) {
                 if (!is_array($isVerifiedFilter)) {
                     $isVerifiedFilter = array(
-                        'operator'  => '=',
-                        'operand'   => $isVerifiedFilter,
+                        'operator' => '=',
+                        'operand' => $isVerifiedFilter,
                     );
                 }
 
@@ -1321,7 +1322,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
             $deleteEvent = new GenericEvent($registration);
             $this->getDispatcher()->dispatch('user.registration.delete', $deleteEvent);
-            
+
             return true;
         }
 
@@ -1361,15 +1362,15 @@ class RegistrationApi extends \Zikula_AbstractApi
 
                     // delete user record
                     $query = $this->entityManager->createQueryBuilder()
-                                                 ->delete()
-                                                 ->from('ZikulaUsersModule:UserEntity', 'u')
-                                                 ->where('u.uid = :uid')
-                                                 ->setParameter('uid', $verifyChg['uid'])
-                                                 ->getQuery();
+                        ->delete()
+                        ->from('ZikulaUsersModule:UserEntity', 'u')
+                        ->where('u.uid = :uid')
+                        ->setParameter('uid', $verifyChg['uid'])
+                        ->getQuery();
                     $query->getResult();
 
                     // delete verification record
-                    ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $verifyChg['uid'], 'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL));
+                    ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $verifyChg['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL));
 
                     $deleteEvent = new GenericEvent($registration);
                     $this->getDispatcher()->dispatch('user.registration.delete', $deleteEvent);
@@ -1459,7 +1460,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid' => $reginfo['uid'],
-            'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL,
+            'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
         ));
 
         $verifyChgObj = new \Zikula\Module\UsersModule\Entity\UserVerificationEntity;
@@ -1473,20 +1474,20 @@ class RegistrationApi extends \Zikula_AbstractApi
 
 
         if (empty($rendererArgs)) {
-            $siteurl   = System::getBaseUrl();
+            $siteurl = System::getBaseUrl();
 
             $rendererArgs = array();
             $rendererArgs['sitename'] = System::getVar('sitename');
-            $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl)-1);
+            $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl) - 1);
         }
         $rendererArgs['reginfo'] = $reginfo;
         $rendererArgs['verifycode'] = $verificationCode;
         $rendererArgs['approvalorder'] = $approvalOrder;
 
         $codeSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification', array(
-            'toAddress'         => $reginfo['email'],
-            'notificationType'  => 'regverifyemail',
-            'templateArgs'      => $rendererArgs,
+            'toAddress' => $reginfo['email'],
+            'notificationType' => 'regverifyemail',
+            'templateArgs' => $rendererArgs,
         ));
 
         if ($codeSent) {
@@ -1562,7 +1563,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 throw new \RuntimeException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $args['uid']));
             }
             if (!isset($reginfo['email'])) {
-               throw new \InvalidArgumentException($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $args['uid']));
+                throw new \InvalidArgumentException($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $args['uid']));
             }
         }
 
@@ -1570,7 +1571,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid' => $reginfo['uid'],
-            'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL,
+            'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
         ));
 
         $reginfo = UserUtil::getVars($reginfo['uid'], true, 'uid', true);
@@ -1648,8 +1649,8 @@ class RegistrationApi extends \Zikula_AbstractApi
             $reginfo['isverified'] = true;
 
             ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
-                'uid'       => $reginfo['uid'],
-                'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL,
+                'uid' => $reginfo['uid'],
+                'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
             ));
         }
 
@@ -1684,7 +1685,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         }*/
 
         // Preventing reactivation from same link !
-        $newregdate = DateUtil::getDatetime(strtotime($args['regdate'])+1);
+        $newregdate = DateUtil::getDatetime(strtotime($args['regdate']) + 1);
         UserUtil::setVar('activated', UsersConstant::ACTIVATED_ACTIVE, $args['uid']);
         UserUtil::setVar('user_regdate', DataUtil::formatForStore($newregdate), $args['uid']);
 
