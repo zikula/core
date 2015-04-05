@@ -120,3 +120,4 @@ Features:
 - Added view plugin {langchange} for switching language, function with shorturls enabled (#2364)
 - Added view plugin {moduleheader} to unify module headers and make styling at one place - moduleheader.tpl (#2372).
 - Added support Webshim, which is a polyfill library that enables you to reliably use HTML5 features across browsers, even if native support is lacking. (#2377)
+- Added mmenu js library and smarty template plugin to create a hidden admin panel
