@@ -58,7 +58,7 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
     $htmlContent .= '<ul>';
     foreach ($modules as $module) {
         if (SecurityUtil::checkPermission("module[name]::", '::', ACCESS_EDIT)) {
-            // first-level list - list modules with general 'index' list
+            // first-level list - list modules with general 'index' link
             $img = ModUtil::getModuleImagePath($module['name']);
             $url = ModUtil::url($module['name'], 'admin', 'index');
             $moduleSelected = empty($moduleSelected) && strpos($view->getRequest()->getUri(), $module['url']) ? " class='Selected'" : "";
@@ -99,7 +99,7 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
                     $("#zikula-admin-hiddenpanel-menu").mmenu({
                         extensions: ["hiddenpanel-customwidth"],
                         "header": {
-                           "title": "Zikula Administration",
+                           "title": "' . __('Zikula Administration') . '",
                            "add": true,
                            "update": true
                         },
