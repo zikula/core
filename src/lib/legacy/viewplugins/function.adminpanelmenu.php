@@ -44,6 +44,12 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
     PageUtil::addVar('stylesheet', '@ZikulaAdminModule/Resources/public/css/mmenu-hiddenpanel-customwidth.css');
 
     $modules = ModUtil::getModulesCapableOf('admin');
+    // sort modules by displayname
+    $moduleNames = array();
+    foreach ($modules as $key => $module) {
+        $moduleNames[$key] = $module['displayname'];
+    }
+    array_multisort($moduleNames, SORT_ASC, $modules);
 
     // create unordered list of admin-capable module links
     $htmlContent = '<nav id="zikula-admin-hiddenpanel-menu">';
