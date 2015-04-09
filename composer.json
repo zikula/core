@@ -36,7 +36,7 @@
     "require": {
         "php": ">=5.3.3",
         "ramsey/array_column": "1.1.*",
-        "beberlei/DoctrineExtensions": "dev-master",
+        "beberlei/DoctrineExtensions": "v0.3",
         "doctrine/doctrine-bundle": "1.3.*",
         "doctrine/orm": "2.4.*",
         "drak/doctrine1": "dev-master",
