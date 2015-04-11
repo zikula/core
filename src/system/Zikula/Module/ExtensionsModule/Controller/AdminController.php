@@ -121,7 +121,7 @@ class AdminController extends \Zikula_AbstractController
                 // This is required here since including pnversion automatically executes the pnversion code
                 // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
                 // since loading is self contained in each zOO application.
-                ZLanguage::bindModuleDomain($obj['directory']);
+                ZLanguage::bindModuleDomain($obj['name']);
             }
 
             $modversion = ExtensionsUtil::getVersionMeta($obj['name'], $baseDir);
