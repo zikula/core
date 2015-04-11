@@ -462,7 +462,6 @@ class ZLanguage
         }
 
         $_this  = self::getInstance();
-        // Hack refs #2740
         if (!$_this->locale) {
             $request = ServiceUtil::get('request');
             $_this->setup($request);
@@ -550,7 +549,7 @@ class ZLanguage
     private function searchOverrides($domain, $path)
     {
         $lang = self::transformFS($this->languageCode);
-        $override = realpath('config/locale/$lang/LC_MESSAGES/'.$domain.'.mo');
+        $override = realpath('config/locale/'.$lang.'/LC_MESSAGES/'.$domain.'.mo');
 
         return $override ? realpath('config/locale') : realpath($path);
     }
