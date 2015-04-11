@@ -566,7 +566,19 @@ class ZLanguage
     {
         $module = ModUtil::getModule($name);
 
-        return (null === $module) ? strtolower('module_'.$name) : 'module_'.$module->getTranslationDomain();
+        if (null === $module) {
+            $result = strtolower('module_'.$name);
+        } else {
+            $translationDomain = $module->getTranslationDomain();
+            
+            if ($translationDomain == 'zikula') {
+                $result = $translationDomain;
+            } else {
+                $result = 'module_'.$translationDomain;
+            }
+        }
+        
+        return $result;
     }
 
     /**
