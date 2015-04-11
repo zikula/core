@@ -106,7 +106,7 @@ class AdminController extends \Zikula_AbstractController
             throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
         }
 
-        if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', "$obj[name]::$id", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', $obj['name'].'::'.$id, ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -116,7 +116,7 @@ class AdminController extends \Zikula_AbstractController
 
             // load gettext domain for 3rd party modules
             if ($baseDir == 'modules' &&
-                (is_dir("modules/$obj[directory]/Resources/locale") || is_dir("modules/$obj[directory]/locale"))
+                (is_dir('modules/'.$obj['directory'].'/Resources/locale') || is_dir('modules/'.$obj['directory'].'/locale'))
             ) {
                 // This is required here since including pnversion automatically executes the pnversion code
                 // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
