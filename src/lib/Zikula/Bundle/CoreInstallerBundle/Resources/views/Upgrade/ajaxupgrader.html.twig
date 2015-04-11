@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <div><a href="#upgrade-fieldset" id="beginupgrade" class="btn btn-lg btn-success">{{ __('Begin Upgrader') }}<br />{{ __('be patient!') }} <i class="fa fa-clock-o"></i></a></div>
+    <div class="text-center"><a href="#upgrade-fieldset" id="beginupgrade" class="btn btn-lg btn-success">{{ __('Begin Upgrader') }}<br />{{ __('be patient!') }} <i class="fa fa-clock-o"></i></a></div>
 
     <fieldset id="upgrade-fieldset">
         <legend>{{  __("Upgrading Modules and Helpers") }}</legend>
@@ -41,7 +41,7 @@
 
     </fieldset>
 
-    <div><a href="{{ url('upgrade', { 'stage': 'complete' }) }}" id="continuebutton" class="btn btn-lg btn-success" style="display:none;">{{ __('Finish') }} <i class="fa fa-angle-double-right"></i></a></div>
+    <div class="text-center><a href="{{ url('upgrade', { 'stage': 'complete' }) }}" id="continuebutton" class="btn btn-lg btn-success" style="display:none;">{{ __('Finish') }} <i class="fa fa-angle-double-right"></i></a></div>
 </div>
 {# create a javascript array of all the stages #}
 <script>
