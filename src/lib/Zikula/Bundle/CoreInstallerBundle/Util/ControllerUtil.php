@@ -118,7 +118,7 @@ class ControllerUtil
         if ($container->hasParameter('upgrading') && $container->getParameter('upgrading') === true) {
             $files = array(
                 'personal_config' => '/../config/personal_config.php',
-                'custom_parameters' => 'app/config/custom_parameters.php');
+                'custom_parameters' => '/config/custom_parameters.yml');
             foreach ($files as $key => $file) {
                 $path = realpath($rootDir . $file);
                 if ($path === false) {
