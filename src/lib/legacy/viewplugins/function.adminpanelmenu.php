@@ -64,7 +64,7 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
             $moduleSelected = empty($moduleSelected) && strpos($view->getRequest()->getUri(), $module['url']) ? " class='Selected'" : "";
             $htmlContent .= "<li{$moduleSelected}><a href='$url'><img src='$img' height='18px' /> " . $module['displayname'] . "</a>";
             $htmlContent .= "<ul class='text-left'>";
-            $links = ModUtil::apiFunc($module['name'], 'admin', 'getLinks');
+            $links = (array)ModUtil::apiFunc($module['name'], 'admin', 'getLinks');
             // create second-level list from module adminLinks
             foreach ($links as $link) {
                 if (isset($link['icon'])) {
