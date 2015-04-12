@@ -161,6 +161,9 @@ class AjaxUpgradeController extends AbstractController
 
     private function clearCaches()
     {
+        // clear cache with zikula's method
+        $cacheClearer = $this->container->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony');
         // use full symfony cache_clearer not zikula's to clear entire cache and set for warmup
         // console commands always run in `dev` mode but site should be `prod` mode. clear both for good measure.
         $this->container->get('cache_clearer')->clear('dev');
