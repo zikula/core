@@ -50,8 +50,7 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function handleFormResult(FormInterface $form)
     {
-        $params = array_merge($this->yamlManager->getParameters(), $form->getData());
-        $this->yamlManager->setParameters($params);
+        $this->container->get('core_installer.controller.util')->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
     }
 
     public function isNecessary()

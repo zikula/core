@@ -17,6 +17,9 @@ namespace Zikula\Bundle\CoreInstallerBundle\Util;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Core\Exception\FatalErrorException;
 use Zikula\Component\Wizard\StageInterface;
+use Zikula\Bundle\CoreBundle\YamlDumper;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Zikula\Component\Wizard\AbortStageException;
 
 class ControllerUtil
 {
@@ -143,6 +146,26 @@ class ControllerUtil
         $results['phpversion'] = phpversion();
 
         return $results;
+    }
+
+    /**
+     * Write admin credentials to param file as encoded values
+     *
+     * @param YamlDumper $yamlManager
+     * @param array $data
+     * @throws AbortStageException
+     */
+    public function writeEncodedAdminCredentials(YamlDumper $yamlManager, array $data)
+    {
+        foreach ($data as $k => $v) {
+            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+        }
+        $params = array_merge($yamlManager->getParameters(), $data);
+        try {
+            $yamlManager->setParameters($params);
+        } catch (IOException $e) {
+            throw new AbortStageException(__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
+        }
     }
 
     /**

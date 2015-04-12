@@ -15,11 +15,9 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
-use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -71,20 +69,6 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
 
     public function handleFormResult(FormInterface $form)
     {
-        $data = $form->getData();
-        foreach ($data as $k => $v) {
-            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
-        }
-        $this->writeParams($data);
-    }
-
-    private function writeParams($data)
-    {
-        $params = array_merge($this->yamlManager->getParameters(), $data);
-        try {
-            $this->yamlManager->setParameters($params);
-        } catch (IOException $e) {
-            throw new AbortStageException(__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
-        }
+        $this->container->get('core_installer.controller.util')->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
     }
 }

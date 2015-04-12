@@ -319,9 +319,15 @@ class AjaxInstallController extends AbstractController
      */
     private function decodeParameters($params)
     {
-        $params['password'] = base64_decode($params['password']);
-        $params['username'] = base64_decode($params['username']);
-        $params['email'] = base64_decode($params['email']);
+        if (!empty($params['password'])) {
+            $params['password'] = base64_decode($params['password']);
+        }
+        if (!empty($params['username'])) {
+            $params['username'] = base64_decode($params['username']);
+        }
+        if (!empty($params['email'])) {
+            $params['email'] = base64_decode($params['email']);
+        }
 
         return $params;
     }
