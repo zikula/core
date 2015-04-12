@@ -100,14 +100,6 @@ jQuery contextMenu git-master at time of inclusion
     Location in Zikula: javascript/jQuery-contextMenu
     Patch details: none
 
-jQuery timepicker addon 1.0.2
-
-    Vendor website: http://trentrichardson.com/examples/timepicker/
-    Downloaded from: http://trentrichardson.com/examples/timepicker/
-    License: MIT
-    Location in Zikula: javascript/plugins/jQuery-Timepicker-Addon
-    Patch details: none
-
 json2.js 2012-10-08
 
     Vendor website: http://www.JSON.org/js.html
