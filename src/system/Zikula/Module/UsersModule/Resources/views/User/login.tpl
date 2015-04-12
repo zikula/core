@@ -31,14 +31,14 @@
         <input id="users_login_returnpage" type="hidden" name="returnpage" value="{$returnpage|safetext}" />
         <input id="users_login_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="users_login_event_type" type="hidden" name="event_type" value="login_screen" />
-        {if ($modvars.ZConfig.seclevel|lower == 'high')}
+        {if ($modvars.ZConfig.seclevel|default:'high'|lower == 'high')}
         <input id="users_login_rememberme" type="hidden" name="rememberme" value="0" />
         {/if}
         <fieldset>
             <div id="users_login_fields">
                 {$login_form_fields}
             </div>
-            {if ($modvars.ZConfig.seclevel|lower != 'high')}
+            {if ($modvars.ZConfig.seclevel|default:'high'|lower != 'high')}
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
                     <input id="users_login_rememberme" type="checkbox" name="rememberme" value="1" />
