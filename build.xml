@@ -106,6 +106,7 @@
         <move file="${workspace}/source/composer.json" tofile="${packagepath}/docs/en/dev/composer.json" overwrite="true"/>
         <move file="${workspace}/source/composer.lock" tofile="${packagepath}/docs/en/dev/composer.lock" overwrite="true"/>
 
+        <exec command="${workspace}/source/build.php build:generate_vendor_doc --write-to '${packagepath}/docs/en/Composer_Vendors.md'" checkreturn="true" passthru="true"/>
         <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor" checkreturn="true" passthru="true"/>
         <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor" checkreturn="true" passthru="true"/>
 
