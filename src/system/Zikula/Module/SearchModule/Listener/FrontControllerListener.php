@@ -55,7 +55,7 @@ class FrontControllerListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        if (\System::isInstalling()) {
+        if (\System::isInstalling() || \System::isUpgrading()) {
             return;
         }
         $openSearchEnabled = ModUtil::getVar('ZikulaSearchModule', 'opensearch_enabled');

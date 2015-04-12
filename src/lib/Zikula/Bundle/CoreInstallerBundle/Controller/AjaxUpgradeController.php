@@ -40,6 +40,7 @@ class AjaxUpgradeController extends AbstractController
     public function ajaxAction(Request $request)
     {
         $stage = $request->request->get('stage');
+        $this->container->setParameter('upgrading', true);
         $status = $this->executeStage($stage);
         $response = array('status' => (boolean) $status);
         if (is_array($status)) {

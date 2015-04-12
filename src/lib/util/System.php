@@ -1053,7 +1053,9 @@ class System
      */
     public static function isUpgrading()
     {
-        return array_key_exists('_ZikulaUpgrader', $GLOBALS);
+        $sm = ServiceUtil::getManager();
+        $upgrading = $sm->hasParameter('upgrading') ? $sm->getParameter('upgrading') : false;
+        return $upgrading || array_key_exists('_ZikulaUpgrader', $GLOBALS);
     }
 
     /**
