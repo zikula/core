@@ -163,17 +163,22 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 }
 
             case '2.9.9':
-                // Multilingual support
-                foreach (array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription') as $variable) {
-                    foreach (ZLanguage::getInstalledLanguages() as $langcode) {
-                        $variable_ml = $variable . '_' . $langcode;
-                        $value_ml = System::getVar($variable_ml);
-                        if (!isset($value_ml) || empty($value_ml)) {
-                            System::setVar($variable_ml, System::getVar($variable));
+                // update certain System vars to multilingual. provide default values for all locales using current value.
+                // must directly manipulate System vars at DB level because using System::getVar() returns empty values due to ModUtil::setupMultilingual()
+                $varsToChange = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
+                $SystemVars = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findBy(array('modname' => ModUtil::CONFIG_MODULE));
+                /** @var \Zikula\Core\Doctrine\Entity\ExtensionVarEntity $modVar */
+                foreach ($SystemVars as $modVar) {
+                    if (in_array($modVar->getName(), $varsToChange)) {
+                        foreach (ZLanguage::getInstalledLanguages() as $langcode) {
+                            $newModVar = clone $modVar;
+                            $newModVar->setName($modVar->getName() . '_' . $langcode);
+                            $this->entityManager->persist($newModVar);
                         }
+                        $this->entityManager->remove($modVar);
                     }
-                    System::delVar($variable);
                 }
+                $this->entityManager->flush();
 
             case '2.9.10':
                 // current version
