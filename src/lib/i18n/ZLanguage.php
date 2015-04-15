@@ -462,7 +462,6 @@ class ZLanguage
         }
 
         $_this  = self::getInstance();
-        // Hack refs #2740
         if (!$_this->locale) {
             $request = ServiceUtil::get('request');
             $_this->setup($request);
@@ -473,7 +472,7 @@ class ZLanguage
         if (null !== $module) {
             $path = $_this->searchOverrides($domain, $module->getPath().'/Resources/locale');
         } else {
-            $path = $_this->searchOverrides($domain, "modules/$modName/locale");
+            $path = $_this->searchOverrides($domain, 'modules/'.$modName.'/locale');
         }
 
         return self::bindDomain($domain, $path);
@@ -550,10 +549,9 @@ class ZLanguage
     private function searchOverrides($domain, $path)
     {
         $lang = self::transformFS($this->languageCode);
-        //$basedir = realpath('.') . DIRECTORY_SEPARATOR;
-        $override = realpath(/*$basedir.*/"config/locale/$lang/LC_MESSAGES/$domain.mo");
+        $override = realpath('config/locale/'.$lang.'/LC_MESSAGES/'.$domain.'.mo');
 
-        return $override ? realpath(/*$basedir.*/'config/locale') : realpath($path);
+        return $override ? realpath('config/locale') : realpath($path);
     }
 
 
@@ -568,7 +566,7 @@ class ZLanguage
     {
         $module = ModUtil::getModule($name);
 
-        return (null === $module) ? strtolower("module_$name") : $module->getTranslationDomain();
+        return (null === $module) ? strtolower('module_'.$name) : $module->getTranslationDomain();
     }
 
     /**

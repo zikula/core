@@ -7,6 +7,7 @@ BC Breaks:
 - Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.
 - Sessions can no longer be stored in a file. This functionality may return in a later version.
 - Support for IE 7 and below has been removed.
+- To translate a module in Zikula 1.4.x, the file name must be in the format `modulename.mo`. To translate a module in Zikula 1.3.x, the file name was previously in the format `module_modulename.mo`. These files must be placed into the legacy folder `app/Resources/locale/{lang}/LC_MESSAGES` (where `{lang}` is the standardized abbreviation for your language (e.g. `de` for german). In the future, the files must be placed into the new `app/Resources/translations` folder. In this case, copy all files to `<filename>.<lang>.po` (for example `routes.template.po => routes.de.po`) and translate the `.po` files as usual to generate the `.mo` files.
 
 Deprecated:
 - DoctrineExtensions Paginator has superseded by Doctrine ORM paginator
