@@ -10,7 +10,9 @@
     # Turn the rewriting engine on
     RewriteEngine On
 
-    # For rewriting to work you might need allow overrides, e.g.:
+    # By default, Apache 2.3.9 and later sets "AllowOverride" to "None".
+    # In Apache 2.3.8 and earlier, it is set to "All".
+    # For rewriting to work, you might need to allow overrides, such as setting to "All".
     #AllowOverride All
 
     # Enable RewriteBase if Zikula is installed to a sub-directory
