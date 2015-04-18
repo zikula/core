@@ -108,7 +108,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             case '1.2.1':
             case '1.2.2':
                 try {
-                    DoctrineHelper::createSchema($this->entityManager, array('ZikulaCategoriesModule:CategoryAttributeEntity'));
+                    DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity'));
                 } catch (\Exception $e) {
                 }
                 // rename old tablename column for Core 1.4.0
@@ -765,18 +765,11 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
      */
     private function migrateAttributesFromObjectData()
     {
-        $dataset = DBUtil::selectObjectArray('categories_category');
-        $em = $this->getEntityManager();
-        foreach ($dataset as $data) {
-            if (!isset($data['__ATTRIBUTES__'])) {
-                continue;
-            }
-            $category = $em->getRepository('ZikulaCategoriesModule:CategoryEntity')->findOneBy(array('id' => $data['id']));
-            foreach ($data['__ATTRIBUTES__'] as $name => $value) {
-                $category->setAttribute($name ,$value);
-            }
-
-            $em->flush();
+        $attributes = $this->getEntityManager()->getConnection()->fetchAll("SELECT * FROM objectdata_attributes WHERE object_type = 'categories_category'");
+        foreach ($attributes as $attribute) {
+            $category = $this->getEntityManager()->getRepository('ZikulaCategoriesModule:CategoryEntity')->findOneBy(array('id' => $attribute['object_id']));
+            $category->setAttribute($attribute['attribute_name'] ,$attribute['value']);
         }
+        $this->getEntityManager()->flush();
     }
 }

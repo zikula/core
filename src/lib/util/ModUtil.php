@@ -671,6 +671,11 @@ class ModUtil
             $modpath = is_dir("system/$directory") ? 'system' : 'modules';
         }
 
+        // all system modules do not require tables.php, return immediately
+        if ($modpath == 'system') {
+            return true;
+        }
+
         // Load the database definition if required
         $files = array();
         if ($module = self::getModule($moduleName)) {
