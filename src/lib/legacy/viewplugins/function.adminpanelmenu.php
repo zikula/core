@@ -60,33 +60,43 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
         if (SecurityUtil::checkPermission("module[name]::", '::', ACCESS_EDIT)) {
             // first-level list - list modules with general 'index' link
             $img = ModUtil::getModuleImagePath($module['name']);
-            $url = ModUtil::url($module['name'], 'admin', 'index');
+            try {
+                $url = ModUtil::url($module['name'], 'admin', 'index');
+            } catch (\Exception $e) {
+                $url = '#';
+            }
             $moduleSelected = empty($moduleSelected) && strpos($view->getRequest()->getUri(), $module['url']) ? " class='Selected'" : "";
             $htmlContent .= "<li{$moduleSelected}><a href='$url'><img src='$img' height='18px' /> " . $module['displayname'] . "</a>";
-            $htmlContent .= "<ul class='text-left'>";
-            $links = (array)ModUtil::apiFunc($module['name'], 'admin', 'getLinks');
-            // create second-level list from module adminLinks
-            foreach ($links as $link) {
-                if (isset($link['icon'])) {
-                    $img = "<i class='fa fa-$link[icon]'></i>";
-                } elseif (isset($link['class'])) {
-                    $img = "<span class='$link[class]'></span>";
-                } else {
-                    $img = '';
-                }
-                $linkSelected = empty($linkSelected) && strpos($view->getRequest()->getUri(), $link['url']) ? " class='Selected'" : "";
-                $htmlContent .= "<li{$linkSelected}><a href='$link[url]'>$img $link[text]</a>";
-                // create third-level list from adminLinks subLinks
-                if (isset($link['links'])) {
-                    $htmlContent .= "<ul class='text-left'>";
-                    foreach ($link['links'] as $sublink) {
-                        $htmlContent .= "<li><a href='$sublink[url]'>$sublink[text]</a></li>";
-                    }
-                    $htmlContent .= '</ul>';
-                }
-                $htmlContent .= "</li>";
+            try {
+                $links = (array)ModUtil::apiFunc($module['name'], 'admin', 'getLinks');
+            } catch (\Exception $e) {
+                $links = array();
             }
-            $htmlContent .= "</ul>";
+            if (count($links) > 0) {
+                // create second-level list from module adminLinks
+                $htmlContent .= "<ul class='text-left'>";
+                foreach ($links as $link) {
+                    if (isset($link['icon'])) {
+                        $img = "<i class='fa fa-$link[icon]'></i>";
+                    } elseif (isset($link['class'])) {
+                        $img = "<span class='$link[class]'></span>";
+                    } else {
+                        $img = '';
+                    }
+                    $linkSelected = empty($linkSelected) && strpos($view->getRequest()->getUri(), $link['url']) ? " class='Selected'" : "";
+                    $htmlContent .= "<li{$linkSelected}><a href='$link[url]'>$img $link[text]</a>";
+                    // create third-level list from adminLinks subLinks
+                    if (isset($link['links']) && count($link['links']) > 0) {
+                        $htmlContent .= "<ul class='text-left'>";
+                        foreach ($link['links'] as $sublink) {
+                            $htmlContent .= "<li><a href='$sublink[url]'>$sublink[text]</a></li>";
+                        }
+                        $htmlContent .= '</ul>';
+                    }
+                    $htmlContent .= "</li>";
+                }
+                $htmlContent .= "</ul>";
+            }
             $htmlContent .= "</li>";
         }
     }
