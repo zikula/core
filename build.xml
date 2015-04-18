@@ -97,16 +97,19 @@
 
         <exec command="cp -a ${workspace}/source/src ${packagepath}"/>
 
+        <!-- generate composer_vendors file -->
+        <exec command="${workspace}/source/build.php build:generate_vendor_doc --write-to '${packagepath}/docs/en/Composer_Vendors.md'" checkreturn="true" passthru="true"/>
+        
         <!-- move doc files from repo root -->
         <echo msg="Moving doc files to /docs/en ..."/>
         <move file="${workspace}/source/README.md" tofile="${packagepath}/docs/en/README.md" overwrite="true"/>
         <move file="${workspace}/source/INSTALL-1.4.0.md" tofile="${packagepath}/docs/en/INSTALL-1.4.0.md" overwrite="true"/>
         <move file="${workspace}/source/UPGRADE-1.4.0.md" tofile="${packagepath}/docs/en/UPGRADE-1.4.0.md" overwrite="true"/>
+        <move file="${workspace}/source/CHANGELOG-1.3.md" tofile="${packagepath}/docs/en/CHANGELOG-1.3.md" overwrite="true"/>
         <move file="${workspace}/source/CHANGELOG-1.4.md" tofile="${packagepath}/docs/en/CHANGELOG-1.4.md" overwrite="true"/>
         <move file="${workspace}/source/composer.json" tofile="${packagepath}/docs/en/dev/composer.json" overwrite="true"/>
         <move file="${workspace}/source/composer.lock" tofile="${packagepath}/docs/en/dev/composer.lock" overwrite="true"/>
 
-        <exec command="${workspace}/source/build.php build:generate_vendor_doc --write-to '${packagepath}/docs/en/Composer_Vendors.md'" checkreturn="true" passthru="true"/>
         <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor" checkreturn="true" passthru="true"/>
         <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor" checkreturn="true" passthru="true"/>
 
