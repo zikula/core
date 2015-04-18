@@ -59,7 +59,8 @@ class InitStage implements StageInterface, InjectContainerInterface
         $kernel = $this->container->get('kernel');
 
         $res = $conn->executeQuery("SELECT name FROM modules WHERE name = 'ZikulaExtensionsModule'");
-        if ($res->fetch()) {
+        $result = $res->fetch();
+        if ($result) {
             // nothing to do, already converted.
             return '';
         }
