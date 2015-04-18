@@ -79,6 +79,8 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         if ($input->isInteractive()) {
+            $env = $this->getContainer()->get('kernel')->getEnvironment();
+            $output->writeln('Configuring Zikula installation in <info>' . $env . '</info> environment.');
             $output->writeln("Please follow the instructions to install Zikula " . Zikula_Core::VERSION_NUM . ".");
         }
 
@@ -101,6 +103,9 @@ class StartCommand extends AbstractCoreInstallerCommand
             $settings = array_merge($settings, $data);
             $formType = new CreateAdminType();
             $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+            foreach ($data as $k => $v) {
+                $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+            }
             $settings = array_merge($settings, $data);
         }
 

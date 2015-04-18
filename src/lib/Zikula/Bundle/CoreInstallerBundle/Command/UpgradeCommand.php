@@ -72,11 +72,15 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             "<info>---------------------------</info>"
         ));
         $output->writeln("*** UPGRADING TO ZIKULA CORE v" . \Zikula_Core::VERSION_NUM . " ***");
+        $env = $this->getContainer()->get('kernel')->getEnvironment();
+        $output->writeln('Upgrading Zikula in <info>' . $env . '</info> environment.');
 
         $this->bootstrap(false);
 
+        $output->writeln('Initializing upgrade...');
         $initStage = new InitStage($this->getContainer());
         $initStage->isNecessary(); // runs init and upgradeUsersModule methods and intentionally returns false
+        $output->writeln('Initialization complete');
 
         $warnings = $this->getContainer()->get('core_installer.controller.util')->initPhp();
         if (!empty($warnings)) {
@@ -93,6 +97,10 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $settings = array();
         foreach ($this->selectedSettings as $name) {
             $settings[$name] = $this->getRequiredOption($input, $output, $name);
+            if (in_array($name, array('username', 'password'))) {
+                // must encode username and password so they are json-safe
+                $settings[$name] = base64_encode($settings[$name]);
+            }
         }
 
         // write the parameters to custom_parameters.yml
@@ -105,6 +113,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $stages = $ajaxInstallerStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
             $output->writeln($stage[AjaxInstallerStage::PRE]);
+            $output->writeln("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
             $status = $this->getContainer()->get('core_installer.controller.ajaxupgrade')->commandLineAction($stage[AjaxInstallerStage::NAME]);
             $message = $status ? "<info>" . $stage[AjaxInstallerStage::SUCCESS] . "</info>" : "<error>" . $stage[AjaxInstallerStage::FAIL] . "</error>";
             $output->writeln($message);

@@ -47,11 +47,15 @@ class FinishCommand extends AbstractCoreInstallerCommand
         }
 
         $output->writeln("*** INSTALLING ***");
+        $env = $this->getContainer()->get('kernel')->getEnvironment();
+        $output->writeln('Configuring Zikula installation in <info>' . $env . '</info> environment.');
+
         // install!
         $ajaxInstallerStage = new AjaxInstallerStage();
         $stages = $ajaxInstallerStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
             $output->writeln($stage[AjaxInstallerStage::PRE]);
+            $output->writeln("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
             $status = $this->getContainer()->get('core_installer.controller.ajaxinstall')->commandLineAction($stage[AjaxInstallerStage::NAME]);
             $message = $status ? "<info>" . $stage[AjaxInstallerStage::SUCCESS] . "</info>" : "<error>" . $stage[AjaxInstallerStage::FAIL] . "</error>";
             $output->writeln($message);
