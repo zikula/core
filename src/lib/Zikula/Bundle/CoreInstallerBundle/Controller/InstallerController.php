@@ -59,6 +59,7 @@ class InstallerController extends AbstractController
             return $currentStage->getResponse($request);
         }
         $templateParams = $this->util->getTemplateGlobals($currentStage);
+        $templateParams['headertemplate'] = '@ZikulaCoreInstaller/installheader.html.twig';
         if ($wizard->isHalted()) {
             $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());
             return $this->templatingService->renderResponse('ZikulaCoreInstallerBundle::error.html.twig', $templateParams);

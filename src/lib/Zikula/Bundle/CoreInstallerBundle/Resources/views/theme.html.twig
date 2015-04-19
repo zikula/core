@@ -17,29 +17,7 @@
 {% block body %}
 <div class="container">
     <div id="content">
-        <div id="header">
-            <h1>{{ __('Zikula Application Framework') }}</h1>
-            <h2>{{ __('Installer script') }}</h2>
-            <ol class="wizard">
-                <li{% if currentstage == 'locale' %} class="active"{% endif %}>
-                    <a href="{{ path('install', { 'stage': 'locale' }) }}">{{ __('Select language') }}</a>
-                </li>
-                <li{% if currentstage == 'requirements' %} class="active"{% endif %}>
-                    {{ __('Check requirements') }}
-                </li>
-                <li{% if currentstage == 'dbcreds' %} class="active"{% endif %}>
-                    {{ __('Database information') }}
-                </li>
-                <li{% if currentstage == 'createadmin' %} class="active"{% endif %}>
-                    {{ __("Create administrator's account") }}
-                </li>
-            </ol>
-            <p class="installguide"><em>{{ __f("Please refer to the %s during the process.",
-                    '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({
-                        '%url%': path('doc', {'name': 'INSTALL-1.4.0.md'}),
-                        '%text%': __('installation guide') }) ) | raw }}</em>
-            </p>
-        </div>
+        {% include headertemplate %}
 
         <div id="maincontent" class="text-left">
             {{ showflashes() }}
