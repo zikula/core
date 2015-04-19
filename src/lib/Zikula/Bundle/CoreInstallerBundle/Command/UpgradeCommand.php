@@ -23,9 +23,16 @@ use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\InitStage;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand
 {
+    /**
+     * @var array
+     * @deprecated This is not used in PHP >=5.4.0
+     */
     private $selectedSettings = array(
         'username',
         'password',
@@ -94,13 +101,36 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
 
         // get the settings from user input
-        $settings = array();
-        foreach ($this->selectedSettings as $name) {
-            $settings[$name] = $this->getRequiredOption($input, $output, $name);
-            if (in_array($name, array('username', 'password'))) {
-                // must encode username and password so they are json-safe
-                $settings[$name] = base64_encode($settings[$name]);
+        $x = explode('.', str_replace('-', '.', phpversion()));
+        $phpVersion = "$x[0].$x[1].$x[2]";
+        if (version_compare($phpVersion, '5.4.0', "<")) {
+            /** @deprecated This method is scheduled for removal in Core 2.0.0 */
+            $settings = array();
+            foreach ($this->selectedSettings as $name) {
+                $settings[$name] = $this->getRequiredOption($input, $output, $name);
+                if (in_array($name, array('username', 'password'))) {
+                    // must encode username and password so they are json-safe
+                    $settings[$name] = base64_encode($settings[$name]);
+                }
             }
+        } else {
+            // This method works in PHP >=5.4.0
+            $formType = new LocaleType();
+            $settings = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+            $formType = new LoginType();
+            $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+            foreach ($data as $k => $v) {
+                $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+            }
+            $settings = array_merge($settings, $data);
+            $formType = new RequestContextType();
+            $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+            foreach ($data as $k => $v) {
+                $newKey = str_replace(':', '.', $k);
+                $data[$newKey] = $v;
+                unset($data[$k]);
+            }
+            $settings = array_merge($settings, $data);
         }
 
         // write the parameters to custom_parameters.yml
