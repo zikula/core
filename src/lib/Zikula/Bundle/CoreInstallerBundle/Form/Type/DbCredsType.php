@@ -40,7 +40,7 @@ class DbCredsType extends AbstractType
                     'myisam' => __('MyISAM')),
                 'data' => 'innodb'))
             ->add('database_host', 'text', array(
-                'label' => __('Host'),
+                'label' => __('Database Host'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'data' => __('localhost'),
                 'constraints' => array(

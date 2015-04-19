@@ -24,6 +24,7 @@ use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 
 class StartCommand extends AbstractCoreInstallerCommand
 {
@@ -98,6 +99,14 @@ class StartCommand extends AbstractCoreInstallerCommand
             // This method works in PHP >=5.4.0
             $formType = new LocaleType();
             $settings = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+            $formType = new RequestContextType();
+            $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+            foreach ($data as $k => $v) {
+                $newKey = str_replace(':', '.', $k);
+                $data[$newKey] = $v;
+                unset($data[$k]);
+            }
+            $settings = array_merge($settings, $data);
             $formType = new DbCredsType();
             $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
             $settings = array_merge($settings, $data);
@@ -112,6 +121,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         if ($input->isInteractive()) {
             $output->writeln(array("", "", ""));
             $output->writeln("Configuration successful. Please verify your parameters below:");
+            $output->writeln("(Admin credentials have been encoded to make them json-safe.)");
         }
 
         $this->printSettings($settings, $output);
