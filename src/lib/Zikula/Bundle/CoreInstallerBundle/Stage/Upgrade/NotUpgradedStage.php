@@ -35,6 +35,14 @@ class NotUpgradedStage implements StageInterface
         if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
             throw new AbortStageException(__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION)));
         }
+        // make sure selected language is installed
+        if (!in_array(\ZLanguage::getLanguageCode(), \ZLanguage::getInstalledLanguages())) {
+            \System::setVar('language_i18n', 'en');
+            \System::setVar('language', 'eng');
+            \System::setVar('locale', 'en');
+            \ZLanguage::setLocale('en');
+        }
+
         return true;
     }
 
