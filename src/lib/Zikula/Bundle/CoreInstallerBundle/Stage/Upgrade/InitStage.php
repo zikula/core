@@ -68,9 +68,12 @@ class InitStage implements StageInterface, InjectContainerInterface
         // remove event handlers that were replaced by DependencyInjection
         $conn->executeQuery("DELETE FROM module_vars WHERE modname = '/EventHandlers' AND name IN ('Extensions', 'Users', 'Search', 'Settings')");
 
+        // remove old Errors module from modules table (uninstall and delete)
+        $conn->executeQuery("DELETE FROM modules WHERE name = 'Errors'");
+
         // rename modules in tables: modules, module_vars, group_perms
         $oldModuleNames = array(
-            'Admin', 'Blocks', 'Categories', 'Errors', 'Extensions', 'Groups',
+            'Admin', 'Blocks', 'Categories', 'Extensions', 'Groups',
             'Mailer', 'PageLock', 'Permissions', 'Search', 'SecurityCenter',
             'Settings', 'Theme', 'Users',
         );
