@@ -195,7 +195,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
 
         if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('ZikulaCategoriesModule::', "{$this->category['id']}::", ACCESS_EDIT)) {
             $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $this->category['id'])));
-            $result .= "&nbsp;&nbsp;<a href=\"{$url}\"><img src=\"images/icons/extrasmall/xedit.png\" title=\"" . __('Edit') . '" alt="' . __('Edit') . '" /></a>';
+            $result .= '&nbsp;&nbsp;<a href="' . $url . '"><i class="fa fa-pencil fa-lg text-danger" title="' . __('Edit') . '"></i></a>';
         }
 
         return $result;
