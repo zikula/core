@@ -29,8 +29,8 @@
     },
     "authors": [
         {
-            "name": "Drak",
-            "email": "drak@zikula.org"
+            "name": "Zikula Team",
+            "homepage": "https://github.com/zikula/core/graphs/contributors"
         }
     ],
     "require": {
@@ -58,7 +58,6 @@
         "symfony/monolog-bundle": "2.7.*",
         "jms/i18n-routing-bundle": "dev-master",
         "twig/extensions": "1.2.*",
-        "zikula/generator-bundle": "dev-master",
         "zikula/filesystem": "dev-master",
         "zikula/jquery-bundle": "dev-master",
         "zikula/jquery-ui-bundle": "dev-master",
@@ -77,6 +76,7 @@
         "zikula/profile-module": "dev-master"
     },
     "require-dev": {
+        "zikula/generator-bundle": "dev-master",
         "zikula/breakit-module": "dev-master"
     },
     "scripts": {
