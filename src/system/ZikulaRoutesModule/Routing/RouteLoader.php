@@ -63,12 +63,27 @@ class RouteLoader implements LoaderInterface
                 list (, $func) = $helper->sanitizeAction($dbRoute->getAction());
                 $defaults['_zkType'] = $type;
                 $defaults['_zkFunc'] = $func;
+                
+                // We have to prepend the bundle prefix if
+                // - routes are _not_ currently extracted via the command line and
+                // - the route has i18n set to false.
+                // This is because when extracting the routes, a bundle author only wants to translate the bare route
+                // patterns, without a redundant and potentially customized bundle prefix in front of them.
+                // If i18n is set to true, Zikula's customized pattern generation strategy will take care of it.
+                // See Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy
+                $options = $dbRoute->getOptions();
+                $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
+                if ($prependBundle) {
+                    $path = $dbRoute->getPathWithBundlePrefix($this->container);
+                } else {
+                    $path = $dbRoute->getPath();
+                }
 
                 $route = new Route(
-                    $dbRoute->getPath(),
+                    $path,
                     $defaults,
                     $dbRoute->getRequirements(),
-                    $dbRoute->getOptions(),
+                    $options,
                     $dbRoute->getHost(),
                     $dbRoute->getSchemes(),
                     $dbRoute->getMethods(),
