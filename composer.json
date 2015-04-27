@@ -59,6 +59,7 @@
         "jms/i18n-routing-bundle": "dev-master",
         "twig/extensions": "1.2.*",
         "zikula/filesystem": "dev-master",
+        "zikula/generator-bundle": "dev-master",
         "zikula/jquery-bundle": "dev-master",
         "zikula/jquery-ui-bundle": "dev-master",
         "zikula/bootstrap-bundle": "dev-master",
@@ -76,7 +77,6 @@
         "zikula/profile-module": "dev-master"
     },
     "require-dev": {
-        "zikula/generator-bundle": "dev-master",
         "zikula/breakit-module": "dev-master"
     },
     "scripts": {
