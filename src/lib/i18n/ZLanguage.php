@@ -436,7 +436,7 @@ class ZLanguage
     {
         $_this  = self::getInstance();
         $domain = self::getThemeDomain($themeName);
-        $theme = ModUtil::getModule($themeName);
+        $theme = ThemeUtil::getTheme($themeName);
         if (null !== $theme) {
             $path = $_this->searchOverrides($domain, $theme->getPath().'/Resources/locale');
         } else {
