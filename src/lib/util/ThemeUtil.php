@@ -245,7 +245,7 @@ class ThemeUtil
             $array = $em->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
             foreach ($array as $theme) {
                 $theme = $theme->toArray();
-                $theme['i18n'] = (is_dir("themes/$theme[name]/locale") ? 1 : 0);
+                $theme['i18n'] = (is_dir("themes/$theme[directory]/locale") || is_dir("themes/$theme[directory]/Resources/locale") ? 1 : 0);
                 $themestable[$theme['id']] = $theme;
             }
         }
