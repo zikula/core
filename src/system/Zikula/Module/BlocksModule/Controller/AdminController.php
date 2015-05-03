@@ -843,7 +843,7 @@ class AdminController extends \Zikula_AbstractController
             // No confirmation yet
             $this->view->assign('position', $item);
 
-            return $this->view->fetch('Admin/deleteposition.tpl');
+            return new Response($this->view->fetch('Admin/deleteposition.tpl'));
         }
 
         $this->checkCsrfToken();
