@@ -50,7 +50,7 @@ ul.navbar-modulelinks > li:last-child {
 }
 
 ul.navbar-modulelinks {
-/*    min-height: inherit;*/
+    min-height: inherit;
     padding: 3px;
     z-index: inherit;
     margin-left: 0;
