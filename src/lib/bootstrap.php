@@ -31,6 +31,11 @@ if ($kernelConfig['env'] !== 'prod') {
 require __DIR__.'/../app/ZikulaKernel.php';
 
 $kernel = new ZikulaKernel($kernelConfig['env'], $kernelConfig['debug']);
+
+if ((isset($GLOBALS['ZConfig']['System']['umask'])) && (!is_null($GLOBALS['ZConfig']['System']['umask']))) {
+    umask($GLOBALS['ZConfig']['System']['umask']);
+}
+
 $kernel->boot();
 
 // legacy handling

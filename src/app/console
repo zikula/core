@@ -20,5 +20,10 @@ $env = $isInstallUpgradeCommand ? 'prod' : $defaultEnv;
 $debug = getenv('ZIKULA_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
 
 $kernel = new ZikulaKernel($env, $debug);
+
+if ((isset($GLOBALS['ZConfig']['System']['umask'])) && (!is_null($GLOBALS['ZConfig']['System']['umask']))) {
+    umask($GLOBALS['ZConfig']['System']['umask']);
+}
+
 $application = new Application($kernel);
 $application->run($input);

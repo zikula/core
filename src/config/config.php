@@ -16,6 +16,17 @@ global $ZConfig;
 $ZConfig['System'] = array();
 
 // ----------------------------------------------------------------------
+// Changing the current umask to "0002" will set directory permissions
+// to "0775", and file permissions to "0664" (for directories such as
+// "app/cache" and "app/logs"). Changing the current umask to "0000"
+// will set (insecure) directory permissions to "0777", and file permissions
+// to "0666". Note that using the ACL is recommended when you have access
+// to them on your server, because changing the umask is not thread-safe.
+// Set this value to NULL, to disable support for umask.
+// ----------------------------------------------------------------------
+$ZConfig['System']['umask'] = null;
+
+// ----------------------------------------------------------------------
 // This is the definition for the default Zikula system database.
 // It must be named 'default'
 // ----------------------------------------------------------------------
