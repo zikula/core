@@ -736,7 +736,7 @@ class JCSSUtil
                     }
                     // fix other paths after @import processing
                     if (!$importsAllowd) {
-                        $newLine = self::cssfixPath($newLine, explode('/', dirname($file)));
+                        $newLine = self::cssFixPath($newLine, explode('/', dirname($file)));
                     }
                     $contents[] = $newLine;
                 } else {
@@ -760,13 +760,13 @@ class JCSSUtil
      *
      * @return string
      */
-    private static function cssfixPath($line, $filepath)
+    private static function cssFixPath($line, $filepath)
     {
         $regexpurl = '/url\([\'"]?([\.\/]*)(.*?)[\'"]?\)/i';
         if (strpos($line, 'url') !== false) {
             preg_match_all($regexpurl, $line, $matches, PREG_SET_ORDER);
             foreach ($matches as $match) {
-                if (strpos($match[1], '/') !== 0) {
+                if ((strpos($match[1], '/') !== 0) && (substr($match[2], 0, 7) != 'http://') && (substr($match[2], 0, 8) != 'https://')) {
                     $depth = substr_count($match[1], '../') * -1;
                     $path = $depth < 0 ? array_slice($filepath, 0, $depth) : $filepath;
                     $path = implode('/', $path);
