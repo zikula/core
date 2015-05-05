@@ -178,7 +178,8 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
 
         $titleHtml = ($this->errorMessage != null ? " title=\"{$this->errorMessage}\"" : '');
         $attributes = $this->renderAttributes($view);
-        $result = "<input{$idHtml}{$nameHtml} type=\"file\" class=\"{$class}\"{$readOnlyHtml}{$titleHtml}{$attributes} />";
+        $requiredFlag = $this->mandatory ? ' required="required"' : '';
+        $result = "<input{$idHtml}{$nameHtml} type=\"file\" class=\"{$class}\"{$readOnlyHtml}{$titleHtml}{$requiredFlag}{$attributes} />";
 
         return $result;
     }
