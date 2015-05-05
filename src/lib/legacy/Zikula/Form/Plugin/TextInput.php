@@ -326,6 +326,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
         }
 
         $attributes = $this->renderAttributes($view);
+        $requiredFlag = $this->mandatory ? ' required="required"' : '';
 
         switch (strtolower($this->textMode)) {
             case 'singleline':
@@ -335,7 +336,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
             case 'password':
             case 'number':
             case 'email':
-                $result = "<input type=\"{$this->textMode}\"{$idHtml}{$nameHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
+                $result = "<input type=\"{$this->textMode}\"{$idHtml}{$nameHtml} class=\"{$class}\" value=\"{$text}\"{$requiredFlag}{$attributes} />";
                 if ($this->mandatory && $this->mandatorysym) {
                     $result .= '<span class="z-form-mandatory-flag">*</span>';
                 }
@@ -351,7 +352,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
                     $colsrowsHtml .= " rows=\"{$this->rows}\"";
                 }
 
-                $result = "<textarea{$idHtml}{$nameHtml}{$colsrowsHtml} class=\"{$class}\"{$attributes}>{$text}</textarea>";
+                $result = "<textarea{$idHtml}{$nameHtml}{$colsrowsHtml} class=\"{$class}\"{$requiredFlag}{$attributes}>{$text}</textarea>";
                 if ($this->mandatory && $this->mandatorysym) {
                     $result .= '<span class="z-form-mandatory-flag">*</span>';
                 }
