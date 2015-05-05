@@ -271,8 +271,9 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
         }
 
         $attributes = $this->renderAttributes($view);
+        $requiredFlag = $this->mandatory ? ' required="required"' : '';
 
-        $result = "<select{$idHtml}{$nameHtml}{$readOnlyHtml}{$classHtml}{$postbackHtml}{$multipleHtml}{$sizeHtml}{$attributes}>\n";
+        $result = "<select{$idHtml}{$nameHtml}{$readOnlyHtml}{$classHtml}{$postbackHtml}{$multipleHtml}{$sizeHtml}{$requiredFlag}{$attributes}>\n";
         $currentOptGroup = null;
         foreach ($this->items as $item) {
             $optgroup = (isset($item['optgroup']) ? $item['optgroup'] : null);
