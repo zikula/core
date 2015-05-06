@@ -198,7 +198,8 @@ class Zikula_View_Theme extends Zikula_View
 
         // if caching and is not an admin controller
         if ($this->caching && strpos($this->type, 'admin') !== 0) {
-            $modulesnocache = explode(',', ModUtil::getVar('ZikulaThemeModule', 'modulesnocache'));
+            $modulesnocache = array_filter(explode(',', ModUtil::getVar('ZikulaThemeModule', 'modulesnocache')));
+            
             if (in_array($this->toplevelmodule, $modulesnocache)) {
                 $this->caching = Zikula_View::CACHE_DISABLED;
             }
