@@ -27,3 +27,14 @@ parameters:
     url_secret:        ~
 
     zikula.session.name: _zsid
+    
+    # Changing the current umask to the octal "022" will set directory permissions
+    # to "755", and file permissions to "644" (for directories such as
+    # "app/cache" and "app/logs"). Changing the current umask to the octal "02"
+    # will set directory permissions to "775", and file permissions to "664".
+    # Changing the current umask to the octal "0" will set (insecure) directory
+    # permissions to "777", and file permissions to "666". Note that using the ACL
+    # is recommended when you have access to them on your server, because changing
+    # the umask is not thread-safe. Set this value to "~" (NULL), to disable support
+    # for umask.
+    umask:             ~
