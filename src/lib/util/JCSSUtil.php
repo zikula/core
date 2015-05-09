@@ -558,7 +558,7 @@ class JCSSUtil
         $hash = md5(serialize($files) . UserUtil::getTheme());
         $cachedFile = "{$cache_dir}/{$hash}_{$ext}.php";
         $cachedFileUri = "{$hash}_{$ext}.php";
-        if (is_readable($cachedFile) && (filemtime($cachedFile) + $lifetime) > time()) {
+        if (is_readable($cachedFile) && (($lifetime == -1) || (filemtime($cachedFile) + $lifetime) > time())) {
             return System::getBaseUri() . '/jcss.php?f=' . $cachedFileUri;
         }
         switch ($ext) {
