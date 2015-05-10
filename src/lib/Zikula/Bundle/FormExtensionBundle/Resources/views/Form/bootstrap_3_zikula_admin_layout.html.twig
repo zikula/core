@@ -1,52 +1,26 @@
-{% extends "bootstrap_3_layout.html.twig" %}
-{#{% extends "bootstrap_3_horizontal_layout.html.twig" %}#}
-
-{# Labels #}
-
-{% block form_label -%}
-{% spaceless %}
-    {% if label is sameas(false) %}
-        <div class="{{ block('form_label_class') }}"></div>
-    {% else %}
-        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ block('form_label_class'))|trim}) %}
-        {{- parent() -}}
-    {% endif %}
-{% endspaceless %}
-{%- endblock form_label %}
+{% extends "bootstrap_3_horizontal_layout.html.twig" %}
 
 {% block form_label_class -%}
 col-lg-3
 {%- endblock form_label_class %}
 
-{# Rows #}
-
-{% block form_row -%}
-{% spaceless %}
-    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
-        {{ form_label(form) }}
-        <div class="{{ block('form_group_class') }}">
-            {{ form_widget(form) }}
-            {{ form_errors(form) }}
-        </div>
-    </div>
-{% endspaceless %}
-{%- endblock form_row %}
+{% block form_group_class -%}
+col-lg-9
+{%- endblock form_group_class %}
 
 {% block checkbox_widget -%}
     {% set parent_label_class = parent_label_class|default('') -%}
     {% if 'checkbox-inline' in parent_label_class %}
         {{- form_label(form, null, { widget: parent() }) -}}
     {% else -%}
-        {#<div class="checkbox">#}
-            {{- form_label(form, null, { widget: parent() }) -}}
-        {#</div>#}
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
     {%- endif %}
 {%- endblock checkbox_widget %}
 
 {% block checkbox_row -%}
 {% spaceless %}
     <div class="form-group{% if not valid %} has-error{% endif %}">
-        <label class="{{ block('form_label_class') }}"></label>
+        {{ block('form_label') }}
         <div class="{{ block('form_group_class') }}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
@@ -54,22 +28,6 @@ col-lg-3
     </div>
 {% endspaceless %}
 {%- endblock checkbox_row %}
-
-{#{% block radio_row -%}#}
-    {#{{- block('checkbox_radio_row') -}}#}
-{#{%- endblock radio_row %}#}
-
-{% block radio_row -%}
-{% spaceless %}
-    <div class="form-group{% if not valid %} has-error{% endif %}">
-        <label class="{{ block('form_label_class') }}"></label>
-        <div class="{{ block('form_group_class') }}">
-            {{ form_widget(form) }}
-            {{ form_errors(form) }}
-        </div>
-    </div>
-{% endspaceless %}
-{%- endblock radio_row %}
 
 {% block submit_row -%}
 {% spaceless %}
@@ -81,7 +39,3 @@ col-lg-3
     </div>
 {% endspaceless %}
 {% endblock submit_row %}
-
-{% block form_group_class -%}
-col-lg-9
-{%- endblock form_group_class %}
