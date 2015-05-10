@@ -57,6 +57,7 @@
         "symfony/swiftmailer-bundle": "2.3.*",
         "symfony/monolog-bundle": "2.7.*",
         "jms/i18n-routing-bundle": "dev-master",
+        "jms/translation-bundle": "dev-master",
         "twig/extensions": "1.2.*",
         "zikula/filesystem": "dev-master",
         "zikula/generator-bundle": "dev-master",
@@ -72,7 +73,6 @@
         "vakata/jstree": "3.0.*",
         "afarkas/html5shiv": "3.7.*",
         "composer/installers": "1.0.*",
-        "nikic/php-parser" : "0.9.4",
 
         "zikula/legal-module": "dev-master",
         "zikula/profile-module": "dev-master"
