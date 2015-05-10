@@ -1,4 +1,16 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPv3 (or at your option any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
@@ -11,6 +23,16 @@ class CoreExtension extends \Twig_Extension
     public function __construct($container = null)
     {
         $this->container = $container;
+    }
+
+    /**
+     * Returns the name of the extension.
+     *
+     * @return string The extension name
+     */
+    public function getName()
+    {
+        return 'zikulacore';
     }
 
     public function getTokenParsers()
@@ -40,6 +62,18 @@ class CoreExtension extends \Twig_Extension
             'zasset' => new \Twig_Function_Method($this, 'getAssetPath'),
             'showflashes' => new \Twig_Function_Method($this, 'showFlashes', array('is_safe' => array('html'))),
             'array_unset' => new \Twig_Function_Method($this, 'arrayUnset'),
+            'pageSetVar' => new \Twig_Function_Method($this, 'pageSetVar'),
+            'pageAddVar' => new \Twig_Function_Method($this, 'pageAddVar'),
+            'setMetaTag' => new \Twig_Function_Method($this, 'setMetaTag'),
+            'checkPermission' => new \Twig_Function_Method($this, 'checkPermission'),
+        );
+    }
+
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter('languageName', array($this, 'languageName')),
+            new \Twig_SimpleFilter('safeHtml', array($this, 'safeHtml')),
         );
     }
 
@@ -125,9 +159,7 @@ class CoreExtension extends \Twig_Extension
     public function showFlashes(array $params = array())
     {
         $result = '';
-
         $total_messages = array();
-
         $messageTypeMap = array(
             \Zikula_Session::MESSAGE_ERROR => 'danger',
             \Zikula_Session::MESSAGE_WARNING => 'warning',
@@ -137,32 +169,19 @@ class CoreExtension extends \Twig_Extension
         );
 
         foreach ($messageTypeMap as $messageType => $bootstrapClass) {
-            /**
-             * Get messages.
-             */
             $messages = $this->container->get('session')->getFlashBag()->get($messageType);
-
             if (count($messages) > 0) {
-                /**
-                 * Set class for the messages.
-                 */
+                // Set class for the messages.
                 $class = (!empty($params['class'])) ? $params['class'] : "alert alert-$bootstrapClass";
-
                 $total_messages = $total_messages + $messages;
-
-                /**
-                 * Build output of the messages.
-                 */
+                // Build output of the messages.
                 if (empty($params['tag']) || ($params['tag'] != 'span')) {
                     $params['tag'] = 'div';
                 }
-
                 $result .= '<' . $params['tag'] . ' class="' . $class . '"';
-
                 if (!empty($params['style'])) {
                     $result .= ' style="' . $params['style'] . '"';
                 }
-
                 $result .= '>';
                 $result .= implode('<hr />', $messages);
                 $result .= '</' . $params['tag'] . '>';
@@ -192,12 +211,98 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * Returns the name of the extension.
-     *
-     * @return string The extension name
+     * @param $code
+     * @return string
      */
-    public function getName()
+    public function languageName($code)
     {
-        return 'zikulacore';
+        return \ZLanguage::getLanguageName($code);
+    }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    public function safeHtml($string)
+    {
+        return \DataUtil::formatForDisplayHTML($string);
+    }
+
+    /**
+     * @todo this maybe should be rewritten to a Tag (Token Parer and Node Visitor) and called {% pageSetVar name = "value" %}
+     *
+     * @param null $name
+     * @param null $value
+     */
+    public function pageSetVar($name = null, $value = null)
+    {
+        if (empty($name) || empty($value)) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
+        if (in_array($name, array('stylesheet', 'javascript'))) {
+            $value = explode(',', $value);
+        }
+
+        \PageUtil::setVar($name, $value);
+    }
+
+    /**
+     * @todo this maybe should be rewritten to a Tag (Token Parer and Node Visitor) and called {% pageSetVar name = "value" %}
+     *
+     * @param null $name
+     * @param null $value
+     */
+    public function pageAddVar($name = null, $value = null, $raw = false)
+    {
+        if ($value == 'polyfill') {
+            $features = isset($params['features']) ? $params['features'] : 'forms';
+        } else {
+            $features = null;
+        }
+
+        if (empty($name) || empty($value)) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
+        if (in_array($name, array('stylesheet', 'javascript')) && !$raw) {
+            $value = explode(',', $value);
+        }
+
+        \PageUtil::addVar($name, $value, $features);
+    }
+
+    /**
+     * @todo this maybe should be rewritten to a Tag (Token Parer and Node Visitor) and called {% setMetaTag name = "value" %}
+     *
+     * @param null $name
+     * @param null $value
+     */
+    public function setMetaTag($name = null, $value = null)
+    {
+        if (empty($name) || empty($value)) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
+        $metaTags = $this->container->hasParameter('zikula_view.metatags') ? $this->container->getParameter('zikula_view.metatags') : array();
+        $metaTags[$name] = \DataUtil::formatForDisplay($value);
+        $this->container->setParameter('zikula_view.metatags', $metaTags);
+    }
+
+    /**
+     * @param null $component
+     * @param null $instance
+     * @param null $level
+     * @return bool
+     */
+    public function checkPermission($component = null, $instance = null, $level = null)
+    {
+        if (empty($component) || empty($instance) || empty($level)) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
+        $result = \SecurityUtil::checkPermission($component, $instance, constant($level));
+
+        return (boolean) $result;
     }
 }
