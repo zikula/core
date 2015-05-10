@@ -20,6 +20,7 @@ class ZikulaKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Zikula\Bundle\CoreBundle\CoreBundle(),
             new Zikula\Bundle\CoreInstallerBundle\ZikulaCoreInstallerBundle(),
+            new Zikula\Bundle\FormExtensionBundle\ZikulaFormExtensionBundle(),
             new Zikula\Bundle\JQueryBundle\ZikulaJQueryBundle(),
             new Zikula\Bundle\JQueryUIBundle\ZikulaJQueryUIBundle(),
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
