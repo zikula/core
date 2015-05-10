@@ -15,6 +15,7 @@ namespace Zikula\RoutesModule\Controller;
 use ModUtil;
 use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\RoutesModule\Controller\Base\RouteController as BaseRouteController;
 use SecurityUtil;
@@ -166,26 +167,34 @@ class RouteController extends BaseRouteController
     /**
      * This is a custom method.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/reload",
+     * @Route("/%zikularoutesmodule.routing.route.plural%/reload/{stage}/{module}",
      *        name = "zikularoutesmodule_route_reload",
      *        methods = {"GET", "POST"}
      * )
      *
      * @param Request  $request      Current request instance
+     * @param int $stage
+     * @param null $module
      *
      * @return mixed Output.
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     *
+     * This method has three stages:
+     * 1. Showing the dropdown with all the bundles to the user.
+     * 2. Clearing the annotation cache.
+     * 3. Reloading routes.
      */
-    public function reloadAction(Request $request)
+    public function reloadAction(Request $request, $stage = 0, $module = null)
     {
         $objectType = 'route';
         if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
+        $cacheClearer = $this->get('zikula.cache_clearer');
         $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
-        if ($request->isMethod('get') && !$request->query->filter('confirm', false, false, FILTER_VALIDATE_BOOLEAN)) {
+        if ($stage == 0) {
             $legacyControllerType = 'admin';
             \System::queryStringSetVar('type', $legacyControllerType);
             $request->query->set('type', $legacyControllerType);
@@ -208,12 +217,22 @@ class RouteController extends BaseRouteController
 
             // fetch and return the appropriate template
             return $viewHelper->processTemplate($this->view, $objectType, 'reload', $request, $templateFile);
+        } else if ($stage == 1) {
+            $cacheClearer->clear('symfony.annotations');
+
+            $module = $this->request->request->get('reload-module', "-1");
+            $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_reload', array(
+                'stage' => 2,
+                'module' => $module,
+                'lct' => 'admin'
+            ), UrlGeneratorInterface::ABSOLUTE_URL);
+
+            return new RedirectResponse($redirectUrl);
         }
 
         /** @var \Zikula\RoutesModule\Entity\Repository\Route $routeRepository */
         $routeRepository = $this->entityManager->getRepository('ZikulaRoutesModule:RouteEntity');
-        $module = $this->request->request->get('reload-module', -1);
-        if ($module == -1) {
+        if ($module == "-1") {
             $routeRepository->reloadAllRoutes($this->getContainer());
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! All routes reloaded.'));
             $hadRoutes = false;
@@ -222,8 +241,6 @@ class RouteController extends BaseRouteController
             $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Routes reloaded for %s.', '<strong>' . $module . '</strong>'));
         }
 
-
-        $cacheClearer = $this->get('zikula.cache_clearer');
         $cacheClearer->clear("symfony.routing");
 
         $this->view->clear_cache();
@@ -236,11 +253,11 @@ class RouteController extends BaseRouteController
             $request->getSession()->getFlashBag()->add('error', $this->__f('Error! There was an error dumping exposed JS Routes: %s', $result));
         }
 
-        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'));
+        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'), UrlGeneratorInterface::ABSOLUTE_URL);
 
         if ($hadRoutes) {
             // no need to pass through to nakedmessage if module previously had routes loaded.
-            return new RedirectResponse(\System::normalizeUrl($redirectUrl));
+            return new RedirectResponse($redirectUrl);
         } else {
             $this->view->assign('delay', 2);
             $this->view->assign('url', $redirectUrl);

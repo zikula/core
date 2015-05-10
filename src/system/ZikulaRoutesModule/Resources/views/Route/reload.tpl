@@ -9,10 +9,9 @@
 
     {insert name="getstatusmsg"}
     <p class="alert alert-warning">{gt text='Do you really want to reload routes? Note: Custom routes won\'t be removed.'}</p>
-    <form class="form-horizontal" action="{modurl modname='ZikulaRoutesModule' type='route' func='reload' lct='admin'}" method="post" role="form">
+    <form class="form-horizontal" action="{modurl modname='ZikulaRoutesModule' type='route' func='reload' lct='admin' stage=1}" method="post" role="form">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-            <input type="hidden" id="confirmation" name="confirmation" value="1" />
             <fieldset>
                 <legend>{gt text='Confirmation prompt'}</legend>
                 <div class="form-group">
