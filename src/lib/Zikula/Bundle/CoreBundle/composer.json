@@ -1,0 +1,21 @@
+{
+    "name": "zikula/core-bundle",
+    "type": "symfony-bundle",
+    "description": "An bundle providing zikula-related symfony form extensions.",
+    "keywords": [ "zikula" ],
+    "homepage": "http://www.zikula.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zikula Team",
+            "homepage": "http://www.zikula.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "~2.0"
+    },
+    "autoload": {
+        "psr-4": { "Zikula\\Bundle\\CoreBundle\\": "" }
+    }
+}
