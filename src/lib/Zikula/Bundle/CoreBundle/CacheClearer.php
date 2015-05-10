@@ -49,6 +49,9 @@ class CacheClearer
         }
         
         $this->cacheTypes = array(
+            "symfony.annotations" => array(
+                "$cacheFolder/annotations"
+            ),
             "symfony.routing.generator" => array(
                 "$cacheFolder{$cachePrefix}UrlGenerator.php",
                 "$cacheFolder{$cachePrefix}UrlGenerator.php.meta",
@@ -72,8 +75,15 @@ class CacheClearer
     {
         foreach ($this->cacheTypes as $cacheType => $files) {
             if (substr($cacheType, 0, strlen($type)) === $type) {
-                // This silently ignores non existing files.
-                $this->fs->remove($files);
+                foreach ($files as $file) {
+                    if (is_dir($file)) {
+                        // Do not delete the folder itself, but all files in it.
+                        // Otherwise Symfony somehow can't create the folder anymore.
+                        $file = new \FilesystemIterator($file);
+                    }
+                    // This silently ignores non existing files.
+                    $this->fs->remove($file);
+                }
             }
         }
     }
