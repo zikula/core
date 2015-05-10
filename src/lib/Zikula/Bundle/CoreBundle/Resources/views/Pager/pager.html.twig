@@ -1,0 +1,41 @@
+{% set separator = '&ndash;' %}
+
+<div class="{{ pagerPluginArray.class }}">
+    {% if pagerPluginArray.currentPage > 1 %}
+        <a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page') }}">{{ __('First page') }}</a> {{ separator }}
+        <a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page') }}">{{ __('Previous page') }}</a> {{ separator }}
+    {% endif %}
+
+    {% if pagerPluginArray.maxPages > 0 %}
+        {% set hiddenPageBoxClosed=0 %}
+        {% set hiddenPageBoxOpened=0 %}
+    {% endif %}
+
+    {% for currentItem, currentPage in pagerPluginArray.pages %}
+        {% if currentItem > pagerPluginArray.perpage %} {{ separator }} {% endif %}
+
+        {% if currentPage.isVisible == 0 and hiddenPageBoxOpened == 0 %}
+            ... <span class="hide">
+            {% set hiddenPageBoxClosed=0 %}
+            {% set hiddenPageBoxOpened=1 %}
+        {% endif %}
+        {% if currentPage.isVisible == 1 and hiddenPageBoxOpened == 1 and hiddenPageBoxClosed == 0 %}
+            </span>
+            {% set hiddenPageBoxClosed=1 %}
+            {% set hiddenPageBoxOpened=0 %}
+        {% endif %}
+
+        {% if currentPage.isCurrentPage %}
+            <span>{{ currentPage.pagenr }}</span>
+        {% else %}
+            <a href="{{ currentPage.url }}">{{ currentPage.pagenr }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
+        {{ separator }}
+        <a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page') }}">{{ __('Next page') }}</a>
+        {{ separator }}
+        <a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page') }}">{{ __('Last page') }}</a>
+    {% endif %}
+</div>
