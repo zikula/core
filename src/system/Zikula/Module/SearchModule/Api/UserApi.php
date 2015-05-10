@@ -118,7 +118,7 @@ class UserApi extends \Zikula_AbstractApi
                     }
                     $moduleBundle = ModUtil::getModule($searchableModule['name']);
                     /** @var $searchableInstance AbstractSearchable */
-                    $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->entityManager, $moduleBundle);
+                    $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->getContainer(), $moduleBundle);
                     if ($searchableInstance instanceof AbstractSearchable) {
                         $modvar[$searchableModule['name']] = isset($modvar[$searchableModule['name']]) ? $modvar[$searchableModule['name']] : null;
                         $results = $searchableInstance->getResults($words, $vars['searchtype'], $modvar[$searchableModule['name']]);
