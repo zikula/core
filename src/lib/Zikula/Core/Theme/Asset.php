@@ -83,8 +83,10 @@ class Asset
     private function getAssetPath($bundleName, $assetPath)
     {
         $bundle = $this->kernel->getBundle($bundleName);
-        $assetDir = 'bundles/';
-        $targetDir = $assetDir.preg_replace('/bundle$/', '', strtolower($bundle->getName()));
+        $bundleType = method_exists($bundle, 'getNameType') ? strtolower($bundle->getNameType()) : 'bundle';
+
+        $assetDir = "{$this->webDir}/{$bundleType}s/";
+        $targetDir = $assetDir . preg_replace("/{$bundleType}$/", '', strtolower($bundle->getName()));
 
         return array(
             'asset_path' => $this->package->getUrl($targetDir.'/'.$assetPath),

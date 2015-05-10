@@ -8,7 +8,7 @@ abstract class AbstractModule extends AbstractBundle
 {
     private $serviceIds = array();
 
-    protected function getNameType()
+    public function getNameType()
     {
         return 'Module';
     }
