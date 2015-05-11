@@ -102,7 +102,7 @@ function smarty_insert_getstatusmsg($params, $view)
         /**
          * Set class for the messages.
          */
-        $class = (!is_null($params['class'])) ? $params['class'] : 'alert alert-success';
+        $class = (!is_null($params['class'])) ? $params['class'] : 'alert alert-warning';
     
         $total_messages = $total_messages + $messages;
     
