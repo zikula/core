@@ -117,8 +117,11 @@ Features:
   - Includes CLI-based installer and upgrader
   - Auto-creates `custom_parameters.yml` and `personal_config.php`
 - Include Zikula/Wizard - a library to assist in multi-stage user interaction (used in installer)
+- Add Zikula/Component/SortableColumns - helps manage sortable column headers in datatables.
 - Added multilingual support for site name, site description and site meta tags (#2316).
 - Added view plugin {langchange} for switching language, function with shorturls enabled (#2364)
 - Added view plugin {moduleheader} to unify module headers and make styling at one place - moduleheader.tpl (#2372).
 - Added support Webshim, which is a polyfill library that enables you to reliably use HTML5 features across browsers, even if native support is lacking. (#2377)
 - Added mmenu js library and smarty template plugin to create a hidden admin panel
+- Added several Twig tags and filters to duplicate some legacy functionality
+- Added automatic form-theming (bootstrap-style) for Twig-based admin forms
