@@ -6,6 +6,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\Yaml\Yaml;
 
 abstract class AbstractBundle extends Bundle
 {
@@ -17,6 +18,15 @@ abstract class AbstractBundle extends Bundle
     protected $booted = false;
 
     private $basePath;
+
+    public function getParent()
+    {  
+        if (is_readable($file = $this->getConfigPath().'/bundle.yml')) {
+            $bundleConfig = Yaml::parse(file_get_contents($file));
+            
+            return $bundleConfig[strtolower($this->name)]['parent'];
+        }
+    }
 
     public function isBooted()
     {
