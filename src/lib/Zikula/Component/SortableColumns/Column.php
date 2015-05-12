@@ -29,6 +29,7 @@ class Column {
     private $currentSortDirection;
     private $reverseSortDirection;
     private $cssClassString;
+    private $isSortColumn = false;
 
     function __construct($name, $currentSortDirection = null, $defaultSortDirection = null)
     {
@@ -119,6 +120,22 @@ class Column {
     public function setCssClassString($cssClassString)
     {
         $this->cssClassString = $cssClassString;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSortColumn()
+    {
+        return $this->isSortColumn;
+    }
+
+    /**
+     * @param boolean $isSortColumn
+     */
+    public function setIsSortColumn($isSortColumn)
+    {
+        $this->isSortColumn = $isSortColumn;
     }
 
     /**

@@ -78,7 +78,7 @@ class SortableColumns {
         $resultArray = array();
         /** @var Column $column */
         foreach ($this->columnCollection as $column) {
-            $this->additionalUrlParameters[$this->directionFieldName] = $column->getReverseSortDirection();
+            $this->additionalUrlParameters[$this->directionFieldName] = $column->isSortColumn() ? $column->getReverseSortDirection() : $column->getCurrentSortDirection();
             $this->additionalUrlParameters[$this->sortFieldName] = $column->getName();
             $resultArray[$column->getName()] = array(
                 'url' => $this->router->generate($this->routeName, $this->additionalUrlParameters),
@@ -139,7 +139,7 @@ class SortableColumns {
     {
         if ($this->columnCollection->contains($sortColumn)) {
             $this->sortColumn = $sortColumn;
-            $sortColumn->setCssClassString('');
+            $sortColumn->setIsSortColumn(true);
             $sortColumn->setCurrentSortDirection($this->getSortDirection());
         }
     }
