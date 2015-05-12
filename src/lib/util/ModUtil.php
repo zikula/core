@@ -935,7 +935,7 @@ class ModUtil
         }
 
         // allow overriding the OO class (to override existing methods using inheritance).
-        $event = new GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+        $event = new GenericEvent(null, array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
         EventUtil::dispatch('module_dispatch.custom_classname', $event);
         if ($event->isPropagationStopped()) {
             $className = $event->getData();
