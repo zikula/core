@@ -64,7 +64,7 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
                 }
                 if ($category instanceof \Zikula\Core\Doctrine\Entity\AbstractEntityCategory) {
                     if (!is_object($category->getCategory())) {
-                        continue(2);
+                        continue;
                     }
                     $name = $category->getCategory()->getName();
                     $display_name = $category->getCategory()->getDisplayName();
