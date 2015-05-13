@@ -86,7 +86,7 @@ class Asset
         $bundleType = method_exists($bundle, 'getNameType') ? strtolower($bundle->getNameType()) : 'bundle';
 
         $assetDir = "{$this->webDir}/{$bundleType}s/";
-        $targetDir = $assetDir . preg_replace("/{$bundleType}$/", '', strtolower($bundle->getName()));
+        $targetDir = $assetDir . str_replace($bundleType, '', strtolower($bundle->getName()));
 
         return array(
             'asset_path' => $this->package->getUrl($targetDir.'/'.$assetPath),
