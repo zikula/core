@@ -76,6 +76,8 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
 
         $this->maxLength = 30;
         $params['width'] = '6em';
+        $params['textMode'] = 'number';
+        $this->attributes['step'] = (1 / pow(10, $this->precision));
 
         parent::create($view, $params);
     }
