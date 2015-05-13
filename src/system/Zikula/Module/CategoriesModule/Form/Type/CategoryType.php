@@ -23,10 +23,6 @@ use Zikula\Module\CategoriesModule\Form\DataTransformer\CategoryDisplayTransform
 use Zikula\Module\CategoriesModule\Form\DataTransformer\CategoryModelTransformer;
 
 /**
- * FormType to display a ZikulaCategoryModule category select box
- * requires modification of form row
- *   {{ form_row(filterForm.category, {'full_name': filterForm.category.vars.full_name ~ '[' ~ filterForm.category.vars.registry_id ~ ']'}) }}
- *
  * Class CategoryType
  * @package Zikula\Module\CategoriesModule\Form\Type
  */

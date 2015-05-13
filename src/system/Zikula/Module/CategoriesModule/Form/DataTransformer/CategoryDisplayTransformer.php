@@ -36,7 +36,7 @@ class CategoryDisplayTransformer implements DataTransformerInterface
      */
     public function transform($category)
     {
-        return empty($category) ? '' : array($this->registryId => $category);
+        return $category;
     }
 
     /**

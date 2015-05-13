@@ -37,9 +37,10 @@ class CategoryModelTransformer implements DataTransformerInterface
      */
     public function transform($array)
     {
-        // @todo this needs to be adjusted when multiple? $array is not rendering properly in Form data
         if (!empty($array) && isset($array[$this->registryId])) {
-            return $array[$this->registryId];
+            /** @var ArrayCollection $arrayCollection */
+            $arrayCollection = $array[$this->registryId];
+            return $arrayCollection->getValues();
         }
 
         return array();
