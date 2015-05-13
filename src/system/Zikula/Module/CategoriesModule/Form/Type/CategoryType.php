@@ -89,6 +89,9 @@ class CategoryType extends AbstractType
     {
         $view->vars['registry_id'] = $options['registry_id'];
         $view->vars['parent_id'] = $options['parent_id'];
+        // replace the full name with an array-type name e.g. `[]`
+        $fullName = str_replace($view->vars['name'], $view->vars['name'] . '][' . $options['registry_id'], $view->vars['full_name']);
+        $view->vars['full_name'] = $fullName;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
