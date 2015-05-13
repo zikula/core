@@ -17,7 +17,8 @@ namespace Zikula\Component\SortableColumns;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Routing\RouterInterface;
 
-class SortableColumns {
+class SortableColumns
+{
 
     /**
      * @var RouterInterface

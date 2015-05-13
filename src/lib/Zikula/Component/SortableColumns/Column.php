@@ -15,7 +15,8 @@
 namespace Zikula\Component\SortableColumns;
 
 
-class Column {
+class Column
+{
 
     const DIRECTION_ASCENDING = 'ASC';
     const DIRECTION_DESCENDING = 'DESC';
