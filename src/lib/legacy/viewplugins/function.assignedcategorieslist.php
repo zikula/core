@@ -67,7 +67,7 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
                         continue;
                     }
                     $name = $category->getCategory()->getName();
-                    $display_name = $category->getCategory()->getDisplayName();
+                    $display_name = $category->getCategory()->getDisplay_name();
                 } elseif ($category instanceof \Zikula\Module\CategoriesModule\Entity\CategoryEntity) {
                     $name = $category->getName();
                     $display_name = $category->getDisplay_name();
