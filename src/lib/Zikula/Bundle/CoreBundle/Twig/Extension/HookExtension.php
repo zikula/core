@@ -50,7 +50,9 @@ class HookExtension extends \Twig_Extension
 
         $output = '';
         foreach ($responses as $result) {
-            $output .= "<div class=\"z-displayhook\">$result</div>\n";
+            if (!empty($result)) {
+                $output .= "<div class=\"z-displayhook\">$result</div>\n";
+            }
         }
 
         return $output;
