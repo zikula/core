@@ -211,7 +211,7 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * @param $code
+     * @param string $code
      * @return string
      */
     public function languageName($code)
@@ -261,10 +261,10 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * @param null $name
-     * @param null $value
+     * @param string $name
+     * @param string $value
      */
-    public function setMetaTag($name = null, $value = null)
+    public function setMetaTag($name, $value)
     {
         if (empty($name) || empty($value)) {
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
@@ -276,12 +276,12 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * @param null $component
-     * @param null $instance
-     * @param null $level
+     * @param string $component
+     * @param string $instance
+     * @param string $level
      * @return bool
      */
-    public function checkPermission($component = null, $instance = null, $level = null)
+    public function checkPermission($component, $instance, $level)
     {
         if (empty($component) || empty($instance) || empty($level)) {
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
