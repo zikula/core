@@ -229,52 +229,38 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
-     * @todo this maybe should be rewritten to a Tag (Token Parer and Node Visitor) and called {% pageSetVar name = "value" %}
-     *
-     * @param null $name
-     * @param null $value
+     * @param string $name
+     * @param string $value
      */
-    public function pageSetVar($name = null, $value = null)
+    public function pageSetVar($name, $value)
     {
         if (empty($name) || empty($value)) {
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        if (in_array($name, array('stylesheet', 'javascript'))) {
-            $value = explode(',', $value);
         }
 
         \PageUtil::setVar($name, $value);
     }
 
     /**
-     * @todo this maybe should be rewritten to a Tag (Token Parer and Node Visitor) and called {% pageSetVar name = "value" %}
-     *
-     * @param null $name
-     * @param null $value
+     * @param string $name
+     * @param string $value
      */
-    public function pageAddVar($name = null, $value = null, $raw = false)
+    public function pageAddVar($name, $value)
     {
+        if (empty($name) || empty($value)) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
         if ($value == 'polyfill') {
             $features = isset($params['features']) ? $params['features'] : 'forms';
         } else {
             $features = null;
         }
 
-        if (empty($name) || empty($value)) {
-            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        if (in_array($name, array('stylesheet', 'javascript')) && !$raw) {
-            $value = explode(',', $value);
-        }
-
         \PageUtil::addVar($name, $value, $features);
     }
 
     /**
-     * @todo this maybe should be rewritten to a Tag (Token Parer and Node Visitor) and called {% setMetaTag name = "value" %}
-     *
      * @param null $name
      * @param null $value
      */
