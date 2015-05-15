@@ -21,9 +21,9 @@ abstract class AbstractBlockController extends AbstractController
     /**
      * Display block.
      *
-     * @param array $blockInfo Blockinfo.
+     * @param array $blockInfo blockInfo.
      *
-     * @return array Blockinfo.
+     * @return array blockInfo.
      */
     abstract public function display($blockInfo);
 
@@ -44,31 +44,11 @@ abstract class AbstractBlockController extends AbstractController
      *
      * @param array $blockInfo Block info.
      *
-     * @return array Blockinfo.
+     * @return array blockInfo.
      */
     public function update($blockInfo)
     {
         return $blockInfo;
     }
 
-    /**
-     * Magic method to for method_not_found events.
-     *
-     * @param string $method Method invoked.
-     * @param array  $args   Arguments.
-     *
-     * @throws \BadMethodCallException If no event responds.
-     *
-     * @return string Data.
-     */
-    public function __call($method, $args)
-    {
-        $event = new \Zikula\Core\Event\GenericEvent($this, array('method' => $method, 'args' => $args));
-        $this->get('eventmanager')->dispatch('block.method_not_found', $event);
-        if ($event->isPropagationStopped()) {
-            return $event->getData();
-        }
-
-        throw new \BadMethodCallException(__f('%1$s::%2$s() does not exist.', array(get_class($this), $method)));
-    }
 }
