@@ -50,7 +50,6 @@ class PagerExtension extends \Twig_Extension
      *  display            Optional choice between 'page' or 'startnum'. Show links using page number or starting item number (default is startnum)
      *  class              Optional class to apply to the pager container (default : z-pager)
      *  processDetailLinks Should the single page links be processed? (default: false if using pagerimage.tpl, otherwise true)
-     *  processUrls        Should urls be processed or assign the arguments? (default: true)
      *  optimize           Only deliver page links which are actually displayed to the template (default: true)
      *  includePostVars    Whether or not to include the POST variables as GET variables in the pager URLs (default: true)
      *
@@ -81,7 +80,6 @@ class PagerExtension extends \Twig_Extension
         $params['owner'] = isset($params['owner']) ? $params['owner'] : false;
         $params['includePostVars'] = isset($params['includePostVars']) ? $params['includePostVars'] : true;
         $params['route'] = isset($params['route']) ? $params['route'] : false;
-        $params['processUrls'] = isset($params['processUrls']) ? (bool)$params['processUrls'] : true;
         $templateName = (isset($params['template'])) ? $params['template'] : 'pagercss.html.twig';
         $params['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($templateName != 'pagerimage.html.twig');
 
@@ -246,23 +244,14 @@ class PagerExtension extends \Twig_Extension
                 $pager['pages'][$currItem]['pagenr'] = $currItem;
                 $pager['pages'][$currItem]['isCurrentPage'] = ($pager['pages'][$currItem]['pagenr'] == $pager['currentPage']);
                 $pager['pages'][$currItem]['isVisible'] = $currItemVisible;
-
-                if ($params['processUrls']) {
-                    $pager['pages'][$currItem]['url'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
-                } else {
-                    $pager['pages'][$currItem]['url'] = array('module' => $pager['module'], 'type' => $pager['type'], 'func' => $pager['func'], 'args' => $pager['args'], 'fragment' => $anchorText);
-                }
+                $pager['pages'][$currItem]['url'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
             }
             unset($pager['args'][$pager['posvar']]);
         }
 
         // link to first & prev page
         $pager['args'][$pager['posvar']] = $pager['first'] = '1';
-        if ($params['processUrls']) {
-            $pager['firstUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
-        } else {
-            $pager['firstUrl'] = array('module' => $pager['module'], 'type' => $pager['type'], 'func' => $pager['func'], 'args' => $pager['args'], 'fragment' => $anchorText);
-        }
+        $pager['firstUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
 
         if ($params['display'] == 'page') {
             $pager['prev'] = ($pager['currentPage'] - 1);
@@ -270,11 +259,7 @@ class PagerExtension extends \Twig_Extension
             $pager['prev'] = ($leftMargin - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
         }
         $pager['args'][$pager['posvar']] = ($pager['prev'] > 1) ? $pager['prev'] : 1;
-        if ($params['processUrls']) {
-            $pager['prevUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
-        } else {
-            $pager['prevUrl'] = array('module' => $pager['module'], 'type' => $pager['type'], 'func' => $pager['func'], 'args' => $pager['args'], 'fragment' => $anchorText);
-        }
+        $pager['prevUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
 
         // link to next & last page
         if ($params['display'] == 'page') {
@@ -283,11 +268,7 @@ class PagerExtension extends \Twig_Extension
             $pager['next'] = $rightMargin * $pager['perpage'] + 1;
         }
         $pager['args'][$pager['posvar']] = ($pager['next'] < $pager['total']) ? $pager['next'] : $pager['next'] - $pager['perpage'];
-        if ($params['processUrls']) {
-            $pager['nextUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
-        } else {
-            $pager['nextUrl'] = array('module' => $pager['module'], 'type' => $pager['type'], 'func' => $pager['func'], 'args' => $pager['args'], 'fragment' => $anchorText);
-        }
+        $pager['nextUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
 
         if ($params['display'] == 'page') {
             $pager['last'] = $pager['countPages'];
@@ -295,11 +276,7 @@ class PagerExtension extends \Twig_Extension
             $pager['last'] = $pager['countPages'] * $pager['perpage'] - $pager['perpage'] + 1;
         }
         $pager['args'][$pager['posvar']] = $pager['last'];
-        if ($params['processUrls']) {
-            $pager['lastUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
-        } else {
-            $pager['lastUrl'] = array('module' => $pager['module'], 'type' => $pager['type'], 'func' => $pager['func'], 'args' => $pager['args'], 'fragment' => $anchorText);
-        }
+        $pager['lastUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
 
         $pager['itemStart'] = ($pager['currentPage'] * $pager['perpage']) - $pager['perpage'] + 1;
         $pager['itemEnd'] = $pager['itemStart'] + $pager['perpage'] - 1;
