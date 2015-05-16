@@ -14,13 +14,17 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Twig;
 
 class CoreExtension extends \Twig_Extension
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
-    public function __construct($container = null)
+    public function __construct(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
