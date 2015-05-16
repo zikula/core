@@ -36,10 +36,7 @@ class PagerExtension extends \Twig_Extension
      *   {{ pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_admin_index', template:'pager.html.twig'}) }}
      *
      * Available parameters:
-     *  modname            Fixed name of the module to page (optional)
-     *  type               Fixed value of the type url parameter (optional)
-     *  func               Fixed value of the function url parameter (optional)
-     *  route              Name of a fixed route to use (optional, replaces modname / type / func)
+     *  route              Name of a fixed route to use (required unless homepage)
      *  rowcount           Total number of items to page in between
      *                       (if an array is assigned, it's count will be used)
      *  limit              Number of items on a page (if <0 unlimited)
@@ -165,35 +162,7 @@ class PagerExtension extends \Twig_Extension
         unset($params['anchorText']);
         unset($params['maxpages']);
 
-        if (isset($params['modname'])) {
-            $pager['module'] = $params['modname'];
-        } else {
-            $module = $request->get('module', null);
-            $name   = $request->get('name', null);
-            $pager['module'] = !empty($module) ? $module : $name;
-        }
-
-        $pager['func'] = isset($params['func']) ? $params['func'] : $request->get('func', 'index');
-        $pager['type'] = isset($params['type']) ? $params['type'] : $request->get('type', 'user');
-
-        $pager['route'] = $params['route'];
-
         $pager['args'] = array();
-        if (empty($pager['module'])) {
-            $pager['module'] = \System::getVar('startpage');
-            $starttype = \System::getVar('starttype');
-            $pager['type'] = !empty($starttype) ? $starttype : 'user';
-            $startfunc = \System::getVar('startfunc');
-            $pager['func'] = !empty($startfunc) ? $startfunc : 'index';
-
-            $startargs   = explode(',', \System::getVar('startargs'));
-            foreach ($startargs as $arg) {
-                if (!empty($arg)) {
-                    $argument = explode('=', $arg);
-                    $pager['args'][$argument[0]] = $argument[1];
-                }
-            }
-        }
 
         //also $_POST vars have to be considered, i.e. for search results
         $allVars = ($params['includePostVars']) ? array_merge($_POST, $_GET, $routeParams) : array_merge($_GET, $routeParams);
@@ -252,18 +221,21 @@ class PagerExtension extends \Twig_Extension
             }
         }
 
-
-        unset($params['modname']);
-        unset($params['type']);
-        unset($params['func']);
-        unset($params['route']);
-
-        $pagerUrl = function ($pager) {
-            if (!$pager['route']) {
-                return \ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']);
+        $pagerUrl = function ($pager) use ($params) {
+            if (!$params['route']) {
+                // only case where this should be true is if this is the homepage
+                $startargs   = explode(',', \System::getVar('startargs'));
+                foreach ($startargs as $arg) {
+                    if (!empty($arg)) {
+                        $argument = explode('=', $arg);
+                        $pager['args'][$argument[0]] = $argument[1];
+                    }
+                }
+                return \ModUtil::url(\System::getVar('startpage'), \System::getVar('starttype'), \System::getVar('startfunc'), $pager['args']);
             }
-            return $this->container->get('router')->generate($pager['route'], $pager['args']);
+            return $this->container->get('router')->generate($params['route'], $pager['args']);
         };
+        unset($params['route']);
 
         // build links to items / pages
         // entries are marked as current or displayed / hidden
