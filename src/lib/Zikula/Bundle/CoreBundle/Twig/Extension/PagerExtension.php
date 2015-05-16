@@ -33,16 +33,7 @@ class PagerExtension extends \Twig_Extension
      * @TODO SIMPLIFY THIS AND REMOVE ALL LEGACY!
      * template pager plugin
      *
-     *   {pager rowcount="400" limit="50"}
-     *   {pager rowcount="400" limit="35" template="pageritems.tpl"}
-     *   {pager rowcount="480" limit="90" template="pagerintervals.tpl" posvar="myposvar"}
-     *   {pager rowcount="500" limit="47" template="pagerimage.tpl"}
-     *   {pager rowcount="432" limit="25" template="pagercss.tpl"}
-     *   {pager rowcount="1200" limit="40" maxpages="10"}
-     *   {pager rowcount="1200" limit="40" template="pagercss.tpl" maxpages="7"}
-     *   {pager rowcount="1200" limit="40" template="pagerjs.tpl" maxpages="10"}
-     *   {pager rowcount="1200" limit="40" template="pagercss2.tpl" maxpages="20"}
-     *   {pager rowcount="1200" limit="40" template="pagercss2.tpl" maxpages="20" optimize=true}
+     *   {{ pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_admin_index', template:'pager.html.twig'}) }}
      *
      * Available parameters:
      *  modname            Fixed name of the module to page (optional)
@@ -54,7 +45,7 @@ class PagerExtension extends \Twig_Extension
      *  limit              Number of items on a page (if <0 unlimited)
      *  posvar             Name of the variable that contains the position data, eg "offset"
      *  owner              If set uses it as the module owner of the Zikula_View instance. Default owner is the Theme module
-     *  template           Optional name of a template file
+     *  template           Optional name of a template file (default: 'pagercss.html.twig')
      *  includeStylesheet  Use predefined stylesheet file? Default is yes.
      *  anchorText         Optional text for hyperlink anchor (e.g. 'comments' for the anchor #comments) (default: '')
      *  maxpages           Optional maximum number of displayed pages, others will be hidden / suppressed
