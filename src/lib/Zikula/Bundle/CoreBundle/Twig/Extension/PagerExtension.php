@@ -61,60 +61,35 @@ class PagerExtension extends \Twig_Extension
     {
         /** @var Request $request */
         $request = $this->container->get('request');
-        if (!isset($params['rowcount'])) {
-            trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pager', 'rowcount')));
-        }
 
-        if (!isset($params['limit'])) {
-            trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pager', 'limit')));
+        if (empty($params['rowcount']) || empty($params['limit'])) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         if (is_array($params['rowcount'])) {
             $params['rowcount'] = count($params['rowcount']);
-        } elseif ($params['rowcount'] == 0) {
-            return '';
         }
 
-        if ($params['limit'] == 0) {
-            $params['limit'] = 5;
-        }
-
-        if (!isset($params['display'])) {
-            $params['display'] = 'startnum';
-        }
-
-        if (!isset($params['class'])) {
-            $params['class'] = 'z-pager';
-        }
-
-        if (!isset($params['optimize'])) {
-            $params['optimize'] = true;
-        }
-
-        if (!isset($params['owner'])) {
-            $params['owner'] = false;
-        }
-
-        if (!isset($params['includePostVars'])) {
-            $params['includePostVars'] = true;
-        }
-
-        if (!isset($params['route'])) {
-            $params['route'] = false;
-        }
-
+        // set default values
         $pager = array();
-        $pager['total']    = $params['rowcount'];
-        $pager['perpage']  = $params['limit'];
-        $pager['class']    = $params['class'];
-        $pager['optimize'] = $params['optimize'];
+        $pager['total'] = $params['rowcount'];
+        $pager['perpage'] = $params['limit'];
+        $pager['class'] = isset($params['class']) ? $params['class'] : 'z-pager';
+        $pager['optimize'] = isset($params['optimize']) ? $params['optimize'] : true;
+        $pager['posvar'] = isset($params['posvar']) ? $params['posvar'] : 'pos';
+        $params['display'] = isset($params['display']) ? $params['display'] : 'startnum';
+        $params['owner'] = isset($params['owner']) ? $params['owner'] : false;
+        $params['includePostVars'] = isset($params['includePostVars']) ? $params['includePostVars'] : true;
+        $params['route'] = isset($params['route']) ? $params['route'] : false;
+        $params['processUrls'] = isset($params['processUrls']) ? (bool)$params['processUrls'] : true;
+        $templateName = (isset($params['template'])) ? $params['template'] : 'pagercss.html.twig';
+        $params['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($templateName != 'pagerimage.html.twig');
+
         unset($params['rowcount']);
         unset($params['limit']);
         unset($params['class']);
         unset($params['optimize']);
-
-        // current position
-        $pager['posvar'] = (isset($params['posvar']) ? $params['posvar'] : 'pos');
+        unset($params['posvar']);
 
         $routeParams = array();
         if ($request->attributes->has('_route_params')) {
@@ -133,14 +108,8 @@ class PagerExtension extends \Twig_Extension
         } else {
             $pager['increment'] = $pager['perpage'];
         }
-
-        if ($pager['pos'] < 1) {
-            $pager['pos'] = 1;
-        }
-        if ($pager['pos'] > $pager['total']) {
-            $pager['pos'] = $pager['total'];
-        }
-        unset($params['posvar']);
+        $pager['pos'] = $pager['pos'] >= 1 ? $pager['pos'] : 1;
+        $pager['pos'] = $pager['pos'] <= $pager['total'] ? $pager['pos'] : $pager['total'];
 
         // number of pages
         $pager['countPages'] = (isset($pager['total']) && $pager['total'] > 0 ? ceil($pager['total'] / $pager['perpage']) : 1);
@@ -150,11 +119,8 @@ class PagerExtension extends \Twig_Extension
 
         // current page
         $pager['currentPage'] = ceil($pager['pos'] / $pager['perpage']);
-        if ($pager['currentPage'] > $pager['countPages']) {
-            $pager['currentPage'] = $pager['countPages'];
-        }
+        $pager['currentPage'] = $pager['currentPage'] > $pager['countPages'] ? $pager['countPages'] : $pager['currentPage'];
 
-        $templateName = (isset($params['template'])) ? $params['template'] : 'pagercss.html.twig';
         $pager['includeStylesheet'] = isset($params['includeStylesheet']) ? $params['includeStylesheet'] : true;
         $anchorText = (isset($params['anchorText']) ? '#' . $params['anchorText'] : '');
         $pager['maxPages'] = (isset($params['maxpages']) ? $params['maxpages'] : 15);
@@ -164,7 +130,7 @@ class PagerExtension extends \Twig_Extension
 
         $pager['args'] = array();
 
-        //also $_POST vars have to be considered, i.e. for search results
+        // Include $_POST vars as requested, i.e. for search results
         $allVars = ($params['includePostVars']) ? array_merge($_POST, $_GET, $routeParams) : array_merge($_GET, $routeParams);
         foreach ($allVars as $k => $v) {
             if ($k != $pager['posvar'] && !is_null($v)) {
@@ -256,8 +222,6 @@ class PagerExtension extends \Twig_Extension
             }
         }
 
-        $params['processUrls']        = isset($params['processUrls']) ? (bool)$params['processUrls'] : true;
-        $params['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($templateName != 'pagerimage.html.twig');
         if ($params['processDetailLinks']) {
             for ($currItem = 1; $currItem <= $pager['countPages']; $currItem++) {
                 $currItemVisible = true;
