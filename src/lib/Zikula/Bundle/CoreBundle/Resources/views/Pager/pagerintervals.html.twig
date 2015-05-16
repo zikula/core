@@ -1,0 +1,30 @@
+<div class="{{ pagerPluginArray.class }}">
+    {% if pagerPluginArray.currentPage > 1 %}
+        [<a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page') }}">{{ __('First page') }}</a>]
+        [<a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page') }}">{{ __('Previous page') }}</a>]
+    {% endif %}
+
+        {% for currentItem, currentPage in pagerPluginArray.pages %}
+            {% set itemFrom = ((currentItem - 1) * pagerPluginArray.perpage) + 1 %}
+
+            {% if currentItem == pagerPluginArray.countPages %}
+                {% set itemTo = pagerPluginArray.total %}
+            {% else %}
+                {% set itemTo = currentItem * pagerPluginArray.perpage %}
+            {% endif %}
+
+            {% set interval = itemFrom - itemTo %}
+            [
+            {% if currentPage.isCurrentPage %}
+                <span>{{ interval }}</span>
+            {% else %}
+                <a href="{{ currentPage.url }}">{{ interval }}</a>
+            {% endif %}
+            ]
+        {% endfor %}
+
+    {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
+        [<a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page') }}">{{ __('Next page') }}</a>]
+        [<a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page') }}">{{ __('Last page') }}</a>]
+    {% endif %}
+</div>

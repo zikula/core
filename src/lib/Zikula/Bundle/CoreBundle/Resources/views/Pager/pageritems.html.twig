@@ -1,0 +1,26 @@
+{% set separator = '–' %}
+<div class="{{ pagerPluginArray.class }}">
+    {% if pagerPluginArray.currentPage > 1 %}
+        <a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page') }}">{{ __('First page') }}</a> {{ separator }}
+        <a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page') }}">{{ __('Previous page') }}</a> {{ separator }}
+    {% endif %}
+
+        {% for currentItem, currentPage in pagerPluginArray.pages %}
+            {% if currentPage.isCurrentPage %}
+                <span>{{ currentItem }}</span>
+            {% else %}
+                <a href="{{ currentPage.url }}">{{ currentItem }}</a>
+            {% endif %}
+            
+            {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
+                {{ separator }}
+            {% endif %}
+        {% endfor %}
+
+    {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
+        <a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page') }}">{{ __('Next page') }}</a>
+
+         {{ separator }} 
+        <a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page') }}">{{ __('Last page') }}</a>
+    {% endif %}
+</div>
