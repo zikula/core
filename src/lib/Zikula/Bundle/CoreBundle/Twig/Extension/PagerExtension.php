@@ -41,7 +41,6 @@ class PagerExtension extends \Twig_Extension
      *                       (if an array is assigned, it's count will be used)
      *  limit              Number of items on a page (if <0 unlimited)
      *  posvar             Name of the variable that contains the position data, eg "offset"
-     *  owner              If set uses it as the module owner of the Zikula_View instance. Default owner is the Theme module
      *  template           Optional name of a template file (default: 'pagercss.html.twig')
      *  includeStylesheet  Use predefined stylesheet file? Default is yes.
      *  anchorText         Optional text for hyperlink anchor (e.g. 'comments' for the anchor #comments) (default: '')
@@ -69,25 +68,21 @@ class PagerExtension extends \Twig_Extension
             $params['rowcount'] = count($params['rowcount']);
         }
 
-        // set default values
+        // set default values - $pager is sent to template
         $pager = array();
         $pager['total'] = $params['rowcount'];
         $pager['perpage'] = $params['limit'];
         $pager['class'] = isset($params['class']) ? $params['class'] : 'z-pager';
         $pager['optimize'] = isset($params['optimize']) ? $params['optimize'] : true;
         $pager['posvar'] = isset($params['posvar']) ? $params['posvar'] : 'pos';
-        $params['display'] = isset($params['display']) ? $params['display'] : 'startnum';
-        $params['owner'] = isset($params['owner']) ? $params['owner'] : false;
-        $params['includePostVars'] = isset($params['includePostVars']) ? $params['includePostVars'] : true;
-        $params['route'] = isset($params['route']) ? $params['route'] : false;
+        $pager['maxPages'] = isset($params['maxpages']) ? $params['maxpages'] : 15;
+        $pager['includeStylesheet'] = isset($params['includeStylesheet']) ? $params['includeStylesheet'] : true;
+        $displayType = isset($params['display']) ? $params['display'] : 'startnum';
+        $includePostVars = isset($params['includePostVars']) ? $params['includePostVars'] : true;
+        $routeName = isset($params['route']) ? $params['route'] : false;
         $templateName = (isset($params['template'])) ? $params['template'] : 'pagercss.html.twig';
-        $params['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($templateName != 'pagerimage.html.twig');
-
-        unset($params['rowcount']);
-        unset($params['limit']);
-        unset($params['class']);
-        unset($params['optimize']);
-        unset($params['posvar']);
+        $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($templateName != 'pagerimage.html.twig');
+        $anchorText = isset($params['anchorText']) ? '#' . $params['anchorText'] : '';
 
         $routeParams = array();
         if ($request->attributes->has('_route_params')) {
@@ -100,7 +95,7 @@ class PagerExtension extends \Twig_Extension
         } else {
             $pager['pos'] = (int)$request->query->get($pager['posvar'], '');
         }
-        if ($params['display'] == 'page') {
+        if ($displayType == 'page') {
             $pager['pos'] = $pager['pos'] * $pager['perpage'];
             $pager['increment'] = 1;
         } else {
@@ -119,33 +114,17 @@ class PagerExtension extends \Twig_Extension
         $pager['currentPage'] = ceil($pager['pos'] / $pager['perpage']);
         $pager['currentPage'] = $pager['currentPage'] > $pager['countPages'] ? $pager['countPages'] : $pager['currentPage'];
 
-        $pager['includeStylesheet'] = isset($params['includeStylesheet']) ? $params['includeStylesheet'] : true;
-        $anchorText = (isset($params['anchorText']) ? '#' . $params['anchorText'] : '');
-        $pager['maxPages'] = (isset($params['maxpages']) ? $params['maxpages'] : 15);
-        unset($params['template']);
-        unset($params['anchorText']);
-        unset($params['maxpages']);
 
         $pager['args'] = array();
 
-        // Include $_POST vars as requested, i.e. for search results
-        $allVars = ($params['includePostVars']) ? array_merge($_POST, $_GET, $routeParams) : array_merge($_GET, $routeParams);
+        // Include POST vars as requested, i.e. for search results
+        $allVars = $includePostVars ? array_merge($request->request->all(), $request->query->all(), $routeParams) : array_merge($request->query->all(), $routeParams);
         foreach ($allVars as $k => $v) {
             if ($k != $pager['posvar'] && !is_null($v)) {
                 switch ($k) {
-                    case 'module':
-                        if (!isset($params['modname'])) {
-                            $pager['module'] = $v;
-                        }
-                        break;
-                    case 'func':
-                        if (!isset($params['func'])) {
-                            $pager['func'] = $v;
-                        }
-                        break;
-                    case 'type':
-                        if (!isset($params['type'])) {
-                            $pager['type'] = $v;
+                    case 'route':
+                        if (!isset($routeName)) {
+                            $routeName = $v;
                         }
                         break;
                     case 'lang':
@@ -185,8 +164,8 @@ class PagerExtension extends \Twig_Extension
             }
         }
 
-        $pagerUrl = function ($pager) use ($params) {
-            if (!$params['route']) {
+        $pagerUrl = function ($pager) use ($routeName) {
+            if (!$routeName) {
                 // only case where this should be true is if this is the homepage
                 $startargs   = explode(',', \System::getVar('startargs'));
                 foreach ($startargs as $arg) {
@@ -197,9 +176,8 @@ class PagerExtension extends \Twig_Extension
                 }
                 return \ModUtil::url(\System::getVar('startpage'), \System::getVar('starttype'), \System::getVar('startfunc'), $pager['args']);
             }
-            return $this->container->get('router')->generate($params['route'], $pager['args']);
+            return $this->container->get('router')->generate($routeName, $pager['args']);
         };
-        unset($params['route']);
 
         // build links to items / pages
         // entries are marked as current or displayed / hidden
@@ -220,7 +198,7 @@ class PagerExtension extends \Twig_Extension
             }
         }
 
-        if ($params['processDetailLinks']) {
+        if ($processDetailLinks) {
             for ($currItem = 1; $currItem <= $pager['countPages']; $currItem++) {
                 $currItemVisible = true;
 
@@ -235,7 +213,7 @@ class PagerExtension extends \Twig_Extension
                     }
                 }
 
-                if ($params['display'] == 'page') {
+                if ($displayType == 'page') {
                     $pager['args'][$pager['posvar']] = $currItem;
                 } else {
                     $pager['args'][$pager['posvar']] = (($currItem - 1) * $pager['perpage']) + 1;
@@ -253,7 +231,7 @@ class PagerExtension extends \Twig_Extension
         $pager['args'][$pager['posvar']] = $pager['first'] = '1';
         $pager['firstUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
 
-        if ($params['display'] == 'page') {
+        if ($displayType == 'page') {
             $pager['prev'] = ($pager['currentPage'] - 1);
         } else {
             $pager['prev'] = ($leftMargin - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
@@ -262,7 +240,7 @@ class PagerExtension extends \Twig_Extension
         $pager['prevUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
 
         // link to next & last page
-        if ($params['display'] == 'page') {
+        if ($displayType == 'page') {
             $pager['next'] = $pager['currentPage'] + 1;
         } else {
             $pager['next'] = $rightMargin * $pager['perpage'] + 1;
@@ -270,7 +248,7 @@ class PagerExtension extends \Twig_Extension
         $pager['args'][$pager['posvar']] = ($pager['next'] < $pager['total']) ? $pager['next'] : $pager['next'] - $pager['perpage'];
         $pager['nextUrl'] = \DataUtil::formatForDisplay($pagerUrl($pager) . $anchorText);
 
-        if ($params['display'] == 'page') {
+        if ($displayType == 'page') {
             $pager['last'] = $pager['countPages'];
         } else {
             $pager['last'] = $pager['countPages'] * $pager['perpage'] - $pager['perpage'] + 1;
@@ -284,6 +262,7 @@ class PagerExtension extends \Twig_Extension
             $pager['itemEnd'] = $pager['total'];
         }
 
+        $templateParameters = array();
         $templateParameters['pagerPluginArray'] = $pager;
         $templateParameters['hiddenPageBoxOpened'] = 0;
         $templateParameters['hiddenPageBoxClosed'] = 0;
