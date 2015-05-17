@@ -23,7 +23,19 @@ define('ACCESS_EDIT', 500);
 define('ACCESS_ADD', 600);
 define('ACCESS_DELETE', 700);
 define('ACCESS_ADMIN', 800);
-ini_set('mbstring.internal_encoding', 'UTF-8');
+
+/**
+ * mbstring.internal_encoding
+ *
+ * This feature has been deprecated as of PHP 5.6.0. Relying on this feature is highly discouraged.
+ * PHP 5.6 and later users should leave this empty and set default_charset instead.
+ *
+ * @link http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.internal-encoding
+ */
+if (version_compare(\PHP_VERSION, '5.6.0', '<')) {
+    ini_set('mbstring.internal_encoding', 'UTF-8');
+}
+
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
 
