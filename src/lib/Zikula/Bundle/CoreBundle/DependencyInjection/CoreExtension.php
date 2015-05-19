@@ -51,6 +51,110 @@ class CoreExtension extends Extension
                 mkdir($cacheDir.'/'.$dir, 0777, true);
             }
         }
+        
+        //$this->registerTranslatorConfiguration($config['translator'], $container);
+        $this->registerTranslatorConfiguration($container);        
+        
+    }
+    
+    /**
+     * Loads the translator configuration.
+     *
+     * @param array            $config    A translator configuration array
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     */
+    private function registerTranslatorConfiguration(ContainerBuilder $container)
+    {
+
+    	// Use the "real" translator instead of the identity default
+    	$container->setAlias('translator', 'translator.default');
+    	$translator = $container->findDefinition('translator.default');
+    	$translator->addMethodCall('setFallbackLocales', array(array('en')));
+    	$container->setParameter('translator.logging', true);
+    	// Discover translation directories
+    	$dirs = array();
+    	
+        if (class_exists('Symfony\Component\Validator\Validator')) {
+            $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
+            $dirs[] = dirname($r->getFilename()).'/Resources/translations';
+        }
+        if (class_exists('Symfony\Component\Form\Form')) {
+            $r = new \ReflectionClass('Symfony\Component\Form\Form');
+            $dirs[] = dirname($r->getFilename()).'/Resources/translations';
+        }
+        if (class_exists('Symfony\Component\Security\Core\Exception\AuthenticationException')) {
+            $r = new \ReflectionClass('Symfony\Component\Security\Core\Exception\AuthenticationException');
+            $dirs[] = dirname($r->getFilename()).'/../Resources/translations';
+        }
+        
+        
+        $overridePath = $container->getParameter('kernel.root_dir').'/Resources/%s/translations';
+        foreach ($container->getParameter('kernel.bundles') as $bundle => $class) {
+            $reflection = new \ReflectionClass($class);
+            if (is_dir($dir = dirname($reflection->getFilename()).'/Resources/translations')) {
+                $dirs[] = $dir;
+            }
+           
+            if (is_dir($dir = dirname($reflection->getFilename()).'/Resources/locale')) {
+            	$dirs[] = $dir;
+            }
+           
+            if (is_dir($dir = sprintf($overridePath, $bundle))) {
+                $dirs[] = $dir;
+            }
+        }
+        
+		
+        if (is_dir($dir = $container->getParameter('kernel.root_dir').'/Resources/translations')) {
+            $dirs[] = $dir;
+        }
+
+        if (is_dir($dir = $container->getParameter('kernel.root_dir').'/Resources/locale')) {
+        	$dirs[] = $dir;
+        }        
+         	
+    	// Register translation resources
+    	if ($dirs) {
+    		foreach ($dirs as $dir) {
+    			$container->addResource(new DirectoryResource($dir));
+    		}
+    		
+    		//nativ
+    		$finder = Finder::create()
+    		->files()
+    		->filter(function (\SplFileInfo $file) {
+    			return 2 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
+    		})
+    		->in($dirs)
+    		;
+    		    		
+    		foreach ($finder as $file) {
+    			// filename is domain.locale.format
+    			list($domain, $locale, $format) = explode('.', $file->getBasename(), 3);
+    			$translator->addMethodCall('addResource', array($format, (string) $file, $locale, $domain));
+    		}
+  		 		
+    		//zikula    		
+    		$zfinder = Finder::create()
+    		->files()
+    		->filter(function (\SplFileInfo $file) {
+    			return 1 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
+    		})
+    		->in($dirs)
+    		;
+
+    		foreach ($zfinder as $file) {
+    			// filepath/name is locale/catalogue/domain.format    			
+    			$path_arr = explode('/', $file->getRelativePath());					
+    			if (count($path_arr) == 2){ 			
+    			 $locale = $path_arr[0];
+    			 list($domain, $format) = explode('.', $file->getBasename(), 2);    			 
+    			 if ($format == 'po'){   			 
+	    			 $translator->addMethodCall('addResource', array($format, (string) $file, $locale, $domain));
+    			 }    			 	
+    			}  
+    		}	  		   		
+    	}
     }
 
     public function getNamespace()
