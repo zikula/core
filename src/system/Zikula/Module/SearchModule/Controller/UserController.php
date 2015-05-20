@@ -136,7 +136,7 @@ class UserController extends \Zikula_AbstractController
             }
             $moduleBundle = ModUtil::getModule($searchableModule['name']);
             /** @var $searchableInstance AbstractSearchable */
-            $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->entityManager, $moduleBundle);
+            $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->getContainer(), $moduleBundle);
 
             if ($searchableInstance instanceof AbstractSearchable) {
                 if ((!$this->getVar("disable_{$searchableModule['name']}") && SecurityUtil::checkPermission('ZikulaSearchModule::Item', "{$searchableModule['name']}::", ACCESS_READ))) {

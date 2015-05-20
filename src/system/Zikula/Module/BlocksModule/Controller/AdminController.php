@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Core\Controller\AbstractBlockController;
 
 /**
  * @Route("/admin")
@@ -287,7 +288,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Block-specific
         $blockoutput = '';
-        if ($blockObj instanceof Zikula_Controller_AbstractBlock) {
+        if (($blockObj instanceof Zikula_Controller_AbstractBlock) || ($blockObj instanceof AbstractBlockController)) {
             $blockoutput = call_user_func(array($blockObj, 'modify'), $blockinfo);
         } else {
             $usname = preg_replace('/ /', '_', $modinfo['name']);
@@ -416,7 +417,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Do block-specific update
-        if ($blockObj instanceof Zikula_Controller_AbstractBlock) {
+        if (($blockObj instanceof Zikula_Controller_AbstractBlock) || ($blockObj instanceof AbstractBlockController)) {
             $blockinfo = call_user_func(array($blockObj, 'update'), $blockinfo);
         } else {
             $usname = preg_replace('/ /', '_', $modinfo['name']);

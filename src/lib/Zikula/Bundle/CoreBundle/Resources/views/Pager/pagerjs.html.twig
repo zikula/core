@@ -1,0 +1,72 @@
+{% set separator=' | ' %}
+
+<div class="{{ pagerPluginArray.class }}">
+    {% if pagerPluginArray.currentPage > 1 %}
+        <a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page') }}">&lt;&lt;</a>
+        <span>{{ separator }}</span>
+
+        <a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page') }}">&lt;</a>
+        <span>{{ separator }}</span>
+    {% endif %}
+
+        {% if pagerPluginArray.maxPages > 0 %}
+            {% set hiddenPageBoxOpened=0 %}
+            {% set hiddenPageBoxClosed=0 %}
+        {% endif %}
+
+        {% for currentItem, currentPage in pagerPluginArray.pages %}
+            {% if currentPage.isVisible == 0 and hiddenPageBoxOpened == 0 %}
+                <a href="javascript:void(0);" onclick="javascript:CheckPageLink('{{ currentPage.pagenr }}')" onkeypress="javascript:CheckPageLink('{{ currentPage.pagenr }}')">
+                    <span id="showlink{{ currentPage.pagenr }}one">... +</span>
+                    <span id="showlink{{ currentPage.pagenr }}two" class="hide">... -</span>
+                </a>
+                <span id="showpages{{ currentPage.pagenr }}" class="hide">
+                {% set hiddenPageBoxOpened=1 %}
+                {% set hiddenPageBoxClosed=0 %}
+            {% endif %}
+
+            {% if currentPage.isVisible == 1 and hiddenPageBoxOpened == 1 and hiddenPageBoxClosed == 0 %}
+                </span>
+                {% set hiddenPageBoxClosed=1 %}
+                {% set hiddenPageBoxOpened=0 %}
+            {% endif %}
+
+            {% if currentPage.isCurrentPage %}
+                <strong>{{ currentPage.pagenr }}</strong>
+            {% else %}
+                <a href="{{ currentPage.url }}">{{ currentPage.pagenr }}</a>
+            {% endif %}
+
+            <span>{{ separator }}</span>
+        {% endfor %}
+
+    {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
+        <a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page') }}">&gt;</a>
+        <span>{{ separator }}</span>
+
+        <a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page') }}">&gt;&gt;</a>
+    {% endif %}
+</div>
+
+<script type="text/javascript">
+    ( function($) {
+        PagerChangeClass = function(id, class1, class2)
+        {
+            var myobj = $('#' + id);
+            if (myobj.hasClass(class1)) {
+                myobj.removeClass(class1);
+                myobj.addClass(class2);
+            } else {
+                myobj.removeClass(class2);
+                myobj.addClass(class1);
+            }
+        }
+
+        CheckPageLink = function(linkid)
+        {
+            PagerChangeClass('showlink' + linkid + 'one', 'hide', 'show');
+            PagerChangeClass('showlink' + linkid + 'two', 'hide', 'show');
+            PagerChangeClass('showpages' + linkid, 'hide', 'show');
+        }
+    })(jQuery);
+</script>

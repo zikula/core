@@ -59,11 +59,19 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
     if (isset($params['doctrine2']) && (boolean)$params['doctrine2'] == true) {
         if (count($params['categories']) > 0) {
             foreach ($params['categories'] as $category) {
-                if (!is_object($category) || !is_object($category->getCategory())) {
+                if (!is_object($category)) {
                     continue;
                 }
-                $name = $category->getCategory()->getName();
-                $display_name = $category->getCategory()->getDisplayName();
+                if ($category instanceof \Zikula\Core\Doctrine\Entity\AbstractEntityCategory) {
+                    if (!is_object($category->getCategory())) {
+                        continue;
+                    }
+                    $name = $category->getCategory()->getName();
+                    $display_name = $category->getCategory()->getDisplay_name();
+                } elseif ($category instanceof \Zikula\Module\CategoriesModule\Entity\CategoryEntity) {
+                    $name = $category->getName();
+                    $display_name = $category->getDisplay_name();
+                }
 
                 if (isset($display_name[$lang]) && !empty($display_name[$lang])) {
                     $result .= "<li>\n" . $display_name[$lang] . "</li>\n";

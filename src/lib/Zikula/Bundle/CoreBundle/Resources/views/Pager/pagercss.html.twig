@@ -1,0 +1,27 @@
+<div class="text-center">
+    <ul class="pagination">
+        {% if pagerPluginArray.currentPage > 1 %}
+            <li><a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page') }}">&laquo;</a></li>
+            <li><a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page') }}">&lsaquo;</a></li>
+        {% else %}
+            <li class="disabled"><span title="{{ __('First page') }}">&laquo;</span></li>
+            <li class="disabled"><span title="{{ __('Previous page') }}">&lsaquo;</span></li>
+        {% endif %}
+
+        {% for currentItem, currentPage in pagerPluginArray.pages %}
+            {% if currentPage.isCurrentPage %}
+            <li class="active"><span>{{ currentItem }}</span></li>
+            {% else %}
+            <li><a href="{{ currentPage.url }}">{{ currentItem }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
+            <li><a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page') }}">&rsaquo;</a></li>
+            <li><a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page') }}">&raquo;</a></li>
+        {% else %}
+            <li class="disabled"><span  title="{{ __('Next page') }}">&rsaquo;</span></li>
+            <li class="disabled"><span title="{{ __('Last page') }}">&raquo;</span></li>
+        {% endif %}
+    </ul>
+</div>

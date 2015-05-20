@@ -125,7 +125,7 @@ abstract class AbstractBundle extends Bundle
         return $this->basePath;
     }
 
-    protected function getNameType()
+    public function getNameType()
     {
         return 'Bundle';
     }

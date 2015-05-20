@@ -1,0 +1,41 @@
+{% extends "bootstrap_3_horizontal_layout.html.twig" %}
+
+{% block form_label_class -%}
+col-lg-3
+{%- endblock form_label_class %}
+
+{% block form_group_class -%}
+col-lg-9
+{%- endblock form_group_class %}
+
+{% block checkbox_widget -%}
+    {% set parent_label_class = parent_label_class|default('') -%}
+    {% if 'checkbox-inline' in parent_label_class %}
+        {{- form_label(form, null, { widget: parent() }) -}}
+    {% else -%}
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+    {%- endif %}
+{%- endblock checkbox_widget %}
+
+{% block checkbox_row -%}
+{% spaceless %}
+    <div class="form-group{% if not valid %} has-error{% endif %}">
+        {{ block('form_label') }}
+        <div class="{{ block('form_group_class') }}">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endspaceless %}
+{%- endblock checkbox_row %}
+
+{% block submit_row -%}
+{% spaceless %}
+    <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-9 {{ block('form_label_class') }}"></div>
+        <div class="col-lg-offset-3 {{ block('form_group_class') }}">
+            {{ form_widget(form) }}
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock submit_row %}

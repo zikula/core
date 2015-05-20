@@ -13,6 +13,7 @@
 
 namespace Zikula\Module\SearchModule;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Core\AbstractModule;
 use Zikula_View;
 use ZLanguage;
@@ -35,6 +36,11 @@ abstract class AbstractSearchable extends Translator
     protected $entityManager;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * @var Zikula_View
      */
     protected $view;
@@ -47,12 +53,13 @@ abstract class AbstractSearchable extends Translator
     /**
      * Constructor.
      *
-     * @param EntityManager  $entityManager
+     * @param ContainerInterface $container
      * @param AbstractModule $bundle
      */
-    public function __construct(EntityManager $entityManager, AbstractModule $bundle)
+    public function __construct(ContainerInterface $container, AbstractModule $bundle)
     {
-        $this->entityManager = $entityManager;
+        $this->container = $container;
+        $this->entityManager = $container->get('doctrine.entitymanager');
         $this->name = $bundle->getName();
         $this->view = Zikula_View::getInstance($this->name);
         parent::__construct(ZLanguage::getModuleDomain($this->name));
@@ -123,5 +130,13 @@ abstract class AbstractSearchable extends Translator
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 }

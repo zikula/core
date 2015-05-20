@@ -11,6 +11,9 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+use \Zikula\Core\Controller\AbstractBlockController;
+
 /**
  * Block util.
  */
@@ -302,15 +305,24 @@ class BlockUtil
             $className = class_exists($className) ? $className : $classNameOld;
         }
         $r = new ReflectionClass($className);
-        $blockInstance = $r->newInstanceArgs(array($sm, $module));
-        if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
+        $instanceArgs = array();
+        if (is_subclass_of($className, 'Zikula_Controller_AbstractBlock')) {
+            $instanceArgs = array($sm, $module);
+        } elseif (is_subclass_of($className, 'Zikula\Core\Controller\AbstractBlockController')) {
+            $instanceArgs = array($module);
+        }
+        $blockInstance = $r->newInstanceArgs($instanceArgs);
+        if ((!$blockInstance instanceof Zikula_Controller_AbstractBlock) && (!$blockInstance instanceof AbstractBlockController)) {
             throw new LogicException(sprintf(
-                'Block %s must inherit from Zikula_Controller_AbstractBlock',
+                'Block %s must inherit from Zikula_Controller_AbstractBlock or Zikula\Core\Controller\AbstractBlockController',
                 $className
             ));
         }
 
         $sm->set($serviceId, $blockInstance);
+        if ($blockInstance instanceof \Symfony\Component\DependencyInjection\ContainerAwareInterface) {
+            $blockInstance->setContainer($sm);
+        }
         $result = $blockInstance;
         $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
         // set the module and keys for the new block
