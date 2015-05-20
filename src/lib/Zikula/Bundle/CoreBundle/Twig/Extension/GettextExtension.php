@@ -12,10 +12,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class GettextExtension extends \Twig_Extension
 {
     private $container;
+    private $translator;
+    private $module;
+    private $locale;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->translator = $this->container->get('translator');
+        $this->module = $this->container->get('request')->get('module');
+        $this->locale = $this->container->get('request')->get('_locale');     
     }
 
     /**
@@ -50,9 +56,11 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see __()
      */
-    public function __(\Twig_Environment $env, $message, $domain = null)
+    public function __(\Twig_Environment $env, $message, $domain = null, $locale = null)
     {
-        return \__($message, $domain);
+    	$domain = $domain == null ? $this->module : $domain;
+    	$locale = $locale == null ? $this->locale : $locale;
+        return $this->translator->trans($message, array(), $domain, $locale);
     }
 
     /**
@@ -66,9 +74,11 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see __f()
      */
-    public function __f(\Twig_Environment $env, $message, $params, $domain = null)
+    public function __f(\Twig_Environment $env, $message, $params, $domain = null, $locale = null)
     {
-        return \__f($message, $params, $domain);
+    	$domain = $domain == null ? $this->module : $domain;
+    	$locale = $locale == null ? $this->locale : $locale;
+        return $this->translator->trans($message, $params, $domain, $locale);
     }
 
     /**
