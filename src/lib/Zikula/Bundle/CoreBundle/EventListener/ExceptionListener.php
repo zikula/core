@@ -71,7 +71,7 @@ class ExceptionListener implements EventSubscriberInterface
             $userLoggedIn = UserUtil::isLoggedIn();
             do {
                 if ($exception instanceof AccessDeniedException) {
-                    $this->handleAccessDeniedException($event, $userLoggedIn);
+                    $this->handleAccessDeniedException($event, $userLoggedIn, $exception->getMessage());
                 } elseif ($exception instanceof RouteNotFoundException) {
                     $this->handleRouteNotFoundException($event, $userLoggedIn);
                 }
@@ -89,15 +89,25 @@ class ExceptionListener implements EventSubscriberInterface
      * @param GetResponseForExceptionEvent $event
      * @param $userLoggedIn
      */
-    private function handleAccessDeniedException(GetResponseForExceptionEvent $event, $userLoggedIn)
+    private function handleAccessDeniedException(GetResponseForExceptionEvent $event, $userLoggedIn, $message = 'Access Denied')
     {
         if (!$userLoggedIn) {
-            $event->getRequest()->getSession()->getFlashBag()->add('error', __('You do not have permission. You must login first.'));
+            if ($message == 'Access Denied') {
+                $event->getRequest()->getSession()->getFlashBag()->add('error', __('You do not have permission. You must login first.'));
+            } else {
+                $event->getRequest()->getSession()->getFlashBag()->add('error', $message); 
+            }
+            
             $params = array('returnpage' => urlencode($event->getRequest()->getSchemeAndHttpHost() . $event->getRequest()->getRequestUri()));
             // redirect to login page
             $route = $this->router->generate('zikulausersmodule_user_login', $params, RouterInterface::ABSOLUTE_URL);
         } else {
-            $event->getRequest()->getSession()->getFlashBag()->add('error', __('You do not have permission for that action.'));
+            if ($message == 'Access Denied') {
+                $event->getRequest()->getSession()->getFlashBag()->add('error', __('You do not have permission for that action.'));
+            } else {
+                $event->getRequest()->getSession()->getFlashBag()->add('error', $message); 
+            }
+            
             // redirect to previous page
             $route = $event->getRequest()->server->get('HTTP_REFERER', \System::getHomepageUrl());
         }
