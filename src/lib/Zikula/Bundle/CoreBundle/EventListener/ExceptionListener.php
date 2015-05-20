@@ -88,26 +88,22 @@ class ExceptionListener implements EventSubscriberInterface
      *
      * @param GetResponseForExceptionEvent $event
      * @param $userLoggedIn
+     * @param string $message a custom error message (default: 'Access Denied') (The default message from Symfony)
+     * @see http://api.symfony.com/2.6/Symfony/Component/Security/Core/Exception/AccessDeniedException.html
      */
     private function handleAccessDeniedException(GetResponseForExceptionEvent $event, $userLoggedIn, $message = 'Access Denied')
     {
         if (!$userLoggedIn) {
-            if ($message == 'Access Denied') {
-                $event->getRequest()->getSession()->getFlashBag()->add('error', __('You do not have permission. You must login first.'));
-            } else {
-                $event->getRequest()->getSession()->getFlashBag()->add('error', $message); 
-            }
-            
+            $message = ($message == 'Access Denied') ? __('You do not have permission. You must login first.') : $message;
+            $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
+
             $params = array('returnpage' => urlencode($event->getRequest()->getSchemeAndHttpHost() . $event->getRequest()->getRequestUri()));
             // redirect to login page
             $route = $this->router->generate('zikulausersmodule_user_login', $params, RouterInterface::ABSOLUTE_URL);
         } else {
-            if ($message == 'Access Denied') {
-                $event->getRequest()->getSession()->getFlashBag()->add('error', __('You do not have permission for that action.'));
-            } else {
-                $event->getRequest()->getSession()->getFlashBag()->add('error', $message); 
-            }
-            
+            $message = ($message == 'Access Denied') ? __('You do not have permission for that action.') : $message;
+            $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
+
             // redirect to previous page
             $route = $event->getRequest()->server->get('HTTP_REFERER', \System::getHomepageUrl());
         }
