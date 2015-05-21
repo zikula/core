@@ -1,4 +1,16 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
@@ -13,15 +25,11 @@ class GettextExtension extends \Twig_Extension
 {
     private $container;
     private $translator;
-    private $module;
-    private $locale;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->translator = $this->container->get('translator');
-        $this->module = $this->container->get('request')->get('module');
-        $this->locale = $this->container->get('request')->get('_locale');     
+        $this->translator = $this->container->get('translator'); 
     }
 
     /**
@@ -58,8 +66,6 @@ class GettextExtension extends \Twig_Extension
      */
     public function __(\Twig_Environment $env, $message, $domain = null, $locale = null)
     {
-    	$domain = $domain == null ? $this->module : $domain;
-    	$locale = $locale == null ? $this->locale : $locale;
         return $this->translator->trans($message, array(), $domain, $locale);
     }
 
@@ -76,8 +82,6 @@ class GettextExtension extends \Twig_Extension
      */
     public function __f(\Twig_Environment $env, $message, $params, $domain = null, $locale = null)
     {
-    	$domain = $domain == null ? $this->module : $domain;
-    	$locale = $locale == null ? $this->locale : $locale;
         return $this->translator->trans($message, $params, $domain, $locale);
     }
 
