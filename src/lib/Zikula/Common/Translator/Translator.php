@@ -191,48 +191,51 @@ class Translator extends BaseTranslator implements WarmableInterface {
 		
 		return strtr ( $this->selector->choose ( $catalogue->get ( $id, $domain ), ( int ) $number, $locale ), $parameters );
 	}
-	
+
 	/**
 	 * singular translation for modules.
 	 *
-	 * @param string $msg
-	 *        	Message.
-	 *        	
+	 * @param string $msg Message.
+	 *
 	 * @return string
 	 */
-	public function __($msg) {
-		return $this->trans ( $msg, array (), $this->domain, $this->locale );
+	public function __($msg, $domain = null, $locale = null)
+	{
+		$domain = ($domain == null) ? $this->domain : $domain ;
+		$locale = ($locale == null) ? $this->locale : $locale ;
+		return $this->trans($msg, array(), $domain, $locale);
 	}
 	
 	/**
 	 * Plural translations for modules.
 	 *
-	 * @param string $m1
-	 *        	Singular.
-	 * @param string $m2
-	 *        	Plural.
-	 * @param integer $n
-	 *        	Count.
-	 *        	
+	 * @param string  $m1 Singular.
+	 * @param string  $m2 Plural.
+	 * @param integer $n  Count.
+	 *
 	 * @return string
 	 */
-	public function _n($m1, $m2, $n) {
-		// transChoice(string $id, integer $number, array $parameters = array(), string $domain = 'messages', string $locale = null)
-		return _n ( $m1, $m2, $n, $this->domain );
+	public function _n($m1, $m2, $n, $domain = null, $locale = null)
+	{
+		$id = $m1;
+		$domain = ($domain == null) ? $this->domain : $domain ;
+		$locale = ($locale == null) ? $this->locale : $locale ;
+		return $this->transChoice($id, $n, array(), $domain, $locale);
 	}
 	
 	/**
 	 * Format translations for modules.
 	 *
-	 * @param string $msg
-	 *        	Message.
-	 * @param string|array $param
-	 *        	Format parameters.
-	 *        	
+	 * @param string       $msg   Message.
+	 * @param string|array $param Format parameters.
+	 *
 	 * @return string
 	 */
-	public function __f($msg, $param) {
-		return $this->trans ( $msg, $param, $this->domain, $this->locale );
+	public function __f($msg, $param, $domain = null, $locale = null)
+	{
+		$domain = ($domain == null) ? $this->domain : $domain ;
+		$locale = ($locale == null) ? $this->locale : $locale ;
+		return $this->trans($msg, $param, $domain, $locale);
 	}
 	
 	/**
@@ -246,11 +249,14 @@ class Translator extends BaseTranslator implements WarmableInterface {
 	 *        	Count.
 	 * @param string|array $param
 	 *        	Format parameters.
-	 *        	
+	 *
 	 * @return string
 	 */
-	public function _fn($m1, $m2, $n, $param) {
-		// transChoice(string $id, integer $number, array $parameters = array(), string $domain = 'messages', string $locale = null)
-		return _fn ( $m1, $m2, $n, $param, $this->domain );
+	public function _fn($m1, $m2, $n, $param, $domain = null, $locale = null) {
+	
+		$id = $m1;
+		$domain = ($domain == null) ? $this->domain : $domain ;
+		$locale = ($locale == null) ? $this->locale : $locale ;
+		return $this->transChoice($id, $n, $param, $domain, $locale);
 	}
 }
