@@ -729,17 +729,20 @@ class System
             $modname = strtolower($parameters['_zkModule']);
             $type = strtolower($parameters['_zkType']);
             $func = strtolower($parameters['_zkFunc']);
-
+            $lang = strtolower($parameters['_locale']);
+            
             $request->attributes->set('_zkModule', $modname);
             $request->attributes->set('_zkType', $type);
             $request->attributes->set('_zkFunc', $func);
             $request->query->set('module', $modname);
             $request->query->set('type', $type);
             $request->query->set('func', $func);
+            $request->query->set('lang', $lang);
             self::queryStringSetVar('module', $modname);
             self::queryStringSetVar('type', $type);
             self::queryStringSetVar('func', $func);
-
+            self::queryStringSetVar('lang', $lang);
+            
             return;
 
         } catch (ResourceNotFoundException $e) {
