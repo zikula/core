@@ -217,7 +217,7 @@ class Translator extends BaseTranslator implements WarmableInterface {
 	 */
 	public function _n($m1, $m2, $n, $domain = null, $locale = null)
 	{
-		$id = $m1;
+		$id = ($n > 1) ? $m2 : $m1 ;
 		$domain = ($domain == null) ? $this->domain : $domain ;
 		$locale = ($locale == null) ? $this->locale : $locale ;
 		return $this->transChoice($id, $n, array(), $domain, $locale);
@@ -254,7 +254,7 @@ class Translator extends BaseTranslator implements WarmableInterface {
 	 */
 	public function _fn($m1, $m2, $n, $param, $domain = null, $locale = null) {
 	
-		$id = $m1;
+		$id = ($n > 1) ? $m2 : $m1 ;
 		$domain = ($domain == null) ? $this->domain : $domain ;
 		$locale = ($locale == null) ? $this->locale : $locale ;
 		return $this->transChoice($id, $n, $param, $domain, $locale);
