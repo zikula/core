@@ -60,6 +60,7 @@ class Translator extends BaseTranslator implements WarmableInterface {
 	 */
 	public function __construct(ContainerInterface $container, MessageSelector $selector, $loaderIds = array(), array $options = array()) {
 		$this->container = $container;
+		$this->selector = $selector ?: new MessageSelector();
 		$this->loaderIds = $loaderIds;
 		// check option names
 		if ($diff = array_diff ( array_keys ( $options ), array_keys ( $this->options ) )) {
