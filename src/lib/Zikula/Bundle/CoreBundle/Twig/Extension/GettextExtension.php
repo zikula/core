@@ -96,9 +96,10 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see _fn()
      */
-    public function _fn(\Twig_Environment $env, $singular, $plural, $count, $params, $domain = null)
+    public function _fn(\Twig_Environment $env, $singular, $plural, $count, $params, $domain = null, $locale = null)
     {
-        return \_fn($singular, $plural, $count, $params, $domain);
+		$id = ($count > 1) ? $singular : $plural ;
+		return $this->translator->transChoice($id, $count, $params, $domain, $locale);
     }
 
     /**
@@ -112,9 +113,10 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see _n()
      */
-    public function _n(\Twig_Environment $env, $singular, $plural, $count, $domain = null)
+    public function _n(\Twig_Environment $env, $singular, $plural, $count, $domain = null, $locale = null)
     {
-        return \_n($singular, $plural, $count, $domain);
+		$id = ($count > 1) ? $singular : $plural ;
+		return $this->translator->transChoice($id, $count, array(), $domain, $locale);
     }
 
     /**
