@@ -27,6 +27,10 @@ class CoreExtension extends Extension
         $loader->load('core.xml');
         $loader->load('twig.xml');
         $loader->load('translation.xml');
+        
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);        
+        
 //        $config = Yaml::parse(file_get_contents(ZIKULA_ROOT.'/../app/config/core_legacy.yml'));
 //        foreach ($config as $key => $array) {
 //            foreach ($array as $id => $value) {
@@ -52,8 +56,7 @@ class CoreExtension extends Extension
             }
         }
         
-        //$this->registerTranslatorConfiguration($config['translator'], $container);
-        $this->registerTranslatorConfiguration($container);        
+		$this->registerTranslatorConfiguration($config['translator'], $container);       
         
     }
     
@@ -63,14 +66,15 @@ class CoreExtension extends Extension
      * @param array            $config    A translator configuration array
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    private function registerTranslatorConfiguration(ContainerBuilder $container)
+    private function registerTranslatorConfiguration(array $config, ContainerBuilder $container)
     {
 
-    	// Use the "real" translator instead of the identity default
-    	$container->setAlias('translator', 'translator.default');
-    	$translator = $container->findDefinition('translator.default');
-    	$translator->addMethodCall('setFallbackLocales', array(array('en')));
-    	$container->setParameter('translator.logging', true);
+        // Use the "real" translator instead of the identity default
+        $container->setAlias('translator', 'translator.default');
+        $translator = $container->findDefinition('translator.default');
+        $translator->addMethodCall('setFallbackLocales', array($config['fallbacks']));
+        $container->setParameter('translator.logging', $config['logging']);
+        
     	// Discover translation directories
     	$dirs = array();
     	
@@ -156,6 +160,11 @@ class CoreExtension extends Extension
     		}	  		   		
     	}
     }
+
+    public function getConfiguration(array $config, ContainerBuilder $container)
+    {
+    	return new Configuration($container->getParameter('kernel.debug'));
+    }    
 
     public function getNamespace()
     {
