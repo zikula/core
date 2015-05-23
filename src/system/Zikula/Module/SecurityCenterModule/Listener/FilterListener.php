@@ -389,12 +389,12 @@ class FilterListener extends \Zikula_AbstractEventHandler
         } else {
 
             // save renderer delimiters
-            $event->data = str_replace('{',  '%VIEW_LEFT_DELIMITER%',  $event->data);
-            $event->data = str_replace('{', '%VIEW_RIGHT_DELIMITER%', $event->data);
+            $event->data = str_replace('{', '%VIEW_LEFT_DELIMITER%', $event->data);
+            $event->data = str_replace('}', '%VIEW_RIGHT_DELIMITER%', $event->data);
             $event->data = $purifier->purify($event->data);
 
             // restore renderer delimiters
-            $event->data = str_replace('%VIEW_LEFT_DELIMITER%',  '{',  $event->data);
+            $event->data = str_replace('%VIEW_LEFT_DELIMITER%', '{', $event->data);
             $event->data = str_replace('%VIEW_RIGHT_DELIMITER%', '}', $event->data);
 
             // cache the value
