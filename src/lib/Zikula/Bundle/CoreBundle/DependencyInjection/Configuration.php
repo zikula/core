@@ -36,4 +36,25 @@ class Configuration implements ConfigurationInterface
 
         return $treeBuilder;
     }
+       
+    private function addTranslatorSection(ArrayNodeDefinition $rootNode)
+    {
+    	$rootNode
+    	->children()
+    	->arrayNode('translator')
+    	->info('translator configuration')
+    	->canBeEnabled()
+    	->fixXmlConfig('fallback')
+    	->children()
+    	->arrayNode('fallbacks')
+    	->beforeNormalization()->ifString()->then(function ($v) { return array($v); })->end()
+    	->prototype('scalar')->end()
+    	->defaultValue(array('en'))
+    	->end()
+    	->booleanNode('logging')->defaultValue($this->debug)->end()
+    	->end()
+    	->end()
+    	->end()
+    	;
+    }    
 }
