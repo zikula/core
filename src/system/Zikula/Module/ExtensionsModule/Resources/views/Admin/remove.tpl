@@ -39,9 +39,9 @@
                         <td>{$dependent.displayname}</td>
                         <td>
                             {if $dependent.status eq 1}
-                            {gt text='required'}
+                            {gt text='Required'}
                             {elseif $dependent.status eq 2}
-                            {gt text='optional'}
+                            {gt text='Optional'}
                             {/if}
                         </td>
                         <td>
