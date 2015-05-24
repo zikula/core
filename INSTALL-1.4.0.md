@@ -61,18 +61,25 @@ If you obtained the Zikula Core by cloning the repo at Github, you should see th
 instructions. This is **not recommended for non-developers**.
 
 If you obtained Zikula Core from zikula.org or the CI server, then you can upload the entire archive (`.zip`
-or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable). Copy all the
-files and directories to your webroot (typically `public_html` or `httpdocs`).
+or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable than 
+uploading files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the
+correct permissions.** Copy all the files and directories to your webroot (typically `public_html` or
+`httpdocs`).
 
 Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
 to the server check if your longest path length is longer than Windows/FTP-Software allows (more than 256 characters).
 
-
 ###Set file permissions (Critical)
 
-If you installed from a `.zip` archive, the permissions for the `app/cache` and `app/logs` must be reset so
-these directories are writable. `chmod 777 app/cache` and `chmod 777 app/logs`. (`.tgz` archives maintain
-the permission settings as they were set correctly by the development team).
+If you installed from a `.zip` archive or uploaded the files via FTP, the permissions for some folders must be changed prior to installing so that your webserver's user has write access:
+- `app/config`
+- `app/config/dynamic`
+- `app/cache`
+- `config`
+- `userdata`
+
+You normally do so using `chmod 777 app/cache` and so on. (`.tgz` archives maintain
+the permission settings as they were set correctly by the development team, if you unpacked it using the `-p` flag).
 
 
 <a name="install"></a>
