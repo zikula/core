@@ -104,6 +104,10 @@ automatically redirected to the installer.
 
 ###Command Line Installer
 
+*Note 1:* One common issue when installing is that the app/cache and app/logs directories must be writable both by the web server and the command line user. See Symfony's [Setting up Permissions](http://symfony.com/doc/current/book/installation.html#book-installation-permissions) to see potential solutions to this problem when installing from the CLI.
+
+*Note 2:* If you have `mod_suexec` installed for Apache the CLI will run into permission problems. (If you are not sure check your phpinfo.) `mod_suexec` often is used in shared hosting environments. In this case, the CLI installer is not recommended, please use the Web Installer. 
+
 Via CLI, access your main zikula directory (`/src` if a Github clone) and run this command:
 ```Shell
 $ php app/console zikula:install:start
@@ -113,8 +117,6 @@ Follow the prompts and complete that step. When you are finished, you are direct
 $ php app/console zikula:install:finish
 ```
 Open your browser and login!
-
-Attention: If you have ``mod_suexec`` installed at Apache the CLI will run into permission problems. If you are not sure see phpinfo. mod_suexec often is used at shared hosting. In this case you have to use the Web Installer. See Symfony's [Setting up Permissions](http://symfony.com/doc/current/book/installation.html#book-installation-permissions). Symfony has the exact same problem. They also provide a CLI installer.
 
 
 <a name="final"></a>
