@@ -46,7 +46,7 @@
         {foreach item='hookprovider' from=$hookproviders}
             {if !empty($hookprovider.areas)}
                 <div class="parea_wrapper">
-                    <h4>{$hookprovider.name}</h4>
+                    <h4>{$hookprovider.displayname}</h4>
                     <div class="panel-content">
                         {foreach key='category' item='areas' from=$hookprovider.areasAndCategories}
                         <fieldset class="pareas_category">
