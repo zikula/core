@@ -111,6 +111,8 @@ $ php app/console zikula:install:finish
 ```
 Open your browser and login!
 
+Attention: If you have ``mod_suexec`` installed at Apache the CLI will run into permission problems. If you are not shure see phpinfo. mod_suexec often is used at shared hosting. In this case you have to use the Web Installer.
+
 
 <a name="final"></a>
 5. Final Note
