@@ -39,23 +39,27 @@ Used technologies try to symplify translation process as possible. Installing la
 You can find your locale translations on ... If there is no translation for your language and you willing to translate please check 'Translators' part of this guide. 
 ### Zikula legacy translator
 
-Path to install Zikula Core translations on systems versions prior to 1.4.x -
-Path to install Zikula Core translations on systems versions 1.4.x -
+* Path to install Zikula Core translations on systems versions prior to 1.4.x -
+* Path to install Zikula Core translations on systems versions 1.4.x -
  
 ### Zikula Symfony Translator
 
-Zikula Symfony translator suports zikula paths on systems versions 1.4.x -
-Paths and file names used by Symfony Translator - 
+* Zikula Symfony translator suports zikula paths on systems versions 1.4.x -
+* Paths and file names used by Symfony Translator - 
 
 ## Translators
 
-To do 
+https://github.com/zikula/zikula-docs/blob/master/guides/translation/GuideForTranslators.rst 
 
 ## Developers guide
+
 To do introduction for developers.
+https://www.gnu.org/software/gettext/manual/gettext.html#I18n_002c-L10n_002c-and-Such
+
 ### Zikula legacy translator
 
 ### Symfony Translator
+
 Symfony comes with translation component Symfony Translations can be in various formats:
 * ArrayLoader - to load catalogs from PHP arrays.
 * CsvFileLoader - to load catalogs from CSV files.
@@ -73,19 +77,29 @@ Symfony comes with translation component Symfony Translations can be in various 
 For more informations please refer to http://symfony.com/doc/current/book/translation.html 
 
 ### Zikula Symfony Translator
-Zikula SF Translator base on SF translator and extend it to fit our translation conventions. Translator is loaded as service and available like other services.
-Zikula translator automatically preload translations from both Symfony and Zikula translation directiories.
-#### Translator service:
+
+* Zikula SF Translator base on SF translator and extend it to fit our translation conventions. Translator is loaded as service and available like other services.
+* Zikula translator automatically preload translations from both Symfony and Zikula translation directiories.
+
+##### Translator service:
+Exaple from AbstractController
 
 ```
-How to use
+		//access translator service
+		$this->translator = $bundle->getContainer()->get('translator');
+		
+		// set domain 
+		$this->translator->setDomain($bundle->getTranslationDomain());
 ```
 
 ##### AbstractController
-Zikula Translator is automatically available in AbstractContraller as 
+
+Zikula Translator is automatically added in AbstractContraller and you can access it using:
+ 
 ```
 $this->translator
 ```
+
 Usage in controller
 
 ```
@@ -98,7 +112,9 @@ Usage in controller
         $translated = $this->__('Page');
         ...
 ```
+
 ##### Twig
+
 http://symfony.com/doc/current/book/translation.html#translations-in-templates
 ```
 //Symfony nativ notation
@@ -113,13 +129,14 @@ http://symfony.com/doc/current/book/translation.html#translations-in-templates
     {{ _fn('Done! Deleted %1$d user account.', 'Done! Deleted %1$d user accounts.', 1, {'%1$d' : 1}, 'zikula', 'pl')  }}
 ```
 
+##### Context functions - core gettext twig
+
+todo 
+https://github.com/zikula/core/blob/1.4/src/lib/Zikula/Bundle/CoreBundle/Twig/Extension/GettextExtension.php#L61
+
 ##### Testing
 
-
-
-
-##### Context functions - core gettext twig
-https://github.com/zikula/core/blob/1.4/src/lib/Zikula/Bundle/CoreBundle/Twig/Extension/GettextExtension.php#L61
+todo
 
 ## Important notes
 From Symfony translator documentation
@@ -127,5 +144,6 @@ From Symfony translator documentation
 There is something new in Symfony translator that was not available with legacy mode. Lets say we have a website with 3 languages en (strings are in en) de and pl. All languages are enabled but some translations are missing for some strings. Normally it would show english as default because strings are in english. Falback locale is a feature that reads translator 'fallback' setting from config.yml and set this as locale to show instead the one that is missing. So when viewing german site in polish language and polish translations are not complete while the german are it will show german string but that will happen only when translator fallback setting locale is set to de. At the end there is always english string.
 
 ## See also sources
-
-To do
+* Gettext documentation https://www.gnu.org/software/gettext/manual/gettext.html#I18n_002c-L10n_002c-and-Such
+* Symfony Translator documentation http://symfony.com/doc/current/book/translation.html 
+* Zikula legacy translations guides https://github.com/zikula/zikula-docs/tree/master/guides/translation
