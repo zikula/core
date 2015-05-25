@@ -148,4 +148,62 @@ abstract class AbstractController extends Controller {
 		
 		return new AccessDeniedException ( $message, $previous );
 	}
+
+	/**
+	 * singular translation for modules.
+	 *
+	 * @param string $msg Message.
+	 *
+	 * @return string
+	 */
+	public function __($msg, $domain = null, $locale = null)
+	{
+    	return $this->translator->__($msg, $domain, $locale);
+	}
+	
+	/**
+	 * Plural translations for modules.
+	 *
+	 * @param string  $m1 Singular.
+	 * @param string  $m2 Plural.
+	 * @param integer $n  Count.
+	 *
+	 * @return string
+	 */
+	public function _n($m1, $m2, $n, $domain = null, $locale = null)
+	{
+		return $this->translator->_n($m1, $m2, $n, $domain = null, $locale = null);
+	}
+	
+	/**
+	 * Format translations for modules.
+	 *
+	 * @param string       $msg   Message.
+	 * @param string|array $param Format parameters.
+	 *
+	 * @return string
+	 */
+	public function __f($msg, $param, $domain = null, $locale = null)
+	{
+		return $this->translator->__f($msg, $param, $domain = null, $locale = null);
+	}
+	
+	/**
+	 * Format pural translations for modules.
+	 *
+	 * @param string $m1
+	 *        	Singular.
+	 * @param string $m2
+	 *        	Plural.
+	 * @param integer $n
+	 *        	Count.
+	 * @param string|array $param
+	 *        	Format parameters.
+	 *
+	 * @return string
+	 */
+	public function _fn($m1, $m2, $n, $param, $domain = null, $locale = null)
+	{
+		return $this->translator->_fn($m1, $m2, $n, $param, $domain = null, $locale = null);
+	}	
 }
