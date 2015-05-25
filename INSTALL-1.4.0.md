@@ -63,7 +63,7 @@ instructions. This is **not recommended for non-developers**.
 If you obtained Zikula Core from zikula.org or the CI server, then you can upload the entire archive (`.zip`
 or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable than 
 uploading files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the
-correct permissions.** Copy all the files and directories to your webroot (typically `public_html` or
+correct permissions (`tar -xpzvf -Zikula_Core-1.4.0.build123.tar.gz` where 123 must contain the downloaded build number).** Copy all the files and directories to your webroot (typically `public_html` or
 `httpdocs`).
 
 Another option can be to download the tar.gz directly from the ci server: e.g. `wget http://ci.zikula.org/job/Zikula_Core-1.4.0/588/artifact/build/archive/Zikula_Core-1.4.0.build588.tar.gz`. But you have to change the build number (e.g. 588) to the latest you can find at the ci server.
