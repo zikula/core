@@ -1,4 +1,16 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Bundle\CoreBundle\DependencyInjection;
 
@@ -30,20 +42,6 @@ class CoreExtension extends Extension
         
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);        
-        
-//        $config = Yaml::parse(file_get_contents(ZIKULA_ROOT.'/../app/config/core_legacy.yml'));
-//        foreach ($config as $key => $array) {
-//            foreach ($array as $id => $value) {
-//                $container->setParameter($id, $value);
-//            }
-//        }
-
-        // @todo temporary hack
-//        $container->setParameter('_zconfig', $config);
-
-//        $this->addClassesToCompile(array(
-//            'Zikula\\Component\\DependencyInjection\\ContainerBuilder',
-//        ));
 
         // todo - temporary - remove when Smarty is removed, also need to redeligate some
         // of this to other's responsibility
@@ -56,8 +54,7 @@ class CoreExtension extends Extension
             }
         }
         
-		$this->registerTranslatorConfiguration($config['translator'], $container);       
-        
+		$this->registerTranslatorConfiguration($config['translator'], $container);              
     }
     
     /**
@@ -90,8 +87,7 @@ class CoreExtension extends Extension
             $r = new \ReflectionClass('Symfony\Component\Security\Core\Exception\AuthenticationException');
             $dirs[] = dirname($r->getFilename()).'/../Resources/translations';
         }
-        
-        
+                
         $overridePath = $container->getParameter('kernel.root_dir').'/Resources/%s/translations';
         foreach ($container->getParameter('kernel.bundles') as $bundle => $class) {
             $reflection = new \ReflectionClass($class);
@@ -107,8 +103,7 @@ class CoreExtension extends Extension
                 $dirs[] = $dir;
             }
         }
-        
-		
+        		
         if (is_dir($dir = $container->getParameter('kernel.root_dir').'/Resources/translations')) {
             $dirs[] = $dir;
         }
@@ -152,7 +147,8 @@ class CoreExtension extends Extension
     			$path_arr = explode('/', $file->getRelativePath());					
     			if (count($path_arr) == 2){ 			
     			 $locale = $path_arr[0];
-    			 list($domain, $format) = explode('.', $file->getBasename(), 2);    			 
+    			 list($domain, $format) = explode('.', $file->getBasename(), 2);
+    			 // todo add $config['zk_loader'] config.xml translator when mo files handling will be working    			 
     			 if ($format == 'po'){   			 
 	    			 $translator->addMethodCall('addResource', array($format, (string) $file, $locale, $domain));
     			 }    			 	
