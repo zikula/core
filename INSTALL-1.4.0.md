@@ -114,6 +114,8 @@ $ php app/console zikula:install:finish
 ```
 Open your browser and login!
 
+Attention: If you have ``mod_suexec`` installed at Apache the CLI will run into permission problems. If you are not sure see phpinfo. mod_suexec often is used at shared hosting. In this case you have to use the Web Installer. See Setting up Permissions http://symfony.com/doc/current/book/installation.html#book-installation-permissions. Symfony has the exact same problem. They also provide a CLI installer.
+
 
 <a name="final"></a>
 5. Final Note
