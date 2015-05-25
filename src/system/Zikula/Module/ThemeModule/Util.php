@@ -86,6 +86,11 @@ class Util
             // Work out the theme type
             if (file_exists("themes/$dir/version.php")) {
                 $themetype = 3;
+                // set defaults
+                $themeversion['name'] = preg_replace('/_/', ' ', $dir);
+                $themeversion['displayname'] = preg_replace('/_/', ' ', $dir);
+                $themeversion['version'] = '0';
+                $themeversion['description'] = '';
                 include "themes/$dir/version.php";
             } else {
                 // anything else isn't a theme
@@ -161,6 +166,7 @@ class Util
             if (isset($dbthemes[$name])) {
                 if (($themeinfo['directory'] != $dbthemes[$name]['directory']) ||
                         ($themeinfo['type'] != $dbthemes[$name]['type']) ||
+                        ($themeinfo['version'] != $dbthemes[$name]['version']) ||
                         ($themeinfo['admin'] != $dbthemes[$name]['admin']) ||
                         ($themeinfo['user'] != $dbthemes[$name]['user']) ||
                         ($themeinfo['system'] != $dbthemes[$name]['system']) ||
