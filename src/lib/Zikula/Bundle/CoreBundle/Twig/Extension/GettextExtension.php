@@ -18,8 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * GettextExtension
- *
- * @todo add automatic domain detection (from the environment)
+ * 
  */
 class GettextExtension extends \Twig_Extension
 {
@@ -66,15 +65,7 @@ class GettextExtension extends \Twig_Extension
      */
     public function __(\Twig_Environment $env, $message, $domain = null, $locale = null)
     {
-        return $this->translator->trans($message, array(), $domain, $locale);
-    }
-
-    /**
-     * @see __p()
-     */
-    public function __p(\Twig_Environment $env, $context, $message, $domain = null)
-    {
-        return \__p($context, $message, $domain);
+        return $this->translator->__($message, array(), $domain, $locale);
     }
 
     /**
@@ -82,24 +73,54 @@ class GettextExtension extends \Twig_Extension
      */
     public function __f(\Twig_Environment $env, $message, $params, $domain = null, $locale = null)
     {
-        return $this->translator->trans($message, $params, $domain, $locale);
+        return $this->translator->__f($message, $params, $domain, $locale);
     }
-
+    
     /**
-     * @see __fp()
+     * @see _n()
      */
-    public function __fp(\Twig_Environment $env, $context, $message, $params, $domain = null)
+    public function _n(\Twig_Environment $env, $singular, $plural, $count, $domain = null, $locale = null)
     {
-        return \__fp($context, $message, $params, $domain);
-    }
+    	return $this->translator->_n($singular, $plural, $count, array(), $domain, $locale);
+    }    
 
     /**
      * @see _fn()
      */
     public function _fn(\Twig_Environment $env, $singular, $plural, $count, $params, $domain = null, $locale = null)
     {
-		$id = ($count > 1) ? $singular : $plural ;
-		return $this->translator->transChoice($id, $count, $params, $domain, $locale);
+    	return $this->translator->_fn($singular, $plural, $count, $params, $domain, $locale);
+    }
+
+    /**
+     * @see no__()
+     */
+    public function no__($msgid)
+    {
+    	return $msgid;
+    }
+       
+    /**
+     * Translator context functions 
+     * 
+     * @todo Define how this should work
+     * 
+     */
+    
+    /**
+     * @see __p()
+     */
+    public function __p(\Twig_Environment $env, $context, $message, $domain = null)
+    {
+    	return \__p($context, $message, $domain);
+    } 
+       
+    /**
+     * @see __fp()
+     */
+    public function __fp(\Twig_Environment $env, $context, $message, $params, $domain = null)
+    {
+        return \__fp($context, $message, $params, $domain);
     }
 
     /**
@@ -111,28 +132,10 @@ class GettextExtension extends \Twig_Extension
     }
 
     /**
-     * @see _n()
-     */
-    public function _n(\Twig_Environment $env, $singular, $plural, $count, $domain = null, $locale = null)
-    {
-		$id = ($count > 1) ? $singular : $plural ;
-		return $this->translator->transChoice($id, $count, array(), $domain, $locale);
-    }
-
-    /**
      * @see _np()
      */
     public function _np(\Twig_Environment $env, $context, $singular, $plural, $count, $domain = null)
     {
         return \_np($context, $singular, $plural, $count, $domain);
-    }
-
-
-    /**
-     * @see no__()
-     */
-    public function no__($msgid)
-    {
-        return $msgid;
     }
 }
