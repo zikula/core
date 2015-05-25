@@ -66,7 +66,7 @@ uploading files via FTP). **Make sure to include the `-p` flag if you extract fr
 correct permissions.** Copy all the files and directories to your webroot (typically `public_html` or
 `httpdocs`).
 
-another otion can be to download the tar.gz directly from the ci server: e.g. `wget http://ci.zikula.org/job/Zikula_Core-1.4.0/588/artifact/build/archive/Zikula_Core-1.4.0.build588.tar.gz`. But you have to change the build number (e.g. 588) to the latest you can find at the ci server.
+Another option can be to download the tar.gz directly from the ci server: e.g. `wget http://ci.zikula.org/job/Zikula_Core-1.4.0/588/artifact/build/archive/Zikula_Core-1.4.0.build588.tar.gz`. But you have to change the build number (e.g. 588) to the latest you can find at the ci server.
 
 
 Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
