@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
@@ -21,7 +20,8 @@ use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Translator.
+ * Translator
+ * 
  */
 class Translator extends BaseTranslator implements WarmableInterface {
 	protected $container;
@@ -32,12 +32,12 @@ class Translator extends BaseTranslator implements WarmableInterface {
 			'debug' => false,
 			'resource_files' => array () 
 	);
-	
 	/**
 	 *
 	 * @var array
 	 */
-	private $resourceLocales;
+	private $resourceLocales;	
+	
 	/**
 	 * Constructor.
 	 *
@@ -76,11 +76,10 @@ class Translator extends BaseTranslator implements WarmableInterface {
 		}
 		parent::__construct ( $container->getParameter ( 'kernel.default_locale' ), $selector, $this->options ['cache_dir'], $this->options ['debug'] );
 	}
-	/**
-	 *
-	 * @ERROR!!!
-	 *
-	 */
+	
+    /**
+     * {@inheritdoc}
+     */
 	public function warmUp($cacheDir) {
 		// skip warmUp when translator doesn't use cache
 		if (null === $this->options ['cache_dir']) {
@@ -90,15 +89,18 @@ class Translator extends BaseTranslator implements WarmableInterface {
 			$this->loadCatalogue ( $locale );
 		}
 	}
-	/**
-	 *
-	 * @ERROR!!!
-	 *
-	 */
+	
+    /**
+     * {@inheritdoc}
+     */
 	protected function initializeCatalogue($locale) {
 		$this->initialize ();
 		parent::initializeCatalogue ( $locale );
 	}
+	
+	/**
+	 * {@inheritdoc}
+	 */	
 	protected function initialize() {
 		$this->loadResources ();
 		foreach ( $this->loaderIds as $id => $aliases ) {
@@ -107,8 +109,9 @@ class Translator extends BaseTranslator implements WarmableInterface {
 			}
 		}
 	}
-	/*
-	 *
+	
+	/**
+	 * {@inheritdoc}
 	 * @todo better load resource
 	 */
 	private function loadResources() {
@@ -156,10 +159,9 @@ class Translator extends BaseTranslator implements WarmableInterface {
 		return $this->domain;
 	}
 	
-	/**
-	 *
-	 * @ERROR!!! @api
-	 */
+    /**
+     * {@inheritdoc}
+     */
 	public function trans($id, array $parameters = array(), $domain = null, $locale = null) {
 		if (null === $domain) {
 			$domain = $this->domain;
@@ -168,10 +170,9 @@ class Translator extends BaseTranslator implements WarmableInterface {
 		return strtr ( $this->getCatalogue ( $locale )->get ( ( string ) $id, $domain ), $parameters );
 	}
 	
-	/**
-	 *
-	 * @ERROR!!! @api
-	 */
+    /**
+     * {@inheritdoc}
+     */
 	public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null) {
 		if (null === $domain) {
 			$domain = $this->domain;
