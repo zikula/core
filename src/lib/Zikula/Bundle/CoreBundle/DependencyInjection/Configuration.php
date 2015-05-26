@@ -18,9 +18,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * FrameworkExtension configuration structure.
- *
- * @author Jeremy Mikola <jmikola@gmail.com>
+ * CoreExtension configuration structure.
  */
 class Configuration implements ConfigurationInterface
 {
@@ -44,8 +42,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('framework');
-               
+        $rootNode = $treeBuilder->root('framework');               
         $this->addTranslatorSection($rootNode);
               
         return $treeBuilder;

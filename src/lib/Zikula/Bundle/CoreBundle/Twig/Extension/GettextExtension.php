@@ -17,8 +17,7 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * GettextExtension
- * 
+ * GettextExtension class.
  */
 class GettextExtension extends \Twig_Extension
 {
