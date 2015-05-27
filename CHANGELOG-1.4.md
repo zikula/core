@@ -128,3 +128,4 @@ Features:
 - Added several Twig tags and filters to duplicate some legacy functionality
 - Added automatic form-theming (bootstrap-style) for Twig-based admin forms
 - Hooks methods moved from event Listener to standard Controller method and given a true route
+- Added support for translating using Symfony Translator.
