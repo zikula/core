@@ -1,7 +1,7 @@
 Zikula Translation's Guide
 =================
 
-This guide is intended to provide overview of translation technologies, usage, implementations and future...
+This guide is intended to provide overview of translation technologies, usage, implementations and developement.
 
 ## Table of contents
 
@@ -22,13 +22,14 @@ This guide is intended to provide overview of translation technologies, usage, i
 
 
 ## Introduction  
-The idea is simple - anywere in project we use English strings and English descriptions.
+Technology for translations used in this guide is simple - anywere in project we use English strings and English descriptions.
 These are translated to other language stored in files or database and loaded on demand instead of English strings. 
 
 ## Terminology
 * **Symfony Translator** - Symfony gettext technology used for translations 
 * **Zikula legacy translator** - Zikula priror to 1.4.x uses own implementation of gettext translation technology. 
 * **Zikula Symfony Translator** - Extends Symfony Translator to support Zikula translation conventions. 
+* **message** -  in basic it is translation array element example: 'Englilsh string' => 'Translated string' 
 * **translation template** - .pot file for gettext used only in process of creating new translations. Not used in actual translating. 
 * **domain** - An optional way to organize messages into groups (e.g. Symfony admin, navigation or the default messages Zikula zikula, theme_themename, module_modulename and 2.0.0 bundlename)
 * **catalogue** - Gettext way to organize messages into groups (LC_MESSAGES, LC_TYPE, LC_ALL) 
@@ -84,7 +85,6 @@ https://github.com/zikula/zikula-docs/blob/master/guides/translation/GuideForTra
 
 Developers should be aware of the gettext specyfication and symfony translator specyfication 
 https://www.gnu.org/software/gettext/manual/gettext.html#I18n_002c-L10n_002c-and-Such
-
 
 ### Zikula legacy translator
 
@@ -200,6 +200,7 @@ Example output for more informations please check http://symfony.com/doc/current
 ## Important notes
 From Symfony translator documentation
 >Each time you create a new translation resource (or install a bundle that includes a translation resource), be sure to clear your cache so that Symfony can discover the new translation resources.
+
 There is something new in Symfony translator that was not available with legacy mode. Lets say we have a website with 3 languages en (strings are in en) de and pl. All languages are enabled but some translations are missing for some strings. Normally it would show english as default because strings are in english. Falback locale is a feature that reads translator 'fallback' setting from config.yml and set this as locale to show instead the one that is missing. So when viewing german site in polish language and polish translations are not complete while the german are it will show german string but that will happen only when translator fallback setting locale is set to de. At the end there is always english string.
 
 ## See also sources
