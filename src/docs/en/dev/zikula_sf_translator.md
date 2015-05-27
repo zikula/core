@@ -26,26 +26,55 @@ The idea is simple - anywere in project we use English strings and English descr
 These are translated to other language stored in files or database and loaded on demand instead of English strings. 
 
 ## Terminology
-* Symfony Translator - Symfony gettext technology used for translations 
-* Zikula legacy translator - Zikula priror to 1.4.x uses own implementation of gettext translation technology. 
-* Zikula Symfony Translator - Extends Symfony Translator to support Zikula translation conventions. 
-* domain - An optional way to organize messages into groups (e.g. admin, navigation or the default messages) - see Using Message Domains;
-* locale - The locale that the translations are for (e.g. en_GB, en, etc);
-* loader - How Symfony should load and parse the file (e.g. xlf, php, yml, etc).
+* **Symfony Translator** - Symfony gettext technology used for translations 
+* **Zikula legacy translator** - Zikula priror to 1.4.x uses own implementation of gettext translation technology. 
+* **Zikula Symfony Translator** - Extends Symfony Translator to support Zikula translation conventions. 
+* **translation template** - .pot file for gettext used only in process of creating new translations. Not used in actual translating. 
+* **domain** - An optional way to organize messages into groups (e.g. Symfony admin, navigation or the default messages Zikula zikula, theme_themename, module_modulename and 2.0.0 bundlename)
+* **catalogue** - Gettext way to organize messages into groups (LC_MESSAGES, LC_TYPE, LC_ALL) 
+* **locale** - The locale that the translations are for (e.g. en_GB, en, etc);
+* **loader** - How Symfony should load and parse the file (e.g. xlf, php, yml, etc Zikula .po .mo).
 
 
 ## User's guide
 Used technologies try to symplify translation process as possible. Installing language for Zikula is as simple as copying translation catalogue to aprioriate directory and enabling it in administration.
-You can find your locale translations on ... If there is no translation for your language and you willing to translate please check 'Translators' part of this guide. 
+You can find your locale translations on https://github.com/zikula-communities If there is no translation for your language and you willing to translate please check 'Translators' part of this guide. 
 ### Zikula legacy translator
 
-* Path to install Zikula Core translations on systems versions prior to 1.4.x -
-* Path to install Zikula Core translations on systems versions 1.4.x -
- 
+* Path to install Zikula Core translations on systems versions prior to 1.4.x  
+
+``` /locale/catalogue/domain.loader ```
+
+* Path to install Zikula Theme translations on systems versions prior to 1.4.x  
+
+``` /locale/catalogue/domain.loader ```
+
+* Path to install Zikula Module translations on systems versions prior to 1.4.x  
+
+``` /locale/catalogue/domain.loader ```
+
+* Path to install Zikula Core translations on systems versions +1.4.x
+
+``` app/Resources/locale/catalogue/domain.loader ```
+
+* Path to install Zikula Theme Module translations on systems versions +1.4.x
+
+``` .../Resources/locale/catalogue/domain.loader ```
+
+
 ### Zikula Symfony Translator
 
-* Zikula Symfony translator suports zikula paths on systems versions 1.4.x -
-* Paths and file names used by Symfony Translator - 
+* Zikula Symfony translator suports zikula paths for core themes and modules on systems versions 1.4.x
+
+``` app/Resources/locale/catalogue/domain.loader ```
+
+* Paths and file names used by Symfony Translator - and standard for zikula 2.0.0 - core
+
+``` app/Resources/translations/domain.locale.loader ```
+
+* Paths and file names used by Symfony Translator - and standard for zikula 2.0.0 - bundles (modules themes etc.)
+
+``` .../Resources/translations/domain.locale.loader ```
 
 ## Translators
 
@@ -53,10 +82,13 @@ https://github.com/zikula/zikula-docs/blob/master/guides/translation/GuideForTra
 
 ## Developers guide
 
-To do introduction for developers.
+Developers should be aware of the gettext specyfication and symfony translator specyfication 
 https://www.gnu.org/software/gettext/manual/gettext.html#I18n_002c-L10n_002c-and-Such
 
+
 ### Zikula legacy translator
+
+Add migration examples
 
 ### Symfony Translator
 
@@ -82,7 +114,10 @@ For more informations please refer to http://symfony.com/doc/current/book/transl
 * Zikula translator automatically preload translations from both Symfony and Zikula translation directiories.
 
 ##### Translator service:
-Exaple from AbstractController
+
+Translator service can be obtained from container.
+Service is preconfigured to automatically detect current locale, domain is by default set to 'zikula'.
+Exaple from AbstractController obtaining translator and setting new domain.
 
 ```
 		//access translator service
@@ -94,13 +129,13 @@ Exaple from AbstractController
 
 ##### AbstractController
 
-Zikula Translator is automatically added in AbstractContraller and you can access it using:
+Zikula Translator is automatically added in AbstractContraller and you can access it in your module controller using:
  
 ```
 $this->translator
 ```
 
-Usage in controller
+Translation examples
 
 ```
 		//Symfony nativ notation
@@ -115,6 +150,7 @@ Usage in controller
 
 ##### Twig
 
+For translations in Twig Zikula uses CoreGettext extensions apart from nativ Symfony Twig trans function.
 http://symfony.com/doc/current/book/translation.html#translations-in-templates
 ```
 //Symfony nativ notation
@@ -136,7 +172,30 @@ https://github.com/zikula/core/blob/1.4/src/lib/Zikula/Bundle/CoreBundle/Twig/Ex
 
 ##### Testing
 
-todo
+Symfony comes with ``` app/console translation:debug ``` command line tool to test translations.
+**This tool work only with Symfony and Zikula 2.0.0 translation paths.**
+Example output for more informations please check http://symfony.com/doc/current/book/translation.html#debugging-translations
+
+```
+	php app/console translation:debug pl KaikmediaPagesModule
+	+----------+-------------+----------------------+
+	| State(s) | Id          | Message Preview (pl) |
+	+----------+-------------+----------------------+
+	| o        | Pages       | Strony               |
+	| o        | Page        | Strona               |
+	| o        | pages       | strony               |
+	| o        | page        | strona               |
+	| o        | read more   | czytaj więcej        |
+	| o        | title       | tytuł                |
+	| o        | description | opis                 |
+	+----------+-------------+----------------------+
+	
+	Legend:
+	 x Missing message
+	 o Unused message
+	 = Same as the fallback message
+```
+
 
 ## Important notes
 From Symfony translator documentation
