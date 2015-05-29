@@ -29,7 +29,7 @@
  *
  * @return string A formatted string containing navigation for the module admin panel.
  */
-function smarty_function_moduleheader($params, $view)
+function smarty_function_moduleheader($params, Zikula_View $view)
 {
     if (!isset($params['modname']) || !ModUtil::available($params['modname'])) {
         $params['modname'] = ModUtil::getName();
