@@ -335,6 +335,8 @@ class Zikula_View_Theme extends Zikula_View
         $event = new \Zikula\Core\Event\GenericEvent($this, array(), $maincontent);
         $maincontent = $this->eventManager->dispatch('theme.prefetch', $event)->getData();
 
+        $this->cache_id = md5($this->cache_id.'|'.$maincontent);
+
         // Assign the main content area to the template engine
         $this->assign('maincontent', $maincontent);
 
