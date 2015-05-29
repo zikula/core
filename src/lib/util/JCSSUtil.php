@@ -103,10 +103,23 @@ class JCSSUtil
         // update stylesheets as there might be some additions for js
         $stylesheets = array_merge((array)$stylesheets, (array)PageUtil::getVar('stylesheet'));
         $stylesheets = self::prepareStylesheets($stylesheets, $themeinfo, $isAdminController);
+        
         if ($combine) {
             $javascripts = (array)self::save($javascripts, 'js', $cache_dir);
             $stylesheets = (array)self::save($stylesheets, 'css', $cache_dir);
         }
+
+        $fonts = PageUtil::getVar('font');
+            
+        if (!empty($fonts)) {
+            foreach ($fonts as $font) {
+                /**
+                 * Fonts must be loaded first, before other stylesheets.
+                 */
+                array_unshift($stylesheets, $font);
+            }
+        }
+
         $jcss = array(
             'stylesheets' => $stylesheets,
             'javascripts' => $javascripts
@@ -675,19 +688,24 @@ class JCSSUtil
                                     $start = strpos($lineParseRest, '(') + 1;
                                     $end = strpos($lineParseRest, ')');
                                     $url = substr($lineParseRest, $start, $end - $start);
-                                    if ($url{0} == '"' | $url{0} == "'") {
-                                        $url = substr($url, 1, strlen($url) - 2);
-                                    }
-                                    // fix url
-                                    $url = dirname($file) . '/' . $url;
-                                    if (!$wasCommentHack) {
-                                        // clear buffer
-                                        $contents[] = $newLine;
-                                        $newLine = "";
-                                        // process include
-                                        self::readfile($contents, $url, $ext);
+                                    
+                                    if (!is_readable($url)) {
+                                        $newLine .= '@import url('.$url.');';
                                     } else {
-                                        $newLine .= '@import url("' . $url . '");';
+                                        if ($url{0} == '"' | $url{0} == "'") {
+                                            $url = substr($url, 1, strlen($url) - 2);
+                                        }
+                                        // fix url
+                                        $url = dirname($file) . '/' . $url;
+                                        if (!$wasCommentHack) {
+                                            // clear buffer
+                                            $contents[] = $newLine;
+                                            $newLine = "";
+                                            // process include
+                                            self::readfile($contents, $url, $ext);
+                                        } else {
+                                            $newLine .= '@import url("' . $url . '");';
+                                        }
                                     }
                                     // skip @import statement
                                     $i += $posEnd - $i;
