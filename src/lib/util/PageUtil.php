@@ -40,6 +40,7 @@
  * <li>body</li>
  * <li>header</li>
  * <li>footer</li>
+ * <li>font</li>
  * </ul>
  *
  * In addition, if your system is operating in legacy compatibility mode, then
@@ -63,6 +64,7 @@ class PageUtil
      * <li>body</li>
      * <li>header</li>
      * <li>footer</li>
+     * <li>font</li>
      * </ul>
      *
      * In addition, if your system is operating in legacy compatibility mode, then
