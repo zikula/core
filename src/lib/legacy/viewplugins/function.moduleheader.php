@@ -59,7 +59,7 @@ function smarty_function_moduleheader($params, Zikula_View $view)
     }
     $titlelink = isset($params['titlelink']) ? $params['titlelink'] : false;
 
-    $renderer = Zikula_View::getInstance('Theme');
+    $renderer = Zikula_View::getInstance('ZikulaThemeModule');
     $renderer->setCaching(Zikula_View::CACHE_DISABLED);
 
     $renderer->assign('userthemename', UserUtil::getTheme());
