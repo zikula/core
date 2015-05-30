@@ -33,35 +33,36 @@ These are translated to other language stored in files or database and loaded on
 * **domain** - An optional way to organize messages into groups (e.g. Symfony admin, navigation or the default messages Zikula zikula, theme_themename, module_modulename and 2.0.0 bundlename)
 * **catalogue** - Gettext way to organize messages into groups (LC_MESSAGES, LC_TYPE, LC_ALL) 
 * **locale** - The locale that the translations are for (e.g. en_GB, en, etc);
-* **loader** - How Symfony should load and parse the file (e.g. xlf, php, yml, etc Zikula .po .mo).
+* **loader** - How Symfon/Zikula should load and parse the file (e.g. xlf, php, yml, etc Zikula .po .mo).
 
 
 ## User's guide
-Used technologies try to symplify translation process as possible. Installing language for Zikula is as simple as copying translation catalogue to aprioriate directory and enabling it in administration.
+Used technologies try to symplify translation process as possible. Installing language for Zikula is as simple as copying translation directory to aprioriate place in Zikula directory tree and enabling it in administration.
 You can find your locale translations on https://github.com/zikula-communities If there is no translation for your language and you willing to translate please check 'Translators' part of this guide. 
 ### Zikula legacy translator
 
-Catalogue is always ``` LC_MESSAGES ```
+catalogue is always ``` LC_MESSAGES ```
+{} - indicate that this part is variable depend on language/module/theme 
 
-**Path to install translations on systems versions prior to 1.4.x**  
+**Path to install translations on systems versions prior to 1.4.x**
 
-``` Core translations /locale/catalogue/domain.loader ```
+``` Core translations /locale/{locale}/LC_MESSAGES/zikula.mo and zikula.po```
 
-``` Theme translations /themes/themename/locale/catalogue/domain.loader  where domain is 'theme_themename' ```
+``` Theme translations /themes/{themename}/locale/{locale}/LC_MESSAGES/{domain}.mo where domain is 'theme_themename' ```
 
-``` Module translations /modules/modulename/locale/catalogue/domain.loader where domain is 'module_themename'```
+``` Module translations /modules/{modulename}/locale/{locale}/LC_MESSAGES/{domain}.mo where domain is 'module_modulename'```
 
 ** <a name="paths_14"></a> Path to install translations on systems versions 1.4.x UPGRADE**
 
-``` Core app/Resources/locale/catalogue/domain.loader ```
+``` Core app/Resources/locale/{locale}/LC_MESSAGES/zikula.mo and zikula.po ```
 
-``` Theme from 1.3.x translations /themes/themename/locale/catalogue/domain.loader  where domain is 'theme_themename' ```
+``` Theme from 1.3.x translations /themes/{themename}/locale/{locale}/LC_MESSAGES/{domain}.mo  where domain is 'theme_themename' ```
 
-``` Module from 1.3.x translations /modules/modulename/locale/catalogue/domain.loader where domain is 'module_themename' ```
+``` Module from 1.3.x translations /modules/modulename/locale/{locale}/LC_MESSAGES/{domain}.mo where domain is 'module_themename' ```
 
-``` Theme - bundle - translations /themes/themename/locale/catalogue/domain.loader  where domain is 'themebundlename' ```
+``` Theme - bundle - translations /themes/themename/locale/{locale}/LC_MESSAGES/{domain}.mo  where domain is 'themebundlename' ```
 
-``` Module - bundle - translations /modules/modulename/locale/catalogue/domain.loader where domain is 'modulebundlename' ```
+``` Module - bundle - translations /modules/modulename/locale/{locale}/LC_MESSAGES/{domain}.mo where domain is 'modulebundlename' ```
 
 > To translate a module in Zikula 1.4.x, the file name must be in the format `modulename.mo`. To translate a module in Zikula 1.3.x, the file name was previously in the format `module_modulename.mo`. These files must be placed into the legacy folder `app/Resources/locale/{lang}/LC_MESSAGES` (where `{lang}` is the standardized abbreviation for your language (e.g. `de` for german). In the future, the files must be placed into the new `app/Resources/translations` folder. In this case, copy all files to `<filename>.<lang>.po` (for example `routes.template.po => routes.de.po`) and translate the `.po` files as usual to generate the `.mo` files.
 
@@ -70,15 +71,15 @@ Catalogue is always ``` LC_MESSAGES ```
 
 **Zikula Symfony translator suports zikula paths for core and modules on systems versions 1.4.x - only bundle type!**
 
-``` Core legacy app/Resources/locale/catalogue/domain.loader ```
+``` Core legacy app/Resources/locale/{locale}/LC_MESSAGES/zikula.mo and po```
 
 **Paths and file names used by Symfony Translator - and standard for zikula 2.0.0 - core**
 
-``` Core 2.0.0 app/Resources/translations/domain.locale.loader ```
+``` Core 2.0.0 app/Resources/translations/{domain}.{locale}.{loader} ```
 
 **Paths and file names used by Symfony Translator - and standard for zikula 2.0.0 - bundles (modules themes etc.)**
 
-``` Themes and modules bundle type .../Resources/translations/domain.locale.loader where domain is 'modulebundlename' or 'themebundlename' ```
+``` Themes and modules bundle type .../Resources/translations/{domain}.{locale}.{loader} where domain is 'modulebundlename' or 'themebundlename' ```
 
 ## Translators
 
