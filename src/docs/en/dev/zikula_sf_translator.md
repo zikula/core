@@ -20,7 +20,6 @@ This guide is intended to provide overview of translation technologies, usage, i
 * See also sources
 
 
-
 ## Introduction  
 Technology for translations used in this guide is simple - anywere in project we use English strings and English descriptions.
 These are translated to other language stored in files or database and loaded on demand instead of English strings. 
@@ -52,7 +51,7 @@ Catalogue is always ``` LC_MESSAGES ```
 
 ``` Module translations /modules/modulename/locale/catalogue/domain.loader where domain is 'module_themename'```
 
-**Path to install translations on systems versions 1.4.x**
+** <a name="paths_14"></a> Path to install translations on systems versions 1.4.x UPGRADE**
 
 ``` Core app/Resources/locale/catalogue/domain.loader ```
 
