@@ -655,6 +655,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function adminfooterAction()
     {
+        $this->view->assign('symfonyversion', \Symfony\Component\HttpKernel\Kernel::VERSION);
         return new Response($this->view->fetch('Admin/footer.tpl'));
     }
 
