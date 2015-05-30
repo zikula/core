@@ -38,10 +38,11 @@
 <div class="z-admin-content clearfix">
     {modgetinfo modname=$currentmodule info='displayname' assign='displayName'}
     {modgetimage modname=$currentmodule assign='image'}
-    {moduleheader modname=$currentmodule type='admin' title=$displayName putimage=true image=$image}<h3>
-    <span class="fa fa-paperclip"></span>
-    {gt text='Hooks'}
-</h3>
+    {moduleheader modname=$currentmodule type='admin' title=$displayName putimage=true image=$image}
+    <h3>
+        <span class="fa fa-paperclip"></span>
+        {gt text='Hooks'}
+    </h3>
 
 {if $showBothPanels}
     <div role="tabpanel">
