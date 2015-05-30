@@ -1566,7 +1566,8 @@ class AdminController extends \Zikula_AbstractController
      *
      * Display hooks user interface
      *
-     * @return Response Thrown if the user doesn't have admin permissions over the module
+     * @return Response
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      * @internal param $moduleName
      */
     public function hooksAction($moduleName)
@@ -1771,4 +1772,33 @@ class AdminController extends \Zikula_AbstractController
 
         return new Response($this->view->fetch('Admin/HookUi/hooks.tpl'));
     }
+
+    /**
+     * @Route("/moduleservices/{moduleName}", options={"zkNoBundlePrefix" = 1})
+     * @Method("GET")
+     *
+     * Display services available to the module
+     *
+     * @param $moduleName
+     * @internal param GenericEvent $event
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
+     *
+     * @return Response
+     */
+    public function moduleServicesAction($moduleName)
+    {
+        if (!SecurityUtil::checkPermission($moduleName.'::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+
+        // notify EVENT here to gather any system service links
+        $event = new GenericEvent(null, array('modname' => $moduleName));
+        \EventUtil::dispatch('module_dispatch.service_links', $event);
+        $sublinks = $event->getData();
+        $this->view->assign('sublinks', $sublinks);
+        $this->view->assign('currentmodule', $moduleName);
+
+        return new Response($this->view->fetch('Admin/HookUi/moduleservices.tpl'));
+    }
+
 }

@@ -264,10 +264,10 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         if (!empty($sublinks)) {
             $event->data[] = array(
-                    'url' => ModUtil::url($event['modname'], 'admin', 'moduleservices'),
-                    'text' => __('Services'),
-                    'icon' => 'cogs',
-                    'links' => $sublinks);
+                'url' => $this->getContainer()->get('router')->generate('zikulaextensionsmodule_admin_moduleservices', array('moduleName' => $event['modname'])),
+                'text' => __('Services'),
+                'icon' => 'cogs',
+                'links' => $sublinks);
         }
     }
 
@@ -281,7 +281,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      *
      * @todo Reimplement in response/header objects in 1.5.0 - drak.
      *
-     * @param Zikula $event
+     * @param Zikula_Event $event
      *
      * @return void
      */
