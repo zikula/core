@@ -59,14 +59,10 @@ class Translator extends BaseTranslator implements WarmableInterface
      * * debug: Whether to enable debugging or not (false by default)
      * * resource_files: List of translation resources available grouped by locale.
      * 
-     * @param ContainerInterface $container
-     *            A ContainerInterface instance
-     * @param MessageSelector $selector
-     *            The message selector for pluralization
-     * @param array $loaderIds
-     *            An array of loader Ids
-     * @param array $options
-     *            An array of options
+     * @param ContainerInterface $container A ContainerInterface instance
+     * @param MessageSelector $selector The message selector for pluralization
+     * @param array $loaderIds An array of loader Ids
+     * @param array $options An array of options
      * @throws \InvalidArgumentException
      */
     public function __construct(ContainerInterface $container, MessageSelector $selector, $loaderIds = array(), array $options = array())
@@ -240,9 +236,10 @@ class Translator extends BaseTranslator implements WarmableInterface
 
     /**
      * singular translation for modules.
-     * 
-     * @param string $msg
-     *            Message.
+     *
+     * @param string $msg Message.
+     * @param null $domain
+     * @param null $locale
      * @return string
      */
     public function __($msg, $domain = null, $locale = null)
@@ -255,13 +252,12 @@ class Translator extends BaseTranslator implements WarmableInterface
 
     /**
      * Plural translations for modules.
-     * 
-     * @param string $m1
-     *            Singular.
-     * @param string $m2
-     *            Plural.
-     * @param integer $n
-     *            Count.
+     *
+     * @param string $m1 Singular.
+     * @param string $m2 Plural.
+     * @param integer $n Count.
+     * @param null $domain
+     * @param null $locale
      * @return string
      */
     public function _n($m1, $m2, $n, $domain = null, $locale = null)
@@ -275,11 +271,11 @@ class Translator extends BaseTranslator implements WarmableInterface
 
     /**
      * Format translations for modules.
-     * 
-     * @param string $msg
-     *            Message.
-     * @param string|array $param
-     *            Format parameters.
+     *
+     * @param string $msg Message.
+     * @param string|array $param Format parameters.
+     * @param null $domain
+     * @param null $locale
      * @return string
      */
     public function __f($msg, $param, $domain = null, $locale = null)
@@ -291,16 +287,14 @@ class Translator extends BaseTranslator implements WarmableInterface
     }
 
     /**
-     * Format pural translations for modules.
-     * 
-     * @param string $m1
-     *            Singular.
-     * @param string $m2
-     *            Plural.
-     * @param integer $n
-     *            Count.
-     * @param string|array $param
-     *            Format parameters.
+     * Format plural translations for modules.
+     *
+     * @param string $m1 Singular.
+     * @param string $m2 Plural.
+     * @param integer $n Count.
+     * @param string|array $param Format parameters.
+     * @param null $domain
+     * @param null $locale
      * @return string
      */
     public function _fn($m1, $m2, $n, $param, $domain = null, $locale = null)
