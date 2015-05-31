@@ -48,11 +48,6 @@ class Translator extends BaseTranslator implements WarmableInterface
     private $resourceLocales;
 
     /**
-     * @var MessageSelector
-     */
-    private $selector;
-
-    /**
      * Constructor.
      * Available options:
      * * cache_dir: The cache directory (or null to disable caching)
@@ -65,10 +60,9 @@ class Translator extends BaseTranslator implements WarmableInterface
      * @param array $options An array of options
      * @throws \InvalidArgumentException
      */
-    public function __construct(ContainerInterface $container, MessageSelector $selector, $loaderIds = array(), array $options = array())
+    public function __construct(ContainerInterface $container, MessageSelector $selector = null, $loaderIds = array(), array $options = array())
     {
         $this->container = $container;
-        $this->selector = $selector ?  : new MessageSelector();
         $this->loaderIds = $loaderIds;
         // check option names
         if ($diff = array_diff(array_keys($options), array_keys($this->options))) {
@@ -195,7 +189,7 @@ class Translator extends BaseTranslator implements WarmableInterface
             $domain = $this->domain;
         }
         
-        return strtr($this->getCatalogue($locale)->get((string) $id, $domain), $parameters);
+        return parent::trans($id, $parameters, $domain, $locale);
     }
 
     /**
@@ -218,20 +212,8 @@ class Translator extends BaseTranslator implements WarmableInterface
         if (null === $domain) {
             $domain = $this->domain;
         }
-        
-        $id = (string) $id;
-        $catalogue = $this->getCatalogue($locale);
-        $locale = $catalogue->getLocale();
-        while (! $catalogue->defines($id, $domain)) {
-            if ($cat = $catalogue->getFallbackCatalogue()) {
-                $catalogue = $cat;
-                $locale = $catalogue->getLocale();
-            } else {
-                break;
-            }
-        }
-        
-        return strtr($this->selector->choose($catalogue->get($id, $domain), (int) $number, $locale), $parameters);
+
+        return parent::transChoice($id, $number, $parameters, $domain, $locale);
     }
 
     /**
