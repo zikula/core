@@ -26,7 +26,7 @@ abstract class AbstractController extends Controller
      */
     protected $name;
     /**
-     * @var object
+     * @var \Zikula\Common\Translator\Translator
      */
     protected $translator;
     
@@ -40,7 +40,7 @@ abstract class AbstractController extends Controller
     public function __construct(AbstractBundle $bundle)
     {
         $this->name = $bundle->getName();
-        $this->translator = $bundle->getContainer()->get('translator');
+        $this->translator = $bundle->getContainer()->get('translator.default');
         $this->translator->setDomain($bundle->getTranslationDomain());
         $this->boot($bundle);
     }
@@ -165,8 +165,10 @@ abstract class AbstractController extends Controller
 
     /**
      * singular translation for modules.
-     * 
+     *
      * @param string $msg Message.
+     * @param null $domain
+     * @param null $locale
      * @return string
      */
     public function __($msg, $domain = null, $locale = null)
@@ -204,7 +206,7 @@ abstract class AbstractController extends Controller
     }
 
     /**
-     * Format pural translations for modules.
+     * Format plural translations for modules.
      *
      * @param string $m1 Singular.
      * @param string $m2 Plural.
