@@ -64,7 +64,7 @@ class GettextExtension extends \Twig_Extension
      */
     public function __(\Twig_Environment $env, $message, $domain = null, $locale = null)
     {
-        return $this->translator->__($message, array(), $domain, $locale);
+        return $this->translator->__($message, $domain, $locale);
     }
 
     /**
