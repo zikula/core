@@ -166,8 +166,7 @@ abstract class AbstractController extends Controller
     /**
      * singular translation for modules.
      * 
-     * @param string $msg
-     *            Message.
+     * @param string $msg Message.
      * @return string
      */
     public function __($msg, $domain = null, $locale = null)
@@ -177,49 +176,46 @@ abstract class AbstractController extends Controller
 
     /**
      * Plural translations for modules.
-     * 
-     * @param string $m1
-     *            Singular.
-     * @param string $m2
-     *            Plural.
-     * @param integer $n
-     *            Count.
+     *
+     * @param string $m1 Singular.
+     * @param string $m2 Plural.
+     * @param integer $n Count.
+     * @param null $domain
+     * @param null $locale
      * @return string
      */
     public function _n($m1, $m2, $n, $domain = null, $locale = null)
     {
-        return $this->translator->_n($m1, $m2, $n, $domain = null, $locale = null);
+        return $this->translator->_n($m1, $m2, $n, $domain, $locale);
     }
 
     /**
      * Format translations for modules.
-     * 
-     * @param string $msg
-     *            Message.
-     * @param string|array $param
-     *            Format parameters.
+     *
+     * @param string $msg Message.
+     * @param string|array $param Format parameters.
+     * @param null $domain
+     * @param null $locale
      * @return string
      */
     public function __f($msg, $param, $domain = null, $locale = null)
     {
-        return $this->translator->__f($msg, $param, $domain = null, $locale = null);
+        return $this->translator->__f($msg, $param, $domain, $locale);
     }
 
     /**
      * Format pural translations for modules.
-     * 
-     * @param string $m1
-     *            Singular.
-     * @param string $m2
-     *            Plural.
-     * @param integer $n
-     *            Count.
-     * @param string|array $param
-     *            Format parameters.
+     *
+     * @param string $m1 Singular.
+     * @param string $m2 Plural.
+     * @param integer $n Count.
+     * @param string|array $param Format parameters.
+     * @param null $domain
+     * @param null $locale
      * @return string
      */
     public function _fn($m1, $m2, $n, $param, $domain = null, $locale = null)
     {
-        return $this->translator->_fn($m1, $m2, $n, $param, $domain = null, $locale = null);
+        return $this->translator->_fn($m1, $m2, $n, $param, $domain, $locale);
     }
 }
