@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Translator extends BaseTranslator implements WarmableInterface
 {
     /**
-     * @var container
+     * @var ContainerInterface
      */
     protected $container;
     /**
@@ -46,6 +46,11 @@ class Translator extends BaseTranslator implements WarmableInterface
      * @var array
      */
     private $resourceLocales;
+
+    /**
+     * @var MessageSelector
+     */
+    private $selector;
 
     /**
      * Constructor.
