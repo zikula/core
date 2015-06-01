@@ -130,16 +130,14 @@ class Translator extends BaseTranslator implements WarmableInterface
                 $c = substr_count($file, ".");
                 
                 if ($c < 2) {
-                    // explode('.', basename($file), 3);
-                    // filename is domain.locale.format
+                    // filename is domain.format
                     list ($domain, $format) = explode('.', basename($file), 2);
                 } else {
-                    // explode('.', basename($file), 3);
                     // filename is domain.locale.format
                     list ($domain, $locale, $format) = explode('.', basename($file), 3);
                 }
                 
-                list ($domain, $format) = explode('.', basename($file), 2);
+//                list ($domain, $format) = explode('.', basename($file), 2);
                 
                 $this->addResource($format, $file, $locale, $domain);
                 unset($this->options['resource_files'][$locale][$key]);
@@ -185,10 +183,9 @@ class Translator extends BaseTranslator implements WarmableInterface
      */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
-        if (null === $domain) {
-            $domain = $this->domain;
-        }
-        
+        $domain = ($domain == null) ? $this->domain : $domain;
+        $locale = ($locale == null) ? $this->locale : $locale;
+
         return parent::trans($id, $parameters, $domain, $locale);
     }
 
@@ -209,9 +206,8 @@ class Translator extends BaseTranslator implements WarmableInterface
      */
     public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
     {
-        if (null === $domain) {
-            $domain = $this->domain;
-        }
+        $domain = ($domain == null) ? $this->domain : $domain;
+        $locale = ($locale == null) ? $this->locale : $locale;
 
         return parent::transChoice($id, $number, $parameters, $domain, $locale);
     }
@@ -226,9 +222,6 @@ class Translator extends BaseTranslator implements WarmableInterface
      */
     public function __($msg, $domain = null, $locale = null)
     {
-        $domain = ($domain == null) ? $this->domain : $domain;
-        $locale = ($locale == null) ? $this->locale : $locale;
-        
         return $this->trans($msg, array(), $domain, $locale);
     }
 
@@ -244,11 +237,9 @@ class Translator extends BaseTranslator implements WarmableInterface
      */
     public function _n($m1, $m2, $n, $domain = null, $locale = null)
     {
-        $id = ($n > 1) ? $m2 : $m1;
-        $domain = ($domain == null) ? $this->domain : $domain;
-        $locale = ($locale == null) ? $this->locale : $locale;
-        
-        return $this->transChoice($id, $n, array(), $domain, $locale);
+        $message = $this->chooseMessage($m1, $m2, $n, $domain);
+
+        return $this->transChoice($message, $n, array(), $domain, $locale);
     }
 
     /**
@@ -262,9 +253,6 @@ class Translator extends BaseTranslator implements WarmableInterface
      */
     public function __f($msg, $param, $domain = null, $locale = null)
     {
-        $domain = ($domain == null) ? $this->domain : $domain;
-        $locale = ($locale == null) ? $this->locale : $locale;
-        
         return $this->trans($msg, $param, $domain, $locale);
     }
 
@@ -281,10 +269,30 @@ class Translator extends BaseTranslator implements WarmableInterface
      */
     public function _fn($m1, $m2, $n, $param, $domain = null, $locale = null)
     {
-        $id = ($n > 1) ? $m2 : $m1;
-        $domain = ($domain == null) ? $this->domain : $domain;
-        $locale = ($locale == null) ? $this->locale : $locale;
-        
-        return $this->transChoice($id, $n, $param, $domain, $locale);
+        $message = $this->chooseMessage($m1, $m2, $n, $domain);
+
+        return $this->transChoice($message, $n, $param, $domain, $locale);
+    }
+
+    /**
+     * Choose message if no translation catalogue
+     *
+     * @param string $m1 Singular.
+     * @param string $m2 Plural.
+     * @param integer $n Count.
+     * @param string|null $domain
+     * @return string
+     */
+    private function chooseMessage($m1, $m2, $n, $domain = null)
+    {
+        $message = $m2;
+        if (($this->locale == 'en') || ($domain == 'en')) {
+            $domains = $this->getCatalogue($this->locale)->getDomains();
+            if (!in_array($this->domain, $domains)) {
+                $message = ($n == 1) ? $m1 : $m2;
+            }
+        }
+
+        return $message;
     }
 }

@@ -22,12 +22,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class GettextExtension extends \Twig_Extension
 {
     private $container;
+    /**
+     * @var \Zikula\Common\Translator\Translator
+     */
     private $translator;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->translator = $this->container->get('translator'); 
+        $this->translator = $this->container->get('translator');
     }
 
     /**
