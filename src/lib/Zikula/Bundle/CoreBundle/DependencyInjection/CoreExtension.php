@@ -77,9 +77,6 @@ class CoreExtension extends Extension
      */
     private function registerTranslatorConfiguration(array $config, ContainerBuilder $container)
     {
-        
-        // Use the "real" translator instead of the identity default
-        $container->setAlias('translator', 'translator.default');
         $translator = $container->findDefinition('translator.default');
         $translator->addMethodCall('setFallbackLocales', array(
             $config['fallbacks']
