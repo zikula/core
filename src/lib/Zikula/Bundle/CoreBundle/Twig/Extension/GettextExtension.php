@@ -30,7 +30,7 @@ class GettextExtension extends \Twig_Extension
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->translator = $this->container->get('translator.default');
+        $this->translator = $this->container->get('translator');
     }
 
     /**

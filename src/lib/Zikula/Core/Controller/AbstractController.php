@@ -40,7 +40,7 @@ abstract class AbstractController extends Controller
     public function __construct(AbstractBundle $bundle)
     {
         $this->name = $bundle->getName();
-        $this->translator = $bundle->getContainer()->get('translator.default');
+        $this->translator = $bundle->getContainer()->get('translator');
         $this->translator->setDomain($bundle->getTranslationDomain());
         $this->boot($bundle);
     }
