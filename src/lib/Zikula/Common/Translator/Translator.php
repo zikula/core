@@ -237,8 +237,9 @@ class Translator extends BaseTranslator implements WarmableInterface
      */
     public function _n($m1, $m2, $n, $domain = null, $locale = null)
     {
+        $message = $this->chooseMessage($m1, $m2, $n, $domain);
 
-        return $this->transChoice($m2, $n, array(), $domain, $locale);
+        return $this->transChoice($message, $n, array(), $domain, $locale);
     }
 
     /**
@@ -268,7 +269,30 @@ class Translator extends BaseTranslator implements WarmableInterface
      */
     public function _fn($m1, $m2, $n, $param, $domain = null, $locale = null)
     {
+        $message = $this->chooseMessage($m1, $m2, $n, $domain);
 
-        return $this->transChoice($m2, $n, $param, $domain, $locale);
+        return $this->transChoice($message, $n, $param, $domain, $locale);
+    }
+
+    /**
+     * Choose message if no translation catalogue
+     *
+     * @param string $m1 Singular.
+     * @param string $m2 Plural.
+     * @param integer $n Count.
+     * @param string|null $domain
+     * @return string
+     */
+    private function chooseMessage($m1, $m2, $n, $domain = null)
+    {
+        $message = $m2;
+        if (($this->locale == 'en') || ($domain == 'en')) {
+            $domains = $this->getCatalogue($this->locale)->getDomains();
+            if (!in_array($this->domain, $domains)) {
+                $message = ($n == 1) ? $m1 : $m2;
+            }
+        }
+
+        return $message;
     }
 }
