@@ -42,7 +42,7 @@ Fixes:
 - Several minor bugfixes.
 
 Features:
-- Symfony (2.7 version) set as primary library for Zikula
+- Symfony (2.7 LTS version) set as primary library for Zikula
   - Switched to Symfony2 routing, including JS routes, multilingual routes and more (#1788, #1789, #1793, others)
   - Introduced Symfony Forms plugin offering integration helpers like a form type for Zikula categories.
   - Switched to Symfony error handling.
