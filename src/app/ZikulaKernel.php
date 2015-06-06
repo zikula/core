@@ -92,4 +92,21 @@ class ZikulaKernel extends Kernel
         $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
         $boot->getPersistedBundles($this, $bundles);
     }
+
+    /**
+     * Is this a Bundle?
+     *
+     * @param $name
+     * @param bool $first
+     * @return bool
+     */
+    public function isBundle($name, $first = true)
+    {
+        try {
+            $this->getBundle($name, $first);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }
