@@ -178,6 +178,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         // set the error reporting level
         $this->error_reporting = isset($GLOBALS['ZConfig']['Debug']['error_reporting']) ? $GLOBALS['ZConfig']['Debug']['error_reporting'] : E_ALL;
+        $this->error_reporting &= ~E_USER_DEPRECATED;
         $this->allow_php_tag = true;
 
         // get variables from input
@@ -2822,6 +2823,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         $_smarty_old_error_level = $this->debugging ? error_reporting() : error_reporting(isset($this->error_reporting)
                ? $this->error_reporting : error_reporting() & ~E_NOTICE);
+        $_smarty_old_error_level &= ~E_USER_DEPRECATED;
 
         if (!$this->debugging && $this->debugging_ctrl == 'URL') {
             $_query_string = $this->request_use_auto_globals ? $_SERVER['QUERY_STRING'] : $GLOBALS['HTTP_SERVER_VARS']['QUERY_STRING'];

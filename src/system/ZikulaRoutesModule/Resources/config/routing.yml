@@ -9,7 +9,7 @@ zikularoutesmodule_redirectingcontroller_removetrailingslash:
     defaults: { _controller: ZikulaRoutesModule:Redirecting:removeTrailingSlash }
     requirements:
         url: .*/$
-        _method: GET
+    methods: [GET]
     options:
         zkDescription: "The goal of this route is to redirect URLs with a trailing slash to the same URL without a trailing slash (for example /en/blog/ to /en/blog)."
         zkNoBundlePrefix: true
