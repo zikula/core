@@ -14,6 +14,8 @@ Deprecated:
   http://docs.doctrine-project.org/en/latest/tutorials/pagination.html
 - Deprecated `Zikula_EventManager` for Symfony2 EventDispatcher component
 - Deprecated `Zikula_ServiceManager` for Symfony2 Dependency Injection component
+- `controller.method_not_found` event is not available in new AbstractController and therefore deprecated
+- Entire contents of `src/Lib/legacy` are deprecated, even if not explicitly stated at code level
 - Many items shown at code level
 
 Fixes:
@@ -125,3 +127,4 @@ Features:
 - Added mmenu js library and smarty template plugin to create a hidden admin panel
 - Added several Twig tags and filters to duplicate some legacy functionality
 - Added automatic form-theming (bootstrap-style) for Twig-based admin forms
+- Hooks methods moved from event Listener to standard Controller method and given a true route
