@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="translator.class">Zikula\Common\Translator\Translator</parameter>
         <parameter key="zikula.extractor.file.php_extractor.class">Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor</parameter>
+        <parameter key="zikula.extractor.file.twig_extractor.class">Zikula\Bundle\CoreBundle\Translation\ZikulaTwigFileExtractor</parameter>
     </parameters>
 
     <services>
@@ -23,6 +24,11 @@
         <service id="zikula.extractor.file.php_extractor" class="%zikula.extractor.file.php_extractor.class%" public="false">
             <argument type="service" id="jms_translation.doc_parser" />
             <argument type="service" id="kernel" strict="false" />
+            <tag name="jms_translation.file_visitor" />
+        </service>
+
+        <service id="zikula.extractor.file.twig_extractor" class="%zikula.extractor.file.twig_extractor.class%" public="false">
+            <argument type="service" id="twig" />
             <tag name="jms_translation.file_visitor" />
         </service>
 
