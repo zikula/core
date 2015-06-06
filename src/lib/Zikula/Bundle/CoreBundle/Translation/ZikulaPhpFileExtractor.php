@@ -69,10 +69,10 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
      * @var array
      */
     private $methodNames = array(
-        '__',
-        '__f',
-        '_n',
-        '_fn'
+        1 => '__',
+        2 => '__f',
+        3 => '_n',
+        4 => '_fn'
     );
 
     public function __construct(DocParser $docParser, KernelInterface $kernel)
@@ -150,21 +150,8 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         }
 
         // determine location of domain
-        switch (strtolower($node->name)) {
-            case '__f':
-                $domainIndex = 2;
-                break;
-            case '_n':
-                $domainIndex = 3;
-                break;
-            case '_fn':
-                $domainIndex = 4;
-                break;
-            default:
-            case '__':
-                $domainIndex = 1;
-                break;
-        }
+        $domainIndex = array_search(strtolower($node->name), $this->methodNames);
+
         if (isset($node->args[$domainIndex])) {
             if (!$node->args[$domainIndex]->value instanceof \PHPParser_Node_Scalar_String) {
                 if ($ignore) {
