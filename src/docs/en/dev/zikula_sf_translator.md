@@ -16,6 +16,7 @@ This guide is intended to provide overview of translation technologies, usage, i
 	* Symfony translator service
 	* Zikula Symfony Translator
 	* Testing
+	* Extraction
 * Important notes
 * See also sources
 
@@ -182,6 +183,21 @@ http://symfony.com/doc/current/book/translation.html#translations-in-templates
 
 todo 
 https://github.com/zikula/core/blob/1.4/src/lib/Zikula/Bundle/CoreBundle/Twig/Extension/GettextExtension.php#L61
+
+##### Extraction
+
+Extension developers can now use native symfony translation extraction (via the jms_translation_bundle).
+
+```
+php app/console translation:extract en --bundle=AcmeDemoModule --output-format=po
+```
+
+The files will automatically be extracted to the `/Resources/translations` directory.
+
+See the help file for more information:
+```
+php app/console translation:extract -h
+```
 
 ##### Testing
 
