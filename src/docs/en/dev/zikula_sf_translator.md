@@ -1,7 +1,7 @@
 Zikula Translation's Guide
 =================
 
-This guide is intended to provide overview of translation technologies, usage, implementations and developement.
+This guide is intended to provide overview of translation technologies, usage, implementations and development.
 
 ## Table of contents
 
@@ -21,24 +21,27 @@ This guide is intended to provide overview of translation technologies, usage, i
 
 
 ## Introduction  
-Technology for translations used in this guide is simple - anywere in project we use English strings and English descriptions.
+Technology for translations used in this guide is simple - anywhere in project we use English strings and English descriptions.
 These are translated to other language stored in files or database and loaded on demand instead of English strings. 
 
 ## Terminology
 * **Symfony Translator** - Symfony gettext technology used for translations 
-* **Zikula legacy translator** - Zikula priror to 1.4.x uses own implementation of gettext translation technology. 
+* **Zikula legacy translator** - Zikula prior to 1.4.x uses own implementation of gettext translation technology.
 * **Zikula Symfony Translator** - Extends Symfony Translator to support Zikula translation conventions. 
-* **message** -  in basic it is translation array element example: 'Englilsh string' => 'Translated string' 
+* **message** -  in basic it is translation array element example: 'English string' => 'Translated string'
 * **translation template** - .pot file for gettext used only in process of creating new translations. Not used in actual translating. 
-* **domain** - An optional way to organize messages into groups (e.g. Symfony admin, navigation or the default messages Zikula zikula, theme_themename, module_modulename and 2.0.0 bundlename)
+* **domain** - An optional way to organize messages into groups (e.g. Symfony admin, navigation or the default messages
+  Zikula zikula, theme_themename, module_modulename and 2.0.0 bundlename)
 * **catalogue** - Gettext way to organize messages into groups (LC_MESSAGES, LC_TYPE, LC_ALL) 
 * **locale** - The locale that the translations are for (e.g. en_GB, en, etc);
-* **loader** - How Symfon/Zikula should load and parse the file (e.g. xlf, php, yml, etc Zikula .po .mo).
+* **loader** - How Symfony/Zikula should load and parse the file (e.g. xlf, php, yml, etc Zikula .po .mo).
 
 
 ## User's guide
-Used technologies try to symplify translation process as possible. Installing language for Zikula is as simple as copying translation directory to aprioriate place in Zikula directory tree and enabling it in administration.
-You can find your locale translations on https://github.com/zikula-communities If there is no translation for your language and you willing to translate please check 'Translators' part of this guide. 
+Used technologies try to simplify translation process as possible. Installing language for Zikula is as simple as copying
+translation directory to appropriate place in Zikula directory tree and enabling it in administration.
+You can find your locale translations on https://github.com/zikula-communities If there is no translation for your language
+and you willing to translate please check 'Translators' part of this guide.
 ### Zikula legacy translator
 
 catalogue is always ``` LC_MESSAGES ```
@@ -64,12 +67,17 @@ catalogue is always ``` LC_MESSAGES ```
 
 ``` Module - bundle - translations /modules/modulename/locale/{locale}/LC_MESSAGES/{domain}.mo where domain is 'modulebundlename' ```
 
-> To translate a module in Zikula 1.4.x, the file name must be in the format `modulename.mo`. To translate a module in Zikula 1.3.x, the file name was previously in the format `module_modulename.mo`. These files must be placed into the legacy folder `app/Resources/locale/{lang}/LC_MESSAGES` (where `{lang}` is the standardized abbreviation for your language (e.g. `de` for german). In the future, the files must be placed into the new `app/Resources/translations` folder. In this case, copy all files to `<filename>.<lang>.po` (for example `routes.template.po => routes.de.po`) and translate the `.po` files as usual to generate the `.mo` files.
+> To translate a module in Zikula 1.4.x, the file name must be in the format `modulename.mo`. To translate a module in Zikula 1.3.x,
+the file name was previously in the format `module_modulename.mo`. These files must be placed into the legacy folder
+`app/Resources/locale/{lang}/LC_MESSAGES` (where `{lang}` is the standardized abbreviation for your language
+(e.g. `de` for german). In the future, the files must be placed into the new `app/Resources/translations` folder.
+In this case, copy all files to `<filename>.<lang>.po` (for example `routes.template.po => routes.de.po`) and translate
+the `.po` files as usual to generate the `.mo` files.
 
 
 ### Zikula Symfony Translator
 
-**Zikula Symfony translator suports zikula paths for core and modules on systems versions 1.4.x - only bundle type!**
+**Zikula Symfony translator supports zikula paths for core and modules on systems versions 1.4.x - only bundle type!**
 
 ``` Core legacy app/Resources/locale/{locale}/LC_MESSAGES/zikula.mo and po```
 
@@ -88,7 +96,7 @@ https://github.com/zikula/zikula-docs/blob/master/guides/translation/GuideForTra
 ## Developers guide
 
 
-Developers should be aware of the gettext specyfication and symfony translator specyfication 
+Developers should be aware of the gettext specification and symfony translator specification
 https://www.gnu.org/software/gettext/manual/gettext.html#I18n_002c-L10n_002c-and-Such
 
 ### Zikula legacy translator
@@ -111,18 +119,18 @@ Symfony comes with translation component Symfony Translations can be in various 
 * JsonFileLoader - to load catalogs from JSON files.
 * YamlFileLoader - to load catalogs from Yaml files (requires the Yaml component). 
 
-For more informations please refer to http://symfony.com/doc/current/book/translation.html 
+For more information please refer to http://symfony.com/doc/current/book/translation.html
 
 ### Zikula Symfony Translator
 
 * Zikula SF Translator base on SF translator and extend it to fit our translation conventions. Translator is loaded as service and available like other services.
-* Zikula translator automatically preload translations from both Symfony and Zikula translation directiories.
+* Zikula translator automatically pre-load translations from both Symfony and Zikula translation directories.
 
 ##### Translator service:
 
 Translator service can be obtained from container.
-Service is preconfigured to automatically detect current locale, domain is by default set to 'zikula'.
-Exaple from AbstractController obtaining translator and setting new domain.
+Service is pre-configured to automatically detect current locale, domain is by default set to 'zikula'.
+Example from AbstractController obtaining translator and setting new domain.
 
 ```
 		//access translator service
@@ -134,7 +142,7 @@ Exaple from AbstractController obtaining translator and setting new domain.
 
 ##### AbstractController
 
-Zikula Translator is automatically added in AbstractContraller and you can access it in your module controller using:
+Zikula Translator is automatically added in AbstractController and you can access it in your module controller using:
  
 ```
 $this->translator
@@ -143,7 +151,7 @@ $this->translator
 Translation examples
 
 ```
-		//Symfony nativ notation
+		//Symfony native notation
         $translated = $this->translator->trans('Hello World');
         //Zikula translation method
         $translated = $this->translator->__('Page');
@@ -155,10 +163,10 @@ Translation examples
 
 ##### Twig
 
-For translations in Twig Zikula uses CoreGettext extensions apart from nativ Symfony Twig trans function.
+For translations in Twig Zikula uses CoreGettext extensions apart from native Symfony Twig trans function.
 http://symfony.com/doc/current/book/translation.html#translations-in-templates
 ```
-//Symfony nativ notation
+//Symfony native notation
 {% trans from "zikula" %}Error! Cannot determine valid 'cid' for edit mode in 'ZikulaCategoriesModule_admin_edit'.{% endtrans %}
 {% trans %}Error! Cannot determine valid 'cid' for edit mode in 'ZikulaCategoriesModule_admin_edit'.{% endtrans %}
 //Zikula gettext notation
@@ -179,7 +187,7 @@ https://github.com/zikula/core/blob/1.4/src/lib/Zikula/Bundle/CoreBundle/Twig/Ex
 
 Symfony comes with ``` app/console translation:debug ``` command line tool to test translations.
 **This tool work only with Symfony and Zikula 2.0.0 translation paths.**
-Example output for more informations please check http://symfony.com/doc/current/book/translation.html#debugging-translations
+Example output for more information please check http://symfony.com/doc/current/book/translation.html#debugging-translations
 
 ```
 	php app/console translation:debug pl KaikmediaPagesModule
@@ -204,9 +212,15 @@ Example output for more informations please check http://symfony.com/doc/current
 
 ## Important notes
 From Symfony translator documentation
->Each time you create a new translation resource (or install a bundle that includes a translation resource), be sure to clear your cache so that Symfony can discover the new translation resources.
+>Each time you create a new translation resource (or install a bundle that includes a translation resource), be sure to
+clear your cache so that Symfony can discover the new translation resources.
 
-There is something new in Symfony translator that was not available with legacy mode. Lets say we have a website with 3 languages en (strings are in en) de and pl. All languages are enabled but some translations are missing for some strings. Normally it would show english as default because strings are in english. Falback locale is a feature that reads translator 'fallback' setting from config.yml and set this as locale to show instead the one that is missing. So when viewing german site in polish language and polish translations are not complete while the german are it will show german string but that will happen only when translator fallback setting locale is set to de. At the end there is always english string.
+There is something new in Symfony translator that was not available with legacy mode. Lets say we have a website with
+3 languages en (strings are in en) de and pl. All languages are enabled but some translations are missing for some strings.
+Normally it would show english as default because strings are in english. Fallback locale is a feature that reads translator
+'fallback' setting from config.yml and set this as locale to show instead the one that is missing. So when viewing
+german site in polish language and polish translations are not complete while the german are it will show german string
+but that will happen only when translator fallback setting locale is set to de. At the end there is always english string.
 
 ## See also sources
 * Gettext documentation https://www.gnu.org/software/gettext/manual/gettext.html#I18n_002c-L10n_002c-and-Such
