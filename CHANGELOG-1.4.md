@@ -14,7 +14,7 @@ Deprecated:
 - Deprecated `Zikula_EventManager` for Symfony2 EventDispatcher component
 - Deprecated `Zikula_ServiceManager` for Symfony2 Dependency Injection component
 - `controller.method_not_found` event is not available in new AbstractController and therefore deprecated
-- Entire contents of `src/Lib/legacy` are deprecated, even if not explicitly stated at code level
+- Entire contents of `src/lib/legacy` are deprecated, even if not explicitly stated at code level
 - Many items shown at code level
 
 Fixes:
