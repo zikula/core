@@ -1,14 +1,24 @@
 <?php
-
+/**
+ * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 namespace Zikula\Bundle\CoreBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * FrameworkExtension configuration structure.
- *
- * @author Jeremy Mikola <jmikola@gmail.com>
+ * CoreExtension configuration structure.
  */
 class Configuration implements ConfigurationInterface
 {
@@ -32,7 +42,30 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-
+        $rootNode = $treeBuilder->root('framework');               
+        $this->addTranslatorSection($rootNode);
+              
         return $treeBuilder;
     }
+       
+    private function addTranslatorSection(ArrayNodeDefinition $rootNode)
+    {
+    	$rootNode
+    	->children()
+    	->arrayNode('translator')
+    	->info('translator configuration')
+    	->canBeEnabled()
+    	->fixXmlConfig('fallback')
+    	->children()
+    	->arrayNode('fallbacks')
+    	->beforeNormalization()->ifString()->then(function ($v) { return array($v); })->end()
+    	->prototype('scalar')->end()
+    	->defaultValue(array('en'))
+    	->end()
+    	->booleanNode('logging')->defaultValue($this->debug)->end()
+    	->end()
+    	->end()
+    	->end()
+    	;
+    }    
 }

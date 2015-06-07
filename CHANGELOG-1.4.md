@@ -7,7 +7,6 @@ BC Breaks:
 - Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.
 - Sessions can no longer be stored in a file. This functionality may return in a later version.
 - Support for IE 7 and below has been removed.
-- To translate a module in Zikula 1.4.x, the file name must be in the format `modulename.mo`. To translate a module in Zikula 1.3.x, the file name was previously in the format `module_modulename.mo`. These files must be placed into the legacy folder `app/Resources/locale/{lang}/LC_MESSAGES` (where `{lang}` is the standardized abbreviation for your language (e.g. `de` for german). In the future, the files must be placed into the new `app/Resources/translations` folder. In this case, copy all files to `<filename>.<lang>.po` (for example `routes.template.po => routes.de.po`) and translate the `.po` files as usual to generate the `.mo` files.
 
 Deprecated:
 - DoctrineExtensions Paginator has superseded by Doctrine ORM paginator
@@ -15,7 +14,7 @@ Deprecated:
 - Deprecated `Zikula_EventManager` for Symfony2 EventDispatcher component
 - Deprecated `Zikula_ServiceManager` for Symfony2 Dependency Injection component
 - `controller.method_not_found` event is not available in new AbstractController and therefore deprecated
-- Entire contents of `src/Lib/legacy` are deprecated, even if not explicitly stated at code level
+- Entire contents of `src/lib/legacy` are deprecated, even if not explicitly stated at code level
 - Many items shown at code level
 
 Fixes:
@@ -128,3 +127,4 @@ Features:
 - Added several Twig tags and filters to duplicate some legacy functionality
 - Added automatic form-theming (bootstrap-style) for Twig-based admin forms
 - Hooks methods moved from event Listener to standard Controller method and given a true route
+- Added support for translating using Symfony Translator.

@@ -1,21 +1,36 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * GettextExtension
- *
- * @todo add automatic domain detection (from the environment)
+ * GettextExtension class.
  */
 class GettextExtension extends \Twig_Extension
 {
     private $container;
+    /**
+     * @var \Zikula\Common\Translator\Translator
+     */
+    private $translator;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->translator = $this->container->get('translator');
     }
 
     /**
@@ -50,41 +65,64 @@ class GettextExtension extends \Twig_Extension
     /**
      * @see __()
      */
-    public function __(\Twig_Environment $env, $message, $domain = null)
+    public function __(\Twig_Environment $env, $message, $domain = null, $locale = null)
     {
-        return \__($message, $domain);
-    }
-
-    /**
-     * @see __p()
-     */
-    public function __p(\Twig_Environment $env, $context, $message, $domain = null)
-    {
-        return \__p($context, $message, $domain);
+        return $this->translator->__($message, $domain, $locale);
     }
 
     /**
      * @see __f()
      */
-    public function __f(\Twig_Environment $env, $message, $params, $domain = null)
+    public function __f(\Twig_Environment $env, $message, $params, $domain = null, $locale = null)
     {
-        return \__f($message, $params, $domain);
+        return $this->translator->__f($message, $params, $domain, $locale);
+    }
+    
+    /**
+     * @see _n()
+     */
+    public function _n(\Twig_Environment $env, $singular, $plural, $count, $domain = null, $locale = null)
+    {
+    	return $this->translator->_n($singular, $plural, $count, array(), $domain, $locale);
+    }    
+
+    /**
+     * @see _fn()
+     */
+    public function _fn(\Twig_Environment $env, $singular, $plural, $count, $params, $domain = null, $locale = null)
+    {
+    	return $this->translator->_fn($singular, $plural, $count, $params, $domain, $locale);
     }
 
+    /**
+     * @see no__()
+     */
+    public function no__($msgid)
+    {
+    	return $msgid;
+    }
+       
+    /**
+     * Translator context functions 
+     * 
+     * @todo Define how this should work
+     * 
+     */
+    
+    /**
+     * @see __p()
+     */
+    public function __p(\Twig_Environment $env, $context, $message, $domain = null)
+    {
+    	return \__p($context, $message, $domain);
+    } 
+       
     /**
      * @see __fp()
      */
     public function __fp(\Twig_Environment $env, $context, $message, $params, $domain = null)
     {
         return \__fp($context, $message, $params, $domain);
-    }
-
-    /**
-     * @see _fn()
-     */
-    public function _fn(\Twig_Environment $env, $singular, $plural, $count, $params, $domain = null)
-    {
-        return \_fn($singular, $plural, $count, $params, $domain);
     }
 
     /**
@@ -96,27 +134,10 @@ class GettextExtension extends \Twig_Extension
     }
 
     /**
-     * @see _n()
-     */
-    public function _n(\Twig_Environment $env, $singular, $plural, $count, $domain = null)
-    {
-        return \_n($singular, $plural, $count, $domain);
-    }
-
-    /**
      * @see _np()
      */
     public function _np(\Twig_Environment $env, $context, $singular, $plural, $count, $domain = null)
     {
         return \_np($context, $singular, $plural, $count, $domain);
-    }
-
-
-    /**
-     * @see no__()
-     */
-    public function no__($msgid)
-    {
-        return $msgid;
     }
 }
