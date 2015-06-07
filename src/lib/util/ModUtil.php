@@ -151,7 +151,7 @@ class ModUtil
         $lang = ZLanguage::getLanguageCode();
         $items = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
         foreach ($items as $item) {
-            self::$modvars['ZConfig'][$item] = isset(self::$modvars['ZConfig'][$item . '_' . $lang]) ? self::$modvars['ZConfig'][$item . '_' . $lang] : '';
+            self::$modvars['ZConfig'][$item] = isset(self::$modvars['ZConfig'][$item . '_' . $lang]) ? self::$modvars['ZConfig'][$item . '_' . $lang] : self::$modvars['ZConfig'][$item . '_en'];
         }
 
         return true;
