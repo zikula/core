@@ -1601,7 +1601,7 @@ class AdminController extends \Zikula_AbstractController
 
             $providerAreasToTitles = array();
             foreach ($providerAreas as $providerArea) {
-                $providerAreasToTitles[$providerArea] = $moduleVersionObj->getHookProviderBundle($providerArea)->getTitle();
+                $providerAreasToTitles[$providerArea] = $this->view->__(/** @Ignore */$moduleVersionObj->getHookProviderBundle($providerArea)->getTitle());
             }
             $this->view->assign('providerAreasToTitles', $providerAreasToTitles);
         }
@@ -1612,20 +1612,20 @@ class AdminController extends \Zikula_AbstractController
 
             $subscriberAreasToTitles = array();
             foreach ($subscriberAreas as $subscriberArea) {
-                $subscriberAreasToTitles[$subscriberArea] = $moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getTitle();
+                $subscriberAreasToTitles[$subscriberArea] = $this->view->__(/** @Ignore */$moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getTitle());
             }
             $this->view->assign('subscriberAreasToTitles', $subscriberAreasToTitles);
 
             $subscriberAreasToCategories = array();
             foreach ($subscriberAreas as $subscriberArea) {
-                $category = $moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory();
+                $category = $this->view->__(/** @Ignore */$moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory());
                 $subscriberAreasToCategories[$subscriberArea] = $category;
             }
             $this->view->assign('subscriberAreasToCategories', $subscriberAreasToCategories);
 
             $subscriberAreasAndCategories = array();
             foreach ($subscriberAreas as $subscriberArea) {
-                $category = $moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory();
+                $category = $this->view->__(/** @Ignore */$moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory());
                 $subscriberAreasAndCategories[$category][] = $subscriberArea;
             }
             $this->view->assign('subscriberAreasAndCategories', $subscriberAreasAndCategories);
@@ -1660,14 +1660,14 @@ class AdminController extends \Zikula_AbstractController
                 // and get the titles
                 $hooksubscriberAreasToTitles = array();
                 foreach ($hooksubscriberAreas as $hooksubscriberArea) {
-                    $hooksubscriberAreasToTitles[$hooksubscriberArea] = $hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getTitle();
+                    $hooksubscriberAreasToTitles[$hooksubscriberArea] = $this->view->__(/** @Ignore */$hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getTitle());
                 }
                 $hooksubscribers[$i]['areasToTitles'] = $hooksubscriberAreasToTitles;
 
                 // and get the categories
                 $hooksubscriberAreasToCategories = array();
                 foreach ($hooksubscriberAreas as $hooksubscriberArea) {
-                    $category = $hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getCategory();
+                    $category = $this->view->__(/** @Ignore */$hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getCategory());
                     $hooksubscriberAreasToCategories[$hooksubscriberArea] = $category;
                 }
                 $hooksubscribers[$i]['areasToCategories'] = $hooksubscriberAreasToCategories;
@@ -1709,7 +1709,7 @@ class AdminController extends \Zikula_AbstractController
                     $sbaProviderModuleVersionObj = ExtensionsUtil::getVersionMeta($sbaProviderModule);
 
                     // get the bundle title
-                    $currentSortingTitles[$areaname] = $sbaProviderModuleVersionObj->getHookProviderBundle($areaname)->getTitle();
+                    $currentSortingTitles[$areaname] = $this->view->__(/** @Ignore */$sbaProviderModuleVersionObj->getHookProviderBundle($areaname)->getTitle());
                 }
             }
             $this->view->assign('areasSorting', $currentSorting);
@@ -1745,21 +1745,21 @@ class AdminController extends \Zikula_AbstractController
                 // and get the titles
                 $hookproviderAreasToTitles = array();
                 foreach ($hookproviderAreas as $hookproviderArea) {
-                    $hookproviderAreasToTitles[$hookproviderArea] = $hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getTitle();
+                    $hookproviderAreasToTitles[$hookproviderArea] = $this->view->__(/** @Ignore */$hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getTitle());
                 }
                 $hookproviders[$i]['areasToTitles'] = $hookproviderAreasToTitles;
 
                 // and get the categories
                 $hookproviderAreasToCategories = array();
                 foreach ($hookproviderAreas as $hookproviderArea) {
-                    $hookproviderAreasToCategories[$hookproviderArea] = $hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getCategory();
+                    $hookproviderAreasToCategories[$hookproviderArea] = $this->view->__(/** @Ignore */$hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getCategory());
                 }
                 $hookproviders[$i]['areasToCategories'] = $hookproviderAreasToCategories;
 
                 // and build array with category => areas
                 $hookproviderAreasAndCategories = array();
                 foreach ($hookproviderAreas as $hookproviderArea) {
-                    $category = $hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getCategory();
+                    $category = $this->view->__(/** @Ignore */$hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getCategory());
                     $hookproviderAreasAndCategories[$category][] = $hookproviderArea;
                 }
                 $hookproviders[$i]['areasAndCategories'] = $hookproviderAreasAndCategories;
