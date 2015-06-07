@@ -295,7 +295,7 @@ class AdminController extends \Zikula_AbstractController
 
         // all done successfully
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved localisation settings.'));
-        $url = $this->get('router')->generate('zikulasettingsmodule_admin_multilingual', RouterInterface::ABSOLUTE_URL);
+        $url = $this->get('router')->generate('zikulasettingsmodule_admin_multilingual', array(), RouterInterface::ABSOLUTE_URL);
 
         return new RedirectResponse($url);
     }
