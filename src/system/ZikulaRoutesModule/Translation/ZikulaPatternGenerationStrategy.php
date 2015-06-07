@@ -65,11 +65,11 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
                     $i18nPattern = $route->getPattern();
                 } else {
                     // Get translation.
-                    $i18nPattern = $this->translator->trans($routeName, array(), $this->translationDomain, $locale);
+                    $i18nPattern = $this->translator->trans(/** @Ignore */$routeName, array(), $this->translationDomain, $locale);
                 }
             } else {
                 // if no translation exists, we use the current pattern
-                if ($routeName === $i18nPattern = $this->translator->trans($routeName, array(), $this->translationDomain, $locale)) {
+                if ($routeName === $i18nPattern = $this->translator->trans(/** @Ignore */$routeName, array(), $this->translationDomain, $locale)) {
                     $i18nPattern = $route->getPattern();
                 }
             }
