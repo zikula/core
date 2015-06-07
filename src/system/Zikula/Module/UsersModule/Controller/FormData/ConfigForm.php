@@ -181,7 +181,7 @@ class ConfigForm extends AbstractFormData
             ->addValidator(new Validator\StringInSet(
                 $this->serviceManager,
                 $hashMethods->getHashMethods(),
-                $this->__('The value must be one of the following: '. implode(', ', $hashMethods->getHashMethods()) .'.')));
+                $this->__f('The value must be one of the following: %s.', implode(', ', $hashMethods->getHashMethods()))));
 
         $this->addField(new Field(
                 $this,

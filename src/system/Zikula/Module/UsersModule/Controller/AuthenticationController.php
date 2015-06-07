@@ -56,13 +56,13 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
         }
 
         if (!isset($args['form_type']) || !is_string($args['form_type'])) {
-            throw new \InvalidArgumentException($this->__('An invalid form type (\'%1$s\') was received.', array(
+            throw new \InvalidArgumentException($this->__f('An invalid form type (\'%1$s\') was received.', array(
                 isset($args['form_type']) ? $args['form_type'] : 'NULL'))
             );
         }
 
         if (!isset($args['method']) || !is_string($args['method']) || !$this->supportsAuthenticationMethod($args['method'])) {
-            throw new \InvalidArgumentException($this->__('An invalid method (\'%1$s\') was received.', array(
+            throw new \InvalidArgumentException($this->__f('An invalid method (\'%1$s\') was received.', array(
                 isset($args['method']) ? $args['method'] : 'NULL'))
             );
         }
