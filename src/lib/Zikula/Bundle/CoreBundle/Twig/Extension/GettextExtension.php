@@ -67,7 +67,7 @@ class GettextExtension extends \Twig_Extension
      */
     public function __(\Twig_Environment $env, $message, $domain = null, $locale = null)
     {
-        return $this->translator->__($message, $domain, $locale);
+        return $this->translator->__(/** @Ignore */$message, $domain, $locale);
     }
 
     /**
@@ -75,7 +75,7 @@ class GettextExtension extends \Twig_Extension
      */
     public function __f(\Twig_Environment $env, $message, $params, $domain = null, $locale = null)
     {
-        return $this->translator->__f($message, $params, $domain, $locale);
+        return $this->translator->__f(/** @Ignore */$message, $params, $domain, $locale);
     }
     
     /**
@@ -83,7 +83,7 @@ class GettextExtension extends \Twig_Extension
      */
     public function _n(\Twig_Environment $env, $singular, $plural, $count, $domain = null, $locale = null)
     {
-    	return $this->translator->_n($singular, $plural, $count, array(), $domain, $locale);
+    	return $this->translator->_n(/** @Ignore */$singular, $plural, $count, array(), $domain, $locale);
     }    
 
     /**
@@ -91,7 +91,7 @@ class GettextExtension extends \Twig_Extension
      */
     public function _fn(\Twig_Environment $env, $singular, $plural, $count, $params, $domain = null, $locale = null)
     {
-    	return $this->translator->_fn($singular, $plural, $count, $params, $domain, $locale);
+    	return $this->translator->_fn(/** @Ignore */$singular, $plural, $count, $params, $domain, $locale);
     }
 
     /**
