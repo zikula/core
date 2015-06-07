@@ -529,8 +529,7 @@ class AdminApi extends \Zikula_AbstractApi
                                             'key' => 'uname'));
         if (!$usersInDB) {
             throw new \RuntimeException($this->__(
-                'Error! The users have been created but something has failed trying to get them from the database. '
-                . 'Now all these users do not have group.'));
+                'Error! The users have been created but something has failed trying to get them from the database. Now all these users do not have group.'));
 
         }
 

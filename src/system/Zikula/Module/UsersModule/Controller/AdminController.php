@@ -1231,8 +1231,7 @@ class AdminController extends \Zikula_AbstractController
         if (!$reginfo) {
             // get application could fail (return false) because of a nonexistant
             // record, no permission to read an existing record, or a database error
-            $request->getSession()->getFlashBag()->add('error', $this->__('Unable to retrieve registration record. '
-                . 'The record with the specified id might not exist, or you might not have permission to access that record.'));
+            $request->getSession()->getFlashBag()->add('error', $this->__('Unable to retrieve registration record. The record with the specified id might not exist, or you might not have permission to access that record.'));
 
             return false;
         }
@@ -2317,7 +2316,7 @@ class AdminController extends \Zikula_AbstractController
                 foreach ($groupsArray as $group) {
                     if (!in_array($group, $allGroupsArray)) {
 
-                        return $this->__('Sorry! The identity of the group %1$s is not not valid in line %2$s. Perhaps it do not exist. Please check your import file.', array($group, $counter));
+                        return $this->__f('Sorry! The identity of the group %1$s is not not valid in line %2$s. Perhaps it do not exist. Please check your import file.', array($group, $counter));
                     }
                 }
             }
