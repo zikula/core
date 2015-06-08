@@ -29,7 +29,7 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
     /**
      * @var array cache of domain names by composerPath
      */
-    static $domainCache;
+    private static $domainCache;
     /**
      * Possible Zikula-style translation method names
      *
@@ -86,7 +86,7 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
                     }
                 }
                 $domainNode = array_search($name, $this->methodNames);
-                $domain = $args->hasNode($domainNode) ? $args->getNode($domainNode) : $domain;
+                $domain = $args->hasNode($domainNode) ? $args->getNode($domainNode)->getAttribute('value') : $domain;
 
                 $message = new Message($id, $domain);
                 $message->addSource(new FileSource((string) $this->file, $node->getLine()));
