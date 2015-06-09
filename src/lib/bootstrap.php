@@ -19,14 +19,6 @@ use Zikula\Core\Event\GenericEvent;
 $loader = require __DIR__.'/../app/autoload.php';
 ZLoader::register($loader);
 
-// set current domain for using it as container parameter
-// http://symfony.com/doc/current/cookbook/configuration/external_parameters.html
-if (strpos(__DIR__, '/src/lib') !== false) {
-    $_SERVER['SYMFONY__ASSETS_BASE_URL'] = '//' . $_SERVER['HTTP_HOST'] . '/src/web';
-} else {
-    $_SERVER['SYMFONY__ASSETS_BASE_URL'] = '//' . $_SERVER['HTTP_HOST'] . '/web';
-}
-
 // TODO remove for Zikula 2.0 / migrating to Symfony 3.0
 $errorReporting = error_reporting();
 $errorReporting &= ~E_USER_DEPRECATED;

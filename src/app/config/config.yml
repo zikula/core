@@ -14,11 +14,8 @@ framework:
     validation:      { enabled: true, enable_annotations: true, api: auto }
     templating:
         engines: ['twig']
-        assets_base_urls: %assets_base_url%
-        #packages:
-        #    assetic: (or any other name)
-        #        base_urls: /web
-        #assets_version: SomeVersionScheme
+    assets:
+        base_path: web/
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
