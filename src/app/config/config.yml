@@ -14,7 +14,8 @@ framework:
     validation:      { enabled: true, enable_annotations: true, api: auto }
     templating:
         engines: ['twig']
-        #assets_version: SomeVersionScheme
+    assets:
+        base_path: web/
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
@@ -142,9 +143,6 @@ stof_doctrine_extensions:
         reference_integrity:  Gedmo\ReferenceIntegrity\ReferenceIntegrityListener
 
 parameters:
-    # Append the 'web/' folder to any asset path, because the application kernel of Zikula is not located in
-    # the 'web' folder.
-    templating.asset.path_package.class: Zikula\Bundle\CoreBundle\Templating\Asset\PathPackage
     # override Stof\DoctrineExtensionsBundle\EventListener\BlameListener to set Zikula User
     stof_doctrine_extensions.event_listener.blame.class: Zikula\Bundle\CoreBundle\EventListener\BlameListener
     # zikula core stylesheet and javascript component locations
