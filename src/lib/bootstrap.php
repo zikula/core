@@ -19,6 +19,11 @@ use Zikula\Core\Event\GenericEvent;
 $loader = require __DIR__.'/../app/autoload.php';
 ZLoader::register($loader);
 
+// TODO remove for Zikula 2.0 / migrating to Symfony 3.0
+$errorReporting = error_reporting();
+$errorReporting &= ~E_USER_DEPRECATED;
+error_reporting($errorReporting);
+
 $kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
 if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));

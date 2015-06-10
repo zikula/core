@@ -148,6 +148,10 @@ class ModUtil
      */
     public static function setupMultilingual()
     {
+        if (System::isInstalling()) {
+            return true;
+        }
+
         $lang = ZLanguage::getLanguageCode();
         $items = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
         foreach ($items as $item) {
