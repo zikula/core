@@ -246,12 +246,12 @@ class Translator extends BaseTranslator implements WarmableInterface
      * Format translations for modules.
      *
      * @param string $msg Message.
-     * @param string|array $param Format parameters.
+     * @param array $param Format parameters.
      * @param null $domain
      * @param null $locale
      * @return string
      */
-    public function __f($msg, $param, $domain = null, $locale = null)
+    public function __f($msg, array $param, $domain = null, $locale = null)
     {
         return $this->trans($msg, $param, $domain, $locale);
     }
@@ -262,12 +262,12 @@ class Translator extends BaseTranslator implements WarmableInterface
      * @param string $m1 Singular.
      * @param string $m2 Plural.
      * @param integer $n Count.
-     * @param string|array $param Format parameters.
+     * @param array $param Format parameters.
      * @param null $domain
      * @param null $locale
      * @return string
      */
-    public function _fn($m1, $m2, $n, $param, $domain = null, $locale = null)
+    public function _fn($m1, $m2, $n, array $param, $domain = null, $locale = null)
     {
         $message = $this->chooseMessage($m1, $m2, $n, $domain);
 

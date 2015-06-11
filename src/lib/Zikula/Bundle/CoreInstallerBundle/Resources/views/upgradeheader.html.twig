@@ -2,8 +2,8 @@
     <h1>{{ __('Zikula Application Framework') }}</h1>
     <h2>{{ __('Upgrader script') }}</h2>
     <p class="installguide"><em>{{ __f("Please refer to the %s during the process.",
-            '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({
+            { '%s': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({
                 '%url%': path('doc', {'name': 'UPGRADE-1.4.0.md'}),
-                '%text%': __('upgrade guide') }) ) | raw }}</em>
+                '%text%': __('upgrade guide') }) } ) | raw }}</em>
     </p>
 </div>
