@@ -8,6 +8,8 @@
         <parameter key="translator.class">Zikula\Common\Translator\Translator</parameter>
         <parameter key="zikula.extractor.file.php_extractor.class">Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor</parameter>
         <parameter key="zikula.extractor.file.twig_extractor.class">Zikula\Bundle\CoreBundle\Translation\ZikulaTwigFileExtractor</parameter>
+        <parameter key="zikula.dumper.pot_dumper.class">Zikula\Bundle\CoreBundle\Translation\Dumper\PotDumper</parameter>
+        <parameter key="zikula.loader.mock_pot_loader.class">Zikula\Bundle\CoreBundle\Translation\Loader\MockPotLoader</parameter>
     </parameters>
 
     <services>
@@ -30,6 +32,14 @@
         <service id="zikula.extractor.file.twig_extractor" class="%zikula.extractor.file.twig_extractor.class%" public="false">
             <argument type="service" id="twig" />
             <tag name="jms_translation.file_visitor" />
+        </service>
+
+        <service id="zikula.dumper.pot_dumper" class="%zikula.dumper.pot_dumper.class%" public="false">
+            <tag name="jms_translation.dumper" format="pot" />
+        </service>
+
+        <service id="zikula.loader.mock_pot_loader" class="%zikula.loader.mock_pot_loader.class%" public="false">
+            <tag name="jms_translation.loader" format="pot" />
         </service>
 
     </services>
