@@ -148,6 +148,7 @@ class ModUtil
      */
     public static function setupMultilingual()
     {
+        // prevent access to missing vars when the system is not installed yet
         if (System::isInstalling()) {
             return true;
         }
