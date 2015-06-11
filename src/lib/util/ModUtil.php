@@ -148,6 +148,11 @@ class ModUtil
      */
     public static function setupMultilingual()
     {
+        // prevent access to missing vars when the system is not installed yet
+        if (System::isInstalling()) {
+            return true;
+        }
+
         $lang = ZLanguage::getLanguageCode();
         $items = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
         foreach ($items as $item) {

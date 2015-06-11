@@ -25,7 +25,9 @@ if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
 }
 $kernelConfig = $kernelConfig['parameters'];
 if ($kernelConfig['env'] !== 'prod') {
-    Debug::enable();
+    // hide deprecation errors
+    // TODO remove exclusions for 2.0
+    Debug::enable(E_ALL & ~E_USER_DEPRECATED);
 }
 
 require __DIR__.'/../app/ZikulaKernel.php';
