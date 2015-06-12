@@ -90,11 +90,12 @@ class ControllerUtil extends BaseControllerUtil
         if ($module === null) {
             throw new NotFoundHttpException();
         }
+        /** @var \Zikula\RoutesModule\Entity\Repository\Route $routeRepository */
+        $hadRoutes = $routeRepository->removeAllOfModule($module);
+
         /** @var \Zikula\RoutesModule\Routing\RouteFinder $routeFinder */
         $routeFinder = $this->get('zikularoutesmodule.routing_finder');
         $routeCollection = $routeFinder->find($module);
-        /** @var \Zikula\RoutesModule\Entity\Repository\Route $routeRepository */
-        $hadRoutes = $routeRepository->removeAllOfModule($module);
         if ($routeCollection->count() > 0) {
             $routeRepository->addRouteCollection($module, $routeCollection);
         }
