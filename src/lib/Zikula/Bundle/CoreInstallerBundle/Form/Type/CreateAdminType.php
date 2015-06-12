@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 
 class CreateAdminType extends AbstractType
@@ -68,14 +68,13 @@ class CreateAdminType extends AbstractType
         return 'createadmin';
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-                'csrf_protection' => false,
+            'csrf_protection' => false,
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',
-            )
-        );
+        ));
     }
 }

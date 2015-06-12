@@ -17,7 +17,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 
 class LoginType extends AbstractType
@@ -45,15 +45,14 @@ class LoginType extends AbstractType
         return 'login';
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-                'constraints' => new Callback(array('callback' => array('Zikula\Bundle\CoreInstallerBundle\Validator\CoreInstallerValidator', 'validateAndLogin'))),
-                'csrf_protection' => false,
+            'constraints' => new Callback(array('callback' => array('Zikula\Bundle\CoreInstallerBundle\Validator\CoreInstallerValidator', 'validateAndLogin'))),
+            'csrf_protection' => false,
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',
-            )
-        );
+        ));
     }
 }
