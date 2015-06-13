@@ -9,7 +9,7 @@
         <parameter key="zikula.extractor.file.php_extractor.class">Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor</parameter>
         <parameter key="zikula.extractor.file.twig_extractor.class">Zikula\Bundle\CoreBundle\Translation\ZikulaTwigFileExtractor</parameter>
         <parameter key="zikula.dumper.pot_dumper.class">Zikula\Bundle\CoreBundle\Translation\Dumper\PotDumper</parameter>
-        <parameter key="zikula.loader.mock_pot_loader.class">Zikula\Bundle\CoreBundle\Translation\Loader\MockPotLoader</parameter>
+        <parameter key="zikula.translation.loader.pot.class">Zikula\Bundle\CoreBundle\Translation\SymfonyLoader\MockPotFileLoader</parameter>
     </parameters>
 
     <services>
@@ -38,8 +38,8 @@
             <tag name="jms_translation.dumper" format="pot" />
         </service>
 
-        <service id="zikula.loader.mock_pot_loader" class="%zikula.loader.mock_pot_loader.class%" public="false">
-            <tag name="jms_translation.loader" format="pot" />
+        <service id="translation.loader.pot" class="%zikula.translation.loader.pot.class%">
+            <tag name="translation.loader" alias="pot" />
         </service>
 
     </services>
