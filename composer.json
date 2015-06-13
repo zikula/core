@@ -46,7 +46,7 @@
         "symfony/assetic-bundle": "2.6.*",
         "symfony/swiftmailer-bundle": "2.3.*",
         "symfony/monolog-bundle": "2.7.*",
-        "sensio/distribution-bundle": "3.0.*",
+        "sensio/distribution-bundle": "4.0.*",
         "sensio/framework-extra-bundle": "3.0.*",
         "elao/web-profiler-extra-bundle" : "2.3.*",
         "matthiasnoback/symfony-service-definition-validator": "1.2.*",
