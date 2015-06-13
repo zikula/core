@@ -40,5 +40,5 @@
     {else}
         <p class="bold text-center">{gt text='There are currently no modules in this category.'}</p>
     {/if}
+    {adminfooter}
 </div>
-<div class="z-admin-coreversion">Zikula {$coredata.version_num}</div>
