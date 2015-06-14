@@ -103,14 +103,15 @@ class Asset
         $paths[] = $this->getAssetPath('CustomBundle', $parameters['asset_path']);
 
         // theme
-        // bundles/themename/$assetPath
+        // bundles/{themeName}/{assetType}/{bundleName}/$assetPath
         $themeName = $this->package->getThemeName();
         if (false === empty($themeName) && $parameters['bundle_name'] !== $themeName) {
-            $paths[] = $this->getAssetPath($this->package->getThemeName(), $parameters['asset_path']);
+            $assetPath = substr_replace($parameters['asset_path'], '/' . $parameters['bundle_name'], strpos($parameters['asset_path'], '/'), 0);
+            $paths[] = $this->getAssetPath($this->package->getThemeName(), $assetPath);
         }
 
         // web
-        // bundles/foo/$assetPath
+        // bundles/{bundleName}/$assetPath
         $paths[] = $this->getAssetPath($parameters['bundle_name'], $parameters['asset_path']);
         /* // todo
                 // bundle (but only if it's visible from the webroot)
