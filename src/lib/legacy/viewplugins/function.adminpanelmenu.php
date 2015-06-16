@@ -77,9 +77,9 @@ $htmlContent .= '<ul>';
                 $htmlContent .= '<ul class="text-left">';
                 foreach ($links as $link) {
                     if (isset($link['icon'])) {
-                        $img = "<i class=\"fa fa-$link[icon]\"></i>";
+                        $img = '<i class="fa fa-' . $link['icon'] . '"></i>';
                     } elseif (isset($link['class'])) {
-                        $img = "<span class=\"$link[class]\"></span>";
+                        $img = '<span class="' . $link['class'] . '"></span>';
                     } else {
                         $img = '';
                     }
