@@ -102,8 +102,18 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
          * Finder appears to start with root level files so Namespace is correct for remaining files
          */
         if ($node instanceof \PHPParser_Node_Stmt_Namespace) {
-            if (array_key_exists($node->name->toString(), $this->bundles)) {
-                $this->domain = strtolower($this->bundles[$node->name->toString()]);
+            if (isset($node->name)) {
+                if (array_key_exists($node->name->toString(), $this->bundles)) {
+                    $this->domain = strtolower($this->bundles[$node->name->toString()]);
+                }
+
+                return;
+            } else {
+                foreach ($node->stmts as $node) {
+                    $this->enterNode($node);
+                }
+
+                return;
             }
         }
         if (!$node instanceof \PHPParser_Node_Expr_MethodCall
