@@ -55,7 +55,7 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
     $htmlContent = '<nav id="zikula-admin-hiddenpanel-menu">';
     $htmlContent .= '<div class="text-left">';
     $htmlContent .= '<h1><img src="images/logo.gif" alt="Logo" style="height: 32px"> ' . __('Administration') . '</h1>';
-$htmlContent .= '<ul>';
+    $htmlContent .= '<ul>';
     foreach ($modules as $module) {
         if (SecurityUtil::checkPermission("module[name]::", '::', ACCESS_EDIT)) {
             // first-level list - list modules with general 'index' link
