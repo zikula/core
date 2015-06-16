@@ -1,0 +1,118 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2015-06-16 19:21+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+
+#: UsersModule/Controller/AdminController.php on line 1200
+msgid "%m-%d-%Y"
+msgstr ""
+#: UsersModule/Controller/AdminController.php on line 1249
+#: UsersModule/Controller/AdminController.php on line 1523
+#: UsersModule/Controller/AdminController.php on line 1639
+#: UsersModule/Controller/AdminController.php on line 1754
+msgid "%m-%d-%Y %H:%M"
+msgstr ""
+#: UsersModule/Controller/AdminController.php on line 231
+msgid "(Password provided by site administrator)"
+msgstr ""
+#: ZikulaRoutesModule/Controller/RouteController.php on line 210
+msgid "All"
+msgstr ""
+#: ZikulaRoutesModule/Base/RoutesModuleInstaller.php on line 43
+#: ZikulaRoutesModule/Base/RoutesModuleInstaller.php on line 329
+msgid "Doctrine Exception: "
+msgstr ""
+#: ZikulaRoutesModule/Api/AdminApi.php on line 36
+#: ZikulaRoutesModule/Api/AdminApi.php on line 37
+msgid "Dump exposed js routes to file"
+msgstr ""
+#: ZikulaRoutesModule/Controller/RouteController.php on line 253
+#: ZikulaRoutesModule/Controller/RouteController.php on line 327
+msgid "Error! There was an error dumping exposed JS Routes: %s"
+msgstr ""
+#: UsersModule/Controller/AdminController.php on line 1495
+#: UsersModule/Controller/AdminController.php on line 1603
+#: UsersModule/Controller/AdminController.php on line 1732
+msgid "Error! Unable to retrieve registration record with uid '%1$s'"
+msgstr ""
+#: Module/UsersModule/UsersModuleInstaller.php on line 156
+msgid "Guest"
+msgstr ""
+#: Controller/FormData/AbstractFormData.php on line 87
+msgid "Invalid field definition"
+msgstr ""
+#: Controller/FormData/AbstractFormData.php on line 124
+msgid "Invalid field name: %1$s"
+msgstr ""
+#: Controller/FormData/Field.php on line 151
+#: Controller/FormData/Field.php on line 161
+#: Controller/FormData/Field.php on line 183
+#: Controller/FormData/Field.php on line 189
+msgid "Invalid field name: '%1$s'"
+msgstr ""
+#: Controller/FormData/Field.php on line 112
+msgid "Invalid field name: '%1$s'."
+msgstr ""
+#: Module/UsersModule/UsersModuleVersion.php on line 74
+#: Module/UsersModule/UsersModuleVersion.php on line 80
+msgid "Login form and block hooks"
+msgstr ""
+#: ZikulaRoutesModule/Controller/RouteController.php on line 80
+msgid "Normal routes:"
+msgstr ""
+#: Module/UsersModule/UsersModuleVersion.php on line 64
+msgid "Registration management hooks"
+msgstr ""
+#: ZikulaRoutesModule/Api/AdminApi.php on line 33
+#: ZikulaRoutesModule/Api/AdminApi.php on line 34
+msgid "Reload multilingual routing settings"
+msgstr ""
+#: ZikulaRoutesModule/Api/AdminApi.php on line 30
+#: ZikulaRoutesModule/Api/AdminApi.php on line 31
+msgid "Reload routes"
+msgstr ""
+#: Api/Base/AdminApi.php on line 46
+msgid "Route list"
+msgstr ""
+#: Api/Base/AdminApi.php on line 45
+#: ZikulaRoutesModule/Base/RoutesModuleVersion.php on line 37
+msgid "Routes"
+msgstr ""
+#: ZikulaRoutesModule/Controller/RouteController.php on line 81
+msgid "Routes fixed to the bottom of the list:"
+msgstr ""
+#: ZikulaRoutesModule/Controller/RouteController.php on line 79
+msgid "Routes fixed to the top of the list:"
+msgstr ""
+#: Handler/Route/EditHandler.php on line 185
+msgid "The path of the route you created or updated looks similar to the following already existing path: %s Are you sure you haven't just introduced a conflict?"
+msgstr ""
+#: Module/UsersModule/UsersModuleVersion.php on line 55
+msgid "User management hooks"
+msgstr ""
+#: UsersModule/Helper/AuthenticationMethodListHelper.php on line 97
+msgid "User name"
+msgstr ""
+#: UsersModule/Helper/AuthenticationMethodListHelper.php on line 97
+msgid "User name and password"
+msgstr ""
+#: Module/UsersModule/UsersModuleVersion.php on line 35
+msgid "Users"
+msgstr ""
+#: Module/UsersModule/UsersModuleInstaller.php on line 186
+msgid "root, webmaster, admin, administrator, nobody, anonymous, username"
+msgstr ""
+#: ZikulaRoutesModule/Base/RoutesModuleVersion.php on line 41
+msgid "routes"
+msgstr ""
+#: Module/UsersModule/UsersModuleVersion.php on line 37
+msgid "users"
+msgstr ""

@@ -1,0 +1,189 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2015-06-16 19:21+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 168
+msgid "Administration"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 135
+msgid "All"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleVersion.php on line 33
+msgid "Blocks"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 147
+msgid "Bottom navigation block"
+msgstr ""
+#: CategoriesModule/Api/AdminApi.php on line 36
+msgid "Categories list"
+msgstr ""
+#: CategoriesModule/Api/AccountApi.php on line 45
+msgid "Categories manager"
+msgstr ""
+#: CategoriesModule/Api/AdminApi.php on line 48
+msgid "Category registry"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 142
+msgid "Center blocks"
+msgstr ""
+#: CategoriesModule/Api/AdminApi.php on line 42
+msgid "Create new category"
+msgstr ""
+#: CategoriesModule/Api/UserApi.php on line 50
+msgid "Error! The root directory cannot be modified in 'user' mode"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 323
+msgid "Fifteen minutes"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 333
+msgid "Five days"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 321
+msgid "Five minutes"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 145
+msgid "Footer block"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 332
+msgid "Four days"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 327
+msgid "Four hours"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 167
+msgid "Go to the home page"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 168
+msgid "Go to the site administration"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 179
+msgid "Go to the site's home page"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 169
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 180
+msgid "Go to your account panel"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleVersion.php on line 71
+msgid "HTML Block content hook"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 195
+msgid "HTML block"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 324
+msgid "Half an hour"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 144
+msgid "Header block"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 167
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 179
+msgid "Home"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 271
+msgid "Homepage"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 140
+msgid "Left blocks"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 170
+msgid "Log out"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 170
+msgid "Log out of this site"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 196
+msgid "Login block"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 164
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 193
+msgid "Main menu"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 169
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 180
+msgid "My Account"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 329
+msgid "One day"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 325
+msgid "One hour"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 319
+msgid "One minute"
+msgstr ""
+#: CategoriesModule/Api/AdminApi.php on line 52
+msgid "Rebuild paths"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 141
+msgid "Right blocks"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 143
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 194
+msgid "Search block"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 194
+msgid "Search box"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 171
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 181
+msgid "Search this site"
+msgstr ""
+#: CategoriesModule/Api/AdminApi.php on line 56
+msgid "Settings"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 335
+msgid "Seven days"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 171
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 181
+msgid "Site search"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 334
+msgid "Six days"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 322
+msgid "Ten minutes"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 198
+msgid "Theme navigation"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 195
+msgid "This site is powered by Zikula!"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 331
+msgid "Three days"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 176
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 198
+msgid "Top navigation"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 146
+msgid "Top navigation block"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 328
+msgid "Twelve hours"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 330
+msgid "Two days"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 326
+msgid "Two hours"
+msgstr ""
+#: BlocksModule/Controller/AdminController.php on line 320
+msgid "Two minutes"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleInstaller.php on line 196
+msgid "User log-in"
+msgstr ""
+#: Module/BlocksModule/BlocksModuleVersion.php on line 35
+msgid "blocks"
+msgstr ""
