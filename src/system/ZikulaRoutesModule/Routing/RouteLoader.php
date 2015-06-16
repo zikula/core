@@ -80,6 +80,7 @@ class RouteLoader implements LoaderInterface
                 }
 
                 $requirements = $dbRoute->getRequirements();
+                // @todo Remove when Symfony 3.0 is used.
                 if (isset($requirements['_method'])) {
                     unset($requirements['_method']);
                 }
