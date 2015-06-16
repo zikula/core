@@ -79,10 +79,18 @@ class RouteLoader implements LoaderInterface
                     $path = $dbRoute->getPath();
                 }
 
+                $requirements = $dbRoute->getRequirements();
+                if (isset($requirements['_method'])) {
+                    unset($requirements['_method']);
+                }
+                if (isset($requirements['_scheme'])) {
+                    unset($requirements['_scheme']);
+                }
+
                 $route = new Route(
                     $path,
                     $defaults,
-                    $dbRoute->getRequirements(),
+                    $requirements,
                     $options,
                     $dbRoute->getHost(),
                     $dbRoute->getSchemes(),
