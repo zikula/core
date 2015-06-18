@@ -36,6 +36,7 @@ use Zikula\Core\Doctrine\Entity\ExtensionEntity;
 use Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
  * Administrative API functions for the Extensions module.
@@ -377,18 +378,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
-            if (null === $module) {
-                $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
-                $classNameOld = ucwords($modinfo['name']) . '_Installer';
-                $className = class_exists($className) ? $className : $classNameOld;
-            } else {
-                $className = $module->getInstallerClass();
-            }
-            $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                throw new \RuntimeException($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
-            }
-            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
+            $installer = $this->getInstaller($module, $modinfo);
 
             // perform the actual deletion of the module
             $func = array($installer, 'uninstall');
@@ -968,18 +958,7 @@ class AdminApi extends \Zikula_AbstractApi
             include_once $bootstrap;
         }
 
-        if (null === $module) {
-            $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
-            $classNameOld = ucwords($modinfo['name']) . '_Installer';
-            $className = class_exists($className) ? $className : $classNameOld;
-        } else {
-            $className = $module->getInstallerClass();
-        }
-        $reflectionInstaller = new ReflectionClass($className);
-        if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-            throw new \RuntimeException($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
-        }
-        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
+        $installer = $this->getInstaller($module, $modinfo);
 
         // perform the actual install of the module
         // system or module
@@ -1065,18 +1044,7 @@ class AdminApi extends \Zikula_AbstractApi
             include_once $bootstrap;
         }
 
-        if (null === $module) {
-            $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
-            $classNameOld = ucwords($modinfo['name']) . '_Installer';
-            $className = class_exists($className) ? $className : $classNameOld;
-        } else {
-            $className = $module->getInstallerClass();
-        }
-        $reflectionInstaller = new ReflectionClass($className);
-        if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-            throw new \RuntimeException($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
-        }
-        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
+        $installer = $this->getInstaller($module, $modinfo);
 
         // perform the actual upgrade of the module
         $func = array($installer, 'upgrade');
@@ -1502,5 +1470,36 @@ class AdminApi extends \Zikula_AbstractApi
             return false;
         }
         return true;
+    }
+
+    /**
+     * Get an instance of the module installer class
+     * @param \Zikula\Core\AbstractModule|null $module
+     * @param array $modInfo
+     * @return \Zikula_AbstractInstaller|\Zikula\Core\ExtensionInstallerInterface
+     */
+    private function getInstaller($module, array $modInfo)
+    {
+        if (null === $module) {
+            $className = ucwords($modInfo['name']) . '\\' . ucwords($modInfo['name']) . 'Installer';
+            $classNameOld = ucwords($modInfo['name']) . '_Installer';
+            $className = class_exists($className) ? $className : $classNameOld;
+        } else {
+            $className = $module->getInstallerClass();
+        }
+        $reflectionInstaller = new ReflectionClass($className);
+        if ($reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
+        } elseif ($reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
+            $installer = $reflectionInstaller->newInstance();
+            $installer->setBundle($module);
+            if ($installer instanceof ContainerAwareInterface) {
+                $installer->setContainer($this->getContainer());
+            }
+        } else {
+            throw new \RuntimeException($this->__f("%s must be an instance of Zikula_AbstractInstaller or implement ExtensionInstallerInterface", $className));
+        }
+
+        return $installer;
     }
 }
