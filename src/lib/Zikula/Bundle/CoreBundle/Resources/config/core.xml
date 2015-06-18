@@ -37,6 +37,7 @@
         <parameter key="zikula.exception_listener.class">Zikula\Bundle\CoreBundle\EventListener\ExceptionListener</parameter>
         <parameter key="zikula.output_compression_listener.class">Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener</parameter>
         <parameter key="zikula.strip_front_controller_listener.class">Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener</parameter>
+        <parameter key="zikula.doctrine.schema_tool.class">Zikula\Core\Doctrine\Helper\SchemaHelper</parameter>
     </parameters>
 
     <services>
@@ -155,5 +156,8 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <service id="zikula.doctrine.schema_tool" class="%zikula.doctrine.schema_tool.class%" lazy="true">
+            <argument type="service" id="doctrine.entitymanager" />
+        </service>
     </services>
 </container>

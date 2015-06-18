@@ -14,6 +14,10 @@
 use Doctrine\ORM\EntityManager as EntityManager;
 use Doctrine\ORM\Tools\SchemaTool as SchemaTool;
 
+/**
+ * Class DoctrineHelper
+ * @deprecated to be removed at Core 2.0.0
+ */
 class DoctrineHelper
 {
     public static function createSchema(EntityManager $em, array $classes)
