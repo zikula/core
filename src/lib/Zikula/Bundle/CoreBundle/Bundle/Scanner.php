@@ -74,6 +74,7 @@ class Scanner
                 $json['autoload']['psr-4'][$ns] = $path;
             }
             $json['extra']['zikula']['short-name'] = substr($class, strrpos($class, '\\') + 1, strlen($class));
+            $json['extensionType'] = strpos($base, 'system') ? \ModUtil::TYPE_SYSTEM : \ModUtil::TYPE_MODULE;
 
             return $json;
         }
