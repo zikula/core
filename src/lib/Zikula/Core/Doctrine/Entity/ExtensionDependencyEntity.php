@@ -154,9 +154,18 @@ class ExtensionDependencyEntity extends EntityAccess
 
             if (null !== $bundle) {
                 $versionClass =  $bundle->getVersionClass();
-                $version = new $versionClass();
-                $meta = $version->getMetaData();
-                $dependencies = $meta['dependencies'];
+
+                if (class_exists($versionClass)) {
+                    // 1.4-module spec - deprecated - remove in Core 2.0
+                    $version = new $versionClass($bundle);
+                    $moduleVersionArray = $version->toArray();
+                    $dependencies = $moduleVersionArray['dependencies'];
+                } else {
+                    // 2.0-module spec
+                    $moduleMetaData = $bundle->getMetaData();
+                    $dependencies = $moduleMetaData->getDependencies();
+                }
+
                 foreach ($dependencies as $dependency) {
                     if ($dependency['modname'] == $this->modname) {
                         $this->reason = isset($dependency['reason']) ? $dependency['reason'] : '';
