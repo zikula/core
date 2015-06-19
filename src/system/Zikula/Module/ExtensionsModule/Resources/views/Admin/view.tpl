@@ -47,7 +47,12 @@
         <tr>
             <td>
                 {if isset($modules[modules].modinfo.capabilities.admin) and $modules[modules].modinfo.state eq 3}
-                <a title="{gt text="Go to the module's administration panel"}" href="{modurl modname=$modules[modules].modinfo.url type='admin' func='index'}">{$modules[modules].modinfo.name|safetext}</a>
+                    {if isset($modules[modules].modinfo.capabilities.admin.url)}
+                        {assign value=$modules[modules].modinfo.capabilities.admin.url var='url'}
+                    {elseif isset($modules[modules].modinfo.capabilities.admin.route)}
+                        {route name=$modules[modules].modinfo.capabilities.admin.route assign='url'}
+                    {/if}
+                <a title="{gt text="Go to the module's administration panel"}" href="{$url}">{$modules[modules].modinfo.name|safetext}</a>
                 {else}
                 {$modules[modules].modinfo.name|safetext}
                 {/if}
