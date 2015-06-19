@@ -529,6 +529,10 @@ class AdminController extends \Zikula_AbstractController
             $modulenotfound = false;
             if (!$confirmation && $dependencies) {
                 foreach ($dependencies as $key => $dependency) {
+                    if ($this->bundleDependencySatisfied($dependency->toArray())) {
+                        unset($dependencies[$key]);
+                        continue;
+                    }
                     $dependencies[$key] = $dependency->toArray();
                     $dependencies[$key]['insystem'] = true;
                     $modinfo = ModUtil::getInfoFromName($dependency['modname']);
@@ -1801,4 +1805,31 @@ class AdminController extends \Zikula_AbstractController
         return new Response($this->view->fetch('Admin/HookUi/moduleservices.tpl'));
     }
 
+    /**
+     * compute if bundle requirements are met
+     *
+     * @param array $dependency
+     * @return bool
+     */
+    private function bundleDependencySatisfied(array $dependency)
+    {
+        if ($dependency['modname'] == "php") {
+            // @todo update to use vierbergenlars/php-semver instead
+            return version_compare(PHP_VERSION, $dependency['minversion'], '>=');
+        }
+        if ($dependency['modname'] == "zikula/core") {
+            // @todo update to use vierbergenlars/php-semver instead
+            return version_compare(\Zikula_Core::VERSION_NUM, '1.4.0', '>=');
+        }
+        if (strpos($dependency['modname'], 'composer/') !== false) {
+            // @todo this specifically is for `composer/installers` but will catch all with `composer/`
+            return true;
+        }
+        if (strpos($dependency['modname'], '/') !== false) {
+            // @todo how to check the bundle version?
+            return $this->get('kernel')->isBundle($dependency['modname']);
+        }
+
+        return false;
+    }
 }
