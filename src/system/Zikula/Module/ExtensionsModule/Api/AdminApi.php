@@ -37,6 +37,9 @@ use Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Bundle\CoreBundle\Bundle\Bootstrap;
+use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 
 /**
  * Administrative API functions for the Extensions module.
@@ -468,8 +471,8 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
-        $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
-        $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
+        $boot = new Bootstrap();
+        $helper = new BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
 
         // sync the filesystem and the bundles table
         $helper->load();
@@ -482,39 +485,53 @@ class AdminApi extends \Zikula_AbstractApi
         $newModules = $scanner->getModulesMetaData();
 
         // scan for all bundle-type modules (psr-0 & psr-4) in either /system or /modules
-        foreach ($newModules as $name => $module) {
-            foreach ($module->getPsr0() as $ns => $path) {
+        /** @var MetaData $moduleMetaData */
+        foreach ($newModules as $name => $moduleMetaData) {
+            /* psr-0 is deprecated - remove this in Core 2.0 */
+            foreach ($moduleMetaData->getPsr0() as $ns => $path) {
                 ZLoader::addPrefix($ns, $path);
             }
 
-            foreach ($module->getPsr4() as $ns => $path) {
+            foreach ($moduleMetaData->getPsr4() as $ns => $path) {
                 ZLoader::addPrefixPsr4($ns, $path);
             }
 
-            $class = $module->getClass();
+            $bundleClass = $moduleMetaData->getClass();
 
             /** @var $bundle \Zikula\Core\AbstractModule */
-            $bundle = new $class;
-            $class = $bundle->getVersionClass();
+            $bundle = new $bundleClass;
+            $versionClass = $bundle->getVersionClass();
 
-            $version = new $class($bundle);
-            $version['name'] = $bundle->getName();
+            if (class_exists($versionClass)) {
+                // 1.4-module spec - deprecated - remove in Core 2.0
+                $version = new $versionClass($bundle);
+                $version['name'] = $bundle->getName();
 
-            $array = $version->toArray();
-            unset($array['id']);
+                $moduleVersionArray = $version->toArray();
+                unset($moduleVersionArray['id']);
+            } else {
+                // 2.0-module spec
+                $moduleMetaData->setTranslator($this->getContainer()->get('translator'));
+                $moduleMetaData->setDirectoryFromBundle($bundle);
+                $moduleVersionArray = $moduleMetaData->getFilteredVersionInfoArray();
+            }
 
             // Work out if admin-capable
-            if (file_exists($bundle->getPath().'/Controller/AdminController.php')) {
-                $caps = $array['capabilities'];
-                $caps['admin'] = array('version' => '1.0');
-                $array['capabilities'] = $caps;
+            // @deprecated - author must declare in Core 2.0
+            // e.g. "capabilities": {"admin": {"route": "zikulafoomodule_admin_index"} }
+            if (empty($moduleVersionArray['capabilities']['admin']) && file_exists($bundle->getPath().'/Controller/AdminController.php')) {
+                $caps = $moduleVersionArray['capabilities'];
+                $caps['admin'] = array('url' => ModUtil::url($bundle->getName(), 'admin', 'index'));
+                $moduleVersionArray['capabilities'] = $caps;
             }
 
             // Work out if user-capable
-            if (file_exists($bundle->getPath().'/Controller/UserController.php')) {
-                $caps = $array['capabilities'];
-                $caps['user'] = array('version' => '1.0');
-                $array['capabilities'] = $caps;
+            // @deprecated - author must declare in Core 2.0
+            // e.g. "capabilities": {"user": {"route": "zikulafoomodule_user_index"} }
+            if (empty($moduleVersionArray['capabilities']['user']) && file_exists($bundle->getPath().'/Controller/UserController.php')) {
+                $caps = $moduleVersionArray['capabilities'];
+                $caps['admin'] = array('url' => ModUtil::url($bundle->getName(), 'user', 'index'));
+                $moduleVersionArray['capabilities'] = $caps;
             }
 
             // loads the gettext domain for 3rd party modules
@@ -522,14 +539,17 @@ class AdminApi extends \Zikula_AbstractApi
                 ZLanguage::bindModuleDomain($bundle->getName());
             }
 
-            $array['capabilities'] = serialize($array['capabilities']);
-            $array['securityschema'] = serialize($array['securityschema']);
-            $array['dependencies'] = serialize($array['dependencies']);
+            $moduleVersionArray['capabilities'] = serialize($moduleVersionArray['capabilities']);
+            $moduleVersionArray['securityschema'] = serialize($moduleVersionArray['securityschema']);
+            $moduleVersionArray['dependencies'] = serialize($moduleVersionArray['dependencies']);
 
-            $filemodules[$bundle->getName()] = $array;
-            $filemodules[$bundle->getName()]['oldnames'] = isset($array['oldnames']) ? $array['oldnames'] : '';
+            $filemodules[$bundle->getName()] = $moduleVersionArray;
+            $filemodules[$bundle->getName()]['oldnames'] = isset($moduleVersionArray['oldnames']) ? $moduleVersionArray['oldnames'] : '';
         }
 
+        /**
+         * @deprecated All the legacy below is to be removed in Core 2.0
+         */
         // set the paths to search
         $rootdirs = array('modules' => ModUtil::TYPE_MODULE); // do not scan `/system` since all are accounted for above
 
@@ -582,14 +602,14 @@ class AdminApi extends \Zikula_AbstractApi
                         // Work out if admin-capable
                         if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
                             $caps = $modversion['capabilities'];
-                            $caps['admin'] = array('version' => '1.0');
+                            $caps['admin'] = array('url' => ModUtil::url($modversion['name'], 'admin', 'index'));
                             $modversion['capabilities'] = $caps;
                         }
 
                         // Work out if user-capable
                         if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
                             $caps = $modversion['capabilities'];
-                            $caps['user'] = array('version' => '1.0');
+                            $caps['admin'] = array('url' => ModUtil::url($modversion['name'], 'user', 'index'));
                             $modversion['capabilities'] = $caps;
                         }
                     }
@@ -679,8 +699,8 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
-        $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
-        $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
+        $boot = new Bootstrap();
+        $helper = new BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
 
         // sync the filesystem and the bundles table
         $helper->load();
