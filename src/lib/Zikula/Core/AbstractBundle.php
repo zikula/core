@@ -6,6 +6,8 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 
 abstract class AbstractBundle extends Bundle
 {
@@ -47,6 +49,10 @@ abstract class AbstractBundle extends Bundle
         return $class;
     }
 
+    /**
+     * @deprecated remove in Core 2.0.0
+     * @return string
+     */
     public function getVersionClass()
     {
         $ns = $this->getNamespace();
@@ -181,5 +187,19 @@ abstract class AbstractBundle extends Bundle
     public function getContainer()
     {
         return $this->container;
+    }
+
+    /**
+     * @return MetaData
+     */
+    public function getMetaData()
+    {
+        $scanner = new Scanner();
+        $jsonPath = $this->getPath() . '/composer.json';
+        $jsonContent = $scanner->decode($jsonPath);
+        $metaData = new MetaData($jsonContent);
+        $metaData->setDirectoryFromBundle($this);
+
+        return $metaData;
     }
 }
