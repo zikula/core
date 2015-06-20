@@ -93,18 +93,18 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
             'default' => null
         ),
         /* Http settings */
-        'router.request_context.host' => array(
+        'router:request_context:host' => array(
             'description' => 'The host where you install Zikula, e.g. "example.com". Do not include subdirectories.',
             "question" => 'Please enter the host where you install Zikula, e.g. "example.com". Do not include subdirectories',
             'default' => null,
         ),
-        'router.request_context.scheme' => array(
+        'router:request_context:scheme' => array(
             'description' => 'The scheme of where you install Zikula, can be either "http" or "https".',
             "question" => 'Please enter the scheme of where you install Zikula, can be either "http" or "https"',
             'default' => 'http',
             /* @todo Choices */
         ),
-        'router.request_context.base_url' => array(
+        'router:request_context:base_url' => array(
             'description' => 'The url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir',
             "question" => 'Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir',
             'default' => '',
