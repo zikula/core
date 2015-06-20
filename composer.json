@@ -50,7 +50,7 @@
         "sensio/framework-extra-bundle": "3.0.*",
         "elao/web-profiler-extra-bundle" : "dev-master",
         "matthiasnoback/symfony-service-definition-validator": "1.2.*",
-        "matthiasnoback/symfony-console-form": "dev-master",
+        "matthiasnoback/symfony-console-form": "1.*",
         "zikula/generator-bundle": "dev-master",
 
 
