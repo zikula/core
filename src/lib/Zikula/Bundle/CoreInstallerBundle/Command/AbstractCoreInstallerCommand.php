@@ -81,12 +81,6 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
             'default' => null,
             'password' => true
         ),
-        'password_repeat' => array(
-            'description' => 'Enter the password again for verification.',
-            "question" => 'Please enter the password again for verification',
-            'default' => null,
-            'password' => true
-        ),
         'email' => array(
             'description' => 'Email of the new Zikula admin user.',
             "question" => 'Please enter the email address of the new Zikula admin user',
