@@ -536,11 +536,12 @@ class AdminController extends \Zikula_AbstractController
             $modulenotfound = false;
             if (!$confirmation && $dependencies) {
                 foreach ($dependencies as $key => $dependency) {
-                    if ($this->bundleDependencySatisfied($dependency->toArray())) {
+                    $dependencyArray = $dependency->toArray();
+                    if ($this->bundleDependencySatisfied($dependencyArray)) {
                         unset($dependencies[$key]);
                         continue;
                     }
-                    $dependencies[$key] = $dependency->toArray();
+                    $dependencies[$key] = $dependencyArray;
                     $dependencies[$key]['insystem'] = true;
                     $modinfo = ModUtil::getInfoFromName($dependency['modname']);
                     $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
@@ -1832,7 +1833,7 @@ class AdminController extends \Zikula_AbstractController
         }
         if ($dependency['minversion'] == "-1") {
             // dependency is "suggested"
-            list ($dependecy['modname'], $dependency['minversion']) = explode(':', $dependency['modname']);
+            list ($dependency['modname'], $dependency['minversion']) = explode(':', $dependency['modname']);
 
             return false;
         }

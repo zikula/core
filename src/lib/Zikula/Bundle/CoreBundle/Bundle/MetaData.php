@@ -231,6 +231,7 @@ class MetaData
             'securityschema' => $this->getSecuritySchema(),
             'dependencies' => $this->getDependencies(),
             'corecompatibility' => $this->getCoreCompatibility(),
+            'core_max' => '' // core_min is set from corecompatibility
         );
     }
 }
