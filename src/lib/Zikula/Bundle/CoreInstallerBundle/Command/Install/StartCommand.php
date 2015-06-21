@@ -143,6 +143,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         $dbh = new \PDO("$params[database_driver]:host=$params[database_host];dbname=$params[database_name]", $params['database_user'], $params['database_password']);
         $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);
         $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
+        unset($params['password_repeat']);
         $yamlManager->setParameters($params);
         $this->getContainer()->get('core_installer.config.util')->writeLegacyConfig($params);
         $this->getContainer()->get('zikula.cache_clearer')->clear('symfony.config');
