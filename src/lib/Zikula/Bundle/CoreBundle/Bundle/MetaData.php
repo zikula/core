@@ -27,6 +27,7 @@ class MetaData
     private $securitySchema;
     private $extensionType;
     private $directory;
+    private $coreCompatibility;
 
     public function __construct($json)
     {
@@ -48,6 +49,7 @@ class MetaData
         $this->securitySchema = isset($json['extra']['zikula']['securityschema']) ? $json['extra']['zikula']['securityschema'] : array();
         $this->extensionType = $json['extensionType'];
         $this->directory = $json['name'];
+        $this->coreCompatibility = isset($json['extra']['zikula']['core-compatibility']) ? $json['extra']['zikula']['core-compatibility'] : '>=1.4.0 <3.0.0'; //@todo >=1.4.1
     }
 
     public function getName()
@@ -148,6 +150,11 @@ class MetaData
         return $this->extensionType;
     }
 
+    public function getCoreCompatibility()
+    {
+        return $this->coreCompatibility;
+    }
+
     private function formatDependencies(array $json)
     {
         $dependencies = array();
@@ -223,8 +230,7 @@ class MetaData
             'capabilities' => $this->getCapabilities(),
             'securityschema' => $this->getSecuritySchema(),
             'dependencies' => $this->getDependencies(),
-            'core_min' => '1.4.0', // will be 1.4.1 but is @deprecated - will use vierbergenlars/php-semver instead
-            'core_max' => '2.9.99' // @deprecated
+            'corecompatibility' => $this->getCoreCompatibility(),
         );
     }
 }

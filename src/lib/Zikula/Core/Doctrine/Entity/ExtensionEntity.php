@@ -251,6 +251,11 @@ class ExtensionEntity extends EntityAccess
         $this->core_max = $core_max;
     }
 
+    public function setCorecompatibility($coreCompatibility)
+    {
+        // @todo temporarily use core_min to store the string - rename and remove core_max
+        $this->core_min = $coreCompatibility;
+    }
 
 
 }

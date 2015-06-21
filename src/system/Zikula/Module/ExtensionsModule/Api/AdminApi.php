@@ -37,6 +37,8 @@ use Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use vierbergenlars\SemVer\expression;
+use vierbergenlars\SemVer\version;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
@@ -800,7 +802,10 @@ class AdminApi extends \Zikula_AbstractApi
             }
 
             // check core version is compatible with current
-            $isCompatible = $this->isCoreCompatible($filemodules[$name]['core_min'], $filemodules[$name]['core_max']);
+            $coreCompatibility = isset($filemodules[$name]['corecompatibility'])
+                ? $filemodules[$name]['corecompatibility']
+                : $this->formatCoreCompatibilityString($filemodules[$name]['core_min'], $filemodules[$name]['core_max']);
+            $isCompatible = $this->isCoreCompatible($coreCompatibility);
             if (isset($dbmodules[$name])) {
                 if (!$isCompatible) {
                     // module is incompatible with current core
@@ -848,8 +853,11 @@ class AdminApi extends \Zikula_AbstractApi
                 if (!$modinfo['version']) {
                     $modinfo['state'] = ModUtil::STATE_INVALID;
                 } else {
+                    $coreCompatibility = isset($filemodules[$name]['corecompatibility'])
+                        ? $filemodules[$name]['corecompatibility']
+                        : $this->formatCoreCompatibilityString($filemodules[$name]['core_min'], $filemodules[$name]['core_max']);
                     // shift state if module is incompatible with core version
-                    $modinfo['state'] = $this->isCoreCompatible($modinfo['core_min'], $modinfo['core_max']) ? $modinfo['state'] : $modinfo['state'] + ModUtil::INCOMPATIBLE_CORE_SHIFT;
+                    $modinfo['state'] = $this->isCoreCompatible($coreCompatibility) ? $modinfo['state'] : $modinfo['state'] + ModUtil::INCOMPATIBLE_CORE_SHIFT;
                 }
 
                 // unset some vars
@@ -882,7 +890,10 @@ class AdminApi extends \Zikula_AbstractApi
                 } elseif ((($dbmodules[$name]['state'] == ModUtil::STATE_INVALID)
                     || ($dbmodules[$name]['state'] == ModUtil::STATE_INVALID + ModUtil::INCOMPATIBLE_CORE_SHIFT))
                     && $modinfo['version']) {
-                    $isCompatible = $this->isCoreCompatible($modinfo['core_min'], $modinfo['core_max']);
+                    $coreCompatibility = isset($filemodules[$name]['corecompatibility'])
+                        ? $filemodules[$name]['corecompatibility']
+                        : $this->formatCoreCompatibilityString($filemodules[$name]['core_min'], $filemodules[$name]['core_max']);
+                    $isCompatible = $this->isCoreCompatible($coreCompatibility);
                     if ($isCompatible) {
                         // module was invalid, now it is valid
                         $item = $this->entityManager->getRepository(self::EXTENSION_ENTITY)->find($dbmodules[$name]['id']);
@@ -1470,26 +1481,30 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Determine if $min and $max values are compatible with Current Core version
      *
-     * @param string $min
-     * @param string $max
+     * @param string $compatibilityString Semver
      * @return bool
      */
-    private function isCoreCompatible($min = null, $max = null)
+    private function isCoreCompatible($compatibilityString)
     {
-        $minok = 0;
-        $maxok = 0;
-        // strip any -dev, -rcN etc from version number
-        $coreVersion = preg_replace('#(\d+\.\d+\.\d+).*#', '$1', Zikula_Core::VERSION_NUM);
-        if (!empty($min)) {
-            $minok = version_compare($coreVersion, $min);
-        }
-        if (!empty($max)) {
-            $maxok = version_compare($max, $coreVersion);
-        }
-        if ($minok == -1 || $maxok == -1) {
-            return false;
-        }
-        return true;
+        $coreVersion = new version(Zikula_Core::VERSION_NUM);
+        $requiredVersionExpression = new expression($compatibilityString);
+
+        return $requiredVersionExpression->satisfiedBy($coreVersion);
+    }
+
+    /**
+     * Format a compatibility string suitable for semver comparison using vierbergenlars/php-semver
+     *
+     * @param null $coreMin
+     * @param null $coreMax
+     * @return string
+     */
+    private function formatCoreCompatibilityString($coreMin = null, $coreMax = null)
+    {
+        $coreMin = !empty($coreMin) ? $coreMin : '1.4.0';
+        $coreMax = !empty($coreMax) ? $coreMax : '2.9.99';
+
+        return $coreMin . " - " . $coreMax;
     }
 
     /**

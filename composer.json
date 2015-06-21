@@ -70,6 +70,7 @@
         "michelf/php-markdown": "1.4.*",
         "phpids/phpids": "dev-master",
         "twig/extensions": "1.2.*",
+        "vierbergenlars/php-semver": "~3.0",
         "zikula/wizard": "dev-master",
         "zikula/filesystem": "dev-master",
 
