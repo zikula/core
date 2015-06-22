@@ -17,8 +17,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Zikula\Core\Response\AdminResponse;
 use Zikula\Core\Response\PlainResponse;
 use Zikula_View_Theme;
+use Zikula\Core\Event\GenericEvent;
 
 class ThemeListener implements EventSubscriberInterface
 {
@@ -45,7 +47,25 @@ class ThemeListener implements EventSubscriberInterface
             return;
         }
 
-        Zikula_View_Theme::getInstance()->themefooter($response);
+        $themeName = '';
+        $smartyCaching = null;
+
+        /**
+         * If Response is an AdminResponse, then change theme to the requested Admin theme (if set)
+         */
+        if ($response instanceof AdminResponse) {
+            $adminTheme = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
+            if (!empty($adminTheme)) {
+                $themeInfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($adminTheme));
+                if ($themeInfo && $themeInfo['state'] == \ThemeUtil::STATE_ACTIVE && is_dir('themes/' . \DataUtil::formatForOS($themeInfo['directory']))) {
+                    $event = new GenericEvent(null, array('type' => 'admin-theme'), $themeInfo['name']);
+                    $themeName = \EventUtil::dispatch('user.gettheme', $event)->getData();
+                    $smartyCaching = false;
+                    $_GET['type'] = 'admin'; // required for smarty and FormUtil::getPassedValue() to use the right pagetype from pageconfigurations.ini
+                }
+            }
+        }
+        Zikula_View_Theme::getInstance($themeName, $smartyCaching)->themefooter($response);
     }
 
     public static function getSubscribedEvents()
