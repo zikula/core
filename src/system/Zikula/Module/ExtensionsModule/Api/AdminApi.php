@@ -532,7 +532,7 @@ class AdminApi extends \Zikula_AbstractApi
             // e.g. "capabilities": {"user": {"route": "zikulafoomodule_user_index"} }
             if (empty($moduleVersionArray['capabilities']['user']) && file_exists($bundle->getPath().'/Controller/UserController.php')) {
                 $caps = $moduleVersionArray['capabilities'];
-                $caps['admin'] = array('url' => ModUtil::url($bundle->getName(), 'user', 'index'));
+                $caps['user'] = array('url' => ModUtil::url($bundle->getName(), 'user', 'index'));
                 $moduleVersionArray['capabilities'] = $caps;
             }
 
@@ -611,7 +611,7 @@ class AdminApi extends \Zikula_AbstractApi
                         // Work out if user-capable
                         if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
                             $caps = $modversion['capabilities'];
-                            $caps['admin'] = array('url' => ModUtil::url($modversion['name'], 'user', 'index'));
+                            $caps['user'] = array('url' => ModUtil::url($modversion['name'], 'user', 'index'));
                             $modversion['capabilities'] = $caps;
                         }
                     }
