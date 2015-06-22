@@ -536,22 +536,25 @@ class MenutreeApi extends \Zikula_AbstractApi
         // otherwise parent id of replaced menu node
         $parentNode = $extrainfo != 'flat' ? $links['modules'][$lang]['id'] : $item['parent'];
 
-        $mods = ModUtil::getUserMods();
+        $mods = ModUtil::getModulesCapableOf('user');
 
         foreach ($mods as $mod) {
             if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
+                $url = isset($module['capabilities']['user']['url'])
+                    ? $module['capabilities']['user']['url']
+                    : $this->get('router')->generate($module['capabilities']['user']['route']);
                 $links[] = array(
-                        $lang => array(
-                                'id' => $idoffset++,
-                                'name' => $mod['displayname'],
-                                'href' => ModUtil::url($mod['name'], 'user', 'index'),
-                                'title' => $mod['description'],
-                                'className' => '',
-                                'state' => 1,
-                                'lang' => $lang,
-                                'lineno' => $lineno++,
-                                'parent' => $parentNode
-                        )
+                    $lang => array(
+                        'id' => $idoffset++,
+                        'name' => $mod['displayname'],
+                        'href' => $url,
+                        'title' => $mod['description'],
+                        'className' => '',
+                        'state' => 1,
+                        'lang' => $lang,
+                        'lineno' => $lineno++,
+                        'parent' => $parentNode
+                    )
                 );
             }
         }

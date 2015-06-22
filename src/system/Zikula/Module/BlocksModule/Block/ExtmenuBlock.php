@@ -156,7 +156,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
         // Modules
         if (!empty($vars['displaymodules'])) {
-            $newmods = ModUtil::getUserMods();
+            $newmods = ModUtil::getModulesCapableOf('user');
             $mods = array();
             foreach ($newmods as $module) {
                 if (!preg_match('#(?:error|blocks)#', strtolower($module['name']))) {
@@ -184,11 +184,12 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
             }
 
             foreach ($mods as $mod) {
-                // prepare image
-
+                $url = isset($mod['capabilities']['user']['url'])
+                    ? $mod['capabilities']['user']['url']
+                    : $this->get('router')->generate($mod['capabilities']['user']['route']);
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
                     $menuitems[] = array('name'   => $mod['displayname'],
-                                         'url'    => ModUtil::url($mod['name'], 'user', 'index'),
+                                         'url'    => $url,
                                          'title'  => $mod['description'],
                                          'level'  => 0,
                                          'parentid' => null,

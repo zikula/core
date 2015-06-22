@@ -557,8 +557,11 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
             if (is_array($mods) && count($mods)>0) {
                 foreach ($mods as $mod) {
+                    $url = isset($mod['capabilities']['user']['url'])
+                        ? $mod['capabilities']['user']['url']
+                        : $this->get('router')->generate($mod['capabilities']['user']['route']);
                     $tmp = array('name'  => $mod['displayname'],
-                                 'href'  => DataUtil::formatForDisplay(ModUtil::url($mod['name'], 'user', 'index')),
+                                 'href'  => DataUtil::formatForDisplay($url),
                                  'title' => $mod['description']);
 
                     foreach ($langs as $lang) {
