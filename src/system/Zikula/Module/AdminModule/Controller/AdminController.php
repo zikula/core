@@ -362,7 +362,7 @@ class AdminController extends \Zikula_AbstractController
         $displayNameType = $this->getVar('displaynametype', 1);
 
         // get admin capable modules
-        $adminmodules = ModUtil::getAdminMods();
+        $adminmodules = ModUtil::getModulesCapableOf('admin');
         $adminlinks = array();
         foreach ($adminmodules as $adminmodule) {
             if (SecurityUtil::checkPermission("{$adminmodule['name']}::", 'ANY', ACCESS_EDIT)) {
@@ -371,26 +371,27 @@ class AdminController extends \Zikula_AbstractController
                 $order = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getSortOrder',
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
                 if (($catid == $acid) || (($catid == false) && ($acid == $this->getVar('defaultcategory')))) {
-                    $modinfo = ModUtil::getInfoFromName($adminmodule['name']);
-                    $menutexturl = ModUtil::url($modinfo['name'], 'admin', 'index');
+                    $menutexturl = isset($adminmodule['capabilities']['admin']['url'])
+                        ? $adminmodule['capabilities']['admin']['url']
+                        : $this->get('router')->generate($adminmodule['capabilities']['admin']['route']);
 
                     if ($displayNameType == 1) {
-                        $menutext = $modinfo['displayname'];
+                        $menutext = $adminmodule['displayname'];
                     } elseif ($displayNameType == 2) {
-                        $menutext = $modinfo['name'];
+                        $menutext = $adminmodule['name'];
                     } elseif ($displayNameType == 3) {
-                        $menutext = $modinfo['displayname'] . ' (' . $modinfo['name'] . ')';
+                        $menutext = $adminmodule['displayname'] . ' (' . $adminmodule['name'] . ')';
                     }
-                    $menutexttitle = $modinfo['description'];
+                    $menutexttitle = $adminmodule['description'];
 
                     $adminicon = ModUtil::getModuleImagePath($adminmodule['name']);
 
                     $adminlinks[] = array('menutexturl' => $menutexturl,
                             'menutext' => $menutext,
                             'menutexttitle' => $menutexttitle,
-                            'modname' => $modinfo['name'],
+                            'modname' => $adminmodule['name'],
                             'adminicon' => $adminicon,
-                            'id' => $modinfo['id'],
+                            'id' => $adminmodule['id'],
                             'order'=> $order);
                 }
             }
@@ -557,7 +558,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get admin capable modules
-        $adminmodules = ModUtil::getAdminMods();
+        $adminmodules = ModUtil::getModulesCapableOf('admin');
         $adminlinks = array();
 
         foreach ($adminmodules as $adminmodule) {
@@ -565,7 +566,9 @@ class AdminController extends \Zikula_AbstractController
                 $catid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', array('mid' => $adminmodule['id']));
                 $order = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getSortOrder',
                                           array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
-                $menutexturl = ModUtil::url($adminmodule['name'], 'admin', 'index');
+                $menutexturl = isset($adminmodule['capabilities']['admin']['url'])
+                    ? $adminmodule['capabilities']['admin']['url']
+                    : $this->get('router')->generate($adminmodule['capabilities']['admin']['route']);
                 $menutext = $adminmodule['displayname'];
                 $menutexttitle = $adminmodule['description'];
                 $adminlinks[$catid][] = array('menutexturl' => $menutexturl,

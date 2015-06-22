@@ -59,6 +59,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         //get the module name
         $displayname = DataUtil::formatForDisplay($module['displayname']);
+        $url = isset($module['capabilities']['admin']['url'])
+            ? $module['capabilities']['admin']['url']
+            : $this->get('router')->generate($module['capabilities']['admin']['route']);
         $module = $module['name'];
         $oldcid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', array('mid' => $moduleID));
 
@@ -71,7 +74,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $output = array(
             'id' => $moduleID,
             'name' => $displayname,
-            'url' => ModUtil::url($module, 'admin', 'index'),
+            'url' => $url,
             'parentCategory' => $newParentCat,
             'oldCategory' => $oldcid,
         );

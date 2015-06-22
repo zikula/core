@@ -132,7 +132,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         }
 
         // Now work on admin capable modules
-        $adminmodules    = ModUtil::getAdminMods();
+        $adminmodules    = ModUtil::getModulesCapableOf('admin');
         $displayNameType = ModUtil::getVar('ZikulaAdminModule', 'displaynametype', 1);
         $default_cid     = ModUtil::getVar('ZikulaAdminModule', 'startcategory');
         $adminlinks      = array();
@@ -143,20 +143,20 @@ class MenutreeApi extends \Zikula_AbstractApi
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
                 $cid = (isset($catinfo[$cid])) ? $cid : $default_cid;  // make sure each module is assigned a category
 
-                $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($adminmodule['name']));
-
-                if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
-                    $menutexturl = ModUtil::url($modinfo['name'], 'admin', 'index');
+                if ($adminmodule['type'] == 2 || $adminmodule['type'] == 3) {
+                    $menutexturl = isset($adminmodule['capabilities']['admin']['url'])
+                        ? $adminmodule['capabilities']['admin']['url']
+                        : $this->get('router')->generate($adminmodule['capabilities']['admin']['route']);
                 } else {
-                    $menutexturl = 'admin.php?module=' . $modinfo['name'];
+                    $menutexturl = 'admin.php?module=' . $adminmodule['name'];
                 }
 
                 if ($displayNameType == 1) {
-                    $menutext = $modinfo['displayname'];
+                    $menutext = $adminmodule['displayname'];
                 } elseif ($displayNameType == 2) {
-                    $menutext = $modinfo['name'];
+                    $menutext = $adminmodule['name'];
                 } elseif ($displayNameType == 3) {
-                    $menutext = $modinfo['displayname'] . ' (' . $modinfo['name'] . ')';
+                    $menutext = $adminmodule['displayname'] . ' (' . $adminmodule['name'] . ')';
                 }
 
                 $adminlinks[] = array(
@@ -164,7 +164,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                                 'id'        => $idoffset++,
                                 'name'      => $menutext,
                                 'href'      => $menutexturl,
-                                'title'     => $modinfo['description'],
+                                'title'     => $adminmodule['description'],
                                 'className' => '',
                                 'state'     => 1,
                                 'lang'      => $lang,

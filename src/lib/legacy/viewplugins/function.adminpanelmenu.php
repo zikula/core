@@ -43,6 +43,7 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
     // add override for panel width created from .scss file
     PageUtil::addVar('stylesheet', '@ZikulaAdminModule/Resources/public/css/mmenu-hiddenpanel-customwidth.css');
 
+    $router = $view->getContainer()->get('router');
     $modules = ModUtil::getModulesCapableOf('admin');
     // sort modules by displayname
     $moduleNames = array();
@@ -60,11 +61,9 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
         if (SecurityUtil::checkPermission("module[name]::", '::', ACCESS_EDIT)) {
             // first-level list - list modules with general 'index' link
             $img = ModUtil::getModuleImagePath($module['name']);
-            try {
-                $url = ModUtil::url($module['name'], 'admin', 'index');
-            } catch (\Exception $e) {
-                $url = '#';
-            }
+            $url = isset($module['capabilities']['admin']['url'])
+                ? $module['capabilities']['admin']['url']
+                : $router->generate($module['capabilities']['admin']['route']);
             $moduleSelected = empty($moduleSelected) && strpos($view->getRequest()->getUri(), $module['url']) ? " class='Selected'" : "";
             $htmlContent .= "<li{$moduleSelected}><a href=\"" . DataUtil::formatForDisplay($url) . "\"><img src=\"$img\" alt=\"\" style=\"height: 18px\" /> " . $module['displayname'] . "</a>";
             try {
@@ -72,7 +71,7 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
             } catch (\Exception $e) {
                 $links = array();
             }
-            if (count($links) > 0) {
+            if ((count($links) > 0) && ($links[0] != false)) {
                 // create second-level list from module adminLinks
                 $htmlContent .= '<ul class="text-left">';
                 foreach ($links as $link) {
