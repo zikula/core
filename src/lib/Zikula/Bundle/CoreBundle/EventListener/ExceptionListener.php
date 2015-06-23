@@ -124,8 +124,13 @@ class ExceptionListener implements EventSubscriberInterface
     {
         $message = $event->getException()->getMessage();
         $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
-//        if ($userLoggedIn && \SecurityUtil::checkPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
-//            $originalRouteCollection = $this->router->getOriginalRouteCollection()->all();
+        if ($userLoggedIn && \SecurityUtil::checkPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
+            $originalRouteCollection = $this->router->getOriginalRouteCollection()->all();
+            if (array_key_exists('zikularoutesmodule_route_reload', $originalRouteCollection)) {
+                $url = $this->router->generate('zikularoutesmodule_route_reload', array('lct' => 'admin'), RouterInterface::ABSOLUTE_URL);
+                $link = "<a href='$url'>". __('re-loading the routes') . "</a>";
+                $event->getRequest()->getSession()->getFlashBag()->add('error', __f('You might try %s for the extension in question.', $link));
+            }
 //            if (!array_key_exists('zikularoutesmodule_route_reload', $originalRouteCollection)) {
 //                // reload routes for the Routes module first
 //                $this->routesControllerUtil->reloadRoutesByModule('ZikulaRoutesModule');
@@ -139,7 +144,7 @@ class ExceptionListener implements EventSubscriberInterface
 //            $event->getRequest()->getSession()->getFlashBag()->add('error', __('You might try re-loading the routes for the extension in question.'));
 //            $event->setResponse(new RedirectResponse($url));
 //            $event->stopPropagation();
-//        }
+        }
     }
 
     /**
