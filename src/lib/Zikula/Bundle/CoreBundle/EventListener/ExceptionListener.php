@@ -124,22 +124,22 @@ class ExceptionListener implements EventSubscriberInterface
     {
         $message = $event->getException()->getMessage();
         $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
-        if ($userLoggedIn && \SecurityUtil::checkPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
-            $originalRouteCollection = $this->router->getOriginalRouteCollection()->all();
-            if (!array_key_exists('zikularoutesmodule_route_reload', $originalRouteCollection)) {
-                // reload routes for the Routes module first
-                $this->routesControllerUtil->reloadRoutesByModule('ZikulaRoutesModule');
-                $this->cacheClearer->clear("symfony.routing");
-            }
-            $url = $this->router->generate('zikularoutesmodule_route_reload', array('lct' => 'admin'), RouterInterface::ABSOLUTE_URL);
-            $frontController = \System::getVar('entrypoint', 'index.php');
-            if (strpos($url, "$frontController/") !== false) {
-                $url = str_ireplace("$frontController/", "", $url);
-            }
-            $event->getRequest()->getSession()->getFlashBag()->add('error', __('You might try re-loading the routes for the extension in question.'));
-            $event->setResponse(new RedirectResponse($url));
-            $event->stopPropagation();
-        }
+//        if ($userLoggedIn && \SecurityUtil::checkPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
+//            $originalRouteCollection = $this->router->getOriginalRouteCollection()->all();
+//            if (!array_key_exists('zikularoutesmodule_route_reload', $originalRouteCollection)) {
+//                // reload routes for the Routes module first
+//                $this->routesControllerUtil->reloadRoutesByModule('ZikulaRoutesModule');
+//                $this->cacheClearer->clear("symfony.routing");
+//            }
+//            $url = $this->router->generate('zikularoutesmodule_route_reload', array('lct' => 'admin'), RouterInterface::ABSOLUTE_URL);
+//            $frontController = \System::getVar('entrypoint', 'index.php');
+//            if (strpos($url, "$frontController/") !== false) {
+//                $url = str_ireplace("$frontController/", "", $url);
+//            }
+//            $event->getRequest()->getSession()->getFlashBag()->add('error', __('You might try re-loading the routes for the extension in question.'));
+//            $event->setResponse(new RedirectResponse($url));
+//            $event->stopPropagation();
+//        }
     }
 
     /**
