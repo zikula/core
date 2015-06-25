@@ -30,6 +30,7 @@
  *  last      Class for the last element (optional)
  *  seperator Link seperator (optional)
  *  class     CSS class (optional).
+ *  returnAsArray     return results as array, not as formatted html - MUST set assign
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -44,6 +45,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
     $menuItemClass      = isset($params['itemclass'])   ? $params['itemclass'] : '';
     $menuItemFirst      = isset($params['first'])       ? $params['first'] : '';
     $menuItemLast       = isset($params['last'])        ? $params['last'] : '';
+    $returnAsArray      = isset($params['returnAsArray']) ? (boolean) $params['returnAsArray'] : false;
 
     if (empty($menuLinks)) {
         if (!isset($params['modname']) || !ModUtil::available($params['modname'])) {
@@ -59,17 +61,20 @@ function smarty_function_modulelinks($params, Zikula_View $view)
 
         $params['type'] = isset($params['type']) ? $params['type'] : 'admin';
 
-        // get the links from the module API
-        $menuLinks = ModUtil::apiFunc($params['modname'], $params['type'], 'getLinks', $params);
+        // get the menu links
+        // try the Core-2.0 way first, then try the legacy way.
+        $menuLinks = $view->getContainer()->get('zikula.link_container_collector')->getLinks($params['modname'], $params['type']);
+        if (empty($menuLinks)) {
+            $menuLinks = ModUtil::apiFunc($params['modname'], $params['type'], 'getLinks', $params);
+        }
     }
 
-    // return if there are no links to print
-    if (!$menuLinks) {
+    // return if there are no links to print or template has requested to returnAsArray
+    if ((!$menuLinks) || ($returnAsArray && isset($params['assign']))) {
         if (isset($params['assign'])) {
             $view->assign($params['assign'], $menuLinks);
-        } else {
-            return '';
         }
+        return '';
     }
 
     $html = '';

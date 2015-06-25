@@ -19,7 +19,8 @@
                     <a title="{$adminlink.menutexttitle|safetext}" href="{$adminlink.menutexturl|safetext}">{$adminlink.menutext|safetext}</a>
 
                     {assign var="modlinks" value=false}
-                    {modapifunc modname=$adminlink.modname type='admin' func='getlinks' assign='modlinks'}
+                    {*{modapifunc modname=$adminlink.modname type='admin' func='getlinks' assign='modlinks'}*}
+                    {modulelinks modname=$adminlink.modname type='admin' assign='modlinks' returnAsArray=true}
                     {if $modlinks}
                         <div class="dropdown" style="display: inline">
                             <a class="caret" data-toggle="dropdown" href="#" title="{gt text='Functions'}"></a>

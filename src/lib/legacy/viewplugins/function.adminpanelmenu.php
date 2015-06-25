@@ -66,11 +66,12 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
                 : $router->generate($module['capabilities']['admin']['route']);
             $moduleSelected = empty($moduleSelected) && strpos($view->getRequest()->getUri(), $module['url']) ? " class='Selected'" : "";
             $htmlContent .= "<li{$moduleSelected}><a href=\"" . DataUtil::formatForDisplay($url) . "\"><img src=\"$img\" alt=\"\" style=\"height: 18px\" /> " . $module['displayname'] . "</a>";
-            try {
+
+            $links = $view->getContainer()->get('zikula.link_container_collector')->getLinks($module['name'], 'admin');
+            if (empty($links)) {
                 $links = (array)ModUtil::apiFunc($module['name'], 'admin', 'getLinks');
-            } catch (\Exception $e) {
-                $links = array();
             }
+
             if ((count($links) > 0) && ($links[0] != false)) {
                 // create second-level list from module adminLinks
                 $htmlContent .= '<ul class="text-left">';
