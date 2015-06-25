@@ -49,7 +49,6 @@ Additional Breaks
 - The interactive installer functionality has been removed.
 - Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.
 - If a module uses Smarty plugins of another modules the file must be named `modules/Foo/templates/config/usemodules.txt`. In 1.3.x both `usemodules.` and `usemodules.txt` work whereby `usemodules.` has been deprecated since 1.2 and was now removed in 1.4.0 (see #2304 for the details).
-- For changes in translation area please refer to [`zikula-sf-translator`](https://github.com/zikula/core/tree/1.4/src/docs/en/dev/zikula_sf_translator.md#paths_14)
 
 Deprecations
 ============
@@ -97,6 +96,7 @@ Module Specification from Zikula Core 1.4.0
   19. [Persistent Event Listeners](#eventlisteners)
   20. [Theme Standard](#themes)
   21. [Theme composer.json](#themecomposer)
+  22. [Translation](#translation)
 
 
 <a name="bootstrapjquery" />
@@ -962,4 +962,11 @@ Themes must have a `composer.json` manifest which looks like the following:
 .. note::
 
 The chosen namespace can be simplified to Foo\\MyTheme\\
-+
+
+
+<a name="translation" />
+Translation
+-----------
+
+For changes in translation area please refer to [`zikula-sf-translator`](https://github.com/zikula/core/tree/1.4/src/docs/en/dev/zikula_sf_translator.md#paths_14)
+
