@@ -31,82 +31,58 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
 {
     /**
      * @var array
-     * @deprecated This is not used in PHP >=5.4.0
      * @see \Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand
      */
     protected $settings = array(
         /* Database */
         'database_host' => array(
             'description' => 'The location of your database, most of the times "localhost".',
-            "question" => 'Please enter the database host',
             'default' => 'localhost'
         ),
         'database_user' => array(
             'description' => 'The database user.',
-            "question" => 'Please enter the database user',
             'default' => null
         ),
         'database_password' => array(
             'description' => 'Your database user\'s password.',
-            "question" => 'Please enter the database password',
             'default' => null,
-            'password' => true
         ),
         'database_name' => array(
             'description' => 'The name of the database.',
-            "question" => 'Please enter the database name',
             'default' => null
         ),
         'database_driver' => array(
             'description' => 'Your database driver.',
-            "question" => 'Please enter the database driver',
             'default' => 'mysql'
-            /* @todo Choices */
         ),
         'dbtabletype' => array(
             'description' => '@todo ?',
-            "question" => '@todo ?',
             'default' => 'myisam'
-            /* @todo Choices */
         ),
         /* Admin user */
         'username' => array(
             'description' => 'Username of the new Zikula admin user.',
-            "question" => 'Please enter the username of the new Zikula admin user',
             'default' => 'admin'
         ),
         'password' => array(
             'description' => 'Password of the new Zikula admin user.',
-            "question" => 'Please enter the password of the new Zikula admin user',
             'default' => null,
-            'password' => true
-        ),
-        'password_repeat' => array(
-            'description' => 'Enter the password again for verification.',
-            "question" => 'Please enter the password again for verification',
-            'default' => null,
-            'password' => true
         ),
         'email' => array(
             'description' => 'Email of the new Zikula admin user.',
-            "question" => 'Please enter the email address of the new Zikula admin user',
             'default' => null
         ),
         /* Http settings */
         'router:request_context:host' => array(
             'description' => 'The host where you install Zikula, e.g. "example.com". Do not include subdirectories.',
-            "question" => 'Please enter the host where you install Zikula, e.g. "example.com". Do not include subdirectories',
             'default' => null,
         ),
         'router:request_context:scheme' => array(
             'description' => 'The scheme of where you install Zikula, can be either "http" or "https".',
-            "question" => 'Please enter the scheme of where you install Zikula, can be either "http" or "https"',
             'default' => 'http',
-            /* @todo Choices */
         ),
         'router:request_context:base_url' => array(
             'description' => 'The url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir',
-            "question" => 'Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir',
             'default' => '',
         ),
     );
@@ -145,36 +121,6 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
             $request = Request::create('http://localhost/install');
             $this->getContainer()->set('request', $request);
         }
-    }
-
-    /**
-     * @deprecated scheduled for removal in Core 2.0.0
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @param $option
-     * @return mixed
-     */
-    protected function getRequiredOption(InputInterface $input, OutputInterface $output, $option)
-    {
-        if (!$input->isInteractive()) {
-            return $input->getOption($option);
-        }
-
-        $setting = $this->settings[$option];
-        if ($input->getOption($option) !== null) {
-            $setting['default'] = $input->getOption($option);
-        }
-        $default = '';
-        if ($setting['default'] !== null) {
-            $default = ' <comment>default:[' . $setting['default'] . ']</comment>';
-        }
-        $question = new Question("<info>" . $setting['question'] . "$default:</info> ", $setting['default']);
-        if (isset($setting['password']) && $setting['password']) {
-            $question->setHidden(true);
-        }
-        $helper = $this->getHelper('question');
-
-        return $helper->ask($input, $output, $question);
     }
 
     protected function printWarnings(OutputInterface $output, $warnings)
