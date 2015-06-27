@@ -2,6 +2,7 @@ CHANGELOG - ZIKULA 1.4.0
 ------------------------
 
 BC Breaks:
+- Zikula 1.4.0 requires PHP >=5.4.0
 - Removed interactive installer from module specification.
 - Gedmo Doctrine Extensions Sluggable has changed. See dev docs for changes
 - Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.

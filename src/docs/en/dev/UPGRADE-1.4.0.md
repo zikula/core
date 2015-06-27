@@ -353,7 +353,7 @@ Modules must have a `composer.json` manifest which looks like the following:
         "psr-4": { "Foo\\MyModule\\": "" }
     },
     "require": {
-        "php": ">5.3.3"
+        "php": ">5.4.0"
     },
     "extra": {
         "zikula": {
@@ -949,7 +949,7 @@ Themes must have a `composer.json` manifest which looks like the following:
         "psr-4": { "Foo\\Theme\\MyTheme\\": "" }
     },
     "require": {
-        "php": ">5.3.3"
+        "php": ">5.4.0"
     },
     "extra": {
         "zikula": {

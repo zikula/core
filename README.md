@@ -24,18 +24,17 @@ of the new core release. Zikula Core 1.4.0 has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.3.8         | 5.5          |
+| PHP           | 5.4.0         | 5.5          |
 
 
 Please note:
 
-  - PHP 5.3.16 has a major bug in the Reflection subsystem and is not suitable to run Zikula (https://bugs.php.net/bug.php?id=62715)
  - Zikula requires `AllowOverride All` and the `mod_rewrite` module (be aware the Apache 2.3.9+ has changed
    the default setting for `AllowOverride` to `None`.
  - Additional (advanced) server considerations can be found on
    [the Symfony site](http://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html)
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini` to 128 MB for the
-    installation process.
+   installation process.
 
 
 <a name="beforeinstalling"></a>
