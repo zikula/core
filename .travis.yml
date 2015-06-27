@@ -1,13 +1,48 @@
 language: php
-sudo: false
+
 php:
-  - 5.3.3
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
+  - hhvm
+  - nightly
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: hhvm
+    - php: nightly
+
+services:
+  - mysql
+
+before_install:
+    - composer self-update
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then phpenv config-rm xdebug.ini; fi;
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]] && [ $(php -r "echo PHP_MINOR_VERSION;") -le 4 ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then (pecl install -f memcached-2.1.0 && echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini) || echo "Let's continue without memcache extension"; fi;
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then php -i; fi;
+     # Set the COMPOSER_ROOT_VERSION to the right version according to the branch being built
+    - if [ "$TRAVIS_BRANCH" = "master" ]; then export COMPOSER_ROOT_VERSION=dev-master; else export COMPOSER_ROOT_VERSION="$TRAVIS_BRANCH".x-dev; fi;
+    - mysql -e 'create database zk_test;'
+
+install:
+    - composer update
+    - cd src
+    - php app/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --password_repeat=12345678 --email=admin@example.com --router:request_context:host=localhost
+    - cat app/config/custom_parameters.yml
+    - php app/console zikula:install:finish
+    - cat app/config/custom_parameters.yml
 
 before_script:
-    - echo '' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
-    - sh -c 'if [ $(php -r "echo PHP_MINOR_VERSION;") -le 4 ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
-    - COMPOSER_ROOT_VERSION=dev-master composer --prefer-source --dev install
+    - sudo apt-get install apache2
+    - sudo a2enmod actions
+    - sudo a2enmod rewrite
+    - echo "export PATH=/home/vagrant/.phpenv/bin:$PATH" | sudo tee -a /etc/apache2/envvars > /dev/null
+    - echo "$(curl -fsSL https://gist.github.com/roderik/16d751c979fdeb5a14e3/raw/gistfile1.txt)" | sudo tee /etc/apache2/conf.d/phpconfig > /dev/null
+    - echo "$(curl -fsSL https://gist.github.com/roderik/2eb301570ed4a1f4c33d/raw/gistfile1.txt)" | sed -e "s,PATH,`pwd`/src,g" | sudo tee /etc/apache2/sites-available/default > /dev/null
+    - sudo service apache2 restart
+
+script:
+    - wget localhost
