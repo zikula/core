@@ -24,7 +24,7 @@ of the new core release. Zikula Core 1.4.0 has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.4.0         | 5.5          |
+| PHP           | 5.4.1         | 5.5          |
 
 
 Please note:

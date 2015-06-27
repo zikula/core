@@ -97,7 +97,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
         "psr-0": { "Zikula\\Module\\AdminModule\\": "" }
     },
     "require": {
-        "php": ">5.4.0"
+        "php": ">5.4.1"
     },
     "extra": {
         "zikula": {
