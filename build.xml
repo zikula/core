@@ -26,6 +26,7 @@
     <property name="tmpdir" value="${builddir}/tmp"/>
     <property name="ignorepaths" value="lib/vendor/*,javascript/*,system/*,themes/*,install/*,lib/legacy,plugins/*"/>
     <property name="ownjslist" value="
+    javascript/helpers/bootstrap-zikula.js,
     javascript/helpers/Zikula.js,
     javascript/helpers/Zikula.ImageViewer.js,
     javascript/helpers/Zikula.Tree.js,
@@ -35,8 +36,11 @@
     system/Zikula/Module/AdminModule/Resources/public/js/admin_admin_systemnotices.js,
     system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js,
     system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Modifyposition.js,
+    system/Zikula/Module/BlocksModule/Resources/public/js/contextmenu.js,
     system/Zikula/Module/BlocksModule/Resources/public/js/functions.js,
     system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js,
+    system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_edit.js,
+    system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_view.js
     system/Zikula/Module/ExtensionsModule/Resources/public/js/hookui.js,
     system/Zikula/Module/GroupsModule/Resources/public/js/groups.js,
     system/Zikula/Module/PageLockModule/Resources/public/js/PageLock.js,
