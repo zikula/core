@@ -31,7 +31,7 @@ before_install:
 install:
     - composer update
     - cd src
-    - php app/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --password_repeat=12345678 --email=admin@example.com --router:request_context:host=localhost
+    - php app/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost
     - php app/console zikula:install:finish
     - cd ..
 
