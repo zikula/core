@@ -86,37 +86,25 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         // get the settings from user input
-        $x = explode('.', str_replace('-', '.', phpversion()));
-        $phpVersion = "$x[0].$x[1].$x[2]";
-        if (version_compare($phpVersion, '5.4.0', "<")) {
-            /** @deprecated This method is scheduled for removal in Core 2.0.0 */
-            $settings = array();
-            foreach (array_keys($this->settings) as $name) {
-                $settings[$name] = $this->getRequiredOption($input, $output, $name);
-            }
-            // @todo validate? (validation is automatic in Form version below)
-        } else {
-            // This method works in PHP >=5.4.0
-            $formType = new LocaleType();
-            $settings = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
-            $formType = new RequestContextType();
-            $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
-            foreach ($data as $k => $v) {
-                $newKey = str_replace(':', '.', $k);
-                $data[$newKey] = $v;
-                unset($data[$k]);
-            }
-            $settings = array_merge($settings, $data);
-            $formType = new DbCredsType();
-            $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
-            $settings = array_merge($settings, $data);
-            $formType = new CreateAdminType();
-            $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
-            foreach ($data as $k => $v) {
-                $data[$k] = base64_encode($v); // encode so values are 'safe' for json
-            }
-            $settings = array_merge($settings, $data);
+        $formType = new LocaleType();
+        $settings = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+        $formType = new RequestContextType();
+        $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+        foreach ($data as $k => $v) {
+            $newKey = str_replace(':', '.', $k);
+            $data[$newKey] = $v;
+            unset($data[$k]);
         }
+        $settings = array_merge($settings, $data);
+        $formType = new DbCredsType();
+        $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+        $settings = array_merge($settings, $data);
+        $formType = new CreateAdminType();
+        $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+        foreach ($data as $k => $v) {
+            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+        }
+        $settings = array_merge($settings, $data);
 
         if ($input->isInteractive()) {
             $output->writeln(array("", "", ""));
@@ -143,7 +131,6 @@ class StartCommand extends AbstractCoreInstallerCommand
         $dbh = new \PDO("$params[database_driver]:host=$params[database_host];dbname=$params[database_name]", $params['database_user'], $params['database_password']);
         $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);
         $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
-        unset($params['password_repeat']);
         $yamlManager->setParameters($params);
         $this->getContainer()->get('core_installer.config.util')->writeLegacyConfig($params);
         $this->getContainer()->get('zikula.cache_clearer')->clear('symfony.config');

@@ -13,7 +13,7 @@
         "psr-4": { "Zikula\\SeaBreezeTheme\\": "" }
     },
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.4.1"
     },
     "extra": {
         "zikula" : {

@@ -87,7 +87,6 @@ class ControllerUtil
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
         $results['phpsatisfied'] = version_compare($phpVersion, \Zikula_Core::PHP_MINIMUM_VERSION, ">=");
-        $results['phpsatisfied'] = $results['phpsatisfied'] && !version_compare($phpVersion, '5.3.16', "=="); // 5.3.16 is known to not work
 
         $results['datetimezone'] = ini_get('date.timezone');
         $results['pdo'] = extension_loaded('pdo');
@@ -144,6 +143,7 @@ class ControllerUtil
             return true;
         }
         $results['phpversion'] = phpversion();
+        $results['phpcoreminversion'] = \Zikula_Core::PHP_MINIMUM_VERSION;
 
         return $results;
     }

@@ -35,9 +35,8 @@ of the new core release. Zikula Core 1.4.0 has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.3.8         | 5.5          |
+| PHP           | 5.4.1         | 5.5          |
 
- - Please note that PHP version `5.3.16` is known to be buggy and will not work.
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
    to 128 MB for the installation process.
  - Zikula requires that `date.timezone` be set in the `php.ini` configuration file (or `.htaccess`).
@@ -63,10 +62,12 @@ instructions. This is **not recommended for non-developers**.
 If you obtained Zikula Core from zikula.org or the CI server, then you can upload the entire archive (`.zip`
 or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable than 
 uploading files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the
-correct permissions (`tar -xpzvf -Zikula_Core-1.4.0.build123.tar.gz` where 123 must contain the downloaded build number).** Copy all the files and directories to your webroot (typically `public_html` or
-`httpdocs`).
+correct permissions (`tar -xpzvf -Zikula_Core-1.4.0.build123.tar.gz` where 123 must contain the downloaded build number).** 
+Copy all the files and directories to your webroot (typically `public_html` or `httpdocs`).
 
-Another option can be to download the tar.gz directly from the ci server: e.g. `wget http://ci.zikula.org/job/Zikula_Core-1.4.0/588/artifact/build/archive/Zikula_Core-1.4.0.build588.tar.gz`. But you have to change the build number (e.g. 588) to the latest you can find at the ci server.
+Another option can be to download the tar.gz directly from the ci server: e.g. 
+`wget http://ci.zikula.org/job/Zikula_Core-1.4.0/588/artifact/build/archive/Zikula_Core-1.4.0.build588.tar.gz`. 
+But you have to change the build number (e.g. 588) to the latest you can find at the ci server.
 
 
 Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
@@ -74,7 +75,8 @@ to the server check if your longest path length is longer than Windows/FTP-Softw
 
 ###Set file permissions (Critical)
 
-If you installed from a `.zip` archive or uploaded the files via FTP, the permissions for some folders must be changed prior to installing so that your webserver's user has write access:
+If you installed from a `.zip` archive or uploaded the files via FTP, the permissions for some folders must be changed 
+prior to installing so that your webserver's user has write access:
 - `app/config`
 - `app/config/dynamic`
 - `app/cache`
@@ -104,9 +106,13 @@ automatically redirected to the installer.
 
 ###Command Line Installer
 
-*Note 1:* One common issue when installing is that the app/cache and app/logs directories must be writable both by the web server and the command line user. See Symfony's [Setting up Permissions](http://symfony.com/doc/current/book/installation.html#book-installation-permissions) to see potential solutions to this problem when installing from the CLI.
+*Note 1:* One common issue when installing is that the app/cache and app/logs directories must be writable both by the 
+web server and the command line user. See Symfony's [Setting up Permissions](http://symfony.com/doc/current/book/installation.html#book-installation-permissions) 
+to see potential solutions to this problem when installing from the CLI.
 
-*Note 2:* If you have `mod_suexec` installed for Apache the CLI will run into permission problems. (If you are not sure check your phpinfo.) `mod_suexec` often is used in shared hosting environments. In this case, the CLI installer is not recommended, please use the Web Installer. 
+*Note 2:* If you have `mod_suexec` installed for Apache the CLI will run into permission problems. (If you are not sure 
+check your phpinfo.) `mod_suexec` often is used in shared hosting environments. In this case, the CLI installer is not 
+recommended, please use the Web Installer. 
 
 Via CLI, access your main zikula directory (`/src` if a Github clone) and run this command:
 ```Shell

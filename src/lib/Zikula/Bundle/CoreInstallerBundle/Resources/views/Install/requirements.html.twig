@@ -10,7 +10,7 @@
                 {% if checks.phpsatisfied %}
                 <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("Your PHP version is %s.", {'%s': checks.phpversion }) }}</li>
                 {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version 5.3.3 or later.", {'%s': checks.phpversion }) }}</li>
+                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __f("You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version %phpmin or later.", {'%s': checks.phpversion, '%phpmin': checks.phpcoreminversion }) }}</li>
                 {% endif %}
                 {% set checks = array_unset(checks, 'phpsatisfied') %}
                 {% set checks = array_unset(checks, 'phpversion') %}

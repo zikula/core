@@ -28,9 +28,8 @@ of the new core release. Zikula Core 1.4.0 has the following requirements
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
-| PHP           | 5.3.8         | 5.5          |
+| PHP           | 5.4.1         | 5.5          |
 
- - Please note that PHP version `5.3.16` is known to be buggy and will not work.
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
    to 128 MB for the installation process.
  - Zikula requires that `date.timezone` be set in the `php.ini` configuration file (or `.htaccess`).
