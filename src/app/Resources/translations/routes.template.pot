@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-06-16 19:21+0200\n"
+"POT-Creation-Date: 2015-06-28 15:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -202,34 +202,6 @@ msgstr ""
 # Desc: /
 # Meaning: This is a route from the ZikulaBlocksModuleBundle and will include a translated prefix.
 msgid "zikulablocksmodule_user_index"
-msgstr ""
-# Desc: /ajax
-# Meaning: This is a route from the ZikulaBreakItModuleBundle and will include a translated prefix.
-msgid "zikulabreakitmodule_ajax_break"
-msgstr ""
-# Desc: /form/test
-# Meaning: This is a route from the ZikulaBreakItModuleBundle and will include a translated prefix.
-msgid "zikulabreakitmodule_form_test"
-msgstr ""
-# Desc: /new/ajax/break
-# Meaning: This is a route from the ZikulaBreakItModuleBundle and will include a translated prefix.
-msgid "zikulabreakitmodule_new_break"
-msgstr ""
-# Desc: /new/{break}
-# Meaning: This is a route from the ZikulaBreakItModuleBundle and will include a translated prefix.
-msgid "zikulabreakitmodule_new_index"
-msgstr ""
-# Desc: /translations/extract
-# Meaning: This is a route from the ZikulaBreakItModuleBundle and will include a translated prefix.
-msgid "zikulabreakitmodule_translations_extract"
-msgstr ""
-# Desc: /translations
-# Meaning: This is a route from the ZikulaBreakItModuleBundle and will include a translated prefix.
-msgid "zikulabreakitmodule_translations_index"
-msgstr ""
-# Desc: /old/{break}
-# Meaning: This is a route from the ZikulaBreakItModuleBundle and will include a translated prefix.
-msgid "zikulabreakitmodule_user_index"
 msgstr ""
 # Desc: /admin/config
 # Meaning: This is a route from the ZikulaCategoriesModuleBundle and will include a translated prefix.
