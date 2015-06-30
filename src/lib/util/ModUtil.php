@@ -1282,27 +1282,28 @@ class ModUtil
             }
         }
 
-        $foundRoute = false;
-        foreach ($routeNames as $routeName) {
-            $routeCollection = ($router instanceof \JMS\I18nRoutingBundle\Router\I18nRouter) ? $router->getOriginalRouteCollection() : $router->getRouteCollection();
-            if ($routeCollection->get($routeName) !== null) {
-                $foundRoute = $routeName;
-            }
-        }
-
-        if ($foundRoute === false) {
-            return false;
-        }
 
         if ($ssl) {
             $oldScheme = $router->getContext()->getScheme();
             $router->getContext()->setScheme('https');
         }
 
-        $url = $router->generate($foundRoute, $args, ($fqurl) ? $router::ABSOLUTE_URL : $router::ABSOLUTE_PATH);
+        $found = false;
+        foreach ($routeNames as $routeName) {
+            try {
+                $url = $router->generate($routeName, $args, ($fqurl) ? $router::ABSOLUTE_URL : $router::ABSOLUTE_PATH);
+                $found = true;
+            } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
+
+            }
+        }
 
         if ($ssl) {
             $router->getContext()->setScheme($oldScheme);
+        }
+
+        if (!$found) {
+            return false;
         }
 
         if (isset($fragment)) {
