@@ -80,6 +80,7 @@ prior to installing so that your webserver's user has write access:
 - `app/config`
 - `app/config/dynamic`
 - `app/cache`
+- `app/logs`
 - `config`
 - `userdata`
 
