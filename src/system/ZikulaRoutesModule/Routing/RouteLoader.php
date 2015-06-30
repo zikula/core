@@ -63,6 +63,7 @@ class RouteLoader implements LoaderInterface
                 list (, $func) = $helper->sanitizeAction($dbRoute->getAction());
                 $defaults['_zkType'] = $type;
                 $defaults['_zkFunc'] = $func;
+                $defaults['_controller'] = $dbRoute->getBundle() . ":" . ucfirst($type) . ":" . ucfirst($func);
                 
                 // We have to prepend the bundle prefix if
                 // - routes are _not_ currently extracted via the command line and
