@@ -117,13 +117,13 @@ class ModUtil
         $em = ServiceUtil::get('doctrine.entitymanager');
         $modvars = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findAll();
         foreach ($modvars as $var) {
-            if (!array_key_exists($var['modname'], self::$modvars)) {
-                self::$modvars[$var['modname']] = array();
+            if (!array_key_exists($var->getModname(), self::$modvars)) {
+                self::$modvars[$var->getModname()] = array();
             }
-            if (array_key_exists($var['name'], $GLOBALS['ZConfig']['System'])) {
-                self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
+            if (array_key_exists($var->getName(), $GLOBALS['ZConfig']['System'])) {
+                self::$modvars[$var->getModname()][$var->getName() = $GLOBALS['ZConfig']['System'][$var->getName()];
             } else {
-                self::$modvars[$var['modname']][$var['name']] = $var['value'];
+                self::$modvars[$var->getModname()][$var->getName()] = $var->getValue();
             }
         }
 
