@@ -115,13 +115,14 @@ class ModUtil
 
         // This loads all module variables into the modvars static class variable.
         $em = ServiceUtil::get('doctrine.entitymanager');
+        /** @var \Zikula\Core\Doctrine\Entity\ExtensionVarEntity[] $modvars */
         $modvars = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findAll();
         foreach ($modvars as $var) {
             if (!array_key_exists($var->getModname(), self::$modvars)) {
                 self::$modvars[$var->getModname()] = array();
             }
             if (array_key_exists($var->getName(), $GLOBALS['ZConfig']['System'])) {
-                self::$modvars[$var->getModname()][$var->getName() = $GLOBALS['ZConfig']['System'][$var->getName()];
+                self::$modvars[$var->getModname()][$var->getName()] = $GLOBALS['ZConfig']['System'][$var->getName()];
             } else {
                 self::$modvars[$var->getModname()][$var->getName()] = $var->getValue();
             }
