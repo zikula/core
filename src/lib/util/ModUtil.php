@@ -1293,6 +1293,7 @@ class ModUtil
             try {
                 $url = $router->generate($routeName, $args, ($fqurl) ? $router::ABSOLUTE_URL : $router::ABSOLUTE_PATH);
                 $found = true;
+                break;
             } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
 
             }
