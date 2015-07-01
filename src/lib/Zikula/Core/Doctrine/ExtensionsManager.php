@@ -62,7 +62,7 @@ class ExtensionsManager
         }
 
         $this->listeners[$type] = $this->serviceManager->get($service);
-        $this->listeners[$type]->setAnnotationReader($this->serviceManager->get('doctrine.annotation_reader'));
+        $this->listeners[$type]->setAnnotationReader($this->serviceManager->get('annotation_reader'));
         $this->eventManager->addEventSubscriber($this->listeners[$type]);
 
         return $this->listeners[$type];

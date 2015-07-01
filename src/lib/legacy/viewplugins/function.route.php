@@ -46,10 +46,9 @@ function smarty_function_route($params, Zikula_View $view)
 
     /** @var $router \JMS\I18nRoutingBundle\Router\I18nRouter */
     $router = $view->getContainer()->get('router');
-    $originalRouteCollection = $router->getOriginalRouteCollection()->all();
-    if (array_key_exists($name, $originalRouteCollection)) {
+    try {
         $route = $router->generate($name, $params, $absolute);
-    } else {
+    } catch (Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
         $route = ''; // route does not exist
     }
 

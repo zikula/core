@@ -115,15 +115,16 @@ class ModUtil
 
         // This loads all module variables into the modvars static class variable.
         $em = ServiceUtil::get('doctrine.entitymanager');
+        /** @var \Zikula\Core\Doctrine\Entity\ExtensionVarEntity[] $modvars */
         $modvars = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findAll();
         foreach ($modvars as $var) {
-            if (!array_key_exists($var['modname'], self::$modvars)) {
-                self::$modvars[$var['modname']] = array();
+            if (!array_key_exists($var->getModname(), self::$modvars)) {
+                self::$modvars[$var->getModname()] = array();
             }
-            if (array_key_exists($var['name'], $GLOBALS['ZConfig']['System'])) {
-                self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
+            if (array_key_exists($var->getName(), $GLOBALS['ZConfig']['System'])) {
+                self::$modvars[$var->getModname()][$var->getName()] = $GLOBALS['ZConfig']['System'][$var->getName()];
             } else {
-                self::$modvars[$var['modname']][$var['name']] = $var['value'];
+                self::$modvars[$var->getModname()][$var->getName()] = $var->getValue();
             }
         }
 
@@ -1282,27 +1283,29 @@ class ModUtil
             }
         }
 
-        $foundRoute = false;
-        foreach ($routeNames as $routeName) {
-            $routeCollection = ($router instanceof \JMS\I18nRoutingBundle\Router\I18nRouter) ? $router->getOriginalRouteCollection() : $router->getRouteCollection();
-            if ($routeCollection->get($routeName) !== null) {
-                $foundRoute = $routeName;
-            }
-        }
-
-        if ($foundRoute === false) {
-            return false;
-        }
 
         if ($ssl) {
             $oldScheme = $router->getContext()->getScheme();
             $router->getContext()->setScheme('https');
         }
 
-        $url = $router->generate($foundRoute, $args, ($fqurl) ? $router::ABSOLUTE_URL : $router::ABSOLUTE_PATH);
+        $found = false;
+        foreach ($routeNames as $routeName) {
+            try {
+                $url = $router->generate($routeName, $args, ($fqurl) ? $router::ABSOLUTE_URL : $router::ABSOLUTE_PATH);
+                $found = true;
+                break;
+            } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
+
+            }
+        }
 
         if ($ssl) {
             $router->getContext()->setScheme($oldScheme);
+        }
+
+        if (!$found) {
+            return false;
         }
 
         if (isset($fragment)) {
