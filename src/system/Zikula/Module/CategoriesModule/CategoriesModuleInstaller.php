@@ -768,7 +768,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
         $attributes = $this->getEntityManager()->getConnection()->fetchAll("SELECT * FROM objectdata_attributes WHERE object_type = 'categories_category'");
         foreach ($attributes as $attribute) {
             $category = $this->getEntityManager()->getRepository('ZikulaCategoriesModule:CategoryEntity')->findOneBy(array('id' => $attribute['object_id']));
-            $category->setAttribute($attribute['attribute_name'] ,$attribute['value']);
+            if (isset($category) && is_object($category)) {
+                $category->setAttribute($attribute['attribute_name'], $attribute['value']);
+            }
         }
         $this->getEntityManager()->flush();
     }
