@@ -677,7 +677,9 @@ class Zikula_View_Theme extends Zikula_View
 
         // load the theme variables
         $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getvariables', array('theme' => $this->name));
-        $this->assign($variables['variables']);
+        if (!empty($variables)) {
+            $this->assign($variables['variables']);
+        }
     }
 
     /**
