@@ -14,12 +14,24 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\StageInterface;
+use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
 
-class NotUpgradedStage implements StageInterface
+class NotUpgradedStage implements StageInterface, InjectContainerInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     public function getName()
     {
         return 'notupgraded';
@@ -36,7 +48,8 @@ class NotUpgradedStage implements StageInterface
             throw new AbortStageException(__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION)));
         }
         // make sure selected language is installed
-        if (!in_array(\ZLanguage::getLanguageCode(), \ZLanguage::getInstalledLanguages())) {
+        $DBLocale = $this->fetchDBLocale();
+        if (!in_array($DBLocale, \ZLanguage::getInstalledLanguages())) {
             \System::setVar('language_i18n', 'en');
             \System::setVar('language', 'eng');
             \System::setVar('locale', 'en');
@@ -49,5 +62,20 @@ class NotUpgradedStage implements StageInterface
     public function getTemplateParams()
     {
         return array();
+    }
+
+    /**
+     * @return string Locale code (e.g. `en`)
+     * @throws AbortStageException
+     */
+    private function fetchDBLocale()
+    {
+        $conn = $this->container->get('doctrine.dbal.default_connection');
+        $serializedValue = $conn->fetchColumn("SELECT value FROM module_vars WHERE name='locale' AND modname='ZConfig'");
+        if ($serializedValue) {
+            return unserialize($serializedValue);
+        } else {
+            throw new AbortStageException(__('The installed language could not be detected.'));
+        }
     }
 }
