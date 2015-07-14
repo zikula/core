@@ -71,7 +71,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                     2 => 'sendmail',
                     3 => 'mail',
                     4 => 'smtp',
-                    5 => 'test',
+                    5 => 'mail',
                 );
                 $config = array(
                     'transport' => $mailerTypeConversion[$modVars['mailertype']],
@@ -83,7 +83,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                     'auth_mode' => (!empty($modVars['auth'])) ? 'login' : null,
                     'spool' => array('type' => 'memory'),
                     'delivery_address' => null,
-                    'disable_delivery' => false,
+                    'disable_delivery' => $modVars['mailertype'] == 5,
                 );
                 $configDumper = $this->getContainer()->get('zikula.dynamic_config_dumper');
                 $configDumper->setConfiguration('swiftmailer', $config);
