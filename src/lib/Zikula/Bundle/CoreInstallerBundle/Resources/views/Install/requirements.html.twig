@@ -108,7 +108,8 @@
             </ul>
         </fieldset>
 
-        <a href="{{ url('install', {'stage': 'requirements'}) }}" class="btn btn-danger btn-lg"><i class="fa fa-fw fa-repeat"></i> {{ __("Check requirements again") }}</a>
+        {# Use the current path as the link here, because this template is used both in the installer and the upgrader with a different route. #}
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="btn btn-danger btn-lg"><i class="fa fa-fw fa-repeat"></i> {{ __("Check requirements again") }}</a>
 
     </div>
 {% endblock %}
