@@ -129,8 +129,10 @@ class AjaxUpgradeController extends AbstractController
 
     private function regenerateThemes()
     {
+        // set default theme to Andreas08
+        \System::setVar('Default_Theme', 'ZikulaAndreas08Theme');
         // regenerate the themes list
-       return ThemeUtil::regenerate();
+        return ThemeUtil::regenerate();
     }
 
     private function finalizeParameters()
