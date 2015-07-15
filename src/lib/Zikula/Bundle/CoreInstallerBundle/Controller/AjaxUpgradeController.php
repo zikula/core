@@ -130,7 +130,7 @@ class AjaxUpgradeController extends AbstractController
     private function regenerateThemes()
     {
         // regenerate the themes list
-       return ThemeUtil::regenerate();
+        return ThemeUtil::regenerate();
     }
 
     private function finalizeParameters()
