@@ -104,7 +104,7 @@ class InitStage implements StageInterface, InjectContainerInterface
         }
 
         // update default theme name
-        $conn->executeQuery("UPDATE module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
+        $conn->executeQuery("UPDATE module_vars SET value = 's:20:\"ZikulaAndreas08Theme\";' WHERE modname = 'ZConfig' AND name = 'Default_Theme');
 
         // confirm custom module urls are valid with new routes, reset if not
         $modules = $conn->fetchAll("SELECT * FROM modules");
