@@ -14,4 +14,4 @@ zikula_core.common.<servicename>
 Dependency Management
 ---------------------
 
-Extensions are reponsible to provide/include their own dependencies or create companion modules/bundles to do so.
+Extensions are responsible to provide/include their own dependencies or create companion modules/bundles to do so.
