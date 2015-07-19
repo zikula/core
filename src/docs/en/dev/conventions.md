@@ -3,13 +3,22 @@ Conventions
 
 Service Names
 -------------
+Service names within the Zikula Core must adhere to this naming scheme.
+
 ```
 zikula_core.internal.<servicename>
 zikula_core.legacy.<servicename>
 zikula_core.common.<servicename>
+```
 
+All extensions must prefix their service names with the full extension name, replacing camel-case with underscores.
+```
 <vendor>_<extensionname>_module.<servicename>
 ```
+
+for example:
+
+`zikula_search_module.front_controller_listener`
 
 Dependency Management
 ---------------------
