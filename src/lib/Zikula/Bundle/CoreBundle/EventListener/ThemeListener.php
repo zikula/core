@@ -14,6 +14,7 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Response\PlainResponse;
@@ -34,7 +35,8 @@ class ThemeListener implements EventSubscriberInterface
         $request = $event->getRequest();
         if ($response instanceof PlainResponse
             || $response instanceof JsonResponse
-            || $request->isXmlHttpRequest()) {
+            || $request->isXmlHttpRequest()
+            || $response instanceof RedirectResponse) {
             return;
         }
 
