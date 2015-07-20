@@ -28,8 +28,7 @@ class Application extends BaseApplication
 
     protected function registerCommands()
     {
-        if (isset($GLOBALS['ZConfig']['DBInfo']['databases']['default']['password']) &&
-            $GLOBALS['ZConfig']['DBInfo']['databases']['default']['password'] == '') {
+        if ($this->kernel->getContainer()->getParameter('installed') !== true) {
             // composer is called, the system may not be installed yet
             return parent::registerCommands();
         }
