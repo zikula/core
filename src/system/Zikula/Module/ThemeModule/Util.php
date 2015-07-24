@@ -21,6 +21,8 @@ use ServiceUtil;
 use Zikula\Module\ThemeModule\Entity\ThemeEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use ZLoader;
+use Zikula\Bundle\CoreBundle\Bundle\Bootstrap;
+use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 
 /**
  * Helper functions for the theme module
@@ -34,8 +36,9 @@ class Util
      */
     public static function regenerate()
     {
-        $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
-        $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection(ServiceUtil::getManager()->get('kernel')));
+        $sm = ServiceUtil::getManager();
+        $boot = new Bootstrap();
+        $helper = new BootstrapHelper($boot->getConnection($sm->get('kernel')));
 
         // sync the filesystem and the bundles table
         $helper->load();
@@ -47,40 +50,53 @@ class Util
         $scanner->scan(array('themes'), 4);
         $newThemes = $scanner->getThemesMetaData();
 
-        foreach ($newThemes as $name => $theme) {
-            foreach ($theme->getPsr0() as $ns => $path) {
+        /** @var \Zikula\Bundle\CoreBundle\Bundle\MetaData $themeMetaData */
+        foreach ($newThemes as $name => $themeMetaData) {
+            // PSR-0 is @deprecated - remove in 2.0
+            foreach ($themeMetaData->getPsr0() as $ns => $path) {
                 ZLoader::addPrefix($ns, $path);
             }
-            foreach ($theme->getPsr4() as $ns => $path) {
+            foreach ($themeMetaData->getPsr4() as $ns => $path) {
                 ZLoader::addPrefixPsr4($ns, $path);
             }
 
-            $class = $theme->getClass();
+            $bundleClass = $themeMetaData->getClass();
 
             /** @var $bundle \Zikula\Core\AbstractTheme */
-            $bundle = new $class;
-            $class = $bundle->getVersionClass();
+            $bundle = new $bundleClass;
+            $versionClass = $bundle->getVersionClass();
 
-            $version = new $class($bundle);
-            $version['name'] = $bundle->getName();
+            if (class_exists($versionClass)) {
+                // 1.4-module spec - deprecated - remove in Core 2.0
+                $version = new $versionClass($bundle);
+                $version['name'] = $bundle->getName();
 
-            $array = $version->toArray();
-            unset($array['id']);
+                $themeVersionArray = $version->toArray();
+                unset($themeVersionArray['id']);
+                $themeVersionArray['xhtml'] = 1;
+            } else {
+                // 2.0-module spec
+                $themeMetaData->setTranslator(\ServiceUtil::get('translator'));
+                $themeMetaData->setDirectoryFromBundle($bundle);
+                $themeVersionArray = $themeMetaData->getThemeFilteredVersionInfoArray();
+            }
 
             $directory = explode('/', $bundle->getRelativePath());
             array_shift($directory);
-            $array['directory'] = implode('/', $directory);
+            $themeVersionArray['directory'] = implode('/', $directory);
 
             // loads the gettext domain for theme
             ZLanguage::bindThemeDomain($bundle->getName());
 
-            $array['type'] = 3;
-            $array['state'] = 1;
-            $array['contact'] = 3;
-            $array['xhtml'] = 1;
-            $filethemes[$bundle->getName()] = $array;
+            // set defaults for all themes
+            $themeVersionArray['type'] = 3;
+            $themeVersionArray['state'] = 1;
+            $themeVersionArray['contact'] = 3;
+
+            $filethemes[$bundle->getName()] = $themeVersionArray;
         }
 
+        // scan for old theme types (<Core-1.4) @deprecated - remove at 2.0
         $dirArray = FileUtil::getFiles('themes', false, true, null, 'd');
         foreach ($dirArray as $dir) {
             // Work out the theme type
@@ -94,6 +110,7 @@ class Util
                 include "themes/$dir/version.php";
             } else {
                 // anything else isn't a theme
+                // this skips all directories not containing a version.php file (including >=1.4-type themes)
                 continue;
             }
 
@@ -114,12 +131,15 @@ class Util
             unset($themetype);
         }
 
-        $sm = ServiceUtil::getManager();
+        /****
+         * Persist themes
+         */
         $entityManager = $sm->get('doctrine.entitymanager');
 
         $dbthemes = array();
         $themeEntities = $entityManager->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
 
+        // @todo - can this be done with the `findAll()` method or doctrine (index by name, hydrate to array?)
         foreach ($themeEntities as $entity) {
             $entity = $entity->toArray();
             $dbthemes[$entity['name']] = $entity;

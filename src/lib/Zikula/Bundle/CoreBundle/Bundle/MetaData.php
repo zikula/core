@@ -214,6 +214,32 @@ class MetaData
     }
 
     /**
+     * Theme MetaData as array
+     * 
+     * @return array
+     */
+    public function getThemeFilteredVersionInfoArray()
+    {
+        $capabilities = $this->getCapabilities();
+        return array(
+            'name' => $this->getShortName(),
+            'type' => $this->getExtensionType(),
+            'directory' => $this->getDirectory(),
+            'displayname' => $this->getDisplayName(),
+            'description' => $this->getDescription(),
+            'version' => $this->getVersion(),
+//            'capabilities' => $this->getCapabilities(),
+            // @todo temp - add to DB and move to inverse in legacy code and refactor later checks
+            'user' => isset($capabilities['user']) ? $capabilities['user'] : true,
+            'admin' => isset($capabilities['admin']) ? $capabilities['admin'] : true,
+            'system' => isset($capabilities['system']) ? $capabilities['system'] : false,
+            'xhtml' => isset($capabilities['xhtml']) ? $capabilities['xhtml'] : true, // @todo is this valid any longer?
+        );
+    }
+
+    /**
+     * Module MetaData as array
+     * 
      * @return array
      */
     public function getFilteredVersionInfoArray()
