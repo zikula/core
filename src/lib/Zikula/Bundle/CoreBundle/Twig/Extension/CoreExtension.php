@@ -68,6 +68,8 @@ class CoreExtension extends \Twig_Extension
             'array_unset' => new \Twig_Function_Method($this, 'arrayUnset'),
             'pageSetVar' => new \Twig_Function_Method($this, 'pageSetVar'),
             'pageAddVar' => new \Twig_Function_Method($this, 'pageAddVar'),
+            'pageGetVar' => new \Twig_Function_Method($this, 'pageGetVar'),
+            'getModVar' => new \Twig_Function_Method($this, 'getModVar'),
             'setMetaTag' => new \Twig_Function_Method($this, 'setMetaTag'),
             'checkPermission' => new \Twig_Function_Method($this, 'checkPermission'),
         );
@@ -262,6 +264,35 @@ class CoreExtension extends \Twig_Extension
         }
 
         \PageUtil::addVar($name, $value, $features);
+    }
+
+    /**
+     * @param $name
+     * @param null $default
+     * @return mixed
+     */
+    public function pageGetVar($name, $default = null)
+    {
+        if (empty($name)) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
+        return \PageUtil::getVar($name, $default);
+    }
+
+    /**
+     * @param $module
+     * @param $name
+     * @param null $default
+     * @return mixed
+     */
+    public function getModVar($module, $name, $default = null)
+    {
+        if (empty($module) || empty($name)) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
+        return \ModUtil::getVar($module, $name, $default);
     }
 
     /**
