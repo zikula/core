@@ -125,6 +125,7 @@
         <service id="zikula.theme_listener" class="%zikula.theme_listener.class%">
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
+            <argument type="service" id="templating" />
         </service>
 
         <!--<service id="zikula.themeinit.subscriber" class="%zikula.themeinit_listener.class%">-->
