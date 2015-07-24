@@ -16,8 +16,8 @@
 namespace Zikula\Core\Response;
 
 /**
- * Admin response will override theme.
+ * Xml Response provides output used in RSS feeds
  */
-class AdminResponse extends ThemedResponse
+class XmlResponse extends ThemedResponse
 {
 }

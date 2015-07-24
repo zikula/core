@@ -16,8 +16,8 @@
 namespace Zikula\Core\Response;
 
 /**
- * Admin response will override theme.
+ * Printable response overrides the theme and provides printable output
  */
-class AdminResponse extends ThemedResponse
+class PrintableResponse extends ThemedResponse
 {
 }

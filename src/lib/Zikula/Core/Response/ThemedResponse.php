@@ -15,9 +15,11 @@
 
 namespace Zikula\Core\Response;
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
- * Admin response will override theme.
+ * Standard ThemedResponse provides Theme wrapper to response
  */
-class AdminResponse extends ThemedResponse
+class ThemedResponse extends Response
 {
 }
