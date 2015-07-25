@@ -67,8 +67,8 @@ class ThemeListener implements EventSubscriberInterface
             if (!empty($adminTheme)) {
                 $themeInfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($adminTheme));
                 if ($themeInfo && $themeInfo['state'] == \ThemeUtil::STATE_ACTIVE && is_dir('themes/' . \DataUtil::formatForOS($themeInfo['directory']))) {
-                    $event = new GenericEvent(null, array('type' => 'admin-theme'), $themeInfo['name']);
-                    $this->themeName = \EventUtil::dispatch('user.gettheme', $event)->getData();
+                    $localEvent = new GenericEvent(null, array('type' => 'admin-theme'), $themeInfo['name']);
+                    $this->themeName = \EventUtil::dispatch('user.gettheme', $localEvent)->getData();
                     $smartyCaching = false;
                     $_GET['type'] = 'admin'; // required for smarty and FormUtil::getPassedValue() to use the right pagetype from pageconfigurations.ini
                 }
@@ -76,10 +76,11 @@ class ThemeListener implements EventSubscriberInterface
         }
 
         if ($this->themeIsTwigBased($this->themeName)) {
-            return $this->wrapResponseInTheme($this->themeName, $response);
+            return $event->setResponse($this->wrapResponseInTheme($response));
         } else {
             // return smarty-based theme
-            return Zikula_View_Theme::getInstance($this->themeName, $smartyCaching)->themefooter($response);
+            $smartyResponse = Zikula_View_Theme::getInstance($this->themeName, $smartyCaching)->themefooter($response);
+            return $event->setResponse($smartyResponse);
         }
     }
 
@@ -90,7 +91,7 @@ class ThemeListener implements EventSubscriberInterface
         );
     }
 
-    private function wrapResponseInTheme($themeName, Response $response)
+    private function wrapResponseInTheme(Response $response)
     {
         // determine proper template? and location
         return $this->templatingService->renderResponse($this->themeName . '::master.html.twig', array('maincontent' => $response->getContent()));
@@ -105,7 +106,7 @@ class ThemeListener implements EventSubscriberInterface
     private function themeIsTwigBased($themeName = '')
     {
         $this->themeName = empty($themeName) ? \UserUtil::getTheme() : $themeName;
-        $themeBundle = \ThemeUtil::getTheme($themeName);
+        $themeBundle = \ThemeUtil::getTheme($this->themeName);
         if (null !== $themeBundle) {
             $versionClass = $themeBundle->getVersionClass();
             if (!class_exists($versionClass)) {
