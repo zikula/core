@@ -76,11 +76,11 @@ class ThemeListener implements EventSubscriberInterface
         }
 
         if ($this->themeIsTwigBased($this->themeName)) {
-            return $event->setResponse($this->wrapResponseInTheme($response));
+            $event->setResponse($this->wrapResponseInTheme($response));
         } else {
             // return smarty-based theme
             $smartyResponse = Zikula_View_Theme::getInstance($this->themeName, $smartyCaching)->themefooter($response);
-            return $event->setResponse($smartyResponse);
+            $event->setResponse($smartyResponse);
         }
     }
 
@@ -94,7 +94,7 @@ class ThemeListener implements EventSubscriberInterface
     private function wrapResponseInTheme(Response $response)
     {
         // determine proper template? and location
-        return $this->templatingService->renderResponse($this->themeName . '::master.html.twig', array('maincontent' => $response->getContent()));
+        return $this->templatingService->renderResponse($this->themeName . '::master.html.twig', array('maincontent' => $response->getContent(), 'pagetype' => 'admin'));
     }
 
     /**
