@@ -16,7 +16,6 @@ use Zikula\Core\Theme\Engine;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Response\AdminResponse;
@@ -57,6 +56,7 @@ class ThemeListener implements EventSubscriberInterface
         }
 
         $smartyCaching = null;
+        $themeName = null;
 
         /**
          * If Response is an AdminResponse, then change theme to the requested Admin theme (if set)
@@ -75,12 +75,13 @@ class ThemeListener implements EventSubscriberInterface
         }
 
         $this->themeEngine->setTheme($themeName);
-        if ($this->themeEngine->themeIsTwigBased()) {
-            $event->setResponse($this->themeEngine->wrapResponseInTheme($response));
+        $twigThemedResponse = $this->themeEngine->wrapResponseInTheme($response);
+        if ($twigThemedResponse) {
+            $event->setResponse($twigThemedResponse);
         } else {
-            // return smarty-based theme
-            $smartyResponse = Zikula_View_Theme::getInstance($themeName, $smartyCaching)->themefooter($response);
-            $event->setResponse($smartyResponse);
+            // theme is not a twig based theme, revert to smarty
+            $smartyThemedResponse = Zikula_View_Theme::getInstance($themeName, $smartyCaching)->themefooter($response);
+            $event->setResponse($smartyThemedResponse);
         }
     }
 

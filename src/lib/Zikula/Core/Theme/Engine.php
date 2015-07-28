@@ -21,6 +21,7 @@ class Engine
 {
     private $templatingService;
     private $themeName = '';
+    private $themeIsTwigBased = false;
 
     function __construct(EngineInterface $templatingService)
     {
@@ -29,11 +30,23 @@ class Engine
 
     /**
      * Set the theme name. Use theme from UserUtil if empty
+     * Set themeIsTwigBased value (bool) based on themeName
      * @param $themeName
      */
     public function setTheme($themeName)
     {
-        $this->themeName = empty($themeName) ? $this->getTheme() : $themeName;
+        /**
+         * @TODO Note usage of Util classes (UserUtil, ThemeUtil) This must be removed.
+         */
+        $this->themeName = empty($themeName) ? \UserUtil::getTheme() : $themeName;
+        $themeBundle = \ThemeUtil::getTheme($this->themeName);
+        if (null !== $themeBundle) {
+            $versionClass = $themeBundle->getVersionClass();
+            if (!class_exists($versionClass)) {
+                $this->themeIsTwigBased = true;
+            }
+        }
+        $this->themeIsTwigBased = false;
     }
 
     /**
@@ -41,56 +54,33 @@ class Engine
      * use response content as maincontent
      *
      * @param Response $response
-     * @return Response
+     * @return Response|bool (false if theme is not twigBased)
      */
     public function wrapResponseInTheme(Response $response)
     {
         // @todo determine proper template? and location
-        return $this->templatingService->renderResponse($this->themeName . '::master.html.twig', array('maincontent' => $response->getContent(), 'pagetype' => 'admin'));
-    }
-
-    /**
-     * Is theme twig based (e.g. Core-2.0 theme)
-     *
-     * @deprecated @2.0 (assume all themes are twig based in Core-2.0)
-     * @return bool
-     */
-    public function themeIsTwigBased()
-    {
-        $themeBundle = $this->getThemeBundle($this->themeName);
-        if (null !== $themeBundle) {
-            $versionClass = $themeBundle->getVersionClass();
-            if (!class_exists($versionClass)) {
-
-                return true;
-            }
+        // @todo NOTE: 'pagetype' is temporary var in the template
+        // @todo remove twigBased check in 2.0
+        if ($this->themeIsTwigBased) {
+            return $this->templatingService->renderResponse($this->themeName . '::master.html.twig', array('maincontent' => $response->getContent(), 'pagetype' => 'admin'));
+        } else {
+            return false;
         }
-
-        return false;
     }
 
     /**
-     * return currently active theme
-     * @todo replace with 2.0-compatible solution
+     * wrap a block in the theme's block template
      *
-     * @deprecated @2.0
-     * @return string
+     * @param array $block
+     * @return bool|string (false if theme is not twigBased)
      */
-    private function getTheme()
+    public function wrapBlockInTheme(array $block)
     {
-        return \UserUtil::getTheme();
-    }
-
-    /**
-     * return the bundle for a theme
-     * @todo replace with a 2.0-compatible solution
-     *
-     * @deprecated @2.0
-     * @param $themeName
-     * @return null|\Zikula\Core\AbstractTheme
-     */
-    private function getThemeBundle($themeName)
-    {
-        return \ThemeUtil::getTheme($themeName);
+        // @todo remove twigBased check in 2.0
+        if ($this->themeIsTwigBased) {
+            return $this->templatingService->render($this->themeName . ':Blocks:block.html.twig', $block);
+        } else {
+            return false;
+        }
     }
 }
