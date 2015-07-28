@@ -8,6 +8,7 @@
     "autoload": {
         "psr-0": {
             "Zikula\\Module\\": "src/system",
+            "Zikula\\Composer\\": "src/system",
             "Zikula\\Theme\\": "src/themes",
             "Zikula\\": "src/lib",
             "Zikula_": "src/lib/legacy",
@@ -88,7 +89,9 @@
         "ramsey/array_column": "1.1.*",
         "beberlei/DoctrineExtensions": "v0.3",
         "drak/doctrine1": "dev-master",
-        "drak/smarty": "dev-master"
+        "drak/smarty": "dev-master",
+
+        "oyejorge/less.php": "dev-master"
     },
     "require-dev": {
         "craigh/breakit-module": "dev-master"
@@ -97,12 +100,14 @@
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS"
         ],
         "post-update-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS"
         ]
     },
     "config": {

@@ -158,10 +158,15 @@ class JCSSUtil
         // Add bootstrap stylesheet only for 1.4.x type themes or if an admin controller is in use
         if (isset($theme) || $isAdminController) {
             $overrideBootstrapPath = ThemeUtil::getVar('bootstrapPath', ''); // allows for theme override of bootstrap css path
-            $bootstrapPath = !empty($overrideBootstrapPath) ? $overrideBootstrapPath : ServiceUtil::getManager()->getParameter('zikula.stylesheet.bootstrap.min.path');
-            array_unshift($stylesheets, $bootstrapPath);
+            if (empty($overrideBootstrapPath)) {
+                $bootstrapFontAwesomePath = ServiceUtil::getManager()->getParameter('zikula.stylesheet.bootstrap-font-awesome.path');
+                array_unshift($stylesheets, $bootstrapFontAwesomePath);
+            }
             // Add font-awesome
-            array_unshift($stylesheets, ServiceUtil::getManager()->getParameter('zikula.stylesheet.fontawesome.min.path'));
+            if (!empty($overrideBootstrapPath)) {
+                $fontAwesomePath = ServiceUtil::getManager()->getParameter('zikula.stylesheet.fontawesome.min.path');
+                array_unshift($stylesheets, $fontAwesomePath);
+            }
             $stylesheets = array_unique(array_values($stylesheets));
         }
         $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
