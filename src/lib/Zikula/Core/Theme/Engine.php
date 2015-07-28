@@ -44,6 +44,8 @@ class Engine
             $versionClass = $themeBundle->getVersionClass();
             if (!class_exists($versionClass)) {
                 $this->themeIsTwigBased = true;
+
+                return;
             }
         }
         $this->themeIsTwigBased = false;
