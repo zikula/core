@@ -55,7 +55,7 @@ class Zikula_Core
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = '1.4.0';
+    const VERSION_NUM = '1.4.1';
 
     /**
      * The version ID.
