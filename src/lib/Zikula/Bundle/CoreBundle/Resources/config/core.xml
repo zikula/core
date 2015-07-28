@@ -5,6 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="zikula_core.common.theme_engine.class">Zikula\Core\Theme\Engine</parameter>
         <parameter key="zikula.theme_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
         <!--<parameter key="zikula.themeinit_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeInitListener</parameter>-->
         <!--<parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>-->
@@ -122,10 +123,14 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <service id="zikula_core.common.theme_engine" class="%zikula_core.common.theme_engine.class%">
+            <argument type="service" id="templating" />
+        </service>
+
         <service id="zikula.theme_listener" class="%zikula.theme_listener.class%">
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
-            <argument type="service" id="templating" />
+            <argument type="service" id="zikula_core.common.theme_engine" />
         </service>
 
         <!--<service id="zikula.themeinit.subscriber" class="%zikula.themeinit_listener.class%">-->

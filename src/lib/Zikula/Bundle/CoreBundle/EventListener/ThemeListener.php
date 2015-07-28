@@ -12,7 +12,7 @@
  */
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Zikula\Core\Theme\Engine;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,12 +26,11 @@ use Zikula\Core\Event\GenericEvent;
 
 class ThemeListener implements EventSubscriberInterface
 {
-    private $templatingService;
-    private $themeName = '';
+    private $themeEngine;
 
-    function __construct(EngineInterface $templatingService)
+    function __construct(Engine $themeEngine)
     {
-        $this->templatingService = $templatingService;
+        $this->themeEngine = $themeEngine;
     }
 
     public function onKernelResponse(FilterResponseEvent $event)
@@ -68,18 +67,19 @@ class ThemeListener implements EventSubscriberInterface
                 $themeInfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($adminTheme));
                 if ($themeInfo && $themeInfo['state'] == \ThemeUtil::STATE_ACTIVE && is_dir('themes/' . \DataUtil::formatForOS($themeInfo['directory']))) {
                     $localEvent = new GenericEvent(null, array('type' => 'admin-theme'), $themeInfo['name']);
-                    $this->themeName = \EventUtil::dispatch('user.gettheme', $localEvent)->getData();
+                    $themeName = \EventUtil::dispatch('user.gettheme', $localEvent)->getData();
                     $smartyCaching = false;
                     $_GET['type'] = 'admin'; // required for smarty and FormUtil::getPassedValue() to use the right pagetype from pageconfigurations.ini
                 }
             }
         }
 
-        if ($this->themeIsTwigBased($this->themeName)) {
-            $event->setResponse($this->wrapResponseInTheme($response));
+        $this->themeEngine->setTheme($themeName);
+        if ($this->themeEngine->themeIsTwigBased()) {
+            $event->setResponse($this->themeEngine->wrapResponseInTheme($response));
         } else {
             // return smarty-based theme
-            $smartyResponse = Zikula_View_Theme::getInstance($this->themeName, $smartyCaching)->themefooter($response);
+            $smartyResponse = Zikula_View_Theme::getInstance($themeName, $smartyCaching)->themefooter($response);
             $event->setResponse($smartyResponse);
         }
     }
@@ -89,32 +89,5 @@ class ThemeListener implements EventSubscriberInterface
         return array(
             KernelEvents::RESPONSE => array(array('onKernelResponse')),
         );
-    }
-
-    private function wrapResponseInTheme(Response $response)
-    {
-        // determine proper template? and location
-        return $this->templatingService->renderResponse($this->themeName . '::master.html.twig', array('maincontent' => $response->getContent(), 'pagetype' => 'admin'));
-    }
-
-    /**
-     * Is theme twig based (e.g. Core-2.0 theme)
-     *
-     * @param $themeName
-     * @return bool
-     */
-    private function themeIsTwigBased($themeName = '')
-    {
-        $this->themeName = empty($themeName) ? \UserUtil::getTheme() : $themeName;
-        $themeBundle = \ThemeUtil::getTheme($this->themeName);
-        if (null !== $themeBundle) {
-            $versionClass = $themeBundle->getVersionClass();
-            if (!class_exists($versionClass)) {
-
-                return true;
-            }
-        }
-
-        return false;
     }
 }
