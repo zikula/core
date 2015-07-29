@@ -74,7 +74,7 @@ class ThemeListener implements EventSubscriberInterface
             }
         }
 
-        $this->themeEngine->setTheme($themeName);
+        $this->themeEngine->initTheme($themeName);
         $twigThemedResponse = $this->themeEngine->wrapResponseInTheme($response);
         if ($twigThemedResponse) {
             $event->setResponse($twigThemedResponse);

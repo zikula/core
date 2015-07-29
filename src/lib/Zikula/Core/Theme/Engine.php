@@ -15,6 +15,7 @@
 namespace Zikula\Core\Theme;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
 
@@ -40,10 +41,12 @@ class Engine
      * @var bool
      */
     private $themeIsTwigBased = false;
+    private $requestAttributes;
 
-    function __construct(EngineInterface $templatingService)
+    function __construct(EngineInterface $templatingService, RequestStack $requestStack)
     {
         $this->templatingService = $templatingService;
+        $this->requestAttributes = $requestStack->getCurrentRequest()->attributes->all();
     }
 
     /**
@@ -51,7 +54,7 @@ class Engine
      * Set themeIsTwigBased value (bool) based on themeName
      * @param $themeName
      */
-    public function setTheme($themeName)
+    public function initTheme($themeName)
     {
         /**
          * @TODO Note usage of Util classes (UserUtil, ThemeUtil) This must be removed.
@@ -108,6 +111,11 @@ class Engine
         $template = $this->themeConfig['master']['block']['positions'][$block['position']];
 
         return $this->templatingService->render($this->themeName . ':' . $template, $block);
+    }
+
+    public function getThemeName()
+    {
+        return $this->themeName;
     }
 
     /**
