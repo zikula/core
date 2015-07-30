@@ -50,13 +50,15 @@ class Engine
     function __construct(EngineInterface $templatingService, RequestStack $requestStack)
     {
         $this->templatingService = $templatingService;
-        $attributes = $requestStack->getCurrentRequest()->attributes; // not an object during installation
-        $this->requestAttributes = is_object($attributes) ? $attributes->all() : array();
-        $this->themeName = $this->getCurrentTheme($requestStack->getCurrentRequest());
-        // @TODO Note usage of Util classes (ThemeUtil) This must be corrected.
-        $this->themeBundle = \ThemeUtil::getTheme($this->themeName);
-        if (null !== $this->themeBundle) {
-            $this->initTheme();
+        $request = $requestStack->getCurrentRequest(); // not available during installation
+        if (is_object($request)) {
+            $this->requestAttributes = $request->attributes->all();
+            $this->themeName = $this->getCurrentTheme($requestStack->getCurrentRequest());
+            // @TODO Note usage of Util classes (ThemeUtil) This must be corrected.
+            $this->themeBundle = \ThemeUtil::getTheme($this->themeName);
+            if (null !== $this->themeBundle) {
+                $this->initTheme();
+            }
         }
     }
 
