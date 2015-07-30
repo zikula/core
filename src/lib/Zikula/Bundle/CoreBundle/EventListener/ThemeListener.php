@@ -18,10 +18,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\Core\Response\AdminResponse;
 use Zikula\Core\Response\PlainResponse;
 use Zikula_View_Theme;
-use Zikula\Core\Event\GenericEvent;
 
 class ThemeListener implements EventSubscriberInterface
 {
@@ -50,37 +48,15 @@ class ThemeListener implements EventSubscriberInterface
             return;
         }
 
-        // if theme has already been processed the new way, stop here
-        if (!isset($response->legacy) && !$request->attributes->get('_legacy', false)) {
-            return;
-        }
-
-        $smartyCaching = null;
-        $themeName = null;
-
-        /**
-         * If Response is an AdminResponse, then change theme to the requested Admin theme (if set)
-         */
-        if ($response instanceof AdminResponse) {
-            $adminTheme = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
-            if (!empty($adminTheme)) {
-                $themeInfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($adminTheme));
-                if ($themeInfo && $themeInfo['state'] == \ThemeUtil::STATE_ACTIVE && is_dir('themes/' . \DataUtil::formatForOS($themeInfo['directory']))) {
-                    $localEvent = new GenericEvent(null, array('type' => 'admin-theme'), $themeInfo['name']);
-                    $themeName = \EventUtil::dispatch('user.gettheme', $localEvent)->getData();
-                    $smartyCaching = false;
-                    $_GET['type'] = 'admin'; // required for smarty and FormUtil::getPassedValue() to use the right pagetype from pageconfigurations.ini
-                }
-            }
-        }
-
-        $this->themeEngine->initTheme($themeName);
+        // @todo in Core-2.0 this can simply return the themedResponse if instanceof ThemedResponse
+        // and the above checks can be reduced to only checking for ThemedResponse
         $twigThemedResponse = $this->themeEngine->wrapResponseInTheme($response);
         if ($twigThemedResponse) {
             $event->setResponse($twigThemedResponse);
         } else {
             // theme is not a twig based theme, revert to smarty
-            $smartyThemedResponse = Zikula_View_Theme::getInstance($themeName, $smartyCaching)->themefooter($response);
+            $theme = $this->themeEngine->themeIsOverridden() ? $this->themeEngine->getThemeName() : null;
+            $smartyThemedResponse = Zikula_View_Theme::getInstance($theme)->themefooter($response);
             $event->setResponse($smartyThemedResponse);
         }
     }
