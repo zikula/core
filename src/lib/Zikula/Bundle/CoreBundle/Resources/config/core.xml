@@ -124,7 +124,6 @@
         </service>
 
         <service id="zikula_core.common.theme_engine" class="%zikula_core.common.theme_engine.class%">
-            <argument type="service" id="templating" />
             <argument type="service" id="request_stack" strict="false" />
         </service>
 
