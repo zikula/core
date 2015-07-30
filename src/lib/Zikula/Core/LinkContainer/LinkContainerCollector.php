@@ -39,10 +39,10 @@ class LinkContainerCollector
         $links = array();
         if ($this->hasContainer($containerName)) {
             $links = $this->linkContainers[$containerName]->getLinks($type);
+            // fire event here to add more links like hooks, moduleServices, etc
+            $event = new GenericEvent($containerName, array('type' => $type), $links);
+            $links = $this->eventDispatcher->dispatch(LinkContainerInterface::EVENT_NAME, $event)->getData();
         }
-        // fire event here to add more links like hooks, moduleServices, etc
-        $event = new GenericEvent($containerName, array('type' => $type), $links);
-        $links = $this->eventDispatcher->dispatch(LinkContainerInterface::EVENT_NAME, $event)->getData();
 
         return $links;
     }
