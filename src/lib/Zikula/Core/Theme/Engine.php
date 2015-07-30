@@ -38,12 +38,16 @@ class Engine
      */
     private $themeConfig = array();
     /**
-     * indicator whether theme is twig-based (default false to force setting)
+     * indicator flag whether theme is twig-based (default false to force setting)
      * remove all checks for this in Core-2.0
      * @deprecated
      * @var bool
      */
     private $themeIsTwigBased = false;
+    /**
+     * flag indicating whether the theme has been overridden by Response type
+     * @var bool
+     */
     private $themeIsOverridden = false;
     private $requestAttributes;
 
@@ -54,28 +58,11 @@ class Engine
         if (is_object($request)) {
             $this->requestAttributes = $request->attributes->all();
             $this->themeName = $this->getCurrentTheme($requestStack->getCurrentRequest());
-            // @TODO Note usage of Util classes (ThemeUtil) This must be corrected.
+            // @todo Note usage of Util classes (ThemeUtil) This must be corrected.
             $this->themeBundle = \ThemeUtil::getTheme($this->themeName);
             if (null !== $this->themeBundle) {
                 $this->initTheme();
             }
-        }
-    }
-
-    /**
-     * Set the theme name. Use theme from UserUtil if empty
-     * Set themeIsTwigBased value (bool) based on themeName
-     */
-    private function initTheme()
-    {
-        // @TODO refactor at 2.0 to assume all themes are Core-2.0 type bundles (w/o Version class)
-        $versionClass = $this->themeBundle->getVersionClass();
-        if (class_exists($versionClass)) {
-            $this->themeIsTwigBased = false;
-        } else {
-            // theme is Core-2.0 type. init and load config
-            $this->themeIsTwigBased = true;
-            $this->loadThemeConfig();
         }
     }
 
@@ -120,14 +107,42 @@ class Engine
         return $this->templatingService->render($this->themeName . ':' . $template, $block);
     }
 
+    /**
+     * @deprecated This will not be needed >=2.0 (when Smarty is removed)
+     * may consider leaving this present and public in 2.0 (unsure)
+     * @return string
+     */
     public function getThemeName()
     {
         return $this->themeName;
     }
 
+    /**
+     * @deprecated This will not be needed >=2.0 (when Smarty is removed)
+     * @return bool
+     */
     public function themeIsOverridden()
     {
         return $this->themeIsOverridden;
+    }
+
+    /**
+     * load the theme config.
+     * @todo this could be used to accomplish other tasks. If this is NOT requuired, then eliminate the method and
+     *       perform loadThemeConfig() directly in the constructor
+     * set themeIsTwigBased (to be removed in 2.0)
+     */
+    private function initTheme()
+    {
+        // @todo refactor at 2.0 to assume all themes are Core-2.0 type bundles (w/o Version class)
+        $versionClass = $this->themeBundle->getVersionClass();
+        if (class_exists($versionClass)) {
+            $this->themeIsTwigBased = false;
+        } else {
+            // theme is Core-2.0 type. init and load config
+            $this->themeIsTwigBased = true;
+            $this->loadThemeConfig();
+        }
     }
 
     /**
@@ -141,14 +156,20 @@ class Engine
         }
     }
 
+    /**
+     * Override the theme based on the Response type (e.g. AdminResponse)
+     * Set a public flag themeIsOverridden for use by Smarty
+     *
+     * @param Response $response
+     */
     private function overrideThemeIfRequired(Response $response)
     {
         // If Response is an AdminResponse, then change theme to the requested Admin theme (if set)
         if ($response instanceof AdminResponse) {
-            // @TODO remove usage of Util classes
+            // @todo remove usage of Util classes
             $adminTheme = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
             $this->themeIsOverridden = true;
-            // @TODO is all this below desired in 2.0 ?
+            // @todo is all this below desired in 2.0 ?
             if (!empty($adminTheme)) {
                 $themeInfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($adminTheme));
                 if ($themeInfo
@@ -166,9 +187,18 @@ class Engine
         }
     }
 
+    /**
+     * Set the theme based on:
+     *  1) the request params (e.g. `?theme=MySpecialTheme`)
+     *  2) the default system theme
+     * @param Request $request
+     * @return mixed
+     */
     private function getCurrentTheme(Request $request)
     {
         $themeByRequest = $request->get('theme', null);
+        // @todo do we want to allow changing the theme by the request?
+        // @todo what about $this->requestAttributes['_theme'] ?
         return !empty($themeByRequest) ? $themeByRequest : \System::getVar('Default_Theme');
     }
 }
