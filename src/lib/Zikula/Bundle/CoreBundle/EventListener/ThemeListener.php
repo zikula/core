@@ -47,6 +47,10 @@ class ThemeListener implements EventSubscriberInterface
             || $response instanceof RedirectResponse) {
             return;
         }
+        // this is needed for the profiler?
+        if (!isset($response->legacy) && !$request->attributes->get('_legacy', false)) {
+            return;
+        }
 
         // @todo in Core-2.0 this can simply return the themedResponse if instanceof ThemedResponse
         // and the above checks can be reduced to only checking for ThemedResponse
