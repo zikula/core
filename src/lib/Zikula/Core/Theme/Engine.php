@@ -104,7 +104,7 @@ class Engine
 
         $template = $this->themeConfig['master']['block']['positions'][$block['position']];
 
-        return $this->templatingService->render($this->themeName . ':' . $template, $block);
+        return $this->templatingService->render($this->themeName . ':' . $template, $block); // @todo renderView?
     }
 
     /**
@@ -128,7 +128,7 @@ class Engine
 
     /**
      * load the theme config.
-     * @todo this could be used to accomplish other tasks. If this is NOT requuired, then eliminate the method and
+     * @todo this could be used to accomplish other tasks. If this is NOT required, then eliminate the method and
      *       perform loadThemeConfig() directly in the constructor
      * set themeIsTwigBased (to be removed in 2.0)
      */
