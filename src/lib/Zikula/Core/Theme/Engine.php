@@ -100,6 +100,35 @@ class Engine
     }
 
     /**
+     * Find the realm in the theme.yml that matches the given path, route or module
+     * @todo is there a faster way to do this?
+     * @return int|string
+     */
+    public function getMatchingRealm()
+    {
+        // @todo accommodate 'home' and 'admin' types
+        // @todo cache realm value?
+        foreach ($this->themeBundle->getConfig() as $realm => $config) {
+            if (!empty($config['pattern'])) {
+                $pattern = '$' . str_replace('/', '\\/', $config['pattern']) . '$';
+                $valuesToMatch = array(
+                    $this->requestAttributes['pathInfo'],
+                    $this->requestAttributes['_route'],
+                    $this->requestAttributes['_zkModule']
+                );
+                foreach ($valuesToMatch as $value) {
+                    $match = preg_match($pattern, $value);
+                    if ($match === 1) {
+                        return $realm;
+                    }
+                }
+            }
+        }
+
+        return 'master';
+    }
+
+    /**
      * Override the theme based on the Response type (e.g. AdminResponse)
      * Set a public flag themeIsOverridden for use by Smarty
      *

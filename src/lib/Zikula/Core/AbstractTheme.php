@@ -20,6 +20,11 @@ abstract class AbstractTheme extends AbstractBundle
         return array();
     }
 
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
     /**
      * load the theme configuration from the config/theme.yml file
      */
@@ -42,19 +47,21 @@ abstract class AbstractTheme extends AbstractBundle
         // @todo determine proper template? and location
         // @todo NOTE: 'pagetype' is temporary var in the template
 
-        $template = $this->config['master']['page'];
+        $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getMatchingRealm();
+        $template = $this->config[$realm]['page'];
 
         return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => $response->getContent(), 'pagetype' => 'admin'));
     }
 
     /**
      * convert the block content to a theme-wrapped Response
-     * @param $block
-     * @return mixed
+     * @param array $block
+     * @return string
      */
-    public function generateThemedBlock($block)
+    public function generateThemedBlock(array $block)
     {
-        $template = $this->config['master']['block']['positions'][$block['position']];
+        $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getMatchingRealm();
+        $template = $this->config[$realm]['block']['positions'][$block['position']];
 
         return $this->getContainer()->get('templating')->render($this->name . ':' . $template, $block); // @todo renderView? renderResponse?
     }
