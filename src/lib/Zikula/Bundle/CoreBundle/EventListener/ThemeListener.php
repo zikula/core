@@ -12,6 +12,7 @@
  */
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use Zikula\Core\Response\AdminResponse;
 use Zikula\Core\Theme\Engine;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,6 +55,7 @@ class ThemeListener implements EventSubscriberInterface
 
         // @todo in Core-2.0 this can simply return the themedResponse if instanceof ThemedResponse
         // and the above checks can be reduced to only checking for ThemedResponse
+        $this->themeEngine->initFromRequest($request);
         $twigThemedResponse = $this->themeEngine->wrapResponseInTheme($response);
         if ($twigThemedResponse) {
             $event->setResponse($twigThemedResponse);
