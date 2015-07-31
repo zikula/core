@@ -25,6 +25,7 @@ class Engine
      * @var \Zikula\Core\AbstractTheme
      */
     private $themeBundle = null;
+    private $realm;
     /**
      * flag indicating whether the theme has been overridden by Response type
      * @var bool
@@ -48,7 +49,7 @@ class Engine
     /**
      * wrap the response in the theme.
      *
-     * @param Response $response
+     * @param Response $response @todo change typecast to ThemedResponse in 2.0
      * @return Response|bool (false if theme is not twigBased)
      */
     public function wrapResponseInTheme(Response $response)
@@ -66,6 +67,7 @@ class Engine
 
     /**
      * wrap a block in the theme's block template
+     * @todo consider changing block to a Response
      *
      * @param array $block
      * @return bool|string (false if theme is not twigBased)
@@ -101,31 +103,50 @@ class Engine
 
     /**
      * Find the realm in the theme.yml that matches the given path, route or module
+     * Uses regex to match a pattern to one of three possible values
+     *
      * @todo is there a faster way to do this?
      * @return int|string
      */
-    public function getMatchingRealm()
+    private function setMatchingRealm()
     {
-        // @todo accommodate 'home' and 'admin' types
-        // @todo cache realm value?
         foreach ($this->themeBundle->getConfig() as $realm => $config) {
             if (!empty($config['pattern'])) {
-                $pattern = '$' . str_replace('/', '\\/', $config['pattern']) . '$';
-                $valuesToMatch = array(
-                    $this->requestAttributes['pathInfo'],
-                    $this->requestAttributes['_route'],
-                    $this->requestAttributes['_zkModule']
-                );
+                $pattern = ';' . str_replace('/', '\\/', $config['pattern']) . ';i'; // delimiters are ; and i means case-insensitive
+                $valuesToMatch = [];
+                if (isset($this->requestAttributes['pathInfo'])) {
+                    $valuesToMatch[] = $this->requestAttributes['pathInfo']; // e.g. /pages/display/welcome-to-pages-content-manager
+                }
+                if (isset($this->requestAttributes['_route'])) {
+                    $valuesToMatch[] = $this->requestAttributes['_route']; // e.g. zikulapagesmodule_user_display
+                }
+                if (isset($this->requestAttributes['_zkModule'])) {
+                    $valuesToMatch[] = $this->requestAttributes['_zkModule']; // e.g. zikulapagesmodule
+                }
                 foreach ($valuesToMatch as $value) {
                     $match = preg_match($pattern, $value);
                     if ($match === 1) {
-                        return $realm;
+                        $this->realm = $realm;
+                        return; // use first match and do not continue to attempt to match patterns
                     }
                 }
             }
         }
 
-        return 'master';
+        $this->realm = 'master';
+    }
+
+    /**
+     * Get the template realm
+     * @return string
+     */
+    public function getRealm()
+    {
+        if (!isset($this->realm)) {
+            $this->setMatchingRealm();
+        }
+
+        return $this->realm;
     }
 
     /**
@@ -139,28 +160,32 @@ class Engine
         // If Response is an AdminResponse, then change theme to the requested Admin theme (if set)
         // BC: (_zkType == 'admin') indicates a legacy response that must be overridden if theme is twig-based
         // this second test can be removed at 2.0
-        if (($response instanceof AdminResponse)
-            || ($this->themeBundle->isTwigBased() && $this->requestAttributes['_zkType'] == 'admin')) {
-                // @todo remove usage of Util classes
-                $themeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
-                $this->themeIsOverridden = true;
-                // @todo is all this below desired in 2.0 ?
-                if (!empty($themeName)) {
-                    $themeInfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($themeName));
-                    if ($themeInfo
-                        && $themeInfo['state'] == \ThemeUtil::STATE_ACTIVE
-                        && is_dir('themes/' . \DataUtil::formatForOS($themeInfo['directory']))) {
-                            $localEvent = new GenericEvent(null, array('type' => 'admin-theme'), $themeInfo['name']);
-                            $themeName = \EventUtil::dispatch('user.gettheme', $localEvent)->getData();
-                            $_GET['type'] = 'admin'; // required for smarty and FormUtil::getPassedValue() to use the right pagetype from pageconfigurations.ini
-                    }
+        if (($response instanceof AdminResponse) || $this->requestAttributes['_zkType'] == 'admin') {
+            // @todo remove usage of Util classes
+            $themeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
+            if (empty($themeName)) {
+                return; // no admin theme set
+            }
+            $this->themeIsOverridden = true;
+            // @todo is all this below desired in 2.0 ?
+            if (!empty($themeName)) {
+                $themeInfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($themeName));
+                if ($themeInfo
+                    && $themeInfo['state'] == \ThemeUtil::STATE_ACTIVE
+                    && is_dir('themes/' . \DataUtil::formatForOS($themeInfo['directory']))) {
+                        $localEvent = new GenericEvent(null, array('type' => 'admin-theme'), $themeInfo['name']);
+                        $themeName = \EventUtil::dispatch('user.gettheme', $localEvent)->getData();
+                        $_GET['type'] = 'admin'; // required for smarty and FormUtil::getPassedValue() to use the right pagetype from pageconfigurations.ini
                 }
+            }
         }
         // @todo check other Response types here...
 
         if ($this->themeIsOverridden) {
             // load new bundle into Engine
             $this->themeBundle = \ThemeUtil::getTheme($themeName);
+            // try to set realm based on response
+            $this->realm = isset($this->themeBundle->getConfig()['admin']) ? 'admin' : null;
         }
     }
 

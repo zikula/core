@@ -2,6 +2,7 @@
 
 namespace Zikula\Core;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
 
@@ -33,6 +34,9 @@ abstract class AbstractTheme extends AbstractBundle
         $configPath = $this->getConfigPath() . '/theme.yml';
         if (file_exists($configPath)) {
             $this->config = Yaml::parse($configPath);
+            if (!isset($this->config['master'])) {
+                throw new InvalidConfigurationException('Core-2.0 themes must have a defined master realm.');
+            }
             $this->isTwigBased = true;
         }
     }
@@ -47,7 +51,7 @@ abstract class AbstractTheme extends AbstractBundle
         // @todo determine proper template? and location
         // @todo NOTE: 'pagetype' is temporary var in the template
 
-        $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getMatchingRealm();
+        $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getRealm();
         $template = $this->config[$realm]['page'];
 
         return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => $response->getContent(), 'pagetype' => 'admin'));
@@ -60,7 +64,7 @@ abstract class AbstractTheme extends AbstractBundle
      */
     public function generateThemedBlock(array $block)
     {
-        $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getMatchingRealm();
+        $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getRealm();
         $template = $this->config[$realm]['block']['positions'][$block['position']];
 
         return $this->getContainer()->get('templating')->render($this->name . ':' . $template, $block); // @todo renderView? renderResponse?
