@@ -142,8 +142,8 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
     if (!empty($lang) && ($lang <> 'en')) {
         PageUtil::addVar("javascript", "javascript/jquery-plugins/jQuery-Timepicker-Addon/i18n/jquery-ui-timepicker-$lang.js");
     }
-    $jQueryTheme = is_dir("javascript/jquery-ui/themes/$jQueryTheme") ? $jQueryTheme : 'smoothness';
-    PageUtil::addVar("stylesheet", "javascript/jquery-ui/themes/$jQueryTheme/jquery-ui.css");
+    $jQueryTheme = is_dir("web/jquery-ui/themes/$jQueryTheme") ? $jQueryTheme : 'smoothness';
+    PageUtil::addVar("stylesheet", "web/jquery-ui/themes/$jQueryTheme/jquery-ui.css");
 
     // build the timepicker
     $javascript = "
