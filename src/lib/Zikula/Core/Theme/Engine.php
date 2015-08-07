@@ -34,6 +34,7 @@ class Engine
     private $requestAttributes;
 
     /**
+     * @api
      * Initialize the theme engine based on the Request
      * @param Request $request
      */
@@ -47,6 +48,7 @@ class Engine
     }
 
     /**
+     * @api
      * wrap the response in the theme.
      *
      * @param Response $response @todo change typecast to ThemedResponse in 2.0
@@ -66,6 +68,7 @@ class Engine
     }
 
     /**
+     * @api
      * wrap a block in the theme's block template
      * @todo consider changing block to a Response
      *
@@ -99,6 +102,21 @@ class Engine
     public function themeIsOverridden()
     {
         return $this->themeIsOverridden;
+    }
+
+    /**
+     * @api
+     * @param Request $request
+     * @return \Zikula\Core\AbstractTheme
+     */
+    public function getTheme(Request $request = null)
+    {
+        // @todo this init should be unnecessary because themeEngine should be instantiated already.
+        // @todo but this is being called from PackagePath before the Engine gets instantiated by the ThemeListener
+        if (empty($this->themeBundle) && !empty($request)) {
+            $this->initFromRequest($request);
+        }
+        return $this->themeBundle;
     }
 
     /**
@@ -137,6 +155,7 @@ class Engine
     }
 
     /**
+     * @api
      * Get the template realm
      * @return string
      */
@@ -198,9 +217,14 @@ class Engine
      */
     private function getCurrentTheme(Request $request)
     {
-        $themeByRequest = $request->get('theme', null);
         // @todo do we want to allow changing the theme by the request?
-        // @todo what about $this->requestAttributes['_theme'] ?
-        return !empty($themeByRequest) ? $themeByRequest : \System::getVar('Default_Theme');
+
+        if (!empty($themeByRequest = $request->get('theme', null))) {
+            return $themeByRequest;
+        } elseif (!empty($themeByRequest = $request->attributes->get('_theme'))) {
+            return $themeByRequest;
+        } else {
+            return \System::getVar('Default_Theme');
+        }
     }
 }

@@ -60,7 +60,7 @@ class CoreExtension extends \Twig_Extension
             'icon' => new \Twig_Function_Method($this, 'icon'),
             'lang' => new \Twig_Function_Method($this, 'lang'),
             'langdirection' => new \Twig_Function_Method($this, 'langDirection'),
-            'showblockposition' => new \Twig_Function_Method($this, 'showBlockPosition'),
+            'showblockposition' => new \Twig_Function_Method($this, 'showBlockPosition', array('is_safe' => array('html'))),
             'showblock' => new \Twig_Function_Method($this, 'showBlock'),
             'blockinfo' => new \Twig_Function_Method($this, 'getBlockInfo'),
             'zasset' => new \Twig_Function_Method($this, 'getAssetPath'),
@@ -262,6 +262,9 @@ class CoreExtension extends \Twig_Extension
         } else {
             $features = null;
         }
+        // @todo temp?
+        // @todo this won't work if theme is not a bundle or not set
+//        $themeIsTwigBased = $this->container->get('zikula_core.common.theme_engine')->getTheme()->isTwigBased();
 
         \PageUtil::addVar($name, $value, $features);
     }

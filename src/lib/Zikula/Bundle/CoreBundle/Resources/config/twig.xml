@@ -66,7 +66,7 @@
 
         <service id="theme.asset.packagepath" class="%theme.asset.packagepath.class%">
             <argument type="service" id="request_stack" strict="false" />
-            <!-- todo, version and format args -->
+            <argument type="service" id="zikula_core.common.theme_engine" />
         </service>
 
         <service id="theme.asset_helper" scope="request" class="%theme.asset_helper.class%">

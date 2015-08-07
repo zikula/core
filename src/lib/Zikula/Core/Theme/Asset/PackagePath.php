@@ -2,29 +2,35 @@
 namespace Zikula\Core\Theme\Asset;
 
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Templating\Asset\PathPackage as BasePathPackage;
+use Symfony\Component\Asset\PathPackage as BasePathPackage;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
+use Symfony\Component\Asset\Context\RequestStackContext;
+use Zikula\Core\AbstractTheme;
+use Zikula\Core\Theme\Engine;
 
 class PackagePath extends BasePathPackage
 {
     private $scriptPath;
     private $documentRoot;
-    private $themeName;
+    /**
+     * @var AbstractTheme
+     */
+    private $themeBundle;
 
     /**
      * Constructor.
      *
-     * @param RequestStack $request The current request.
-     * @param string       $version The version.
-     * @param string       $format  The version format.
+     * @param RequestStack $requestStack The request stack.
+     * @param $themeEngine
      */
-    public function __construct(RequestStack $requestStack, $version = null, $format = null)
+    public function __construct(RequestStack $requestStack, Engine $themeEngine)
     {
         $request = $requestStack->getCurrentRequest();
         $this->scriptPath = ltrim(\dirname($request->getScriptName()), '/');
         $this->documentRoot = $request->server->get('DOCUMENT_ROOT');
-        $this->themeName = $request->attributes->get('_theme');
+        $this->themeBundle = $themeEngine->getTheme($request);
 
-        parent::__construct($request->getBasePath(), $version, $format);
+        parent::__construct('', new EmptyVersionStrategy(), new RequestStackContext($requestStack));
     }
 
     public function getScriptPath()
@@ -37,8 +43,18 @@ class PackagePath extends BasePathPackage
         return $this->documentRoot;
     }
 
+    /**
+     * @deprecated remove in Core-2.0
+     * use getThemeBundle instead
+     * @return string
+     */
     public function getThemeName()
     {
-        return $this->themeName;
+        return $this->themeBundle->getName();
+    }
+
+    public function getThemeBundle()
+    {
+        return $this->themeBundle;
     }
 }
