@@ -12,6 +12,7 @@
  */
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Zikula\Core\Response\AdminResponse;
 use Zikula\Core\Theme\Engine;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -55,7 +56,6 @@ class ThemeListener implements EventSubscriberInterface
 
         // @todo in Core-2.0 this can simply return the themedResponse if instanceof ThemedResponse
         // and the above checks can be reduced to only checking for ThemedResponse
-        $this->themeEngine->initFromRequest($request);
         $twigThemedResponse = $this->themeEngine->wrapResponseInTheme($response);
         if ($twigThemedResponse) {
             $event->setResponse($twigThemedResponse);
@@ -67,10 +67,20 @@ class ThemeListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * The ThemeEngine::requestAttributes MUST be updated based on EACH Request and not only the initial Request.
+     * @param GetResponseEvent $event
+     */
+    public function onKernelRequest(GetResponseEvent $event)
+    {
+        $this->themeEngine->setRequestAttributes($event->getRequest());
+    }
+
     public static function getSubscribedEvents()
     {
         return array(
             KernelEvents::RESPONSE => array(array('onKernelResponse')),
+            KernelEvents::REQUEST => array(array('onKernelRequest')),
         );
     }
 }

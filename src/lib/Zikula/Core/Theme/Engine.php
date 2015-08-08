@@ -15,6 +15,7 @@
 namespace Zikula\Core\Theme;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\AdminResponse;
@@ -34,17 +35,26 @@ class Engine
     private $requestAttributes;
 
     /**
+     * Engine constructor.
+     * @param RequestStack $requestStack
+     */
+    public function __construct(RequestStack $requestStack)
+    {
+        $themeName = $this->getCurrentTheme($requestStack->getCurrentRequest());
+        // @todo remove usage of ThemeUtil class
+        $this->themeBundle = \ThemeUtil::getTheme($themeName);
+        $this->setRequestAttributes($requestStack->getCurrentRequest());
+    }
+
+    /**
      * @api
      * Initialize the theme engine based on the Request
      * @param Request $request
      */
-    public function initFromRequest(Request $request)
+    public function setRequestAttributes(Request $request)
     {
         $this->requestAttributes = $request->attributes->all();
         $this->requestAttributes['pathInfo'] = $request->getPathInfo();
-        $themeName = $this->getCurrentTheme($request);
-        // @todo remove usage of ThemeUtil class
-        $this->themeBundle = \ThemeUtil::getTheme($themeName);
     }
 
     /**
@@ -111,11 +121,6 @@ class Engine
      */
     public function getTheme(Request $request = null)
     {
-        // @todo this init should be unnecessary because themeEngine should be instantiated already.
-        // @todo but this is being called from PackagePath before the Engine gets instantiated by the ThemeListener
-        if (empty($this->themeBundle) && !empty($request)) {
-            $this->initFromRequest($request);
-        }
         return $this->themeBundle;
     }
 
@@ -179,7 +184,9 @@ class Engine
         // If Response is an AdminResponse, then change theme to the requested Admin theme (if set)
         // BC: (_zkType == 'admin') indicates a legacy response that must be overridden if theme is twig-based
         // this second test can be removed at 2.0
-        if (($response instanceof AdminResponse) || $this->requestAttributes['_zkType'] == 'admin') {
+        if (($response instanceof AdminResponse)
+            || (!empty($this->requestAttributes['_zkType'])
+                && $this->requestAttributes['_zkType'] == 'admin')) {
             // @todo remove usage of Util classes
             $themeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
             if (empty($themeName)) {
