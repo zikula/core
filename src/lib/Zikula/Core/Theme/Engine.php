@@ -40,10 +40,13 @@ class Engine
      */
     public function __construct(RequestStack $requestStack)
     {
-        $themeName = $this->getCurrentTheme($requestStack->getCurrentRequest());
-        // @todo remove usage of ThemeUtil class
-        $this->themeBundle = \ThemeUtil::getTheme($themeName);
-        $this->setRequestAttributes($requestStack->getCurrentRequest());
+        $request = $requestStack->getCurrentRequest();
+        if (!empty($request)) {
+            $themeName = $this->getCurrentTheme($request);
+            // @todo remove usage of ThemeUtil class
+            $this->themeBundle = \ThemeUtil::getTheme($themeName);
+            $this->setRequestAttributes($request);
+        }
     }
 
     /**
