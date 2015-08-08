@@ -219,9 +219,12 @@ class Engine
     {
         // @todo do we want to allow changing the theme by the request?
 
-        if (!empty($themeByRequest = $request->get('theme', null))) {
+        $themeByRequest = $request->get('theme', null);
+        if (!empty($themeByRequest)) {
             return $themeByRequest;
-        } elseif (!empty($themeByRequest = $request->attributes->get('_theme'))) {
+        }
+        $themeByRequest = $request->attributes->get('_theme');
+        if (!empty($themeByRequest)) {
             return $themeByRequest;
         } else {
             return \System::getVar('Default_Theme');
