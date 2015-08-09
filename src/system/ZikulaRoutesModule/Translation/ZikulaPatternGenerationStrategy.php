@@ -37,6 +37,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     private $locales;
     private $cacheDir;
     private $defaultLocale;
+    private $modUrlMap = array();
 
     public function __construct($strategy, TranslatorInterface $translator, array $locales, $cacheDir, $translationDomain = 'routes', $defaultLocale = 'en')
     {
@@ -81,8 +82,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
             if ($route->hasDefault('_zkModule')) {
                 $zkNoBundlePrefix = $route->getOption('zkNoBundlePrefix');
                 if (!isset($zkNoBundlePrefix) || !$zkNoBundlePrefix) {
-                    $modinfo = \ModUtil::getInfoFromName($route->getDefault('_zkModule'));
-                    $i18nPattern = "/" . $modinfo["url"] . $i18nPattern;
+                    $i18nPattern = "/" . $this->getModUrlString($route->getDefault('_zkModule')) . $i18nPattern;
                 }
             }
 
@@ -116,5 +116,20 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
                 }
             }
         }
+    }
+
+    /**
+     * customized method to cache the url string for modules
+     * @param $moduleName
+     * @return string
+     */
+    private function getModUrlString($moduleName)
+    {
+        if (!isset($this->modUrlMap[$moduleName])) {
+            $modInfo = \ModUtil::getInfoFromName($moduleName);
+            $this->modUrlMap[$moduleName] = $modInfo['url'];
+        }
+
+        return $this->modUrlMap[$moduleName];
     }
 }
