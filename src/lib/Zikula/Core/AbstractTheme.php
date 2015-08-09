@@ -54,7 +54,7 @@ abstract class AbstractTheme extends AbstractBundle
         $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getRealm();
         $template = $this->config[$realm]['page'];
 
-        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => $response->getContent(), 'pagetype' => 'admin'));
+        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => '<div id="z-maincontent">' . $response->getContent() . '</div>', 'pagetype' => 'admin'));
     }
 
     /**
