@@ -11,7 +11,7 @@ class Filter
         $this->pageVars = $bag;
     }
 
-    public function filter($source, $js, $css)
+    public function filter($source, $js = null, $css = null)
     {
         $header = implode("\n", $this->pageVars->get('header', array()))."\n";
         if ($css) {
