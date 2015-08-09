@@ -5,6 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="core_installer.install_upgrade_check.class">Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener</parameter>
         <parameter key="core_installer.controller.util.class">Zikula\Bundle\CoreInstallerBundle\Util\ControllerUtil</parameter>
         <parameter key="core_installer.config.util.class">Zikula\Bundle\CoreInstallerBundle\Util\ConfigUtil</parameter>
         <parameter key="core_installer.controller.installer.class">Zikula\Bundle\CoreInstallerBundle\Controller\InstallerController</parameter>
@@ -15,6 +16,11 @@
     </parameters>
 
     <services>
+        <service id="core_installer.install_upgrade_check" class="%core_installer.install_upgrade_check.class%">
+            <argument type="service" id="service_container" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
         <service id="core_installer.controller.util" class="%core_installer.controller.util.class%">
         </service>
 
