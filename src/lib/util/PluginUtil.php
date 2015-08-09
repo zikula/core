@@ -160,7 +160,8 @@ class PluginUtil
             $plugin->setBooted();
         }
 
-        return $sm->set($serviceId, $plugin);
+        $sm->set($serviceId, $plugin);
+        return $plugin;
     }
 
     /**
