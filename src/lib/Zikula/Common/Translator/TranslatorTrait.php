@@ -26,8 +26,8 @@ trait TranslatorTrait
      * singular translation for modules.
      *
      * @param string $msg Message.
-     * @param null $domain
-     * @param null $locale
+     * @param string|null $domain
+     * @param string|null $locale
      * @return string
      */
     public function __($msg, $domain = null, $locale = null)
@@ -41,8 +41,8 @@ trait TranslatorTrait
      * @param string $m1 Singular.
      * @param string $m2 Plural.
      * @param integer $n Count.
-     * @param null $domain
-     * @param null $locale
+     * @param string|null $domain
+     * @paramstring| null $locale
      * @return string
      */
     public function _n($m1, $m2, $n, $domain = null, $locale = null)
@@ -55,8 +55,8 @@ trait TranslatorTrait
      *
      * @param string $msg Message.
      * @param string|array $param Format parameters.
-     * @param null $domain
-     * @param null $locale
+     * @param string|null $domain
+     * @param string|null $locale
      * @return string
      */
     public function __f($msg, $param, $domain = null, $locale = null)
@@ -71,8 +71,8 @@ trait TranslatorTrait
      * @param string $m2 Plural.
      * @param integer $n Count.
      * @param string|array $param Format parameters.
-     * @param null $domain
-     * @param null $locale
+     * @param string|null $domain
+     * @param string|null $locale
      * @return string
      */
     public function _fn($m1, $m2, $n, $param, $domain = null, $locale = null)
