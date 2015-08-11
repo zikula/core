@@ -73,6 +73,8 @@ class AjaxUpgradeController extends AbstractController
                 return $this->container->get('core_installer.controller.ajaxinstall')->reloadRoutes();
             case "regenthemes":
                 return $this->regenerateThemes();
+            case "from140to141":
+                return $this->from140to141();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
@@ -84,6 +86,11 @@ class AjaxUpgradeController extends AbstractController
 
     private function installRoutesModule()
     {
+        if (version_compare(\Zikula_Core::VERSION_NUM, '1.4.0', '>') && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.0', '>=')) {
+            // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
+            return true;
+        }
+
         $kernel = $this->container->get('kernel');
         $routeModuleName = 'ZikulaRoutesModule';
         $install = $this->container->get('core_installer.controller.ajaxinstall')->installModule($routeModuleName);
@@ -97,7 +104,7 @@ class AjaxUpgradeController extends AbstractController
         \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $modApi->getfilemodules()));
 
         // determine module id
-        $mid = \ModUtil::getIdFromName($routeModuleName, true);
+        $mid = \ModUtil::getIdFromName($routeModuleName);
 
         // force load the modules admin API
         \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
@@ -133,6 +140,12 @@ class AjaxUpgradeController extends AbstractController
         return ThemeUtil::regenerate();
     }
 
+    private function from140to141()
+    {
+        // take whatever additional actions necessary to upgrade from 140 to 141
+        return true;
+    }
+
     private function finalizeParameters()
     {
         \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
@@ -148,8 +161,12 @@ class AjaxUpgradeController extends AbstractController
         // add new configuration parameters
         $params = $this->yamlManager->getParameters();
         unset($params['username'], $params['password']);
-        $params['secret'] = \RandomUtil::getRandomString(50);
-        $params['url_secret'] = \RandomUtil::getRandomString(10);
+        if (!isset($params['secret']) || ($params['secret'] == 'ThisTokenIsNotSoSecretChangeIt')) {
+            $params['secret'] = \RandomUtil::getRandomString(50);
+        }
+        if (!isset($params['url_secret'])) {
+            $params['url_secret'] = \RandomUtil::getRandomString(10);
+        }
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
         $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] :$this->container->get('request')->getHost();

@@ -42,6 +42,10 @@ class InitStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary()
     {
+        if (version_compare(\Zikula_Core::VERSION_NUM, '1.4.0', '>') && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, '1.4.0', '>=')) {
+            // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
+            return false;
+        }
         $this->init();
         $this->upgradeUsersModule();
         return false;
