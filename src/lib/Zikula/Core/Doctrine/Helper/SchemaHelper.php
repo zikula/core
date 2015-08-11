@@ -45,11 +45,7 @@ class SchemaHelper
         foreach ($classes as $class) {
             $metaClasses[] = $this->entityManager->getClassMetadata($class);
         }
-        try {
-            $this->tool->createSchema($metaClasses);
-        } catch (\PDOException $e) {
-            throw $e;
-        }
+        $this->tool->createSchema($metaClasses);
     }
 
     /**
@@ -62,11 +58,7 @@ class SchemaHelper
         foreach ($classes as $class) {
             $metaClasses[] = $this->entityManager->getClassMetadata($class);
         }
-        try {
-            $this->tool->dropSchema($metaClasses);
-        } catch (\PDOException $e) {
-            throw $e;
-        }
+        $this->tool->dropSchema($metaClasses);
     }
 
     /**
@@ -80,10 +72,6 @@ class SchemaHelper
         foreach ($classes as $class) {
             $metaClasses[] = $this->entityManager->getClassMetadata($class);
         }
-        try {
-            $this->tool->updateSchema($metaClasses, $saveMode);
-        } catch (\PDOException $e) {
-            throw $e;
-        }
+        $this->tool->updateSchema($metaClasses, $saveMode);
     }
 }
