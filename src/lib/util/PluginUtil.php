@@ -93,6 +93,7 @@ class PluginUtil
         $path = realpath($path);
 
         if (isset($loaded[$path])) {
+
             return;
         }
 
@@ -139,6 +140,7 @@ class PluginUtil
         $sm = ServiceUtil::getManager();
         $serviceId = self::getServiceId($className);
         if ($sm->has($serviceId)) {
+
             return $sm->get($serviceId);
         }
 
@@ -159,8 +161,8 @@ class PluginUtil
             }
             $plugin->setBooted();
         }
-
         $sm->set($serviceId, $plugin);
+
         return $plugin;
     }
 
@@ -176,6 +178,7 @@ class PluginUtil
         $sm = ServiceUtil::getManager();
         $serviceId = self::getServiceId($className);
         if ($sm->has($serviceId)) {
+
             return $sm->get($serviceId);
         }
     }
