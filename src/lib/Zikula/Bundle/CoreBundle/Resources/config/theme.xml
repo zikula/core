@@ -1,0 +1,112 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="zikula.theme_template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeTemplateOverrideYamlListener</parameter>
+        <parameter key="zikula_core.common.theme_engine.class">Zikula\Core\Theme\Engine</parameter>
+        <parameter key="zikula.theme_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
+        <!--<parameter key="zikula.themeinit_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeInitListener</parameter>-->
+        <parameter key="zikula_core.common.theme.assets.js.class">Zikula\Core\Theme\AssetBag</parameter>
+        <parameter key="zikula_core.common.theme.assets.css.class">Zikula\Core\Theme\AssetBag</parameter>
+        <parameter key="zikula_core.common.theme.pagevars.class">Zikula\Core\Theme\ParameterBag</parameter>
+        <parameter key="zikula_core.common.theme_filter.class">Zikula\Core\Theme\Filter</parameter>
+        <parameter key="theme.themevars.class">Zikula\Core\Theme\ParameterBag</parameter>
+        <!--<parameter key="theme.metatags.class">Zikula\Core\Theme\ParameterBag</parameter>-->
+        <parameter key="zikula_core.common.theme.asset_helper.class">Zikula\Core\Theme\Asset</parameter>
+        <parameter key="theme.asset.packagepath.class">Zikula\Core\Theme\Asset\PackagePath</parameter>
+        <parameter key="zikula_core.common.theme.js_resolver.class">Zikula\Core\Theme\Asset\JsResolver</parameter>
+        <parameter key="zikula_core.common.theme.css_resolver.class">Zikula\Core\Theme\Asset\CssResolver</parameter>
+    </parameters>
+
+    <services>
+        <service id="zikula.theme_template_override_listener" class="%zikula.theme_template_override_listener.class%">
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="zikula_core.common.theme_engine" class="%zikula_core.common.theme_engine.class%">
+            <argument type="service" id="request_stack" strict="false" />
+            <argument type="service" id="zikula_core.common.theme_filter" />
+        </service>
+
+        <service id="zikula.theme_listener" class="%zikula.theme_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="request" />
+            <argument type="service" id="zikula_core.common.theme_engine" />
+        </service>
+
+        <!--<service id="zikula.themeinit.subscriber" class="%zikula.themeinit_listener.class%">-->
+        <!--<tag name="kernel.event_subscriber" />-->
+        <!--<argument type="service" id="service_container" />-->
+        <!--</service>-->
+
+        <!--<service id="zikula.themes.subscriber" class="%zikula.theme_listener.class%">-->
+        <!--<tag name="kernel.event_subscriber" />-->
+        <!--<argument type="service" id="service_container" />-->
+        <!--<argument type="service" id="templating" />-->
+        <!--</service>-->
+
+        <service id="zikula_core.common.theme.assets_js" class="%zikula_core.common.theme.assets.js.class%">
+            <argument type="collection">
+                <!-- @todo possibly convert this to extended AssetBag that can resolve relative paths -->
+                <argument>%router.request_context.base_url%/web/jquery/jquery.min.js</argument>
+                <argument>%router.request_context.base_url%/web/bootstrap/js/bootstrap.min.js</argument>
+                <argument>%router.request_context.base_url%/javascript/helpers/bootstrap-zikula.js</argument>
+                <argument>%router.request_context.base_url%/web/bundles/fosjsrouting/js/router.js</argument>
+                <argument>%router.request_context.base_url%/web/js/fos_js_routes.js</argument>
+            </argument>
+        </service>
+
+        <service id="zikula_core.common.theme.assets_css" class="%zikula_core.common.theme.assets.css.class%">
+            <argument type="collection">
+                <!-- @todo possibly convert this to extended AssetBag that can resolve relative paths -->
+                <argument>%router.request_context.base_url%/web/bootstrap-font-awesome.css</argument>
+            </argument>
+        </service>
+
+        <service id="zikula_core.common.theme.pagevars" class="%zikula_core.common.theme.pagevars.class%">
+        </service>
+
+        <service id="zikula_core.common.theme_filter" class="%zikula_core.common.theme_filter.class%">
+            <argument type="service" id="zikula_core.common.theme.pagevars" />
+            <argument type="service" id="zikula_core.common.theme.js_resolver" />
+            <argument type="service" id="zikula_core.common.theme.css_resolver" />
+        </service>
+
+        <service id="theme.themevars" class="%theme.themevars.class%">
+        </service>
+
+        <!--<service id="theme.metatags" class="%theme.metatags.class%">-->
+        <!--</service>-->
+
+        <service id="zikula_core.common.theme.js_resolver" class="%zikula_core.common.theme.js_resolver.class%">
+            <argument type="service" id="zikula_core.common.theme.assets_js" />
+        </service>
+
+        <service id="zikula_core.common.theme.css_resolver" class="%zikula_core.common.theme.css_resolver.class%">
+            <argument type="service" id="zikula_core.common.theme.assets_css" />
+        </service>
+
+        <service id="theme.asset.packagepath" class="%theme.asset.packagepath.class%">
+            <argument type="service" id="request_stack" strict="false" />
+        </service>
+
+        <service id="zikula_core.common.theme.asset_helper" scope="request" class="%zikula_core.common.theme.asset_helper.class%">
+            <argument type="service" id="kernel" strict="false" />
+            <argument type="service" id="theme.asset.packagepath" />
+            <argument type="service" id="zikula_core.common.theme_engine" />
+            <!--<argument>%framework.assets.base_path%</argument>-->
+        </service>
+
+        <!-- Alias for services. These service names are deprecated and will be removed in Core-2.0 -->
+        <service id="theme.asset_helper" alias="zikula_core.common.theme.asset_helper" />
+        <service id="theme.pagevars" alias="zikula_core.common.theme.pagevars" />
+        <service id="theme.assets_js" alias="zikula_core.common.theme.assets_js" />
+        <service id="theme.assets_css" alias="zikula_core.common.theme.assets_css" />
+        <service id="theme.js_resolver" alias="zikula_core.common.theme.js_resolver" />
+        <service id="theme.css_resolver" alias="zikula_core.common.theme.css_resolver" />
+        <!-- end alias definitions -->
+    </services>
+</container>

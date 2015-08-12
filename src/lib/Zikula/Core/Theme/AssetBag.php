@@ -11,15 +11,18 @@ class AssetBag implements \IteratorAggregate, \Countable
         $this->assets = $assets;
     }
 
-//    public function set($asset)
-//    {
-//        $this->assets[] = $asset;
-//        $this->assets = array_unique($this->assets);
-//    }
-
+    /**
+     * Add an array of assets to the Bag
+     * A string value is allowed also
+     *
+     * @param string|array $asset
+     */
     public function add($asset)
     {
-        $this->assets[] = $asset;
+        if (!is_array($asset)) {
+            $asset = array($asset);
+        }
+        $this->assets = array_merge($this->assets, $asset);
         $this->assets = array_unique($this->assets);
     }
 

@@ -85,7 +85,7 @@ class CoreExtension extends \Twig_Extension
 
     public function getAssetPath($path)
     {
-        return $this->container->get('theme.asset_helper')->resolve($path);
+        return $this->container->get('zikula_core.common.theme.asset_helper')->resolve($path);
     }
 
     public function showBlockPosition($name, $implode = true)
@@ -244,12 +244,22 @@ class CoreExtension extends \Twig_Extension
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
-        \PageUtil::setVar($name, $value);
+        $this->container->get('zikula_core.common.theme.pagevars')->set($name, $value);
     }
 
     /**
      * @param string $name
      * @param string $value
+     *
+     * Zikula does not impose any restriction on the page variable's name except for duplicate
+     * and reserved names. As of this writing, the list of reserved names consists of
+     * <ul>
+     * <li>title</li>
+     * <li>stylesheet</li>
+     * <li>javascript</li>
+     * <li>header</li>
+     * <li>footer</li>
+     * </ul>
      */
     public function pageAddVar($name, $value)
     {
@@ -257,16 +267,21 @@ class CoreExtension extends \Twig_Extension
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
+        // @todo handle this polyfill feature issue
         if ($value == 'polyfill') {
             $features = isset($params['features']) ? $params['features'] : 'forms';
         } else {
             $features = null;
         }
-        // @todo temp?
-        // @todo this won't work if theme is not a bundle or not set
-//        $themeIsTwigBased = $this->container->get('zikula_core.common.theme_engine')->getTheme()->isTwigBased();
 
-        \PageUtil::addVar($name, $value, $features);
+        if ('stylesheet' == $name) {
+            $this->container->get('zikula_core.common.theme.assets_css')->add($value);
+        } elseif ('javascript' == $name) {
+            $this->container->get('zikula_core.common.theme.assets_js')->add($value);
+        } else {
+            // @todo using 'set' but should be 'add'...
+            $this->container->get('zikula_core.common.theme.pagevars')->set($name, $value);
+        }
     }
 
     /**
@@ -280,7 +295,7 @@ class CoreExtension extends \Twig_Extension
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
-        return \PageUtil::getVar($name, $default);
+        return $this->container->get('zikula_core.common.theme.pagevars')->get($name, $default);
     }
 
     /**

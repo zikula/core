@@ -10,11 +10,13 @@ class Asset
     private $kernel;
     private $package;
     private $webDir;
+    private $themeBundle;
 
-    public function __construct(KernelInterface $kernel, PackagePath $package, $webDir = 'web')
+    public function __construct(KernelInterface $kernel, PackagePath $package, Engine $engine, $webDir = 'web')
     {
         $this->kernel = $kernel;
         $this->package = $package;
+        $this->themeBundle = $engine->getTheme();
         $this->webDir = $webDir;
     }
 
@@ -75,7 +77,7 @@ class Asset
             );
 
             // theme
-            $themeName = strtolower($this->package->getThemeName());
+            $themeName = strtolower($this->themeBundle->getName());
             $array[] = array(
                 // @todo needs to convert /bundles/bundlename/css/... to /bundles/themename/css/bundlename/...
                 'asset_path' => $path2 = $this->package->getUrl($this->webDir . '/' . preg_replace('#bundles/([\w\d_-]+)/(.*)$#', 'bundles/'.$themeName.'/$2', $path)),
@@ -119,11 +121,9 @@ class Asset
 
         // customized in theme
         // themes/$themeName/$assetType/$bundleName/$assetPath
-        $themeName = $this->package->getThemeName();
+        $themeName = $this->themeBundle->getName();
         if (false === empty($themeName) && $parameters['bundle_name'] !== $themeName) {
-//            $assetPath = substr_replace($parameters['asset_path'], '/' . $parameters['bundle_name'], strpos($parameters['asset_path'], '/'), 0);
-//            $paths[] = $this->getAssetPath($this->package->getThemeName(), $assetPath);
-            $paths[] = $this->getAssetPath($this->package->getThemeName(), $this->customizedAssetPath($parameters['bundle_name'], $parameters['asset_path']));
+            $paths[] = $this->getAssetPath($themeName, $this->customizedAssetPath($parameters['bundle_name'], $parameters['asset_path']));
         }
 
         // web

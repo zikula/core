@@ -33,20 +33,23 @@ class Engine
      */
     private $themeIsOverridden = false;
     private $requestAttributes;
+    private $filterService;
 
     /**
      * Engine constructor.
      * @param RequestStack $requestStack
+     * @param \Zikula\Core\Theme\Filter $filter
      */
-    public function __construct(RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack, $filter)
     {
         $request = $requestStack->getCurrentRequest();
         if (!empty($request)) {
-            $themeName = $this->getCurrentTheme($request);
+            $themeName = $this->setActiveTheme($request);
             // @todo remove usage of ThemeUtil class
             $this->themeBundle = \ThemeUtil::getTheme($themeName);
             $this->setRequestAttributes($request);
         }
+        $this->filterService = $filter;
     }
 
     /**
@@ -77,7 +80,9 @@ class Engine
             return false;
         }
 
-        return $this->themeBundle->generateThemedResponse($response);
+        $themedResponse = $this->themeBundle->generateThemedResponse($response);
+        $filteredResponse = $this->filter($themedResponse);
+        return $filteredResponse;
     }
 
     /**
@@ -119,10 +124,9 @@ class Engine
 
     /**
      * @api
-     * @param Request $request
      * @return \Zikula\Core\AbstractTheme
      */
-    public function getTheme(Request $request = null)
+    public function getTheme()
     {
         return $this->themeBundle;
     }
@@ -225,7 +229,7 @@ class Engine
      * @param Request $request
      * @return mixed
      */
-    private function getCurrentTheme(Request $request)
+    private function setActiveTheme(Request $request)
     {
         // @todo do we want to allow changing the theme by the request?
 
@@ -239,5 +243,23 @@ class Engine
         } else {
             return \System::getVar('Default_Theme');
         }
+    }
+
+    private function filter(Response $response)
+    {
+        // @todo START legacy block - remove at Core-2.0
+        $javascripts = \PageUtil::getVar('javascript');
+        foreach ($javascripts as $key => $javascript) {
+            $javascripts[$key] = \System::getBaseUri() . '/' . $javascript;
+        }
+        $stylsheets = \PageUtil::getVar('stylesheet');
+        foreach ($stylsheets as $key => $stylsheet) {
+            $stylsheets[$key] = \System::getBaseUri() . '/' . $stylsheet;
+        }
+        // @todo END legacy block - remove at Core-2.0
+
+        $filteredContent = $this->filterService->filter($response->getContent(), $javascripts, $stylsheets);
+        $response->setContent($filteredContent);
+        return $response;
     }
 }

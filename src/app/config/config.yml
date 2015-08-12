@@ -28,6 +28,8 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+        pagevars:     "@zikula_core.common.theme.pagevars"
 
 ## Assetic Configuration
 assetic:
