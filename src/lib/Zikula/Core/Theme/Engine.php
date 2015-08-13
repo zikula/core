@@ -253,8 +253,8 @@ class Engine
             $javascripts[$key] = \System::getBaseUri() . '/' . $javascript;
         }
         $stylesheets = \PageUtil::getVar('stylesheet');
-        foreach ($stylesheets as $key => $stylsheet) {
-            $stylesheets[$key] = \System::getBaseUri() . '/' . $stylsheet;
+        foreach ($stylesheets as $key => $stylesheet) {
+            $stylesheets[$key] = \System::getBaseUri() . '/' . $stylesheet;
         }
         // @todo END legacy block - remove at Core-2.0
 
