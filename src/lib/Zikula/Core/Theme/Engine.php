@@ -252,13 +252,13 @@ class Engine
         foreach ($javascripts as $key => $javascript) {
             $javascripts[$key] = \System::getBaseUri() . '/' . $javascript;
         }
-        $stylsheets = \PageUtil::getVar('stylesheet');
-        foreach ($stylsheets as $key => $stylsheet) {
-            $stylsheets[$key] = \System::getBaseUri() . '/' . $stylsheet;
+        $stylesheets = \PageUtil::getVar('stylesheet');
+        foreach ($stylesheets as $key => $stylsheet) {
+            $stylesheets[$key] = \System::getBaseUri() . '/' . $stylsheet;
         }
         // @todo END legacy block - remove at Core-2.0
 
-        $filteredContent = $this->filterService->filter($response->getContent(), $javascripts, $stylsheets);
+        $filteredContent = $this->filterService->filter($response->getContent(), $javascripts, $stylesheets);
         $response->setContent($filteredContent);
         return $response;
     }
