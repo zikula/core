@@ -96,7 +96,6 @@
         <service id="zikula_core.common.theme.asset_helper" scope="request" class="%zikula_core.common.theme.asset_helper.class%">
             <argument type="service" id="kernel" strict="false" />
             <argument type="service" id="theme.asset.packagepath" />
-            <argument type="service" id="zikula_core.common.theme_engine" />
             <!--<argument>%framework.assets.base_path%</argument>-->
         </service>
 

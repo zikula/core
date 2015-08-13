@@ -85,7 +85,8 @@ class CoreExtension extends \Twig_Extension
 
     public function getAssetPath($path)
     {
-        return $this->container->get('zikula_core.common.theme.asset_helper')->resolve($path);
+        $themeName = $this->container->get('zikula_core.common.theme_engine')->getTheme()->getName();
+        return $this->container->get('zikula_core.common.theme.asset_helper')->resolve($path, $themeName);
     }
 
     public function showBlockPosition($name, $implode = true)

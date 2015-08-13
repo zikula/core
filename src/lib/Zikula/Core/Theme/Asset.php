@@ -10,29 +10,26 @@ class Asset
     private $kernel;
     private $package;
     private $webDir;
-    private $themeBundle;
 
-    public function __construct(KernelInterface $kernel, PackagePath $package, Engine $engine, $webDir = 'web')
+    public function __construct(KernelInterface $kernel, PackagePath $package, $webDir = 'web')
     {
         $this->kernel = $kernel;
         $this->package = $package;
-        $this->themeBundle = $engine->getTheme();
         $this->webDir = $webDir;
     }
 
     /**
      * Returns path for asset.
      *
-     * @param $path
-     *
+     * @param string $path
+     * @param string $themeName
      * @return bool
-     * @throws \InvalidArgumentException
      */
-    public function resolve($path)
+    public function resolve($path, $themeName)
     {
         // for straight asset paths
         if ('@' !== $path[0]) {
-            return $this->choose($this->resolvePath($path));
+            return $this->choose($this->resolvePath($path, $themeName));
         }
 
         // Maps to AcmeBundle/Resources/public/$assetPath
@@ -49,15 +46,15 @@ class Asset
         $bundleName = substr($parts[0], 1, strlen($parts[0]));
         $assetPath = $parts[1];
 
-        $parameters = array(
-            'bundle_name' => $bundleName,
-            'asset_path' => $assetPath,
-        );
-
-        return $this->choose($this->getSearchPath($parameters));
+        return $this->choose($this->getSearchPath($bundleName, $assetPath, $themeName));
     }
 
-    public function resolvePath($path)
+    /**
+     * @param string $path
+     * @param string $themeName
+     * @return array
+     */
+    public function resolvePath($path, $themeName)
     {
         // just expect something already in assets folder
         // replace first part of assets folder /bundles/$name/* with /bundles/custom/*
@@ -77,7 +74,7 @@ class Asset
             );
 
             // theme
-            $themeName = strtolower($this->themeBundle->getName());
+            $themeName = strtolower($themeName);
             $array[] = array(
                 // @todo needs to convert /bundles/bundlename/css/... to /bundles/themename/css/bundlename/...
                 'asset_path' => $path2 = $this->package->getUrl($this->webDir . '/' . preg_replace('#bundles/([\w\d_-]+)/(.*)$#', 'bundles/'.$themeName.'/$2', $path)),
@@ -111,31 +108,30 @@ class Asset
         );
     }
 
-    private function getSearchPath(array $parameters)
+    private function getSearchPath($bundleName, $assetPath, $themeName)
     {
         $paths = array();
 
         // customized in customBundle
         // bundles/custom/$assetType/$bundleName/$assetPath
-        $paths[] = $this->getAssetPath('CustomBundle', $this->customizedAssetPath($parameters['bundle_name'], $parameters['asset_path']));
+        $paths[] = $this->getAssetPath('CustomBundle', $this->customizedAssetPath($bundleName, $assetPath));
 
         // customized in theme
         // themes/$themeName/$assetType/$bundleName/$assetPath
-        $themeName = $this->themeBundle->getName();
-        if (false === empty($themeName) && $parameters['bundle_name'] !== $themeName) {
-            $paths[] = $this->getAssetPath($themeName, $this->customizedAssetPath($parameters['bundle_name'], $parameters['asset_path']));
+        if (false === empty($themeName) && $bundleName !== $themeName) {
+            $paths[] = $this->getAssetPath($themeName, $this->customizedAssetPath($bundleName, $assetPath));
         }
 
         // web
         // bundles/$bundleName/$assetPath
-        $paths[] = $this->getAssetPath($parameters['bundle_name'], $parameters['asset_path']);
+        $paths[] = $this->getAssetPath($bundleName, $assetPath);
 
         // bundle
         // (modules|themes|system)/FooBundle/Resources/public/$assetPath
-        $bundle = $this->kernel->getBundle($parameters['bundle_name']);
+        $bundle = $this->kernel->getBundle($bundleName);
         // is it visible (within) from the webroot ?
         if (false !== $pathStart = strpos($bundle->getPath(), $this->package->getScriptPath())) {
-            $path = 'Resources/public/' . $parameters['asset_path'];
+            $path = 'Resources/public/' . $assetPath;
             $pathStart += strlen($this->package->getScriptPath()) + 1;
             $fullPath = str_replace('\\', '/', $bundle->getPath() . '/' . $path);
             // remove the stuff after the script path...
