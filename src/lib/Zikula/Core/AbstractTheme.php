@@ -65,9 +65,16 @@ abstract class AbstractTheme extends AbstractBundle
     public function generateThemedBlock(array $block)
     {
         $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getRealm();
-        $template = $this->config[$realm]['block']['positions'][$block['position']];
+        if (isset($this->config[$realm]['block']['positions'][$block['position']])) {
+            $template = $this->name . ':' . $this->config[$realm]['block']['positions'][$block['position']];
+        } else {
+            // block position not defined.
+            // @todo return with no content, throw an exception or provide a default block?
+            // for now, provide a default
+            $template = 'CoreBundle:Default:block.html.twig';
+        }
 
-        return $this->getContainer()->get('templating')->render($this->name . ':' . $template, $block); // @todo renderView? renderResponse?
+        return $this->getContainer()->get('templating')->render($template, $block); // @todo renderView? renderResponse?
     }
 
     /**
