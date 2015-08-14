@@ -275,6 +275,13 @@ class CoreExtension extends \Twig_Extension
             $features = null;
         }
 
+        // remove this code block at Core-2.0 because all themes are twig based
+        $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
+        if (!$themeBundle->isTwigBased()) {
+            \PageUtil::addVar($name, $value);
+            return;
+        }
+
         if ('stylesheet' == $name) {
             $this->container->get('zikula_core.common.theme.assets_css')->add($value);
         } elseif ('javascript' == $name) {
