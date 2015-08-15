@@ -20,7 +20,7 @@ if (!defined('LC_MESSAGES')) {
  * Format _dgettext string.
  *
  * Uses sprintf() formatting %s etc, and positional %1$s, %2$s etc.
- * {@link http://us.php.net/manual/en/function.sprintf.php
+ * {@link http://us.php.net/manual/en/function.sprintf.php}
  * %1$s specifies the first occurance in the array of params, %2$s the second
  *
  * Note params must passed either as
