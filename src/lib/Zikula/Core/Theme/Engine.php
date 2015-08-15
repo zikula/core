@@ -248,7 +248,7 @@ class Engine
     private function filter(Response $response)
     {
         // @todo START legacy block - remove at Core-2.0
-        $javascripts = \PageUtil::getVar('javascript');
+        $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript'));
         foreach ($javascripts as $key => $javascript) {
             $javascripts[$key] = \System::getBaseUri() . '/' . $javascript;
         }

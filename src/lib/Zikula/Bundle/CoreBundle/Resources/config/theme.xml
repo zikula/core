@@ -35,6 +35,9 @@
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
             <argument type="service" id="zikula_core.common.theme_engine" />
+            <argument type="service" id="zikula_core.common.theme.assets_js" />
+            <argument type="service" id="zikula_core.common.theme.assets_css" />
+            <argument type="service" id="zikula_core.common.theme.pagevars" />
         </service>
 
         <!--<service id="zikula.themeinit.subscriber" class="%zikula.themeinit_listener.class%">-->
@@ -48,23 +51,9 @@
         <!--<argument type="service" id="templating" />-->
         <!--</service>-->
 
-        <service id="zikula_core.common.theme.assets_js" class="%zikula_core.common.theme.assets.js.class%">
-            <argument type="collection">
-                <!-- @todo possibly convert this to extended AssetBag that can resolve relative paths -->
-                <argument>%router.request_context.base_url%/web/jquery/jquery.min.js</argument>
-                <argument>%router.request_context.base_url%/web/bootstrap/js/bootstrap.min.js</argument>
-                <argument>%router.request_context.base_url%/javascript/helpers/bootstrap-zikula.js</argument>
-                <argument>%router.request_context.base_url%/web/bundles/fosjsrouting/js/router.js</argument>
-                <argument>%router.request_context.base_url%/web/js/fos_js_routes.js</argument>
-            </argument>
-        </service>
+        <service id="zikula_core.common.theme.assets_js" class="%zikula_core.common.theme.assets.js.class%" />
 
-        <service id="zikula_core.common.theme.assets_css" class="%zikula_core.common.theme.assets.css.class%">
-            <argument type="collection">
-                <!-- @todo possibly convert this to extended AssetBag that can resolve relative paths -->
-                <argument>%router.request_context.base_url%/web/bootstrap-font-awesome.css</argument>
-            </argument>
-        </service>
+        <service id="zikula_core.common.theme.assets_css" class="%zikula_core.common.theme.assets.css.class%" />
 
         <service id="zikula_core.common.theme.pagevars" class="%zikula_core.common.theme.pagevars.class%">
         </service>
