@@ -1,4 +1,5 @@
 <?php
+
 namespace Zikula\Core\Theme\Asset;
 
 use Symfony\Component\HttpFoundation\RequestStack;

@@ -48,7 +48,6 @@ abstract class AbstractTheme extends AbstractBundle
      */
     public function generateThemedResponse(Response $response)
     {
-        // @todo determine proper template? and location
         // @todo NOTE: 'pagetype' is temporary var in the template
 
         $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getRealm();
