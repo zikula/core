@@ -99,23 +99,25 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label" for="cache_lifetime">{gt text="Length of time to keep cached theme pages"}</label>
                     <div class="col-sm-9">
-                        <p class="help-block alert alert-info">{gt text="Notice: A cache lifetime of 0 will set the cache to continually regenerate; this is equivalent to no caching."}<br />{gt text="A cache lifetime of -1 will set the cache output to never expire."}</p>
                         <label for="cache_lifetime">{gt text="For homepage"}</label>
                         <span>
-                            <input type="text" class="form-control" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|safetext}" size="6" tabindex="2" />
-                            {gt text="seconds"}
-                            <a class="zikulathememodule-indented" href="{route name='zikulathememodule_admin_clearcache' cacheid=homepage csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
+                            <select class="form-control" id="cache_lifetime" name="cache_lifetime">
+                                <option value="0">{gt text='Select'}</option>
+                                {html_select_cache_lifetime selected=$cache_lifetime|safetext}
+                            </select>
+                            <a href="{route name='zikulathememodule_admin_clearcache' cacheid=homepage csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
                         </span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label" for="cache_lifetime_mods">{gt text="For modules"}</label>
-                    <div class="col-sm-9">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <label for="cache_lifetime">{gt text='For modules'}</label>
                         <span>
-                            <input type="text" class="form-control" name="cache_lifetime_mods" id="cache_lifetime_mods" value="{$cache_lifetime_mods|safetext}" size="6" tabindex="2" />
-                            {gt text="seconds"}
+                            <select class="form-control" id="cache_lifetime_mods" name="cache_lifetime_mods">
+                                <option value="0">{gt text='Select'}</option>
+                                {html_select_cache_lifetime selected=$cache_lifetime_mods|safetext}
+                            </select>
                         </span>
-
                     </div>
                 </div>
                 <div class="form-group">
@@ -153,10 +155,11 @@
                     <label class="col-sm-3 control-label" for="render_lifetime">{gt text="Length of time to keep cached render pages"}</label>
                     <div class="col-sm-9">
                         <span>
-                            <input id="render_lifetime" type="text" class="form-control" name="render_lifetime" value="{$render_lifetime|safetext}" size="6" />
-                            {gt text="seconds"}
+                            <select class="form-control" id="render_lifetime" name="render_lifetime">
+                                <option value="0">{gt text='Select'}</option>
+                                {html_select_cache_lifetime selected=$render_lifetime|safetext}
+                            </select>
                         </span>
-                        <p class="help-block alert alert-info">{gt text="Notice: A cache lifetime of 0 will set the cache to continually regenerate; this is equivalent to no caching."}<br />{gt text="Notice: A cache lifetime of -1 will set the cache output to never expire."}</p>
                     </div>
                 </div>
             </div>
@@ -191,8 +194,10 @@
                     <label class="col-sm-3 control-label" for="cssjscombine_lifetime">{gt text="Length of time to keep combination cache"}</label>
                     <div class="col-sm-9">
                         <span>
-                            <input type="text" class="form-control" name="cssjscombine_lifetime" id="cssjscombine_lifetime" value="{$cssjscombine_lifetime|safetext}" size="6" />
-                            {gt text="seconds"}
+                            <select class="form-control" id="cssjscombine_lifetime" name="cssjscombine_lifetime">
+                                <option value="0">{gt text='Select'}</option>
+                                {html_select_cache_lifetime selected=$cssjscombine_lifetime|safetext}
+                            </select>
                         </span>
                     </div>
                 </div>
