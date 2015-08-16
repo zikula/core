@@ -7,7 +7,6 @@
     "prefer-stable": true,
     "autoload": {
         "psr-0": {
-            "Zikula\\Module\\": "src/system",
             "Zikula\\Theme\\": "src/themes",
             "Zikula\\": "src/lib",
             "Zikula_": "src/lib/legacy",
@@ -15,20 +14,7 @@
             "CustomBundle\\": "src/app/custom"
         },
         "psr-4": {
-            "Zikula\\AdminModule\\": "src/system/AdminModule",
-            "Zikula\\BlocksModule\\": "src/system/BlocksModule",
-            "Zikula\\CategoriesModule\\": "src/system/CategoriesModule",
-            "Zikula\\ExtensionsModule\\": "src/system/ExtensionsModule",
-            "Zikula\\GroupsModule\\": "src/system/GroupsModule",
-            "Zikula\\MailerModule\\": "src/system/MailerModule",
-            "Zikula\\PageLockModule\\": "src/system/PageLockModule",
-            "Zikula\\PermissionsModule\\": "src/system/PermissionsModule",
-            "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule",
-            "Zikula\\SearchModule\\": "src/system/SearchModule",
-            "Zikula\\SecurityCenterModule\\": "src/system/SecurityCenterModule",
-            "Zikula\\SettingsModule\\": "src/system/SettingsModule",
-            "Zikula\\ThemeModule\\": "src/system/ThemeModule",
-            "Zikula\\UsersModule\\": "src/system/UsersModule"
+            "Zikula\\": "src/system"
         },
         "classmap": [
             "src/lib/util/",
