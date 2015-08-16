@@ -60,7 +60,7 @@ class CoreExtension extends \Twig_Extension
             'icon' => new \Twig_Function_Method($this, 'icon'),
             'lang' => new \Twig_Function_Method($this, 'lang'),
             'langdirection' => new \Twig_Function_Method($this, 'langDirection'),
-            'showblockposition' => new \Twig_Function_Method($this, 'showBlockPosition'),
+            'showblockposition' => new \Twig_Function_Method($this, 'showBlockPosition', array('is_safe' => array('html'))),
             'showblock' => new \Twig_Function_Method($this, 'showBlock'),
             'blockinfo' => new \Twig_Function_Method($this, 'getBlockInfo'),
             'zasset' => new \Twig_Function_Method($this, 'getAssetPath'),
@@ -68,6 +68,8 @@ class CoreExtension extends \Twig_Extension
             'array_unset' => new \Twig_Function_Method($this, 'arrayUnset'),
             'pageSetVar' => new \Twig_Function_Method($this, 'pageSetVar'),
             'pageAddVar' => new \Twig_Function_Method($this, 'pageAddVar'),
+            'pageGetVar' => new \Twig_Function_Method($this, 'pageGetVar'),
+            'getModVar' => new \Twig_Function_Method($this, 'getModVar'),
             'setMetaTag' => new \Twig_Function_Method($this, 'setMetaTag'),
             'checkPermission' => new \Twig_Function_Method($this, 'checkPermission'),
         );
@@ -83,7 +85,8 @@ class CoreExtension extends \Twig_Extension
 
     public function getAssetPath($path)
     {
-        return $this->container->get('theme.asset_helper')->resolve($path);
+        $themeName = $this->container->get('zikula_core.common.theme_engine')->getTheme()->getName();
+        return $this->container->get('zikula_core.common.theme.asset_helper')->resolve($path, $themeName);
     }
 
     public function showBlockPosition($name, $implode = true)
@@ -242,12 +245,22 @@ class CoreExtension extends \Twig_Extension
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
-        \PageUtil::setVar($name, $value);
+        $this->container->get('zikula_core.common.theme.pagevars')->set($name, $value);
     }
 
     /**
      * @param string $name
      * @param string $value
+     *
+     * Zikula does not impose any restriction on the page variable's name except for duplicate
+     * and reserved names. As of this writing, the list of reserved names consists of
+     * <ul>
+     * <li>title</li>
+     * <li>stylesheet</li>
+     * <li>javascript</li>
+     * <li>header</li>
+     * <li>footer</li>
+     * </ul>
      */
     public function pageAddVar($name, $value)
     {
@@ -255,13 +268,57 @@ class CoreExtension extends \Twig_Extension
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
+        // @todo handle this polyfill feature issue
         if ($value == 'polyfill') {
             $features = isset($params['features']) ? $params['features'] : 'forms';
         } else {
             $features = null;
         }
 
-        \PageUtil::addVar($name, $value, $features);
+        // remove this code block at Core-2.0 because all themes are twig based
+        $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
+        if (!$themeBundle->isTwigBased()) {
+            \PageUtil::addVar($name, $value);
+            return;
+        }
+
+        if ('stylesheet' == $name) {
+            $this->container->get('zikula_core.common.theme.assets_css')->add($value);
+        } elseif ('javascript' == $name) {
+            $this->container->get('zikula_core.common.theme.assets_js')->add($value);
+        } else {
+            // @todo using 'set' but should be 'add'...
+            $this->container->get('zikula_core.common.theme.pagevars')->set($name, $value);
+        }
+    }
+
+    /**
+     * @param $name
+     * @param null $default
+     * @return mixed
+     */
+    public function pageGetVar($name, $default = null)
+    {
+        if (empty($name)) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
+        return $this->container->get('zikula_core.common.theme.pagevars')->get($name, $default);
+    }
+
+    /**
+     * @param $module
+     * @param $name
+     * @param null $default
+     * @return mixed
+     */
+    public function getModVar($module, $name, $default = null)
+    {
+        if (empty($module) || empty($name)) {
+            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+
+        return \ModUtil::getVar($module, $name, $default);
     }
 
     /**

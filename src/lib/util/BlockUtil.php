@@ -257,6 +257,13 @@ class BlockUtil
             $blockinfo['minbox'] = '';
         }
 
+        // try twig theme first (note: theme is already set by this point)
+        $container = ServiceUtil::getManager();
+        $twigBasedThemeBlock = $container->get('zikula_core.common.theme_engine')->wrapBlockInTheme($blockinfo);
+        if ($twigBasedThemeBlock) {
+            return $twigBasedThemeBlock;
+        }
+        // theme is not twig based revert to smarty
         return Zikula_View_Theme::getInstance()->themesidebox($blockinfo);
     }
 

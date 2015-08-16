@@ -350,7 +350,7 @@ class UserApi extends \Zikula_AbstractApi
      *      @type string $file  name of the ini file to read
      *                      }
      *
-     * @return array the parsed ini file
+     * @return array the parsed ini file or false if file doesn't exist (Core 1.4.1+)
      *
      * @throws \InvalidArgumentException Thrown if either the theme or file parameters aren't provided or are empty
      */
@@ -382,7 +382,12 @@ class UserApi extends \Zikula_AbstractApi
         } elseif (file_exists('themes/'.$ostheme.'/templates/config/'.$osfile)) {
             return parse_ini_file('themes/'.$ostheme.'/templates/config/'.$osfile, $args['sections']);
         } elseif ($theme = ThemeUtil::getTheme($themeinfo['name'])) {
-            return parse_ini_file($theme->getPath().'/Resources/config/'.$osfile, $args['sections']);
+            $file = $theme->getPath().'/Resources/config/'.$osfile;
+            if (file_exists($file)) {
+                return parse_ini_file($file, $args['sections']);
+            } else {
+                return false;
+            }
         }
     }
 

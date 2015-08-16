@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Event handler to override templates.
  */
@@ -35,6 +37,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.preinit', 'initDB');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
+        $this->addHandlerDefinition('zikula.link_collector', 'processHookListeners');
     }
 
     /**
@@ -290,5 +293,21 @@ class SystemListeners extends Zikula_AbstractEventHandler
         header('X-Frames-Options: SAMEORIGIN');
         //header("X-Content-Security-Policy: frame-ancestors 'self'");
         header('X-XSS-Protection: 1');
+    }
+
+    /**
+     * Respond to zikula.link_collector events.
+     *
+     * Create a BC Layer for the zikula.link_collector event to gather Hook-related links.
+     *
+     * @param GenericEvent $event
+     */
+    public function processHookListeners(GenericEvent $event)
+    {
+        $event->setArgument('modname', $event->getSubject());
+        $event->setArgument('modfunc', array(1 => 'getLinks'));
+        $event->setArgument('api', true);
+        $this->addHooksLink($event);
+        $this->addServiceLink($event);
     }
 }

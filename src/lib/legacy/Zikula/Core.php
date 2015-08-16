@@ -55,7 +55,7 @@ class Zikula_Core
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = '1.4.0';
+    const VERSION_NUM = '1.4.1';
 
     /**
      * The version ID.
@@ -220,27 +220,6 @@ class Zikula_Core
     public function setKernel($kernel)
     {
         $this->kernel = $kernel;
-    }
-
-    /**
-     * Get current installed version number
-     *
-     * @param ContainerInterface $container
-     * @return string
-     * @throws \Exception
-     */
-    public static function defineCurrentInstalledCoreVersion($container)
-    {
-        $moduleTable = 'module_vars';
-        try {
-            $stmt = $container->get('doctrine.dbal.default_connection')->executeQuery("SELECT value FROM $moduleTable WHERE modname = 'ZConfig' AND name = 'Version_Num'");
-            $result = $stmt->fetch(\PDO::FETCH_NUM);
-            define('ZIKULACORE_CURRENT_INSTALLED_VERSION', unserialize($result[0]));
-        } catch (\Doctrine\DBAL\Exception\TableNotFoundException $e) {
-            throw new \Exception("ERROR: Could not find $moduleTable table. Maybe you forgot to copy it to your server, or you left a custom_parameters.yml file in place with installed: true in it.");
-        } catch (\Exception $e) {
-            // now what? @todo
-        }
     }
 
     /**
@@ -460,43 +439,12 @@ class Zikula_Core
 
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArgument('stage', self::STAGE_CONFIG);
+            /***************************************************
+             * NOTE: this event is monitored by
+             * \Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener
+             * to see if install or upgrade is needed
+             ***************************************************/
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
-        }
-
-        // create several booleans to test condition of request regrading install/upgrade
-        $installed = $this->getContainer()->getParameter('installed');
-        if ($installed) {
-            self::defineCurrentInstalledCoreVersion($this->getContainer());
-        }
-        $requiresUpgrade = $installed && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, self::VERSION_NUM, '<');
-        // can't use $request->get('_route') to get any of the following
-        // all these routes are hard-coded in xml files
-        $uriContainsInstall = strpos($request->getRequestUri(), '/install') !== false;
-        $uriContainsUpgrade = strpos($request->getRequestUri(), '/upgrade') !== false;
-        $uriContainsDoc = strpos($request->getRequestUri(), '/installdoc') !== false;
-        $uriContainsWdt = strpos($request->getRequestUri(), '/_wdt') !== false;
-        $uriContainsProfiler = strpos($request->getRequestUri(), '/_profiler') !== false;
-        $uriContainsRouter = strpos($request->getRequestUri(), '/js/routing?callback=fos.Router.setData') !== false;
-        $doNotRedirect = $uriContainsProfiler || $uriContainsWdt || $uriContainsRouter || $request->isXmlHttpRequest();
-
-        // check if Zikula Core is not installed
-        if (!$installed && !$uriContainsDoc && !$uriContainsInstall && !$doNotRedirect) {
-            $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
-            $url = $this->container->get('router')->generate('install');
-            $response = new RedirectResponse($url);
-            $response->send();
-            System::shutDown();
-        }
-        // check if Zikula Core requires upgrade
-        if ($requiresUpgrade && !$uriContainsDoc && !$uriContainsUpgrade && !$doNotRedirect) {
-            $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
-            $url = $this->container->get('router')->generate('upgrade');
-            $response = new RedirectResponse($url);
-            $response->send();
-            System::shutDown();
-        }
-        if (!$installed || $requiresUpgrade || $this->getContainer()->hasParameter('upgrading')) {
-            System::setInstalling(true);
         }
 
         if ($stage & self::STAGE_DB) {

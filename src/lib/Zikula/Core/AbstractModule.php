@@ -12,17 +12,6 @@ abstract class AbstractModule extends AbstractBundle
     {
         return 'Module';
     }
-//    abstract public function getVersion();
-//    public function getVersion()
-//    {
-//        $ns = $this->getNamespace();
-//        $class = $this->getVersionClass();
-//
-//        $version = new $class($this);
-//        $version['name'] = $this->getName();
-//
-//        return $version;
-//    }
 
 //    /**
 //     * @return ModuleInstallerInterface

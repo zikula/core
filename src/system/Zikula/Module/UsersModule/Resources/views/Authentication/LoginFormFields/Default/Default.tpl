@@ -35,9 +35,9 @@
     <div class="col-sm-9">
         <div class="input-group">
             {if $authentication_method eq 'email'}
-                <i class="fa fa-fw fa-envelope input-group-addon"></i>
+                <span class="input-group-addon"><i class="fa fa-fw fa-envelope"></i></span>
             {elseif $authentication_method eq 'uname' || $authentication_method eq 'unameoremail'}
-                <i class="fa fa-fw fa-user input-group-addon"></i>
+                <span class="input-group-addon"><i class="fa fa-fw fa-user"></i></span>
             {/if}
             <input id="users_login_login_id" class="form-control"  type="text" name="authentication_info[login_id]" maxlength="64" value="{if isset($authentication_info.login_id)}{$authentication_info.login_id}{/if}" required="required" />
         </div>
@@ -48,9 +48,9 @@
     <label class="col-sm-3 control-label required" for="users_login_pass">{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}</label>
     <div class="col-sm-9">
         <div class="input-group">
-            <i class="fa fa-fw fa-asterisk input-group-addon"></i>
+            <span class="input-group-addon"><i class="fa fa-fw fa-asterisk"></i></span>
             <input id="users_login_pass" class="form-control" type="password" name="authentication_info[pass]" size="25" maxlength="60" required="required" />
-            <i id="capsLok" class="fa fa-fw fa-arrow-circle-up input-group-addon hide"> {gt text='Caps Lock is on!'}</i>
+            <span id="capsLok" class="input-group-addon hide"><i class="fa fa-fw fa-arrow-circle-up"> {gt text='Caps Lock is on!'}</i></span>
         </div>
     </div>
 </div>

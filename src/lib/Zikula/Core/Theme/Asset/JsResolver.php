@@ -4,7 +4,7 @@ namespace Zikula\Core\Theme\Asset;
 
 use Zikula\Core\Theme\AssetBag;
 
-class JsResolver
+class JsResolver implements ResolverInterface
 {
     private $bag;
 
@@ -21,5 +21,10 @@ class JsResolver
         }
 
         return $headers;
+    }
+
+    public function getBag()
+    {
+        return $this->bag;
     }
 }

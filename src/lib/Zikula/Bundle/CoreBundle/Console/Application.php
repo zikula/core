@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\Bundle\CoreInstallerBundle\Util\VersionUtil;
 
 class Application extends BaseApplication
 {
@@ -37,7 +38,7 @@ class Application extends BaseApplication
         $this->bootstrap();
         if ($this->kernel->getContainer()->getParameter('installed') === true) {
             // don't attempt to login if the Core needs an upgrade
-            \Zikula_Core::defineCurrentInstalledCoreVersion($this->kernel->getContainer());
+            VersionUtil::defineCurrentInstalledCoreVersion($this->kernel->getContainer());
             if (defined('ZIKULACORE_CURRENT_INSTALLED_VERSION') && version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, \Zikula_Core::VERSION_NUM, '==')) {
                 try {
                     $this->loginAsAdministrator();

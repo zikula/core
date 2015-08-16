@@ -5,11 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="zikula.theme_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
-        <!--<parameter key="zikula.themeinit_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeInitListener</parameter>-->
         <!--<parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>-->
         <parameter key="zikula.config_template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\ConfigTemplateOverrideYamlListener</parameter>
-        <parameter key="zikula.theme_template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeTemplateOverrideYamlListener</parameter>
 
         <parameter key="zikula.doctrine1_connector.class">Zikula\Bundle\CoreBundle\EventListener\Doctrine1ConnectorListener</parameter>
         <parameter key="zikula.doctrine_connector.class">Zikula\Bundle\CoreBundle\EventListener\DoctrineListener</parameter>
@@ -37,6 +34,7 @@
         <parameter key="zikula.exception_listener.class">Zikula\Bundle\CoreBundle\EventListener\ExceptionListener</parameter>
         <parameter key="zikula.output_compression_listener.class">Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener</parameter>
         <parameter key="zikula.strip_front_controller_listener.class">Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener</parameter>
+        <parameter key="zikula.doctrine.schema_tool.class">Zikula\Core\Doctrine\Helper\SchemaHelper</parameter>
     </parameters>
 
     <services>
@@ -103,10 +101,6 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="zikula.theme_template_override_listener" class="%zikula.theme_template_override_listener.class%">
-            <tag name="kernel.event_subscriber" />
-        </service>
-
         <service id="zikula.legacy_route_listener" class="%zikula.legacy_route_listener.class%">
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
@@ -120,22 +114,6 @@
         <service id="zikula.session_expire_listener" class="%zikula.session_expire_listener.class%">
             <tag name="kernel.event_subscriber" />
         </service>
-
-        <service id="zikula.theme_listener" class="%zikula.theme_listener.class%">
-            <tag name="kernel.event_subscriber" />
-            <tag name="monolog.logger" channel="request" />
-        </service>
-
-        <!--<service id="zikula.themeinit.subscriber" class="%zikula.themeinit_listener.class%">-->
-            <!--<tag name="kernel.event_subscriber" />-->
-            <!--<argument type="service" id="service_container" />-->
-        <!--</service>-->
-
-        <!--<service id="zikula.themes.subscriber" class="%zikula.theme_listener.class%">-->
-            <!--<tag name="kernel.event_subscriber" />-->
-            <!--<argument type="service" id="service_container" />-->
-            <!--<argument type="service" id="templating" />-->
-        <!--</service>-->
 
         <service id="zikula.exception_listener" class="%zikula.exception_listener.class%">
             <tag name="kernel.event_subscriber" />
@@ -155,5 +133,8 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <service id="zikula.doctrine.schema_tool" class="%zikula.doctrine.schema_tool.class%" lazy="true">
+            <argument type="service" id="doctrine.entitymanager" />
+        </service>
     </services>
 </container>

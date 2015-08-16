@@ -375,6 +375,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         parent::assign('metatags', $this->serviceManager->getParameter('zikula_view.metatags'));
 
+        if ($themeBundle->isTwigBased()) {
+            // correct asset urls when smarty output is wrapped by twig theme
+            $this->load_filter('output', 'asseturls');
+        }
+
         $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('view.init', $event);
     }
@@ -2123,7 +2128,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     }
 
     /**
-     * Retrieve an array of security settings, only used if template security is enabled (see {@link setSecurity()).
+     * Retrieve an array of security settings, only used if template security is enabled (see {@link setSecurity()}).
      *
      * @return array An array of security settings.
      */
@@ -2133,7 +2138,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     }
 
     /**
-     * Set an array of security settings, only used if template security is enabled (see {@link setSecurity()).
+     * Set an array of security settings, only used if template security is enabled (see {@link setSecurity()}).
      *
      * @param array $security_settings An array of security settings.
      *
@@ -2159,7 +2164,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Set an array of directories where trusted php scripts reside.
      *
-     * Template security (see {@link setSecurity()) is disabled during their inclusion/execution.
+     * Template security (see @link setSecurity()) is disabled during their inclusion/execution.
      *
      * @param array $trusted_dir An array of trusted directories.
      *
@@ -2696,7 +2701,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     }
 
     /**
-     * Retrieve the array keeping track of plugins (see {@link Smarty::$_plugins}.
+     * Retrieve the array keeping track of plugins (see {@link Smarty::$_plugins}).
      *
      * @return array An array of plugins by type.
      */
@@ -2706,7 +2711,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     }
 
     /**
-     * Set the array keeping track of plugins (see {@link Smarty::$_plugins}.
+     * Set the array keeping track of plugins (see {@link Smarty::$_plugins}).
      *
      * @param array $_plugins An array of plugins by type.
      *

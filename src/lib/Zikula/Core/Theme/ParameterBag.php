@@ -20,6 +20,12 @@ class ParameterBag implements \IteratorAggregate, \Countable
     {
         $this->parameters = $array;
         $this->ns = $ns;
+        // set some defaults
+        // @todo this may not be the best place to do this?
+        $this->set('lang', \ZLanguage::getLanguageCode());
+        $this->set('title', \System::getVar('defaultpagetitle'));
+        $this->set('meta.description', \System::getVar('defaultmetadescription'));
+        $this->set('meta.keywords', \System::getVar('metakeywords'));
     }
 
     /**
@@ -65,6 +71,10 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Sets value.
+     *   can use 'key' = array('subkey' => value, 'subkey2' => value2)
+     *      or
+     *   'key.subkey' = value
+     *   'key.subkey2' = value2
      *
      * @param $key
      * @param $value

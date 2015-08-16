@@ -268,8 +268,23 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $registries = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(array(), array('modname' => 'ASC', 'property' => 'ASC'));
+        $modules = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findBy(array('state' => 3), array('displayname' => 'ASC'));
+        $moduleOptions = array();
+        foreach ($modules as $module) {
+            $bundle = \ModUtil::getModule($module['name']);
+            if ((null !== $bundle) && !class_exists($bundle->getVersionClass())) {
+                // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
+                // then instead of getting MetaData, could just do ModUtil::getCapabilitiesOf($module['name'])
+                $capabilities = $bundle->getMetaData()->getCapabilities();
+                if (!isset($capabilities['categorizable'])) {
+                    continue; // skip this module if not categorizable
+                }
+            }
+            $moduleOptions[$module['name']] = $module['displayname'];
+        }
 
         $this->view->assign('objectArray', $registries)
+                   ->assign('moduleOptions', $moduleOptions)
                    ->assign('newobj', $obj)
                    ->assign('root_id', $root_id)
                    ->assign('id', $id);

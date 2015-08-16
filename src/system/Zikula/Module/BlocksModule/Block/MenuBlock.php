@@ -114,7 +114,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
 
         // Modules
         if (!empty($vars['displaymodules'])) {
-            $mods = ModUtil::getUserMods();
+            $mods = ModUtil::getModulesCapableOf('user');
 
             // Separate from current content, if any
             if ($vars['content'] == 1) {
@@ -123,7 +123,10 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
 
             foreach ($mods as $mod) {
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
-                    $menuitems[] = self::addMenuItem($mod['displayname'], ModUtil::url($mod['name'], 'user', 'index'), $mod['description']);
+                    $url = isset($mod['capabilities']['user']['url'])
+                        ? $mod['capabilities']['user']['url']
+                        : $this->get('router')->generate($mod['capabilities']['user']['route']);
+                    $menuitems[] = self::addMenuItem($mod['displayname'], $url, $mod['description']);
                     $content = true;
                 }
             }

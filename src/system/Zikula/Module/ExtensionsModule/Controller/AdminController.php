@@ -36,6 +36,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotatio
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 use Symfony\Component\Routing\RouterInterface;
 use HookUtil;
+use vierbergenlars\SemVer\expression;
+use vierbergenlars\SemVer\version;
 
 /**
  * No need for a route prefix, as there isn't a user controller.
@@ -45,6 +47,11 @@ use HookUtil;
 class AdminController extends \Zikula_AbstractController
 {
     const NEW_ROUTES_AVAIL = 'new.routes.avail';
+
+    /**
+     * @var array packages as read from the composer.lock file
+     */
+    private $installedPackages = array();
 
     /**
      * Post initialise.
@@ -529,7 +536,12 @@ class AdminController extends \Zikula_AbstractController
             $modulenotfound = false;
             if (!$confirmation && $dependencies) {
                 foreach ($dependencies as $key => $dependency) {
-                    $dependencies[$key] = $dependency->toArray();
+                    $dependencyArray = $dependency->toArray();
+                    if ($this->bundleDependencySatisfied($dependencyArray)) {
+                        unset($dependencies[$key]);
+                        continue;
+                    }
+                    $dependencies[$key] = $dependencyArray;
                     $dependencies[$key]['insystem'] = true;
                     $modinfo = ModUtil::getInfoFromName($dependency['modname']);
                     $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
@@ -1801,4 +1813,52 @@ class AdminController extends \Zikula_AbstractController
         return new Response($this->view->fetch('Admin/HookUi/moduleservices.tpl'));
     }
 
+    /**
+     * compute if bundle requirements are met
+     *
+     * @param array $dependency
+     * @return bool
+     */
+    private function bundleDependencySatisfied(array &$dependency)
+    {
+        if ($dependency['modname'] == "php") {
+            $phpVersion = new version(PHP_VERSION);
+            $requiredVersionExpression = new expression($dependency['minversion']);
+
+            return $requiredVersionExpression->satisfiedBy($phpVersion);
+        }
+        if (strpos($dependency['modname'], 'composer/') !== false) {
+            // @todo this specifically is for `composer/installers` but will catch all with `composer/`
+            return true;
+        }
+        if ($dependency['minversion'] == "-1") {
+            // dependency is "suggested"
+            list ($dependency['modname'], $dependency['minversion']) = explode(':', $dependency['modname']);
+
+            return false;
+        }
+        if (strpos($dependency['modname'], '/') !== false) {
+            if ($this->get('kernel')->isBundle($dependency['modname'])) {
+                if (empty($this->installedPackages)) {
+                    // create and cache installed packages from composer.lock file
+                    $appPath = $this->get('kernel')->getRootDir();
+                    $composerLockPath = realpath($appPath . '/../') . 'composer.lock';
+                    $packages = json_decode(file_get_contents($composerLockPath), true);
+                    foreach ($packages as $package) {
+                        $this->installedPackages[$package['name']] = $package;
+                    }
+                }
+                $bundleVersion = new version($this->installedPackages[$dependency['modname']]['version']);
+                $requiredVersionExpression = new expression($dependency['minversion']);
+
+                return $requiredVersionExpression->satisfiedBy($bundleVersion);
+            }
+
+            $dependency['reason'] = $this->__('This dependency can only be resolved via `composer update`');
+
+            return false;
+        }
+
+        return false;
+    }
 }

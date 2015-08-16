@@ -23,7 +23,7 @@
             <tbody>
                 {foreach item='dependency' from=$dependencies}
                 <tr>
-                    <td>{$dependency.displayname|default:$dependency.modname}</td>
+                    <td>{$dependency.displayname|default:$dependency.modname} ({$dependency.minversion|default:''})</td>
                     <td>
                         {if $dependency.insystem ne true && $dependency.status eq 1}
                         {gt text='Not present'}

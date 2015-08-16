@@ -28,7 +28,7 @@
  */
 function smarty_outputfilter_asseturls($source, $view)
 {
-    $source = preg_replace_callback('#(href=|src=){1}("|\'){1}([a-zA-Z0-9/\.\-_]+)("|\'){1}#', '_smarty_outputfilter_asseturls', $source);
+    $source = preg_replace_callback('#(href=|src=){1}("|\'){1}([a-zA-Z0-9\/\.\-_]+)("|\'){1}#', '_smarty_outputfilter_asseturls', $source);
 
     return $source;
 }

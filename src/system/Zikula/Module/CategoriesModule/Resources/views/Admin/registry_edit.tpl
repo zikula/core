@@ -26,7 +26,9 @@
                 {if $obj.id eq $id}
                     <input id="category_registry_id" name="category_registry[id]" value="{$obj.id}" type="hidden" />
                     <td>
-                        {selector_module name='category_registry[modname]' selectedValue=$obj.modname defaultValue='' defaultText=$chooseModule submit='1'}
+                        <select name="category_registry[modname]" id="category_registry__id__" onchange="this.form.submit();">
+                            {foreach from=$moduleOptions key='value' item='text' }<option value="{$value}"{if $value eq $obj.modname} selected="selected"{/if}>{$text}</option>{/foreach}
+                        </select>
                     </td>
                     <td>
                         {if $obj.modname}{selector_module_tables modname=$obj.modname name='category_registry[entityname]' selectedValue=$obj.entityname defaultValue='' defaultText=$chooseEntity}
@@ -57,7 +59,11 @@
                 {if $id eq 0}
                 <tr>
                     <td>
-                        <span class="required"></span>{selector_module name="category_registry[modname]" defaultValue="0" defaultText=$chooseModule selectedValue=$newobj.modname|default:'' submit="1"}
+                        <span class="required"></span>
+                        <select name="category_registry[modname]" id="category_registry__id__" onchange="this.form.submit();">
+                            <option value="0"{if empty($newobj.modname)} selected="selected"{/if}>{$chooseModule}</option>
+                            {foreach from=$moduleOptions key='value' item='text' }<option value="{$value}"{if $value eq $newobj.modname|default:''} selected="selected"{/if}>{$text}</option>{/foreach}
+                        </select>
                     </td>
                     <td>
                         {if !empty($newobj.modname)}

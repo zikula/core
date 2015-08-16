@@ -470,6 +470,24 @@ class HtmlUtil
         }
 
         // Doctrine 2 entities (Core 1.3.0++)
+        // Core-2.0 spec
+        $module = ModUtil::getModule($modname);
+        if ((null !== $module) && !class_exists($module->getVersionClass())) {
+            // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
+            $capabilities = $module->getMetaData()->getCapabilities();
+            if (isset($capabilities['categorizable'])) {
+                $data = array();
+                foreach ($capabilities['categorizable'] as $fullyQualifiedEntityName) {
+                    $nameParts = explode('\\', $fullyQualifiedEntityName);
+                    $entityName = array_pop($nameParts);
+                    $data[$entityName] = $entityName;
+                }
+                $selectedValue = (count($data) == 1) ? $entityName : $defaultValue;
+                return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
+            }
+        }
+
+        // (Core-1.3 spec)
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
@@ -490,7 +508,6 @@ class HtmlUtil
             }
         }
 
-        $module = ModUtil::getModule($modname);
         $data = array();
         foreach ($entities as $entity) {
             $possibleClassNames = array(
