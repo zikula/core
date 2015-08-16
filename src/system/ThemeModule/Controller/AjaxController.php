@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\ThemeModule\Controller;
+namespace Zikula\ThemeModule\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Core\Response\Ajax\AjaxResponse;

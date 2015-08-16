@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\ThemeModule\Api;
+namespace Zikula\ThemeModule\Api;
 
 use LogUtil;
 use ModUtil;

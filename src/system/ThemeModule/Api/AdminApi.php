@@ -11,9 +11,9 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\ThemeModule\Api;
+namespace Zikula\ThemeModule\Api;
 
-use Zikula\Module\ThemeModule\Util;
+use Zikula\ThemeModule\Util;
 use ModUtil;
 use SecurityUtil;
 use LogUtil;

@@ -16,7 +16,8 @@
             "CustomBundle\\": "src/app/custom"
         },
         "psr-4": {
-            "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule"
+            "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule",
+            "Zikula\\ThemeModule\\": "src/system/ThemeModule"
         },
         "classmap": [
             "src/lib/util/",

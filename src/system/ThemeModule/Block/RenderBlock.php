@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\ThemeModule\Block;
+namespace Zikula\ThemeModule\Block;
 
 use Zikula_View;
 use SecurityUtil;

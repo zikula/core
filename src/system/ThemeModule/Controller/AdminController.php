@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\ThemeModule\Controller;
+namespace Zikula\ThemeModule\Controller;
 
 use Zikula_View;
 use Modutil;
@@ -23,7 +23,7 @@ use DataUtil;
 use ZLanguage;
 use BlockUtil;
 use Zikula_View_Theme;
-use Zikula\Module\ThemeModule\Util;
+use Zikula\ThemeModule\Util;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;

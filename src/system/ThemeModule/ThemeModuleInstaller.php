@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\ThemeModule;
+namespace Zikula\ThemeModule;
 
 use ModUtil;
 use DoctrineHelper;
@@ -30,7 +30,7 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\ThemeModule\Entity\ThemeEntity'));
+            DoctrineHelper::createSchema($this->entityManager, array('Zikula\ThemeModule\Entity\ThemeEntity'));
         } catch (\Exception $e) {
             return false;
         }

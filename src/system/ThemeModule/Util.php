@@ -11,14 +11,14 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\ThemeModule;
+namespace Zikula\ThemeModule;
 
 use ModUtil;
 use FileUtil;
 use ZLanguage;
 use ThemeUtil;
 use ServiceUtil;
-use Zikula\Module\ThemeModule\Entity\ThemeEntity;
+use Zikula\ThemeModule\Entity\ThemeEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use ZLoader;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap;
