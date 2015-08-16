@@ -11,14 +11,14 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\BlocksModule\Api;
+namespace Zikula\BlocksModule\Api;
 
 use System;
 use SecurityUtil;
-use Zikula\Module\BlocksModule\Entity\BlockPlacementEntity;
+use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use ModUtil;
-use Zikula\Module\BlocksModule\Entity\BlockEntity;
-use Zikula\Module\BlocksModule\Entity\BlockPositionEntity;
+use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -278,7 +278,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        /** @var \Zikula\Module\BlocksModule\Entity\BlockEntity $block */
+        /** @var \Zikula\BlocksModule\Entity\BlockEntity $block */
         $block = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'get', array('bid' => $args['bid']));
 
         // Security check
@@ -373,7 +373,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Get the existing position
-        /** @var \Zikula\Module\BlocksModule\Entity\BlockPositionEntity $item */
+        /** @var \Zikula\BlocksModule\Entity\BlockPositionEntity $item */
         $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
 
         if ($item == false) {
@@ -420,7 +420,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        /** @var \Zikula\Module\BlocksModule\Entity\BlockPositionEntity $position */
+        /** @var \Zikula\BlocksModule\Entity\BlockPositionEntity $position */
         $position = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
 
         if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$position[name]::$position[pid]", ACCESS_DELETE)) {

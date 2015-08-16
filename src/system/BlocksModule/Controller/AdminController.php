@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\BlocksModule\Controller;
+namespace Zikula\BlocksModule\Controller;
 
 use Zikula_View;
 use ModUtil;

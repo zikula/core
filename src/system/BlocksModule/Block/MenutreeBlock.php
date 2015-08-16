@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\BlocksModule\Block;
+namespace Zikula\BlocksModule\Block;
 
 use SecurityUtil;
 use BlockUtil;
@@ -19,8 +19,8 @@ use PageUtil;
 use UserUtil;
 use ZLanguage;
 use ModUtil;
-use Zikula\Module\BlocksModule\MenutreeUtil;
-use Zikula\Module\BlocksModule\MenutreeTree;
+use Zikula\BlocksModule\MenutreeUtil;
+use Zikula\BlocksModule\MenutreeTree;
 use System;
 use Zikula_View;
 use DataUtil;
@@ -367,7 +367,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // sort tree array according to lineno key
-        uasort($vars['menutree_content'], array('Zikula\Module\BlocksModule\Block\MenutreeBlock','sort_menu'));
+        uasort($vars['menutree_content'], array('Zikula\BlocksModule\Block\MenutreeBlock','sort_menu'));
 
         // get other form data
         $menutree_data = $this->request->request->get('menutree');

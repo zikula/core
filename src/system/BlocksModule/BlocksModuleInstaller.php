@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\BlocksModule;
+namespace Zikula\BlocksModule;
 
 use DoctrineHelper;
 use ModUtil;
@@ -33,10 +33,10 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create tables
         $classes = array(
-            'Zikula\Module\BlocksModule\Entity\BlockEntity',
-            'Zikula\Module\BlocksModule\Entity\BlockPositionEntity',
-            'Zikula\Module\BlocksModule\Entity\BlockPlacementEntity',
-            'Zikula\Module\BlocksModule\Entity\UserBlockEntity'
+            'Zikula\BlocksModule\Entity\BlockEntity',
+            'Zikula\BlocksModule\Entity\BlockPositionEntity',
+            'Zikula\BlocksModule\Entity\BlockPlacementEntity',
+            'Zikula\BlocksModule\Entity\UserBlockEntity'
         );
 
         try {
@@ -70,7 +70,7 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
             case '3.8.2':
             case '3.9.0':
                 $blocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findAll();
-                /** @var \Zikula\Module\BlocksModule\Entity\BlockEntity $block */
+                /** @var \Zikula\BlocksModule\Entity\BlockEntity $block */
                 foreach ($blocks as $block) {
                     $content = $block->getContent();
                     if(\DataUtil::is_serialized($content)) {

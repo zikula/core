@@ -11,24 +11,22 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\BlocksModule\Block;
+namespace Zikula\BlocksModule\Block;
 
 use SecurityUtil;
 use BlockUtil;
 
 /**
- * Block to display simple rendered text
+ * Block to display html 
  */
-class TextBlock extends \Zikula_Controller_AbstractBlock
+class HtmlBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
-     *
-     * @return void
      */
     public function init()
     {
-        SecurityUtil::registerPermissionSchema('Textblock::', 'Block title::');
+        SecurityUtil::registerPermissionSchema('HTMLblock::', 'Block title::');
     }
 
     /**
@@ -39,8 +37,8 @@ class TextBlock extends \Zikula_Controller_AbstractBlock
     public function info()
     {
         return array('module'         => 'ZikulaBlocksModule',
-                     'text_type'      => $this->__('Text'),
-                     'text_type_long' => $this->__('Plain text'),
+                     'text_type'      => $this->__('HTML'),
+                     'text_type_long' => $this->__('HTML'),
                      'allow_multiple' => true,
                      'form_content'   => true,
                      'form_refresh'   => false,
@@ -60,11 +58,9 @@ class TextBlock extends \Zikula_Controller_AbstractBlock
      */
     public function display($blockinfo)
     {
-        if (!SecurityUtil::checkPermission('Textblock::', "$blockinfo[title]::", ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('HTMLblock::', "$blockinfo[title]::", ACCESS_OVERVIEW)) {
             return;
         }
-
-        $blockinfo['content'] = nl2br($blockinfo['content']);
 
         return BlockUtil::themeBlock($blockinfo);
     }

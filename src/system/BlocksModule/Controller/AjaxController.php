@@ -11,10 +11,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\BlocksModule\Controller;
+namespace Zikula\BlocksModule\Controller;
 
 use SecurityUtil;
-use Zikula\Module\BlocksModule\Entity\BlockPlacementEntity;
+use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\FatalResponse;

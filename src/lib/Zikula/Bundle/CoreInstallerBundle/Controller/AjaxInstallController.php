@@ -219,7 +219,7 @@ class AjaxInstallController extends AbstractController
     private function createBlocks()
     {
         // create the default blocks.
-        $blockInstance = new \Zikula\Module\BlocksModule\BlocksModuleInstaller($this->container, $this->container->get('kernel')->getModule('ZikulaBlocksModule'));
+        $blockInstance = new \Zikula\BlocksModule\BlocksModuleInstaller($this->container, $this->container->get('kernel')->getModule('ZikulaBlocksModule'));
         $blockInstance->defaultdata();
 
         return true;

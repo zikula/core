@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\BlocksModule;
+namespace Zikula\BlocksModule;
 
 use HookUtil;
 use ModUtil;

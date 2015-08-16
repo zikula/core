@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\BlocksModule\Block;
+namespace Zikula\BlocksModule\Block;
 
 use SecurityUtil;
 use BlockUtil;

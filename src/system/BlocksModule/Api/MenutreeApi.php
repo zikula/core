@@ -11,11 +11,11 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\BlocksModule\Api;
+namespace Zikula\BlocksModule\Api;
 
 use ModUtil;
 use SecurityUtil;
-use Zikula\Module\BlocksModule\MenutreeUtil;
+use Zikula\BlocksModule\MenutreeUtil;
 use ZLanguage;
 use Loader;
 use CategoryRegistryUtil;
