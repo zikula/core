@@ -22,7 +22,9 @@
             "Zikula\\BlocksModule\\": "src/system/BlocksModule",
             "Zikula\\CategoriesModule\\": "src/system/CategoriesModule",
             "Zikula\\ExtensionsModule\\": "src/system/ExtensionsModule",
-            "Zikula\\GroupsModule\\": "src/system/GroupsModule"
+            "Zikula\\GroupsModule\\": "src/system/GroupsModule",
+            "Zikula\\MailerModule\\": "src/system/MailerModule",
+            "Zikula\\PageLockModule\\": "src/system/PageLockModule"
         },
         "classmap": [
             "src/lib/util/",

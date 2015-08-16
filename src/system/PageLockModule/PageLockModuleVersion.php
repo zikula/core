@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\PageLockModule;
+namespace Zikula\PageLockModule;
 
 /**
  * Version information for the pagelock module

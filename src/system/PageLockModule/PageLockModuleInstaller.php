@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\PageLockModule;
+namespace Zikula\PageLockModule;
 
 use DoctrineHelper;
 
@@ -30,7 +30,7 @@ class PageLockModuleInstaller extends \Zikula_AbstractInstaller
     {
         try {
             DoctrineHelper::createSchema($this->entityManager, array(
-                'Zikula\Module\PageLockModule\Entity\PageLockEntity',
+                'Zikula\PageLockModule\Entity\PageLockEntity',
             ));
         } catch (\Exception $e) {
              return false;
@@ -60,7 +60,7 @@ class PageLockModuleInstaller extends \Zikula_AbstractInstaller
     {
     
         try {
-            DoctrineHelper::dropSchema($this->entityManager, array('Zikula\Module\PageLockModule\Entity\PageLockEntity'));
+            DoctrineHelper::dropSchema($this->entityManager, array('Zikula\PageLockModule\Entity\PageLockEntity'));
         } catch (\PDOException $e) {
             $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
             

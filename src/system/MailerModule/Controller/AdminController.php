@@ -11,15 +11,15 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\MailerModule\Controller;
+namespace Zikula\MailerModule\Controller;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula_View;
 use SecurityUtil;
 use FormUtil;
 use System;
-use Zikula\Module\MailerModule\Form\Handler\ModifyConfigHandler;
-use Zikula\Module\MailerModule\Form\Handler\TestConfigHandler;
+use Zikula\MailerModule\Form\Handler\ModifyConfigHandler;
+use Zikula\MailerModule\Form\Handler\TestConfigHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;

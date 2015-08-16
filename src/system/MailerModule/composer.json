@@ -1,6 +1,6 @@
 {
-    "name": "zikula/pagelock-module",
-    "description": "Zikula Forms Pagelock Module",
+    "name": "zikula/mailer-module",
+    "description": "Mailer Module",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
@@ -10,14 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Zikula\\Module\\PageLockModule\\": "" }
+        "psr-0": { "Zikula\\MailerModule\\": "" }
     },
     "require": {
         "php": ">5.4.0"
     },
     "extra": {
         "zikula": {
-            "class": "Zikula\\Module\\PageLockModule\\ZikulaPageLockModule"
+            "class": "Zikula\\MailerModule\\ZikulaMailerModule"
         }
     }
 }

@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\PageLockModule\Entity;
+namespace Zikula\PageLockModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

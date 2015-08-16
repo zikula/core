@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\MailerModule\Form\Handler;
+namespace Zikula\MailerModule\Form\Handler;
 
 use Zikula_Form_View;
 use SecurityUtil;

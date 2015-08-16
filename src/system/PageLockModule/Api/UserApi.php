@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\PageLockModule\Api;
+namespace Zikula\PageLockModule\Api;
 
 use UserUtil;
 use PageUtil;
@@ -21,7 +21,7 @@ use Zikula_View;
 use DataUtil;
 use DateUtil;
 use ServiceUtil;
-use Zikula\Module\PageLockModule\Entity\PageLockEntity;
+use Zikula\PageLockModule\Entity\PageLockEntity;
 
 /**
  * API functions used by user controllers

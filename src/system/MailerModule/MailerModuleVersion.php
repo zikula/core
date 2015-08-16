@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\MailerModule;
+namespace Zikula\MailerModule;
 
 use HookUtil;
 use Zikula\Component\HookDispatcher\SubscriberBundle;

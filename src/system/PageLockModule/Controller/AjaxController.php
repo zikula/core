@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\PageLockModule\Controller;
+namespace Zikula\PageLockModule\Controller;
 
 use UserUtil;
 use ModUtil;
