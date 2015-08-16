@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\AdminModule;
+namespace Zikula\AdminModule;
 
 /**
  * Version information for the admin module

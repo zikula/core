@@ -11,15 +11,15 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\AdminModule\Api;
+namespace Zikula\AdminModule\Api;
 
 use ModUtil;
-use Zikula\Module\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use SecurityUtil;
 use System;
 use DataUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Module\AdminModule\Entity\AdminModuleEntity;
+use Zikula\AdminModule\Entity\AdminModuleEntity;
 
 /**
  * API functions used by administrative controllers

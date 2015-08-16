@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\AdminModule\Listener;
+namespace Zikula\AdminModule\Listener;
 
 use ModUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

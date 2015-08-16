@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\AdminModule;
+namespace Zikula\AdminModule;
 
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 

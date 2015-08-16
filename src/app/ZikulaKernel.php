@@ -63,7 +63,7 @@ class ZikulaKernel extends Kernel
 
     private function registerCoreModules(array &$bundles)
     {
-        $bundles[] = new Zikula\Module\AdminModule\ZikulaAdminModule();
+        $bundles[] = new Zikula\AdminModule\ZikulaAdminModule();
         $bundles[] = new Zikula\Module\BlocksModule\ZikulaBlocksModule();
         $bundles[] = new Zikula\Module\CategoriesModule\ZikulaCategoriesModule();
         $bundles[] = new Zikula\Module\ExtensionsModule\ZikulaExtensionsModule();

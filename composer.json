@@ -17,7 +17,8 @@
         },
         "psr-4": {
             "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule",
-            "Zikula\\ThemeModule\\": "src/system/ThemeModule"
+            "Zikula\\ThemeModule\\": "src/system/ThemeModule",
+            "Zikula\\AdminModule\\": "src/system/AdminModule"
         },
         "classmap": [
             "src/lib/util/",

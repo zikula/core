@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\AdminModule\Controller;
+namespace Zikula\AdminModule\Controller;
 
 use Zikula_View;
 use ModUtil;
@@ -396,7 +396,7 @@ class AdminController extends \Zikula_AbstractController
                 }
             }
         }
-        usort($adminlinks, 'Zikula\Module\AdminModule\Controller\AdminController::_sortAdminModsByOrder');
+        usort($adminlinks, 'Zikula\AdminModule\Controller\AdminController::_sortAdminModsByOrder');
         $this->view->assign('adminlinks', $adminlinks);
 
         return new Response($this->view->fetch('Admin/adminpanel.tpl'));
@@ -519,7 +519,7 @@ class AdminController extends \Zikula_AbstractController
                                   'category' => $category));
 
                 if ($result == false) {
-                    /** @var $cat \Zikula\Module\AdminModule\Entity\AdminCategoryEntity */
+                    /** @var $cat \Zikula\AdminModule\Entity\AdminCategoryEntity */
                     $cat = ModUtil::apiFunc($this->name, 'admin', 'getCategory', array('cid' => $category));
                     $request->getSession()->getFlashBag()->add('error', $this->__f('Error! Could not add module %1$s to module category %2$s.', array($adminmodule['name'], $cat->getName())));
                 }
@@ -583,7 +583,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         foreach ($adminlinks as &$item) {
-            usort($item, 'Zikula\Module\AdminModule\Controller\AdminController::_sortAdminModsByOrder');
+            usort($item, 'Zikula\AdminModule\Controller\AdminController::_sortAdminModsByOrder');
         }
 
         $menuoptions = array();

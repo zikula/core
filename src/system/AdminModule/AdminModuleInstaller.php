@@ -11,10 +11,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\AdminModule;
+namespace Zikula\AdminModule;
 
 use DoctrineHelper;
-use Zikula\Module\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
 
 /**
  * Installation and upgrade routines for the admin module
@@ -34,8 +34,8 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
         // create tables
         try {
             DoctrineHelper::createSchema($this->entityManager, array(
-                'Zikula\Module\AdminModule\Entity\AdminCategoryEntity',
-                'Zikula\Module\AdminModule\Entity\AdminModuleEntity',
+                'Zikula\AdminModule\Entity\AdminCategoryEntity',
+                'Zikula\AdminModule\Entity\AdminModuleEntity',
             ));
         } catch (\Exception $e) {
             return false;

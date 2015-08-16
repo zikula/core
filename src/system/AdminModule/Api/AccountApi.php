@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\AdminModule\Api;
+namespace Zikula\AdminModule\Api;
 
 use ModUtil;
 use SecurityUtil;
