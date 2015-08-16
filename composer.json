@@ -16,8 +16,6 @@
             "CustomBundle\\": "src/app/custom"
         },
         "psr-4": {
-            "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule",
-            "Zikula\\ThemeModule\\": "src/system/ThemeModule",
             "Zikula\\AdminModule\\": "src/system/AdminModule",
             "Zikula\\BlocksModule\\": "src/system/BlocksModule",
             "Zikula\\CategoriesModule\\": "src/system/CategoriesModule",
@@ -25,7 +23,9 @@
             "Zikula\\GroupsModule\\": "src/system/GroupsModule",
             "Zikula\\MailerModule\\": "src/system/MailerModule",
             "Zikula\\PageLockModule\\": "src/system/PageLockModule",
-            "Zikula\\PermissionsModule\\": "src/system/PermissionsModule"
+            "Zikula\\PermissionsModule\\": "src/system/PermissionsModule",
+            "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule",
+            "Zikula\\ThemeModule\\": "src/system/ThemeModule"
         },
         "classmap": [
             "src/lib/util/",
