@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SecurityCenterModule;
+namespace Zikula\SecurityCenterModule;
 
 /**
  * Version information for the security centre module

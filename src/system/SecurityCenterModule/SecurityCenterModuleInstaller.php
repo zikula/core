@@ -11,12 +11,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SecurityCenterModule;
+namespace Zikula\SecurityCenterModule;
 
 use System;
 use Zikula_Core;
 use CacheUtil;
-use Zikula\Module\SecurityCenterModule\Util as SecurityCenterUtil;
+use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
 use DoctrineHelper;
 
 /**
@@ -33,7 +33,7 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity'));
+            DoctrineHelper::createSchema($this->entityManager, array('Zikula\SecurityCenterModule\Entity\IntrusionEntity'));
         } catch (\Exception $e) {
             return false;
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2013 - Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -11,13 +11,5 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SecurityCenterModule;
-
-use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
-
-/**
- * Base module definition for the security center module
- */
-class ZikulaSecurityCenterModule extends AbstractCoreModule
-{
-}
+// register event handlers
+EventUtil::attachEventHandler('Zikula\SecurityCenterModule\Listener\FilterListener');

@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SecurityCenterModule\Listener;
+namespace Zikula\SecurityCenterModule\Listener;
 
 use Zikula_Core;
 use System;
@@ -21,9 +21,9 @@ use UserUtil;
 use DateUtil;
 use ModUtil;
 use ServiceUtil;
-use Zikula\Module\SecurityCenterModule\Util as SecurityCenterUtil;
+use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
 use Zikula_Event;
-use Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity;
+use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**

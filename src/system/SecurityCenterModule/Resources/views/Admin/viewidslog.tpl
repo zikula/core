@@ -15,19 +15,19 @@
         <fieldset>
             <legend>{gt text='Filter'}</legend>
             <label>{gt text='User Name'}</label>
-            {selector_object_array entity=1 name='filter[uid]' modname='SecurityCenter' class='Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity' field='uid' displayField='username' selectedValue=$filter.uid defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
+            {selector_object_array entity=1 name='filter[uid]' modname='SecurityCenter' class='Zikula\SecurityCenterModule\Entity\IntrusionEntity' field='uid' displayField='username' selectedValue=$filter.uid defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
             <label>{gt text='Name'}</label>
-            {selector_object_array entity=1 name='filter[name]' modname='SecurityCenter' class='Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity' field='name' displayField='name' selectedValue=$filter.name defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
+            {selector_object_array entity=1 name='filter[name]' modname='SecurityCenter' class='Zikula\SecurityCenterModule\Entity\IntrusionEntity' field='name' displayField='name' selectedValue=$filter.name defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
             <label>{gt text='Tag'}</label>
-            {selector_object_array entity=1 name='filter[tag]' modname='SecurityCenter' class='Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity' field='tag' displayField='tag' selectedValue=$filter.tag defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
+            {selector_object_array entity=1 name='filter[tag]' modname='SecurityCenter' class='Zikula\SecurityCenterModule\Entity\IntrusionEntity' field='tag' displayField='tag' selectedValue=$filter.tag defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
             <label>{gt text='Value'}</label>
-            {selector_object_array entity=1 name='filter[value]' modname='SecurityCenter' class='Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity' field='value' displayField='value' selectedValue=$filter.value defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
+            {selector_object_array entity=1 name='filter[value]' modname='SecurityCenter' class='Zikula\SecurityCenterModule\Entity\IntrusionEntity' field='value' displayField='value' selectedValue=$filter.value defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
             <label>{gt text='Page'}</label>
-            {selector_object_array entity=1 name='filter[page]' modname='SecurityCenter' class='Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity' field='page' displayField='page' selectedValue=$filter.page defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
+            {selector_object_array entity=1 name='filter[page]' modname='SecurityCenter' class='Zikula\SecurityCenterModule\Entity\IntrusionEntity' field='page' displayField='page' selectedValue=$filter.page defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
             <label>{gt text='IP Address'}</label>
-            {selector_object_array entity=1 name='filter[ip]' modname='SecurityCenter' class='Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity' field='ip' displayField='ip' selectedValue=$filter.ip defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
+            {selector_object_array entity=1 name='filter[ip]' modname='SecurityCenter' class='Zikula\SecurityCenterModule\Entity\IntrusionEntity' field='ip' displayField='ip' selectedValue=$filter.ip defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
             <label>{gt text='Impact'}</label>
-            {selector_object_array entity=1 name='filter[impact]' modname='SecurityCenter' class='Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity' field='impact' displayField='impact' selectedValue=$filter.impact defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
+            {selector_object_array entity=1 name='filter[impact]' modname='SecurityCenter' class='Zikula\SecurityCenterModule\Entity\IntrusionEntity' field='impact' displayField='impact' selectedValue=$filter.impact defaultValue='0' defaultText=$lblAll distinct='1' submit='1'}
             {if ($filter.uid || $filter.name || $filter.tag || $filter.value || $filter.page || $filter.ip || $filter.impact)}
             <a href="{route name='zikulasecuritycentermodule_admin_viewidslog'}">{img src='button_cancel.png' modname='core' set='icons/extrasmall' __alt='Clear filter' __title='Clear filter'}</a>
             {/if}

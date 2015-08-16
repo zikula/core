@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SecurityCenterModule\Controller;
+namespace Zikula\SecurityCenterModule\Controller;
 
 use Zikula_View;
 use ModUtil;
@@ -21,7 +21,7 @@ use Zikula_Core;
 use CacheUtil;
 use DataUtil;
 use UserUtil;
-use Zikula\Module\SecurityCenterModule\Util as SecurityCenterUtil;
+use Zikula\SecurityCenterModule\Util as SecurityCenterUtil;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;
