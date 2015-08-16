@@ -115,7 +115,7 @@ class InitStage implements StageInterface, InjectContainerInterface
         foreach ($modules as $module) {
             $path = realpath($kernel->getRootDir() . '/../' . $module['url']);
             if (is_dir($path)) {
-                $meta = \Zikula\Module\ExtensionsModule\Util::getVersionMeta($module['name']);
+                $meta = \Zikula\ExtensionsModule\Util::getVersionMeta($module['name']);
                 $conn->executeQuery("UPDATE modules SET url = '$meta[url]' WHERE id = $modules[id]");
             }
         }
@@ -142,7 +142,7 @@ class InitStage implements StageInterface, InjectContainerInterface
         $installerInstance->upgrade($oldModuleInfo['version']);
         $versionInstance = new \Zikula\Module\UsersModule\UsersModuleVersion($module);
         $metaData = $versionInstance->getMetaData();
-        $item = $this->container->get('doctrine.entitymanager')->getRepository(\Zikula\Module\ExtensionsModule\Api\AdminApi::EXTENSION_ENTITY)->find($oldModuleInfo['id']);
+        $item = $this->container->get('doctrine.entitymanager')->getRepository(\Zikula\ExtensionsModule\Api\AdminApi::EXTENSION_ENTITY)->find($oldModuleInfo['id']);
         $item['version'] = $metaData['version'];
         $item['state'] = \ModUtil::STATE_ACTIVE;
         $this->container->get('doctrine.entitymanager')->flush();

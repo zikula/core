@@ -278,7 +278,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             $categoryEntityClass = 'Zikula_Doctrine2_Entity_Category';
             if (strpos($entityClass, '\\') !== false) {
                 // if using namespaces, use new base class
-                $categoryEntityClass = 'Zikula\Module\CategoriesModule\Entity\CategoryEntity';
+                $categoryEntityClass = 'Zikula\CategoriesModule\Entity\CategoryEntity';
             }
 
             foreach ($selectedValues as $selectedValue) {

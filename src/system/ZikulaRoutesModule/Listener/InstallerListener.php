@@ -82,7 +82,7 @@ class InstallerListener extends BaseInstallerListener
 
         $this->cacheClearer->clear('symfony.routing');
 
-        // dumping the JS routes after module install occurs in \Zikula\Module\ExtensionsModule\Controller\AdminController::viewAction
+        // dumping the JS routes after module install occurs in \Zikula\ExtensionsModule\Controller\AdminController::viewAction
     }
 
     /**

@@ -47,7 +47,7 @@ class CategoryUtil
 
         $lang = ZLanguage::getLanguageCode();
 
-        /** @var \Zikula\Module\CategoriesModule\Entity\CategoryEntity $rootCat */
+        /** @var \Zikula\CategoriesModule\Entity\CategoryEntity $rootCat */
         $rootCat = self::getCategoryByPath($rootPath);
         if (!$rootCat) {
             return LogUtil::registerError(__f("Error! Non-existing root category '%s' received", $rootPath));
@@ -55,7 +55,7 @@ class CategoryUtil
 
         $checkCat = self::getCategoryByPath("$rootPath/$name");
         if (!$checkCat) {
-            $cat = new \Zikula\Module\CategoriesModule\Entity\CategoryEntity();
+            $cat = new \Zikula\CategoriesModule\Entity\CategoryEntity();
             $em = ServiceUtil::get('doctrine.entitymanager');
             $em->persist($cat);
             $data = array();
@@ -158,7 +158,7 @@ class CategoryUtil
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $dql = "SELECT $columns FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c $where $sort";
+        $dql = "SELECT $columns FROM Zikula\CategoriesModule\Entity\CategoryEntity c $where $sort";
         $query = $em->createQuery($dql);
         $categories = $query->getResult();
 
@@ -496,12 +496,12 @@ class CategoryUtil
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $dql = "DELETE FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c WHERE c.id = :cid";
+        $dql = "DELETE FROM Zikula\CategoriesModule\Entity\CategoryEntity c WHERE c.id = :cid";
         $query = $em->createQuery($dql);
         $query->setParameter('cid', $cid);
         $query->getResult();
 
-        $dql = "DELETE FROM Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity a WHERE a.category = :cid";
+        $dql = "DELETE FROM Zikula\CategoriesModule\Entity\CategoryAttributeEntity a WHERE a.category = :cid";
         $query = $em->createQuery($dql);
         $query->setParameter('cid', $cid);
         $query->getResult();
@@ -523,7 +523,7 @@ class CategoryUtil
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $dql = "SELECT c.id FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c WHERE c.$field LIKE :apath";
+        $dql = "SELECT c.id FROM Zikula\CategoriesModule\Entity\CategoryEntity c WHERE c.$field LIKE :apath";
         $query = $em->createQuery($dql);
         $query->setParameter('apath', "{$apath}%");
         $categories = $query->getResult();
@@ -610,7 +610,7 @@ class CategoryUtil
 
         $dql = "
             SELECT c
-            FROM Zikula\Module\CategoriesModule\Entity\CategoryEntity c
+            FROM Zikula\CategoriesModule\Entity\CategoryEntity c
             WHERE c.$pathField = :apath OR c.$pathField LIKE :apathwc";
         $query = $em->createQuery($dql);
         $query->setParameter('apath', $apath);
@@ -626,9 +626,9 @@ class CategoryUtil
 
         $pid = $cats[0]['id'];
         if ($includeRoot) {
-            $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.id = :pid";
+            $dql = "UPDATE Zikula\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.id = :pid";
         } else {
-            $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.parent = :pid";
+            $dql = "UPDATE Zikula\CategoriesModule\Entity\CategoryEntity c SET c.parent = :newparent WHERE c.parent = :pid";
         }
         $query = $em->createQuery($dql);
         $query->setParameter('newparent', $newparent_id);
@@ -769,7 +769,7 @@ class CategoryUtil
             $cat['id'] = '';
             $cat['parent'] = isset($oldToNewID[$cat['parent']['id']]) ? $oldToNewID[$cat['parent']['id']] : $em->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
 
-            $catObj = new Zikula\Module\CategoriesModule\Entity\CategoryEntity;
+            $catObj = new Zikula\CategoriesModule\Entity\CategoryEntity;
             $catObj->merge($cat);
             $em->persist($catObj);
             $em->flush();
@@ -971,10 +971,10 @@ class CategoryUtil
     /**
      * create a JSON formatted object compatible with jsTree node structure for one category (includes children)
      *
-     * @param \Zikula\Module\CategoriesModule\Entity\CategoryEntity $category
+     * @param \Zikula\CategoriesModule\Entity\CategoryEntity $category
      * @return array
      */
-    public static function getJsTreeNodeFromCategory(\Zikula\Module\CategoriesModule\Entity\CategoryEntity $category)
+    public static function getJsTreeNodeFromCategory(\Zikula\CategoriesModule\Entity\CategoryEntity $category)
     {
         $lang = ZLanguage::getLanguageCode();
         return array(
@@ -1598,7 +1598,7 @@ class CategoryUtil
 
             foreach ($cats as $k => $v) {
                 if (isset($v[$field]) && isset($paths[$k]) && ($v[$field] != $paths[$k])) {
-                    $dql = "UPDATE Zikula\Module\CategoriesModule\Entity\CategoryEntity c SET c.$field = :path WHERE c.id = :id";
+                    $dql = "UPDATE Zikula\CategoriesModule\Entity\CategoryEntity c SET c.$field = :path WHERE c.id = :id";
                     $query = $em->createQuery($dql);
                     $query->setParameter('path', $paths[$k]);
                     $query->setParameter('id', $k);

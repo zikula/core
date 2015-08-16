@@ -19,7 +19,9 @@
             "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule",
             "Zikula\\ThemeModule\\": "src/system/ThemeModule",
             "Zikula\\AdminModule\\": "src/system/AdminModule",
-            "Zikula\\BlocksModule\\": "src/system/BlocksModule"
+            "Zikula\\BlocksModule\\": "src/system/BlocksModule",
+            "Zikula\\CategoriesModule\\": "src/system/CategoriesModule",
+            "Zikula\\ExtensionsModule\\": "src/system/ExtensionsModule"
         },
         "classmap": [
             "src/lib/util/",
