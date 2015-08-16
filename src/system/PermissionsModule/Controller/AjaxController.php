@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\PermissionsModule\Controller;
+namespace Zikula\PermissionsModule\Controller;
 
 use SecurityUtil;
 use ModUtil;

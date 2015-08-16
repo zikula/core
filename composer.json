@@ -24,7 +24,8 @@
             "Zikula\\ExtensionsModule\\": "src/system/ExtensionsModule",
             "Zikula\\GroupsModule\\": "src/system/GroupsModule",
             "Zikula\\MailerModule\\": "src/system/MailerModule",
-            "Zikula\\PageLockModule\\": "src/system/PageLockModule"
+            "Zikula\\PageLockModule\\": "src/system/PageLockModule",
+            "Zikula\\PermissionsModule\\": "src/system/PermissionsModule"
         },
         "classmap": [
             "src/lib/util/",

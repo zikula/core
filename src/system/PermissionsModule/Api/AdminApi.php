@@ -11,12 +11,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\PermissionsModule\Api;
+namespace Zikula\PermissionsModule\Api;
 
 use SecurityUtil;
 use BlockUtil;
 use ModUtil;
-use Zikula\Module\PermissionsModule\Entity\PermissionEntity;
+use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**

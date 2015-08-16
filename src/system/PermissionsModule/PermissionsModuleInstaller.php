@@ -11,9 +11,9 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\PermissionsModule;
+namespace Zikula\PermissionsModule;
 
-use Zikula\Module\PermissionsModule\Entity\PermissionEntity;
+use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 /**
  * Installation and upgrade routines for the permissions module
@@ -32,7 +32,7 @@ class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            \DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\PermissionsModule\Entity\PermissionEntity'));
+            \DoctrineHelper::createSchema($this->entityManager, array('Zikula\PermissionsModule\Entity\PermissionEntity'));
         } catch (\Exception $e) {
             return false;
         }
