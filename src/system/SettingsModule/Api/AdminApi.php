@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SettingsModule\Api;
+namespace Zikula\SettingsModule\Api;
 
 use ZLanguage;
 use ModUtil;

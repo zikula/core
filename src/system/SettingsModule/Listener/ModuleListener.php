@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SettingsModule\Listener;
+namespace Zikula\SettingsModule\Listener;
 
 use LogUtil;
 use ModUtil;

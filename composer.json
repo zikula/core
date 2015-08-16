@@ -27,6 +27,7 @@
             "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule",
             "Zikula\\SearchModule\\": "src/system/SearchModule",
             "Zikula\\SecurityCenterModule\\": "src/system/SecurityCenterModule",
+            "Zikula\\SettingsModule\\": "src/system/SettingsModule",
             "Zikula\\ThemeModule\\": "src/system/ThemeModule"
         },
         "classmap": [

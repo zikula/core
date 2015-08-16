@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SettingsModule\Controller;
+namespace Zikula\SettingsModule\Controller;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula_View;

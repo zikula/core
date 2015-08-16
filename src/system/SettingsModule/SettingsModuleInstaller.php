@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SettingsModule;
+namespace Zikula\SettingsModule;
 
 use System;
 use Zikula_Core;
@@ -117,9 +117,9 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
          */
         try {
             DoctrineHelper::createSchema($this->entityManager, array(
-                'Zikula\Module\SettingsModule\Entity\ObjectdataAttributes',
-                'Zikula\Module\SettingsModule\Entity\ObjectdataLog',
-                'Zikula\Module\SettingsModule\Entity\ObjectdataMeta',
+                'Zikula\SettingsModule\Entity\ObjectdataAttributes',
+                'Zikula\SettingsModule\Entity\ObjectdataLog',
+                'Zikula\SettingsModule\Entity\ObjectdataMeta',
             ));
         } catch (\Exception $e) {
             return false;
@@ -146,7 +146,7 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '2.9.7':
-                EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\Module\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
 
             case '2.9.8':
                 $permasearch = System::getVar('permasearch');

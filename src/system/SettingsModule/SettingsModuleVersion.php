@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SettingsModule;
+namespace Zikula\SettingsModule;
 
 /**
  * Version information for the settings module
