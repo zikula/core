@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SearchModule;
+namespace Zikula\SearchModule;
 
 use LogUtil;
 use DoctrineHelper;
@@ -34,8 +34,8 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         // create schema
         try {
             DoctrineHelper::createSchema($this->entityManager, array(
-                'Zikula\Module\SearchModule\Entity\SearchResultEntity',
-                'Zikula\Module\SearchModule\Entity\SearchStatEntity',
+                'Zikula\SearchModule\Entity\SearchResultEntity',
+                'Zikula\SearchModule\Entity\SearchStatEntity',
             ));
         } catch (\Exception $e) {
             return false;
@@ -72,7 +72,7 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
                 // update schema
                 try {
                     DoctrineHelper::updateSchema($this->entityManager, array(
-                        'Zikula\Module\SearchModule\Entity\SearchResultEntity',
+                        'Zikula\SearchModule\Entity\SearchResultEntity',
                     ));
                 } catch (\Exception $e) {
                     return LogUtil::registerError($e->getMessage());
@@ -81,7 +81,7 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
                 // update schema
                 try {
                     DoctrineHelper::updateSchema($this->entityManager, array(
-                        'Zikula\Module\SearchModule\Entity\SearchResultEntity',
+                        'Zikula\SearchModule\Entity\SearchResultEntity',
                     ));
                 } catch (\Exception $e) {
                     return LogUtil::registerError($e->getMessage());
@@ -106,8 +106,8 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
     {
         try {
             DoctrineHelper::dropSchema($this->entityManager, array(
-                'Zikula\Module\SearchModule\Entity\SearchResultEntity',
-                'Zikula\Module\SearchModule\Entity\SearchStatEntity',
+                'Zikula\SearchModule\Entity\SearchResultEntity',
+                'Zikula\SearchModule\Entity\SearchStatEntity',
             ));
         } catch (\Exception $e) {
             return false;

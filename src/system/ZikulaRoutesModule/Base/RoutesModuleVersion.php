@@ -16,7 +16,7 @@ use HookUtil;
 use Zikula_AbstractVersion;
 use Zikula\Component\HookDispatcher\ProviderBundle;
 use Zikula\Component\HookDispatcher\SubscriberBundle;
-use Zikula\Module\SearchModule\AbstractSearchable;
+use Zikula\SearchModule\AbstractSearchable;
 
 /**
  * Version information base class.

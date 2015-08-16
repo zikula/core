@@ -15,7 +15,7 @@ namespace Zikula\Module\UsersModule;
 
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use HookUtil;
-use Zikula\Module\SearchModule\AbstractSearchable;
+use Zikula\SearchModule\AbstractSearchable;
 use Zikula_HookManager_SubscriberBundle;
 
 /**

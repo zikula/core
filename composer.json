@@ -25,6 +25,7 @@
             "Zikula\\PageLockModule\\": "src/system/PageLockModule",
             "Zikula\\PermissionsModule\\": "src/system/PermissionsModule",
             "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule",
+            "Zikula\\SearchModule\\": "src/system/SearchModule",
             "Zikula\\ThemeModule\\": "src/system/ThemeModule"
         },
         "classmap": [

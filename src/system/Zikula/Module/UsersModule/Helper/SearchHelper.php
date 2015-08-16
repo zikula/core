@@ -13,7 +13,7 @@
 
 namespace Zikula\Module\UsersModule\Helper;
 
-use Zikula\Module\SearchModule\AbstractSearchable;
+use Zikula\SearchModule\AbstractSearchable;
 use SecurityUtil;
 use System;
 use Zikula\Module\UsersModule\Constant as UsersConstant;

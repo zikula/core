@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SearchModule\Controller;
+namespace Zikula\SearchModule\Controller;
 
 use ModUtil;
 use SecurityUtil;
@@ -25,7 +25,7 @@ use Zikula\Core\Response\PlainResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Zikula\Module\SearchModule\AbstractSearchable;
+use Zikula\SearchModule\AbstractSearchable;
 
 /**
  * User controllers for the search module

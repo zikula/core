@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SearchModule\Api;
+namespace Zikula\SearchModule\Api;
 
 use ModUtil;
 use SecurityUtil;

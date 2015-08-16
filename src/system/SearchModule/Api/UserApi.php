@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SearchModule\Api;
+namespace Zikula\SearchModule\Api;
 
 use ModUtil;
 use UserUtil;
@@ -21,10 +21,10 @@ use DataUtil;
 use Zikula\Core\ModUrl;
 use ZLanguage;
 use SecurityUtil;
-use Zikula\Module\SearchModule\ResultHelper;
-use Zikula\Module\SearchModule\Entity\SearchStatEntity;
-use Zikula\Module\SearchModule\AbstractSearchable;
-use Zikula\Module\SearchModule\Entity\SearchResultEntity;
+use Zikula\SearchModule\ResultHelper;
+use Zikula\SearchModule\Entity\SearchStatEntity;
+use Zikula\SearchModule\AbstractSearchable;
+use Zikula\SearchModule\Entity\SearchResultEntity;
 
 /**
  * API's used by user controllers
@@ -77,7 +77,7 @@ class UserApi extends \Zikula_AbstractApi
         if ($firstPage) {
             // Clear current search result for current user - before showing the first page
             // Clear also older searches from other users.
-            $query = $this->entityManager->createQuery("DELETE Zikula\Module\SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid OR DATE_ADD(s.found, 1, 'DAY') < CURRENT_TIMESTAMP()");
+            $query = $this->entityManager->createQuery("DELETE Zikula\SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid OR DATE_ADD(s.found, 1, 'DAY') < CURRENT_TIMESTAMP()");
             $query->setParameter('sid', $sessionId);
             $query->execute();
 

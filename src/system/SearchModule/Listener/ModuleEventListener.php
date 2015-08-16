@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SearchModule\Listener;
+namespace Zikula\SearchModule\Listener;
 
 use ModUtil;
 use BlockUtil;

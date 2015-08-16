@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\SearchModule;
+namespace Zikula\SearchModule;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Core\AbstractModule;
