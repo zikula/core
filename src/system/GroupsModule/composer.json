@@ -10,14 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Zikula\\Module\\GroupsModule\\": "" }
+        "psr-4": { "Zikula\\GroupsModule\\": "" }
     },
     "require": {
         "php": ">5.4.0"
     },
     "extra": {
         "zikula": {
-            "class": "Zikula\\Module\\GroupsModule\\ZikulaGroupsModule"
+            "class": "Zikula\\GroupsModule\\ZikulaGroupsModule"
         }
     }
 }

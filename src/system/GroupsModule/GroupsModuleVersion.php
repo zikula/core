@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\GroupsModule;
+namespace Zikula\GroupsModule;
 
 /**
  * Version information for the groups module

@@ -11,12 +11,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\GroupsModule\Controller;
+namespace Zikula\GroupsModule\Controller;
 
 use Zikula_View;
 use ModUtil;
 use SecurityUtil;
-use Zikula\Module\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Helper\CommonHelper;
 use UserUtil;
 use Users_Constant;
 use System;

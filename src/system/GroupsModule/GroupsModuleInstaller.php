@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\GroupsModule;
+namespace Zikula\GroupsModule;
 
 use DoctrineHelper;
 
@@ -29,9 +29,9 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create tables
         $classes = array(
-            'Zikula\Module\GroupsModule\Entity\GroupEntity',
-            'Zikula\Module\GroupsModule\Entity\GroupMembershipEntity',
-            'Zikula\Module\GroupsModule\Entity\GroupApplicationEntity'
+            'Zikula\GroupsModule\Entity\GroupEntity',
+            'Zikula\GroupsModule\Entity\GroupMembershipEntity',
+            'Zikula\GroupsModule\Entity\GroupApplicationEntity'
         );
 
         try {
@@ -104,7 +104,7 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
         );
 
         foreach ($records as $record) {
-            $item = new \Zikula\Module\GroupsModule\Entity\GroupEntity;
+            $item = new \Zikula\GroupsModule\Entity\GroupEntity;
             $item['name'] = $record['name'];
             $item['description'] = $record['description'];
             $item['prefix'] = $record['prefix'];
@@ -126,7 +126,7 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
         );
 
         foreach ($records as $record) {
-            $item = new \Zikula\Module\GroupsModule\Entity\GroupMembershipEntity;
+            $item = new \Zikula\GroupsModule\Entity\GroupMembershipEntity;
             $item['gid'] = $record['gid'];
             $item['uid'] = $record['uid'];
             $this->entityManager->persist($item);

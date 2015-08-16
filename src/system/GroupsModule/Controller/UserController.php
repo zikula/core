@@ -11,13 +11,13 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\GroupsModule\Controller;
+namespace Zikula\GroupsModule\Controller;
 
 use ModUtil;
 use SecurityUtil;
 use UserUtil;
 use Zikula_View;
-use Zikula\Module\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Helper\CommonHelper;
 use DataUtil;
 use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;

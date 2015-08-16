@@ -11,12 +11,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\GroupsModule\Api;
+namespace Zikula\GroupsModule\Api;
 
 use Zikula\Core\Event\GenericEvent;
-use Zikula\Module\GroupsModule\Helper\CommonHelper;
-use Zikula\Module\GroupsModule\Entity\GroupApplicationEntity;
-use Zikula\Module\GroupsModule\Entity\GroupMembershipEntity;
+use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Entity\GroupApplicationEntity;
+use Zikula\GroupsModule\Entity\GroupMembershipEntity;
 use SecurityUtil;
 use UserUtil;
 use ModUtil;

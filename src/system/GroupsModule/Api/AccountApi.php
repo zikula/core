@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\GroupsModule\Api;
+namespace Zikula\GroupsModule\Api;
 
 use ModUtil;
 

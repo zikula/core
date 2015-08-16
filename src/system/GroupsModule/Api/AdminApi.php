@@ -11,12 +11,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\GroupsModule\Api;
+namespace Zikula\GroupsModule\Api;
 
 use Zikula\Core\Event\GenericEvent;
-use Zikula\Module\GroupsModule\Entity\GroupEntity;
-use Zikula\Module\GroupsModule\Entity\GroupMembershipEntity;
-use Zikula\Module\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\Entity\GroupMembershipEntity;
+use Zikula\GroupsModule\Helper\CommonHelper;
 use SecurityUtil;
 use Zikula;
 use ModUtil;
@@ -394,7 +394,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('g')
-           ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g');
+           ->from('Zikula\GroupsModule\Entity\GroupEntity', 'g');
 
         // add clause for filtering name
         $qb->andWhere($qb->expr()->eq('g.gid', ':ggid'))->setParameter('ggid', $args['gid']);

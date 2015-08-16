@@ -21,7 +21,8 @@
             "Zikula\\AdminModule\\": "src/system/AdminModule",
             "Zikula\\BlocksModule\\": "src/system/BlocksModule",
             "Zikula\\CategoriesModule\\": "src/system/CategoriesModule",
-            "Zikula\\ExtensionsModule\\": "src/system/ExtensionsModule"
+            "Zikula\\ExtensionsModule\\": "src/system/ExtensionsModule",
+            "Zikula\\GroupsModule\\": "src/system/GroupsModule"
         },
         "classmap": [
             "src/lib/util/",

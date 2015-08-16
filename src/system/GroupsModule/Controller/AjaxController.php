@@ -11,12 +11,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\GroupsModule\Controller;
+namespace Zikula\GroupsModule\Controller;
 
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\Core\Response\Ajax\FatalResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
-use Zikula\Module\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Helper\CommonHelper;
 use SecurityUtil;
 use ModUtil;
 use LogUtil;
