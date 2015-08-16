@@ -8,7 +8,6 @@
     "autoload": {
         "psr-0": {
             "Zikula\\Module\\": "src/system",
-            "Zikula\\Composer\\": "src/system",
             "Zikula\\Theme\\": "src/themes",
             "Zikula\\": "src/lib",
             "Zikula_": "src/lib/legacy",
