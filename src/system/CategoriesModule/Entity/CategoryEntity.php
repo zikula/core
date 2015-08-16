@@ -152,7 +152,7 @@ class CategoryEntity extends EntityAccess
      * The user id of the creator of the category
      *     
      * @Gedmo\Blameable(on="create")
-     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
      */
     private $cr_uid;
@@ -161,7 +161,7 @@ class CategoryEntity extends EntityAccess
      * The user id of the last updater of the category
      *     
      * @Gedmo\Blameable(on="update")
-     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
      */
     private $lu_uid;

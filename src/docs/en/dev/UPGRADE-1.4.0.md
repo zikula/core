@@ -794,7 +794,7 @@ The Api/methodology for the search module has changed. The previous method of us
 fully functional) in favor of a dedicated class that is identified in the Version file's `capabilities` area, like so:
 
 ```php
-$meta['capabilities'][AbstractSearchable::SEARCHABLE] = array('class' => 'Zikula\Module\UsersModule\Helper\SearchHelper');
+$meta['capabilities'][AbstractSearchable::SEARCHABLE] = array('class' => 'Zikula\UsersModule\Helper\SearchHelper');
 ```
 
 The `class` key must point to a helper class that extends `Zikula\SearchModule\AbstractSearchable` and defines

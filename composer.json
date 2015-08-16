@@ -28,7 +28,8 @@
             "Zikula\\SearchModule\\": "src/system/SearchModule",
             "Zikula\\SecurityCenterModule\\": "src/system/SecurityCenterModule",
             "Zikula\\SettingsModule\\": "src/system/SettingsModule",
-            "Zikula\\ThemeModule\\": "src/system/ThemeModule"
+            "Zikula\\ThemeModule\\": "src/system/ThemeModule",
+            "Zikula\\UsersModule\\": "src/system/UsersModule"
         },
         "classmap": [
             "src/lib/util/",

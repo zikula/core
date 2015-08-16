@@ -1332,8 +1332,8 @@ class ObjectUtil
             $prop['attributes'] = isset($prop['attributes']) && ($prop['attributes'] instanceof \Doctrine\ORM\PersistentCollection) ? $prop['attributes']->toArray() : array();
             $prop['cr_date'] = isset($prop['cr_date']) && ($prop['cr_date'] instanceof \DateTime) ? $prop['cr_date']->format("Y-m-d H:i:s") : $prop['cr_date'];
             $prop['lu_date'] = isset($prop['lu_date']) && ($prop['lu_date'] instanceof \DateTime) ? $prop['lu_date']->format("Y-m-d H:i:s") : $prop['lu_date'];
-            $prop['cr_uid'] = isset($prop['cr_uid']) && ($prop['cr_uid'] instanceof \Zikula\Module\UsersModule\Entity\UserEntity) ? $prop['cr_uid']->getUid() : $prop['cr_uid'];
-            $prop['lu_uid'] = isset($prop['lu_uid']) && ($prop['lu_uid'] instanceof \Zikula\Module\UsersModule\Entity\UserEntity) ? $prop['lu_uid']->getUid() : $prop['lu_uid'];
+            $prop['cr_uid'] = isset($prop['cr_uid']) && ($prop['cr_uid'] instanceof \Zikula\UsersModule\Entity\UserEntity) ? $prop['cr_uid']->getUid() : $prop['cr_uid'];
+            $prop['lu_uid'] = isset($prop['lu_uid']) && ($prop['lu_uid'] instanceof \Zikula\UsersModule\Entity\UserEntity) ? $prop['lu_uid']->getUid() : $prop['lu_uid'];
         }
 
     }

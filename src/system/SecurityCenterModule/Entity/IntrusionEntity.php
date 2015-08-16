@@ -74,7 +74,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * user id assoicated with the intrusion
      *
-     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="uid", referencedColumnName="uid")
      */
     private $user;
@@ -217,7 +217,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * Set user
      *
-     * @param \Zikula\Module\UsersModule\Entity\UserEntity $user
+     * @param \Zikula\UsersModule\Entity\UserEntity $user
      * @return IntrusionEntity
      */
     public function setUser($user)
@@ -229,7 +229,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * Get user
      *
-     * @return \Zikula\Module\UsersModule\Entity\UserEntity
+     * @return \Zikula\UsersModule\Entity\UserEntity
      */
     public function getUser()
     {

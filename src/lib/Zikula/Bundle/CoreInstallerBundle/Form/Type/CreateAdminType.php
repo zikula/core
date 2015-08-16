@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Module\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 class CreateAdminType extends AbstractType
 {

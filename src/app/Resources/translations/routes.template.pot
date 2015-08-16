@@ -1124,15 +1124,15 @@ msgstr ""
 msgid "zikulausersmodule_user_confirmchemail"
 msgstr ""
 # Desc: /useraccount
-# Meaning: Route Controller and method: Zikula\Module\UsersModule\Controller\UserController::indexAction
+# Meaning: Route Controller and method: Zikula\UsersModule\Controller\UserController::indexAction
 msgid "zikulausersmodule_user_index"
 msgstr ""
 # Desc: /login
-# Meaning: Route Controller and method: Zikula\Module\UsersModule\Controller\UserController::loginAction
+# Meaning: Route Controller and method: Zikula\UsersModule\Controller\UserController::loginAction
 msgid "zikulausersmodule_user_login"
 msgstr ""
 # Desc: /logout
-# Meaning: Route Controller and method: Zikula\Module\UsersModule\Controller\UserController::logoutAction
+# Meaning: Route Controller and method: Zikula\UsersModule\Controller\UserController::logoutAction
 msgid "zikulausersmodule_user_logout"
 msgstr ""
 # Desc: /lost-password
@@ -1152,7 +1152,7 @@ msgstr ""
 msgid "zikulausersmodule_user_lostuname"
 msgstr ""
 # Desc: /register
-# Meaning: Route Controller and method: Zikula\Module\UsersModule\Controller\UserController::registerAction
+# Meaning: Route Controller and method: Zikula\UsersModule\Controller\UserController::registerAction
 msgid "zikulausersmodule_user_register"
 msgstr ""
 # Desc: /email/update

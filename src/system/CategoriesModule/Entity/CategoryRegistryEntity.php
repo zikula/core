@@ -71,7 +71,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The user id of the creator of this entity
      *
      * @Gedmo\Blameable(on="create")
-     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
      */
     protected $cr_uid;
@@ -80,7 +80,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The user id of the last update of this entity
      *
      * @Gedmo\Blameable(on="update")
-     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
      */
     protected $lu_uid;

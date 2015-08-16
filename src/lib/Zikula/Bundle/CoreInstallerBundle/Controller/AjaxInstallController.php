@@ -24,7 +24,7 @@ use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper as CoreBundleBootstrapHelper;
 use Zikula\ExtensionsModule\Api\AdminApi as ExtensionsAdminApi;
 use Zikula\ExtensionsModule\ZikulaExtensionsModule;
-use Zikula\Module\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\CoreEvents;
@@ -242,7 +242,7 @@ class AjaxInstallController extends AbstractController
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
 
-        /** @var \Zikula\Module\UsersModule\Entity\UserEntity $entity */
+        /** @var \Zikula\UsersModule\Entity\UserEntity $entity */
         $entity = $em->find('ZikulaUsersModule:UserEntity', 2);
         $entity->setUname($username);
         $entity->setEmail($params['email']);
