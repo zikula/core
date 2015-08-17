@@ -130,6 +130,7 @@ class AjaxUpgradeController extends AbstractController
     {
         // force load the modules admin API
         \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
+        // this also regenerates all the modules
         return \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgradeall');
         // returns array(array(modname => boolean))
     }
