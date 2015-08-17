@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\RssTheme;
+namespace Zikula\RssTheme;
 
 class RssThemeVersion extends \Zikula_AbstractThemeVersion
 {

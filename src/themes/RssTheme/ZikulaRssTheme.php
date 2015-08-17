@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\RssTheme;
+namespace Zikula\RssTheme;
 
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 
