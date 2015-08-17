@@ -13,7 +13,7 @@
             "CustomBundle\\": "src/app/custom"
         },
         "psr-4": {
-            "Zikula\\": "src/system"
+            "Zikula\\": ["src/system", "src/themes"]
         },
         "classmap": [
             "src/lib/util/",
