@@ -15,7 +15,7 @@
 !/src/modules/acme-example
 /src/themes/*
 !/src/themes/Andreas08Theme
-!/src/themes/Zikula/Theme/AtomTheme
+!/src/themes/AtomTheme
 !/src/themes/Zikula/Theme/BootstrapTheme
 !/src/themes/Zikula/Theme/MobileTheme
 !/src/themes/Zikula/Theme/PrinterTheme

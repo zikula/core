@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\AtomTheme;
+namespace Zikula\AtomTheme;
 
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 

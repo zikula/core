@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\AtomTheme;
+namespace Zikula\AtomTheme;
 
 class AtomThemeVersion extends \Zikula_AbstractThemeVersion
 {
