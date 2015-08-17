@@ -291,7 +291,7 @@ class AjaxInstallController extends AbstractController
         // add admin email as site email
         \System::setVar('adminmail', $params['email']);
         // regenerate the theme list
-        \Zikula\Module\ThemeModule\Util::regenerate();
+        \Zikula\ThemeModule\Util::regenerate();
 
         // add remaining parameters and remove unneeded ones
         unset($params['username'], $params['password'], $params['email'], $params['dbtabletype']);

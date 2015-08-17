@@ -17,7 +17,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Zikula\Module\ThemeModule\Util as ThemeUtil;
+use Zikula\ThemeModule\Util as ThemeUtil;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 
 /**
