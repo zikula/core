@@ -5,7 +5,7 @@ Zikula bootstrap theme
 
 Installation
 ------------
-1. Copy the files to src/themes/Zikula/Theme/
+1. Copy the files to src/themes/
 2. Activate the Theme in the theme settings
 
 Already migrated components

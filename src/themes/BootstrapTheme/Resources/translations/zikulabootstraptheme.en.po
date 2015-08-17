@@ -1,0 +1,10 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+
+msgid "Bootstrap"
+msgstr "Bootstrap"
+msgid "Bootstrap testing version. Based on Andreas 08."
+msgstr "Bootstrap testing version. Based on Andreas 08."

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\BootstrapTheme;
+namespace Zikula\BootstrapTheme;
 
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 

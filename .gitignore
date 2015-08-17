@@ -16,7 +16,7 @@
 /src/themes/*
 !/src/themes/Andreas08Theme
 !/src/themes/AtomTheme
-!/src/themes/Zikula/Theme/BootstrapTheme
+!/src/themes/BootstrapTheme
 !/src/themes/Zikula/Theme/MobileTheme
 !/src/themes/Zikula/Theme/PrinterTheme
 !/src/themes/Zikula/Theme/RssTheme

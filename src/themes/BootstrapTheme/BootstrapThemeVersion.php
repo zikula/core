@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\BootstrapTheme;
+namespace Zikula\BootstrapTheme;
 
 class BootstrapThemeVersion extends \Zikula_AbstractThemeVersion
 {
