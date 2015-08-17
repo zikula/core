@@ -17,8 +17,7 @@
 !/src/themes/Andreas08Theme
 !/src/themes/AtomTheme
 !/src/themes/BootstrapTheme
-!/src/themes/Zikula/Theme/MobileTheme
-!/src/themes/Zikula/Theme/PrinterTheme
+!/src/themes/PrinterTheme
 !/src/themes/Zikula/Theme/RssTheme
 !/src/themes/SeaBreezeTheme
 /src/app/Resources/locale/*

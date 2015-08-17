@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\PrinterTheme;
+namespace Zikula\PrinterTheme;
 
 class PrinterThemeVersion extends \Zikula_AbstractThemeVersion
 {

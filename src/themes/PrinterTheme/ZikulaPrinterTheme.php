@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\PrinterTheme;
+namespace Zikula\PrinterTheme;
 
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 
