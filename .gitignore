@@ -14,13 +14,12 @@
 /src/modules/*
 !/src/modules/acme-example
 /src/themes/*
-!/src/themes/Zikula/Theme/Andreas08Theme
+!/src/themes/Andreas08Theme
 !/src/themes/Zikula/Theme/AtomTheme
 !/src/themes/Zikula/Theme/BootstrapTheme
 !/src/themes/Zikula/Theme/MobileTheme
 !/src/themes/Zikula/Theme/PrinterTheme
 !/src/themes/Zikula/Theme/RssTheme
-!/src/themes/Zikula/Theme/SeaBreezeTheme
 !/src/themes/SeaBreezeTheme
 /src/app/Resources/locale/*
 !/src/app/Resources/locale/en

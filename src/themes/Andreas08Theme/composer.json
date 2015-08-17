@@ -10,14 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Zikula\\Theme\\Andreas08Theme\\": "" }
+        "psr-4": { "Zikula\\Andreas08Theme\\": "" }
     },
     "require": {
         "php": ">=5.4.1"
     },
     "extra": {
         "zikula" : {
-            "class": "Zikula\\Theme\\Andreas08Theme\\ZikulaAndreas08Theme"
+            "class": "Zikula\\Andreas08Theme\\ZikulaAndreas08Theme"
         }
     }
 }

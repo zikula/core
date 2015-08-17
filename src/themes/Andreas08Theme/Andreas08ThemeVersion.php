@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\Andreas08Theme;
+namespace Zikula\Andreas08Theme;
 
 class Andreas08ThemeVersion extends \Zikula_AbstractThemeVersion
 {
