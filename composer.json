@@ -7,7 +7,6 @@
     "prefer-stable": true,
     "autoload": {
         "psr-0": {
-            "Zikula\\Theme\\": "src/themes",
             "Zikula\\": "src/lib",
             "Zikula_": "src/lib/legacy",
             "DoctrineExtensions\\StandardFields\\": "src/lib/legacy",
