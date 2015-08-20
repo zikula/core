@@ -15,9 +15,11 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Theme\AssetBag;
 use Zikula\Core\Theme\Engine;
@@ -26,13 +28,15 @@ use Zikula_View_Theme;
 
 class ThemeListener implements EventSubscriberInterface
 {
+    private $loader;
     private $themeEngine;
     private $cssAssetBag;
     private $jsAssetBag;
     private $pageVars;
 
-    function __construct(Engine $themeEngine, AssetBag $jsAssetBag, AssetBag $cssAssetBag, ParameterBag $pageVars)
+    function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine, AssetBag $jsAssetBag, AssetBag $cssAssetBag, ParameterBag $pageVars)
     {
+        $this->loader = $loader;
         $this->themeEngine = $themeEngine;
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
@@ -115,6 +119,33 @@ class ThemeListener implements EventSubscriberInterface
         ));
     }
 
+    /**
+     * Add ThemePath to searchable paths when locating templates using name-spaced scheme
+     * @param FilterControllerEvent $event
+     * @throws \Twig_Error_Loader
+     */
+    public function setUpThemePathOverrides(FilterControllerEvent $event)
+    {
+        // add theme path to template locator
+        // This 'twig.loader' functions only when @Bundle/template (name-spaced) name-scheme is used
+        // if old name-scheme (Bundle:template) or controller annotations (@Template) are used
+        // the \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::locateResource method is used instead
+        $controller = $event->getController()[0];
+        if ($controller instanceof AbstractController) {
+            $theme = $this->themeEngine->getTheme();
+            $bundleName = $controller->getName();
+            if ($theme) {
+                $overridePath = $theme->getPath() . '/Resources/' . $bundleName . '/views';
+                if (is_readable($overridePath)) {
+                    $paths = $this->loader->getPaths($bundleName);
+                    // inject themeOverridePath before the original path in the array
+                    array_splice($paths, count($paths) - 1, 0, array($overridePath));
+                    $this->loader->setPaths($paths, $bundleName);
+                }
+            }
+        }
+    }
+
     public static function getSubscribedEvents()
     {
         return array(
@@ -123,6 +154,7 @@ class ThemeListener implements EventSubscriberInterface
                 array('setThemeEngineRequestAttributes'),
                 array('setDefaultPageAssets', 201),
             ),
+            KernelEvents::CONTROLLER => array(array('setUpThemePathOverrides')),
         );
     }
 }

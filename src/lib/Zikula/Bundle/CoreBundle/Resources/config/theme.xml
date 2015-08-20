@@ -34,6 +34,7 @@
         <service id="zikula.theme_listener" class="%zikula.theme_listener.class%">
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
+            <argument type="service" id="twig.loader" />
             <argument type="service" id="zikula_core.common.theme_engine" />
             <argument type="service" id="zikula_core.common.theme.assets_js" />
             <argument type="service" id="zikula_core.common.theme.assets_css" />

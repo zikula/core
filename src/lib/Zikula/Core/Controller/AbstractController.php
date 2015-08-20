@@ -163,6 +163,11 @@ abstract class AbstractController extends Controller
         return new AccessDeniedException($message, $previous);
     }
 
+    public function getName()
+    {
+        return $this->name;
+    }
+
     /**
      * singular translation for modules.
      *
