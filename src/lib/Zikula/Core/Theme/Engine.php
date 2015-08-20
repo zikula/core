@@ -42,12 +42,12 @@ class Engine
      */
     public function __construct(RequestStack $requestStack, $filter)
     {
-        $request = $requestStack->getCurrentRequest();
-        if (!empty($request)) {
-            $themeName = $this->setActiveTheme($request);
-            // @todo remove usage of ThemeUtil class
-            $this->themeBundle = \ThemeUtil::getTheme($themeName);
-            $this->setRequestAttributes($request);
+        // set a system theme as default before resetting it from Request
+        // without a default, the cache doesn't rebuild without error
+        // @todo it would be better if this was unnecessary
+        $this->themeBundle = \ThemeUtil::getTheme('ZikulaSpecTheme');
+        if (null !== $requestStack->getCurrentRequest()) {
+            $this->setRequestAttributes($requestStack->getCurrentRequest());
         }
         $this->filterService = $filter;
     }
@@ -59,6 +59,9 @@ class Engine
      */
     public function setRequestAttributes(Request $request)
     {
+        $themeName = $this->setActiveTheme($request);
+        // @todo remove usage of ThemeUtil class
+        $this->themeBundle = \ThemeUtil::getTheme($themeName);
         $this->requestAttributes = $request->attributes->all();
         $this->requestAttributes['pathInfo'] = $request->getPathInfo();
     }
