@@ -151,7 +151,7 @@ class ThemeListener implements EventSubscriberInterface
         return array(
             KernelEvents::RESPONSE => array(array('onKernelResponse')),
             KernelEvents::REQUEST => array(
-                array('setThemeEngineRequestAttributes'),
+                array('setThemeEngineRequestAttributes', 32),
                 array('setDefaultPageAssets', 201),
             ),
             KernelEvents::CONTROLLER => array(array('setUpThemePathOverrides')),

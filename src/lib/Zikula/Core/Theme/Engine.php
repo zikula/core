@@ -25,7 +25,7 @@ class Engine
     /**
      * @var \Zikula\Core\AbstractTheme
      */
-    private $themeBundle = null;
+    private $activeThemeBundle = null;
     private $realm;
     /**
      * flag indicating whether the theme has been overridden by Response type
@@ -42,10 +42,6 @@ class Engine
      */
     public function __construct(RequestStack $requestStack, $filter)
     {
-        // set a system theme as default before resetting it from Request
-        // without a default, the cache doesn't rebuild without error
-        // @todo it would be better if this was unnecessary
-        $this->themeBundle = \ThemeUtil::getTheme('ZikulaSpecTheme');
         if (null !== $requestStack->getCurrentRequest()) {
             $this->setRequestAttributes($requestStack->getCurrentRequest());
         }
@@ -59,9 +55,7 @@ class Engine
      */
     public function setRequestAttributes(Request $request)
     {
-        $themeName = $this->setActiveTheme($request);
-        // @todo remove usage of ThemeUtil class
-        $this->themeBundle = \ThemeUtil::getTheme($themeName);
+        $this->setActiveTheme($request);
         $this->requestAttributes = $request->attributes->all();
         $this->requestAttributes['pathInfo'] = $request->getPathInfo();
     }
@@ -79,11 +73,11 @@ class Engine
 
         // original OR overridden theme may not be twig based
         // @todo remove twigBased check in 2.0
-        if (!$this->themeBundle->isTwigBased()) {
+        if (!$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
 
-        $themedResponse = $this->themeBundle->generateThemedResponse($response);
+        $themedResponse = $this->activeThemeBundle->generateThemedResponse($response);
         $filteredResponse = $this->filter($themedResponse);
         return $filteredResponse;
     }
@@ -99,11 +93,11 @@ class Engine
     public function wrapBlockInTheme(array $block)
     {
         // @todo remove twigBased check in 2.0
-        if (!$this->themeBundle->isTwigBased()) {
+        if (!$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
 
-        return $this->themeBundle->generateThemedBlock($block);
+        return $this->activeThemeBundle->generateThemedBlock($block);
     }
 
     /**
@@ -113,7 +107,7 @@ class Engine
      */
     public function getThemeName()
     {
-        return $this->themeBundle->getName();
+        return $this->activeThemeBundle->getName();
     }
 
     /**
@@ -131,7 +125,7 @@ class Engine
      */
     public function getTheme()
     {
-        return $this->themeBundle;
+        return $this->activeThemeBundle;
     }
 
     /**
@@ -143,7 +137,7 @@ class Engine
      */
     private function setMatchingRealm()
     {
-        foreach ($this->themeBundle->getConfig() as $realm => $config) {
+        foreach ($this->activeThemeBundle->getConfig() as $realm => $config) {
             if (!empty($config['pattern'])) {
                 $pattern = ';' . str_replace('/', '\\/', $config['pattern']) . ';i'; // delimiters are ; and i means case-insensitive
                 $valuesToMatch = [];
@@ -219,33 +213,36 @@ class Engine
 
         if ($this->themeIsOverridden) {
             // load new bundle into Engine
-            $this->themeBundle = \ThemeUtil::getTheme($themeName);
+            $this->activeThemeBundle = \ThemeUtil::getTheme($themeName);
             // try to set realm based on response
-            $this->realm = isset($this->themeBundle->getConfig()['admin']) ? 'admin' : null;
+            $this->realm = isset($this->activeThemeBundle->getConfig()['admin']) ? 'admin' : null;
         }
     }
 
     /**
      * Set the theme based on:
      *  1) the request params (e.g. `?theme=MySpecialTheme`)
-     *  2) the default system theme
-     * @param Request $request
+     *  2) the request attributes (e.g. `_theme`)
+     *  3) the default system theme
+     * @param Request|null $request
      * @return mixed
      */
-    private function setActiveTheme(Request $request)
+    private function setActiveTheme(Request $request = null)
     {
-        // @todo do we want to allow changing the theme by the request?
-
-        $themeByRequest = $request->get('theme', null);
-        if (!empty($themeByRequest)) {
-            return $themeByRequest;
+        $activeTheme = \System::getVar('Default_Theme');
+        if (isset($request)) {
+            // @todo do we want to allow changing the theme by the request?
+            $themeByRequest = $request->get('theme', null);
+            if (!empty($themeByRequest)) {
+                $activeTheme = $themeByRequest;
+            }
+            $themeByRequest = $request->attributes->get('_theme');
+            if (!empty($themeByRequest)) {
+                $activeTheme = $themeByRequest;
+            }
         }
-        $themeByRequest = $request->attributes->get('_theme');
-        if (!empty($themeByRequest)) {
-            return $themeByRequest;
-        } else {
-            return \System::getVar('Default_Theme');
-        }
+        // @todo remove usage of ThemeUtil class , use kernel instead
+        $this->activeThemeBundle = \ThemeUtil::getTheme($activeTheme);
     }
 
     private function filter(Response $response)
