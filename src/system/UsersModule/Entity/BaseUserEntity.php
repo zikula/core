@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  *  4. delete existing child-class `UserEntity` class in this directory
  *  5. delete referenced psr-0 UserEntity class in /src/system/UsersModule/ZikulaUsersModule.php
  *
- * @ORM\MappedSuperClass
+ * @ORM\MappedSuperclass
  *
  * Main Users table.
  * Stores core information about each user account.
