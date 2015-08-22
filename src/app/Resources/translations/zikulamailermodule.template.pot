@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-06-28 15:11+0200\n"
+"POT-Creation-Date: 2015-08-22 15:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,12 +14,12 @@ msgstr ""
 #: PageLockModule/Controller/AjaxController.php on line 89
 msgid "Error! Lock broken!"
 msgstr ""
-#: Module/MailerModule/MailerModuleVersion.php on line 50
+#: system/MailerModule/MailerModuleVersion.php on line 50
 msgid "HTML mail hook"
 msgstr ""
-#: Module/MailerModule/MailerModuleVersion.php on line 32
+#: system/MailerModule/MailerModuleVersion.php on line 32
 msgid "Mailer Module"
 msgstr ""
-#: Module/MailerModule/MailerModuleVersion.php on line 35
+#: system/MailerModule/MailerModuleVersion.php on line 35
 msgid "mailer"
 msgstr ""

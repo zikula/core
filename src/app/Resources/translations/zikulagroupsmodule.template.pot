@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-06-28 15:11+0200\n"
+"POT-Creation-Date: 2015-08-22 15:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 
-#: Module/GroupsModule/GroupsModuleInstaller.php on line 101
+#: system/GroupsModule/GroupsModuleInstaller.php on line 101
 msgid "Administrators"
 msgstr ""
 #: GroupsModule/Helper/CommonHelper.php on line 88
@@ -26,7 +26,7 @@ msgstr ""
 #: Form/Handler/ModifyConfigHandler.php on line 54
 msgid "Google gmail"
 msgstr ""
-#: Module/GroupsModule/GroupsModuleVersion.php on line 29
+#: system/GroupsModule/GroupsModuleVersion.php on line 29
 msgid "Groups"
 msgstr ""
 #: Form/Handler/ModifyConfigHandler.php on line 52
@@ -53,15 +53,15 @@ msgstr ""
 #: MailerModule/Api/AdminApi.php on line 37
 msgid "Test current settings"
 msgstr ""
-#: Module/GroupsModule/GroupsModuleInstaller.php on line 98
+#: system/GroupsModule/GroupsModuleInstaller.php on line 98
 msgid "Users"
 msgstr ""
-#: Module/GroupsModule/GroupsModuleInstaller.php on line 103
+#: system/GroupsModule/GroupsModuleInstaller.php on line 103
 msgid "adm"
 msgstr ""
-#: Module/GroupsModule/GroupsModuleVersion.php on line 32
+#: system/GroupsModule/GroupsModuleVersion.php on line 32
 msgid "groups"
 msgstr ""
-#: Module/GroupsModule/GroupsModuleInstaller.php on line 100
+#: system/GroupsModule/GroupsModuleInstaller.php on line 100
 msgid "usr"
 msgstr ""

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-06-28 15:11+0200\n"
+"POT-Creation-Date: 2015-08-22 15:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,8 +14,8 @@ msgstr ""
 #: BlocksModule/Block/ExtmenuBlock.php on line 177
 msgid "--Installed modules--"
 msgstr ""
-#: BlocksModule/Block/ExtmenuBlock.php on line 306
-#: BlocksModule/Block/ExtmenuBlock.php on line 308
+#: BlocksModule/Block/ExtmenuBlock.php on line 307
+#: BlocksModule/Block/ExtmenuBlock.php on line 309
 msgid "--New link--"
 msgstr ""
 #: BlocksModule/Block/MenutreeBlock.php on line 453
@@ -24,7 +24,7 @@ msgstr ""
 #: BlocksModule/Block/MenutreeBlock.php on line 455
 msgid "Admin access"
 msgstr ""
-#: Module/AdminModule/AdminModuleVersion.php on line 29
+#: system/AdminModule/AdminModuleVersion.php on line 29
 #: AdminModule/Api/AccountApi.php on line 37
 msgid "Administration panel"
 msgstr ""
@@ -34,18 +34,18 @@ msgstr ""
 #: BlocksModule/Api/AdminApi.php on line 472
 msgid "Blocks list"
 msgstr ""
-#: AdminModule/Controller/AdminController.php on line 822
-#: AdminModule/Controller/AdminController.php on line 834
+#: AdminModule/Controller/AdminController.php on line 825
+#: AdminModule/Controller/AdminController.php on line 837
 msgid "Caching"
 msgstr ""
 #: BlocksModule/Block/LangBlock.php on line 126
 msgid "Choose a language"
 msgstr ""
-#: AdminModule/Controller/AdminController.php on line 814
-#: AdminModule/Controller/AdminController.php on line 826
+#: AdminModule/Controller/AdminController.php on line 817
+#: AdminModule/Controller/AdminController.php on line 829
 msgid "Compile check"
 msgstr ""
-#: Module/AdminModule/AdminModuleInstaller.php on line 113
+#: system/AdminModule/AdminModuleInstaller.php on line 113
 msgid "Content"
 msgstr ""
 #: BlocksModule/Api/AdminApi.php on line 480
@@ -72,8 +72,8 @@ msgstr ""
 #: BlocksModule/Block/ExtmenuBlock.php on line 52
 msgid "Extended menu block"
 msgstr ""
-#: AdminModule/Controller/AdminController.php on line 818
-#: AdminModule/Controller/AdminController.php on line 830
+#: AdminModule/Controller/AdminController.php on line 821
+#: AdminModule/Controller/AdminController.php on line 833
 msgid "Force compile"
 msgstr ""
 #: BlocksModule/Block/HtmlBlock.php on line 40
@@ -92,7 +92,7 @@ msgstr ""
 #: BlocksModule/Block/LangBlock.php on line 57
 msgid "Language selector block"
 msgstr ""
-#: Module/AdminModule/AdminModuleInstaller.php on line 109
+#: system/AdminModule/AdminModuleInstaller.php on line 109
 msgid "Layout"
 msgstr ""
 #: BlocksModule/Block/MenuBlock.php on line 49
@@ -120,7 +120,7 @@ msgstr ""
 #: BlocksModule/Api/AdminApi.php on line 466
 msgid "Position "%s""
 msgstr ""
-#: Module/AdminModule/AdminModuleInstaller.php on line 117
+#: system/AdminModule/AdminModuleInstaller.php on line 117
 msgid "Security"
 msgstr ""
 #: AdminModule/Api/AdminApi.php on line 444
@@ -130,7 +130,7 @@ msgstr ""
 #: BlocksModule/Block/FincludeBlock.php on line 45
 msgid "Simple file include"
 msgstr ""
-#: Module/AdminModule/AdminModuleInstaller.php on line 107
+#: system/AdminModule/AdminModuleInstaller.php on line 107
 msgid "System"
 msgstr ""
 #: BlocksModule/Block/TextBlock.php on line 42
@@ -139,17 +139,17 @@ msgstr ""
 #: BlocksModule/Block/MenutreeBlock.php on line 53
 msgid "Tree-like menu (menutree)"
 msgstr ""
-#: Module/AdminModule/AdminModuleInstaller.php on line 115
+#: system/AdminModule/AdminModuleInstaller.php on line 115
 msgid "Uncategorised"
 msgstr ""
-#: Module/AdminModule/AdminModuleInstaller.php on line 111
+#: system/AdminModule/AdminModuleInstaller.php on line 111
 msgid "Users"
 msgstr ""
 #: BlocksModule/Block/XsltBlock.php on line 43
 #: BlocksModule/Block/XsltBlock.php on line 44
 msgid "XSLT"
 msgstr ""
-#: Module/AdminModule/AdminModuleVersion.php on line 31
+#: system/AdminModule/AdminModuleVersion.php on line 31
 msgid "adminpanel"
 msgstr ""
 #: BlocksModule/Block/MenutreeBlock.php on line 537

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-06-28 15:11+0200\n"
+"POT-Creation-Date: 2015-08-22 15:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: PermissionsModule/Controller/AdminController.php on line 352
 msgid "Modify permission rule"
 msgstr ""
-#: Module/PageLockModule/PageLockModuleVersion.php on line 29
+#: system/PageLockModule/PageLockModuleVersion.php on line 29
 msgid "Page lock"
 msgstr ""
 #: PermissionsModule/Controller/AjaxController.php on line 235
@@ -66,7 +66,7 @@ msgstr ""
 #: PermissionsModule/Controller/AdminController.php on line 518
 msgid "[Illegal input in instance!]"
 msgstr ""
-#: Module/PageLockModule/PageLockModuleVersion.php on line 32
+#: system/PageLockModule/PageLockModuleVersion.php on line 32
 msgid "pagelock"
 msgstr ""
 #: PermissionsModule/Controller/AjaxController.php on line 249
