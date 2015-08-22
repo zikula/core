@@ -58,6 +58,7 @@ class Engine
         $this->setActiveTheme($request);
         $this->requestAttributes = $request->attributes->all();
         $this->requestAttributes['pathInfo'] = $request->getPathInfo();
+        $this->requestAttributes['lct'] = $request->query->get('lct', null); // @todo BC remove at Core-2.0
     }
 
     /**
@@ -158,6 +159,11 @@ class Engine
                     }
                 }
             }
+        }
+        // @todo BC remove at Core-2.0
+        if (($this->requestAttributes['_zkType'] == 'admin') || (isset($this->requestAttributes['lct']))) {
+            $this->realm = 'admin';
+            return;
         }
 
         $this->realm = 'master';
