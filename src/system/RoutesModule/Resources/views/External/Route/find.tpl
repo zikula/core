@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="web/bootstrap/css/bootstrap-theme.css" type="text/css" />
         <script type="text/javascript" src="web/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="web/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{$baseurl}system/Resources/public/js/ZikulaRoutesModule.Finder.js"></script>
+    <script type="text/javascript" src="{$baseurl}system/RoutesModule/Resources/public/js/ZikulaRoutesModule.Finder.js"></script>
 </head>
 <body>
     <form action="{$ourEntry|default:'index.php'}" id="zikulaRoutesModuleSelectorForm" method="get" class="form-horizontal" role="form">
