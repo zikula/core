@@ -1,4 +1,4 @@
-{pageaddvar name='javascript' value='system/Zikula/Module/GroupsModule/Resources/public/js/groups.js'}
+{pageaddvar name='javascript' value='system/GroupsModule/Resources/public/js/groups.js'}
 {adminheader}
 
 <h3>

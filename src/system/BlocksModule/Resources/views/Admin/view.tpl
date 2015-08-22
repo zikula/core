@@ -1,4 +1,4 @@
-{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js'}
+{pageaddvar name='javascript' value='system/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js'}
 
 {gt text='Click to activate this block' assign='activate'}
 {gt text='Click to deactivate this block' assign='deactivate'}

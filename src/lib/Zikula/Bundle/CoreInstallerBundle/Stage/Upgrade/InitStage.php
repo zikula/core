@@ -82,7 +82,7 @@ class InitStage implements StageInterface, InjectContainerInterface
             'Settings', 'Theme', 'Users',
         );
         foreach ($oldModuleNames as $module) {
-            $conn->executeQuery("UPDATE modules SET name = 'Zikula{$module}Module', directory = 'Zikula/Module/{$module}Module' WHERE name = '$module'");
+            $conn->executeQuery("UPDATE modules SET name = 'Zikula{$module}Module', directory = '{$module}Module' WHERE name = '$module'");
             $conn->executeQuery("UPDATE module_vars SET modname = 'Zikula{$module}Module' WHERE modname = '$module'");
             $strlen = strlen($module) + 1;
             $conn->executeQuery("UPDATE group_perms SET component = CONCAT('Zikula{$module}Module', SUBSTRING(component, $strlen)) WHERE component LIKE '{$module}%'");
@@ -93,7 +93,7 @@ class InitStage implements StageInterface, InjectContainerInterface
             'Andreas08', 'Atom', 'SeaBreeze', 'Mobile', 'Printer',
         );
         foreach ($oldThemeNames as $theme) {
-            $conn->executeQuery("UPDATE themes SET name = 'Zikula{$theme}Theme', directory = 'Zikula/Theme/{$theme}Theme' WHERE name = '$theme'");
+            $conn->executeQuery("UPDATE themes SET name = 'Zikula{$theme}Theme', directory = '{$theme}Theme' WHERE name = '$theme'");
         }
         $conn->executeQuery("UPDATE themes SET name = 'ZikulaRssTheme', directory = 'Zikula/Theme/RssTheme' WHERE name = 'RSS'");
 

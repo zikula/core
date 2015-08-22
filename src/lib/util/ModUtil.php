@@ -1931,7 +1931,7 @@ class ModUtil
         $paths[] = $modpath . '/' . $osmoddir . '/images/admin.png';
         $paths[] = $modpath . '/' . $osmoddir . '/images/admin.jpg';
         $paths[] = $modpath . '/' . $osmoddir . '/images/admin.gif';
-        $paths[] = 'system/Zikula/Module/AdminModule/Resources/public/images/default.gif';
+        $paths[] = 'system/AdminModule/Resources/public/images/default.gif';
 
         foreach ($paths as $path) {
             if (is_readable($path)) {

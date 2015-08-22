@@ -1,5 +1,5 @@
 {if $deleteUsers}
-{pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/ZikulaUsersModule.Admin.MailUsers.js'}
+{pageaddvar name='javascript' value='system/UsersModule/Resources/public/js/ZikulaUsersModule.Admin.MailUsers.js'}
 {/if}
 
 {adminheader}

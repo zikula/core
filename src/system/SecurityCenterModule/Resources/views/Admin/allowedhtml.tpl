@@ -1,5 +1,5 @@
 {pageaddvar name='javascript' value='jquery'}
-{pageaddvar name="javascript" value='system/Zikula/Module/SecurityCenterModule/Resources/public/js/securitycenter_admin_allowedhtm.js'}
+{pageaddvar name="javascript" value='system/SecurityCenterModule/Resources/public/js/securitycenter_admin_allowedhtm.js'}
 {adminheader}
 <h3>
     <span class="fa fa-list"></span>

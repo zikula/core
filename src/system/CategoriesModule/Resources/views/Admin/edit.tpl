@@ -1,4 +1,4 @@
-{pageaddvar name='javascript' value='system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_edit.js'}
+{pageaddvar name='javascript' value='system/CategoriesModule/Resources/public/js/categories_admin_edit.js'}
 {adminheader}
 {if $mode eq 'edit'}
     <h3>

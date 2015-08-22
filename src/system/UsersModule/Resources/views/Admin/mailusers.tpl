@@ -1,4 +1,4 @@
-{pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/ZikulaUsersModule.Admin.MailUsers.js'}
+{pageaddvar name='javascript' value='system/UsersModule/Resources/public/js/ZikulaUsersModule.Admin.MailUsers.js'}
 {adminheader}
 <h3>
     <span class="fa fa-envelope"></span>

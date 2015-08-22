@@ -51,7 +51,7 @@ class MenutreeUtil
         );
 
         // module templates
-        $modulesTpls = FileUtil::getFiles('system/Zikula/Module/BlocksModule/Resources/views/Block/Menutree', false, true, 'tpl', null, false);
+        $modulesTpls = FileUtil::getFiles('system/BlocksModule/Resources/views/Block/Menutree', false, true, 'tpl', null, false);
         $configTpls = FileUtil::getFiles('config/templates/ZikulaBlocksModule/menutree', false, true, 'tpl', null, false);
         $tpls['modules'] = array_merge($modulesTpls, $configTpls);
 
@@ -118,13 +118,13 @@ class MenutreeUtil
 
         // restricted stylesheets, array for possible future changes
         $sysStyles = array(
-            'system/Zikula/Module/BlocksModule/Resources/public/css/menutree/adminstyle.css',
-            'system/Zikula/Module/BlocksModule/Resources/public/css/menutree/contextmenu.css',
-            'system/Zikula/Module/BlocksModule/Resources/public/css/menutree/tree.css'
+            'system/BlocksModule/Resources/public/css/menutree/adminstyle.css',
+            'system/BlocksModule/Resources/public/css/menutree/contextmenu.css',
+            'system/BlocksModule/Resources/public/css/menutree/tree.css'
         );
 
         // module stylesheets
-        $modulesStyles = FileUtil::getFiles('system/Zikula/Module/BlocksModule/Resources/public/css/menutree', false, false, 'css', null, false);
+        $modulesStyles = FileUtil::getFiles('system/BlocksModule/Resources/public/css/menutree', false, false, 'css', null, false);
         $configStyles = FileUtil::getFiles('config/style/ZikulaBlocksModule/menutree', false, false, 'css', null, false);
         $styles['modules'] = array_merge($modulesStyles, $configStyles);
 

@@ -1,8 +1,8 @@
 {pageaddvar name='javascript' value='jquery,jquery-ui'}
 {* TODO if you enable the following stylesheet it breaks the layout; thus, the styles in hooks.css should be updated accordingly *}
 {*pageaddvar name='stylesheet' value='web/jquery-ui/themes/smoothness/jquery-ui.css'*}
-{pageaddvar name='javascript' value='system/Zikula/Module/ExtensionsModule/Resources/public/js/hookui.js'}
-{pageaddvar name='stylesheet' value='system/Zikula/Module/ExtensionsModule/Resources/public/css/hooks.css'}
+{pageaddvar name='javascript' value='system/ExtensionsModule/Resources/public/js/hookui.js'}
+{pageaddvar name='stylesheet' value='system/ExtensionsModule/Resources/public/css/hooks.css'}
 {assign var='showBothPanels' value=false}
 {if $isSubscriber and $isProvider and !empty($providerAreas) and $total_available_subscriber_areas gt 0}
     {assign var='showBothPanels' value=true}

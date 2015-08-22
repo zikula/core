@@ -119,7 +119,7 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
             } else if (file_exists($themepic = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/Resources/public/images/preview_small.png')) {
                 $themeinfo['previewImage'] = $themepic;
             } else {
-                $themeinfo['previewImage'] = 'system/Zikula/Module/ThemeModule/Resources/public/images/preview_small.png';
+                $themeinfo['previewImage'] = 'system/ThemeModule/Resources/public/images/preview_small.png';
             }
             $previewthemes[$themename] = $themeinfo;
             if ($themename == $currenttheme['name']) {

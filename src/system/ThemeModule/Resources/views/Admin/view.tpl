@@ -1,4 +1,4 @@
-{pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.View.js'}
+{pageaddvar name='javascript' value='system/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.View.js'}
 {gt text="Extension database" assign='extdbtitle'}
 {assign value="<strong><a href=\"https://github.com/zikula-modules\">`$extdbtitle`</a></strong>" var='extdblink'}
 

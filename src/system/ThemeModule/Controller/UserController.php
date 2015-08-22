@@ -77,8 +77,8 @@ class UserController extends \Zikula_AbstractController
                 $themeinfo['previewImage'] = $themepic;
                 $themeinfo['largeImage'] = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/Resources/public/images/preview_large.png';
             } else {
-                $themeinfo['previewImage'] = 'system/Zikula/Module/ThemeModule/Resources/public/images/preview_medium.png';
-                $themeinfo['largeImage'] = 'system/Zikula/Module/ThemeModule/Resources/public/images/preview_large.png';
+                $themeinfo['previewImage'] = 'system/ThemeModule/Resources/public/images/preview_medium.png';
+                $themeinfo['largeImage'] = 'system/ThemeModule/Resources/public/images/preview_large.png';
             }
             if ($themename == $currenttheme['name']) {
                 $currentthemepic = $themepic;

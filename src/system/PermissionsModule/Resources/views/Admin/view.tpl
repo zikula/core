@@ -7,7 +7,7 @@
 {/pageaddvarblock}
 
 {pageaddvar name='javascript' value='web/bootstrap-jqueryui/bootstrap-jqueryui.min.js'}
-{pageaddvar name='javascript' value='system/Zikula/Module/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.View.js'}
+{pageaddvar name='javascript' value='system/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.View.js'}
 {adminheader}
 
 <h3>

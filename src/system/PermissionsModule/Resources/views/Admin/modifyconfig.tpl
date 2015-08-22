@@ -1,5 +1,5 @@
 {gt text='Settings' assign='templatetitle'}
-{pageaddvar name='javascript' value='system/Zikula/Module/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.ModifyConfig.js'}
+{pageaddvar name='javascript' value='system/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.ModifyConfig.js'}
 
 {adminheader}
 <h3>

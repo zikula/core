@@ -1,10 +1,10 @@
-{pageaddvar name="javascript" value="system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.Admin.Modify.js"}
-{pageaddvar name="javascript" value="system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.Common.UserValidation.js"}
+{pageaddvar name="javascript" value="system/UsersModule/Resources/public/js/Zikula.Users.Admin.Modify.js"}
+{pageaddvar name="javascript" value="system/UsersModule/Resources/public/js/Zikula.Users.Common.UserValidation.js"}
 {strip}
     {gt text='Edit user account of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
     {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
         {pageaddvar name='javascript' value='jquery'}
-        {pageaddvar name='javascript' value='system/Zikula/Module/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
+        {pageaddvar name='javascript' value='system/UsersModule/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
                 ( function($) {

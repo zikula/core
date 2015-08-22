@@ -55,7 +55,7 @@ function smarty_function_previewimage($params, Zikula_View $view)
     if (file_exists("$themePath/preview_{$params['size']}.png")) {
         $filesrc = "$themePath/preview_{$params['size']}.png";
     } else {
-        $filesrc = "system/Zikula/Module/ThemeModule/Resources/public/images/preview_{$params['size']}.png";
+        $filesrc = "system/ThemeModule/Resources/public/images/preview_{$params['size']}.png";
     }
 
     $markup = "<img{$idstring} src=\"{$filesrc}\" alt=\"\" />";

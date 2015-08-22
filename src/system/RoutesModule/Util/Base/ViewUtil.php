@@ -106,7 +106,7 @@ class ViewUtil extends Zikula_AbstractBase
         }
         if ($lct == 'admin') {
             // load Smarty plugins of Admin module
-            $view->addPluginDir('system/Zikula/Module/AdminModule/Resources/views/plugins');
+            $view->addPluginDir('system/AdminModule/Resources/views/plugins');
         }
     
         if ($raw == true) {

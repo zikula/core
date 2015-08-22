@@ -1,5 +1,5 @@
-{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js'}
-{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Modifyposition.js'}
+{pageaddvar name='javascript' value='system/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js'}
+{pageaddvar name='javascript' value='system/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Modifyposition.js'}
 {pageaddvar name='javascript' value='jquery-ui'}
 {adminheader}
 <h3>

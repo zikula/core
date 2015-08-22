@@ -1,5 +1,5 @@
 {pageaddvar name='javascript' value='javascript/helpers/Zikula.itemlist.js'}
-{pageaddvar name='stylesheet' value='system/Zikula/Module/BlocksModule/Resources/public/css/extmenu_modify.css'}
+{pageaddvar name='stylesheet' value='system/BlocksModule/Resources/public/css/extmenu_modify.css'}
 {pageaddvarblock}
     <script type="text/javascript">
         /* <![CDATA[ */

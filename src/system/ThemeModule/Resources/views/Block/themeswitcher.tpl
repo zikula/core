@@ -1,5 +1,5 @@
 {if $format eq 1}
-{pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/themeswitcher.js'}
+{pageaddvar name='javascript' value='system/ThemeModule/Resources/public/js/themeswitcher.js'}
 <img src="{$currentthemepic}" id="preview" alt="{$currenttheme.displayname}" title="{$currenttheme.description|default:$currenttheme.displayname}" />
 <form id="themeform" action="" method="get" enctype="application/x-www-form-urlencoded">
     <div>

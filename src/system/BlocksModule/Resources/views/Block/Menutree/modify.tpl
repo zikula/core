@@ -1,8 +1,8 @@
 {ajaxheader modname=$module ui=true}
-{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/functions.js'}
-{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/contextmenu.js'}
-{pageaddvar name='stylesheet' value='system/Zikula/Module/BlocksModule/Resources/public/css/menutree/adminstyle.css'}
-{pageaddvar name='stylesheet' value='system/Zikula/Module/BlocksModule/Resources/public/css/menutree/contextmenu.css'}
+{pageaddvar name='javascript' value='system/BlocksModule/Resources/public/js/functions.js'}
+{pageaddvar name='javascript' value='system/BlocksModule/Resources/public/js/contextmenu.js'}
+{pageaddvar name='stylesheet' value='system/BlocksModule/Resources/public/css/menutree/adminstyle.css'}
+{pageaddvar name='stylesheet' value='system/BlocksModule/Resources/public/css/menutree/contextmenu.css'}
 
 {if !empty($redirect)}
     <input type="hidden" name="redirect" value="{$redirect}" />
