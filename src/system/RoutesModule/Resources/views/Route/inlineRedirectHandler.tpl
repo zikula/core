@@ -9,7 +9,7 @@
         <script type="text/javascript" src="web/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="web/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{$baseurl}javascript/helpers/Zikula.js"></script>
-        <script type="text/javascript" src="{$baseurl}system/ZikulaRoutesModule/Resources/public/js/ZikulaRoutesModule.EditFunctions.js"></script>
+        <script type="text/javascript" src="{$baseurl}system/RoutesModule/Resources/public/js/ZikulaRoutesModule.EditFunctions.js"></script>
     </head>
     <body>
         <script type="text/javascript">
