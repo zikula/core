@@ -95,7 +95,7 @@ class InitStage implements StageInterface, InjectContainerInterface
         foreach ($oldThemeNames as $theme) {
             $conn->executeQuery("UPDATE themes SET name = 'Zikula{$theme}Theme', directory = '{$theme}Theme' WHERE name = '$theme'");
         }
-        $conn->executeQuery("UPDATE themes SET name = 'ZikulaRssTheme', directory = 'Zikula/Theme/RssTheme' WHERE name = 'RSS'");
+        $conn->executeQuery("UPDATE themes SET name = 'ZikulaRssTheme', directory = 'RssTheme' WHERE name = 'RSS'");
 
         // update 'Users' -> 'ZikulaUsersModule' in all the hook tables
         $sqls = array();

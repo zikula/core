@@ -13,7 +13,7 @@
  */
 
 use Doctrine\ORM\Query;
-use Zikula\Module\ThemeModule\Entity\ThemeEntity;
+use Zikula\ThemeModule\Entity\ThemeEntity;
 
 /**
  * ThemeUtil
