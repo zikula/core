@@ -22,9 +22,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper as CoreBundleBootstrapHelper;
-use Zikula\Module\ExtensionsModule\Api\AdminApi as ExtensionsAdminApi;
-use Zikula\Module\ExtensionsModule\ZikulaExtensionsModule;
-use Zikula\Module\UsersModule\Constant as UsersConstant;
+use Zikula\ExtensionsModule\Api\AdminApi as ExtensionsAdminApi;
+use Zikula\ExtensionsModule\ZikulaExtensionsModule;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\CoreEvents;
@@ -219,7 +219,7 @@ class AjaxInstallController extends AbstractController
     private function createBlocks()
     {
         // create the default blocks.
-        $blockInstance = new \Zikula\Module\BlocksModule\BlocksModuleInstaller($this->container, $this->container->get('kernel')->getModule('ZikulaBlocksModule'));
+        $blockInstance = new \Zikula\BlocksModule\BlocksModuleInstaller($this->container, $this->container->get('kernel')->getModule('ZikulaBlocksModule'));
         $blockInstance->defaultdata();
 
         return true;
@@ -242,7 +242,7 @@ class AjaxInstallController extends AbstractController
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
 
-        /** @var \Zikula\Module\UsersModule\Entity\UserEntity $entity */
+        /** @var \Zikula\UsersModule\Entity\UserEntity $entity */
         $entity = $em->find('ZikulaUsersModule:UserEntity', 2);
         $entity->setUname($username);
         $entity->setEmail($params['email']);
@@ -291,7 +291,7 @@ class AjaxInstallController extends AbstractController
         // add admin email as site email
         \System::setVar('adminmail', $params['email']);
         // regenerate the theme list
-        \Zikula\Module\ThemeModule\Util::regenerate();
+        \Zikula\ThemeModule\Util::regenerate();
 
         // add remaining parameters and remove unneeded ones
         unset($params['username'], $params['password'], $params['email'], $params['dbtabletype']);

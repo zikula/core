@@ -14,7 +14,7 @@
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity;
+use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 
 /**
  * Category doctrine2 entity.
@@ -108,7 +108,7 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity="Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity",
+     * @ORM\OneToMany(targetEntity="Zikula\CategoriesModule\Entity\CategoryAttributeEntity",
      *                mappedBy="category",
      *                cascade={"all"},
      *                orphanRemoval=true,

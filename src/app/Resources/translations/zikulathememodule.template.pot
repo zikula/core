@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-06-28 15:11+0200\n"
+"POT-Creation-Date: 2015-08-22 15:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -148,7 +148,7 @@ msgstr ""
 #: UsersModule/Api/AdminApi.php on line 434
 msgid "Settings"
 msgstr ""
-#: Module/ThemeModule/ThemeModuleVersion.php on line 29
+#: system/ThemeModule/ThemeModuleVersion.php on line 29
 msgid "Themes"
 msgstr ""
 #: UsersModule/Block/UserBlock.php on line 44
@@ -192,6 +192,6 @@ msgstr ""
 #: UsersModule/Api/RegistrationApi.php on line 100
 msgid "Your password must be at least %s character long|Your password must be at least %s characters long"
 msgstr ""
-#: Module/ThemeModule/ThemeModuleVersion.php on line 32
+#: system/ThemeModule/ThemeModuleVersion.php on line 32
 msgid "theme"
 msgstr ""

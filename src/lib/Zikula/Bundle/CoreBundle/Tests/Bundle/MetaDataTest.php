@@ -68,7 +68,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetClass()
     {
-        $this->assertEquals('Zikula\\Module\\AdminModule\\ZikulaAdminModule', $this->metaData->getClass());
+        $this->assertEquals('Zikula\\AdminModule\\ZikulaAdminModule', $this->metaData->getClass());
     }
 
     /**
@@ -76,7 +76,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNamespace()
     {
-        $this->assertEquals('Zikula\\Module\\AdminModule\\', $this->metaData->getNamespace());
+        $this->assertEquals('Zikula\\AdminModule\\', $this->metaData->getNamespace());
     }
 
     private function getJson()
@@ -94,14 +94,14 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
         }
     ],
     "autoload": {
-        "psr-0": { "Zikula\\Module\\AdminModule\\": "" }
+        "psr-0": { "Zikula\\AdminModule\\": "" }
     },
     "require": {
         "php": ">5.4.1"
     },
     "extra": {
         "zikula": {
-            "class": "Zikula\\Module\\AdminModule\\ZikulaAdminModule",
+            "class": "Zikula\\AdminModule\\ZikulaAdminModule",
             "base-path": "",
             "root-path": "",
             "short-name": ""

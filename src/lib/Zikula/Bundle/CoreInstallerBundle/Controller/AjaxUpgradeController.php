@@ -17,7 +17,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Zikula\Module\ThemeModule\Util as ThemeUtil;
+use Zikula\ThemeModule\Util as ThemeUtil;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 
 /**
@@ -100,7 +100,7 @@ class AjaxUpgradeController extends AbstractController
         }
 
         // regenerate modules list
-        $modApi = new \Zikula\Module\ExtensionsModule\Api\AdminApi($kernel->getContainer(), new \Zikula\Module\ExtensionsModule\ZikulaExtensionsModule());
+        $modApi = new \Zikula\ExtensionsModule\Api\AdminApi($kernel->getContainer(), new \Zikula\ExtensionsModule\ZikulaExtensionsModule());
         \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $modApi->getfilemodules()));
 
         // determine module id
@@ -130,6 +130,7 @@ class AjaxUpgradeController extends AbstractController
     {
         // force load the modules admin API
         \ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
+        // this also regenerates all the modules
         return \ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgradeall');
         // returns array(array(modname => boolean))
     }

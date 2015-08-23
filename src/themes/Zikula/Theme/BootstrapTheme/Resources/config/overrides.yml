@@ -1,5 +1,0 @@
-## YAML Override template
-## original/file.tpl: override/file.tpl
----
-system/Zikula/Module/UsersModule/Resources/views/User/main.tpl: themes/Zikula/Theme/BootstrapTheme/Resources/views/modules/ZikulaUsersModule/User/main.tpl
-system/Zikula/Module/ThemeModule/Resources/views/moduleheader.tpl: themes/Zikula/Theme/BootstrapTheme/Resources/views/modules/ZikulaThemeModule/moduleheader.tpl

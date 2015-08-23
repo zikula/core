@@ -54,7 +54,7 @@ function smarty_function_zdebug($params, Zikula_View $view)
         $_plugins_outputfilter = $view->_plugins['outputfilter'];
         $_compile_id_orig   = $view->_compile_id;
 
-        $view->template_dir = 'system/Zikula/Module/ThemeModule/Resources/views';
+        $view->template_dir = 'system/ThemeModule/Resources/views';
         $view->default_resource_type = 'file';
         $view->_plugins['outputfilter'] = null;
         $view->_compile_id  = null;

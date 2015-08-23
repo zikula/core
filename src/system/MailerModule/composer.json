@@ -1,0 +1,23 @@
+{
+    "name": "zikula/mailer-module",
+    "description": "Mailer Module",
+    "type": "zikula-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "http://zikula.org/"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Zikula\\MailerModule\\": "" }
+    },
+    "require": {
+        "php": ">5.4.0"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Zikula\\MailerModule\\ZikulaMailerModule"
+        }
+    }
+}

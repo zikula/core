@@ -82,7 +82,7 @@ class InitStage implements StageInterface, InjectContainerInterface
             'Settings', 'Theme', 'Users',
         );
         foreach ($oldModuleNames as $module) {
-            $conn->executeQuery("UPDATE modules SET name = 'Zikula{$module}Module', directory = 'Zikula/Module/{$module}Module' WHERE name = '$module'");
+            $conn->executeQuery("UPDATE modules SET name = 'Zikula{$module}Module', directory = '{$module}Module' WHERE name = '$module'");
             $conn->executeQuery("UPDATE module_vars SET modname = 'Zikula{$module}Module' WHERE modname = '$module'");
             $strlen = strlen($module) + 1;
             $conn->executeQuery("UPDATE group_perms SET component = CONCAT('Zikula{$module}Module', SUBSTRING(component, $strlen)) WHERE component LIKE '{$module}%'");
@@ -93,9 +93,9 @@ class InitStage implements StageInterface, InjectContainerInterface
             'Andreas08', 'Atom', 'SeaBreeze', 'Mobile', 'Printer',
         );
         foreach ($oldThemeNames as $theme) {
-            $conn->executeQuery("UPDATE themes SET name = 'Zikula{$theme}Theme', directory = 'Zikula/Theme/{$theme}Theme' WHERE name = '$theme'");
+            $conn->executeQuery("UPDATE themes SET name = 'Zikula{$theme}Theme', directory = '{$theme}Theme' WHERE name = '$theme'");
         }
-        $conn->executeQuery("UPDATE themes SET name = 'ZikulaRssTheme', directory = 'Zikula/Theme/RssTheme' WHERE name = 'RSS'");
+        $conn->executeQuery("UPDATE themes SET name = 'ZikulaRssTheme', directory = 'RssTheme' WHERE name = 'RSS'");
 
         // update 'Users' -> 'ZikulaUsersModule' in all the hook tables
         $sqls = array();
@@ -115,7 +115,7 @@ class InitStage implements StageInterface, InjectContainerInterface
         foreach ($modules as $module) {
             $path = realpath($kernel->getRootDir() . '/../' . $module['url']);
             if (is_dir($path)) {
-                $meta = \Zikula\Module\ExtensionsModule\Util::getVersionMeta($module['name']);
+                $meta = \Zikula\ExtensionsModule\Util::getVersionMeta($module['name']);
                 $conn->executeQuery("UPDATE modules SET url = '$meta[url]' WHERE id = $modules[id]");
             }
         }
@@ -138,11 +138,11 @@ class InitStage implements StageInterface, InjectContainerInterface
         $oldModuleInfo = \ModUtil::getInfoFromName('ZikulaUsersModule');
         /** @var \Zikula\Core\AbstractBundle $module */
         $module = $this->container->get('kernel')->getModule('ZikulaUsersModule');
-        $installerInstance = new \Zikula\Module\UsersModule\UsersModuleInstaller($this->container, $module);
+        $installerInstance = new \Zikula\UsersModule\UsersModuleInstaller($this->container, $module);
         $installerInstance->upgrade($oldModuleInfo['version']);
-        $versionInstance = new \Zikula\Module\UsersModule\UsersModuleVersion($module);
+        $versionInstance = new \Zikula\UsersModule\UsersModuleVersion($module);
         $metaData = $versionInstance->getMetaData();
-        $item = $this->container->get('doctrine.entitymanager')->getRepository(\Zikula\Module\ExtensionsModule\Api\AdminApi::EXTENSION_ENTITY)->find($oldModuleInfo['id']);
+        $item = $this->container->get('doctrine.entitymanager')->getRepository(\Zikula\ExtensionsModule\Api\AdminApi::EXTENSION_ENTITY)->find($oldModuleInfo['id']);
         $item['version'] = $metaData['version'];
         $item['state'] = \ModUtil::STATE_ACTIVE;
         $this->container->get('doctrine.entitymanager')->flush();

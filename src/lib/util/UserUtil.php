@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Exception\ExtensionNotAvailableException;
-use Zikula\Module\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 /**
  * UserUtil
@@ -1996,7 +1996,7 @@ class UserUtil
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = null, $offset = null, $activated = '', $field = '', $expression = '', $where = '')
     {
-        $user = new \Zikula\Module\UsersModule\Entity\UserEntity;
+        $user = new \Zikula\UsersModule\Entity\UserEntity;
 
         if (empty($where)) {
             $whereFragments = array();
@@ -2029,7 +2029,7 @@ class UserUtil
         }
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $dql = "SELECT u FROM Zikula\Module\UsersModule\Entity\UserEntity u $where $orderby";
+        $dql = "SELECT u FROM Zikula\UsersModule\Entity\UserEntity u $where $orderby";
         $query = $em->createQuery($dql);
 
         if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -2095,7 +2095,7 @@ class UserUtil
 
         // no change in uid or uname allowed, empty label is not an alias
         if (($label != 'uid') && ($label != 'uname') && !empty($label)) {
-            $userObj = new \Zikula\Module\UsersModule\Entity\UserEntity;
+            $userObj = new \Zikula\UsersModule\Entity\UserEntity;
             $isFieldAlias = property_exists($userObj, $label);
         }
 

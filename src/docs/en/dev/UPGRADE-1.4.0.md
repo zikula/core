@@ -794,16 +794,16 @@ The Api/methodology for the search module has changed. The previous method of us
 fully functional) in favor of a dedicated class that is identified in the Version file's `capabilities` area, like so:
 
 ```php
-$meta['capabilities'][AbstractSearchable::SEARCHABLE] = array('class' => 'Zikula\Module\UsersModule\Helper\SearchHelper');
+$meta['capabilities'][AbstractSearchable::SEARCHABLE] = array('class' => 'Zikula\UsersModule\Helper\SearchHelper');
 ```
 
-The `class` key must point to a helper class that extends `Zikula\Module\SearchModule\AbstractSearchable` and defines
+The `class` key must point to a helper class that extends `Zikula\SearchModule\AbstractSearchable` and defines
 both the `getOptions()` method and the `getResults()` method. These two functions are similar to the old Api methods of
 similar names, but now have specific parameters set. Please see `AbstractSearchable` for documentation of the parameters.
 
 The main difference now is that the `getResults()` method **MUST** return an array of arrays containing the module's
 result set and the sub-arrays **MUST** have keys matching the field names of the
-`Zikula\Module\SearchModule\Entity\SearchResultEntity` for merging and persisting the results (be sure to check `sesid`).
+`Zikula\SearchModule\Entity\SearchResultEntity` for merging and persisting the results (be sure to check `sesid`).
 **Modules are no longer responsible for persisting their own search results**.
 
 Additional differences include the addition of a `url` field to the result set (results are no longer post-processed),
@@ -813,6 +813,9 @@ your module's search. Also, a helper method, `addError()` is available to provid
 is invalid for your module.
 
 The **UsersModule** has implemented the new Search method and can be used as a reference.
+
+1.4.1 Note: The class was originally implemented as `Zikula\Module\SearchModule\AbstractSearchable` and has been 
+refactored as of Core 1.4.1 as `Zikula\SearchModule\AbstractSearchable`. The old class is still functional but deprecated.
 
 
 <a name="versionfile" />

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-06-28 15:11+0200\n"
+"POT-Creation-Date: 2015-08-22 15:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -66,7 +66,7 @@ msgstr ""
 #: SecurityCenterModule/Api/AdminApi.php on line 190
 msgid "Settings"
 msgstr ""
-#: Module/SearchModule/SearchModuleVersion.php on line 29
+#: system/SearchModule/SearchModuleVersion.php on line 29
 msgid "Site search"
 msgstr ""
 #: SecurityCenterModule/Controller/AdminController.php on line 744
@@ -82,6 +82,6 @@ msgstr ""
 #: SecurityCenterModule/Api/AdminApi.php on line 200
 msgid "View IDS Log"
 msgstr ""
-#: Module/SearchModule/SearchModuleVersion.php on line 32
+#: system/SearchModule/SearchModuleVersion.php on line 32
 msgid "search"
 msgstr ""

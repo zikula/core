@@ -93,7 +93,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
             // clear thumb when render cache is cleared
             // what with theme cache?
             $themeClearMethods = array('clear_cache', 'render_clear_cache', 'clearallcompiledcaches');
-            if ($event['modfunc'][0] instanceof Zikula\Module\ThemeModule\Controller\AdminController && in_array($event['modfunc'][1], $themeClearMethods)) {
+            if ($event['modfunc'][0] instanceof Zikula\ThemeModule\Controller\AdminController && in_array($event['modfunc'][1], $themeClearMethods)) {
                 $this->getManager()->cleanupThumbs();
             }
         }

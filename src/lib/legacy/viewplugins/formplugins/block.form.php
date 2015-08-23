@@ -25,7 +25,7 @@
 function smarty_block_form($params, $content, $view)
 {
     if ($content) {
-        PageUtil::AddVar('stylesheet', 'system/Zikula/Module/ThemeModule/Resources/public/css/form/style.css');
+        PageUtil::AddVar('stylesheet', 'system/ThemeModule/Resources/public/css/form/style.css');
         $action = htmlspecialchars(System::getCurrentUri());
         $classString = '';
         $roleString = '';

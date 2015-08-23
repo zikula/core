@@ -1,0 +1,23 @@
+{
+    "name": "zikula/admin-module",
+    "description": "Backend Administration Module",
+    "type": "zikula-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "http://zikula.org/"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\AdminModule\\": "" }
+    },
+    "require": {
+        "php": ">5.4.0"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Zikula\\AdminModule\\ZikulaAdminModule"
+        }
+    }
+}

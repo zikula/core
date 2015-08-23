@@ -372,7 +372,7 @@ msgstr ""
 msgid "zikulaextensionsmodule_admin_deactivateplugin"
 msgstr ""
 # Desc: /hooks/{moduleName}
-# Meaning: Route Controller and method: Zikula\Module\ExtensionsModule\Controller\AdminController::hooksAction
+# Meaning: Route Controller and method: Zikula\ExtensionsModule\Controller\AdminController::hooksAction
 msgid "zikulaextensionsmodule_admin_hooks"
 msgstr ""
 # Desc: /
@@ -396,7 +396,7 @@ msgstr ""
 msgid "zikulaextensionsmodule_admin_modifyconfig"
 msgstr ""
 # Desc: /moduleservices/{moduleName}
-# Meaning: Route Controller and method: Zikula\Module\ExtensionsModule\Controller\AdminController::moduleServicesAction
+# Meaning: Route Controller and method: Zikula\ExtensionsModule\Controller\AdminController::moduleServicesAction
 msgid "zikulaextensionsmodule_admin_moduleservices"
 msgstr ""
 # Desc: /modules/remove
@@ -1124,15 +1124,15 @@ msgstr ""
 msgid "zikulausersmodule_user_confirmchemail"
 msgstr ""
 # Desc: /useraccount
-# Meaning: Route Controller and method: Zikula\Module\UsersModule\Controller\UserController::indexAction
+# Meaning: Route Controller and method: Zikula\UsersModule\Controller\UserController::indexAction
 msgid "zikulausersmodule_user_index"
 msgstr ""
 # Desc: /login
-# Meaning: Route Controller and method: Zikula\Module\UsersModule\Controller\UserController::loginAction
+# Meaning: Route Controller and method: Zikula\UsersModule\Controller\UserController::loginAction
 msgid "zikulausersmodule_user_login"
 msgstr ""
 # Desc: /logout
-# Meaning: Route Controller and method: Zikula\Module\UsersModule\Controller\UserController::logoutAction
+# Meaning: Route Controller and method: Zikula\UsersModule\Controller\UserController::logoutAction
 msgid "zikulausersmodule_user_logout"
 msgstr ""
 # Desc: /lost-password
@@ -1152,7 +1152,7 @@ msgstr ""
 msgid "zikulausersmodule_user_lostuname"
 msgstr ""
 # Desc: /register
-# Meaning: Route Controller and method: Zikula\Module\UsersModule\Controller\UserController::registerAction
+# Meaning: Route Controller and method: Zikula\UsersModule\Controller\UserController::registerAction
 msgid "zikulausersmodule_user_register"
 msgstr ""
 # Desc: /email/update

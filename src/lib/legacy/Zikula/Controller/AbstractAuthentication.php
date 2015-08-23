@@ -135,7 +135,7 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
         // End parameter extraction and error checking
 
         if ($this->authenticationMethodIsEnabled($args['method'])) {
-            /** @var \Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper $authenticationMethod */
+            /** @var \Zikula\UsersModule\Helper\AuthenticationMethodHelper $authenticationMethod */
             $authenticationMethod = $this->getAuthenticationMethod($args['method']);
             $icon = $authenticationMethod->getIcon();
             $isFontAwesomeIcon = $authenticationMethod->isFontAwesomeIcon();

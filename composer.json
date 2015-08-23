@@ -7,16 +7,13 @@
     "prefer-stable": true,
     "autoload": {
         "psr-0": {
-            "Zikula\\Module\\": "src/system",
-            "Zikula\\Composer\\": "src/system",
-            "Zikula\\Theme\\": "src/themes",
             "Zikula\\": "src/lib",
             "Zikula_": "src/lib/legacy",
             "DoctrineExtensions\\StandardFields\\": "src/lib/legacy",
             "CustomBundle\\": "src/app/custom"
         },
         "psr-4": {
-            "Zikula\\RoutesModule\\": "src/system/ZikulaRoutesModule"
+            "Zikula\\": ["src/system", "src/themes"]
         },
         "classmap": [
             "src/lib/util/",
