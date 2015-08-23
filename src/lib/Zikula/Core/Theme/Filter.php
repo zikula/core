@@ -45,7 +45,7 @@ class Filter
         }
 
         if (false === empty($footer)) {
-            $source = str_replace('</body>', $footer, $source);
+            $source = str_replace('</body>', $footer."\n</body>", $source);
         }
 
         return $source;
