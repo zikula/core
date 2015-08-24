@@ -42,7 +42,7 @@ trait TranslatorTrait
      * @param string $m2 Plural.
      * @param integer $n Count.
      * @param string|null $domain
-     * @paramstring| null $locale
+     * @param string| null $locale
      * @return string
      */
     public function _n($m1, $m2, $n, $domain = null, $locale = null)
