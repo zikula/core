@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @todo remove this class at Core-2.0
  *  see notes in \Zikula\UsersModule\Entity\BaseUserEntity
- *  This class is not technically deprecated, but will be return to an concrete class in Core-2.0
+ *  This class is not technically deprecated, but will be returned to a concrete class in Core-2.0
  *
  * @ORM\Entity
  * @ORM\Table(name="users",indexes={@ORM\Index(name="uname",columns={"uname"}), @ORM\Index(name="email",columns={"email"})})
