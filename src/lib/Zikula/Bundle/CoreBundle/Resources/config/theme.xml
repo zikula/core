@@ -63,6 +63,7 @@
             <argument type="service" id="zikula_core.common.theme.pagevars" />
             <argument type="service" id="zikula_core.common.theme.js_resolver" />
             <argument type="service" id="zikula_core.common.theme.css_resolver" />
+            <argument>%script_position%</argument>
         </service>
 
         <service id="theme.themevars" class="%theme.themevars.class%">

@@ -100,6 +100,8 @@ class ThemeListener implements EventSubscriberInterface
             return;
         }
         $basePath = $event->getRequest()->getBasePath();
+
+        // add default javascripts to jsAssetBag
         $this->jsAssetBag->add(array(
             $basePath . '/web/jquery/jquery.min.js',
             $basePath . '/web/bootstrap/js/bootstrap.min.js',
@@ -108,11 +110,8 @@ class ThemeListener implements EventSubscriberInterface
             $basePath . '/web/bundles/fosjsrouting/js/router.js',
             $basePath . '/web/js/fos_js_routes.js',
         ));
-        // @todo this is a hack and should be done differently
-        // it adds a script to the header that defines `Zikula.Config` which is needed for NoConflict and Ajax
-        $header = $this->pageVars->get('header');
-        $header[] = \JCSSUtil::getJSConfig();
-        $this->pageVars->set('header', $header);
+
+        // add default stylesheets to cssAssetBag
         $this->cssAssetBag->add(array(
             $basePath . '/web/bootstrap-font-awesome.css',
             $basePath . '/style/core.css',
