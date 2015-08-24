@@ -49,19 +49,20 @@ abstract class ZikulaKernel extends Kernel
     private $autoloader;
 
     /**
-     * Flag determines if container is dumped or not
-     *
-     * @param $flag
+     * @deprecated - Remove when inclusion of files inside the constructor is removed!
+     * @var bool
      */
-    public function setDump($flag)
-    {
-        $this->dump = $flag;
-    }
+    private static $included = false;
 
     public function __construct($env, $debug)
     {
         parent::__construct($env, $debug);
 
+        if (self::$included) {
+            return;
+        }
+        self::$included = true;
+        
         // this is all to be deprecated (todo drak)
         $paths = array(
             $this->rootDir .'/../config/config.php',
@@ -74,6 +75,16 @@ abstract class ZikulaKernel extends Kernel
                 include $path;
             }
         }
+    }
+
+    /**
+     * Flag determines if container is dumped or not
+     *
+     * @param $flag
+     */
+    public function setDump($flag)
+    {
+        $this->dump = $flag;
     }
 
     public function boot()
