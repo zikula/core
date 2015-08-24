@@ -8,39 +8,45 @@
 {if count($items) > 1}
 {pageaddvar value='jquery-ui' name='javascript'}
 <script type="text/javascript">
-    jQuery(function(){
-        // Return a helper with preserved width of cells
-        var fixHelper = function(e, ui) {
-            ui.children().each(function() {
-                jQuery(this).css({width: jQuery(this).width()});
-            });
-            return ui;
-        };
+    /* <![CDATA[ */
+    ( function() {
+        jQuery(document).ready(function() {
+            jQuery(function(){
+                // Return a helper with preserved width of cells
+                var fixHelper = function(e, ui) {
+                    ui.children().each(function() {
+                        jQuery(this).css({width: jQuery(this).width()});
+                    });
+                    return ui;
+                };
 
-        jQuery('#indicator').hide().removeClass('hidden');
+                jQuery('#indicator').hide().removeClass('hidden');
 
-        jQuery("#routesViewForm table tbody").sortable({
-            helper: fixHelper,
-            items: '> tr.sortable',
-            update: function (event, ui) {
-                function showIndicator() {
-                    jQuery('#indicator').fadeIn();
-                }
-                function hideIndicator() {
-                    jQuery('#indicator').fadeOut();
-                }
-                showIndicator();
-                jQuery.ajax({
-                    url: '{{modurl modname='ZikulaRoutesModule' type='ajax' func='sort' assign='url'}}{{$url}}',
-                    type: 'POST',
-                    data: {
-                        ot: 'route',
-                        sort: jQuery( "#routesViewForm table tbody" ).sortable( "toArray" )
+                jQuery("#routesViewForm table tbody").sortable({
+                    helper: fixHelper,
+                    items: '> tr.sortable',
+                    update: function (event, ui) {
+                        function showIndicator() {
+                            jQuery('#indicator').fadeIn();
+                        }
+                        function hideIndicator() {
+                            jQuery('#indicator').fadeOut();
+                        }
+                        showIndicator();
+                        jQuery.ajax({
+                            url: '{{modurl modname='ZikulaRoutesModule' type='ajax' func='sort' assign='url'}}{{$url}}',
+                            type: 'POST',
+                            data: {
+                                ot: 'route',
+                                sort: jQuery( "#routesViewForm table tbody" ).sortable( "toArray" )
+                            }
+                        }).always(hideIndicator);
                     }
-                }).always(hideIndicator);
-            }
-        }).disableSelection();
-    });
+                }).disableSelection();
+            });
+        });
+    })();
+    /* ]]> */
 </script>
 <style type="text/css">
     #indicator {
