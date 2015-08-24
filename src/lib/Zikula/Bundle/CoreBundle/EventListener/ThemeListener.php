@@ -15,9 +15,11 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Theme\AssetBag;
 use Zikula\Core\Theme\Engine;
@@ -26,13 +28,15 @@ use Zikula_View_Theme;
 
 class ThemeListener implements EventSubscriberInterface
 {
+    private $loader;
     private $themeEngine;
     private $cssAssetBag;
     private $jsAssetBag;
     private $pageVars;
 
-    function __construct(Engine $themeEngine, AssetBag $jsAssetBag, AssetBag $cssAssetBag, ParameterBag $pageVars)
+    function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine, AssetBag $jsAssetBag, AssetBag $cssAssetBag, ParameterBag $pageVars)
     {
+        $this->loader = $loader;
         $this->themeEngine = $themeEngine;
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
@@ -96,6 +100,8 @@ class ThemeListener implements EventSubscriberInterface
             return;
         }
         $basePath = $event->getRequest()->getBasePath();
+
+        // add default javascripts to jsAssetBag
         $this->jsAssetBag->add(array(
             $basePath . '/web/jquery/jquery.min.js',
             $basePath . '/web/bootstrap/js/bootstrap.min.js',
@@ -104,15 +110,39 @@ class ThemeListener implements EventSubscriberInterface
             $basePath . '/web/bundles/fosjsrouting/js/router.js',
             $basePath . '/web/js/fos_js_routes.js',
         ));
-        // @todo this is a hack and should be done differently
-        // it adds a script to the header that defines `Zikula.Config` which is needed for NoConflict and Ajax
-        $header = $this->pageVars->get('header');
-        $header[] = \JCSSUtil::getJSConfig();
-        $this->pageVars->set('header', $header);
+
+        // add default stylesheets to cssAssetBag
         $this->cssAssetBag->add(array(
             $basePath . '/web/bootstrap-font-awesome.css',
             $basePath . '/style/core.css',
         ));
+    }
+
+    /**
+     * Add ThemePath to searchable paths when locating templates using name-spaced scheme
+     * @param FilterControllerEvent $event
+     * @throws \Twig_Error_Loader
+     */
+    public function setUpThemePathOverrides(FilterControllerEvent $event)
+    {
+        // add theme path to template locator
+        // This 'twig.loader' functions only when @Bundle/template (name-spaced) name-scheme is used
+        // if old name-scheme (Bundle:template) or controller annotations (@Template) are used
+        // the \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::locateResource method is used instead
+        $controller = $event->getController()[0];
+        if ($controller instanceof AbstractController) {
+            $theme = $this->themeEngine->getTheme();
+            $bundleName = $controller->getName();
+            if ($theme) {
+                $overridePath = $theme->getPath() . '/Resources/' . $bundleName . '/views';
+                if (is_readable($overridePath)) {
+                    $paths = $this->loader->getPaths($bundleName);
+                    // inject themeOverridePath before the original path in the array
+                    array_splice($paths, count($paths) - 1, 0, array($overridePath));
+                    $this->loader->setPaths($paths, $bundleName);
+                }
+            }
+        }
     }
 
     public static function getSubscribedEvents()
@@ -120,9 +150,10 @@ class ThemeListener implements EventSubscriberInterface
         return array(
             KernelEvents::RESPONSE => array(array('onKernelResponse')),
             KernelEvents::REQUEST => array(
-                array('setThemeEngineRequestAttributes'),
+                array('setThemeEngineRequestAttributes', 32),
                 array('setDefaultPageAssets', 201),
             ),
+            KernelEvents::CONTROLLER => array(array('setUpThemePathOverrides')),
         );
     }
 }

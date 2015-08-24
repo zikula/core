@@ -34,6 +34,7 @@
         <service id="zikula.theme_listener" class="%zikula.theme_listener.class%">
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
+            <argument type="service" id="twig.loader" />
             <argument type="service" id="zikula_core.common.theme_engine" />
             <argument type="service" id="zikula_core.common.theme.assets_js" />
             <argument type="service" id="zikula_core.common.theme.assets_css" />
@@ -62,6 +63,7 @@
             <argument type="service" id="zikula_core.common.theme.pagevars" />
             <argument type="service" id="zikula_core.common.theme.js_resolver" />
             <argument type="service" id="zikula_core.common.theme.css_resolver" />
+            <argument>%script_position%</argument>
         </service>
 
         <service id="theme.themevars" class="%theme.themevars.class%">

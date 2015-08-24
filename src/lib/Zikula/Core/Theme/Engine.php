@@ -25,7 +25,7 @@ class Engine
     /**
      * @var \Zikula\Core\AbstractTheme
      */
-    private $themeBundle = null;
+    private $activeThemeBundle = null;
     private $realm;
     /**
      * flag indicating whether the theme has been overridden by Response type
@@ -42,12 +42,8 @@ class Engine
      */
     public function __construct(RequestStack $requestStack, $filter)
     {
-        $request = $requestStack->getCurrentRequest();
-        if (!empty($request)) {
-            $themeName = $this->setActiveTheme($request);
-            // @todo remove usage of ThemeUtil class
-            $this->themeBundle = \ThemeUtil::getTheme($themeName);
-            $this->setRequestAttributes($request);
+        if (null !== $requestStack->getCurrentRequest()) {
+            $this->setRequestAttributes($requestStack->getCurrentRequest());
         }
         $this->filterService = $filter;
     }
@@ -59,8 +55,10 @@ class Engine
      */
     public function setRequestAttributes(Request $request)
     {
+        $this->setActiveTheme($request);
         $this->requestAttributes = $request->attributes->all();
         $this->requestAttributes['pathInfo'] = $request->getPathInfo();
+        $this->requestAttributes['lct'] = $request->query->get('lct', null); // @todo BC remove at Core-2.0
     }
 
     /**
@@ -76,11 +74,11 @@ class Engine
 
         // original OR overridden theme may not be twig based
         // @todo remove twigBased check in 2.0
-        if (!$this->themeBundle->isTwigBased()) {
+        if (!$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
 
-        $themedResponse = $this->themeBundle->generateThemedResponse($response);
+        $themedResponse = $this->activeThemeBundle->generateThemedResponse($response);
         $filteredResponse = $this->filter($themedResponse);
         return $filteredResponse;
     }
@@ -96,11 +94,11 @@ class Engine
     public function wrapBlockInTheme(array $block)
     {
         // @todo remove twigBased check in 2.0
-        if (!$this->themeBundle->isTwigBased()) {
+        if (!$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
 
-        return $this->themeBundle->generateThemedBlock($block);
+        return $this->activeThemeBundle->generateThemedBlock($block);
     }
 
     /**
@@ -110,7 +108,7 @@ class Engine
      */
     public function getThemeName()
     {
-        return $this->themeBundle->getName();
+        return $this->activeThemeBundle->getName();
     }
 
     /**
@@ -128,7 +126,7 @@ class Engine
      */
     public function getTheme()
     {
-        return $this->themeBundle;
+        return $this->activeThemeBundle;
     }
 
     /**
@@ -140,7 +138,7 @@ class Engine
      */
     private function setMatchingRealm()
     {
-        foreach ($this->themeBundle->getConfig() as $realm => $config) {
+        foreach ($this->activeThemeBundle->getConfig() as $realm => $config) {
             if (!empty($config['pattern'])) {
                 $pattern = ';' . str_replace('/', '\\/', $config['pattern']) . ';i'; // delimiters are ; and i means case-insensitive
                 $valuesToMatch = [];
@@ -161,6 +159,11 @@ class Engine
                     }
                 }
             }
+        }
+        // @todo BC remove at Core-2.0
+        if (($this->requestAttributes['_zkType'] == 'admin') || (isset($this->requestAttributes['lct']))) {
+            $this->realm = 'admin';
+            return;
         }
 
         $this->realm = 'master';
@@ -216,45 +219,49 @@ class Engine
 
         if ($this->themeIsOverridden) {
             // load new bundle into Engine
-            $this->themeBundle = \ThemeUtil::getTheme($themeName);
+            $this->activeThemeBundle = \ThemeUtil::getTheme($themeName);
             // try to set realm based on response
-            $this->realm = isset($this->themeBundle->getConfig()['admin']) ? 'admin' : null;
+            $this->realm = isset($this->activeThemeBundle->getConfig()['admin']) ? 'admin' : null;
         }
     }
 
     /**
      * Set the theme based on:
      *  1) the request params (e.g. `?theme=MySpecialTheme`)
-     *  2) the default system theme
-     * @param Request $request
+     *  2) the request attributes (e.g. `_theme`)
+     *  3) the default system theme
+     * @param Request|null $request
      * @return mixed
      */
-    private function setActiveTheme(Request $request)
+    private function setActiveTheme(Request $request = null)
     {
-        // @todo do we want to allow changing the theme by the request?
-
-        $themeByRequest = $request->get('theme', null);
-        if (!empty($themeByRequest)) {
-            return $themeByRequest;
+        $activeTheme = \System::getVar('Default_Theme');
+        if (isset($request)) {
+            // @todo do we want to allow changing the theme by the request?
+            $themeByRequest = $request->get('theme', null);
+            if (!empty($themeByRequest)) {
+                $activeTheme = $themeByRequest;
+            }
+            $themeByRequest = $request->attributes->get('_theme');
+            if (!empty($themeByRequest)) {
+                $activeTheme = $themeByRequest;
+            }
         }
-        $themeByRequest = $request->attributes->get('_theme');
-        if (!empty($themeByRequest)) {
-            return $themeByRequest;
-        } else {
-            return \System::getVar('Default_Theme');
-        }
+        // @todo remove usage of ThemeUtil class , use kernel instead
+        $this->activeThemeBundle = \ThemeUtil::getTheme($activeTheme);
     }
 
     private function filter(Response $response)
     {
         // @todo START legacy block - remove at Core-2.0
+        $baseUri = \System::getBaseUri();
         $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript'));
         foreach ($javascripts as $key => $javascript) {
-            $javascripts[$key] = \System::getBaseUri() . '/' . $javascript;
+            $javascripts[$key] = $baseUri . '/' . $javascript;
         }
         $stylesheets = \PageUtil::getVar('stylesheet');
         foreach ($stylesheets as $key => $stylesheet) {
-            $stylesheets[$key] = \System::getBaseUri() . '/' . $stylesheet;
+            $stylesheets[$key] = $baseUri . '/' . $stylesheet;
         }
         // @todo END legacy block - remove at Core-2.0
 

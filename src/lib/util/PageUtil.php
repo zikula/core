@@ -419,7 +419,7 @@ class PageUtil
 
         $root = realpath($kernel->getRootDir() . "/../");
         $fullPath = $kernel->locateResource($path);
-        $path = System::getBaseUri() . str_replace(DIRECTORY_SEPARATOR, '/', substr($fullPath, strlen($root)));
+        $path = str_replace(DIRECTORY_SEPARATOR, '/', substr($fullPath, strlen($root) + 1));
 
         return $path;
     }

@@ -9,8 +9,7 @@
     <title>{gt text="Redirecting..."}</title>
     <meta name="generator" content="Zikula -- http://www.zikula.org" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <link rel="stylesheet" href="{$baseurl}/web/bootstrap/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="{$baseurl}/web/font-awesome/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="{$baseurl}/web/bootstrap-font-awesome.css" type="text/css" />
 </head>
 <body>
 <div class="site-wrapper">

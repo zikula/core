@@ -407,4 +407,30 @@ abstract class ZikulaKernel extends Kernel
         // ensure these extensions are implicitly loaded
         $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException if a custom resource is hidden by a resource in a derived bundle
+     */
+    public function locateResource($name, $dir = null, $first = true)
+    {
+        $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
+        $locations = parent::locateResource($name, $dir, false);
+        if ($locations && (false !== strpos($locations[0], $dir))) {
+            // if found in $dir (typically app/Resources) return it immediately.
+            return $locations[0];
+        }
+
+        // add theme path to template locator
+        // this method functions if the controller uses `@Template` or `ZikulaSpecModule:Foo:index.html.twig` naming scheme
+        // if `@ZikulaSpecModule/Foo/index.html.twig` (name-spaced) naming scheme is used
+        // the \Zikula\Bundle\CoreBundle\EventListener\ThemeListener::setUpThemePathOverrides method is used instead
+        if ($themeBundle && (false === strpos($name, $themeBundle->getName()))) {
+            // do not add theme override path to theme files
+            $customThemePath = $themeBundle->getPath() . '/Resources';
+            return parent::locateResource($name, $customThemePath, true);
+        }
+        return $locations[0];
+    }
 }
