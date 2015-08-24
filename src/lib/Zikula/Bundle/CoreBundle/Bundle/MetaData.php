@@ -110,7 +110,7 @@ class MetaData
     public function getDescription()
     {
         $this->confirmTranslator();
-        return $this->__($this->description);
+        return $this->__(/** @Ignore */$this->description);
     }
 
     public function getDependencies()
@@ -121,13 +121,13 @@ class MetaData
     public function getDisplayName()
     {
         $this->confirmTranslator();
-        return $this->__($this->displayName);
+        return $this->__(/** @Ignore */$this->displayName);
     }
 
     public function getUrl()
     {
         $this->confirmTranslator();
-        return $this->__($this->url);
+        return $this->__(/** @Ignore */$this->url);
     }
 
     public function getOldNames()
