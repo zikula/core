@@ -53,7 +53,7 @@ class ServiceUtil
             return self::$serviceManager;
         }
 
-        self::$serviceManager = $core->getContainer();
+        self::$serviceManager = (isset($core)) ? $core->getContainer() : null;
 
         return self::$serviceManager;
     }
