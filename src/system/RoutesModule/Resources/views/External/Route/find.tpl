@@ -10,7 +10,7 @@
     <script type="text/javascript">/* <![CDATA[ */
         if (typeof(Zikula) == 'undefined') {var Zikula = {};}
         Zikula.Config = {'entrypoint': '{{$ourEntry|default:'index.php'}}', 'baseURL': '{{$baseurl}}'}; /* ]]> */</script>
-        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="web/bootstrap-font-awesome.css" type="text/css" />
         <link rel="stylesheet" href="web/bootstrap/css/bootstrap-theme.css" type="text/css" />
         <script type="text/javascript" src="web/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="web/bootstrap/js/bootstrap.min.js"></script>
