@@ -257,11 +257,11 @@ class Engine
         $baseUri = \System::getBaseUri();
         $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript'));
         foreach ($javascripts as $key => $javascript) {
-            $javascripts[$key] = (false === strpos($javascript, $baseUri)) ? $baseUri . '/' . $javascript : $javascript;
+            $javascripts[$key] = $baseUri . '/' . $javascript;
         }
         $stylesheets = \PageUtil::getVar('stylesheet');
         foreach ($stylesheets as $key => $stylesheet) {
-            $stylesheets[$key] = (false === strpos($stylesheet, $baseUri)) ? $baseUri . '/' . $stylesheet : $stylesheet;
+            $stylesheets[$key] = $baseUri . '/' . $stylesheet;
         }
         // @todo END legacy block - remove at Core-2.0
 
