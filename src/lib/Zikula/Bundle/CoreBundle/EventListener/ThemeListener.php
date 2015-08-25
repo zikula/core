@@ -119,6 +119,22 @@ class ThemeListener implements EventSubscriberInterface
     }
 
     /**
+     * Add default pagevar settings to every page
+     * @param GetResponseEvent $event
+     */
+    public function setDefaultPageVars(GetResponseEvent $event)
+    {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+        // set some defaults
+        $this->pageVars->set('lang', \ZLanguage::getLanguageCode());
+        $this->pageVars->set('title', \System::getVar('defaultpagetitle'));
+        $this->pageVars->set('meta.description', \System::getVar('defaultmetadescription'));
+        $this->pageVars->set('meta.keywords', \System::getVar('metakeywords'));
+    }
+
+    /**
      * Add ThemePath to searchable paths when locating templates using name-spaced scheme
      * @param FilterControllerEvent $event
      * @throws \Twig_Error_Loader
@@ -152,6 +168,7 @@ class ThemeListener implements EventSubscriberInterface
             KernelEvents::REQUEST => array(
                 array('setThemeEngineRequestAttributes', 32),
                 array('setDefaultPageAssets', 201),
+                array('setDefaultPageVars', 201),
             ),
             KernelEvents::CONTROLLER => array(array('setUpThemePathOverrides')),
         );
