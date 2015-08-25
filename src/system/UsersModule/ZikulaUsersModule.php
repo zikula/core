@@ -62,26 +62,3 @@ namespace {
     {
     }
 }
-
-namespace Zikula\Module\UsersModule\Entity {
-    use Doctrine\ORM\Mapping as ORM;
-    use Zikula\UsersModule\Entity\BaseUserEntity;
-
-    /**
-     * @deprecated remove at Core-2.0
-     * @see Zikula\UsersModule\Entity\UserEntity
-     * @see Zikula\UsersModule\Entity\BaseUserEntity
-     *
-     * This class is necessary because of the refactoring to psr-4
-     * This class maintains the 1.4.x BC API
-     *
-     * @ORM\Entity
-     * @ORM\Table(name="users",indexes={@ORM\Index(name="uname",columns={"uname"}), @ORM\Index(name="email",columns={"email"})})
-     *
-     * Class UserEntity
-     * @package Zikula\Module\UsersModule\Entity
-     */
-    class UserEntity extends BaseUserEntity
-    {
-    }
-}

@@ -19,6 +19,12 @@ use Zikula\Core\Event\GenericEvent;
 $loader = require __DIR__.'/../app/autoload.php';
 ZLoader::register($loader);
 
+/**
+ * create aliases for psr-4 1.4.1-classnames to psr-0 <= 1.4.0-legacy for BC
+ */
+class_alias('\Zikula\CategoriesModule\Entity\CategoryEntity', '\Zikula\Module\CategoriesModule\Entity\CategoryEntity', true);
+class_alias('\Zikula\UsersModule\Entity\UserEntity', '\Zikula\Module\UsersModule\Entity\UserEntity', true);
+
 $kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
 if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
