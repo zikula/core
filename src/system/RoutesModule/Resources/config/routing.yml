@@ -4,7 +4,7 @@ zikularoutesmodule:
     # enable support for defining routes by annotations
     type:     annotation
 
-zikularoutesmodule_redirectingcontroller_removetrailingslash:
+zikularoutesmodule_redirecting_removetrailingslash:
     path: /{url}
     defaults: { _controller: ZikulaRoutesModule:Redirecting:removeTrailingSlash }
     requirements:
