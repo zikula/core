@@ -11,6 +11,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Add vierbergenlars/php-semver vendor lib for version comparison (#2560)
  - Add Twig-based theme engine (refs #1753)
  - Categorization of Entities enabled (#411)
+ - Fixed 'Removetrailingslash' error (#2552)
  
 
 * 1.4.0 (2015-07-20)
