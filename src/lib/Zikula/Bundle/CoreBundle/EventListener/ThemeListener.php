@@ -76,8 +76,7 @@ class ThemeListener implements EventSubscriberInterface
             $event->setResponse($twigThemedResponse);
         } else {
             // theme is not a twig based theme, revert to smarty
-            $theme = $this->themeEngine->themeIsOverridden() ? $this->themeEngine->getThemeName() : null;
-            $smartyThemedResponse = Zikula_View_Theme::getInstance($theme)->themefooter($response);
+            $smartyThemedResponse = Zikula_View_Theme::getInstance()->themefooter($response);
             $event->setResponse($smartyThemedResponse);
         }
     }
@@ -191,7 +190,6 @@ class ThemeListener implements EventSubscriberInterface
             if ($adminThemeName) {
                 $request->attributes->set('_theme', $adminThemeName);
                 $this->themeEngine->setActiveTheme($request);
-                $this->themeEngine->setThemeIsOverriden(true);
 
                 return $adminThemeName;
             }

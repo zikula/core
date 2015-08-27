@@ -26,11 +26,6 @@ class Engine
     private $activeThemeBundle = null;
     private $realm;
     private $annotation = null;
-    /**
-     * flag indicating whether the theme has been overridden by Response type
-     * @var bool
-     */
-    private $themeIsOverridden = false;
     private $requestAttributes;
     private $filterService;
 
@@ -105,20 +100,6 @@ class Engine
     public function getThemeName()
     {
         return $this->activeThemeBundle->getName();
-    }
-
-    /**
-     * @deprecated This will not be needed >=2.0 (when Smarty is removed)
-     * @return bool
-     */
-    public function themeIsOverridden()
-    {
-        return $this->themeIsOverridden;
-    }
-
-    public function setThemeIsOverriden($value)
-    {
-        $this->themeIsOverridden = (bool) $value;
     }
 
     /**
