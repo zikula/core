@@ -733,6 +733,7 @@ class Zikula_View_Theme extends Zikula_View
         if (!$this->themeconfig) {
             // load the page configurations
             $pageconfigurations = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfigurations', array('theme' => $this->name));
+            $methodAnnotation = ServiceUtil::get('zikula_core.common.theme_engine')->getAnnotation(); // Core-2.0 FC
 
             // identify and load the correct module configuration
 
@@ -752,7 +753,8 @@ class Zikula_View_Theme extends Zikula_View
                 $file = $pageconfigurations['*'.$this->type]['file'];
 
             // identify an admin-like type
-            } elseif (strpos($this->type, 'admin') === 0 && isset($pageconfigurations['*admin'])) {
+            } elseif ((strpos($this->type, 'admin') === 0 && isset($pageconfigurations['*admin']))
+                || (isset($methodAnnotation) && ($methodAnnotation == 'admin'))) { // Core-2.0 FC
                 $file = $pageconfigurations['*admin']['file'];
 
             // search for arguments match

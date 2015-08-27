@@ -25,19 +25,23 @@ use Zikula\Core\Theme\AssetBag;
 use Zikula\Core\Theme\Engine;
 use Zikula\Core\Theme\ParameterBag;
 use Zikula_View_Theme;
+use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Common\Annotations\Reader;
 
 class ThemeListener implements EventSubscriberInterface
 {
     private $loader;
     private $themeEngine;
+    private $annotationReader;
     private $cssAssetBag;
     private $jsAssetBag;
     private $pageVars;
 
-    function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine, AssetBag $jsAssetBag, AssetBag $cssAssetBag, ParameterBag $pageVars)
+    function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine, Reader $annotationReader, AssetBag $jsAssetBag, AssetBag $cssAssetBag, ParameterBag $pageVars)
     {
         $this->loader = $loader;
         $this->themeEngine = $themeEngine;
+        $this->annotationReader = $annotationReader;
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
         $this->pageVars = $pageVars;
@@ -141,6 +145,7 @@ class ThemeListener implements EventSubscriberInterface
      */
     public function setUpThemePathOverrides(FilterControllerEvent $event)
     {
+        // @todo check isMasterRequest() ????
         // add theme path to template locator
         // This 'twig.loader' functions only when @Bundle/template (name-spaced) name-scheme is used
         // if old name-scheme (Bundle:template) or controller annotations (@Template) are used
@@ -161,16 +166,55 @@ class ThemeListener implements EventSubscriberInterface
         }
     }
 
+    public function readControllerAnnotations(FilterControllerEvent $event)
+    {
+        if (!$event->isMasterRequest()) {
+            // prevents calling this for controller usage within a template or elsewhere
+            return;
+        }
+        $controller = $event->getController();
+        list($controller, $method) = $controller;
+        $this->changeThemeByAnnotation($controller, $method, $event->getRequest());
+    }
+
+    public function changeThemeByAnnotation($controller, $method, $request)
+    {
+        // the controller could be a proxy, e.g. when using the JMSSecuriyExtraBundle or JMSDiExtraBundle
+        $className = is_object($controller) ? ClassUtils::getClass($controller) : $controller;
+        $reflectionClass = new \ReflectionClass($className);
+        $reflectionMethod = $reflectionClass->getMethod($method);
+        $adminAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, 'Zikula\Core\Theme\Annotation\Admin');
+        if (isset($adminAnnotation)) {
+            $this->themeEngine->setAnnotation('admin');
+            // method annotations contain `@Admin` so set theme as admintheme
+            $adminThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
+            if ($adminThemeName) {
+                $request->attributes->set('_theme', $adminThemeName);
+                $this->themeEngine->setActiveTheme($request);
+                $this->themeEngine->setThemeIsOverriden(true);
+
+                return $adminThemeName;
+            }
+        }
+
+        return false;
+    }
+
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::RESPONSE => array(array('onKernelResponse')),
             KernelEvents::REQUEST => array(
                 array('setThemeEngineRequestAttributes', 32),
                 array('setDefaultPageAssets', 201),
                 array('setDefaultPageVars', 201),
             ),
-            KernelEvents::CONTROLLER => array(array('setUpThemePathOverrides')),
+            KernelEvents::CONTROLLER => array(
+                array('readControllerAnnotations'),
+                array('setUpThemePathOverrides'),
+            ),
+            KernelEvents::RESPONSE => array(
+                array('onKernelResponse')
+            ),
         );
     }
 }

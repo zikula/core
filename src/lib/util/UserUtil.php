@@ -1888,6 +1888,19 @@ class UserUtil
         }
 
         // check for an admin theme
+        // first setting the theme from the method annotation (Core-2.0 FC)
+        $router = ServiceUtil::get('router');
+        try {
+            $parameters = $router->matchRequest($request);
+            list($controllerName, $controllerMethod) = explode('::', $parameters['_controller'], 2);
+            $newAdminTheme = ServiceUtil::get('zikula_core.internal.theme.listener')->changeThemeByAnnotation($controllerName, $controllerMethod, $request);
+            if (false !== $newAdminTheme) {
+                $pagetheme = $newAdminTheme;
+                return $newAdminTheme;
+            }
+        } catch (\Exception $e) {
+            // was a homepage or something that doesn't matter. the request must be an admin route request to be changed.
+        }
         $adminSections = array('admin', 'adminplugin');
         if (in_array($type, $adminSections) && SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
             $admintheme = ModUtil::getVar('ZikulaAdminModule', 'admintheme');

@@ -17,8 +17,6 @@ namespace Zikula\Core\Theme;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Response\AdminResponse;
 
 class Engine
 {
@@ -27,6 +25,7 @@ class Engine
      */
     private $activeThemeBundle = null;
     private $realm;
+    private $annotation = null;
     /**
      * flag indicating whether the theme has been overridden by Response type
      * @var bool
@@ -70,9 +69,6 @@ class Engine
      */
     public function wrapResponseInTheme(Response $response)
     {
-        $this->overrideThemeIfRequired($response);
-
-        // original OR overridden theme may not be twig based
         // @todo remove twigBased check in 2.0
         if (!$this->activeThemeBundle->isTwigBased()) {
             return false;
@@ -118,6 +114,11 @@ class Engine
     public function themeIsOverridden()
     {
         return $this->themeIsOverridden;
+    }
+
+    public function setThemeIsOverriden($value)
+    {
+        $this->themeIsOverridden = (bool) $value;
     }
 
     /**
@@ -184,48 +185,6 @@ class Engine
     }
 
     /**
-     * Override the theme based on the Response type (e.g. AdminResponse)
-     * Set a public flag themeIsOverridden for use by Smarty
-     *
-     * @param Response $response
-     */
-    private function overrideThemeIfRequired(Response $response)
-    {
-        // If Response is an AdminResponse, then change theme to the requested Admin theme (if set)
-        // BC: (_zkType == 'admin') indicates a legacy response that must be overridden if theme is twig-based
-        // this second test can be removed at 2.0
-        if (($response instanceof AdminResponse)
-            || (!empty($this->requestAttributes['_zkType'])
-                && $this->requestAttributes['_zkType'] == 'admin')) {
-            // @todo remove usage of Util classes
-            $themeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
-            if (empty($themeName)) {
-                return; // no admin theme set
-            }
-            $this->themeIsOverridden = true;
-            // @todo is all this below desired in 2.0 ?
-            if (!empty($themeName)) {
-                $themeInfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($themeName));
-                if ($themeInfo
-                    && $themeInfo['state'] == \ThemeUtil::STATE_ACTIVE
-                    && is_dir('themes/' . \DataUtil::formatForOS($themeInfo['directory']))) {
-                        $localEvent = new GenericEvent(null, array('type' => 'admin-theme'), $themeInfo['name']);
-                        $themeName = \EventUtil::dispatch('user.gettheme', $localEvent)->getData();
-                        $_GET['type'] = 'admin'; // required for smarty and FormUtil::getPassedValue() to use the right pagetype from pageconfigurations.ini
-                }
-            }
-        }
-        // @todo check other Response types here...
-
-        if ($this->themeIsOverridden) {
-            // load new bundle into Engine
-            $this->activeThemeBundle = \ThemeUtil::getTheme($themeName);
-            // try to set realm based on response
-            $this->realm = isset($this->activeThemeBundle->getConfig()['admin']) ? 'admin' : null;
-        }
-    }
-
-    /**
      * Set the theme based on:
      *  1) the request params (e.g. `?theme=MySpecialTheme`)
      *  2) the request attributes (e.g. `_theme`)
@@ -233,7 +192,7 @@ class Engine
      * @param Request|null $request
      * @return mixed
      */
-    private function setActiveTheme(Request $request = null)
+    public function setActiveTheme(Request $request = null)
     {
         $activeTheme = \System::getVar('Default_Theme');
         if (isset($request)) {
@@ -269,4 +228,15 @@ class Engine
         $response->setContent($filteredContent);
         return $response;
     }
+
+    public function getAnnotation()
+    {
+        return $this->annotation;
+    }
+
+    public function setAnnotation($annotation)
+    {
+        $this->annotation = $annotation;
+    }
+
 }

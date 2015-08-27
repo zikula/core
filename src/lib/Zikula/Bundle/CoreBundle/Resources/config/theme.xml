@@ -31,11 +31,12 @@
             <argument type="service" id="zikula_core.common.theme_filter" />
         </service>
 
-        <service id="zikula.theme_listener" class="%zikula.theme_listener.class%">
+        <service id="zikula_core.internal.theme.listener" class="%zikula.theme_listener.class%">
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
             <argument type="service" id="twig.loader" />
             <argument type="service" id="zikula_core.common.theme_engine" />
+            <argument type="service" id="annotation_reader" />
             <argument type="service" id="zikula_core.common.theme.assets_js" />
             <argument type="service" id="zikula_core.common.theme.assets_css" />
             <argument type="service" id="zikula_core.common.theme.pagevars" />
@@ -91,6 +92,7 @@
         </service>
 
         <!-- Alias for services. These service names are deprecated and will be removed in Core-2.0 -->
+        <service id="theme.theme_listener" alias="zikula_core.internal.theme.listener" />
         <service id="theme.asset_helper" alias="zikula_core.common.theme.asset_helper" />
         <service id="theme.pagevars" alias="zikula_core.common.theme.pagevars" />
         <service id="theme.assets_js" alias="zikula_core.common.theme.assets_js" />
