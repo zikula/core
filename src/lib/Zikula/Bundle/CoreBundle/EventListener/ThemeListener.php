@@ -69,8 +69,7 @@ class ThemeListener implements EventSubscriberInterface
             return;
         }
 
-        // @todo in Core-2.0 this can simply return the themedResponse if instanceof ThemedResponse
-        // and the above checks can be reduced to only checking for ThemedResponse
+        // all responses are assumed to be themed. PlainResponse will have already returned.
         $twigThemedResponse = $this->themeEngine->wrapResponseInTheme($response);
         if ($twigThemedResponse) {
             $event->setResponse($twigThemedResponse);
