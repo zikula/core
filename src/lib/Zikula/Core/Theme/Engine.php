@@ -49,7 +49,7 @@ class Engine
      */
     public function setRequestAttributes(Request $request)
     {
-        $this->setActiveTheme($request);
+        $this->setActiveTheme(null, $request);
         $this->requestAttributes = $request->attributes->all();
         $this->requestAttributes['pathInfo'] = $request->getPathInfo();
         $this->requestAttributes['lct'] = $request->query->get('lct', null); // @todo BC remove at Core-2.0
@@ -167,15 +167,17 @@ class Engine
 
     /**
      * Set the theme based on:
-     *  1) the request params (e.g. `?theme=MySpecialTheme`)
-     *  2) the request attributes (e.g. `_theme`)
-     *  3) the default system theme
+     *  1) manual setting
+     *  2) the request params (e.g. `?theme=MySpecialTheme`)
+     *  3) the request attributes (e.g. `_theme`)
+     *  4) the default system theme
+     * @param string|null $newThemeName
      * @param Request|null $request
      * @return mixed
      */
-    public function setActiveTheme(Request $request = null)
+    public function setActiveTheme($newThemeName = null, Request $request = null)
     {
-        $activeTheme = \System::getVar('Default_Theme');
+        $activeTheme = isset($newThemeName) ? $newThemeName : \System::getVar('Default_Theme');
         if (isset($request)) {
             // @todo do we want to allow changing the theme by the request?
             $themeByRequest = $request->get('theme', null);

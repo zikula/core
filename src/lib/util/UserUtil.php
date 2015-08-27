@@ -1893,7 +1893,7 @@ class UserUtil
         try {
             $parameters = $router->matchRequest($request);
             list($controllerName, $controllerMethod) = explode('::', $parameters['_controller'], 2);
-            $newAdminTheme = ServiceUtil::get('zikula_core.internal.theme.listener')->changeThemeByAnnotation($controllerName, $controllerMethod, $request);
+            $newAdminTheme = ServiceUtil::get('zikula_core.internal.theme.listener')->changeThemeByAnnotation($controllerName, $controllerMethod);
             if (false !== $newAdminTheme) {
                 $pagetheme = $newAdminTheme;
                 return $newAdminTheme;

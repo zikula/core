@@ -165,6 +165,10 @@ class ThemeListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * Read the controller annotations and change theme if the annotation indicate that need
+     * @param FilterControllerEvent $event
+     */
     public function readControllerAnnotations(FilterControllerEvent $event)
     {
         if (!$event->isMasterRequest()) {
@@ -173,10 +177,16 @@ class ThemeListener implements EventSubscriberInterface
         }
         $controller = $event->getController();
         list($controller, $method) = $controller;
-        $this->changeThemeByAnnotation($controller, $method, $event->getRequest());
+        $this->changeThemeByAnnotation($controller, $method);
     }
 
-    public function changeThemeByAnnotation($controller, $method, $request)
+    /**
+     * Change a theme based on the annotation
+     * @param $controller
+     * @param $method
+     * @return array|bool|string
+     */
+    public function changeThemeByAnnotation($controller, $method)
     {
         // the controller could be a proxy, e.g. when using the JMSSecuriyExtraBundle or JMSDiExtraBundle
         $className = is_object($controller) ? ClassUtils::getClass($controller) : $controller;
@@ -188,8 +198,7 @@ class ThemeListener implements EventSubscriberInterface
             // method annotations contain `@Admin` so set theme as admintheme
             $adminThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
             if ($adminThemeName) {
-                $request->attributes->set('_theme', $adminThemeName);
-                $this->themeEngine->setActiveTheme($request);
+                $this->themeEngine->setActiveTheme($adminThemeName);
 
                 return $adminThemeName;
             }
