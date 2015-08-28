@@ -28,6 +28,7 @@
 
         <service id="zikula_core.common.theme_engine" class="%zikula_core.common.theme_engine.class%">
             <argument type="service" id="request_stack" strict="false" />
+            <argument type="service" id="annotation_reader" />
             <argument type="service" id="zikula_core.common.theme_filter" />
         </service>
 
@@ -36,7 +37,6 @@
             <tag name="monolog.logger" channel="request" />
             <argument type="service" id="twig.loader" />
             <argument type="service" id="zikula_core.common.theme_engine" />
-            <argument type="service" id="annotation_reader" />
             <argument type="service" id="zikula_core.common.theme.assets_js" />
             <argument type="service" id="zikula_core.common.theme.assets_css" />
             <argument type="service" id="zikula_core.common.theme.pagevars" />

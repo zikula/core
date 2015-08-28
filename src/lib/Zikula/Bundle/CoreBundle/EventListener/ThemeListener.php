@@ -26,22 +26,19 @@ use Zikula\Core\Theme\Engine;
 use Zikula\Core\Theme\ParameterBag;
 use Zikula_View_Theme;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Common\Annotations\Reader;
 
 class ThemeListener implements EventSubscriberInterface
 {
     private $loader;
     private $themeEngine;
-    private $annotationReader;
     private $cssAssetBag;
     private $jsAssetBag;
     private $pageVars;
 
-    function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine, Reader $annotationReader, AssetBag $jsAssetBag, AssetBag $cssAssetBag, ParameterBag $pageVars)
+    function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine, AssetBag $jsAssetBag, AssetBag $cssAssetBag, ParameterBag $pageVars)
     {
         $this->loader = $loader;
         $this->themeEngine = $themeEngine;
-        $this->annotationReader = $annotationReader;
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
         $this->pageVars = $pageVars;
@@ -176,34 +173,9 @@ class ThemeListener implements EventSubscriberInterface
         }
         $controller = $event->getController();
         list($controller, $method) = $controller;
-        $this->changeThemeByAnnotation($controller, $method);
-    }
-
-    /**
-     * Change a theme based on the annotation
-     * @param $controller
-     * @param $method
-     * @return array|bool|string
-     */
-    public function changeThemeByAnnotation($controller, $method)
-    {
         // the controller could be a proxy, e.g. when using the JMSSecuriyExtraBundle or JMSDiExtraBundle
-        $className = is_object($controller) ? ClassUtils::getClass($controller) : $controller;
-        $reflectionClass = new \ReflectionClass($className);
-        $reflectionMethod = $reflectionClass->getMethod($method);
-        $adminAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, 'Zikula\Core\Theme\Annotation\Admin');
-        if (isset($adminAnnotation)) {
-            $this->themeEngine->setAnnotation('admin');
-            // method annotations contain `@Admin` so set theme as admintheme
-            $adminThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
-            if ($adminThemeName) {
-                $this->themeEngine->setActiveTheme($adminThemeName);
-
-                return $adminThemeName;
-            }
-        }
-
-        return false;
+        $controllerClassName = ClassUtils::getClass($controller);
+        $this->themeEngine->changeThemeByAnnotation($controllerClassName, $method);
     }
 
     public static function getSubscribedEvents()

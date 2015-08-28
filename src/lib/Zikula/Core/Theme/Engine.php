@@ -17,6 +17,7 @@ namespace Zikula\Core\Theme;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\Common\Annotations\Reader;
 
 class Engine
 {
@@ -24,21 +25,35 @@ class Engine
      * @var \Zikula\Core\AbstractTheme
      */
     private $activeThemeBundle = null;
+    /**
+     * Realm is a present value in the theme config determining which page templates to utilize
+     * @var string
+     */
     private $realm;
-    private $annotation = null;
+    /**
+     * AnnotationValue is the value of the active method Theme annotation
+     * @var null|string
+     */
+    private $annotationValue = null;
     private $requestAttributes;
+    /**
+     * @var Reader
+     */
+    private $annotationReader;
     private $filterService;
 
     /**
      * Engine constructor.
      * @param RequestStack $requestStack
+     * @param Reader $annotationReader
      * @param \Zikula\Core\Theme\Filter $filter
      */
-    public function __construct(RequestStack $requestStack, $filter)
+    public function __construct(RequestStack $requestStack, Reader $annotationReader, $filter)
     {
         if (null !== $requestStack->getCurrentRequest()) {
             $this->setRequestAttributes($requestStack->getCurrentRequest());
         }
+        $this->annotationReader = $annotationReader;
         $this->filterService = $filter;
     }
 
@@ -166,6 +181,39 @@ class Engine
     }
 
     /**
+     * Change a theme based on the annotationValue
+     * @param string $controllerClassName
+     * @param string $method
+     * @return bool|string
+     */
+    public function changeThemeByAnnotation($controllerClassName, $method)
+    {
+        $reflectionClass = new \ReflectionClass($controllerClassName);
+        $reflectionMethod = $reflectionClass->getMethod($method);
+        $themeAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, 'Zikula\Core\Theme\Annotation\Theme');
+        if (isset($themeAnnotation)) {
+            // method annotations contain `@Theme` so set theme based on value
+            $this->annotationValue = $themeAnnotation->value;
+            switch ($themeAnnotation->value) {
+                case 'admin':
+                    $adminThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
+                    if ($adminThemeName) {
+                        $this->setActiveTheme($adminThemeName);
+
+                        return $adminThemeName;
+                    }
+                case 'print':
+                case 'atom':
+                case 'rss':
+                default:
+                    // @todo use kernel to see if value exists as theme and set
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Set the theme based on:
      *  1) manual setting
      *  2) the request params (e.g. `?theme=MySpecialTheme`)
@@ -175,7 +223,7 @@ class Engine
      * @param Request|null $request
      * @return mixed
      */
-    public function setActiveTheme($newThemeName = null, Request $request = null)
+    private function setActiveTheme($newThemeName = null, Request $request = null)
     {
         $activeTheme = isset($newThemeName) ? $newThemeName : \System::getVar('Default_Theme');
         if (isset($request)) {
@@ -212,14 +260,8 @@ class Engine
         return $response;
     }
 
-    public function getAnnotation()
+    public function getAnnotationValue()
     {
-        return $this->annotation;
+        return $this->annotationValue;
     }
-
-    public function setAnnotation($annotation)
-    {
-        $this->annotation = $annotation;
-    }
-
 }

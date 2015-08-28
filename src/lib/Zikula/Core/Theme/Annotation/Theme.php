@@ -6,9 +6,9 @@ use Doctrine\Common\Annotations\Annotation;
 
 /**
  * @Annotation
- * Class Admin
+ * Class Theme
  * @package Zikula\Core\Theme\Annotation
  */
-class Admin extends Annotation
+class Theme extends Annotation
 {
 }
