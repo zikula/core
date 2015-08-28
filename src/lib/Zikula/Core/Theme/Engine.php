@@ -19,28 +19,59 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\Reader;
 
+/**
+ * Class Engine
+ * @package Zikula\Core\Theme
+ *
+ * The Theme Engine class is responsible to manage all aspects of theme management using the classes referenced below.
+ * @see \Zikula\Core\Theme\*
+ * @see \Zikula\Bundle\CoreBundle\EventListener\ThemeListener
+ * @see \Zikula\Core\AbstractTheme
+ *
+ * The Engine works by intercepting the Response sent by the module controller (the controller action is the
+ * 'primary actor'). It takes this response and "wraps" the theme around it and filters the resulting html to add
+ * required page assets and variables and then sends the resulting Response to the browser. e.g.
+ *     Request -> Controller -> CapturedResponse -> Filter -> ThemedResponse
+ *
+ * In this altered Symfony Request/Response cycle, the theme can be altered by the Controller Action through Annotation.
+ * @see \Zikula\Core\Theme\Annotation\Theme
+ * The annotation only excepts defined values.
+ *
+ * Themes are fully-qualified Symfony bundles with specific requirements.
+ * @see https://github.com/zikula/SpecTheme
+ * Themes can define 'realms' which determine specific templates based on Request.
+ */
 class Engine
 {
     /**
+     * The instance of the currently active theme.
      * @var \Zikula\Core\AbstractTheme
      */
     private $activeThemeBundle = null;
     /**
-     * Realm is a present value in the theme config determining which page templates to utilize
+     * Realm is a present value in the theme config determining which page templates to utilize.
      * @var string
      */
     private $realm;
     /**
-     * AnnotationValue is the value of the active method Theme annotation
+     * AnnotationValue is the value of the active method Theme annotation.
      * @var null|string
      */
     private $annotationValue = null;
+    /**
+     * All the request attributes plus a few additional values.
+     * @var array
+     */
     private $requestAttributes;
     /**
-     * The doctrine annotation reader service
+     * The doctrine annotation reader service.
      * @var Reader
      */
     private $annotationReader;
+    /**
+     * The filter service.
+     * @var Filter
+     */
     private $filterService;
 
     /**
@@ -59,8 +90,8 @@ class Engine
     }
 
     /**
-     * @api
-     * Initialize the theme engine based on the Request
+     * @api Core-2.0
+     * Initialize the theme engine based on the Request.
      * @param Request $request
      */
     public function setRequestAttributes(Request $request)
@@ -72,7 +103,7 @@ class Engine
     }
 
     /**
-     * @api
+     * @api Core-2.0
      * wrap the response in the theme.
      *
      * @param Response $response @todo change typecast to ThemedResponse in 2.0
@@ -91,8 +122,8 @@ class Engine
     }
 
     /**
-     * @api
-     * wrap a block in the theme's block template
+     * @api Core-2.0
+     * wrap a block in the theme's block template.
      * @todo consider changing block to a Response
      *
      * @param array $block
@@ -110,7 +141,7 @@ class Engine
 
     /**
      * @deprecated This will not be needed >=2.0 (when Smarty is removed)
-     * may consider leaving this present and public in 2.0 (unsure)
+     * may consider leaving this present and public in 2.0 (unsure).
      * @return string
      */
     public function getThemeName()
@@ -119,7 +150,7 @@ class Engine
     }
 
     /**
-     * @api
+     * @api Core-2.0
      * @return \Zikula\Core\AbstractTheme
      */
     public function getTheme()
@@ -128,7 +159,7 @@ class Engine
     }
 
     /**
-     * @api
+     * @api Core-2.0
      * Get the template realm
      * @return string
      */
@@ -142,7 +173,7 @@ class Engine
     }
 
     /**
-     * @api
+     * @api Core-2.0
      * @return null|string
      */
     public function getAnnotationValue()
@@ -151,8 +182,8 @@ class Engine
     }
 
     /**
-     * @api
-     * Change a theme based on the annotationValue
+     * @api Core-2.0
+     * Change a theme based on the annotationValue.
      * @param string $controllerClassName
      * @param string $method
      * @return bool|string
@@ -185,8 +216,8 @@ class Engine
     }
 
     /**
-     * Find the realm in the theme.yml that matches the given path, route or module
-     * Uses regex to match a pattern to one of three possible values
+     * Find the realm in the theme.yml that matches the given path, route or module.
+     * Uses regex to match a pattern to one of three possible values.
      *
      * @todo is there a faster way to do this?
      * @return int|string
