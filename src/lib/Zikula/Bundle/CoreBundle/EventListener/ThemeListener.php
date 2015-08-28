@@ -13,14 +13,12 @@
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Theme\AssetBag;
 use Zikula\Core\Theme\Engine;
 use Zikula\Core\Theme\ParameterBag;
@@ -54,15 +52,9 @@ class ThemeListener implements EventSubscriberInterface
         }
 
         $response = $event->getResponse();
-        $request = $event->getRequest();
-        if ($response instanceof PlainResponse
-            || $response instanceof JsonResponse
-            || $request->isXmlHttpRequest()
-            || $response instanceof RedirectResponse) {
-            return;
-        }
-        // this is needed for the profiler?
-        if (!isset($response->legacy) && !$request->attributes->get('_legacy', false)) {
+        if (!($response instanceof Response)
+            || is_subclass_of($response, '\Symfony\Component\HttpFoundation\Response')
+            || $event->getRequest()->isXmlHttpRequest()) {
             return;
         }
 
