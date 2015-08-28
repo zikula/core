@@ -37,6 +37,7 @@ class Engine
     private $annotationValue = null;
     private $requestAttributes;
     /**
+     * The doctrine annotation reader service
      * @var Reader
      */
     private $annotationReader;
@@ -127,6 +128,63 @@ class Engine
     }
 
     /**
+     * @api
+     * Get the template realm
+     * @return string
+     */
+    public function getRealm()
+    {
+        if (!isset($this->realm)) {
+            $this->setMatchingRealm();
+        }
+
+        return $this->realm;
+    }
+
+    /**
+     * @api
+     * @return null|string
+     */
+    public function getAnnotationValue()
+    {
+        return $this->annotationValue;
+    }
+
+    /**
+     * @api
+     * Change a theme based on the annotationValue
+     * @param string $controllerClassName
+     * @param string $method
+     * @return bool|string
+     */
+    public function changeThemeByAnnotation($controllerClassName, $method)
+    {
+        $reflectionClass = new \ReflectionClass($controllerClassName);
+        $reflectionMethod = $reflectionClass->getMethod($method);
+        $themeAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, 'Zikula\Core\Theme\Annotation\Theme');
+        if (isset($themeAnnotation)) {
+            // method annotations contain `@Theme` so set theme based on value
+            $this->annotationValue = $themeAnnotation->value;
+            switch ($themeAnnotation->value) {
+                case 'admin':
+                    $adminThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
+                    if ($adminThemeName) {
+                        $this->setActiveTheme($adminThemeName);
+
+                        return $adminThemeName;
+                    }
+                case 'print':
+                case 'atom':
+                case 'rss':
+                default:
+                    // @todo use kernel to see if value exists as theme and set
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Find the realm in the theme.yml that matches the given path, route or module
      * Uses regex to match a pattern to one of three possible values
      *
@@ -167,53 +225,6 @@ class Engine
     }
 
     /**
-     * @api
-     * Get the template realm
-     * @return string
-     */
-    public function getRealm()
-    {
-        if (!isset($this->realm)) {
-            $this->setMatchingRealm();
-        }
-
-        return $this->realm;
-    }
-
-    /**
-     * Change a theme based on the annotationValue
-     * @param string $controllerClassName
-     * @param string $method
-     * @return bool|string
-     */
-    public function changeThemeByAnnotation($controllerClassName, $method)
-    {
-        $reflectionClass = new \ReflectionClass($controllerClassName);
-        $reflectionMethod = $reflectionClass->getMethod($method);
-        $themeAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, 'Zikula\Core\Theme\Annotation\Theme');
-        if (isset($themeAnnotation)) {
-            // method annotations contain `@Theme` so set theme based on value
-            $this->annotationValue = $themeAnnotation->value;
-            switch ($themeAnnotation->value) {
-                case 'admin':
-                    $adminThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
-                    if ($adminThemeName) {
-                        $this->setActiveTheme($adminThemeName);
-
-                        return $adminThemeName;
-                    }
-                case 'print':
-                case 'atom':
-                case 'rss':
-                default:
-                    // @todo use kernel to see if value exists as theme and set
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Set the theme based on:
      *  1) manual setting
      *  2) the request params (e.g. `?theme=MySpecialTheme`)
@@ -241,6 +252,11 @@ class Engine
         $this->activeThemeBundle = \ThemeUtil::getTheme($activeTheme);
     }
 
+    /**
+     * Filter the Response to add page assets and vars and return.
+     * @param Response $response
+     * @return Response
+     */
     private function filter(Response $response)
     {
         // @todo START legacy block - remove at Core-2.0
@@ -258,10 +274,5 @@ class Engine
         $filteredContent = $this->filterService->filter($response->getContent(), $javascripts, $stylesheets);
         $response->setContent($filteredContent);
         return $response;
-    }
-
-    public function getAnnotationValue()
-    {
-        return $this->annotationValue;
     }
 }
