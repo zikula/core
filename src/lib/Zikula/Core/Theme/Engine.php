@@ -88,12 +88,12 @@ class Engine
      */
     public function __construct(RequestStack $requestStack, Reader $annotationReader, ZikulaKernel $kernel, $filter)
     {
-        if (null !== $requestStack->getCurrentRequest()) {
-            $this->setRequestAttributes($requestStack->getCurrentRequest());
-        }
         $this->annotationReader = $annotationReader;
         $this->kernel = $kernel;
         $this->filterService = $filter;
+        if (null !== $requestStack->getCurrentRequest()) {
+            $this->setRequestAttributes($requestStack->getCurrentRequest());
+        }
     }
 
     /**
