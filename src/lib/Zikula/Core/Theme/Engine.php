@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\Reader;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 /**
  * Class Engine
@@ -69,6 +70,10 @@ class Engine
      */
     private $annotationReader;
     /**
+     * @var \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel
+     */
+    private $kernel;
+    /**
      * The filter service.
      * @var Filter
      */
@@ -78,14 +83,16 @@ class Engine
      * Engine constructor.
      * @param RequestStack $requestStack
      * @param Reader $annotationReader
+     * @param ZikulaKernel $kernel
      * @param \Zikula\Core\Theme\Filter $filter
      */
-    public function __construct(RequestStack $requestStack, Reader $annotationReader, $filter)
+    public function __construct(RequestStack $requestStack, Reader $annotationReader, ZikulaKernel $kernel, $filter)
     {
         if (null !== $requestStack->getCurrentRequest()) {
             $this->setRequestAttributes($requestStack->getCurrentRequest());
         }
         $this->annotationReader = $annotationReader;
+        $this->kernel = $kernel;
         $this->filterService = $filter;
     }
 
@@ -198,17 +205,24 @@ class Engine
             $this->annotationValue = $themeAnnotation->value;
             switch ($themeAnnotation->value) {
                 case 'admin':
-                    $adminThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
-                    if ($adminThemeName) {
-                        $this->setActiveTheme($adminThemeName);
-
-                        return $adminThemeName;
-                    }
+                    $newThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
+                    break;
                 case 'print':
+                    $newThemeName = 'ZikulaPrinterTheme';
+                    break;
                 case 'atom':
+                    $newThemeName = 'ZikulaAtomTheme';
+                    break;
                 case 'rss':
+                    $newThemeName = 'ZikulaRssTheme';
+                    break;
                 default:
-                    // @todo use kernel to see if value exists as theme and set
+                    $newThemeName = $themeAnnotation->value;
+            }
+            if (!empty($newThemeName) && $this->kernel->isTheme($newThemeName)) {
+                $this->setActiveTheme($newThemeName);
+
+                return $newThemeName;
             }
         }
 

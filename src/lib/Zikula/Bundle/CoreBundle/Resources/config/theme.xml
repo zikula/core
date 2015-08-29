@@ -29,6 +29,7 @@
         <service id="zikula_core.common.theme_engine" class="%zikula_core.common.theme_engine.class%">
             <argument type="service" id="request_stack" strict="false" />
             <argument type="service" id="annotation_reader" />
+            <argument type="service" id="kernel" strict="false" />
             <argument type="service" id="zikula_core.common.theme_filter" />
         </service>
 
