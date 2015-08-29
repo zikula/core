@@ -219,11 +219,9 @@ class Engine
                 default:
                     $newThemeName = $themeAnnotation->value;
             }
-            if (!empty($newThemeName) && $this->kernel->isTheme($newThemeName)) {
-                $this->setActiveTheme($newThemeName);
+            $this->setActiveTheme($newThemeName);
 
-                return $newThemeName;
-            }
+            return $newThemeName;
         }
 
         return false;
@@ -278,6 +276,7 @@ class Engine
      * @param string|null $newThemeName
      * @param Request|null $request
      * @return mixed
+     * kernel::getTheme() @throws \InvalidArgumentException if theme is invalid.
      */
     private function setActiveTheme($newThemeName = null, Request $request = null)
     {
@@ -293,8 +292,7 @@ class Engine
                 $activeTheme = $themeByRequest;
             }
         }
-        // @todo remove usage of ThemeUtil class , use kernel instead
-        $this->activeThemeBundle = \ThemeUtil::getTheme($activeTheme);
+        $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
     }
 
     /**

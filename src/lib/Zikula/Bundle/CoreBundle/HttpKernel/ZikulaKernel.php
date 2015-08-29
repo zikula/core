@@ -167,17 +167,6 @@ abstract class ZikulaKernel extends Kernel
         return $this->themes;
     }
 
-    public function isTheme($themeName)
-    {
-        try {
-            $theme = $this->getTheme($themeName);
-        } catch (\InvalidArgumentException $e) {
-            $theme = null;
-        }
-
-        return isset($theme);
-    }
-
     public function getJustBundles()
     {
         $bundles = array();
