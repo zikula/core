@@ -13,18 +13,17 @@
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Theme\AssetBag;
 use Zikula\Core\Theme\Engine;
 use Zikula\Core\Theme\ParameterBag;
 use Zikula_View_Theme;
+use Doctrine\Common\Util\ClassUtils;
 
 class ThemeListener implements EventSubscriberInterface
 {
@@ -53,27 +52,19 @@ class ThemeListener implements EventSubscriberInterface
         }
 
         $response = $event->getResponse();
-        $request = $event->getRequest();
-        if ($response instanceof PlainResponse
-            || $response instanceof JsonResponse
-            || $request->isXmlHttpRequest()
-            || $response instanceof RedirectResponse) {
-            return;
-        }
-        // this is needed for the profiler?
-        if (!isset($response->legacy) && !$request->attributes->get('_legacy', false)) {
+        if (!($response instanceof Response)
+            || is_subclass_of($response, '\Symfony\Component\HttpFoundation\Response')
+            || $event->getRequest()->isXmlHttpRequest()) {
             return;
         }
 
-        // @todo in Core-2.0 this can simply return the themedResponse if instanceof ThemedResponse
-        // and the above checks can be reduced to only checking for ThemedResponse
+        // all responses are assumed to be themed. PlainResponse will have already returned.
         $twigThemedResponse = $this->themeEngine->wrapResponseInTheme($response);
         if ($twigThemedResponse) {
             $event->setResponse($twigThemedResponse);
         } else {
             // theme is not a twig based theme, revert to smarty
-            $theme = $this->themeEngine->themeIsOverridden() ? $this->themeEngine->getThemeName() : null;
-            $smartyThemedResponse = Zikula_View_Theme::getInstance($theme)->themefooter($response);
+            $smartyThemedResponse = Zikula_View_Theme::getInstance()->themefooter($response);
             $event->setResponse($smartyThemedResponse);
         }
     }
@@ -141,6 +132,7 @@ class ThemeListener implements EventSubscriberInterface
      */
     public function setUpThemePathOverrides(FilterControllerEvent $event)
     {
+        // @todo check isMasterRequest() ????
         // add theme path to template locator
         // This 'twig.loader' functions only when @Bundle/template (name-spaced) name-scheme is used
         // if old name-scheme (Bundle:template) or controller annotations (@Template) are used
@@ -161,16 +153,38 @@ class ThemeListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * Read the controller annotations and change theme if the annotation indicate that need
+     * @param FilterControllerEvent $event
+     */
+    public function readControllerAnnotations(FilterControllerEvent $event)
+    {
+        if (!$event->isMasterRequest()) {
+            // prevents calling this for controller usage within a template or elsewhere
+            return;
+        }
+        $controller = $event->getController();
+        list($controller, $method) = $controller;
+        // the controller could be a proxy, e.g. when using the JMSSecuriyExtraBundle or JMSDiExtraBundle
+        $controllerClassName = ClassUtils::getClass($controller);
+        $this->themeEngine->changeThemeByAnnotation($controllerClassName, $method);
+    }
+
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::RESPONSE => array(array('onKernelResponse')),
             KernelEvents::REQUEST => array(
                 array('setThemeEngineRequestAttributes', 32),
                 array('setDefaultPageAssets', 201),
                 array('setDefaultPageVars', 201),
             ),
-            KernelEvents::CONTROLLER => array(array('setUpThemePathOverrides')),
+            KernelEvents::CONTROLLER => array(
+                array('readControllerAnnotations'),
+                array('setUpThemePathOverrides'),
+            ),
+            KernelEvents::RESPONSE => array(
+                array('onKernelResponse')
+            ),
         );
     }
 }
