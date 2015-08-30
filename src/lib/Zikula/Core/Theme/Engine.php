@@ -97,8 +97,8 @@ class Engine
     }
 
     /**
-     * @api Core-2.0
      * Initialize the theme engine based on the Request.
+     * @api Core-2.0
      * @param Request $request
      */
     public function setRequestAttributes(Request $request)
@@ -110,9 +110,8 @@ class Engine
     }
 
     /**
+     * Wrap the response in the theme.
      * @api Core-2.0
-     * wrap the response in the theme.
-     *
      * @param Response $response @todo change typecast to ThemedResponse in 2.0
      * @return Response|bool (false if theme is not twigBased)
      */
@@ -129,10 +128,9 @@ class Engine
     }
 
     /**
+     * Wrap a block in the theme's block template.
      * @api Core-2.0
-     * wrap a block in the theme's block template.
      * @todo consider changing block to a Response
-     *
      * @param array $block
      * @return bool|string (false if theme is not twigBased)
      */
@@ -166,8 +164,8 @@ class Engine
     }
 
     /**
+     * Get the template realm.
      * @api Core-2.0
-     * Get the template realm
      * @return string
      */
     public function getRealm()
@@ -189,8 +187,8 @@ class Engine
     }
 
     /**
-     * @api Core-2.0
      * Change a theme based on the annotationValue.
+     * @api Core-2.0
      * @param string $controllerClassName
      * @param string $method
      * @return bool|string
@@ -232,7 +230,6 @@ class Engine
     /**
      * Find the realm in the theme.yml that matches the given path, route or module.
      * Uses regex to match a pattern to one of three possible values.
-     *
      * @todo is there a faster way to do this?
      * @return int|string
      */
