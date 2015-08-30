@@ -205,7 +205,7 @@ class Engine
             $this->annotationValue = $themeAnnotation->value;
             switch ($themeAnnotation->value) {
                 case 'admin':
-                    $newThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme');
+                    $newThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme', '');
                     break;
                 case 'print':
                     $newThemeName = 'ZikulaPrinterTheme';
@@ -219,9 +219,11 @@ class Engine
                 default:
                     $newThemeName = $themeAnnotation->value;
             }
-            $this->setActiveTheme($newThemeName);
+            if (!empty($newThemeName)) {
+                $this->setActiveTheme($newThemeName);
 
-            return $newThemeName;
+                return $newThemeName;
+            }
         }
 
         return false;
@@ -280,7 +282,7 @@ class Engine
      */
     private function setActiveTheme($newThemeName = null, Request $request = null)
     {
-        $activeTheme = isset($newThemeName) ? $newThemeName : \System::getVar('Default_Theme');
+        $activeTheme = !empty($newThemeName) ? $newThemeName : \System::getVar('Default_Theme');
         if (isset($request)) {
             // @todo do we want to allow changing the theme by the request?
             $themeByRequest = $request->get('theme', null);
