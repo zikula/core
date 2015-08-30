@@ -5,7 +5,7 @@
     {insert name='getstatusmsg'}
 {/if}
 
-{if $themename|strtolower|strpos:"printer" !== false}
+{if $userthemename|strtolower|strpos:"printer" !== false}
     {if isset($image) && $image}<img src="{$image|safetext}" alt="{$title|safetext}" />{/if}
     {if $title}<h2>{$title|safetext}</h2>{/if}
 
