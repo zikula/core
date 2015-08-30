@@ -459,12 +459,11 @@ class AdminApi extends \Zikula_AbstractApi
      * This function scans the file system for modules and returns an array with all (potential) modules found.
      * This information is used to regenerate the module list.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
-     * @throws \RuntimeException Thrown if the version information of a module cannot be found
-     *
-     * @return array An array of modules found in the file system.
+     * @param array $directories
+     * @return array Thrown if the user doesn't have admin permissions over the module
+     * @throws \Exception
      */
-    public function getfilemodules()
+    public function getfilemodules($directories = array('system', 'modules'))
     {
         // Security check
         if (!System::isInstalling()) {
@@ -483,7 +482,7 @@ class AdminApi extends \Zikula_AbstractApi
         $filemodules = array();
 
         $scanner = new Scanner();
-        $scanner->scan(array('system', 'modules'), 5);
+        $scanner->scan($directories, 5);
         $newModules = $scanner->getModulesMetaData();
 
         // scan for all bundle-type modules (psr-0 & psr-4) in either /system or /modules

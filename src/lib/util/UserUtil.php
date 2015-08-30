@@ -1892,11 +1892,13 @@ class UserUtil
         $router = ServiceUtil::get('router');
         try {
             $parameters = $router->matchRequest($request);
-            list($controllerName, $controllerMethod) = explode('::', $parameters['_controller'], 2);
-            $newAdminTheme = ServiceUtil::get('zikula_core.common.theme_engine')->changeThemeByAnnotation($controllerName, $controllerMethod);
-            if (false !== $newAdminTheme) {
-                $pagetheme = $newAdminTheme;
-                return $newAdminTheme;
+            if (strpos($parameters['_controller'], '::')) {
+                list($controllerName, $controllerMethod) = explode('::', $parameters['_controller'], 2);
+                $newAdminTheme = ServiceUtil::get('zikula_core.common.theme_engine')->changeThemeByAnnotation($controllerName, $controllerMethod);
+                if (false !== $newAdminTheme) {
+                    $pagetheme = $newAdminTheme;
+                    return $newAdminTheme;
+                }
             }
         } catch (\Exception $e) {
             // was a homepage or something that doesn't matter. the request must be an admin route request to be changed.

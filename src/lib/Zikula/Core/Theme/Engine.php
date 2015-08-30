@@ -103,7 +103,9 @@ class Engine
      */
     public function setRequestAttributes(Request $request)
     {
-        $this->setActiveTheme(null, $request);
+        if ($this->kernel->getContainer()->getParameter('installed')) {
+            $this->setActiveTheme(null, $request);
+        }
         $this->requestAttributes = $request->attributes->all();
         $this->requestAttributes['pathInfo'] = $request->getPathInfo();
         $this->requestAttributes['lct'] = $request->query->get('lct', null); // @todo BC remove at Core-2.0
