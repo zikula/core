@@ -229,13 +229,39 @@ class Engine
 
     /**
      * Find the realm in the theme.yml that matches the given path, route or module.
-     * Uses regex to match a pattern to one of three possible values.
-     * @todo is there a faster way to do this?
+     * Three 'alias' realms may be defined and do not require a pattern:
+     *  1) 'master' (required) this is the default realm. any non-matching value will utilize the master realm
+     *  2) 'home' (optional) will be used when the path matches `^/$`
+     *  3) 'admin' (optional) will be used when the annotationValue is 'admin'
+     *     until Core-2.0 the 'admin' realm will also be used when _zkType or lct are 'admin' (BC)
+     * Uses regex to find the FIRST match to a pattern to one of three possible request attribute values.
+     *  1) path   e.g. /pages/display/welcome-to-pages-content-manager
+     *  2) route  e.g. zikulapagesmodule_user_display
+     *  3) module e.g. zikulapagesmodule (case insensitive)
+     *
      * @return int|string
      */
     private function setMatchingRealm()
     {
-        foreach ($this->activeThemeBundle->getConfig() as $realm => $config) {
+        $themeConfig = $this->activeThemeBundle->getConfig();
+        // defining an admin realm overrides all other options for 'admin' annotated methods
+        if ($this->annotationValue == 'admin' && isset($themeConfig['admin'])) {
+            $this->realm = 'admin';
+            return;
+        }
+        // @todo BC remove at Core-2.0
+        if (($this->requestAttributes['_zkType'] == 'admin') || (isset($this->requestAttributes['lct']))) {
+            $this->realm = 'admin';
+            return;
+        }
+        // match `/` for home realm
+        if (preg_match(';^\\/$;', $this->requestAttributes['pathInfo']) && isset($themeConfig['home'])) {
+            $this->realm = 'home';
+            return;
+        }
+        unset($themeConfig['admin'], $themeConfig['home'], $themeConfig['master']); // remove to avoid scanning/matching in loop
+        foreach ($themeConfig as $realm => $config) {
+            // @todo is there a faster way to do this?
             if (!empty($config['pattern'])) {
                 $pattern = ';' . str_replace('/', '\\/', $config['pattern']) . ';i'; // delimiters are ; and i means case-insensitive
                 $valuesToMatch = [];
@@ -256,11 +282,6 @@ class Engine
                     }
                 }
             }
-        }
-        // @todo BC remove at Core-2.0
-        if (($this->requestAttributes['_zkType'] == 'admin') || (isset($this->requestAttributes['lct']))) {
-            $this->realm = 'admin';
-            return;
         }
 
         $this->realm = 'master';
