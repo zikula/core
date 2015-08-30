@@ -463,8 +463,9 @@ class AdminApi extends \Zikula_AbstractApi
      * @return array Thrown if the user doesn't have admin permissions over the module
      * @throws \Exception
      */
-    public function getfilemodules($directories = array('system', 'modules'))
+    public function getfilemodules(array $directories)
     {
+        $directories = empty($directories) ? array('system', 'modules') : $directories;
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
@@ -488,7 +489,7 @@ class AdminApi extends \Zikula_AbstractApi
         // scan for all bundle-type modules (psr-0 & psr-4) in either /system or /modules
         /** @var MetaData $moduleMetaData */
         foreach ($newModules as $name => $moduleMetaData) {
-            /* psr-0 is deprecated - remove this in Core 2.0 */
+            /* @todo psr-0 is deprecated - remove this in Core-2.0 */
             foreach ($moduleMetaData->getPsr0() as $ns => $path) {
                 ZLoader::addPrefix($ns, $path);
             }
@@ -504,7 +505,7 @@ class AdminApi extends \Zikula_AbstractApi
             $versionClass = $bundle->getVersionClass();
 
             if (class_exists($versionClass)) {
-                // 1.4-module spec - deprecated - remove in Core 2.0
+                // @todo 1.4-module spec - deprecated - remove in Core-2.0
                 $version = new $versionClass($bundle);
                 $version['name'] = $bundle->getName();
 
