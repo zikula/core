@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Add Twig-based theme engine (refs #1753)
  - Categorization of Entities enabled (#411)
  - Fixed 'Removetrailingslash' error (#2552)
+ - Corrected vairable name in BootstrapTheme template override (#2557)
  
 
 * 1.4.0 (2015-07-20)
