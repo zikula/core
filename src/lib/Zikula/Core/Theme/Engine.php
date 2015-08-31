@@ -252,7 +252,7 @@ class Engine
             return;
         }
         // @todo BC remove at Core-2.0
-        if (($this->requestAttributes['_zkType'] == 'admin') || (isset($this->requestAttributes['lct']))) {
+        if ((isset($this->requestAttributes['_zkType']) && $this->requestAttributes['_zkType'] == 'admin') || (isset($this->requestAttributes['lct']))) {
             $this->realm = 'admin';
             return;
         }
