@@ -289,8 +289,10 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
                 return $imagePath;
             }
         }
+        // Replace backslashes on Windows.
+        $rootPath = str_replace('\\', '/', realpath('.'));
 
-        return str_replace(realpath('.') . '/', '', $image->getThumbPathname());
+        return str_replace($rootPath . '/', '', $image->getThumbPathname());
     }
 
     /**
