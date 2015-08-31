@@ -44,7 +44,7 @@ class CoreExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
         
-        // todo - temporary - remove when Smarty is removed, also need to redeligate some
+        // @todo - temporary - remove at Core-2.0, also need to redeligate some
         // of this to other's responsibility
         $cacheDir = $container->getParameterBag()->resolveValue('%kernel.cache_dir%/ztemp');
         $dirs = array(
