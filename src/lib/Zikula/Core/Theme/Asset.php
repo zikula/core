@@ -129,8 +129,10 @@ class Asset
         // bundle
         // (modules|themes|system)/FooBundle/Resources/public/$assetPath
         $bundle = $this->kernel->getBundle($bundleName);
+        // Replace backslashes on Windows.
+        $bundlePath = str_replace('\\', '/', $bundle->getPath());
         // is it visible (within) from the webroot ?
-        if (false !== $pathStart = strpos($bundle->getPath(), $this->package->getScriptPath())) {
+        if (false !== $pathStart = strpos($bundlePath, $this->package->getScriptPath())) {
             $path = 'Resources/public/' . $assetPath;
             $pathStart += strlen($this->package->getScriptPath()) + 1;
             $fullPath = str_replace('\\', '/', $bundle->getPath() . '/' . $path);
