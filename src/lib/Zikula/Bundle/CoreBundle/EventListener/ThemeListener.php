@@ -52,9 +52,12 @@ class ThemeListener implements EventSubscriberInterface
         }
 
         $response = $event->getResponse();
+        $route = $event->getRequest()->attributes->has('_route') ? $event->getRequest()->attributes->get('_route') : '0'; // default must not be '_'
         if (!($response instanceof Response)
             || is_subclass_of($response, '\Symfony\Component\HttpFoundation\Response')
-            || $event->getRequest()->isXmlHttpRequest()) {
+            || $event->getRequest()->isXmlHttpRequest()
+            || $route[0] === '_' // the profiler and other symfony routes begin with '_' @todo this is still too permissive
+        ) {
             return;
         }
 
