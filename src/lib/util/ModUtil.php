@@ -1010,8 +1010,6 @@ class ModUtil
                 $object = $r->newInstanceArgs(array($sm, self::getModule($modname)));
             } elseif ($r->hasMethod('__construct') && $r->isSubclassOf('Zikula\Core\Controller\AbstractController')) {
                 $object = $r->newInstanceArgs(array(self::getModule($modname)));
-            } elseif ($r->hasMethod('__construct') && $r->isSubclassOf('Zikula\Core\Api\AbstractApi')) {
-                $object = $r->newInstanceArgs(array(self::getModule($modname)));
             } else {
                 $object = $r->newInstance();
             }
