@@ -17,19 +17,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractBundle;
 
 abstract class AbstractController extends Controller
 {
+    use TranslatorTrait;
+
     /**
      * @var string
      */
     protected $name;
-    /**
-     * @var \Zikula\Common\Translator\Translator
-     */
-    protected $translator;
-    
+
     /**
      * Constructor.
      *
@@ -40,7 +39,7 @@ abstract class AbstractController extends Controller
     public function __construct(AbstractBundle $bundle)
     {
         $this->name = $bundle->getName();
-        $this->translator = $bundle->getContainer()->get('translator');
+        $this->setTranslator($bundle->getContainer()->get('translator'));
         $this->translator->setDomain($bundle->getTranslationDomain());
         $this->boot($bundle);
     }
@@ -168,61 +167,8 @@ abstract class AbstractController extends Controller
         return $this->name;
     }
 
-    /**
-     * singular translation for modules.
-     *
-     * @param string $msg Message.
-     * @param null $domain
-     * @param null $locale
-     * @return string
-     */
-    public function __($msg, $domain = null, $locale = null)
+    public function setTranslator($translator)
     {
-        return $this->translator->__($msg, $domain, $locale);
-    }
-
-    /**
-     * Plural translations for modules.
-     *
-     * @param string $m1 Singular.
-     * @param string $m2 Plural.
-     * @param integer $n Count.
-     * @param null $domain
-     * @param null $locale
-     * @return string
-     */
-    public function _n($m1, $m2, $n, $domain = null, $locale = null)
-    {
-        return $this->translator->_n($m1, $m2, $n, $domain, $locale);
-    }
-
-    /**
-     * Format translations for modules.
-     *
-     * @param string $msg Message.
-     * @param string|array $param Format parameters.
-     * @param null $domain
-     * @param null $locale
-     * @return string
-     */
-    public function __f($msg, $param, $domain = null, $locale = null)
-    {
-        return $this->translator->__f($msg, $param, $domain, $locale);
-    }
-
-    /**
-     * Format plural translations for modules.
-     *
-     * @param string $m1 Singular.
-     * @param string $m2 Plural.
-     * @param integer $n Count.
-     * @param string|array $param Format parameters.
-     * @param null $domain
-     * @param null $locale
-     * @return string
-     */
-    public function _fn($m1, $m2, $n, $param, $domain = null, $locale = null)
-    {
-        return $this->translator->_fn($m1, $m2, $n, $param, $domain, $locale);
+        $this->translator = $translator;
     }
 }
