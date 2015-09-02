@@ -1,3 +1,3 @@
 <!-- Start Search Block -->
-{$content}
+{{ content }}
 <!--  End Search Block  -->

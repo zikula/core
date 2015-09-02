@@ -4,7 +4,7 @@
     </div>
     <div id="theme_maincontent" class="grid_9">
         {blockposition name=center}
-        {$maincontent}
+        {{ maincontent }}
     </div>
     <div id="theme_rightcol" class="grid_4">
         {blockposition name=right}

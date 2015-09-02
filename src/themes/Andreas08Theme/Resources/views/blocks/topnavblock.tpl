@@ -1,3 +1,3 @@
 <!-- Start Top Navigation Block -->
-{$content}
+{{ content }}
 <!--  End Top Navigation Block  -->

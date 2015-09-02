@@ -3,6 +3,6 @@
         {blockposition name=left}
     </div>
     <div id="theme_maincontent" class="grid_13">
-        {$maincontent}
+        {{ maincontent }}
     </div>
 </div>

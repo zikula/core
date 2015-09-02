@@ -4,6 +4,6 @@
     </div>
     <div id="theme_maincontent" class="grid_13">
         {blockposition name=center}
-        {$maincontent}
+        {{ maincontent }}
     </div>
 </div>
