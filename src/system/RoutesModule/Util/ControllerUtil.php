@@ -85,21 +85,6 @@ class ControllerUtil extends BaseControllerUtil
      */
     public function reloadRoutesByModule($moduleName = "ZikulaRoutesRoutes")
     {
-        $routeRepository = $this->entityManager->getRepository('ZikulaRoutesModule:RouteEntity');
-        $module = \ModUtil::getModule($moduleName);
-        if ($module === null) {
-            throw new NotFoundHttpException();
-        }
-        /** @var \Zikula\RoutesModule\Entity\Repository\Route $routeRepository */
-        $hadRoutes = $routeRepository->removeAllOfModule($module);
-
-        /** @var \Zikula\RoutesModule\Routing\RouteFinder $routeFinder */
-        $routeFinder = $this->get('zikularoutesmodule.routing_finder');
-        $routeCollection = $routeFinder->find($module);
-        if ($routeCollection->count() > 0) {
-            $routeRepository->addRouteCollection($module, $routeCollection);
-        }
-
-        return $hadRoutes;
+        //@todo REMOVE
     }
 }

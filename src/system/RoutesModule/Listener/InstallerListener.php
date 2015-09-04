@@ -72,12 +72,8 @@ class InstallerListener extends BaseInstallerListener
         }
 
         if ($module->getName() === 'ZikulaRoutesModule') {
-            // The module itself just got installed, reload all routes.
-            $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->reloadAllRoutes();
             // Reload multilingual routing settings.
             \ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
-        } else {
-            $this->addRoutesToCache($module);
         }
 
         $this->cacheClearer->clear('symfony.routing');
@@ -101,18 +97,6 @@ class InstallerListener extends BaseInstallerListener
         if ($module === null) {
             return;
         }
-
-        try {
-            $this->removeRoutesFromCache($module);
-        } catch (DBALException $e) {
-            if (\System::isUpgrading()) {
-                // This happens when the RoutesModule isn't installed.
-                return;
-            } else {
-                throw $e;
-            }
-        }
-        $this->addRoutesToCache($module);
 
         $this->cacheClearer->clear('symfony.routing');
 
@@ -163,8 +147,6 @@ class InstallerListener extends BaseInstallerListener
             return;
         }
 
-        $this->removeRoutesFromCache($module);
-
         // reload **all** JS routes
         $this->controllerHelper->dumpJsRoutes();
 
@@ -195,29 +177,5 @@ class InstallerListener extends BaseInstallerListener
     {
         // reload **all** JS routes
         $this->controllerHelper->dumpJsRoutes();
-    }
-
-    /**
-     * Add the specified routes to the cache.
-     *
-     * @param AbstractModule $module
-     */
-    private function addRoutesToCache(AbstractModule $module)
-    {
-        $routeCollection = $this->routeFinder->find($module);
-
-        if ($routeCollection->count() > 0) {
-            $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->addRouteCollection($module, $routeCollection);
-        }
-    }
-
-    /**
-     * Remove all routes of the specified module from cache.
-     *
-     * @param AbstractModule $module
-     */
-    private function removeRoutesFromCache(AbstractModule $module)
-    {
-        $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->removeAllOfModule($module);
     }
 }

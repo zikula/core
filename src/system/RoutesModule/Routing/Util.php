@@ -17,6 +17,7 @@ class Util
      */
     public static function getParametersFromRouteName($name)
     {
+        // @todo DOES NOT WORK!! REMOVE
         $name = explode('_', $name);
         $count = count($name);
         if (is_numeric($name[$count - 1])) {
