@@ -10,9 +10,6 @@
     </parameters>
     <services>
         <service id="zikularoutesmodule.routing_finder" class="Zikula\RoutesModule\Routing\RouteFinder">
-            <argument type="service" id="kernel" />
-            <argument type="service" id="routing.loader" />
-            <argument type="service" id="logger" />
         </service>
 
         <service id="zikularoutesmodule.console_command_listener" class="%zikularoutesmodule.console_command_listener.class%">
@@ -23,6 +20,7 @@
             <tag name="routing.loader" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="service_container" />
+            <argument type="service" id="kernel" />
         </service>
 
         <service id="zikularoutesmodule.installer_listener" class="%zikularoutesmodule.installer_listener.class%">
