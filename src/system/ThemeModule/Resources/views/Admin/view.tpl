@@ -30,6 +30,8 @@
         {/if}
         <tr {if $theme.name|strtolower eq $currenttheme|strtolower}class="success"{/if}>
             <td>
+                {if $theme.isTwigBased|default:false}{assign var='themeType' value='twig'}{else}{assign var='themeType' value='smarty'}{/if}
+                <img src="system/ThemeModule/Resources/public/images/{$themeType}-logo.jpg" title="{gt text='Theme is %s based' tag1=$themeType}" class="tooltips" />
                 {if !$theme.structure}<strike>{/if}
                 {previewimage name=$theme.name assign='img'}
                 <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}{if $theme.name|strtolower eq $currenttheme|strtolower} ({gt text='Default theme'}){/if}" class="marktooltip" data-trigger="hover" data-html="true" data-content='{$img|safehtml}' target="_blank">
