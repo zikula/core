@@ -1,4 +1,4 @@
-{% include 'includes/header.tpl' %}
+{% include 'Includes/header.html.twig' %}
 <div id="theme_navigation_bar" class="clearfix">
     {blockposition name=topnav assign=topnavblock}
     {% if empty(topnavblock) %}
@@ -10,7 +10,7 @@
     {% else %}
     {{ topnavblock }}
     {% endif %}
-    {blockposition name=search}
+    {{ showblockposition('search') }}
 </div>
-{% include "body/$home.tpl" %}
-{% include 'includes/footer.tpl' %}
+{% include "Body/$home.html.twig" %}
+{% include 'Includes/footer.html.twig' %}
