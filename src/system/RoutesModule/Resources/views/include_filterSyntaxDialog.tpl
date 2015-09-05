@@ -45,7 +45,7 @@
                     <li><code>gt</code> {gt text='is greater than.'}</li>
                     <li><code>ge</code> {gt text='is greater or equal than.'}</li>
                     <li><code>search</code> {gt text='is any middle coincidence.'} {gt text='The term "bar" will match "foobarthis", but not "foobar" nor "barfoo".'}</li>
-                    <li><code>like</code> {gt text='is like.'} {gt text='The value is scanned case insensitive.'} {gt text='Also you can use "%" as placeholder.'} {gt text='"%bar" will match "FOObar", "Blubbar" and so on, but not "BarFoo".'}</li>
+                    <li><code>like</code> {gt text='is like.'} {gt text='The value is scanned case insensitive.'} {gt text='Also you can use "\%" as placeholder.'} {gt text='"\%bar" will match "FOObar", "Blubbar" and so on, but not "BarFoo".'}</li>
                     <li><code>likefirst</code> {'is for coincidences at the beginning.'} {gt text='The term "foo" will match "fOo", "FOObar", "FooBlub" and so on, but not "AnotherFoo".'}</li>
                     <li><code>likelast</code> {'is for coincidences at the end.'} {gt text='The term "foo" will match "fOo", "AnotherFoo" and so on, but not "FoObar" or "FooBlub".'}</li>
                     <li><code>null</code> {gt text='is Empty or NULL.'}</li>

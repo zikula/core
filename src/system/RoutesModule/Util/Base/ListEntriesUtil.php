@@ -30,7 +30,7 @@ class ListEntriesUtil extends Zikula_AbstractBase
      */
     public function resolve($value, $objectType = '', $fieldName = '', $delimiter = ', ')
     {
-        if (empty($value) || empty($objectType) || empty($fieldName)) {
+        if ((empty($value) && $value != '0') || empty($objectType) || empty($fieldName)) {
             return $value;
         }
     

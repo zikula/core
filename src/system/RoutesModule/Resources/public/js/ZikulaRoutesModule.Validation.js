@@ -47,7 +47,7 @@ function zikulaRoutesReadDate(val, includeTime)
     }
 
     // look if we have DD.MM.YYYY
-    if (val.substr(2, 1) === '.' && val.substr(4, 1) === '.') {
+    if (val.substr(2, 1) === '.' && val.substr(5, 1) === '.') {
         var newVal = val.substr(6, 4) + '-' + val.substr(3, 2) + '-' + val.substr(0, 2);
         if (includeTime === true) {
             newVal += ' ' + val.substr(11, 5);
@@ -69,11 +69,11 @@ function zikulaRoutesValidateNoSpace(val)
  */
 function zikulaRoutesPerformCustomValidationRules(objectType, id)
 {
-    $('.validate-nospace').each( function() {
-        if (zikulaRoutesValidateNoSpace($(this).val())) {
-            $(this).setCustomValidity(Zikula.__('This value must not contain spaces.', 'module_zikularoutesmodule_js'));
+    jQuery('.validate-nospace').each( function() {
+        if (zikulaRoutesValidateNoSpace(jQuery(this).val())) {
+            document.getElementById(jQuery(this).attr('id')).setCustomValidity(Zikula.__('This value must not contain spaces.', 'zikularoutesmodule_js'));
         } else {
-            $(this).setCustomValidity('');
+            document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
         }
     });
 }

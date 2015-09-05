@@ -1,12 +1,10 @@
 {* purpose of this template: routes view filter form *}
 {checkpermissionblock component='ZikulaRoutesModule:Route:' instance='::' level='ACCESS_EDIT'}
 {assign var='objectType' value='route'}
-<form action="{$modvars.ZConfig.entrypoint|default:'index.php'}" method="get" id="zikulaRoutesModuleRouteQuickNavForm" class="zikularoutesmodule-quicknav {*form-inline*}navbar-form" role="navigation">
+<form action="{route name='zikularoutesmodule_route_view'}" method="get" id="zikulaRoutesModuleRouteQuickNavForm" class="zikularoutesmodule-quicknav {*form-inline*}navbar-form" role="navigation">
     <fieldset>
         <h3>{gt text='Quick navigation'}</h3>
-        <input type="hidden" name="module" value="{modgetinfo modname='ZikulaRoutesModule' info='url'}" />
-        <input type="hidden" name="type" value="route" />
-        <input type="hidden" name="func" value="view" />
+        <input type="hidden" name="lct" value="{$lct}" />
         <input type="hidden" name="all" value="{$all|default:0}" />
         <input type="hidden" name="own" value="{$own|default:0}" />
         {gt text='All' assign='lblDefault'}
@@ -89,7 +87,7 @@
                 </select>
             </div>
         {/if}
-        <input type="submit" name="updateview" id="quicknavSubmit" value="{gt text='OK'}" class="btn btn-default" />
+        <input type="submit" name="updateview" id="quicknavSubmit" value="{gt text='OK'}" class="btn btn-default btn-sm" />
     </fieldset>
 </form>
 
