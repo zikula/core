@@ -14,11 +14,11 @@ namespace Zikula\RoutesModule\Api\Base;
 
 use ModUtil;
 use SecurityUtil;
-use Zikula_AbstractApi;
+use Zikula\Core\Api\AbstractApi;
 
 /**
  * This is the Ajax api helper class.
  */
-class AjaxApi extends Zikula_AbstractApi
+class AjaxApi extends AbstractApi
 {
 }

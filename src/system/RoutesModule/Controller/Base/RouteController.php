@@ -131,6 +131,12 @@ class RouteController extends Zikula_AbstractController
         // parameter for used sorting field
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
+            System::queryStringSetVar('sort', $sort);
+            $request->query->set('sort', $sort);
+            // set default sorting in route parameters (e.g. for the pager)
+            $routeParams = $request->attributes->get('_route_params');
+            $routeParams['sort'] = $sort;
+            $request->attributes->set('_route_params', $routeParams);
         }
         
         // parameter for used sort order

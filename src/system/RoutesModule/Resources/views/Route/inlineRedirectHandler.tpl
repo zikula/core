@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         {$jcssConfig}
-        <link rel="stylesheet" href="web/bootstrap-font-awesome.css" type="text/css" />
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.min.css" type="text/css" />
         <link rel="stylesheet" href="web/bootstrap/css/bootstrap-theme.css" type="text/css" />
         <script type="text/javascript" src="web/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="web/bootstrap/js/bootstrap.min.js"></script>

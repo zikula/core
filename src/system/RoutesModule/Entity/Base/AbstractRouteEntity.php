@@ -78,6 +78,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     protected $id = 0;
     
     /**
+     * the current workflow state
      * @ORM\Column(length=20)
      * @Assert\NotBlank()
      * @Assert\Choice(callback="getWorkflowStateAllowedValues", multiple=false)
@@ -838,6 +839,8 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     
     
     
+    protected $processedLoadCallback = false;
+    
     /**
      * Post-Process the data after the entity has been constructed by the entity manager.
      * The event happens after the entity has been loaded from database or after a refresh call.
@@ -854,6 +857,10 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     protected function performPostLoadCallback()
     {
         // echo 'loaded a record ...';
+        if ($this->processedLoadCallback) {
+            return true;
+        }
+    
         $currentFunc = FormUtil::getPassedValue('func', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
         $serviceManager = ServiceUtil::getManager();
         $requestStack = $serviceManager->get('request_stack');
@@ -881,6 +888,8 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         // create the new FilterRouteEvent and dispatch it
         $event = new FilterRouteEvent($this);
         $dispatcher->dispatch(RoutesEvents::ROUTE_POST_LOAD, $event);
+    
+        $this->processedLoadCallback = true;
     
         return true;
     }
@@ -950,8 +959,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      */
     protected function performPrePersistCallback()
     {
-        $this->validate();
-    
         $serviceManager = ServiceUtil::getManager();
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1092,8 +1099,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      */
     protected function performPreUpdateCallback()
     {
-        $this->validate();
-    
         $serviceManager = ServiceUtil::getManager();
         $dispatcher = $serviceManager->get('event_dispatcher');
     
@@ -1144,7 +1149,9 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      */
     protected function performPreSaveCallback()
     {
-        $this->validate();
+        if (!$this->validate()) {
+            return false;
+        }
     
         $serviceManager = ServiceUtil::getManager();
         $dispatcher = $serviceManager->get('event_dispatcher');
@@ -1295,7 +1302,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     public function validate()
     {
         if ($this->_bypassValidation === true) {
-            return;
+            return true;
         }
     
         $serviceManager = ServiceUtil::getManager();
@@ -1308,7 +1315,10 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
             foreach ($errors as $error) {
                 $session->getFlashBag()->add('error', $error->getMessage());
             }
+            return false;
         }
+    
+        return true;
     }
     
     /**

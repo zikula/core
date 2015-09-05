@@ -14,12 +14,12 @@ namespace Zikula\RoutesModule\Api\Base;
 
 use ModUtil;
 use SecurityUtil;
-use Zikula_AbstractApi;
+use Zikula\Core\Api\AbstractApi;
 
 /**
  * This is the Admin api helper class.
  */
-class AdminApi extends Zikula_AbstractApi
+class AdminApi extends AbstractApi
 {
     /**
      * Returns available admin panel links.
@@ -29,19 +29,21 @@ class AdminApi extends Zikula_AbstractApi
     public function getLinks()
     {
         $links = array();
+        $router = $this->get('router');
+        $request = $this->get('request');
 
 
-        $controllerHelper = $this->serviceManager->get('zikularoutesmodule.controller_helper');
+        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
         $utilArgs = array('api' => 'admin', 'action' => 'getLinks');
         $allowedObjectTypes = $controllerHelper->getObjectTypes('api', $utilArgs);
 
-        $currentType = $this->request->query->filter('type', 'route', false, FILTER_SANITIZE_STRING);
-        $currentLegacyType = $this->request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
+        $currentType = $request->query->filter('type', 'route', false, FILTER_SANITIZE_STRING);
+        $currentLegacyType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
         $permLevel = in_array('admin', array($currentType, $currentLegacyType)) ? ACCESS_ADMIN : ACCESS_READ;
 
         if (in_array('route', $allowedObjectTypes)
             && SecurityUtil::checkPermission($this->name . ':Route:', '::', $permLevel)) {
-            $links[] = array('url' => $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin')),
+            $links[] = array('url' => $router->generate('zikularoutesmodule_route_view', array('lct' => 'admin')),
                              'text' => $this->__('Routes'),
                              'title' => $this->__('Route list'));
         }
