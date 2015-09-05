@@ -1,0 +1,7 @@
+##
+# ZikulaAndreas08Theme variables
+##
+layout: "grid"
+home: "3col_w_centerblock"
+master: "2col"
+admin: "1col"
