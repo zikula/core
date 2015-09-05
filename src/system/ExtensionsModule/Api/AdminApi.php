@@ -463,7 +463,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return array Thrown if the user doesn't have admin permissions over the module
      * @throws \Exception
      */
-    public function getfilemodules(array $directories)
+    public function getfilemodules(array $directories = array())
     {
         $directories = empty($directories) ? array('system', 'modules') : $directories;
         // Security check
