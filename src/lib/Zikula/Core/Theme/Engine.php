@@ -315,7 +315,7 @@ class Engine
             }
         }
         $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
-        $this->activeThemeBundle->setThemeVars();
+        $this->activeThemeBundle->loadThemeVars();
     }
 
     /**

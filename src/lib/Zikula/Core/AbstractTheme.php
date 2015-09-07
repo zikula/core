@@ -79,7 +79,7 @@ abstract class AbstractTheme extends AbstractBundle
     /**
      * load the themevars into the themeEngine global vars
      */
-    public function setThemeVars()
+    public function loadThemeVars()
     {
         $this->getContainer()->get('zikula_core.common.theme.themevars')->replace($this->getThemeVars());
     }
@@ -111,7 +111,7 @@ abstract class AbstractTheme extends AbstractBundle
         $themeVarsPath = $this->getConfigPath() . '/variables.yml';
         if (file_exists($themeVarsPath)) {
             if ($this->getContainer()) {
-                $yamlVars = Yaml::parse($themeVarsPath);
+                $yamlVars = Yaml::parse(file_get_contents($themeVarsPath));
                 foreach($yamlVars as $name => $definition) {
                     $defaultVars[$name] = $definition['default_value'];
                 }
