@@ -232,7 +232,7 @@ class RouteController extends BaseRouteController
      * This is a custom method.
      * Dump the routes exposed to javascript to '/web/js/fos_js_routes.js'
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/dump/{lang}",
+     * @Route("/routes/dump/{lang}",
      *        name = "zikularoutesmodule_route_dumpjsroutes",
      *        methods = {"GET"}
      * )
