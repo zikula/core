@@ -123,8 +123,16 @@ class Engine
         if (!$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
+        // wrap page in unique div
+        $realm = $this->getRealm();
+        $content = '<div id="z-maincontent" class="'
+            . ($realm == 'home' ? 'z-homepage ' : '')
+            . 'z-module-' . strtolower($this->requestAttributes['_zkModule']) . '">'
+            . $response->getContent()
+            . '</div>';
+        $response->setContent($content);
 
-        $themedResponse = $this->activeThemeBundle->generateThemedResponse($response);
+        $themedResponse = $this->activeThemeBundle->generateThemedResponse($realm, $response);
         $filteredResponse = $this->filter($themedResponse);
         return $filteredResponse;
     }
@@ -142,8 +150,16 @@ class Engine
         if (!$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
+        // wrap block with unique div
+        $position = !empty($block['position']) ? $block['position'] : 'none';
+        $block['content'] = '<div class="z-block'
+            . ' z-blockposition-' . $position
+            . ' z-bkey-' . strtolower($block['bkey'])
+            . ' z-bid-' . $block['bid'] . '">' . "\n"
+            . $block['content']
+            . "</div>\n";
 
-        return $this->activeThemeBundle->generateThemedBlock($block);
+        return $this->activeThemeBundle->generateThemedBlock($this->getRealm(), $block);
     }
 
     /**

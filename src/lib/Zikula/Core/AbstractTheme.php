@@ -43,27 +43,26 @@ abstract class AbstractTheme extends AbstractBundle
 
     /**
      * generate a response wrapped in the theme
+     * @param string $realm
      * @param Response $response
      * @return Response
      */
-    public function generateThemedResponse(Response $response)
+    public function generateThemedResponse($realm, Response $response)
     {
-        // @todo NOTE: 'pagetype' is temporary var in the template
-
-        $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getRealm();
         $template = $this->config[$realm]['page'];
 
-        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => '<div id="z-maincontent">' . $response->getContent() . '</div>', 'pagetype' => 'admin'));
+        // @todo NOTE: 'pagetype' is temporary var in the template
+        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => $response->getContent(), 'pagetype' => 'admin'));
     }
 
     /**
      * convert the block content to a theme-wrapped Response
+     * @param string $realm
      * @param array $block
      * @return string
      */
-    public function generateThemedBlock(array $block)
+    public function generateThemedBlock($realm, array $block)
     {
-        $realm = $this->getContainer()->get('zikula_core.common.theme_engine')->getRealm();
         if (isset($this->config[$realm]['block']['positions'][$block['position']])) {
             $template = $this->name . ':' . $this->config[$realm]['block']['positions'][$block['position']];
         } else {
