@@ -12,16 +12,13 @@
 
 namespace Zikula\RoutesModule\Api;
 
-use ModUtil;
 use SecurityUtil;
-use Zikula\RoutesModule\Api\Base\AdminApi as BaseAdminApi;
 
 /**
  * This is the Admin api helper class.
  */
-class AdminApi extends BaseAdminApi
+class AdminApi extends \Zikula_AbstractApi
 {
-
     /**
      * Reloads the multilingual routing settings by reading system variables and checking installed languages.
      *
