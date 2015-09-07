@@ -2,7 +2,7 @@ parameters:
 
 services:
     zikularoutesmodule.link_container:
-        class: "Zikula\\RoutesModule\\Container\\LinkContainer
+        class: "Zikula\\RoutesModule\\Container\\LinkContainer"
         arguments:
             translator: "@translator"
             router: "@router"
