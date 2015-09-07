@@ -85,7 +85,7 @@
 
 
     {if $canBeCreated}
-        {checkpermissionblock component='ZikulaRoutesModule:Route:' instance='::' level='ACCESS_COMMENT'}
+        {checkpermissionblock component='ZikulaRoutesModule:Route:' instance='::' level='ACCESS_EDIT'}
             {gt text='Create route' assign='createTitle'}
             <a href="{route name='zikularoutesmodule_route_edit' lct=$lct}" title="{$createTitle}" class="fa fa-plus">{$createTitle}</a>
         {/checkpermissionblock}
@@ -265,25 +265,17 @@
 {include file="`$lctUc`/footer.tpl"}
 
 <script type="text/javascript">
-    /* <![CDATA[ */
+/* <![CDATA[ */
     ( function($) {
         $(document).ready(function() {
             $('.dropdown-toggle').dropdown();
             $('a.fa-zoom-in').attr('target', '_blank');
-        });
-    })(jQuery);
-    /* ]]> */
-</script>
-<script type="text/javascript">
-/* <![CDATA[ */
-    ( function($) {
-        $(document).ready(function() {
             {{if $lct eq 'admin'}}
                 {{* init the "toggle all" functionality *}}
-                if ($('#toggleRoutes') != undefined) {
+                if ($('#toggleRoutes').length > 0) {
                     $('#toggleRoutes').on('click', function (e) {
                         Zikula.toggleInput('routesViewForm');
-                        e.stop()
+                        e.preventDefault();
                     });
                 }
             {{/if}}

@@ -33,8 +33,7 @@ class RouteController extends BaseRouteController
     /**
      * This method is the default function handling the main area called without defining arguments.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%",
-     *        name = "zikularoutesmodule_route_index",
+     * @Route("/routes",
      *        methods = {"GET"}
      * )
      *
@@ -52,9 +51,8 @@ class RouteController extends BaseRouteController
     /**
      * This method provides a item list overview.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/%zikularoutesmodule.routing.view.suffix%/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        name = "zikularoutesmodule_route_view",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "%zikularoutesmodule.routing.formats.view%"},
+     * @Route("/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|kml"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 0, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -93,8 +91,7 @@ class RouteController extends BaseRouteController
     /**
      * This method provides a handling of edit requests.
      *
-     * @Route("/%zikularoutesmodule.routing.route.singular%/edit/{id}.{_format}",
-     *        name = "zikularoutesmodule_route_edit",
+     * @Route("/route/edit/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
@@ -117,9 +114,8 @@ class RouteController extends BaseRouteController
     /**
      * This method provides a item detail view.
      *
-     * @Route("/%zikularoutesmodule.routing.route.singular%/{id}.{_format}",
-     *        name = "zikularoutesmodule_route_display",
-     *        requirements = {"id" = "\d+", "_format" = "%zikularoutesmodule.routing.formats.display%"},
+     * @Route("/route/{id}.{_format}",
+     *        requirements = {"id" = "\d+", "_format" = "html|kml|ics"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -141,8 +137,7 @@ class RouteController extends BaseRouteController
     /**
      * This method provides a handling of simple delete requests.
      *
-     * @Route("/%zikularoutesmodule.routing.route.singular%/delete/{id}.{_format}",
-     *        name = "zikularoutesmodule_route_delete",
+     * @Route("/route/delete/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
@@ -167,8 +162,7 @@ class RouteController extends BaseRouteController
     /**
      * This is a custom method.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/reload",
-     *        name = "zikularoutesmodule_route_reload",
+     * @Route("/routes/reload",
      *        methods = {"GET", "POST"}
      * )
      *
@@ -208,9 +202,8 @@ class RouteController extends BaseRouteController
     /**
      * This is a custom method.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/renew",
-     *        name = "zikularoutesmodule_route_renew",
-     *        methods = {"GET"}
+     * @Route("/routes/renew",
+     *        methods = {"GET", "POST"}
      * )
      *
      * @param Request  $request      Current request instance
@@ -276,8 +269,7 @@ class RouteController extends BaseRouteController
      * This function processes the items selected in the admin view page.
      * Multiple items may have their state changed or be deleted.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/handleSelectedEntries",
-     *        name = "zikularoutesmodule_route_handleSelectedEntries",
+     * @Route("/routes/handleSelectedEntries",
      *        methods = {"POST"}
      * )
      *
@@ -296,8 +288,7 @@ class RouteController extends BaseRouteController
     /**
      * This method cares for a redirect within an inline frame.
      *
-     * @Route("/%zikularoutesmodule.routing.route.singular%/handleInlineRedirect/{idPrefix}/{commandName}/{id}",
-     *        name = "zikularoutesmodule_route_handleInlineRedirect",
+     * @Route("/route/handleInlineRedirect/{idPrefix}/{commandName}/{id}",
      *        requirements = {"id" = "\d+"},
      *        defaults = {"commandName" = "", "id" = 0},
      *        methods = {"GET"}

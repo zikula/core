@@ -63,7 +63,7 @@
     {pagesetvar name='title' value=$templateTitle}
     {if $lct eq 'admin'}
         <h3>
-            <span class="icon icon-{$adminPageIcon}"></span>
+            <span class="fa fa-{$adminPageIcon}"></span>
             {$templateTitle}
         </h3>
     {else}
@@ -195,9 +195,11 @@
     {/if}
     {if is_array($hooks) && count($hooks)}
         {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}
-            <fieldset>
-                {$hook}
-            </fieldset>
+            {if $providerArea ne 'provider.scribite.ui_hooks.editor'}{* fix for #664 *}
+                <fieldset>
+                    {$hook}
+                </fieldset>
+            {/if}
         {/foreach}
     {/if}
 
@@ -228,7 +230,7 @@
                 {formbutton id="btn`$actionIdCapital`" commandName=$action.id text=$actionTitle class=$action.buttonClass}
             {/if}
         {/foreach}
-        {formbutton id='btnCancel' commandName='cancel' __text='Cancel' class='btn btn-default'}
+        {formbutton id='btnCancel' commandName='cancel' __text='Cancel' class='btn btn-default' formnovalidate='formnovalidate'}
     </div>
     </div>
     {/zikularoutesmoduleFormFrame}
@@ -245,41 +247,50 @@
 
             var formButtons;
 
-            function handleFormButton (event) {
+            function executeCustomValidationConstraints()
+            {
                 zikulaRoutesPerformCustomValidationRules('route', '{{if $mode ne 'create'}}{{$route.id}}{{/if}}');
-                var result = document.getElementById('{{$__formid}}').checkValidity();
-                if (!result) {
-                    // validation error, abort form submit
-                    event.stopPropagation();
-                } else {
-                    // hide form buttons to prevent double submits by accident
-                    formButtons.each(function (btn) {
-                        btn.addClass('hidden');
-                    });
+            }
+
+            function triggerFormValidation()
+            {
+                executeCustomValidationConstraints();
+                if (!document.getElementById('{{$__formid}}').checkValidity()) {
+                    // This does not really submit the form,
+                    // but causes the browser to display the error message
+                    jQuery('#{{$__formid}}').find(':submit').not(jQuery('#btnDelete')).click();
+                }
+            }
+
+            function handleFormSubmit (event) {
+                triggerFormValidation();
+                if (!document.getElementById('{{$__formid}}').checkValidity()) {
+                    event.preventDefault();
+                    return false;
                 }
 
-                return result;
+                // hide form buttons to prevent double submits by accident
+                formButtons.each(function (index) {
+                    jQuery(this).addClass('hidden');
+                });
+
+                return true;
             }
 
             ( function($) {
                 $(document).ready(function() {
 
-                    {{* observe validation on button events instead of form submit to exclude the cancel command *}}
+                    var allFormFields = $('#{{$__formid}} input, #{{$__formid}} select, #{{$__formid}} textarea');
+                    allFormFields.change(executeCustomValidationConstraints);
+
+                    formButtons = $('#{{$__formid}} .form-buttons input');
+                    $('#{{$__formid}}').submit(handleFormSubmit);
+
                     {{if $mode ne 'create'}}
-                        if (!document.getElementById('{{$__formid}}').checkValidity()) {
-                            document.getElementById('{{$__formid}}').submit();
-                        }
+                        triggerFormValidation();
                     {{/if}}
 
-                    formButtons = $('#{{$__formid}}').find('div.form-buttons input');
-
-                    formButtons.each(function (elem) {
-                        if (elem.attr('id') != 'btnCancel') {
-                            elem.click(handleFormButton);
-                        }
-                    });
-
-                    $('.zikularoutesmodule-form-tooltips').tooltip();
+                    $('#{{$__formid}} label').tooltip();
                 });
             })(jQuery);
 /* ]]> */

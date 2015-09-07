@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Controller for external calls implementation class.
  *
- * @Route("/%zikularoutesmodule.routing.external%")
+ * @Route("/external")
  */
 class ExternalController extends BaseExternalController
 {

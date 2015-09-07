@@ -14,14 +14,14 @@ namespace Zikula\RoutesModule\Api\Base;
 
 use ModUtil;
 use UserUtil;
-use Zikula\Core\Api\AbstractApi;
+use Zikula_AbstractBase;
 use Zikula_View;
 use Zikula_View_Theme;
 
 /**
  * Cache api base class.
  */
-class CacheApi extends AbstractApi
+class CacheApi extends Zikula_AbstractBase
 {
     /**
      * Clear cache for given item. Can be called from other modules to clear an item cache.
