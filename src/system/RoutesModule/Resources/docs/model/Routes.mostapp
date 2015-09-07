@@ -24,7 +24,6 @@ application Routes {
 		generateCsvTemplates false
 		generateXmlTemplates false
 		generateJsonTemplates false
-		generateOnlyBaseClasses true
 		generatePoweredByBacklinksIntoFooterTemplates false
 		writeModelToDocs true
 		markFiles "
@@ -42,8 +41,9 @@ application Routes {
 			Resources/views/Route/view.tpl,
 			Resources/views/Route/display.tpl,
 			Resources/views/Route/edit.tpl,
+			Resources/views/Route/reload.tpl,
 			Util/ControllerUtil.php,
-			workflows/function.standard_permissioncheck.php
+			workflows/function.none_permissioncheck.php
 		"
 	}
 	entities {

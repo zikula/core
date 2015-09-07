@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Ajax controller class providing navigation and interaction functionality.
  *
- * @Route("/%zikularoutesmodule.routing.ajax%")
+ * @Route("/ajax")
  */
 class AjaxController extends BaseAjaxController
 {

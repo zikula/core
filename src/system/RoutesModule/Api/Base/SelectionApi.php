@@ -13,12 +13,12 @@
 namespace Zikula\RoutesModule\Api\Base;
 
 use ModUtil;
-use Zikula\Core\Api\AbstractApi;
+use Zikula_AbstractBase;
 
 /**
  * Selection api base class.
  */
-class SelectionApi extends AbstractApi
+class SelectionApi extends Zikula_AbstractBase
 {
     /**
      * Gets the list of identifier fields for a given object type.

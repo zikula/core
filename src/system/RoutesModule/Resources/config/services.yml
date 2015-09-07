@@ -1,6 +1,14 @@
 parameters:
 
 services:
+    zikularoutesmodule.link_container:
+        class: "Zikula\\RoutesModule\\Container\\LinkContainer
+        arguments:
+            translator: "@translator"
+            router: "@router"
+        tags:
+            - { name: zikula.link_container }
+
     # Entity factory classes
     zikularoutesmodule.route_factory:
         class: "Zikula\\RoutesModule\\Entity\\Factory\\RouteFactory"
