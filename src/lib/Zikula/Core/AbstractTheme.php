@@ -77,6 +77,51 @@ abstract class AbstractTheme extends AbstractBundle
     }
 
     /**
+     * load the themevars into the themeEngine global vars
+     */
+    public function setThemeVars()
+    {
+        $this->getContainer()->get('zikula_core.common.theme.themevars')->replace($this->getThemeVars());
+    }
+
+    /**
+     * Get the theme variables from both the DB and the .yml file.
+     * @return array|string
+     */
+    public function getThemeVars()
+    {
+        $dbVars = \ModUtil::getVar($this->name);
+        $defaultVars = $this->getDefaultThemeVars();
+        $combinedVars = array_merge($defaultVars, $dbVars);
+        if (array_keys($dbVars) != array_keys($combinedVars)) {
+            // First load of file or vars have been added to the .yml file.
+            \ModUtil::setVars($this->name, $combinedVars);
+        }
+
+        return $combinedVars;
+    }
+
+    /**
+     * Get the default values from variables.yml.
+     * @return array
+     */
+    public function getDefaultThemeVars()
+    {
+        $defaultVars = [];
+        $themeVarsPath = $this->getConfigPath() . '/variables.yml';
+        if (file_exists($themeVarsPath)) {
+            if ($this->getContainer()) {
+                $yamlVars = Yaml::parse($themeVarsPath);
+                foreach($yamlVars as $name => $definition) {
+                    $defaultVars[$name] = $definition['default_value'];
+                }
+            }
+        }
+
+        return $defaultVars;
+    }
+
+    /**
      * Is theme twig (Core-2.0) based?
      * @deprecated
      * @return bool
