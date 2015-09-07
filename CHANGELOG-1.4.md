@@ -3,16 +3,19 @@ CHANGELOG - ZIKULA 1.4.x
 
 * 1.4.1 ()
 
- - Symfony update to 2.7.3(#2551)
- - All system modules and themes updated to PSR-4 (#2563, #2424)
- - Core-2.0 Theme Specification finalized and enabled (#2500, #2560)
- - Core-2.0 Module Specification finalized and enabled (#2500, #2560)
- - TranslatorTrait added (#2560)
- - Add vierbergenlars/php-semver vendor lib for version comparison (#2560)
- - Add Twig-based theme engine (refs #1753)
- - Categorization of Entities enabled (#411)
- - Fixed 'Removetrailingslash' error (#2552)
- - Corrected variable name in BootstrapTheme template override (#2557)
+ - BC Breaks:
+     - Removed `Zikula\Core\Api\AbstractApi` that was introduced only in 1.4.0 (#2494)
+ - Fixes:
+     - Symfony update to 2.7.3(#2551)
+     - All system modules and themes updated to PSR-4 (#2563, #2424)
+     - Core-2.0 Theme Specification finalized and enabled (#2500, #2560)
+     - Core-2.0 Module Specification finalized and enabled (#2500, #2560)
+     - TranslatorTrait added (#2560)
+     - Add vierbergenlars/php-semver vendor lib for version comparison (#2560)
+     - Add Twig-based theme engine (refs #1753)
+     - Categorization of Entities enabled (#411)
+     - Fixed 'Removetrailingslash' error (#2552)
+     - Corrected variable name in BootstrapTheme template override (#2557)
  
 
 * 1.4.0 (2015-07-20)
