@@ -33,7 +33,7 @@ abstract class AbstractTheme extends AbstractBundle
     {
         $configPath = $this->getConfigPath() . '/theme.yml';
         if (file_exists($configPath)) {
-            $this->config = Yaml::parse($configPath);
+            $this->config = Yaml::parse(file_get_contents($configPath));
             if (!isset($this->config['master'])) {
                 throw new InvalidConfigurationException('Core-2.0 themes must have a defined master realm.');
             }
