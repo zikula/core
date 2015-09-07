@@ -71,8 +71,17 @@ abstract class AbstractTheme extends AbstractBundle
             // for now, provide a default
             $template = 'CoreBundle:Default:block.html.twig';
         }
+        $content = $this->getContainer()->get('templating')->render($template, $block); // @todo renderView? renderResponse?
+        // wrap block with unique div
+        $position = !empty($block['position']) ? $block['position'] : 'none';
+        $content = '<div class="z-block'
+            . ' z-blockposition-' . $position
+            . ' z-bkey-' . strtolower($block['bkey'])
+            . ' z-bid-' . $block['bid'] . '">' . "\n"
+            . $content
+            . "</div>\n";
 
-        return $this->getContainer()->get('templating')->render($template, $block); // @todo renderView? renderResponse?
+        return $content;
     }
 
     /**

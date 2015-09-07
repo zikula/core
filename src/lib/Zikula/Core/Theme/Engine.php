@@ -134,6 +134,7 @@ class Engine
 
         $themedResponse = $this->activeThemeBundle->generateThemedResponse($realm, $response);
         $filteredResponse = $this->filter($themedResponse);
+
         return $filteredResponse;
     }
 
@@ -150,14 +151,6 @@ class Engine
         if (!$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
-        // wrap block with unique div
-        $position = !empty($block['position']) ? $block['position'] : 'none';
-        $block['content'] = '<div class="z-block'
-            . ' z-blockposition-' . $position
-            . ' z-bkey-' . strtolower($block['bkey'])
-            . ' z-bid-' . $block['bid'] . '">' . "\n"
-            . $block['content']
-            . "</div>\n";
 
         return $this->activeThemeBundle->generateThemedBlock($this->getRealm(), $block);
     }
