@@ -56,7 +56,8 @@
                 {/if}
                 {if $theme.structure}
                 <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}" target="_blank"><span class="fa fa-eye tooltips" title="{$strPreviewTheme}"></span></a>
-                <a href="{route name='zikulathememodule_admin_modify' themename=$theme.name}"><span class="fa fa-pencil tooltips" title="{$strEditTheme}"></span></a>
+                {if $theme.isTwigBased|default:false}{assign var='modifyRoute' value='zikulathememodule_var_var'}{else}{assign var='modifyRoute' value='zikulathememodule_admin_modify'}{/if}
+                <a href="{route name=$modifyRoute themeName=$theme.name}"><span class="fa fa-pencil tooltips" title="{$strEditTheme}"></span></a>
                 {/if}
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
                 <a href="{route name='zikulathememodule_admin_delete' themename=$theme.name}"><span class="fa fa-trash-o tooltips" title="{$strDeleteTheme}"></span></a>
