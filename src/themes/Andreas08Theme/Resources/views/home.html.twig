@@ -1,8 +1,8 @@
 {% include 'ZikulaAndreas08Theme:Includes:header.html.twig' %}
-<div id="theme_navigation_bar" class="clearfix">
+<div id="theme_navigation_bar" class="row">
     {% set topnavblock = showblockposition('topnav') %}
     {% if topnavblock is empty %}
-    <ul class="pull-left">
+    <ul class="list-inline">
         <li><a href="{{ app.request.baseUrl }}" title="{{ __("Go to the site's home page") }}">{{ __('Home') }}</a></li>
         <li><a href="{{ path('zikulausersmodule_user_index') }}" title="{{ __('Go to your account panel') }}">{{ __('My Account') }}</a></li>
         <li><a href="{{ path('zikulasearchmodule_user_form') }}" title="{{ __('Search this site') }}">{{ __('Site search') }}</a></li>

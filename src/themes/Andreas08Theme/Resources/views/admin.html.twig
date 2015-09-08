@@ -1,7 +1,7 @@
 {% include 'ZikulaAndreas08Theme:Includes:header.html.twig' %}
 
 <div id="theme_navigation_bar">
-    <ul class="clearfix">
+    <ul class="list-inline">
         <li><a href="{{ app.request.baseUrl }}">{{ __('Home') }}</a></li>
         {% if hasPermission('ZikulaSettingsModule::','::','ACCESS_ADMIN') %}
         <li><a href="{{ path('zikulasettingsmodule_admin_index') }}">{{ __('Settings') }}</a></li>

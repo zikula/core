@@ -1,4 +1,4 @@
-{menu from=$menuitems item='item' name='extmenu' class='pull-left'}
+{menu from=$menuitems item='item' name='extmenu' class='list-inline'}
 {if $item.name != '' && $item.url != ''}
     <li{if $item.url|replace:$baseurl:'' eq $currenturi|urldecode} class="selected"{/if}>
         <a href="{$item.url|safetext}" title="{$item.title}">

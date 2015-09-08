@@ -2,12 +2,12 @@
 /* Free to use in any way and for any purpose as long as the proper credits are given to the original designer.     */
 /**************** Body and tag styles ****************/
 body {
-    font: 76% Verdana, Tahoma, Arial, sans-serif;
+    font: 12px Verdana, Tahoma, Arial, sans-serif;
     line-height: 1.4em;
     text-align: center;
     color: #303030;
     background: #e8eaec;
-    margin: 0;
+    margin: 1em 5em;
     padding: 0;
 }
 
@@ -30,35 +30,7 @@ hr {
     height: 0;
 }
 
-/**************** Headings ****************/
-h1 {
-    font-size: 20px;
-}
-
-h2 {
-    font-size: 18px;
-}
-
-h3 {
-    font-size: 16px;
-}
-
-h4 {
-    font-size: 14px;
-}
-
-h5 {
-    font-size: 13px;
-}
-
-h6 {
-    font-size: 12px;
-}
-
 /**************** Spacing ****************/
-p, hr, h1, h2, h3, h4, h5, h6, pre, table, address, fieldset {
-    margin-bottom: 0.5em;
-}
 
 ol {
     list-style: decimal;
@@ -80,7 +52,7 @@ ol.breadcrumb {
 }
 
 li {
-    margin: 0 0 0.5em 1.5em;
+    margin: 0 0 0.5em -1.5em;
 }
 
 .pagination li, .breadcrumb > li {
@@ -130,6 +102,7 @@ dd {
     font-size: 2.4em;
     color: #ffffff;
     letter-spacing: -2px;
+    margin: 0;
 }
 
 #theme_header h1 a {
@@ -289,7 +262,8 @@ dd {
 
 #theme_content .z-block h3,
 #theme_content .z-block h4 {
-    padding-top: 0
+    padding-top: 0;
+    margin-top: 0;
 }
 
 .z-blockposition-center {
@@ -332,6 +306,7 @@ ul.navlist {
     border-top: 1px solid #BBBBBB;
     list-style: none outside none;
     margin: 0;
+    padding: 0;
 }
 
 ul.navlist li {

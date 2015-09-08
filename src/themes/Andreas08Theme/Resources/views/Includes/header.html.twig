@@ -6,13 +6,11 @@
         <meta name="description" content="{{ pagevars.meta.description }}" />
         <meta name="keywords" content="{{ pagevars.meta.keywords }}" />
         {{ pageAddVar('stylesheet', asset('bootstrap/css/bootstrap-theme.min.css')) }}
-        {{ pageAddVar('stylesheet', zasset('@ZikulaAndreas08Theme:css/fluid960gs/reset.css')) }}
-        {{ pageAddVar('stylesheet', zasset('@ZikulaAndreas08Theme:css/fluid960gs/' ~ themevars.layout ~ '.css')) }}
         {{ pageAddVar('stylesheet', zasset('@ZikulaAndreas08Theme:css/style.css')) }}
     </head>
     <body>
 
-        <div id="theme_page_container" class="container_16">
+        <div id="theme_page_container" class="container-fluid">
             <div id="theme_header">
                 <h1 class="title">{# adminpanelmenu #} <a href="{{ app.request.baseUrl }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
                 <h2 class="slogan">{{ getModVar('ZConfig', 'slogan') }}</h2>
