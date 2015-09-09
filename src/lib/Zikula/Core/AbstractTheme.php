@@ -81,7 +81,9 @@ abstract class AbstractTheme extends AbstractBundle
      */
     public function loadThemeVars()
     {
-        $this->getContainer()->get('zikula_core.common.theme.themevars')->replace($this->getThemeVars());
+        if ($this->getContainer()->has('zikula_core.common.theme.themevars')) {
+            $this->getContainer()->get('zikula_core.common.theme.themevars')->replace($this->getThemeVars());
+        }
     }
 
     /**
