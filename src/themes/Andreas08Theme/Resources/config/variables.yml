@@ -38,6 +38,3 @@ admin:
       2col_w_centerblock: Two columns with centerblock
       3col: Three columns
       3col_w_centerblock: Three columns with centerblock
-test:
-  default_value: 17
-  type: text
