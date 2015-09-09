@@ -2,7 +2,7 @@
 # ZikulaAndreas08Theme variables
 ##
 layout:
-  default_value: grid
+  default_value: container
   type: choice
   options:
     choices:
