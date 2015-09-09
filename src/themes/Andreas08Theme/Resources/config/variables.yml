@@ -6,8 +6,8 @@ layout:
   type: choice
   options:
     choices:
-      grid: Fluid
-      960: Fixed
+      container-fluid: Fluid
+      container: Fixed
 home:
   default_value: 3col_w_centerblock
   type: choice
