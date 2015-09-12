@@ -123,9 +123,18 @@ class Engine
         if (!$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
+        // wrap page in unique div
+        $realm = $this->getRealm();
+        $content = '<div id="z-maincontent" class="'
+            . ($realm == 'home' ? 'z-homepage ' : '')
+            . 'z-module-' . strtolower($this->requestAttributes['_zkModule']) . '">'
+            . $response->getContent()
+            . '</div>';
+        $response->setContent($content);
 
-        $themedResponse = $this->activeThemeBundle->generateThemedResponse($response);
+        $themedResponse = $this->activeThemeBundle->generateThemedResponse($realm, $response);
         $filteredResponse = $this->filter($themedResponse);
+
         return $filteredResponse;
     }
 
@@ -143,7 +152,7 @@ class Engine
             return false;
         }
 
-        return $this->activeThemeBundle->generateThemedBlock($block);
+        return $this->activeThemeBundle->generateThemedBlock($this->getRealm(), $block);
     }
 
     /**

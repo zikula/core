@@ -71,7 +71,7 @@ class CoreExtension extends \Twig_Extension
             'pageGetVar' => new \Twig_Function_Method($this, 'pageGetVar'),
             'getModVar' => new \Twig_Function_Method($this, 'getModVar'),
             'setMetaTag' => new \Twig_Function_Method($this, 'setMetaTag'),
-            'checkPermission' => new \Twig_Function_Method($this, 'checkPermission'),
+            'hasPermission' => new \Twig_Function_Method($this, 'hasPermission'),
         );
     }
 
@@ -342,7 +342,7 @@ class CoreExtension extends \Twig_Extension
      * @param string $level
      * @return bool
      */
-    public function checkPermission($component, $instance, $level)
+    public function hasPermission($component, $instance, $level)
     {
         if (empty($component) || empty($instance) || empty($level)) {
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);

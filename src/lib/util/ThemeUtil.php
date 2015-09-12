@@ -141,6 +141,8 @@ class ThemeUtil
 
         foreach ($themesarray[$key] as $theme => $values) {
             $themesarray[$key][$theme]['structure'] = true;
+            $themeBundle = ThemeUtil::getTheme($values['name']);
+            $themesarray[$key][$theme]['isTwigBased'] = $themeBundle->isTwigBased();
         }
 
         return $themesarray[$key];

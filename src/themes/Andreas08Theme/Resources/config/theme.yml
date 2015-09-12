@@ -1,0 +1,30 @@
+##
+# ZikulaAndreas08Theme config
+##
+admin:
+  page: ":admin.html.twig"
+  block:
+    positions:
+      left: "Blocks:block.html.twig"
+      right: "Blocks:block.html.twig"
+      center: "Blocks:block.html.twig"
+      topnav: "Blocks:topnavblock.html.twig"
+      search: "Blocks:searchblock.html.twig"
+home:
+  page: ":home.html.twig"
+  block:
+    positions:
+      left: "Blocks:block.html.twig"
+      right: "Blocks:block.html.twig"
+      center: "Blocks:block.html.twig"
+      topnav: "Blocks:topnavblock.html.twig"
+      search: "Blocks:searchblock.html.twig"
+master:
+  page: ":master.html.twig"
+  block:
+    positions:
+      left: "Blocks:block.html.twig"
+      right: "Blocks:block.html.twig"
+      center: "Blocks:block.html.twig"
+      topnav: "Blocks:topnavblock.html.twig"
+      search: "Blocks:searchblock.html.twig"

@@ -125,7 +125,9 @@ class ThemeListener implements EventSubscriberInterface
         }
         // set some defaults
         $this->pageVars->set('lang', \ZLanguage::getLanguageCode());
+        $this->pageVars->set('langdirection', \ZLanguage::getDirection());
         $this->pageVars->set('title', \System::getVar('defaultpagetitle'));
+        $this->pageVars->set('meta.charset', \ZLanguage::getDBCharset());
         $this->pageVars->set('meta.description', \System::getVar('defaultmetadescription'));
         $this->pageVars->set('meta.keywords', \System::getVar('metakeywords'));
     }
