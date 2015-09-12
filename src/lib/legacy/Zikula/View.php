@@ -237,10 +237,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->addPluginDir($mpluginPathNew); // Plugins for current module
         $this->addPluginDir($mpluginPath); // Plugins for current module
 
-        // check if the 'type' parameter in the URL is admin or adminplugin and 
-        // if yes, include system/Admin/templates/plugins to the plugins_dir 
-        // array
-        if ($type === 'admin' || $type === 'adminplugin') {
+        // check if the 'type' parameter in the URL is admin or adminplugin
+        $legacyControllerType = FormUtil::getPassedValue('lct', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
+        if ($type === 'admin' || $type === 'adminplugin' || $legacyControllerType === 'admin') {
+            // include plugins of the Admin module to the plugins_dir array
             if (!$this instanceof Zikula_View_Theme) {
                 $this->addPluginDir('system/AdminModule/Resources/views/plugins');
             } else {
