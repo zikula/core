@@ -56,6 +56,7 @@ class ThemeListener implements EventSubscriberInterface
         if (!($response instanceof Response)
             || is_subclass_of($response, '\Symfony\Component\HttpFoundation\Response')
             || $event->getRequest()->isXmlHttpRequest()
+            || false === strpos($response->headers->get('Content-Type'), 'text/html')
             || $route[0] === '_' // the profiler and other symfony routes begin with '_' @todo this is still too permissive
         ) {
             return;
@@ -101,8 +102,9 @@ class ThemeListener implements EventSubscriberInterface
             $basePath . '/web/bootstrap/js/bootstrap.min.js',
             $basePath . '/javascript/helpers/bootstrap-zikula.js',
 //            $basePath . '/javascript/helpers/Zikula.js', // @todo legacy remove at Core 2.0
-            $basePath . '/web/bundles/fosjsrouting/js/router.js',
-            $basePath . '/web/js/fos_js_routes.js',
+        // the following currently added by JCSSUtil in Engine::filter()
+//            $basePath . '/web/bundles/fosjsrouting/js/router.js',
+//            $basePath . '/web/js/fos_js_routes.js',
         ));
 
         // add default stylesheets to cssAssetBag
