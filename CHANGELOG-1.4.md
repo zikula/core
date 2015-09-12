@@ -18,6 +18,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Core-2.0 Theme Specification finalized and enabled (#2500, #2560)
        - ZikulaAndreas08Theme updated to new spec and bootstrap
     - Core-2.0 Module Specification finalized and enabled (#2500, #2560)
+    - Combined and customized bootstrap/font-awesome css using Less.
  
 
 * 1.4.0 (2015-07-20)
@@ -150,4 +151,3 @@ CHANGELOG - ZIKULA 1.4.x
     - Added automatic form-theming (bootstrap-style) for Twig-based admin forms
     - Hooks methods moved from event Listener to standard Controller method and given a true route
     - Added support for translating using Symfony Translator.
-    - Combined and customized bootstrap/font-awesome css.
