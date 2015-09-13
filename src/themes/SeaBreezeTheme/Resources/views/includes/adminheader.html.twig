@@ -1,0 +1,17 @@
+<div id="topline" class="clearfix">
+    <div class="pull-left">{userwelcome|ucwords}</div>
+    <div class="pull-right">{{ showblockposition('search') }}</div>
+</div>
+<div id="header" class="clearfix">
+    <h1>{# adminpanelmenu #} <a href="{{ app.request.baseUrl }}" title="{{ {{ getModVar('ZConfig', 'slogan') }} }}">{{ {{ getModVar('ZConfig', 'sitename') }} }}</a></h1>
+    <div id="navi" class="z-clearer">
+        <ul id="nav">
+            <li class="page_item">
+                <a href="{{ app.request.baseUrl }}"><span>{{ __('Home') }}</span></a>
+            </li>
+            <li class="page_item">
+                <a href="{{ path('zikulacategoriesmodule_admin_index}><span>{gt', {"text":"Categories","":"","<\/li>":"","<li":"","class":"page_item>","<a":"","href":"{modurl","rules\"}<\/span><\/a>":""}) }}</span></a>
+            </li>
+        </ul>
+    </div>
+</div>

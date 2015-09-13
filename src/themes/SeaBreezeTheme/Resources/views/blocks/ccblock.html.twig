@@ -1,8 +1,8 @@
 <!-- Start Center Block -->
-{if $title neq ''}
-<h3>{$title}</h3>
-{/if}
+{% if title != '' %}
+<h3>{{ title }}</h3>
+{% endif %}
 <div class="sbCenterContent">
-    {$content}
+    {{ content|raw }}
 </div>
 <!--  End Center Block  -->
