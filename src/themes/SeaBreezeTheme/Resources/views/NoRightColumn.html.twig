@@ -1,20 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang}" lang="{lang}" dir="{langdirection}">
-    <head>{include file="includes/head.tpl"}</head>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ pagevars.lang }}" lang="{{ pagevars.lang }}" dir="{{ pagevars.langdirection }}">
+    <head>{% include "includes/head.html.twig" %}</head>
     <body class="norightcol">
-        {include file="includes/userheader.tpl"}
+        {% include "includes/userheader.html.twig" %}
         <div id="pagewidth">
             <div id="wrapper" class="clearfix">
                 <div id="leftcol">
                     <div id="sidebar">
-                        {blockposition name=left}
+                        {{ showblockposition('left') }}
                      </div>
                 </div>
                 <div id="maincol">
-                    {$maincontent}
+                    {{ maincontent|raw }}
                 </div>
             </div>
         </div>
-        {include file="includes/footer.tpl"}
+        {% include "includes/footer.html.twig" %}
     </body>
 </html>

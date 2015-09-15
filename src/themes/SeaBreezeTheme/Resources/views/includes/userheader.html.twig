@@ -1,0 +1,19 @@
+<div id="topline" class="clearfix">
+    <div class="pull-left">{userwelcome|ucwords}</div>
+    <div class="pull-right">{{ showblockposition('search') }}</div>
+</div>
+<div id="header" class="clearfix">
+    <h1>{# adminpanelmenu #} <a href="{{ app.request.baseUrl }}" title="{{ getModVar('ZConfig', 'slogan') }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
+    {% set topnavblock = showblockposition('topnav') %}
+    {% if topnavblock is empty %}
+    <div id="navi" class="z-clearer">
+        <ul id="nav">
+            <li class="page_item"><a href="{{ app.request.baseUrl }}" title="{gt text="Go to the site's home page"}">{{ __('Home') }}</a></li>
+            <li class="page_item"><a href="{{ path('zikulausersmodule_user_main') }}" title="{{ __('Go to your account panel') }}">{{ __('My Account') }}</a></li>
+            <li class="page_item"><a href="{{ path('zikulasearchmodule_user_main') }}" title="{{ __('Search this site') }}">{{ __('Site search') }}</a></li>
+        </ul>
+    </div>
+    {% else %}
+    {{ topnavblock }}
+    {% endif %}
+</div>

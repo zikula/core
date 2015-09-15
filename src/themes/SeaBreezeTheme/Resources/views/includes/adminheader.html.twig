@@ -1,0 +1,38 @@
+<div id="topline" class="clearfix">
+    <div class="pull-left">{userwelcome|ucwords}</div>
+    <div class="pull-right">{{ showblockposition('search') }}</div>
+</div>
+<div id="header" class="clearfix">
+    <h1>{# adminpanelmenu #} <a href="{{ app.request.baseUrl }}" title="{{ getModVar('ZConfig', 'slogan') }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
+    <div id="navi" class="z-clearer">
+        <ul id="nav">
+            <li class="page_item">
+                <a href="{{ app.request.baseUrl }}"><span>{{ __('Home') }}</span></a>
+            </li>
+            <li class="page_item">
+                <a href="{{ path('zikulasettingsmodule_admin_index') }}"><span>{{ __('Settings') }}</span></a>
+            </li>
+            <li class="page_item">
+                <a href="{{ path('zikulaextensionsmodule_admin_index') }}"><span>{{ __('Extensions') }}</span></a>
+            </li>
+            <li class="page_item">
+                <a href="{{ path('zikulablocksmodule_admin_index') }}"><span>{{ __('Blocks') }}</span></a>
+            </li>
+            <li class="page_item">
+                <a href="{{ path('zikulausersmodule_admin_index') }}"><span>{{ __('Users') }}</span></a>
+            </li>
+            <li class="page_item">
+                <a href="{{ path('zikulagroupsmodule_admin_index') }}"><span>{{ __('Groups') }}</span></a>
+            </li>
+            <li class="page_item">
+                <a href="{{ path('zikulapermissionsmodule_admin_index') }}"><span>{{ __('Permission rules') }}</span></a>
+            </li>
+            <li class="page_item">
+                <a href="{{ path('zikulathememodule_admin_index') }}"><span>{{ __('Themes') }}</span></a>
+            </li>
+            <li class="page_item">
+                <a href="{{ path('zikulacategoriesmodule_admin_index') }}"><span>{{ __('Categories') }}</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
