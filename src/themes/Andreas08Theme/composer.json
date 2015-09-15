@@ -20,7 +20,7 @@
         "zikula" : {
             "core-compatibility": ">=1.4.1",
             "class": "Zikula\\Andreas08Theme\\ZikulaAndreas08Theme",
-            "displayname": "SpecTheme",
+            "displayname": "Andreas08",
             "capabilities": {
                 "user": true,
                 "admin": true
