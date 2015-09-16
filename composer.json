@@ -52,7 +52,7 @@
         "zikula/generator-bundle": "dev-master",
 
 
-        "jms/i18n-routing-bundle": "dev-master",
+        "acasademont/i18n-routing-bundle": "2.0.0",
         "jms/translation-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
 
