@@ -17,6 +17,7 @@ application Routes {
 		generateNewsletterPlugin false
 		generateModerationPanel false
 		generatePendingContentSupport false
+		generateExternalControllerAndFinder false
 		generateScribitePlugins false
 		generateTagSupport false
 		generateRssTemplates false
@@ -26,10 +27,12 @@ application Routes {
 		generateJsonTemplates false
 		generatePoweredByBacklinksIntoFooterTemplates false
 		writeModelToDocs true
-		markFiles "
+		skipFiles "
 			README.md,
-			CHANGELOG.md,
-			Api/AdminApi.php,
+			CHANGELOG.md
+		"
+		markFiles "
+			Container/LinkContainer.php,
 			Controller/AjaxController.php,
 			Controller/RouteController.php,
 			DependencyInjection/ZikulaRoutesExtension.php,
@@ -42,6 +45,7 @@ application Routes {
 			Resources/views/Route/display.tpl,
 			Resources/views/Route/edit.tpl,
 			Resources/views/Route/reload.tpl,
+			RoutesModuleInstaller.php,
 			Util/ControllerUtil.php,
 			workflows/function.none_permissioncheck.php
 		"

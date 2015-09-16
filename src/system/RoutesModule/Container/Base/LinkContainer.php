@@ -14,6 +14,7 @@ namespace Zikula\RoutesModule\Container\Base;
 
 use ModUtil;
 use SecurityUtil;
+use ServiceUtil;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\Translator;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
@@ -46,33 +47,31 @@ class LinkContainer implements LinkContainerInterface
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
-//        $links = array();
-//        $request = $this->get('request');
-//
-//        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
-//        $utilArgs = array('api' => 'ajax', 'action' => 'getLinks');
-//        $allowedObjectTypes = $controllerHelper->getObjectTypes('api', $utilArgs);
-//
-//        $currentLegacyType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
-//        $permLevel = in_array('admin', array($type, $currentLegacyType)) ? ACCESS_ADMIN : ACCESS_READ;
-//
-//
-//        if (in_array('admin', array($type, $currentLegacyType))) {
-//
-//            if (in_array('route', $allowedObjectTypes)
-//                && SecurityUtil::checkPermission($this->name . ':Route:', '::', $permLevel)) {
-//                $links[] = array('url' => $this->router->generate('zikularoutesmodule_route_view', array('lct' => 'admin')),
-//                                 'text' => $this->translator->__('Routes'),
-//                                 'title' => $this->translator->__('Route list'));
-//            }
-//        }
-//
-//        return $links;
+        $links = array();
+        $serviceManager = ServiceUtil::getManager();
+        $request = $serviceManager->get('request');
+
+        $controllerHelper = $serviceManager->get('zikularoutesmodule.controller_helper');
+        $utilArgs = array('api' => 'ajax', 'action' => 'getLinks');
+        $allowedObjectTypes = $controllerHelper->getObjectTypes('api', $utilArgs);
+
+        $currentLegacyType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
+        $permLevel = in_array('admin', array($type, $currentLegacyType)) ? ACCESS_ADMIN : ACCESS_READ;
+
+        
+        if (in_array('admin', array($type, $currentLegacyType))) {
+            
+            if (in_array('route', $allowedObjectTypes)
+                && SecurityUtil::checkPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
+                $links[] = array('url' => $this->router->generate('zikularoutesmodule_route_view', array('lct' => 'admin')),
+                                 'text' => $this->translator->__('Routes'),
+                                 'title' => $this->translator->__('Route list'));
+            }
+        }
+
+        return $links;
     }
 
-    /**
-     * @return string
-     */
     public function getBundleName()
     {
         return 'ZikulaRoutesModule';

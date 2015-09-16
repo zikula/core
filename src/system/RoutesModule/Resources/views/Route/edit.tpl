@@ -1,6 +1,6 @@
 {* purpose of this template: build the Form to edit an instance of route *}
 {pageaddvar name='javascript' value='jquery'}
-{pageaddvarblock}
+{pageaddvarblock name='header'}
     <script type="text/javascript">
         (function($) {
             $(function(){
@@ -97,18 +97,18 @@
         </div>
 
         <div class="form-group">
-            {formlabel for='controller' __text='Controller' mandatorysym='1' cssClass=' col-lg-3 control-label'}
+            {formlabel for='controller' __text='Controller' mandatorysym='1' cssClass=' col-lg-3 control-label' placeholder='UserController'}
             <div class="col-lg-9">
                 {formtextinput group='route' id='controller' mandatory=true readOnly=false __title='Enter the controller of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
-                <em class="z-sub">{gt text='Insert the name of the controller, which was called "type" in earlier versions of Zikula. Example: "UserController"'}</em>
+                <em class="z-sub">{gt text='Insert the name of the controller, which was called "type" in earlier versions of Zikula.'}</em>
             </div>
         </div>
 
         <div class="form-group">
             {formlabel for='action' __text='Action' mandatorysym='1' cssClass=' col-lg-3 control-label'}
             <div class="col-lg-9">
-                {formtextinput group='route' id='action' mandatory=true readOnly=false __title='Enter the action of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
-                <em class="z-sub">{gt text='Insert the name of the action, which was called "func" in earlier versions of Zikula. Example: "EditAction"'}</em>
+                {formtextinput group='route' id='action' mandatory=true readOnly=false __title='Enter the action of the route' textMode='singleline' maxLength=255 cssClass='form-control required' placeholder='editAction'}
+                <em class="z-sub">{gt text='Insert the name of the action, which was called "func" in earlier versions of Zikula.'}</em>
             </div>
         </div>
 

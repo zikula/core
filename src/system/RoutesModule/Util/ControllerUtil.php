@@ -77,14 +77,4 @@ class ControllerUtil extends BaseControllerUtil
 
         return $errors;
     }
-
-    /**
-     * Reload routes for one module by name
-     * @param string $moduleName (default: ZikulaRoutesModule)
-     * @return boolean $hadRoutes
-     */
-    public function reloadRoutesByModule($moduleName = "ZikulaRoutesRoutes")
-    {
-        //@todo REMOVE
-    }
 }

@@ -9,33 +9,6 @@ namespace Zikula\RoutesModule\Routing;
 class Util
 {
     /**
-     * Extracts modname, type, function and numeric suffix from a route's name.
-     *
-     * @param string $name The route name, e.g. acmeexamplemodule_user_index_1
-     *
-     * @return array ($modname, $type, $func, $numericSuffix)
-     */
-    public static function getParametersFromRouteName($name)
-    {
-        // @todo DOES NOT WORK!! REMOVE
-        $name = explode('_', $name);
-        $count = count($name);
-        if (is_numeric($name[$count - 1])) {
-            // e.g. acmeexamplemodule_user_index_1
-            $type = $name[$count - 3];
-            $func = $name[$count - 2];
-            $numericSuffix = "_" . $name[$count - 1];
-        } else {
-            // e.g. acmeexamplemodule_user_index
-            $type = $name[$count - 2];
-            $func = $name[$count - 1];
-            $numericSuffix = "";
-        }
-
-        return array($name[0], $type, $func, $numericSuffix);
-    }
-
-    /**
      * Sanitizes the action / func parameter.
      *
      * @param string $action

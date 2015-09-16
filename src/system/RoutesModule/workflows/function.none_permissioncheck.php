@@ -24,10 +24,6 @@
  */
 function ZikulaRoutesModule_workflow_none_permissioncheck($obj, $permLevel, $currentUser, $actionId)
 {
-    // Make sure not to check permission on installation.
-    if (\System::isInstalling()) {
-        return true;
-    }
 
     // calculate the permission component
     $objectType = $obj['_objectType'];
@@ -71,12 +67,12 @@ function ZikulaRoutesModule_workflow_none_gettextstrings()
             'initial' => array(
                 no__('Submit') => no__('Submit content.'),
             )
-            ,
+        ,
             'approved' => array(
                 no__('Update') => no__('Update content.'),
                 no__('Delete') => no__('Delete content permanently.')
             )
-            ,
+        ,
             'deleted' => array(
             )
         )

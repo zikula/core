@@ -97,18 +97,6 @@ class ViewUtil extends Zikula_AbstractBase
             $raw = true;
         }
     
-        // ensure the Admin module's plugins are loaded if we have lct=admin but another type value
-        $lct = 'user';
-        if ($request->isMethod('POST')) {
-            $lct = $request->request->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
-        } elseif ($request->isMethod('GET')) {
-            $lct = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
-        }
-        if ($lct == 'admin') {
-            // load Smarty plugins of Admin module
-            $view->addPluginDir('system/AdminModule/Resources/views/plugins');
-        }
-    
         if ($raw == true) {
             // standalone output
             if ($templateExtension == 'pdf') {

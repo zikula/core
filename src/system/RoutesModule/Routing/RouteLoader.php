@@ -15,8 +15,6 @@ use Zikula\Core\AbstractModule;
 use Zikula\Core\AbstractTheme;
 
 /**
- * Class RouteLoader.
- *
  * Custom loader following http://symfony.com/doc/current/cookbook/routing/custom_route_loader.html
  */
 class RouteLoader extends Loader
@@ -39,23 +37,6 @@ class RouteLoader extends Loader
         $this->zikulaKernel = $zikulaKernel;
     }
 
-    private function sanitizeController($bundleName, $controllerString)
-    {
-        if (strpos($controllerString, '::') === false) {
-            return $controllerString;
-        }
-
-        $action = substr($controllerString, strpos($controllerString, '::') + 2);
-        $func = lcfirst(substr($action, 0, -6));
-
-        $a = strrpos($controllerString, '\\') + 1;
-        $b = strrpos($controllerString, '::');
-        $controller = substr($controllerString, $a, $b - $a);
-        $type = substr($controller, 0, -10);
-
-        return $bundleName . ':' . $type . ':' . $func;
-    }
-
     /**
      * Finds all routes of all Zikula themes and modules.
      *
@@ -65,24 +46,19 @@ class RouteLoader extends Loader
     {
         $modules = $this->zikulaKernel->getModules();
         $themes = $this->zikulaKernel->getThemes();
+        $bundles = array_merge($modules, $themes);
 
-        $routeCollection = new RouteCollection();
         $topRouteCollection = new RouteCollection();
+        $middleRouteCollection = new RouteCollection();
         $bottomRouteCollection = new RouteCollection();
-        foreach ($modules as $module) {
-            list ($currentRouteCollection, $currentTopRouteCollection, $currentBottomRouteCollection) = $this->find($module);
-            $routeCollection->addCollection($currentRouteCollection);
-            $topRouteCollection->addCollection($currentTopRouteCollection);
-            $bottomRouteCollection->addCollection($currentBottomRouteCollection);
-        }
-        foreach ($themes as $theme) {
-            list ($currentRouteCollection, $currentTopRouteCollection, $currentBottomRouteCollection) = $this->find($theme);
-            $routeCollection->addCollection($currentRouteCollection);
+        foreach ($bundles as $bundle) {
+            list ($currentMiddleRouteCollection, $currentTopRouteCollection, $currentBottomRouteCollection) = $this->find($bundle);
+            $middleRouteCollection->addCollection($currentMiddleRouteCollection);
             $topRouteCollection->addCollection($currentTopRouteCollection);
             $bottomRouteCollection->addCollection($currentBottomRouteCollection);
         }
 
-        return [$routeCollection, $topRouteCollection, $bottomRouteCollection];
+        return [$middleRouteCollection, $topRouteCollection, $bottomRouteCollection];
     }
 
     /**
@@ -100,84 +76,58 @@ class RouteLoader extends Loader
         try {
             $path = $this->zikulaKernel->locateResource($bundle->getRoutingConfig());
         } catch (\InvalidArgumentException $e) {
-            // Routing file does not exist (e.g. because the bundle could not be located)
+            // Routing file does not exist (e.g. because the bundle could not be located).
             return [new RouteCollection(), new RouteCollection(), new RouteCollection()];
         }
         $name = $bundle->getName();
 
-        $routeCollection = new RouteCollection();
         $topRouteCollection = new RouteCollection();
+        $middleRouteCollection = new RouteCollection();
         $bottomRouteCollection = new RouteCollection();
 
-        /** @var RouteCollection $currentRouteCollection */
-        $currentRouteCollection = $this->import($path);
-        foreach ($currentRouteCollection->getResources() as $resource) {
-            $routeCollection->addResource($resource);
+        /**
+         * These are all routes of the module, as loaded by Symfony.
+         * @var RouteCollection $routeCollection
+         */
+        $routeCollection = $this->import($path);
+
+        // Add all resources from the imported route collection to the middleRouteCollection.
+        // The actual collection (top, middle, bottom) to add the resources too does not matter,
+        // they just must be added to one of them, so that they don't get lost.
+        foreach ($routeCollection->getResources() as $resource) {
+            $middleRouteCollection->addResource($resource);
         }
+        // It would be great to auto-reload routes here if the module version changes or a module is uninstalled.
+        // This is not yet possible, see
+        // - https://github.com/symfony/symfony/issues/7176
+        // - https://github.com/symfony/symfony/pull/15738
+        // - https://github.com/symfony/symfony/pull/15692
+        // $routeCollection->addResource(new ZikulaResource())
 
         /** @var Route $route */
-        foreach ($currentRouteCollection as $oldRouteName => $route) {
-            $defaults = $route->getDefaults();
+        foreach ($routeCollection as $oldRouteName => $route) {
+            $this->fixRequirements($route);
+            $this->prependBundlePrefix($route, $name);
+            list($type, $func) = $this->setZikulaDefaults($route, $bundle, $name);
+            $routeName = $this->getRouteName($oldRouteName, $name, $type, $func);
 
-            $defaults['_zkBundle'] = $name;
-            if ($bundle instanceof AbstractModule) {
-                $defaults['_zkModule'] = $name;
-            } else if ($bundle instanceof AbstractTheme) {
-                $defaults['_zkTheme'] = $name;
-            }
-
-            $controller = $this->sanitizeController($name, $defaults['_controller']);
-            $controller = explode(':', $controller);
-            $defaults['_zkType'] = $type = lcfirst($controller[1]);
-            $defaults['_zkFunc'] = $func = $controller[2];
-            $defaults['_controller'] = $name . ":" . ucfirst($type) . ":" . ucfirst($func);
-
-            $route->setDefaults($defaults);
-
-            // We have to prepend the bundle prefix if
-            // - routes are _not_ currently extracted via the command line and
-            // - the route has i18n set to false.
-            // This is because when extracting the routes, a bundle author only wants to translate the bare route
-            // patterns, without a redundant and potentially customized bundle prefix in front of them.
-            // If i18n is set to true, Zikula's customized pattern generation strategy will take care of it.
-            // See Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy
-            $options = $route->getOptions();
-            $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
-            if ($prependBundle && (!isset($options['zkNoBundlePrefix']) || !$options['zkNoBundlePrefix'])) {
-                $modinfo = \ModUtil::getInfoFromName($name);
-
-                $path = "/" . $modinfo["url"] . $route->getPath();
-                $route->setPath($path);
-            }
-
-            // @todo Remove when Symfony 3.0 is used.
-            $requirements = $route->getRequirements();
-            if (isset($requirements['_method'])) {
-                unset($requirements['_method']);
-            }
-            if (isset($requirements['_scheme'])) {
-                unset($requirements['_scheme']);
-            }
-            $route->setRequirements($requirements);
-
-            $suffix = '';
-            $lastPart = substr($oldRouteName, strrpos($oldRouteName, '_'));
-            if (is_numeric($lastPart)) {
-                $suffix = '_' . $lastPart;
-            }
-            $routeName = strtolower($name . '_' . $type . '_' . $func) . $suffix;
-            if (isset($options['zkPosition']) && in_array($options['zkPosition'], ['top', 'bottom'])) {
-                if ($options['zkPosition'] == 'top') {
-                    $topRouteCollection->add($routeName, $route);
-                } else {
-                    $bottomRouteCollection->add($routeName, $route);
+            if ($route->hasOption('zkPosition')) {
+                switch ($route->getOption('zkPosition')) {
+                    case 'top':
+                        $topRouteCollection->add($routeName, $route);
+                        break;
+                    case 'bottom':
+                        $bottomRouteCollection->add($routeName, $route);
+                        break;
+                    default:
+                        throw new \RuntimeException('Unknown route position. Got "' . $route->getOption('zkPosition') . '", expected "top" or "bottom"');
                 }
             } else {
-                $routeCollection->add($routeName, $route);
+                $middleRouteCollection->add($routeName, $route);
             }
         }
 
-        return [$routeCollection, $topRouteCollection, $bottomRouteCollection];
+        return [$middleRouteCollection, $topRouteCollection, $bottomRouteCollection];
     }
 
     public function load($resource, $type = null)
@@ -257,11 +207,128 @@ class RouteLoader extends Loader
         $routeCollection->addCollection($bottomRouteCollection);
 
         $this->loaded = true;
-        // We would need a DatabaseResource or similar, which does not exist in Symfony (yet).
-        // See https://github.com/symfony/symfony/issues/7176
-        // $routeCollection->addResource(new FileResource())
 
         return $routeCollection;
+    }
+
+    /**
+     * Sets some Zikula-specific defaults for the routes.
+     *
+     * @param Route $route The route instance.
+     * @param AbstractBundle $bundle The bundle.
+     * @param string $bundleName The bundle's name.
+     * @return array The legacy $type and $func parameters.
+     */
+    private function setZikulaDefaults(Route $route, AbstractBundle $bundle, $bundleName)
+    {
+        $defaults = $route->getDefaults();
+
+        $defaults['_zkBundle'] = $bundleName;
+        if ($bundle instanceof AbstractModule) {
+            $defaults['_zkModule'] = $bundleName;
+        } else if ($bundle instanceof AbstractTheme) {
+            $defaults['_zkTheme'] = $bundleName;
+        }
+
+        $controller = $this->sanitizeController($bundleName, $defaults['_controller']);
+        $controller = explode(':', $controller);
+        $defaults['_zkType'] = $type = lcfirst($controller[1]);
+        $defaults['_zkFunc'] = $func = $controller[2];
+        $defaults['_controller'] = $bundleName . ":" . $controller[1] . ":" . $func;
+
+        $route->setDefaults($defaults);
+
+        return [$type, $func];
+    }
+
+    /**
+     * Removes some deprecated requirements which cause depreciation notices.
+     *
+     * @param Route $route
+     *
+     * @todo Remove when Symfony 3.0 is used.
+     */
+    private function fixRequirements(Route $route)
+    {
+        $requirements = $route->getRequirements();
+        if (isset($requirements['_method'])) {
+            unset($requirements['_method']);
+        }
+        if (isset($requirements['_scheme'])) {
+            unset($requirements['_scheme']);
+        }
+        $route->setRequirements($requirements);
+    }
+
+    /**
+     * Prepends the bundle prefix to the route.
+     *
+     * @param Route $route
+     * @param string $bundleName
+     *
+     * We have to prepend the bundle prefix if
+     * - routes are _not_ currently extracted via the command line and
+     * - the route has i18n set to false.
+     * This is because when extracting the routes, a bundle author only wants to translate the bare route
+     * patterns, without a redundant and potentially customized bundle prefix in front of them.
+     * If i18n is set to true, Zikula's customized pattern generation strategy will take care of it.
+     * See Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy
+     */
+    private function prependBundlePrefix(Route $route, $bundleName)
+    {
+        $options = $route->getOptions();
+        $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
+        if ($prependBundle && (!isset($options['zkNoBundlePrefix']) || !$options['zkNoBundlePrefix'])) {
+            $modinfo = \ModUtil::getInfoFromName($bundleName);
+
+            $path = "/" . $modinfo["url"] . $route->getPath();
+            $route->setPath($path);
+        }
+    }
+
+    /**
+     * Converts the controller identifier into a unified form.
+     *
+     * @param string $bundleName The name of the bundle
+     * @param string $controllerString The given controller identifier.
+     * @return string The controller identifier in a Bundle:Type:func form.
+     */
+    private function sanitizeController($bundleName, $controllerString)
+    {
+        if (strpos($controllerString, '::') === false) {
+            return $controllerString;
+        }
+
+        $action = substr($controllerString, strpos($controllerString, '::') + 2);
+        $func = lcfirst(substr($action, 0, -6));
+
+        $a = strrpos($controllerString, '\\') + 1;
+        $b = strrpos($controllerString, '::');
+        $controller = substr($controllerString, $a, $b - $a);
+        $type = substr($controller, 0, -10);
+
+        return $bundleName . ':' . $type . ':' . $func;
+    }
+
+    /**
+     * Generates the route's new name.
+     *
+     * @param string $oldRouteName The old route name.
+     * @param string $bundleName   The bundle name.
+     * @param string $type         The legacy type.
+     * @param string $func         The legacy func.
+     * @return string The route's new name.
+     */
+    private function getRouteName($oldRouteName, $bundleName, $type, $func)
+    {
+        $suffix = '';
+        $lastPart = substr($oldRouteName, strrpos($oldRouteName, '_'));
+        if (is_numeric($lastPart)) {
+            // If the last part of the old route name is numeric, also append it to the new route name.
+            // This allows multiple routes for the same action.
+            $suffix = '_' . $lastPart;
+        }
+        return strtolower($bundleName . '_' . $type . '_' . $func) . $suffix;
     }
 
     public function supports($resource, $type = null)
