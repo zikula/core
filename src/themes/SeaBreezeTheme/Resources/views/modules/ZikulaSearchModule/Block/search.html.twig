@@ -1,4 +1,4 @@
-<form id="theme_search" method="post" action="{{ path('search_user_search') }}{# @todo probably an incorrect path #}">
+<form id="theme_search" method="post" action="{{ path('zikulasearchmodule_user_search') }}">
     <div>
         <input id="block_search_q" type="search" name="q" size="20" maxlength="255" results="10" autosave="Search" class="theme_search_input" />
         {% if vars.displaySearchBtn == 1 %}
@@ -9,9 +9,9 @@
             {{ plugin_option }}
             {% endfor %}
         </div>
-        {searchvartofieldnames data=$modvars.ZikulaSearchModule prefix="modvar" assign="modvariables"}
+        {# @TODO searchvartofieldnames data=$modvars.ZikulaSearchModule prefix="modvar" assign="modvariables" #}
         {% for name, value in modvariables %}
-        <input type="hidden" name="{$name|safetext}" value="{$value|safetext}" />
+        <input type="hidden" name="{{ name }}" value="{{ value }}" />
         {% endfor %}
     </div>
 </form>

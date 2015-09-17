@@ -1,7 +1,7 @@
-{menu from=$menuitems item='item' name='extmenu' id='nav'}
-{% if item.name != '' && item.url != '' %}
+{# @TODO menu from=$menuitems item='item' name='extmenu' id='nav' #}
+{% if item.name is not empty and item.url is not empty %}
 <li class="page_item {% if item.url|replace(baseurl:'') == currenturi|urldecode %}selected{% endif %}">
-    <a href="{$item.url|safetext}" title="{{ item.title }}">
+    <a href="{{ item.url }}" title="{{ item.title }}">
         {% if item.image != '' %}
         <img src="{{ item.image }}" alt="{{ item.title }}" />
         {% endif %}
@@ -9,4 +9,4 @@
     </a>
 </li>
 {% endif %}
-{/menu}
+{# /menu #}
