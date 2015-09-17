@@ -79,7 +79,7 @@ class CoreExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('languageName', array($this, 'languageName')),
-            new \Twig_SimpleFilter('safeHtml', array($this, 'safeHtml')),
+            new \Twig_SimpleFilter('safeHtml', array($this, 'safeHtml', array('is_safe' => array('html')))),
         );
     }
 
