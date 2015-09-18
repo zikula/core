@@ -1,0 +1,5 @@
+services:
+    zikula_rss_theme.twig.rsstheme_extension:
+        class: Zikula\RssTheme\Twig\RssThemeExtension
+        tags:
+            - { name: twig.extension }
