@@ -17,6 +17,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Add vierbergenlars/php-semver vendor lib for version comparison (#2560)
     - Core-2.0 Theme Specification finalized and enabled (#2500, #2560)
        - ZikulaAndreas08Theme updated to new spec and bootstrap
+       - ZikulaSeaBreezeTheme updated to new spec
     - Core-2.0 Module Specification finalized and enabled (#2500, #2560)
     - Combined and customized bootstrap/font-awesome css using Less.
  
