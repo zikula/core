@@ -41,14 +41,14 @@ class GettextExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            '__' => new \Twig_Function_Method($this, '__', array('needs_environment' => true)),
-            '_n' => new \Twig_Function_Method($this, '_n', array('needs_environment' => true)),
-            '__f' => new \Twig_Function_Method($this, '__f', array('needs_environment' => true)),
-            '_fn' => new \Twig_Function_Method($this, '_fn', array('needs_environment' => true)),
-            '__p' => new \Twig_Function_Method($this, '__p', array('needs_environment' => true)),
-            '__fp' => new \Twig_Function_Method($this, '__fp', array('needs_environment' => true)),
-            '_fnp' => new \Twig_Function_Method($this, '_fnp', array('needs_environment' => true)),
-            'no__' => new \Twig_Function_Method($this, 'no__'),
+            new \Twig_SimpleFunction('__', [$this, '__'], array('needs_environment' => true)),
+            new \Twig_SimpleFunction('_n', [$this, '_n'], array('needs_environment' => true)),
+            new \Twig_SimpleFunction('__f', [$this, '__f'], array('needs_environment' => true)),
+            new \Twig_SimpleFunction('_fn', [$this, '_fn'], array('needs_environment' => true)),
+            new \Twig_SimpleFunction('__p', [$this, '__p'], array('needs_environment' => true)),
+            new \Twig_SimpleFunction('__fp', [$this, '__fp'], array('needs_environment' => true)),
+            new \Twig_SimpleFunction('_fnp', [$this, '_fnp'], array('needs_environment' => true)),
+            new \Twig_SimpleFunction('no__', [$this, 'no__']),
         );
     }
 

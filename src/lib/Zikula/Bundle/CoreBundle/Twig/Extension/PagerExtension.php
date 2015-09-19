@@ -25,7 +25,7 @@ class PagerExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'pager' => new \Twig_Function_Method($this, 'pager', array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('pager', [$this, 'pager'], array('is_safe' => array('html'))),
         );
     }
 

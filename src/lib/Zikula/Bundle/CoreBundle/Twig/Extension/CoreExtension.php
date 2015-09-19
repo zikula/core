@@ -55,31 +55,31 @@ class CoreExtension extends \Twig_Extension
     {
 
         return array(
-            'button' => new \Twig_Function_Method($this, 'button'),
-            'img' => new \Twig_Function_Method($this, 'img'),
-            'icon' => new \Twig_Function_Method($this, 'icon'),
-            'lang' => new \Twig_Function_Method($this, 'lang'),
-            'langdirection' => new \Twig_Function_Method($this, 'langDirection'),
-            'showblockposition' => new \Twig_Function_Method($this, 'showBlockPosition', array('is_safe' => array('html'))),
-            'showblock' => new \Twig_Function_Method($this, 'showBlock'),
-            'blockinfo' => new \Twig_Function_Method($this, 'getBlockInfo'),
-            'zasset' => new \Twig_Function_Method($this, 'getAssetPath'),
-            'showflashes' => new \Twig_Function_Method($this, 'showFlashes', array('is_safe' => array('html'))),
-            'array_unset' => new \Twig_Function_Method($this, 'arrayUnset'),
-            'pageSetVar' => new \Twig_Function_Method($this, 'pageSetVar'),
-            'pageAddVar' => new \Twig_Function_Method($this, 'pageAddVar'),
-            'pageGetVar' => new \Twig_Function_Method($this, 'pageGetVar'),
-            'getModVar' => new \Twig_Function_Method($this, 'getModVar'),
-            'setMetaTag' => new \Twig_Function_Method($this, 'setMetaTag'),
-            'hasPermission' => new \Twig_Function_Method($this, 'hasPermission'),
+            new \Twig_SimpleFunction('button', [$this, 'button']),
+            new \Twig_SimpleFunction('img', [$this, 'img']),
+            new \Twig_SimpleFunction('icon', [$this, 'icon']),
+            new \Twig_SimpleFunction('lang', [$this, 'lang']),
+            new \Twig_SimpleFunction('langdirection', [$this, 'langDirection']),
+            new \Twig_SimpleFunction('showblockposition', [$this, 'showBlockPosition'], array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('showblock', [$this, 'showBlock']),
+            new \Twig_SimpleFunction('blockinfo', [$this, 'getBlockInfo']),
+            new \Twig_SimpleFunction('zasset', [$this, 'getAssetPath']),
+            new \Twig_SimpleFunction('showflashes', [$this, 'showFlashes'], array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('array_unset', [$this, 'arrayUnset']),
+            new \Twig_SimpleFunction('pageSetVar', [$this, 'pageSetVar']),
+            new \Twig_SimpleFunction('pageAddVar', [$this, 'pageAddVar']),
+            new \Twig_SimpleFunction('pageGetVar', [$this, 'pageGetVar']),
+            new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
+            new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
+            new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
         );
     }
 
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('languageName', array($this, 'languageName')),
-            new \Twig_SimpleFilter('safeHtml', array($this, 'safeHtml', array('is_safe' => array('html')))),
+            new \Twig_SimpleFilter('languageName', [$this, 'languageName']),
+            new \Twig_SimpleFilter('safeHtml', [$this, 'safeHtml'], array('is_safe' => array('html'))),
         );
     }
 

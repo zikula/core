@@ -32,8 +32,8 @@ class AtomThemeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'atomId' => new \Twig_Function_Method($this, 'id'),
-            'updated' => new \Twig_Function_Method($this, 'updated'),
+            new \Twig_SimpleFunction('atomId', [$this, 'id']),
+            new \Twig_SimpleFunction('updated', [$this, 'updated']),
         );
     }
 

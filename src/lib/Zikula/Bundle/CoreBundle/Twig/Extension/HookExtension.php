@@ -23,7 +23,7 @@ class HookExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'notifyDisplayHooks' => new \Twig_Function_Method($this, 'notifyDisplayHooks', array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('notifyDisplayHooks', [$this, 'notifyDisplayHooks'], array('is_safe' => array('html'))),
         );
     }
 
