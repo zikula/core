@@ -1,0 +1,5 @@
+services:
+    zikula_atom_theme.twig.atomtheme_extension:
+        class: Zikula\AtomTheme\Twig\AtomThemeExtension
+        tags:
+            - { name: twig.extension }

@@ -1,7 +1,7 @@
 {
     "name": "zikula/andreas08-theme",
     "version": "2.0.0",
-    "description": "Andreas08 Theme",
+    "description": "Based on the theme Andreas08 by Andreas Viklund",
     "type": "zikula-theme",
     "license": "LGPL-3.0+",
     "authors": [

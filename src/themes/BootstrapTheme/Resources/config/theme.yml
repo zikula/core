@@ -1,5 +1,5 @@
 ##
-# ZikulaAndreas08Theme config
+# ZikulaBootstrapTheme config
 ##
 admin:
   page: ":admin.html.twig"

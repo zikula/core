@@ -17,6 +17,7 @@
         <tr>
             <th>{gt text="Name"}</th>
             <th>{gt text="Description"}</th>
+            <th style="width: 8em;">{gt text="Version"}</th>
             <th class="text-right">{gt text="Actions"}</th>
         </tr>
     </thead>
@@ -44,6 +45,9 @@
                 {if !$theme.structure}<strike>{/if}
                 {$theme.description|default:$theme.displayname}
                 {if !$theme.structure}</strike>{/if}
+            </td>
+            <td>
+                {$theme.version}
             </td>
             <td class="actions">
                 {gt text='Preview: %s' tag1=$theme.displayname assign=strPreviewTheme}

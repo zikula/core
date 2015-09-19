@@ -52,7 +52,7 @@ class Util
 
         /** @var \Zikula\Bundle\CoreBundle\Bundle\MetaData $themeMetaData */
         foreach ($newThemes as $name => $themeMetaData) {
-            // PSR-0 is @deprecated - remove in 2.0
+            // PSR-0 is @deprecated - remove in Core-2.0
             foreach ($themeMetaData->getPsr0() as $ns => $path) {
                 ZLoader::addPrefix($ns, $path);
             }
@@ -67,7 +67,7 @@ class Util
             $versionClass = $bundle->getVersionClass();
 
             if (class_exists($versionClass)) {
-                // 1.4-module spec - deprecated - remove in Core 2.0
+                // 1.4-module spec - deprecated - remove in Core-2.0
                 $version = new $versionClass($bundle);
                 $version['name'] = $bundle->getName();
 
@@ -185,7 +185,8 @@ class Util
         foreach ($filethemes as $name => $themeinfo) {
             if (isset($dbthemes[$name])) {
                 if (($themeinfo['directory'] != $dbthemes[$name]['directory']) ||
-                        ($themeinfo['type'] != $dbthemes[$name]['type']) ||
+                    ($themeinfo['type'] != $dbthemes[$name]['type']) ||
+                    ($themeinfo['description'] != $dbthemes[$name]['description']) ||
                         ($themeinfo['version'] != $dbthemes[$name]['version']) ||
                         ($themeinfo['admin'] != $dbthemes[$name]['admin']) ||
                         ($themeinfo['user'] != $dbthemes[$name]['user']) ||

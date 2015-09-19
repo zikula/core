@@ -1,6 +1,7 @@
 {
     "name": "zikula/rss-theme",
-    "description": "RSS Theme",
+    "version": "2.0.0",
+    "description": "The RSS theme is an auxiliary theme designed specially for outputting pages as an RSS feed.",
     "type": "zikula-theme",
     "license": "LGPL-3.0+",
     "authors": [
@@ -17,7 +18,13 @@
     },
     "extra": {
         "zikula" : {
-            "class": "Zikula\\RssTheme\\ZikulaRssTheme"
+            "core-compatibility": ">=1.4.1",
+            "class": "Zikula\\RssTheme\\ZikulaRssTheme",
+            "displayname": "Rss",
+            "capabilities": {
+                "user": true,
+                "admin": false
+            }
         }
     }
 }

@@ -1,0 +1,17 @@
+##
+# ZikulaAtomTheme variables
+##
+showdescription:
+  default_value: true
+  type: checkbox
+  options:
+    label: "Show item descriptions"
+    disabled: true
+rsslevel:
+  default_value: rss20
+  type: choice
+  options:
+    label: "RSS Version"
+    choices:
+      rss091: "RSS v0.91"
+      rss20: "RSS v0.20"
