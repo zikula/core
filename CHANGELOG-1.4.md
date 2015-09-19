@@ -15,9 +15,9 @@ CHANGELOG - ZIKULA 1.4.x
     - Categorization of Entities enabled (#411)
     - Add Twig-based theme engine (refs #1753)
     - Add vierbergenlars/php-semver vendor lib for version comparison (#2560)
-    - Core-2.0 Theme Specification finalized and enabled (#2500, #2560)
+    - Core-2.0 Theme Specification finalized and enabled (#1753, #2500, #2560)
        - All core themes updated to new spec
-       - ZikulaAndreas08Theme updated to new spec and bootstrap
+       - ZikulaAndreas08Theme updated to new spec and bootstrap (#2428)
     - Core-2.0 Module Specification finalized and enabled (#2500, #2560)
     - Combined and customized bootstrap/font-awesome css using Less.
  
