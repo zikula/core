@@ -3,7 +3,6 @@
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 require 'src/vendor/autoload.php';
 
-class GenerateVendorDocCommand extends Symfony\Component\Console\Command\Command
+class GenerateVendorDocCommand extends Command
 {
     protected function configure()
     {
@@ -101,7 +100,7 @@ class GenerateVendorDocCommand extends Symfony\Component\Console\Command\Command
     }
 }
 
-class PurgeVendorsCommand extends \Symfony\Component\Console\Command\Command
+class PurgeVendorsCommand extends Command
 {
     protected function configure()
     {
@@ -157,7 +156,7 @@ class PurgeVendorsCommand extends \Symfony\Component\Console\Command\Command
     }
 }
 
-class FixAutoloaderCommand extends \Symfony\Component\Console\Command\Command
+class FixAutoloaderCommand extends Command
 {
     protected function configure()
     {
@@ -334,9 +333,26 @@ CHECKSUM;
     }
 }
 
+class LessCommand extends Command
+{
+    protected function configure()
+    {
+        $this
+            ->setName('build:generate_less')
+            ->setDescription('Generates Bootstrap Less file')
+        ;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        \Zikula\Composer\LessGenerator::generateCombinedBootstrapFontAwesomeCSS();
+    }
+}
+
 $application = new Application();
 $application->add(new BuildPackageCommand());
 $application->add(new PurgeVendorsCommand());
 $application->add(new FixAutoloaderCommand());
 $application->add(new GenerateVendorDocCommand());
+$application->add(new LessCommand());
 $application->run();
