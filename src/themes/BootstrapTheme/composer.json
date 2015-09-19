@@ -1,6 +1,7 @@
 {
     "name": "zikula/bootstrap-theme",
-    "description": "BootstrapTheme",
+    "version": "1.0.0",
+    "description": "Bootstrap based theme",
     "type": "zikula-theme",
     "license": "LGPL-3.0+",
     "authors": [
@@ -17,7 +18,13 @@
     },
     "extra": {
         "zikula" : {
-            "class": "Zikula\\BootstrapTheme\\ZikulaBootstrapTheme"
+            "core-compatibility": ">=1.4.1",
+            "class": "Zikula\\BootstrapTheme\\ZikulaBootstrapTheme",
+            "displayname": "Bootstrap",
+            "capabilities": {
+                "user": true,
+                "admin": true
+            }
         }
     }
 }

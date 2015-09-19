@@ -1,11 +1,7 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
-        {if empty($maincontent)}
-            {blockposition name=center}
-        {else}
-            {$maincontent}
-        {/if}
+        {{ showblockposition('center') }}
     </div>
 </div>
 
@@ -13,14 +9,13 @@
     <!-- Example row of columns -->
     <div class="row">
         <div class="col-lg-4">
-            {blockposition name=left}
+            {{ showblockposition('left') }}
         </div>
         <div class="col-lg-4">
-            {blockposition name=center}
+            {{ maincontent|raw }}
         </div>
         <div class="col-lg-4">
-            {blockposition name=rigth}
+            {{ showblockposition('right') }}
         </div>
     </div>
 </div>
-          
