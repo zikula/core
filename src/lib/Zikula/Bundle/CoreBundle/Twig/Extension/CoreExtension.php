@@ -68,6 +68,7 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('array_unset', [$this, 'arrayUnset']),
             new \Twig_SimpleFunction('pageSetVar', [$this, 'pageSetVar']),
             new \Twig_SimpleFunction('pageAddVar', [$this, 'pageAddVar']),
+            new \Twig_SimpleFunction('pageAddAsset', [$this, 'pageAddAsset']),
             new \Twig_SimpleFunction('pageGetVar', [$this, 'pageGetVar']),
             new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
@@ -236,6 +237,9 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
+     * Zikula imposes no restriction on page variable names.
+     * Typical usage is to set `title` `meta.charset` `lang` etc.
+     * array values are set using `.` in the `$name` string (e.g. `meta.charset`)
      * @param string $name
      * @param string $value
      */
@@ -249,23 +253,39 @@ class CoreExtension extends \Twig_Extension
     }
 
     /**
+     * @deprecated at Core 1.4.1, remove at Core-2.0
+     * @see use pageSetVar() or pageAddAsset()
      * @param string $name
      * @param string $value
-     *
-     * Zikula does not impose any restriction on the page variable's name except for duplicate
-     * and reserved names. As of this writing, the list of reserved names consists of
-     * <ul>
-     * <li>title</li>
-     * <li>stylesheet</li>
-     * <li>javascript</li>
-     * <li>header</li>
-     * <li>footer</li>
-     * </ul>
      */
     public function pageAddVar($name, $value)
     {
-        if (empty($name) || empty($value)) {
+        if (in_array($name, ['stylesheet', 'javascript', 'header', 'footer'])) {
+            $this->pageAddAsset($name, $value);
+        } else {
+            $this->pageSetVar($name, $value);
+        }
+    }
+
+    /**
+     * Zikula allows only the following asset types
+     * <ul>
+     *  <li>stylesheet</li>
+     *  <li>javascript</li>
+     *  <li>header</li>
+     *  <li>footer</li>
+     * </ul>
+     *
+     * @param string $type
+     * @param string $value
+     */
+    public function pageAddAsset($type, $value)
+    {
+        if (empty($type) || empty($value)) {
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+        }
+        if (!in_array($type, ['stylesheet', 'javascript', 'header', 'footer'])) {
+            throw new \InvalidArgumentException(__('Invalid argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         // @todo handle this polyfill feature issue
@@ -278,17 +298,18 @@ class CoreExtension extends \Twig_Extension
         // remove this code block at Core-2.0 because all themes are twig based
         $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
         if (!$themeBundle->isTwigBased()) {
-            \PageUtil::addVar($name, $value);
+            \PageUtil::addVar($type, $value);
             return;
         }
 
-        if ('stylesheet' == $name) {
+        if ('stylesheet' == $type) {
             $this->container->get('zikula_core.common.theme.assets_css')->add($value);
-        } elseif ('javascript' == $name) {
+        } elseif ('javascript' == $type) {
             $this->container->get('zikula_core.common.theme.assets_js')->add($value);
-        } else {
-            // @todo using 'set' but should be 'add'...
-            $this->container->get('zikula_core.common.theme.pagevars')->set($name, $value);
+        } elseif ('header' == $type) {
+            $this->container->get('zikula_core.common.theme.assets_header')->add($value);
+        } elseif ('footer' == $type) {
+            $this->container->get('zikula_core.common.theme.assets_footer')->add($value);
         }
     }
 

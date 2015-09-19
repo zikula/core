@@ -5,6 +5,8 @@ CHANGELOG - ZIKULA 1.4.x
 
  - BC Breaks:
      - Removed `Zikula\Core\Api\AbstractApi` that was introduced only in 1.4.0 (#2494)
+ - Deprecated:
+     - Twig function `pageAddVar()` deprecated. Use `pageAddAsset()` or `pageSetVar()` instead.
  - Fixes:
     - Fixed 'Removetrailingslash' error (#2552)
     - Corrected variable name in BootstrapTheme template override (#2557)

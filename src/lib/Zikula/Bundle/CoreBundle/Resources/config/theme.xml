@@ -10,6 +10,8 @@
         <parameter key="zikula_core.internal.theme.listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
         <parameter key="zikula_core.common.theme.assets.js.class">Zikula\Core\Theme\AssetBag</parameter>
         <parameter key="zikula_core.common.theme.assets.css.class">Zikula\Core\Theme\AssetBag</parameter>
+        <parameter key="zikula_core.common.theme.assets.header.class">Zikula\Core\Theme\AssetBag</parameter>
+        <parameter key="zikula_core.common.theme.assets.footer.class">Zikula\Core\Theme\AssetBag</parameter>
         <parameter key="zikula_core.common.theme.pagevars.class">Zikula\Core\Theme\ParameterBag</parameter>
         <parameter key="zikula_core.internal.theme_filter.class">Zikula\Core\Theme\Filter</parameter>
         <parameter key="zikula_core.common.theme.themevars.class">Zikula\Core\Theme\ParameterBag</parameter>
@@ -43,14 +45,16 @@
         </service>
 
         <service id="zikula_core.common.theme.assets_js" class="%zikula_core.common.theme.assets.js.class%" />
-
         <service id="zikula_core.common.theme.assets_css" class="%zikula_core.common.theme.assets.css.class%" />
+        <service id="zikula_core.common.theme.assets_header" class="%zikula_core.common.theme.assets.header.class%" />
+        <service id="zikula_core.common.theme.assets_footer" class="%zikula_core.common.theme.assets.footer.class%" />
 
         <service id="zikula_core.common.theme.pagevars" class="%zikula_core.common.theme.pagevars.class%">
         </service>
 
         <service id="zikula_core.internal.theme_filter" class="%zikula_core.internal.theme_filter.class%">
-            <argument type="service" id="zikula_core.common.theme.pagevars" />
+            <argument type="service" id="zikula_core.common.theme.assets_header" />
+            <argument type="service" id="zikula_core.common.theme.assets_footer" />
             <argument type="service" id="zikula_core.internal.theme.js_resolver" />
             <argument type="service" id="zikula_core.internal.theme.css_resolver" />
             <argument>%script_position%</argument>
