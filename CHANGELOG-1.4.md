@@ -16,8 +16,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Add Twig-based theme engine (refs #1753)
     - Add vierbergenlars/php-semver vendor lib for version comparison (#2560)
     - Core-2.0 Theme Specification finalized and enabled (#2500, #2560)
+       - All core themes updated to new spec
        - ZikulaAndreas08Theme updated to new spec and bootstrap
-       - ZikulaSeaBreezeTheme updated to new spec
     - Core-2.0 Module Specification finalized and enabled (#2500, #2560)
     - Combined and customized bootstrap/font-awesome css using Less.
  
