@@ -189,9 +189,9 @@
     {* include display hooks *}
     {if $mode ne 'create'}
         {assign var='hookId' value=$route.id}
-        {notifydisplayhooks eventname='routes.ui_hooks.routes.form_edit' id=$hookId assign='hooks'}
+        {notifydisplayhooks eventname='zikularoutesmodule.ui_hooks.routes.form_edit' id=$hookId assign='hooks'}
     {else}
-        {notifydisplayhooks eventname='routes.ui_hooks.routes.form_edit' id=null assign='hooks'}
+        {notifydisplayhooks eventname='zikularoutesmodule.ui_hooks.routes.form_edit' id=null assign='hooks'}
     {/if}
     {if is_array($hooks) && count($hooks)}
         {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}

@@ -1426,7 +1426,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      */
     public function getHookAreaPrefix()
     {
-        return 'routes.ui_hooks.routes';
+        return 'zikularoutesmodule.ui_hooks.routes';
     }
     
     /**
