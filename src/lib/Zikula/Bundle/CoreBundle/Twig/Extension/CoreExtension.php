@@ -260,6 +260,7 @@ class CoreExtension extends \Twig_Extension
      */
     public function pageAddVar($name, $value)
     {
+        $this->container->get('logger')->log(\Monolog\Logger::DEBUG, '\Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension::pageAddVar is deprecated use pageAddAsset() or pageSetVar().');
         if (in_array($name, ['stylesheet', 'javascript', 'header', 'footer'])) {
             $this->pageAddAsset($name, $value);
         } else {
