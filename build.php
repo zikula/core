@@ -340,12 +340,13 @@ class LessCommand extends Command
         $this
             ->setName('build:generate_less')
             ->setDescription('Generates Bootstrap Less file')
+            ->addOption('write-to', null, InputOption::VALUE_REQUIRED, 'Where to dump the generated file.');
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        \Zikula\Composer\LessGenerator::generateCombinedBootstrapFontAwesomeCSS();
+        \Zikula\Composer\LessGenerator::generateCombinedBootstrapFontAwesomeCSS($input->getOption('write-to'));
     }
 }
 
