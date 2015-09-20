@@ -87,12 +87,19 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     protected $workflowState = 'initial';
     
     /**
-     * @ORM\Column(name="route_name", length=255)
+     * @ORM\Column(length=255)
      * @Assert\NotBlank()
-     * @Assert\Length(min="0", max="255")
-     * @var string $name.
+     * @Assert\Choice(callback="getRouteTypeAllowedValues", multiple=false)
+     * @var string $routeType.
      */
-    protected $name = '';
+    protected $routeType = 'additional';
+    
+    /**
+     * @ORM\Column(length=255, nullable=true)
+     * @Assert\Length(min="0", max="255")
+     * @var string $replacedRouteName.
+     */
+    protected $replacedRouteName = '';
     
     /**
      * @ORM\Column(length=255)
@@ -403,25 +410,47 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get name.
+     * Get route type.
      *
      * @return string
      */
-    public function getName()
+    public function getRouteType()
     {
-        return $this->name;
+        return $this->routeType;
     }
     
     /**
-     * Set name.
+     * Set route type.
      *
-     * @param string $name.
+     * @param string $routeType.
      *
      * @return void
      */
-    public function setName($name)
+    public function setRouteType($routeType)
     {
-        $this->name = $name;
+        $this->routeType = $routeType;
+    }
+    
+    /**
+     * Get replaced route name.
+     *
+     * @return string
+     */
+    public function getReplacedRouteName()
+    {
+        return $this->replacedRouteName;
+    }
+    
+    /**
+     * Set replaced route name.
+     *
+     * @param string $replacedRouteName.
+     *
+     * @return void
+     */
+    public function setReplacedRouteName($replacedRouteName)
+    {
+        $this->replacedRouteName = $replacedRouteName;
     }
     
     /**
@@ -899,7 +928,8 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         
         $this['id'] = (int) ((isset($this['id']) && !empty($this['id'])) ? DataUtil::formatForDisplay($this['id']) : 0);
         $this->formatTextualField('workflowState', $currentFunc, $usesCsvOutput, true);
-        $this->formatTextualField('name', $currentFunc, $usesCsvOutput);
+        $this->formatTextualField('routeType', $currentFunc, $usesCsvOutput, true);
+        $this->formatTextualField('replacedRouteName', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('bundle', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('controller', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('action', $currentFunc, $usesCsvOutput);
@@ -1254,6 +1284,24 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $serviceManager = ServiceUtil::getManager();
         $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
         $listEntries = $helper->getWorkflowStateEntriesForRoute();
+    
+        $allowedValues = array();
+        foreach ($listEntries as $entry) {
+            $allowedValues[] = $entry['value'];
+        }
+    
+        return $allowedValues;
+    }
+    
+    /**
+     * Returns a list of possible choices for the routeType list field.
+     * This method is used for validation.
+     */
+    public static function getRouteTypeAllowedValues()
+    {
+        $serviceManager = ServiceUtil::getManager();
+        $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
+        $listEntries = $helper->getRouteTypeEntriesForRoute();
     
         $allowedValues = array();
         foreach ($listEntries as $entry) {

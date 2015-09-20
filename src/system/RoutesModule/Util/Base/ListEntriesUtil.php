@@ -111,6 +111,9 @@ class ListEntriesUtil extends Zikula_AbstractBase
                     case 'workflowState':
                         $result = false;
                         break;
+                    case 'routeType':
+                        $result = false;
+                        break;
                     case 'schemes':
                         $result = true;
                         break;
@@ -146,6 +149,9 @@ class ListEntriesUtil extends Zikula_AbstractBase
                     case 'workflowState':
                         $entries = $this->getWorkflowStateEntriesForRoute();
                         break;
+                    case 'routeType':
+                        $entries = $this->getRouteTypeEntriesForRoute();
+                        break;
                     case 'schemes':
                         $entries = $this->getSchemesEntriesForRoute();
                         break;
@@ -176,6 +182,38 @@ class ListEntriesUtil extends Zikula_AbstractBase
         $states[] = array('value'   => '!approved',
                           'text'    => $this->__('All except approved'),
                           'title'   => $this->__('Shows all items except these which are approved'),
+                          'image'   => '',
+                          'default' => false);
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'route type' list entries.
+     *
+     * @return array Array with desired list entries.
+     */
+    public function getRouteTypeEntriesForRoute()
+    {
+        $states = array();
+        $states[] = array('value'   => 'additional',
+                          'text'    => $this->__('Additional'),
+                          'title'   => '',
+                          'image'   => '',
+                          'default' => true);
+        $states[] = array('value'   => 'temporaryRedirect',
+                          'text'    => $this->__('Temporary redirect'),
+                          'title'   => '',
+                          'image'   => '',
+                          'default' => false);
+        $states[] = array('value'   => 'permanentRedirect',
+                          'text'    => $this->__('Permanent redirect'),
+                          'title'   => '',
+                          'image'   => '',
+                          'default' => false);
+        $states[] = array('value'   => 'replace',
+                          'text'    => $this->__('Replace'),
+                          'title'   => '',
                           'image'   => '',
                           'default' => false);
     

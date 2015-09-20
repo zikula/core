@@ -54,8 +54,17 @@ application Routes {
 			nameMultiple routes
 			displayPattern "#path# (#sort#)"
 			fields {
-				string name {
-					dbName route_name
+				list "routeType" {
+					defaultValue "additional"
+					items {
+						default listItem "additional" ("additional"),
+						listItem "temporaryRedirect" ("temporaryRedirect"),
+						listItem "permanentRedirect" ("permanentRedirect"),
+						listItem "replace" ("replace")
+					}
+				},
+				string replacedRouteName nullable {
+					mandatory false
 				},
 				string "bundle",
 				string "controller",

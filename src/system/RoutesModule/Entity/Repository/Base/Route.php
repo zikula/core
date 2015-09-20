@@ -55,7 +55,8 @@ class Route extends SortableRepository
         return array(
             'id',
             'workflowState',
-            'name',
+            'routeType',
+            'replacedRouteName',
             'bundle',
             'controller',
             'action',
@@ -131,7 +132,7 @@ class Route extends SortableRepository
      */
     public function getTitleFieldName()
     {
-        $fieldName = 'name';
+        $fieldName = 'replacedRouteName';
     
         return $fieldName;
     }
@@ -198,6 +199,7 @@ class Route extends SortableRepository
                 $templateParameters = $this->getViewQuickNavParameters($context, $args);
                 $listHelper = $serviceManager->get('zikularoutesmodule.listentries_helper');
                 $templateParameters['workflowStateItems'] = $listHelper->getEntries('route', 'workflowState');
+                $templateParameters['routeTypeItems'] = $listHelper->getEntries('route', 'routeType');
                 $templateParameters['schemesItems'] = $listHelper->getEntries('route', 'schemes');
                 $templateParameters['methodsItems'] = $listHelper->getEntries('route', 'methods');
                 $booleanSelectorItems = array(
@@ -233,6 +235,7 @@ class Route extends SortableRepository
     
         $parameters = array();
         $parameters['workflowState'] = $this->request->query->get('workflowState', '');
+        $parameters['routeType'] = $this->request->query->get('routeType', '');
         $parameters['schemes'] = $this->request->query->get('schemes', '');
         $parameters['methods'] = $this->request->query->get('methods', '');
         $parameters['q'] = $this->request->query->get('q', '');
@@ -730,7 +733,9 @@ class Route extends SortableRepository
         $where = '';
         if (!$fragmentIsNumeric) {
             $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.name LIKE \'%' . $fragment . '%\'';
+            $where .= 'tbl.routeType = \'' . $fragment . '\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.replacedRouteName LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.bundle LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
@@ -755,7 +760,9 @@ class Route extends SortableRepository
             $where .= 'tbl.group LIKE \'%' . $fragment . '%\'';
         } else {
             $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.name LIKE \'%' . $fragment . '%\'';
+            $where .= 'tbl.routeType = \'' . $fragment . '\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.replacedRouteName LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.bundle LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');

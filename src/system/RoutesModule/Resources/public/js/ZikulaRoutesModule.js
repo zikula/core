@@ -40,6 +40,9 @@ function zikulaRoutesInitQuickNavigation(objectType)
         if (jQuery('#workflowState').length > 0) {
             jQuery('#workflowState').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
+        if (jQuery('#routeType').length > 0) {
+            jQuery('#routeType').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        }
         if (jQuery('#schemes').length > 0) {
             jQuery('#schemes').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }

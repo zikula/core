@@ -19,6 +19,17 @@
                 </select>
             </div>
         {/if}
+        {if !isset($routeTypeFilter) || $routeTypeFilter eq true}
+            <div class="form-group">
+                <label for="routeType">{gt text='Route type'}</label>
+                <select id="routeType" name="routeType" class="form-control input-sm">
+                    <option value="">{$lblDefault}</option>
+                {foreach item='option' from=$routeTypeItems}
+                <option value="{$option.value}"{if $option.title ne ''} title="{$option.title|safetext}"{/if}{if $option.value eq $routeType} selected="selected"{/if}>{$option.text|safetext}</option>
+                {/foreach}
+                </select>
+            </div>
+        {/if}
         {if !isset($schemesFilter) || $schemesFilter eq true}
             <div class="form-group">
                 <label for="schemes">{gt text='Schemes'}</label>
@@ -53,7 +64,8 @@
                 &nbsp;
                 <select id="sortBy" name="sort" class="form-control input-sm">
                     <option value="id"{if $sort eq 'id'} selected="selected"{/if}>{gt text='Id'}</option>
-                    <option value="name"{if $sort eq 'name'} selected="selected"{/if}>{gt text='Name'}</option>
+                    <option value="routeType"{if $sort eq 'routeType'} selected="selected"{/if}>{gt text='Route type'}</option>
+                    <option value="replacedRouteName"{if $sort eq 'replacedRouteName'} selected="selected"{/if}>{gt text='Replaced route name'}</option>
                     <option value="bundle"{if $sort eq 'bundle'} selected="selected"{/if}>{gt text='Bundle'}</option>
                     <option value="controller"{if $sort eq 'controller'} selected="selected"{/if}>{gt text='Controller'}</option>
                     <option value="action"{if $sort eq 'action'} selected="selected"{/if}>{gt text='Action'}</option>

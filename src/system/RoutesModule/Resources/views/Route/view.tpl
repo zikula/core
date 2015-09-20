@@ -117,7 +117,8 @@
                 {if $lct eq 'admin'}
                     <col id="cSelect" />
                 {/if}
-                {*<col id="cName" />*}
+                <col id="cRouteType" />
+                {*<col id="cReplacedRouteName" />*}
                 <col id="cBundle" />
                 {*<col id="cController" />*}
                 {*<col id="cAction" />*}
@@ -141,8 +142,11 @@
                         <input type="checkbox" id="toggleRoutes" />
                     </th>
                 {/if}
-                {*<th id="hName" scope="col" class="text-left">
-                    {sortlink __linktext='Name' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='name' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize lct=$lct}
+                <th id="hRouteType" scope="col" class="text-left">
+                    {gt text='Route type'}{*sortlink __linktext='Route type' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='routeType' sortdir=$sdir all=$all own=$own workflowState=$workflowState routeType=$routeType schemes=$schemes methods=$methods q=$q pageSize=$pageSize prependBundlePrefix=$prependBundlePrefix translatable=$translatable lct=$lct*}
+                </th>
+                {*<th id="hReplacedRouteName" scope="col" class="text-left">
+                    {sortlink __linktext='Replaced route name' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='replacedRouteName' sortdir=$sdir all=$all own=$own workflowState=$workflowState routeType=$routeType schemes=$schemes methods=$methods q=$q pageSize=$pageSize prependBundlePrefix=$prependBundlePrefix translatable=$translatable lct=$lct}
                 </th>*}
                 <th id="hBundle" scope="col" class="text-left">
                    {gt text='Bundle'}{*sortlink __linktext='Bundle' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='bundle' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize lct=$lct*}
@@ -195,7 +199,7 @@
             {foreach item='route' from=$items}
                 {if $route.group != $groupOld}
                     <tr>
-                        <td class="text-left" colspan="{if $lct eq 'admin'}11{else}10{/if}">
+                        <td class="text-left" colspan="{if $lct eq 'admin'}12{else}11{/if}">
                             {$groupMessages[$route.group]}
                         </td>
                     </tr>
@@ -206,9 +210,12 @@
                             <input type="checkbox" name="items[]" value="{$route.id}" class="routes-checkbox" />
                         </td>
                     {/if}
-                    {*<td headers="hName" class="z-left">
-                        <a href="{route name='zikularoutesmodule_route_display'  id=$route.id lct=$lct}" title="{gt text='View detail page'}">{$route.name|notifyfilters:'zikularoutesmodule.filterhook.routes'}</a>
-                    </td>*}
+                <td headers="hRouteType" class="z-left">
+                    {$route.routeType|zikularoutesmoduleGetListEntry:'route':'routeType'|safetext}
+                </td>
+                {*<td headers="hReplacedRouteName" class="z-left">
+                    {$route.replacedRouteName}
+                </td>*}
                     <td headers="hBundle" class="z-left">
                         {$route.bundle}
                     </td>
@@ -269,7 +276,7 @@
             {assign var='groupOld' value=$route.group}
         {foreachelse}
             <tr class="z-{if $lct eq 'admin'}admin{else}data{/if}tableempty">
-              <td class="text-left" colspan="{if $lct eq 'admin'}10{else}9{/if}">
+              <td class="text-left" colspan="{if $lct eq 'admin'}11{else}10{/if}">
             {gt text='No routes found.'}
               </td>
             </tr>

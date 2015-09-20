@@ -65,8 +65,10 @@
     {/if}
 
     <dl>
-        <dt>{gt text='Name'}</dt>
-        <dd>{$route.name}</dd>
+        <dt>{gt text='Route type'}</dt>
+        <dd>{$route.routeType|zikularoutesmoduleGetListEntry:'route':'routeType'|safetext}</dd>
+        <dt>{gt text='Replaced route name'}</dt>
+        <dd>{$route.replacedRouteName}</dd>
         <dt>{gt text='Bundle'}</dt>
         <dd>{$route.bundle}</dd>
         <dt>{gt text='Controller'}</dt>

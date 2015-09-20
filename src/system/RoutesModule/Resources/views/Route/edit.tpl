@@ -72,37 +72,24 @@
 {form cssClass='form-horizontal' role='form'}
     {* add validation summary and a <div> element for styling the form *}
     {zikularoutesmoduleFormFrame}
-    {formsetinitialfocus inputId='bundle'}
-
-
-
-
-        {*<div class="form-group">
-            {formlabel for='i18n' __text='Translatable' cssClass=' col-sm-3 control-label' mandatorysym=false}
-            <div class="col-sm-9">
-                {formcheckbox group='route' id='i18n' checked=true mandatory=false readOnly=false __title='Decide whether or not the route is translatable'}
-            </div>
-        </div>
-        <div class="form-group">
-            {formlabel for='bundlePrefix' __text='Prepend bundle prefix' cssClass=' col-sm-3 control-label' mandatorysym=false}
-            <div class="col-sm-9">
-                {formcheckbox group='route' id='bundlePrefix' checked=true mandatory=false readOnly=false __title='Decide whether or not to prepend the bundle prefix to the path'}
-            </div>
-        </div>*}
+    {formsetinitialfocus inputId='routeType' doSelect=true}
 
     <fieldset>
         <legend>{gt text='Content'}</legend>
 
-        <div>
-            {formtextinput group='route' id='name' mandatory=false readOnly=false textMode='hidden' maxLength=255}
+        <div class="form-group">
+            {formlabel for='routeType' __text='Route type' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formdropdownlist group='route' id='routeType' mandatory=true __title='Choose the route type' selectionMode='single' cssClass='form-control'}
+            </div>
         </div>
 
-        {*<div class="form-group">
-            {formlabel for='name' __text='Name' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+        <div class="form-group">
+            {formlabel for='replacedRouteName' __text='Replaced route name' cssClass=' col-sm-3 control-label'}
             <div class="col-sm-9">
-                {formtextinput group='route' id='name' mandatory=true readOnly=false __title='Enter the name of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
+            {formtextinput group='route' id='replacedRouteName' mandatory=false readOnly=false __title='Enter the replaced route name of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
             </div>
-        </div>*}
+        </div>
 
         <div class="form-group">
             {formlabel for='bundle' __text='Bundle' mandatorysym='1' cssClass=' col-sm-3 control-label'}
