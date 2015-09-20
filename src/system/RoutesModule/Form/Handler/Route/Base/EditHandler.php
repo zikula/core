@@ -47,7 +47,7 @@ class EditHandler extends BaseEditHandler
     
         $this->hasPageLockSupport = true;
         // array with list fields and multiple flags
-        $this->listFields = array('workflowState' => false);
+        $this->listFields = array('workflowState' => false, 'schemes' => true, 'methods' => true);
     }
 
     /**

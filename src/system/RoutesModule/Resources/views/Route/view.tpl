@@ -117,18 +117,21 @@
                 {if $lct eq 'admin'}
                     <col id="cSelect" />
                 {/if}
-                {*<col id="cName" />
+                {*<col id="cName" />*}
                 <col id="cBundle" />
-                <col id="cController" />
-                <col id="cAction" />*}
+                {*<col id="cController" />*}
+                {*<col id="cAction" />*}
                 <col id="cPath" />
                 <col id="cHost" />
-                <col id="cCondition" />
+                <col id="cSchemes" />
+                <col id="cMethods" />
+                <col id="cPrependBundlePrefix" />
+                <col id="cTranslatable" />
+                <col id="cTranslationPrefix" />
+                {*<col id="cCondition" />*}
                 <col id="cDescription" />
-                <col id="cBundle" />
-                <col id="cUserRoute" />
-                {*<col id="cSort" />
-                <col id="cGroup" />*}
+                {*<col id="cSort" />*}
+                {*<col id="cGroup" />*}
                 <col id="cItemActions" />
             </colgroup>
             <thead>
@@ -138,23 +141,44 @@
                         <input type="checkbox" id="toggleRoutes" />
                     </th>
                 {/if}
+                {*<th id="hName" scope="col" class="text-left">
+                    {sortlink __linktext='Name' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='name' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize lct=$lct}
+                </th>*}
+                <th id="hBundle" scope="col" class="text-left">
+                   {gt text='Bundle'}{*sortlink __linktext='Bundle' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='bundle' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize lct=$lct*}
+                </th>
+                {*<th id="hController" scope="col" class="text-left">
+                    {sortlink __linktext='Controller' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='controller' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize lct=$lct}
+                </th>
+                <th id="hAction" scope="col" class="text-left">
+                    {sortlink __linktext='Action' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='action' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize lct=$lct}
+                </th>*}
                     <th id="hPath" scope="col" class="text-left">
                     {gt text='Path'}{*sortlink __linktext='Path' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='path' sortdir=$sdir all=$all own=$own workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize userRoute=$userRoute lct=$lct*}
                     </th>
                     <th id="hHost" scope="col" class="text-left">
                     {gt text='Host'}{*sortlink __linktext='Host' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='host' sortdir=$sdir all=$all own=$own workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize userRoute=$userRoute lct=$lct*}
                     </th>
-                    {*<th id="hCondition" scope="col" class="text-left">
+                    <th id="hSchemes" scope="col" class="text-left">
+                        {gt text='Schemes'}{*sortlink __linktext='Schemes' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='schemes' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize lct=$lct*}
+                    </th>
+                    <th id="hMethods" scope="col" class="text-left">
+                        {gt text='Methods'}{*sortlink __linktext='Methods' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='methods' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize lct=$lct*}
+                    </th>
+                <th id="hPrependBundlePrefix" scope="col" class="text-center">
+                    {gt text='Prepend bundle prefix'}{*sortlink __linktext='Prepend bundle prefix' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='prependBundlePrefix' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize prependBundlePrefix=$prependBundlePrefix translatable=$translatable lct=$lct*}
+                </th>
+                <th id="hTranslatable" scope="col" class="text-center">
+                    {gt text='Translatable'}{*sortlink __linktext='Translatable' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='translatable' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize prependBundlePrefix=$prependBundlePrefix translatable=$translatable lct=$lct*}
+                </th>
+                <th id="hTranslationPrefix" scope="col" class="text-left">
+                    {gt text='Translation prefix'}{*sortlink __linktext='Translation prefix' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='translationPrefix' sortdir=$sdir all=$all own=$own workflowState=$workflowState schemes=$schemes methods=$methods q=$q pageSize=$pageSize prependBundlePrefix=$prependBundlePrefix translatable=$translatable lct=$lct*}
+                </th>
+                {*<th id="hCondition" scope="col" class="text-left">
                     {sortlink __linktext='Condition' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='condition' sortdir=$sdir all=$all own=$own workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize userRoute=$userRoute lct=$lct}
                     </th>*}
                     <th id="hDescription" scope="col" class="text-left">
                     {gt text='Description'}{*sortlink __linktext='Description' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='description' sortdir=$sdir all=$all own=$own workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize userRoute=$userRoute lct=$lct*}
-                    </th>
-                    <th id="hBundle" scope="col" class="text-left">
-                    {gt text='Bundle'}{*sortlink __linktext='Bundle' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='bundle' sortdir=$sdir all=$all own=$own workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize userRoute=$userRoute lct=$lct*}
-                    </th>
-                    <th id="hUserRoute" scope="col" class="text-center">
-                    {gt text='User route'}{*sortlink __linktext='User route' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='userRoute' sortdir=$sdir all=$all own=$own workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize userRoute=$userRoute lct=$lct*}
                     </th>
                     {*<th id="hSort" scope="col" class="text-right">
                         {sortlink __linktext='Sort' currentsort=$sort modname='ZikulaRoutesModule' type='route' func='view' sort='sort' sortdir=$sdir all=$all own=$own workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize userRoute=$userRoute lct=$lct}
@@ -171,34 +195,55 @@
             {foreach item='route' from=$items}
                 {if $route.group != $groupOld}
                     <tr>
-                        <td class="text-left" colspan="{if $lct eq 'admin'}8{else}7{/if}">
+                        <td class="text-left" colspan="{if $lct eq 'admin'}11{else}10{/if}">
                             {$groupMessages[$route.group]}
                         </td>
                     </tr>
                 {/if}
                 <tr id="row_{$route.id}" {if in_array($route.group, $sortableGroups)}class="sortable"{/if}>
-                {if $lct eq 'admin'}
-                    <td headers="hselect" align="center" valign="top">
-                        <input type="checkbox" name="items[]" value="{$route.id}" class="routes-checkbox" />
+                    {if $lct eq 'admin'}
+                        <td headers="hselect" align="center" valign="top">
+                            <input type="checkbox" name="items[]" value="{$route.id}" class="routes-checkbox" />
+                        </td>
+                    {/if}
+                    {*<td headers="hName" class="z-left">
+                        <a href="{route name='zikularoutesmodule_route_display'  id=$route.id lct=$lct}" title="{gt text='View detail page'}">{$route.name|notifyfilters:'zikularoutesmodule.filterhook.routes'}</a>
+                    </td>*}
+                    <td headers="hBundle" class="z-left">
+                        {$route.bundle}
                     </td>
-                {/if}
+                    {*<td headers="hController" class="z-left">
+                        {$route.controller}
+                    </td>
+                    <td headers="hAction" class="z-left">
+                        {$route.action}
+                    </td>*}
                     <td headers="hPath" class="z-left" title="{$route.name}">
                         {$route.path|zikularoutesmodulePathToString:$route}{if count($route.methods) > 0} <span class="small">[{foreach from=$route.methods item='method' name='methods'}{$method}{if !$smarty.foreach.methods.last}, {/if}{/foreach}</span>]{/if}
                     </td>
                     <td headers="hHost" class="z-left">
                         {$route.host}
                     </td>
-                    {*<td headers="hCondition" class="z-left">
-                        {$route.condition}
-                    </td>*}
+                <td headers="hSchemes" class="z-left">
+                    {$route.schemes|zikularoutesmoduleGetListEntry:'route':'schemes'|safetext}
+                </td>
+                <td headers="hMethods" class="z-left">
+                    {$route.methods|zikularoutesmoduleGetListEntry:'route':'methods'|safetext}
+                </td>
+                <td headers="hPrependBundlePrefix" class="z-center">
+                    {$route.prependBundlePrefix|yesno:true}
+                </td>
+                <td headers="hTranslatable" class="z-center">
+                    {$route.translatable|yesno:true}
+                </td>
+                <td headers="hTranslationPrefix" class="z-left">
+                    {$route.translationPrefix}
+                </td>
+                {*<td headers="hCondition" class="z-left">
+                    {$route.condition}
+                </td>*}
                     <td headers="hDescription" class="z-left">
-                        {$route.description}
-                    </td>
-                    <td headers="hBundle" class="z-left">
-                        {$route.bundle}
-                    </td>
-                    <td headers="hUserRoute" class="z-center">
-                        {$route.userRoute|yesno:true}
+                        {$route.description|truncate:50}
                     </td>
                     {*<td headers="hSort" class="z-right">
                         {$route.sort}
@@ -221,10 +266,10 @@
                     {/if}
                 </td>
             </tr>
-                {assign var='groupOld' value=$route.group}
+            {assign var='groupOld' value=$route.group}
         {foreachelse}
             <tr class="z-{if $lct eq 'admin'}admin{else}data{/if}tableempty">
-              <td class="text-left" colspan="{if $lct eq 'admin'}7{else}6{/if}">
+              <td class="text-left" colspan="{if $lct eq 'admin'}10{else}9{/if}">
             {gt text='No routes found.'}
               </td>
             </tr>
@@ -256,12 +301,12 @@
 
 
     {* here you can activate calling display hooks for the view page if you need it *}
-    {if $lct ne 'admin'}
+    {*if $lct ne 'admin'}
         {notifydisplayhooks eventname='zikularoutesmodule.ui_hooks.routes.display_view' urlobject=$currentUrlObject assign='hooks'}
         {foreach key='providerArea' item='hook' from=$hooks}
             {$hook}
         {/foreach}
-    {/if}
+    {/if*}
 </div>
 {include file="`$lctUc`/footer.tpl"}
 

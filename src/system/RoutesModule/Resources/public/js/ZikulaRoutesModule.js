@@ -40,8 +40,17 @@ function zikulaRoutesInitQuickNavigation(objectType)
         if (jQuery('#workflowState').length > 0) {
             jQuery('#workflowState').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
-        if (jQuery('#userRoute').length > 0) {
-            jQuery('#userRoute').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        if (jQuery('#schemes').length > 0) {
+            jQuery('#schemes').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        }
+        if (jQuery('#methods').length > 0) {
+            jQuery('#methods').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        }
+        if (jQuery('#prependBundlePrefix').length > 0) {
+            jQuery('#prependBundlePrefix').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
+        }
+        if (jQuery('#translatable').length > 0) {
+            jQuery('#translatable').change(function () { zikulaRoutesSubmitQuickNavForm(objectType); });
         }
         break;
     default:

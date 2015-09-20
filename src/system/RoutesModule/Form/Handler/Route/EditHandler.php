@@ -135,11 +135,7 @@ class EditHandler extends BaseEditHandler
 
     private function convertRouteSettingsToOutput()
     {
-        $options = $this->entityRef->getOptions();
-        $i18n = isset($options['i18n']) ? $options['i18n'] : true;
-        $bundlePrefix = isset($options['zkNoBundlePrefix']) ? !$options['zkNoBundlePrefix'] : true;
-
-        return array($i18n, $bundlePrefix);
+        return array($this->entityRef->getTranslatable(), $this->entityRef->getPrependBundlePrefix());
     }
 
     private function checkConflicts(RouteEntity $routeEntity)

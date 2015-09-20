@@ -74,6 +74,22 @@
     {zikularoutesmoduleFormFrame}
     {formsetinitialfocus inputId='bundle'}
 
+
+
+
+        {*<div class="form-group">
+            {formlabel for='i18n' __text='Translatable' cssClass=' col-sm-3 control-label' mandatorysym=false}
+            <div class="col-sm-9">
+                {formcheckbox group='route' id='i18n' checked=true mandatory=false readOnly=false __title='Decide whether or not the route is translatable'}
+            </div>
+        </div>
+        <div class="form-group">
+            {formlabel for='bundlePrefix' __text='Prepend bundle prefix' cssClass=' col-sm-3 control-label' mandatorysym=false}
+            <div class="col-sm-9">
+                {formcheckbox group='route' id='bundlePrefix' checked=true mandatory=false readOnly=false __title='Decide whether or not to prepend the bundle prefix to the path'}
+            </div>
+        </div>*}
+
     <fieldset>
         <legend>{gt text='Content'}</legend>
 
@@ -113,20 +129,7 @@
         </div>
 
         <div class="form-group">
-            {formlabel for='i18n' __text='Translatable' cssClass=' col-sm-3 control-label' mandatorysym=false}
-            <div class="col-sm-9">
-                {formcheckbox group='route' id='i18n' checked=true mandatory=false readOnly=false __title='Decide whether or not the route is translatable'}
-            </div>
-        </div>
-        <div class="form-group">
-            {formlabel for='bundlePrefix' __text='Prepend bundle prefix' cssClass=' col-sm-3 control-label' mandatorysym=false}
-            <div class="col-sm-9">
-                {formcheckbox group='route' id='bundlePrefix' checked=true mandatory=false readOnly=false __title='Decide whether or not to prepend the bundle prefix to the path'}
-            </div>
-        </div>
-
-        <div class="form-group">
-            {formlabel for='path' __text='Path' cssClass=' col-sm-3 control-label' mandatorysym=true}
+            {formlabel for='path' __text='Path' mandatorysym='1' cssClass=' col-sm-3 control-label'}
             <div class="col-sm-9">
                 <div class="input-group">
                     <span class="input-group-addon" id="pathPrefix"></span>
@@ -141,6 +144,41 @@
             <div class="col-sm-9">
             {formtextinput group='route' id='host' mandatory=false readOnly=false __title='Enter the host of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
                 <em class="z-sub">{gt text='Advanced setting, see %s' tag1='<a href="http://symfony.com/doc/current/components/routing/hostname_pattern.html">http://symfony.com/doc/current/components/routing/hostname_pattern.html</a>'}</em>
+            </div>
+        </div>
+
+        <div class="form-group">
+            {formlabel for='schemes' __text='Schemes' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formdropdownlist group='route' id='schemes' mandatory=true __title='Choose the schemes' selectionMode='multiple' cssClass='form-control'}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {formlabel for='methods' __text='Methods' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formdropdownlist group='route' id='methods' mandatory=true __title='Choose the methods' selectionMode='multiple' cssClass='form-control'}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {formlabel for='prependBundlePrefix' __text='Prepend bundle prefix' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formcheckbox group='route' id='prependBundlePrefix' readOnly=false __title='prepend bundle prefix ?' cssClass='required' }
+            </div>
+        </div>
+
+        <div class="form-group">
+            {formlabel for='translatable' __text='Translatable' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formcheckbox group='route' id='translatable' readOnly=false __title='translatable ?' cssClass='required' }
+            </div>
+        </div>
+
+        <div class="form-group">
+            {formlabel for='translationPrefix' __text='Translation prefix' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formtextinput group='route' id='translationPrefix' mandatory=false readOnly=false __title='Enter the translation prefix of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
             </div>
         </div>
 
@@ -160,14 +198,7 @@
             </div>
         </div>
 
-        {*<div class="form-group">
-            {formlabel for='userRoute' __text='User route' cssClass=' col-sm-3 control-label'}
-            <div class="col-sm-9">
-                {formcheckbox group='route' id='userRoute' readOnly=false __title='user route ?' cssClass='' }
-            </div>
-        </div>
-
-        <div class="form-group">
+       {*<div class="form-group">
             {formlabel for='sort' __text='Sort' cssClass=' col-sm-3 control-label'}
             <div class="col-sm-9">
             {formintinput group='route' id='sort' mandatory=false __title='Enter the sort of the route' maxLength=11 cssClass='form-control  validate-digits' }
@@ -202,6 +233,7 @@
             {/if}
         {/foreach}
     {/if}
+
 
     {* include return control *}
     {if $mode eq 'create'}

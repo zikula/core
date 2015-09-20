@@ -134,20 +134,43 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     protected $host = '';
     
     /**
-     * @ORM\Column(type="array")
-     * @Assert\NotNull()
-     * @Assert\Type(type="array")
-     * @var array $schemes.
+     * @ORM\Column(length=255)
+     * @Assert\NotBlank()
+     * @Assert\Choice(callback="getSchemesAllowedValues", multiple=true)
+     * @var string $schemes.
      */
-    protected $schemes = array();
+    protected $schemes = 'http';
     
     /**
-     * @ORM\Column(type="array")
-     * @Assert\NotNull()
-     * @Assert\Type(type="array")
-     * @var array $methods.
+     * @ORM\Column(length=255)
+     * @Assert\NotBlank()
+     * @Assert\Choice(callback="getMethodsAllowedValues", multiple=true)
+     * @var string $methods.
      */
-    protected $methods = array();
+    protected $methods = 'GET';
+    
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\True(message="This option is mandatory.")
+     * @Assert\Type(type="bool")
+     * @var boolean $prependBundlePrefix.
+     */
+    protected $prependBundlePrefix = false;
+    
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\True(message="This option is mandatory.")
+     * @Assert\Type(type="bool")
+     * @var boolean $translatable.
+     */
+    protected $translatable = false;
+    
+    /**
+     * @ORM\Column(length=255, nullable=true)
+     * @Assert\Length(min="0", max="255")
+     * @var string $translationPrefix.
+     */
+    protected $translationPrefix = '';
     
     /**
      * @ORM\Column(name="route_defaults", type="array")
@@ -166,14 +189,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     protected $requirements = array();
     
     /**
-     * @ORM\Column(type="array")
-     * @Assert\NotNull()
-     * @Assert\Type(type="array")
-     * @var array $options.
-     */
-    protected $options = array();
-    
-    /**
      * @ORM\Column(name="route_condition", length=255, nullable=true)
      * @Assert\Length(min="0", max="255")
      * @var string $condition.
@@ -186,14 +201,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
      * @var string $description.
      */
     protected $description = '';
-    
-    /**
-     * @ORM\Column(type="boolean")
-     * @Assert\NotNull()
-     * @Assert\Type(type="bool")
-     * @var boolean $userRoute.
-     */
-    protected $userRoute = false;
     
     /**
      * @Gedmo\SortablePosition
@@ -530,7 +537,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     /**
      * Get schemes.
      *
-     * @return array
+     * @return string
      */
     public function getSchemes()
     {
@@ -540,7 +547,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     /**
      * Set schemes.
      *
-     * @param array $schemes.
+     * @param string $schemes.
      *
      * @return void
      */
@@ -552,7 +559,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     /**
      * Get methods.
      *
-     * @return array
+     * @return string
      */
     public function getMethods()
     {
@@ -562,13 +569,83 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     /**
      * Set methods.
      *
-     * @param array $methods.
+     * @param string $methods.
      *
      * @return void
      */
     public function setMethods($methods)
     {
         $this->methods = $methods;
+    }
+    
+    /**
+     * Get prepend bundle prefix.
+     *
+     * @return boolean
+     */
+    public function getPrependBundlePrefix()
+    {
+        return $this->prependBundlePrefix;
+    }
+    
+    /**
+     * Set prepend bundle prefix.
+     *
+     * @param boolean $prependBundlePrefix.
+     *
+     * @return void
+     */
+    public function setPrependBundlePrefix($prependBundlePrefix)
+    {
+        if ($prependBundlePrefix !== $this->prependBundlePrefix) {
+            $this->prependBundlePrefix = (bool)$prependBundlePrefix;
+        }
+    }
+    
+    /**
+     * Get translatable.
+     *
+     * @return boolean
+     */
+    public function getTranslatable()
+    {
+        return $this->translatable;
+    }
+    
+    /**
+     * Set translatable.
+     *
+     * @param boolean $translatable.
+     *
+     * @return void
+     */
+    public function setTranslatable($translatable)
+    {
+        if ($translatable !== $this->translatable) {
+            $this->translatable = (bool)$translatable;
+        }
+    }
+    
+    /**
+     * Get translation prefix.
+     *
+     * @return string
+     */
+    public function getTranslationPrefix()
+    {
+        return $this->translationPrefix;
+    }
+    
+    /**
+     * Set translation prefix.
+     *
+     * @param string $translationPrefix.
+     *
+     * @return void
+     */
+    public function setTranslationPrefix($translationPrefix)
+    {
+        $this->translationPrefix = $translationPrefix;
     }
     
     /**
@@ -616,28 +693,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Get options.
-     *
-     * @return array
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-    
-    /**
-     * Set options.
-     *
-     * @param array $options.
-     *
-     * @return void
-     */
-    public function setOptions($options)
-    {
-        $this->options = $options;
-    }
-    
-    /**
      * Get condition.
      *
      * @return string
@@ -679,30 +734,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     public function setDescription($description)
     {
         $this->description = $description;
-    }
-    
-    /**
-     * Get user route.
-     *
-     * @return boolean
-     */
-    public function getUserRoute()
-    {
-        return $this->userRoute;
-    }
-    
-    /**
-     * Set user route.
-     *
-     * @param boolean $userRoute.
-     *
-     * @return void
-     */
-    public function setUserRoute($userRoute)
-    {
-        if ($userRoute !== $this->userRoute) {
-            $this->userRoute = (bool)$userRoute;
-        }
     }
     
     /**
@@ -874,9 +905,13 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $this->formatTextualField('action', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('path', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('host', $currentFunc, $usesCsvOutput);
+        $this->formatTextualField('schemes', $currentFunc, $usesCsvOutput, true);
+        $this->formatTextualField('methods', $currentFunc, $usesCsvOutput, true);
+        $this['prependBundlePrefix'] = (bool) $this['prependBundlePrefix'];
+        $this['translatable'] = (bool) $this['translatable'];
+        $this->formatTextualField('translationPrefix', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('condition', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('description', $currentFunc, $usesCsvOutput);
-        $this['userRoute'] = (bool) $this['userRoute'];
         $this['sort'] = (int) ((isset($this['sort']) && !empty($this['sort'])) ? DataUtil::formatForDisplay($this['sort']) : 0);
         $this->formatTextualField('group', $currentFunc, $usesCsvOutput);
     
@@ -1219,6 +1254,42 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
         $serviceManager = ServiceUtil::getManager();
         $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
         $listEntries = $helper->getWorkflowStateEntriesForRoute();
+    
+        $allowedValues = array();
+        foreach ($listEntries as $entry) {
+            $allowedValues[] = $entry['value'];
+        }
+    
+        return $allowedValues;
+    }
+    
+    /**
+     * Returns a list of possible choices for the schemes list field.
+     * This method is used for validation.
+     */
+    public static function getSchemesAllowedValues()
+    {
+        $serviceManager = ServiceUtil::getManager();
+        $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
+        $listEntries = $helper->getSchemesEntriesForRoute();
+    
+        $allowedValues = array();
+        foreach ($listEntries as $entry) {
+            $allowedValues[] = $entry['value'];
+        }
+    
+        return $allowedValues;
+    }
+    
+    /**
+     * Returns a list of possible choices for the methods list field.
+     * This method is used for validation.
+     */
+    public static function getMethodsAllowedValues()
+    {
+        $serviceManager = ServiceUtil::getManager();
+        $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
+        $listEntries = $helper->getMethodsEntriesForRoute();
     
         $allowedValues = array();
         foreach ($listEntries as $entry) {

@@ -111,6 +111,12 @@ class ListEntriesUtil extends Zikula_AbstractBase
                     case 'workflowState':
                         $result = false;
                         break;
+                    case 'schemes':
+                        $result = true;
+                        break;
+                    case 'methods':
+                        $result = true;
+                        break;
                 }
                 break;
         }
@@ -140,6 +146,12 @@ class ListEntriesUtil extends Zikula_AbstractBase
                     case 'workflowState':
                         $entries = $this->getWorkflowStateEntriesForRoute();
                         break;
+                    case 'schemes':
+                        $entries = $this->getSchemesEntriesForRoute();
+                        break;
+                    case 'methods':
+                        $entries = $this->getMethodsEntriesForRoute();
+                        break;
                 }
                 break;
         }
@@ -164,6 +176,70 @@ class ListEntriesUtil extends Zikula_AbstractBase
         $states[] = array('value'   => '!approved',
                           'text'    => $this->__('All except approved'),
                           'title'   => $this->__('Shows all items except these which are approved'),
+                          'image'   => '',
+                          'default' => false);
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'schemes' list entries.
+     *
+     * @return array Array with desired list entries.
+     */
+    public function getSchemesEntriesForRoute()
+    {
+        $states = array();
+        $states[] = array('value'   => 'http',
+                          'text'    => $this->__('Http'),
+                          'title'   => '',
+                          'image'   => '',
+                          'default' => true);
+        $states[] = array('value'   => 'https',
+                          'text'    => $this->__('Https'),
+                          'title'   => '',
+                          'image'   => '',
+                          'default' => true);
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'methods' list entries.
+     *
+     * @return array Array with desired list entries.
+     */
+    public function getMethodsEntriesForRoute()
+    {
+        $states = array();
+        $states[] = array('value'   => 'GET',
+                          'text'    => $this->__('G e t'),
+                          'title'   => '',
+                          'image'   => '',
+                          'default' => true);
+        $states[] = array('value'   => 'POST',
+                          'text'    => $this->__('P o s t'),
+                          'title'   => '',
+                          'image'   => '',
+                          'default' => false);
+        $states[] = array('value'   => 'HEAD',
+                          'text'    => $this->__('H e a d'),
+                          'title'   => '',
+                          'image'   => '',
+                          'default' => false);
+        $states[] = array('value'   => 'PUT',
+                          'text'    => $this->__('P u t'),
+                          'title'   => '',
+                          'image'   => '',
+                          'default' => false);
+        $states[] = array('value'   => 'DELETE',
+                          'text'    => $this->__('D e l e t e'),
+                          'title'   => '',
+                          'image'   => '',
+                          'default' => false);
+        $states[] = array('value'   => 'OPTIONS',
+                          'text'    => $this->__('O p t i o n s'),
+                          'title'   => '',
                           'image'   => '',
                           'default' => false);
     
