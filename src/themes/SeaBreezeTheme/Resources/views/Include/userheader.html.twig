@@ -3,7 +3,7 @@
     <div class="pull-right">{{ showblockposition('search') }}</div>
 </div>
 <div id="header" class="clearfix">
-    <h1>{# adminpanelmenu #} <a href="{{ app.request.baseUrl }}" title="{{ getModVar('ZConfig', 'slogan') }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
+    <h1>{{ adminPanelMenu() }} <a href="{{ app.request.baseUrl }}" title="{{ getModVar('ZConfig', 'slogan') }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
     {% set topnavblock = showblockposition('topnav') %}
     {% if topnavblock is empty %}
     <div id="navi" class="z-clearer">
