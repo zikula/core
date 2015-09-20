@@ -67,12 +67,12 @@ function ZikulaRoutesModule_workflow_none_gettextstrings()
             'initial' => array(
                 no__('Submit') => no__('Submit content.'),
             )
-        ,
+            ,
             'approved' => array(
                 no__('Update') => no__('Update content.'),
                 no__('Delete') => no__('Delete content permanently.')
             )
-        ,
+            ,
             'deleted' => array(
             )
         )

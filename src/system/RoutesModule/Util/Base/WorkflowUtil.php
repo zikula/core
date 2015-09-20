@@ -189,7 +189,7 @@ class WorkflowUtil extends Zikula_AbstractBase
     
         $this->normaliseWorkflowData($entity);
     
-        $result = Zikula_Workflow_Util::executeAction($schemaName, $entity, $actionId, $objectType, $this->name, $idColumn);
+        $result = Zikula_Workflow_Util::executeAction($schemaName, $entity, $actionId, $objectType, 'ZikulaRoutesModule', $idColumn);
     
         if ($result !== false && !$recursive) {
             $entities = $entity->getRelatedObjectsToPersist();

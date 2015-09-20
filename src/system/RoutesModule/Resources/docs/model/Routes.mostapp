@@ -46,8 +46,7 @@ application Routes {
 			Resources/views/Route/edit.tpl,
 			Resources/views/Route/reload.tpl,
 			RoutesModuleInstaller.php,
-			Util/ControllerUtil.php,
-			workflows/function.none_permissioncheck.php
+			Util/ControllerUtil.php
 		"
 	}
 	entities {

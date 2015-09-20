@@ -239,15 +239,16 @@
         {/if}
     {if $lct eq 'admin'}
             <fieldset>
-                <label for="zikulaRoutesModuleAction" class="col-lg-3 control-label">{gt text='With selected routes'}</label>
-                <div class="col-lg-9">
-                <select id="zikulaRoutesModuleAction" name="action" class="form-control">
+                <label for="zikulaRoutesModuleAction" class="col-sm-3 control-label">{gt text='With selected routes'}</label>
+                <div class="col-sm-6">
+                <select id="zikulaRoutesModuleAction" name="action" class="form-control input-sm">
                     <option value="">{gt text='Choose action'}</option>
-                <option value="approve" title="{gt text='Update content and approve for immediate publishing.'}">{gt text='Approve'}</option>
                     <option value="delete" title="{gt text='Delete content permanently.'}">{gt text='Delete'}</option>
                 </select>
                 </div>
-                <input type="submit" value="{gt text='Submit'}" />
+                <div class="col-sm-3">
+                    <input type="submit" value="{gt text='Submit'}" class="btn btn-default btn-sm" />
+                </div>
             </fieldset>
         </div>
     </form>

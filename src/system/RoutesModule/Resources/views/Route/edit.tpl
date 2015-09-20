@@ -82,52 +82,52 @@
         </div>
 
         {*<div class="form-group">
-            {formlabel for='name' __text='Name' mandatorysym='1' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='name' __text='Name' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
                 {formtextinput group='route' id='name' mandatory=true readOnly=false __title='Enter the name of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
             </div>
         </div>*}
 
         <div class="form-group">
-            {formlabel for='bundle' __text='Bundle' mandatorysym='1' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='bundle' __text='Bundle' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
                 {*formtextinput group='route' id='bundle' mandatory=true readOnly=false __title='Enter the bundle of the route' textMode='singleline' maxLength=255 cssClass='form-control required' *}
                 {formdropdownlist items=$modules group='route' id='bundle' mandatory=true readOnly=false __title='Enter the bundle of the route' cssClass='form-control required' }
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='controller' __text='Controller' mandatorysym='1' cssClass=' col-lg-3 control-label' placeholder='UserController'}
-            <div class="col-lg-9">
+            {formlabel for='controller' __text='Controller' mandatorysym='1' cssClass=' col-sm-3 control-label' placeholder='UserController'}
+            <div class="col-sm-9">
                 {formtextinput group='route' id='controller' mandatory=true readOnly=false __title='Enter the controller of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
                 <em class="z-sub">{gt text='Insert the name of the controller, which was called "type" in earlier versions of Zikula.'}</em>
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='action' __text='Action' mandatorysym='1' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='action' __text='Action' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
                 {formtextinput group='route' id='action' mandatory=true readOnly=false __title='Enter the action of the route' textMode='singleline' maxLength=255 cssClass='form-control required' placeholder='editAction'}
                 <em class="z-sub">{gt text='Insert the name of the action, which was called "func" in earlier versions of Zikula.'}</em>
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='i18n' __text='Translatable' cssClass=' col-lg-3 control-label' mandatorysym=false}
-            <div class="col-lg-9">
+            {formlabel for='i18n' __text='Translatable' cssClass=' col-sm-3 control-label' mandatorysym=false}
+            <div class="col-sm-9">
                 {formcheckbox group='route' id='i18n' checked=true mandatory=false readOnly=false __title='Decide whether or not the route is translatable'}
             </div>
         </div>
         <div class="form-group">
-            {formlabel for='bundlePrefix' __text='Prepend bundle prefix' cssClass=' col-lg-3 control-label' mandatorysym=false}
-            <div class="col-lg-9">
+            {formlabel for='bundlePrefix' __text='Prepend bundle prefix' cssClass=' col-sm-3 control-label' mandatorysym=false}
+            <div class="col-sm-9">
                 {formcheckbox group='route' id='bundlePrefix' checked=true mandatory=false readOnly=false __title='Decide whether or not to prepend the bundle prefix to the path'}
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='path' __text='Path' cssClass=' col-lg-3 control-label' mandatorysym=true}
-            <div class="col-lg-9">
+            {formlabel for='path' __text='Path' cssClass=' col-sm-3 control-label' mandatorysym=true}
+            <div class="col-sm-9">
                 <div class="input-group">
                     <span class="input-group-addon" id="pathPrefix"></span>
                     {formtextinput group='route' id='path' mandatory=true readOnly=false __title='Enter the path of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
@@ -137,46 +137,46 @@
         </div>
 
         <div class="form-group">
-            {formlabel for='host' __text='Host' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='host' __text='Host' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
             {formtextinput group='route' id='host' mandatory=false readOnly=false __title='Enter the host of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
                 <em class="z-sub">{gt text='Advanced setting, see %s' tag1='<a href="http://symfony.com/doc/current/components/routing/hostname_pattern.html">http://symfony.com/doc/current/components/routing/hostname_pattern.html</a>'}</em>
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='condition' __text='Condition' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='condition' __text='Condition' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
             {formtextinput group='route' id='condition' mandatory=false readOnly=false __title='Enter the condition of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
                 <em class="z-sub">{gt text='Advanced setting, see %s' tag1='<a href="http://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions">http://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions</a>'}</em>
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='description' __text='Description' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='description' __text='Description' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
             {formtextinput group='route' id='description' mandatory=false readOnly=false __title='Enter the description of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
                 <em class="z-sub">{gt text='Insert a brief description of the route, to explain why you created it. It is only shown in the admin interface.'}</em>
             </div>
         </div>
 
         {*<div class="form-group">
-            {formlabel for='userRoute' __text='User route' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='userRoute' __text='User route' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
                 {formcheckbox group='route' id='userRoute' readOnly=false __title='user route ?' cssClass='' }
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='sort' __text='Sort' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='sort' __text='Sort' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
             {formintinput group='route' id='sort' mandatory=false __title='Enter the sort of the route' maxLength=11 cssClass='form-control  validate-digits' }
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='group' __text='Group' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='group' __text='Group' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
             {formtextinput group='route' id='group' mandatory=false readOnly=false __title='Enter the group of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
             </div>
         </div>*}
@@ -208,8 +208,8 @@
         <fieldset>
             <legend>{gt text='Return control'}</legend>
             <div class="form-group">
-                {formlabel for='repeatCreation' __text='Create another item after save' cssClass='col-lg-3 control-label'}
-            <div class="col-lg-9">
+                {formlabel for='repeatCreation' __text='Create another item after save' cssClass='col-sm-3 control-label'}
+            <div class="col-sm-9">
                     {formcheckbox group='route' id='repeatCreation' readOnly=false}
             </div>
             </div>
@@ -218,7 +218,7 @@
 
     {* include possible submit actions *}
     <div class="form-group form-buttons">
-    <div class="col-lg-offset-3 col-lg-9">
+    <div class="col-sm-offset-3 col-sm-9">
         {foreach item='action' from=$actions}
             {assign var='actionIdCapital' value=$action.id|@ucfirst}
             {gt text=$action.title assign='actionTitle'}

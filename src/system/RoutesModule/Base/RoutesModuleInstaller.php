@@ -129,6 +129,9 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
             
             // update module name in the hook tables
             $this->updateHookNamesFor140();
+            
+            // update module name in the workflows table
+            $this->updateWorkflowsFor140();
         } * /
     */
     
@@ -277,6 +280,20 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
         $conn->executeQuery("UPDATE $dbName.hook_subscriber
                              SET eventname = CONCAT('zikularoutesmodule', SUBSTRING(eventname, $componentLength))
                              WHERE eventname LIKE 'routes%';
+        ");
+    }
+    
+    /**
+     * Updates the module name in the workflows table.
+     */
+    protected function updateWorkflowsFor140()
+    {
+        $conn = $this->getConnection();
+        $dbName = $this->getDbName();
+    
+        $conn->executeQuery("UPDATE $dbName.workflows
+                             SET module = 'ZikulaRoutesModule'
+                             WHERE module = 'Routes';
         ");
     }
     
