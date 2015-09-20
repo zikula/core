@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Twig;
+use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\AdminMenuPanelSimpleFunction;
 
 class CoreExtension extends \Twig_Extension
 {
@@ -37,6 +38,14 @@ class CoreExtension extends \Twig_Extension
     public function getName()
     {
         return 'zikulacore';
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 
     public function getTokenParsers()
@@ -73,6 +82,7 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
             new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
+            new \Twig_SimpleFunction('adminPanelMenu', [new AdminMenuPanelSimpleFunction($this), 'display'], ['is_safe' => array('html')]),
         );
     }
 
