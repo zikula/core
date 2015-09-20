@@ -85,6 +85,10 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
             'description' => 'The url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir',
             'default' => '',
         ),
+        'locale' => [
+            'description' => 'The locale to use.',
+            'default' => 'en'
+        ]
     );
 
     protected function bootstrap($disableSessions = true, $loadZikulaCore = true, $fakeRequest = true)
