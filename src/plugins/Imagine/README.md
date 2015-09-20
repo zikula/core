@@ -177,7 +177,7 @@ It's recommended to use grouping methods.
 
 ### Custom image transformations
 
-It is possibly to apply custom image transformations before the thumbnail is created. 
+It is possible to apply custom image transformations before the thumbnail is created. 
 This can be archived by adding transformations to the preset (see Presets section) 
 or applying transformation inline:
 
