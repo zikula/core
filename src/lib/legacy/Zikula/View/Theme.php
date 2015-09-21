@@ -287,13 +287,13 @@ class Zikula_View_Theme extends Zikula_View
         if (!$themeName) {
             $themeName = UserUtil::getTheme();
         }
+        $serviceManager = ServiceUtil::getManager();
         $themeBundle = ThemeUtil::getTheme($themeName);
         if (isset($themeBundle) && $themeBundle->isTwigBased()) {
-            return new Zikula_View_MockTheme();
+            return new Zikula_View_MockTheme($serviceManager, $themeName);
         }
 
         $serviceId = 'zikula.theme';
-        $serviceManager = ServiceUtil::getManager();
 
         if (!$serviceManager->has($serviceId)) {
             $themeInstance = new self($serviceManager, $themeName);
