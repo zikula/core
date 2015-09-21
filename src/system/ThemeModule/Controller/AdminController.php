@@ -201,7 +201,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/modify/{themeName}")
+     * @Route("/modify/{themename}")
      * @Method("GET")
      *
      * modify a theme
@@ -213,21 +213,21 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function modifyAction(Request $request, $themeName)
+    public function modifyAction(Request $request, $themename)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themeName::", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
         // get the theme info
-        $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themeName));
+        $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
 
         // check that we have writable files
         $this->checkRunningConfig($request, $themeinfo);
 
         return new Response(
-                $this->view->assign('themename', $themeName)
+                $this->view->assign('themename', $themename)
                     ->assign('themeinfo', $themeinfo)
                     ->fetch('Admin/modify.tpl'));
     }
