@@ -42,6 +42,7 @@
             <argument type="service" id="zikula_core.common.theme.assets_js" />
             <argument type="service" id="zikula_core.common.theme.assets_css" />
             <argument type="service" id="zikula_core.common.theme.pagevars" />
+            <argument>%env%</argument>
         </service>
 
         <service id="zikula_core.common.theme.assets_js" class="%zikula_core.common.theme.assets.js.class%" />

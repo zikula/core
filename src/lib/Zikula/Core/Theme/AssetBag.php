@@ -4,11 +4,17 @@ namespace Zikula\Core\Theme;
 
 class AssetBag implements \IteratorAggregate, \Countable
 {
-    private $assets;
+    const DEFAULT_WEIGHT = 100;
 
-    public function __construct(array $assets = array())
+    /**
+     * array format:
+     * $assets = [value => weight, value => weight, value => weight]
+     * @var array
+     */
+    private $assets = array();
+
+    public function __construct()
     {
-        $this->assets = $assets;
     }
 
     /**
@@ -19,18 +25,22 @@ class AssetBag implements \IteratorAggregate, \Countable
      */
     public function add($asset)
     {
+        // ensure value is an array
         if (!is_array($asset)) {
-            $asset = array($asset);
+            $asset = [$asset => self::DEFAULT_WEIGHT];
         }
-        $this->assets = array_merge($this->assets, $asset);
-        $this->assets = array_unique($this->assets);
+        foreach ($asset as $source => $weight) {
+            if ((isset($this->assets[$source]) && $this->assets[$source] > $weight) || !isset($this->assets[$source])) {
+                // keep original weight if lighter. set if not set already.
+                $this->assets[$source] = $weight;
+            }
+        }
+        asort($this->assets); // put array in order by weight
     }
 
     public function remove($var)
     {
-        if ($key = array_search($var, $this->assets)) {
-            unset($this->assets[$key]);
-        }
+        unset($this->assets[$var]);
     }
 
     public function clear()
@@ -40,7 +50,8 @@ class AssetBag implements \IteratorAggregate, \Countable
 
     public function all()
     {
-        return $this->assets;
+        // returns sorted asset
+        return array_keys($this->assets);
     }
 
     /**

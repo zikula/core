@@ -32,14 +32,16 @@ class ThemeListener implements EventSubscriberInterface
     private $cssAssetBag;
     private $jsAssetBag;
     private $pageVars;
+    private $env;
 
-    function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine, AssetBag $jsAssetBag, AssetBag $cssAssetBag, ParameterBag $pageVars)
+    function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine, AssetBag $jsAssetBag, AssetBag $cssAssetBag, ParameterBag $pageVars, $env)
     {
         $this->loader = $loader;
         $this->themeEngine = $themeEngine;
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
         $this->pageVars = $pageVars;
+        $this->env = $env;
     }
 
     public function onKernelResponse(FilterResponseEvent $event)
@@ -95,23 +97,29 @@ class ThemeListener implements EventSubscriberInterface
             return;
         }
         $basePath = $event->getRequest()->getBasePath();
+        $jquery = $this->env == 'prod' ? 'jquery.min.js' : 'jquery.js';
 
         // add default javascripts to jsAssetBag
-        $this->jsAssetBag->add(array(
-            $basePath . '/web/jquery/jquery.min.js',
-            $basePath . '/web/bootstrap/js/bootstrap.min.js',
-            $basePath . '/javascript/helpers/bootstrap-zikula.js',
+        $this->jsAssetBag->add(
+            [
+                $basePath . "/web/jquery/$jquery" => 0,
+                $basePath . '/web/bootstrap/js/bootstrap.min.js' => 1,
+                $basePath . '/javascript/helpers/bootstrap-zikula.js' => 2,
+                $basePath . '/web/html5shiv/dist/html5shiv.js' => 3,
 //            $basePath . '/javascript/helpers/Zikula.js', // @todo legacy remove at Core 2.0
         // the following currently added by JCSSUtil in Engine::filter()
 //            $basePath . '/web/bundles/fosjsrouting/js/router.js',
 //            $basePath . '/web/js/fos_js_routes.js',
-        ));
+            ]
+        );
 
         // add default stylesheets to cssAssetBag
-        $this->cssAssetBag->add(array(
-            $basePath . '/web/bootstrap-font-awesome.css',
-            $basePath . '/style/core.css',
-        ));
+        $this->cssAssetBag->add(
+            [
+                $basePath . '/web/bootstrap-font-awesome.css' => 0,
+                $basePath . '/style/core.css' => 1,
+            ]
+        );
     }
 
     /**

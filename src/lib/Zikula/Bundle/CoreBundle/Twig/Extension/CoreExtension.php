@@ -17,6 +17,7 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\AdminMenuPanelSimpleFunction;
+use Zikula\Core\Theme\AssetBag;
 
 class CoreExtension extends \Twig_Extension
 {
@@ -291,13 +292,14 @@ class CoreExtension extends \Twig_Extension
      *
      * @param string $type
      * @param string $value
+     * @param int $weight
      */
-    public function pageAddAsset($type, $value)
+    public function pageAddAsset($type, $value, $weight = AssetBag::DEFAULT_WEIGHT)
     {
         if (empty($type) || empty($value)) {
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
-        if (!in_array($type, ['stylesheet', 'javascript', 'header', 'footer'])) {
+        if (!in_array($type, ['stylesheet', 'javascript', 'header', 'footer']) || !is_numeric($weight)) {
             throw new \InvalidArgumentException(__('Invalid argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
@@ -308,7 +310,7 @@ class CoreExtension extends \Twig_Extension
             $features = null;
         }
 
-        // remove this code block at Core-2.0 because all themes are twig based
+        // @todo remove this code block at Core-2.0 because all themes are twig based
         $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
         if (!$themeBundle->isTwigBased()) {
             \PageUtil::addVar($type, $value);
@@ -316,13 +318,13 @@ class CoreExtension extends \Twig_Extension
         }
 
         if ('stylesheet' == $type) {
-            $this->container->get('zikula_core.common.theme.assets_css')->add($value);
+            $this->container->get('zikula_core.common.theme.assets_css')->add([$value => $weight]);
         } elseif ('javascript' == $type) {
-            $this->container->get('zikula_core.common.theme.assets_js')->add($value);
+            $this->container->get('zikula_core.common.theme.assets_js')->add([$value => $weight]);
         } elseif ('header' == $type) {
-            $this->container->get('zikula_core.common.theme.assets_header')->add($value);
+            $this->container->get('zikula_core.common.theme.assets_header')->add([$value => $weight]);
         } elseif ('footer' == $type) {
-            $this->container->get('zikula_core.common.theme.assets_footer')->add($value);
+            $this->container->get('zikula_core.common.theme.assets_footer')->add([$value => $weight]);
         }
     }
 

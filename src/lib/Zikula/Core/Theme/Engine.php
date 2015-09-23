@@ -340,17 +340,21 @@ class Engine
     {
         // @todo START legacy block - remove at Core-2.0
         $baseUri = \System::getBaseUri();
+        $jsAssets = [];
         $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript'));
         foreach ($javascripts as $key => $javascript) {
             $javascripts[$key] = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? $baseUri . '/' . $javascript : $javascript;
+            $jsAssets[$javascript] = 50; // add before pageAddAsset default weight (100)
         }
+        $cssAssets = [];
         $stylesheets = \PageUtil::getVar('stylesheet');
         foreach ($stylesheets as $key => $stylesheet) {
-            $stylesheets[$key] = $baseUri . '/' . $stylesheet;
+            $stylesheet = $baseUri . '/' . $stylesheet;
+            $cssAssets[$stylesheet] = 50; // add before pageAddAsset default weight (100)
         }
         // @todo END legacy block - remove at Core-2.0
 
-        $filteredContent = $this->filterService->filter($response->getContent(), $javascripts, $stylesheets);
+        $filteredContent = $this->filterService->filter($response->getContent(), $jsAssets, $cssAssets);
         $response->setContent($filteredContent);
         return $response;
     }
