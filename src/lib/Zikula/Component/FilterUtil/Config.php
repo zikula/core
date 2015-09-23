@@ -131,7 +131,7 @@ class Config
     {
         $this->paramNumber++;
 
-        return ':'.$pluginName.'_'.$fieldName.'_'.$this->paramNumber;
+        return ':'.$pluginName.'_'.str_replace('.', '', $fieldName).'_'.$this->paramNumber;
     }
 
     /**
