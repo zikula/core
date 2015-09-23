@@ -22,6 +22,7 @@ CHANGELOG - ZIKULA 1.4.x
        - ZikulaAndreas08Theme updated to new spec and bootstrap (#2428)
     - Core-2.0 Module Specification finalized and enabled (#2500, #2560)
     - Combined and customized bootstrap/font-awesome css using Less.
+    - Improved multilingual UI in general settings (#2547)
  
 
 * 1.4.0 (2015-07-20)
