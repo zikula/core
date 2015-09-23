@@ -218,17 +218,18 @@ class EditHandler extends BaseEditHandler
         $entity = $this->entityRef;
     
         $action = $args['commandName'];
-    
+
+        $success = false;
         try {
             // execute the workflow action
             $workflowHelper = $this->view->getServiceManager()->get('zikularoutesmodule.workflow_helper');
             $success = $workflowHelper->executeAction($entity, $action);
         } catch(\Exception $e) {
-            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
+            $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($e->getMessage())));
             $logger = $this->view->getServiceManager()->get('logger');
             $logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed. Error details: {errorMessage}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier(), 'errorMessage' => $e->getMessage()));
         }
-    
+
         $this->addDefaultMessage($args, $success);
     
         if ($success && $this->mode == 'create') {
