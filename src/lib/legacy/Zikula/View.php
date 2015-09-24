@@ -375,7 +375,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         parent::assign('metatags', $this->serviceManager->getParameter('zikula_view.metatags'));
 
-        if ($themeBundle->isTwigBased()) {
+        if (isset($themeBundle) && $themeBundle->isTwigBased()) {
             // correct asset urls when smarty output is wrapped by twig theme
             $this->load_filter('output', 'asseturls');
         }

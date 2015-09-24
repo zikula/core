@@ -120,7 +120,7 @@ class Engine
     public function wrapResponseInTheme(Response $response)
     {
         // @todo remove twigBased check in 2.0
-        if (!$this->activeThemeBundle->isTwigBased()) {
+        if (!isset($this->activeThemeBundle) || !$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
         // wrap page in unique div
@@ -148,7 +148,7 @@ class Engine
     public function wrapBlockInTheme(array $block)
     {
         // @todo remove twigBased check in 2.0
-        if (!$this->activeThemeBundle->isTwigBased()) {
+        if (!isset($this->activeThemeBundle) || !$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
 
@@ -323,8 +323,12 @@ class Engine
                 $activeTheme = $themeByRequest;
             }
         }
-        $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
-        $this->activeThemeBundle->loadThemeVars();
+        try {
+            $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
+            $this->activeThemeBundle->loadThemeVars();
+        } catch (\Exception $e) {
+            // fail silently, this is a Core < 1.4 theme.
+        }
     }
 
     /**
