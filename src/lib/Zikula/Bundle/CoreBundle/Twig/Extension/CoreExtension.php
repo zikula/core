@@ -96,7 +96,9 @@ class CoreExtension extends \Twig_Extension
 
     public function getAssetPath($path)
     {
-        $themeName = $this->container->get('zikula_core.common.theme_engine')->getTheme()->getName();
+        $theme = $this->container->get('zikula_core.common.theme_engine')->getTheme();
+        $themeName = isset($theme) ? $theme->getName() : '';
+
         return $this->container->get('zikula_core.common.theme.asset_helper')->resolve($path, $themeName);
     }
 

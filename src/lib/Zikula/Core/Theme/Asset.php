@@ -25,7 +25,7 @@ class Asset
      * @param string $themeName
      * @return bool
      */
-    public function resolve($path, $themeName)
+    public function resolve($path, $themeName = '')
     {
         // for straight asset paths
         if ('@' !== $path[0]) {
@@ -54,7 +54,7 @@ class Asset
      * @param string $themeName
      * @return array
      */
-    public function resolvePath($path, $themeName)
+    public function resolvePath($path, $themeName = '')
     {
         // just expect something already in assets folder
         // replace first part of assets folder /bundles/$name/* with /bundles/custom/*
@@ -74,12 +74,14 @@ class Asset
             );
 
             // theme
-            $themeName = strtolower($themeName);
-            $array[] = array(
-                // @todo needs to convert /bundles/bundlename/css/... to /bundles/themename/css/bundlename/...
-                'asset_path' => $path2 = $this->package->getUrl($this->webDir . '/' . preg_replace('#bundles/([\w\d_-]+)/(.*)$#', 'bundles/'.$themeName.'/$2', $path)),
-                'full_path' => $this->package->getDocumentRoot() . $path2,
-            );
+            if (!empty($themeName)) {
+                $themeName = strtolower($themeName);
+                $array[] = array(
+                    // @todo needs to convert /bundles/bundlename/css/... to /bundles/themename/css/bundlename/...
+                    'asset_path' => $path2 = $this->package->getUrl($this->webDir . '/' . preg_replace('#bundles/([\w\d_-]+)/(.*)$#', 'bundles/' . $themeName . '/$2', $path)),
+                    'full_path' => $this->package->getDocumentRoot() . $path2,
+                );
+            }
         }
 
         // web
@@ -108,7 +110,7 @@ class Asset
         );
     }
 
-    private function getSearchPath($bundleName, $assetPath, $themeName)
+    private function getSearchPath($bundleName, $assetPath, $themeName = '')
     {
         $paths = array();
 
