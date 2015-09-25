@@ -11,7 +11,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed 'Removetrailingslash' error (#2552)
     - Corrected variable name in BootstrapTheme template override (#2557)
  - Features:
-    - Symfony update to 2.7.4 (#2551, #2582)
+    - Symfony update to 2.7.5 (#2551, #2582)
     - All system modules and themes updated to PSR-4 (#2563, #2424)
     - TranslatorTrait added (#2560)
     - Categorization of Entities enabled (#411)
