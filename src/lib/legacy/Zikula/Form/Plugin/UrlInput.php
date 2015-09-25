@@ -45,23 +45,6 @@ class Zikula_Form_Plugin_UrlInput extends Zikula_Form_Plugin_TextInput
     }
 
     /**
-     * Render event handler.
-     *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
-     *
-     * @return string The rendered output
-     */
-    public function render(Zikula_Form_View $view)
-    {
-        if (!empty($this->defaultText) && ($this->text == null || empty($this->text))) {
-            $this->text = $this->defaultText;
-        }
-        $params['textMode'] = 'url';
-
-        return parent::render($view);
-    }
-
-    /**
      * Create event handler.
      *
      * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
@@ -73,10 +56,27 @@ class Zikula_Form_Plugin_UrlInput extends Zikula_Form_Plugin_TextInput
     public function create(Zikula_Form_View $view, &$params)
     {
         $this->maxLength = 2000;
+        $params['textMode'] = 'url';
 
         parent::create($view, $params);
 
         $this->cssClass .= ' z-form-url';
+    }
+
+    /**
+     * Render event handler.
+     *
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     *
+     * @return string The rendered output
+     */
+    public function render(Zikula_Form_View $view)
+    {
+        if (!empty($this->defaultText) && ($this->text == null || empty($this->text))) {
+            $this->text = $this->defaultText;
+        }
+
+        return parent::render($view);
     }
 
     /**
