@@ -342,7 +342,7 @@ class Engine
         $baseUri = \System::getBaseUri();
         $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript'));
         foreach ($javascripts as $key => $javascript) {
-            $javascripts[$key] = (false === strpos($javascript, $baseUri)) ? $baseUri . '/' . $javascript : $javascript;
+            $javascripts[$key] = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? $baseUri . '/' . $javascript : $javascript;
         }
         $stylesheets = \PageUtil::getVar('stylesheet');
         foreach ($stylesheets as $key => $stylesheet) {

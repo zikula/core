@@ -21,7 +21,7 @@ class PackagePath extends BasePathPackage
     {
         $request = $requestStack->getCurrentRequest();
         $this->scriptPath = ltrim(\dirname($request->getScriptName()), '/');
-        $this->documentRoot = $request->server->get('DOCUMENT_ROOT');
+        $this->documentRoot = rtrim($request->server->get('DOCUMENT_ROOT'), '/');
 
         // @todo probably change EmptyVersionStrategy
         parent::__construct('', new EmptyVersionStrategy(), new RequestStackContext($requestStack));
