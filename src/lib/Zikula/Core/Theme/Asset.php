@@ -134,7 +134,7 @@ class Asset
         // Replace backslashes on Windows.
         $bundlePath = str_replace('\\', '/', $bundle->getPath());
         // is it visible (within) from the webroot ?
-        $webRootPath = $this->package->getDocumentRoot() . DIRECTORY_SEPARATOR . $this->package->getScriptPath();
+        $webRootPath = $this->package->getDocumentRoot() . $this->package->getScriptPath();
         if (false !== strpos($bundlePath, $webRootPath)) {
             $path = 'Resources/public/' . $assetPath;
             $pathStart = strlen($webRootPath) + 1;
