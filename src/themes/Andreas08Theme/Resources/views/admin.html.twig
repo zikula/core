@@ -2,7 +2,7 @@
 
 <div id="theme_navigation_bar">
     <ul class="list-inline">
-        <li><a href="{{ app.request.baseUrl }}">{{ __('Home') }}</a></li>
+        <li><a href="{{ pagevars.homepath }}">{{ __('Home') }}</a></li>
         {% if hasPermission('ZikulaSettingsModule::','::','ACCESS_ADMIN') %}
         <li><a href="{{ path('zikulasettingsmodule_admin_index') }}">{{ __('Settings') }}</a></li>
         {% endif %}

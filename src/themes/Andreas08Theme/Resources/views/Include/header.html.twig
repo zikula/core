@@ -12,6 +12,6 @@
 
         <div id="theme_page_container" class="{{ themevars.layout|default('container') }}">
             <div id="theme_header">
-                <h1 class="title">{{ adminPanelMenu() }} <a href="{{ app.request.baseUrl }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
+                <h1 class="title">{{ adminPanelMenu() }} <a href="{{ pagevars.homepath }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
                 <h2 class="slogan">{{ getModVar('ZConfig', 'slogan') }}</h2>
             </div>

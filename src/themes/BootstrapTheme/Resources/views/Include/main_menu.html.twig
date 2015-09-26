@@ -6,13 +6,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{ app.request.baseUrl }}">{{ getModVar('ZConfig', 'sitename') }}</a>
+          <a class="navbar-brand" href="{{ pagevars.homepath }}">{{ getModVar('ZConfig', 'sitename') }}</a>
         </div>
         <div class="navbar-collapse collapse">
         {% if pagetype == 'admin' %}
           <ul class="nav navbar-nav">
             <li>{{ adminPanelMenu() }}</li>
-            <li><a href="{{ app.request.baseUrl }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ pagevars.homepath }}">{{ __('Home') }}</a></li>
             {% if hasPermission('ZikulaSettingsModule::', '::', 'ACCESS_ADMIN') %}
             <li><a href="{{ path('zikulasettingsmodule_admin_index') }}">{{ __('Settings') }}</a></li>
             {% endif %}
@@ -37,7 +37,7 @@
           </ul>
         {% else %}
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{{ app.request.baseUrl }}" title="{{ __('Go to the sites home page') }}">{{ __('Home') }}</a></li>
+            <li class="active"><a href="{{ pagevars.homepath }}" title="{{ __('Go to the sites home page') }}">{{ __('Home') }}</a></li>
             <li><a href="{{ path('zikulausersmodule_user_index') }}" title="{{ __('Go to your account panel') }}">{{ __('My Account') }}</a></li>
             <li><a href="{{ path('zikulasearchmodule_user_main') }}" title="{{ __('Search this site') }}">{{ __('Site search') }}</a></li>
             <li class="dropdown">

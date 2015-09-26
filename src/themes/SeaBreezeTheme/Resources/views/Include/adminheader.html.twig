@@ -3,11 +3,11 @@
     <div class="pull-right">{{ showblockposition('search') }}</div>
 </div>
 <div id="header" class="clearfix">
-    <h1>{# adminpanelmenu #} <a href="{{ app.request.baseUrl }}" title="{{ getModVar('ZConfig', 'slogan') }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
+    <h1>{# adminpanelmenu #} <a href="{{ pagevars.homepath }}" title="{{ getModVar('ZConfig', 'slogan') }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
     <div id="navi" class="z-clearer">
         <ul id="nav">
             <li class="page_item">
-                <a href="{{ app.request.baseUrl }}"><span>{{ __('Home') }}</span></a>
+                <a href="{{ pagevars.homepath }}"><span>{{ __('Home') }}</span></a>
             </li>
             <li class="page_item">
                 <a href="{{ path('zikulasettingsmodule_admin_index') }}"><span>{{ __('Settings') }}</span></a>

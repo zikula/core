@@ -2,8 +2,8 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
 <atom:link href="{{ app.request.uriForPath() }}" rel="self" type="application/rss+xml" />
-<title>{{ pagevars.title }}</title>{{ app.request.baseUrl }}
-<link>{{ app.request.baseUrl }}</link>
+<title>{{ pagevars.title }}</title>{{ pagevars.homepath }}
+<link>{{ pagevars.homepath }}</link>
 <description>{{ pagevars.meta.description }}</description>
 <language>{{ pagevars.lang }}</language>
 {# here you can add your image if you want to #}
@@ -11,7 +11,7 @@
 <image>
   <title>{{ getModVar('ZConfig', 'sitename') }}</title>
   <url>{{ zasset(@VendorBundleName:images/logo.png) }}</url>
-  <link>{{ app.request.baseUrl }}</link>
+  <link>{{ pagevars.homepath }}</link>
 </image>
 #}
 <managingEditor>{{ __('Administrator') }} {{ getModVar('ZConfig', 'adminmail') }} ({{ getModVar('ZConfig', 'sitename') }})</managingEditor>
