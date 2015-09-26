@@ -307,6 +307,7 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
         $extrainfo['maxitems'] = isset($extrainfo['maxitems']) ? (int)$extrainfo['maxitems'] : -1;
         $extrainfo['flat'] = isset($extrainfo['flat']) ? (bool)$extrainfo['flat'] : false;
         $extrainfo['orderby'] = isset($extrainfo['orderby']) ? $extrainfo['orderby'] : null;
+        $extrainfo['filter'] = isset($extrainfo['filter']) ? $extrainfo['filter'] : null;
 
         // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
@@ -339,6 +340,7 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
                                array('tid'          => $extrainfo['tid'],
                                      'orderby'      => $extrainfo['orderby'],
                                      'itemsperpage' => $extrainfo['maxitems'],
+                                     'filter' => $extrainfo['filter'],
                                      'checkPerm'    => false,
                                      'array'        => true));
         $publist = $result['publist'];
