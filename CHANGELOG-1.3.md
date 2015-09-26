@@ -1,9 +1,16 @@
+CHANGELOG - ZIKULA 1.3.11
+-------------------------
+
+- Load correct theme in case Mobile theme is enabled and Mobile detect is enabled (#2583)
+- Add filter parameter to Menutree in order to work better with Clip (#2597)
+
+
 CHANGELOG - ZIKULA 1.3.10
 -------------------------
 
-- Added missing hook area registration for HTML blocks.
-- Show registration errors in current language.
-- Improved language detection when using short urls.
+- Added missing hook area registration for HTML blocks
+- Show registration errors in current language
+- Improved language detection when using short urls
 - Fixed error messages with new module that is not compatible (#1641)
 - Corrected behaviour of CategorySelector if no category is selected.
 - Added optional loading of newer jQuery 1.11.2 with jquery-migrate (#2223)
@@ -11,11 +18,13 @@ CHANGELOG - ZIKULA 1.3.10
 - Updated Imagine lib to 0.6.2 and plugin is enhanced with width/height autoscale and jpg/png quality (#2174, #1644)
 - New view plugin {langchange} for switching language, also function with shorturls enabled (#2356)
 - Multilingual site name, site description and site meta tags (#2358)
+- Added view plugin {moduleheader} to unify module headers and make styling at one place - moduleheader.tpl (#2371).
 
 CHANGELOG - ZIKULA 1.3.9
 ------------------------
 
 - Added output sanitizing for authentication method module in login form error message
+
 
 CHANGELOG - ZIKULA 1.3.8
 ------------------------
@@ -31,6 +40,7 @@ CHANGELOG - ZIKULA 1.3.8
 - Fixed invalid output of useravatar plugin (#1734)
 - Fixed DBUtil regression bug introduced in 1.3.7 (#1810, #1815)
 - Added output sanitizing for authentication module/method in login form
+
 
 CHANGELOG - ZIKULA 1.3.7
 ------------------------
@@ -57,6 +67,7 @@ CHANGELOG - ZIKULA 1.3.7
 - Fix developer notices (#564)
 - Fixed decoding of Block content which made problems on some servers
 
+
 CHANGELOG - ZIKULA 1.3.6
 ------------------------
 
@@ -80,11 +91,14 @@ Features:
 - Added development/debug email mode
 - Added basic setup for jQuery ajax to pass csfr token checks
 - Added new option for Zikula UI Windows - autoClose
+- Update jQuery-UI to 1.9.1
 - Update jQuery to 1.8.3
 - Mark active item in modulelinks
 - Mobile Theme: Changed blockposition in home.tpl to 'mobile'
 - Added thumbnail management features to Imagine plugin
 - Refactor Mailer module to use Zikula Form
+- Zikula Form - automatically set proper form enctype when upload input is used
+
 
 CHANGELOG - ZIKULA 1.3.4
 ------------------------
@@ -131,6 +145,7 @@ CHANGELOG - ZIKULA 1.3.4
 - Fixed ModulePlugins do not add the right template directory (#452)
 - Fixed incorrect object field reference in DBObject.php (#494)
 - Fixed module.users.ui.logout.succeeded logout event (#508)
+
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------
@@ -353,7 +368,7 @@ system.
 - Fixed problem with deleting group via ajax with insufficient permissions
 (#1568).
 
-- Fixed an issue where an incorrect group type was displayed when editing a
+- Fixed an issue where an incorrect group type was displayed when editing a 
 group through the administration panel (#2993).
 
 - Allow module to specify core version requirements.
@@ -369,7 +384,7 @@ at least one instance. (#1026).
 specified, if the user is not logged in then he is redirected to a login
 screen. (#1729).
 
-- Corrected minor defects that generated notices (issues #1901, #1902).
+- Corrected minor defects that generated notices (#1901, #1902).
 
 - The Mailer module can now send multipart/alternative e-mails with the
 specification of a plain-text altbody (#1768).
@@ -560,7 +575,7 @@ status.
 - Added doctrine support to DropdownRelationlist form view plugin. (issue
 #2442).
 
-- Added more HTML5 tags to allowed HTML settings page (issues #2139 and #2460).
+- Added more HTML5 tags to allowed HTML settings page (#2139 and #2460).
 
 - Fixed conflict in search module short-urls url (#2494).
 
