@@ -130,6 +130,10 @@ class ThemeListener implements EventSubscriberInterface
         $this->pageVars->set('meta.charset', \ZLanguage::getDBCharset());
         $this->pageVars->set('meta.description', \System::getVar('defaultmetadescription'));
         $this->pageVars->set('meta.keywords', \System::getVar('metakeywords'));
+
+        $schemeAndHost = $event->getRequest()->getSchemeAndHttpHost();
+        $baseUrl = $event->getRequest()->getBaseUrl();
+        $this->pageVars->set('homepath', $schemeAndHost . $baseUrl);
     }
 
     /**
