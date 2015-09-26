@@ -1,6 +1,9 @@
 CHANGELOG - ZIKULA 1.3.11
 -------------------------
+
 - Load correct theme in case Mobile theme is enabled and Mobile detect is enabled (#2583)
+- Add filter parameter to Menutree in order to work better with Clip (#2597)
+
 
 CHANGELOG - ZIKULA 1.3.10
 -------------------------
@@ -22,6 +25,7 @@ CHANGELOG - ZIKULA 1.3.9
 
 - Added output sanitizing for authentication method module in login form error message
 
+
 CHANGELOG - ZIKULA 1.3.8
 ------------------------
 
@@ -36,6 +40,7 @@ CHANGELOG - ZIKULA 1.3.8
 - Fixed invalid output of useravatar plugin (#1734)
 - Fixed DBUtil regression bug introduced in 1.3.7 (#1810, #1815)
 - Added output sanitizing for authentication module/method in login form
+
 
 CHANGELOG - ZIKULA 1.3.7
 ------------------------
@@ -94,6 +99,7 @@ Features:
 - Refactor Mailer module to use Zikula Form
 - Zikula Form - automatically set proper form enctype when upload input is used
 
+
 CHANGELOG - ZIKULA 1.3.4
 ------------------------
 
@@ -139,6 +145,7 @@ CHANGELOG - ZIKULA 1.3.4
 - Fixed ModulePlugins do not add the right template directory (#452)
 - Fixed incorrect object field reference in DBObject.php (#494)
 - Fixed module.users.ui.logout.succeeded logout event (#508)
+
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------
