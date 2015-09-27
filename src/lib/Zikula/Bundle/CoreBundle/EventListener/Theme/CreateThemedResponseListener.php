@@ -25,7 +25,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
 {
     private $themeEngine;
 
-    function __construct(Engine $themeEngine)
+    public function __construct(Engine $themeEngine)
     {
         $this->themeEngine = $themeEngine;
     }

@@ -22,7 +22,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
 {
     private $pageVars;
 
-    function __construct(ParameterBag $pageVars)
+    public function __construct(ParameterBag $pageVars)
     {
         $this->pageVars = $pageVars;
     }

@@ -22,7 +22,7 @@ class TemplatePathOverrideListener implements EventSubscriberInterface
     private $loader;
     private $themeEngine;
 
-    function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine)
+    public function __construct(\Twig_Loader_Filesystem $loader, Engine $themeEngine)
     {
         $this->loader = $loader;
         $this->themeEngine = $themeEngine;
