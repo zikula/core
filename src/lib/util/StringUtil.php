@@ -184,14 +184,14 @@ class StringUtil
             }
 
             // Get context on the left
-            $startPos = max(0, $startPos - floor($contextSize / 2));
+            $startPos = (integer) max(0, $startPos - floor($contextSize / 2));
             // Get the first word of section in full length
             while ($startPos > 0 && $text[$startPos] != ' ') {
                 --$startPos;
             }
 
             // Get context on the right
-            $endPos = min($textLen, $startPos + $contextSize);
+            $endPos = (integer) min($textLen, $startPos + $contextSize);
             // Get the last word of section in full length
             while ($endPos < (mb_strlen($text)) && $text[$endPos] != ' ') {
                 ++$endPos;
