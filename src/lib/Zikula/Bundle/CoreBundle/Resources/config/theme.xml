@@ -49,7 +49,9 @@
             <tag name="monolog.logger" channel="request" />
             <argument type="service" id="zikula_core.common.theme.assets_js" />
             <argument type="service" id="zikula_core.common.theme.assets_css" />
-            <argument>%env%</argument>
+            <call method="setParameters">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="zikula_core.internal.theme.default_page_var_setter_listener" class="%zikula_core.internal.theme.default_page_var_setter_listener.class%">

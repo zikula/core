@@ -13,6 +13,7 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener\Theme;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -22,13 +23,19 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 {
     private $cssAssetBag;
     private $jsAssetBag;
-    private $env;
+    private $params;
 
-    function __construct(AssetBag $jsAssetBag, AssetBag $cssAssetBag, $env)
+    public function __construct(AssetBag $jsAssetBag, AssetBag $cssAssetBag)
     {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
-        $this->env = $env;
+    }
+
+    public function setParameters(ContainerInterface $container)
+    {
+        $this->params = [
+            'env' => $container->getParameter('env'),
+        ];
     }
 
     /**
@@ -41,7 +48,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             return;
         }
         $basePath = $event->getRequest()->getBasePath();
-        $jquery = $this->env != 'dev' ? 'jquery.min.js' : 'jquery.js';
+        $jquery = $this->params['env'] != 'dev' ? 'jquery.min.js' : 'jquery.js';
 
         // add default javascripts to jsAssetBag
         $this->jsAssetBag->add(
