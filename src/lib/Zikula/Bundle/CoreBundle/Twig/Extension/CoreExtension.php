@@ -302,6 +302,10 @@ class CoreExtension extends \Twig_Extension
         if (!in_array($type, ['stylesheet', 'javascript', 'header', 'footer']) || !is_numeric($weight)) {
             throw new \InvalidArgumentException(__('Invalid argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
+        // ensure proper variable types
+        $value = (string) $value;
+        $type = (string) $type;
+        $weight = (integer) $weight;
 
         // @todo handle this polyfill feature issue
         if ($value == 'polyfill') {
