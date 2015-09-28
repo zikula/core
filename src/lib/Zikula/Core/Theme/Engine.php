@@ -342,15 +342,17 @@ class Engine
         $baseUri = \System::getBaseUri();
         $jsAssets = [];
         $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript'));
-        foreach ($javascripts as $key => $javascript) {
-            $javascripts[$key] = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? $baseUri . '/' . $javascript : $javascript;
-            $jsAssets[$javascript] = 50; // add before pageAddAsset default weight (100)
+        $i = 50;
+        foreach ($javascripts as $javascript) {
+            $javascript = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? $baseUri . '/' . $javascript : $javascript;
+            $jsAssets[$javascript] = $i++; // add before pageAddAsset default weight (100)
         }
         $cssAssets = [];
         $stylesheets = \PageUtil::getVar('stylesheet');
-        foreach ($stylesheets as $key => $stylesheet) {
+        $i = 50;
+        foreach ($stylesheets as $stylesheet) {
             $stylesheet = $baseUri . '/' . $stylesheet;
-            $cssAssets[$stylesheet] = 50; // add before pageAddAsset default weight (100)
+            $cssAssets[$stylesheet] = $i++; // add before pageAddAsset default weight (100)
         }
         // @todo END legacy block - remove at Core-2.0
 
