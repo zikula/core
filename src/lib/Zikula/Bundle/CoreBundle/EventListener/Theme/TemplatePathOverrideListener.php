@@ -17,6 +17,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Theme\Engine;
 
+/**
+ * Class TemplatePathOverrideListener
+ * @package Zikula\Bundle\CoreBundle\EventListener\Theme
+ *
+ * This class adds the theme Resources path to the search path when locating assets like templates.
+ * This listener only works when new "namespaced" (e.g. "@Bundle/template.html.twig") is used.
+ * If old name-scheme (Bundle:template) or controller annotations ("@Template") are used
+ * the \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::locateResource method is used instead
+ */
 class TemplatePathOverrideListener implements EventSubscriberInterface
 {
     private $loader;
@@ -35,11 +44,10 @@ class TemplatePathOverrideListener implements EventSubscriberInterface
      */
     public function setUpThemePathOverrides(FilterControllerEvent $event)
     {
-        // @todo check isMasterRequest() ????
+        if (!$event->isMasterRequest()) {
+            return;
+        }
         // add theme path to template locator
-        // This 'twig.loader' functions only when @Bundle/template (name-spaced) name-scheme is used
-        // if old name-scheme (Bundle:template) or controller annotations (@Template) are used
-        // the \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::locateResource method is used instead
         $controller = $event->getController()[0];
         if ($controller instanceof AbstractController) {
             $theme = $this->themeEngine->getTheme();

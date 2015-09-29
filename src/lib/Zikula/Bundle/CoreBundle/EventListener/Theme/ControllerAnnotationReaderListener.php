@@ -19,6 +19,14 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Theme\Engine;
 use Doctrine\Common\Util\ClassUtils;
 
+/**
+ * Class ControllerAnnotationReaderListener
+ * @package Zikula\Bundle\CoreBundle\EventListener\Theme
+ *
+ * This class reads annotations from a controller and submits them to the theme engine to
+ * potentially change the theme based on that annotation. (e.g. "@Theme('admin')" annotation)
+ * @see \Zikula\Core\Theme\Annotation\Theme
+ */
 class ControllerAnnotationReaderListener implements EventSubscriberInterface
 {
     private $themeEngine;

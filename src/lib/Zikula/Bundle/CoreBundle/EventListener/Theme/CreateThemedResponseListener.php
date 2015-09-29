@@ -21,6 +21,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Theme\Engine;
 use Zikula_View_Theme;
 
+/**
+ * Class CreateThemedResponseListener
+ * @package Zikula\Bundle\CoreBundle\EventListener\Theme
+ *
+ * This class intercepts the Response and modifies it to return a themed Response.
+ * It is currently fully BC with Core-1.3 in order to return a smarty-based themed response.
+ */
 class CreateThemedResponseListener implements EventSubscriberInterface
 {
     private $themeEngine;

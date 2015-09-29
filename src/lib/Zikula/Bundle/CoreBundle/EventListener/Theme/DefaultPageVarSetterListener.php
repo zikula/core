@@ -18,6 +18,13 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Theme\ParameterBag;
 
+/**
+ * Class DefaultPageVarSetterListener
+ * @package Zikula\Bundle\CoreBundle\EventListener\Theme
+ *
+ * This class sets default pagevars that are available in all Twig templates in a global scope.
+ * @todo remove use of legacy Util classes and replace
+ */
 class DefaultPageVarSetterListener implements EventSubscriberInterface
 {
     private $pageVars;

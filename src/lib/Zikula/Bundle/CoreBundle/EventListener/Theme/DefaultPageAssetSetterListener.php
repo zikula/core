@@ -20,6 +20,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Theme\AssetBag;
 
+/**
+ * Class DefaultPageAssetSetterListener
+ * @package Zikula\Bundle\CoreBundle\EventListener\Theme
+ *
+ * This class adds default assets (javascripts and stylesheets) to every page, regardless of the selected theme.
+ * In some cases, the actual asset is configurable or able to be overridden.
+ */
 class DefaultPageAssetSetterListener implements EventSubscriberInterface
 {
     private $cssAssetBag;
@@ -62,7 +69,6 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
                 $basePath . '/' . $this->params['zikula.javascript.bootstrap.min.path'] => 1,
                 $basePath . '/javascript/helpers/bootstrap-zikula.js' => 2,
                 $basePath . '/web/html5shiv/dist/html5shiv.js' => 3,
-//            $basePath . '/javascript/helpers/Zikula.js', // @todo legacy remove at Core 2.0
             ]
         );
         $this->addFosJsRouting($basePath);
