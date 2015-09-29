@@ -26,7 +26,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
  *
  * The Theme Engine class is responsible to manage all aspects of theme management using the classes referenced below.
  * @see \Zikula\Core\Theme\*
- * @see \Zikula\Bundle\CoreBundle\EventListener\ThemeListener
+ * @see \Zikula\Bundle\CoreBundle\EventListener\Theme\*
  * @see \Zikula\Core\AbstractTheme
  *
  * The Engine works by intercepting the Response sent by the module controller (the controller action is the
