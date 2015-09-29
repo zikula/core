@@ -2,6 +2,20 @@
 
 namespace Zikula\Core\Theme;
 
+/**
+ * Class AssetBag
+ * @package Zikula\Core\Theme
+ *
+ * This class provides an abstracted method of collecting, managing and retrieving page assets.
+ * Each asset should be assigned a 'weight' which helps determine in what order the assets are loaded into the page.
+ *  - A lighter weight loads before a heavier weight.
+ *  - Assets of the same weight cannot be guaranteed to load in any specific order.
+ *  - Duplicate assets with different weights will be loaded according to the lighter weight.
+ *  - Assets not given a weight are assigned the DEFAULT_WEIGHT (100)
+ *  - Core assets are loaded at weights 0, 1, 2, etc.
+ * @see \Zikula\Bundle\CoreBundle\EventListener\Theme\DefaultPageAssetSetterListener::setDefaultPageAssets()
+ * @see \Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension::pageAddAsset()
+ */
 class AssetBag implements \IteratorAggregate, \Countable
 {
     const DEFAULT_WEIGHT = 100;

@@ -7,6 +7,12 @@ use Symfony\Component\Asset\PathPackage as BasePathPackage;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\Asset\Context\RequestStackContext;
 
+/**
+ * Class PackagePath
+ * @package Zikula\Core\Theme\Asset
+ *
+ * This class implements Symfony's Asset management system.
+ */
 class PackagePath extends BasePathPackage
 {
     private $scriptPath;

@@ -4,6 +4,12 @@ namespace Zikula\Core\Theme\Asset;
 
 use Zikula\Core\Theme\AssetBag;
 
+/**
+ * Class CssResolver
+ * @package Zikula\Core\Theme\Asset
+ *
+ * This class compiles all css page assets into proper html code for inclusion into a page header
+ */
 class CssResolver implements ResolverInterface
 {
     private $bag;

@@ -5,6 +5,14 @@ namespace Zikula\Core\Theme;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Core\Theme\Asset\PackagePath;
 
+/**
+ * Class Asset
+ * @package Zikula\Core\Theme
+ *
+ * This class assists in the location of assets accounting for possible overrides in the CustomBundle or in the
+ * active theme. It is foremost used by the zasset() Twig template plugin, but can be utilized as a standalone
+ * service as well.
+ */
 class Asset
 {
     private $kernel;
