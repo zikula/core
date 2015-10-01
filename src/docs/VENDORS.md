@@ -130,7 +130,7 @@ jQuery.mmenu 5.0.3
     Vendor website: http://mmenu.frebsite.nl/
     Downloaded from: http://mmenu.frebsite.nl/
     License: MIT
-    Location in Zikula: system/AdminModule/Resources/public/js/jQuery.mmenu-master
+    Location in Zikula: system/AdminModule/Resources/public/js/jQuery.mmenu-5.5.1
     Patch details: none
 
 ICON LIBRARIES
