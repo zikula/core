@@ -50,8 +50,8 @@ class AdminMenuPanelSimpleFunction
         }
 
         // add required scritps and stylesheets to page
-        $this->twigExtension->getContainer()->get('zikula_core.common.theme.assets_js')->add($this->twigExtension->getAssetPath('@ZikulaAdminModule:js/jQuery.mmenu-master/dist/js/jquery.mmenu.min.all.js'));
-        $this->twigExtension->getContainer()->get('zikula_core.common.theme.assets_css')->add($this->twigExtension->getAssetPath('@ZikulaAdminModule:js/jQuery.mmenu-master/dist/css/jquery.mmenu.all.css'));
+        $this->twigExtension->getContainer()->get('zikula_core.common.theme.assets_js')->add($this->twigExtension->getAssetPath('@ZikulaAdminModule:js/jQuery.mmenu-5.5.1/dist/core/js/jquery.mmenu.min.all.js'));
+        $this->twigExtension->getContainer()->get('zikula_core.common.theme.assets_css')->add($this->twigExtension->getAssetPath('@ZikulaAdminModule:js/jQuery.mmenu-5.5.1/dist/core/css/jquery.mmenu.all.css'));
         // add override for panel width created from .scss file
         $this->twigExtension->getContainer()->get('zikula_core.common.theme.assets_css')->add($this->twigExtension->getAssetPath('@ZikulaAdminModule:css/mmenu-hiddenpanel-customwidth.css'));
 
