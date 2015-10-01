@@ -11,14 +11,20 @@ namespace Zikula\Core\Theme;
  *  - A lighter weight loads before a heavier weight.
  *  - Assets of the same weight cannot be guaranteed to load in any specific order.
  *  - Duplicate assets with different weights will be loaded according to the lighter weight.
- *  - Assets not given a weight are assigned the DEFAULT_WEIGHT (100)
+ *  - Assets not given a weight are assigned the self::WEIGHT_DEFAULT (100)
  *  - Core assets are loaded at weights 0, 1, 2, etc.
  * @see \Zikula\Bundle\CoreBundle\EventListener\Theme\DefaultPageAssetSetterListener::setDefaultPageAssets()
  * @see \Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension::pageAddAsset()
  */
 class AssetBag implements \IteratorAggregate, \Countable
 {
-    const DEFAULT_WEIGHT = 100;
+    const WEIGHT_JQUERY = 20;
+    const WEIGHT_BOOTSTRAP_JS = 21;
+    const WEIGHT_BOOTSTRAP_ZIKULA = 22;
+    const WEIGHT_HTML5SHIV = 23;
+    const WEIGHT_ROUTER_JS = 24;
+    const WEIGHT_ROUTES_JS = 25;
+    const WEIGHT_DEFAULT = 100;
 
     /**
      * array format:
@@ -41,7 +47,7 @@ class AssetBag implements \IteratorAggregate, \Countable
     {
         // ensure value is an array
         if (!is_array($asset)) {
-            $asset = [$asset => self::DEFAULT_WEIGHT];
+            $asset = [$asset => self::WEIGHT_DEFAULT];
         }
         foreach ($asset as $source => $weight) {
             if ((isset($this->assets[$source]) && $this->assets[$source] > $weight) || !isset($this->assets[$source])) {

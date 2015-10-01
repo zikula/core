@@ -342,14 +342,18 @@ class Engine
         $baseUri = \System::getBaseUri();
         $jsAssets = [];
         $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript'));
-        $i = 50;
+        $i = 60;
+        $legacyAjaxScripts = 0;
         foreach ($javascripts as $javascript) {
             $javascript = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? $baseUri . '/' . $javascript : $javascript;
-            $jsAssets[$javascript] = $i++; // add before pageAddAsset default weight (100)
+            // Add legacy ajax scripts (like prototype/scriptaculous) at the lightest weight (0) and in order from there.
+            // Add others after core default assets (like jQuery) but before pageAddAsset default weight (100) and in order from there.
+            $jsAssets[$javascript] = (false !== strpos($javascript, 'javascript/ajax/')) ? $legacyAjaxScripts++ : $i++;
+
         }
         $cssAssets = [];
         $stylesheets = \PageUtil::getVar('stylesheet');
-        $i = 50;
+        $i = 60;
         foreach ($stylesheets as $stylesheet) {
             $stylesheet = $baseUri . '/' . $stylesheet;
             $cssAssets[$stylesheet] = $i++; // add before pageAddAsset default weight (100)

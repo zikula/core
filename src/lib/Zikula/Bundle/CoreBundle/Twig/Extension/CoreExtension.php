@@ -294,7 +294,7 @@ class CoreExtension extends \Twig_Extension
      * @param string $value
      * @param int $weight
      */
-    public function pageAddAsset($type, $value, $weight = AssetBag::DEFAULT_WEIGHT)
+    public function pageAddAsset($type, $value, $weight = AssetBag::WEIGHT_DEFAULT)
     {
         if (empty($type) || empty($value)) {
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);

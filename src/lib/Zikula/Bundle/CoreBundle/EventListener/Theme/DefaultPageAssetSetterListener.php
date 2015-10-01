@@ -66,9 +66,9 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->addJquery($basePath);
         $this->jsAssetBag->add(
             [
-                $basePath . '/' . $this->params['zikula.javascript.bootstrap.min.path'] => 1,
-                $basePath . '/javascript/helpers/bootstrap-zikula.js' => 2,
-                $basePath . '/web/html5shiv/dist/html5shiv.js' => 3,
+                $basePath . '/' . $this->params['zikula.javascript.bootstrap.min.path'] => AssetBag::WEIGHT_BOOTSTRAP_JS,
+                $basePath . '/javascript/helpers/bootstrap-zikula.js' => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
+                $basePath . '/web/html5shiv/dist/html5shiv.js' => AssetBag::WEIGHT_HTML5SHIV,
             ]
         );
         $this->addFosJsRouting($basePath);
@@ -94,21 +94,21 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private function addJquery($basePath)
     {
         $jquery = $this->params['env'] != 'dev' ? 'jquery.min.js' : 'jquery.js';
-        $this->jsAssetBag->add([$basePath . "/web/jquery/$jquery" => 0]);
+        $this->jsAssetBag->add([$basePath . "/web/jquery/$jquery" => AssetBag::WEIGHT_JQUERY]);
     }
 
     private function addFosJsRouting($basePath)
     {
         if ($this->params['env'] != 'dev' && file_exists(realpath('web/js/fos_js_routes.js'))) {
             $this->jsAssetBag->add([
-                $basePath . '/web/bundles/fosjsrouting/js/router.js' => 4,
-                $basePath . '/web/js/fos_js_routes.js' => 5
+                $basePath . '/web/bundles/fosjsrouting/js/router.js' => AssetBag::WEIGHT_ROUTER_JS,
+                $basePath . '/web/js/fos_js_routes.js' => AssetBag::WEIGHT_ROUTES_JS
             ]);
         } else {
             $routeScript = $this->router->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData'));
             $this->jsAssetBag->add([
-                $basePath . '/web/bundles/fosjsrouting/js/router.js' => 4,
-                $routeScript => 5
+                $basePath . '/web/bundles/fosjsrouting/js/router.js' => AssetBag::WEIGHT_ROUTER_JS,
+                $routeScript => AssetBag::WEIGHT_ROUTES_JS
             ]);
         }
     }
