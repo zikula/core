@@ -177,9 +177,9 @@ It's recommended to use grouping methods.
 
 ### Custom image transformations
 
-It is possible to apply for thumbnails custom image transformations, supported by Imagine library.
-This can be archived by adding transformation to preset (see Presets section) or applying
-transformation inline:
+It is possible to apply custom image transformations before the thumbnail is created. 
+This can be archived by adding transformations to the preset (see Presets section) 
+or applying transformation inline:
 
 ```
     $manager = $this->getContainer()->get('systemplugin.imagine.manager');
@@ -191,6 +191,21 @@ transformation inline:
         ->setPreset('my_preset');
     $thumb = $manager->getThumb('path/to/image.png');
 ```
+
+By adding transformations with a priority greater than 50, you can also apply 
+custom transformations after the thumbnail generation:
+
+```
+    $manager = $this->getContainer()->get('systemplugin.imagine.manager');
+    $transformation = new Imagine\Filter\Transformation();
+    $transformation->add(new Imagine\Filter\Basic\FlipHorizontally(), 60);
+
+    $manager->setModule('Foo')
+        ->setTransformation($transformation)
+        ->setPreset('my_preset');
+    $thumb = $manager->getThumb('path/to/image.png');
+```
+
 
 ### Imagine engines
 

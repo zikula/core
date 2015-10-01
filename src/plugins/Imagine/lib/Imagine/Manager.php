@@ -430,10 +430,13 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
 		
         $size = new \Imagine\Image\Box($preset['width'], $preset['height']);
 
+        // Clone the transformation here, because we don't want the thumbnail transformations to bubble up.
+        $transformation = clone $this->getTransformation();
+        $transformation->add(new \Imagine\Filter\Basic\Thumbnail($size, $mode), 50);
+
         try {
-            $this->getTransformation()
+            $transformation
                 ->apply($this->getImagine()->open($image->getRealPath()))
-                ->thumbnail($size, $mode)
                 ->save($image->getThumbRealPath(), $options);
         } catch (Exception $exception) {
             throw $exception;
