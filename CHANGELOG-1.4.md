@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Fixes:
     - Fixed 'Removetrailingslash' error (#2552)
     - Corrected variable name in BootstrapTheme template override (#2557)
+    - Update JQuery MMenu to 5.5.1 to fix Prototype compatibility.
  - Features:
     - Symfony update to 2.7.5 (#2551, #2582)
     - All system modules and themes updated to PSR-4 (#2563, #2424)
