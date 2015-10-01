@@ -2,6 +2,17 @@
 
 namespace Zikula\Core\Theme;
 
+/**
+ * Class ParameterBag
+ * @package Zikula\Core\Theme
+ *
+ * This class provides an abstracted method of collecting, managing and retrieving variables.
+ * values can be stored in a namespaced array structure. i.e.
+ *   'key' = array('subkey' => value, 'subkey2' => value2)
+ *      or
+ *   'key.subkey' = value
+ *   'key.subkey2' = value2
+ */
 class ParameterBag implements \IteratorAggregate, \Countable
 {
     /**

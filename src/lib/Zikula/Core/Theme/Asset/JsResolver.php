@@ -4,6 +4,12 @@ namespace Zikula\Core\Theme\Asset;
 
 use Zikula\Core\Theme\AssetBag;
 
+/**
+ * Class JsResolver
+ * @package Zikula\Core\Theme\Asset
+ *
+ * This class compiles all js page assets into proper html code for inclusion into a page header or footer
+ */
 class JsResolver implements ResolverInterface
 {
     private $bag;

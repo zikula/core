@@ -2,13 +2,39 @@
 
 namespace Zikula\Core\Theme;
 
+/**
+ * Class AssetBag
+ * @package Zikula\Core\Theme
+ *
+ * This class provides an abstracted method of collecting, managing and retrieving page assets.
+ * Each asset should be assigned a 'weight' which helps determine in what order the assets are loaded into the page.
+ *  - A lighter weight loads before a heavier weight.
+ *  - Assets of the same weight cannot be guaranteed to load in any specific order.
+ *  - Duplicate assets with different weights will be loaded according to the lighter weight.
+ *  - Assets not given a weight are assigned the self::WEIGHT_DEFAULT (100)
+ *  - Core assets are loaded at weights 0, 1, 2, etc.
+ * @see \Zikula\Bundle\CoreBundle\EventListener\Theme\DefaultPageAssetSetterListener::setDefaultPageAssets()
+ * @see \Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension::pageAddAsset()
+ */
 class AssetBag implements \IteratorAggregate, \Countable
 {
-    private $assets;
+    const WEIGHT_JQUERY = 20;
+    const WEIGHT_BOOTSTRAP_JS = 21;
+    const WEIGHT_BOOTSTRAP_ZIKULA = 22;
+    const WEIGHT_HTML5SHIV = 23;
+    const WEIGHT_ROUTER_JS = 24;
+    const WEIGHT_ROUTES_JS = 25;
+    const WEIGHT_DEFAULT = 100;
 
-    public function __construct(array $assets = array())
+    /**
+     * array format:
+     * $assets = [value => weight, value => weight, value => weight]
+     * @var array
+     */
+    private $assets = array();
+
+    public function __construct()
     {
-        $this->assets = $assets;
     }
 
     /**
@@ -19,18 +45,22 @@ class AssetBag implements \IteratorAggregate, \Countable
      */
     public function add($asset)
     {
+        // ensure value is an array
         if (!is_array($asset)) {
-            $asset = array($asset);
+            $asset = [$asset => self::WEIGHT_DEFAULT];
         }
-        $this->assets = array_merge($this->assets, $asset);
-        $this->assets = array_unique($this->assets);
+        foreach ($asset as $source => $weight) {
+            if ((isset($this->assets[$source]) && $this->assets[$source] > $weight) || !isset($this->assets[$source])) {
+                // keep original weight if lighter. set if not set already.
+                $this->assets[$source] = $weight;
+            }
+        }
+        asort($this->assets); // put array in order by weight
     }
 
     public function remove($var)
     {
-        if ($key = array_search($var, $this->assets)) {
-            unset($this->assets[$key]);
-        }
+        unset($this->assets[$var]);
     }
 
     public function clear()
@@ -40,7 +70,8 @@ class AssetBag implements \IteratorAggregate, \Countable
 
     public function all()
     {
-        return $this->assets;
+        // returns sorted asset
+        return array_keys($this->assets);
     }
 
     /**

@@ -7,7 +7,11 @@
     <parameters>
         <parameter key="zikula_core.legacy.theme_template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeTemplateOverrideYamlListener</parameter>
         <parameter key="zikula_core.common.theme_engine.class">Zikula\Core\Theme\Engine</parameter>
-        <parameter key="zikula_core.internal.theme.listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
+        <parameter key="zikula_core.internal.theme.create_themed_response_listener.class">Zikula\Bundle\CoreBundle\EventListener\Theme\CreateThemedResponseListener</parameter>
+        <parameter key="zikula_core.internal.theme.default_page_asset_setter_listener.class">Zikula\Bundle\CoreBundle\EventListener\Theme\DefaultPageAssetSetterListener</parameter>
+        <parameter key="zikula_core.internal.theme.default_page_var_setter_listener.class">Zikula\Bundle\CoreBundle\EventListener\Theme\DefaultPageVarSetterListener</parameter>
+        <parameter key="zikula_core.internal.theme.controller_annotation_reader_listener.class">Zikula\Bundle\CoreBundle\EventListener\Theme\ControllerAnnotationReaderListener</parameter>
+        <parameter key="zikula_core.internal.theme.template_path_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\Theme\TemplatePathOverrideListener</parameter>
         <parameter key="zikula_core.common.theme.assets.js.class">Zikula\Core\Theme\AssetBag</parameter>
         <parameter key="zikula_core.common.theme.assets.css.class">Zikula\Core\Theme\AssetBag</parameter>
         <parameter key="zikula_core.common.theme.assets.header.class">Zikula\Core\Theme\AssetBag</parameter>
@@ -34,14 +38,41 @@
             <argument type="service" id="zikula_core.internal.theme_filter" />
         </service>
 
-        <service id="zikula_core.internal.theme.listener" class="%zikula_core.internal.theme.listener.class%">
+        <service id="zikula_core.internal.theme.create_themed_response_listener" class="%zikula_core.internal.theme.create_themed_response_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="request" />
+            <argument type="service" id="zikula_core.common.theme_engine" />
+        </service>
+
+        <service id="zikula_core.internal.theme.default_page_asset_setter_listener" class="%zikula_core.internal.theme.default_page_asset_setter_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="request" />
+            <argument type="service" id="zikula_core.common.theme.assets_js" />
+            <argument type="service" id="zikula_core.common.theme.assets_css" />
+            <argument type="service" id="router" />
+            <call method="setParameters">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="zikula_core.internal.theme.default_page_var_setter_listener" class="%zikula_core.internal.theme.default_page_var_setter_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="request" />
+            <argument type="service" id="zikula_core.common.theme.pagevars" />
+            <argument>%env%</argument>
+        </service>
+
+        <service id="zikula_core.internal.theme.controller_annotation_reader_listener" class="%zikula_core.internal.theme.controller_annotation_reader_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="request" />
+            <argument type="service" id="zikula_core.common.theme_engine" />
+        </service>
+
+        <service id="zikula_core.internal.theme.template_path_override_listener" class="%zikula_core.internal.theme.template_path_override_listener.class%">
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
             <argument type="service" id="twig.loader" />
             <argument type="service" id="zikula_core.common.theme_engine" />
-            <argument type="service" id="zikula_core.common.theme.assets_js" />
-            <argument type="service" id="zikula_core.common.theme.assets_css" />
-            <argument type="service" id="zikula_core.common.theme.pagevars" />
         </service>
 
         <service id="zikula_core.common.theme.assets_js" class="%zikula_core.common.theme.assets.js.class%" />
@@ -83,7 +114,7 @@
 
         <!-- Alias for services. These service names are @deprecated and will be removed in Core-2.0 -->
         <service id="zikula.theme_template_override_listener" alias="zikula_core.legacy.theme_template_override_listener" />
-        <service id="theme.theme_listener" alias="zikula_core.internal.theme.listener" />
+        <service id="theme.theme_listener" alias="zikula_core.internal.theme.create_themed_response_listener" />
         <service id="theme.asset_helper" alias="zikula_core.common.theme.asset_helper" />
         <service id="theme.pagevars" alias="zikula_core.common.theme.pagevars" />
         <service id="theme.assets_js" alias="zikula_core.common.theme.assets_js" />

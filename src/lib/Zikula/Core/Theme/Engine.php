@@ -26,7 +26,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
  *
  * The Theme Engine class is responsible to manage all aspects of theme management using the classes referenced below.
  * @see \Zikula\Core\Theme\*
- * @see \Zikula\Bundle\CoreBundle\EventListener\ThemeListener
+ * @see \Zikula\Bundle\CoreBundle\EventListener\Theme\*
  * @see \Zikula\Core\AbstractTheme
  *
  * The Engine works by intercepting the Response sent by the module controller (the controller action is the
@@ -340,17 +340,27 @@ class Engine
     {
         // @todo START legacy block - remove at Core-2.0
         $baseUri = \System::getBaseUri();
+        $jsAssets = [];
         $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript'));
-        foreach ($javascripts as $key => $javascript) {
-            $javascripts[$key] = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? $baseUri . '/' . $javascript : $javascript;
+        $i = 60;
+        $legacyAjaxScripts = 0;
+        foreach ($javascripts as $javascript) {
+            $javascript = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? $baseUri . '/' . $javascript : $javascript;
+            // Add legacy ajax scripts (like prototype/scriptaculous) at the lightest weight (0) and in order from there.
+            // Add others after core default assets (like jQuery) but before pageAddAsset default weight (100) and in order from there.
+            $jsAssets[$javascript] = (false !== strpos($javascript, 'javascript/ajax/')) ? $legacyAjaxScripts++ : $i++;
+
         }
+        $cssAssets = [];
         $stylesheets = \PageUtil::getVar('stylesheet');
-        foreach ($stylesheets as $key => $stylesheet) {
-            $stylesheets[$key] = $baseUri . '/' . $stylesheet;
+        $i = 60;
+        foreach ($stylesheets as $stylesheet) {
+            $stylesheet = $baseUri . '/' . $stylesheet;
+            $cssAssets[$stylesheet] = $i++; // add before pageAddAsset default weight (100)
         }
         // @todo END legacy block - remove at Core-2.0
 
-        $filteredContent = $this->filterService->filter($response->getContent(), $javascripts, $stylesheets);
+        $filteredContent = $this->filterService->filter($response->getContent(), $jsAssets, $cssAssets);
         $response->setContent($filteredContent);
         return $response;
     }
