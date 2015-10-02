@@ -28,6 +28,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Improved multilingual UI in general settings (#2547)
     - [Imagine Plugin] Possibility to add transformations which are applied after the thumbnail 
         is generated. (#2594)
+    - Gedmo Doctrine Extensions updated to version 2.4.x,
  
 
 * 1.4.0 (2015-07-20)
