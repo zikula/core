@@ -7,6 +7,7 @@ CHANGELOG - ZIKULA 1.4.x
      - Removed `Zikula\Core\Api\AbstractApi` that was introduced only in 1.4.0 (#2494)
      - If you use the Imagine System plugin and add custom transformations with a priority greater than 50,
        these are now applied *after* the thumbnail is generated. (#2594)
+     - Removed `app/CustomBundle` but likely this was not used by anyone. (#2622)
  - Deprecated:
      - Twig function `pageAddVar()` deprecated. Use `pageAddAsset()` or `pageSetVar()` instead.
  - Fixes:
@@ -26,6 +27,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Core-2.0 Module Specification finalized and enabled (#2500, #2560)
     - Combined and customized bootstrap/font-awesome css using Less.
     - Improved multilingual UI in general settings (#2547)
+    - Add `pageAddAsset()` Twig function and enable 'weighting' of assets to specify load order. (#2606, #2596, #1324)
     - [Imagine Plugin] Possibility to add transformations which are applied after the thumbnail 
         is generated. (#2594)
     - Gedmo Doctrine Extensions updated to version 2.4.x,
