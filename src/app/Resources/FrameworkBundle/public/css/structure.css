@@ -1,6 +1,13 @@
 /* replaces FrameworkBundle/Resources/public/css/structure.css */
-.sf-reset, .sf-reset .block, .sf-reset #message {
+.sf-reset,
+.sf-reset .block,
+.sf-reset .block-exception,
+.sf-reset .block-exception-detected .text-exception,
+.sf-reset #message {
+    width: auto;
     margin: auto;
+    margin-bottom: 20px;
+    padding: 20px;
 }
 img {
     border: 0;
@@ -53,7 +60,7 @@ img {
     -webkit-appearance: textfield;
 }
 #content {
-    width: 970px;
+    /*width: 970px;*/
     margin: 0 auto;
 }
 pre {
