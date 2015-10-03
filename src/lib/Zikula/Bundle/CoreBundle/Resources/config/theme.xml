@@ -20,7 +20,6 @@
         <parameter key="zikula_core.internal.theme_filter.class">Zikula\Core\Theme\Filter</parameter>
         <parameter key="zikula_core.common.theme.themevars.class">Zikula\Core\Theme\ParameterBag</parameter>
         <parameter key="zikula_core.common.theme.asset_helper.class">Zikula\Core\Theme\Asset</parameter>
-        <parameter key="zikula_core.internal.theme.asset.packagepath.class">Zikula\Core\Theme\Asset\PackagePath</parameter>
         <parameter key="zikula_core.internal.theme.js_resolver.class">Zikula\Core\Theme\Asset\JsResolver</parameter>
         <parameter key="zikula_core.internal.theme.css_resolver.class">Zikula\Core\Theme\Asset\CssResolver</parameter>
     </parameters>
@@ -102,14 +101,9 @@
             <argument type="service" id="zikula_core.common.theme.assets_css" />
         </service>
 
-        <service id="zikula_core.internal.theme.asset.packagepath" class="%zikula_core.internal.theme.asset.packagepath.class%">
-            <argument type="service" id="request_stack" strict="false" />
-        </service>
-
         <service id="zikula_core.common.theme.asset_helper" scope="request" class="%zikula_core.common.theme.asset_helper.class%">
             <argument type="service" id="kernel" strict="false" />
-            <argument type="service" id="zikula_core.internal.theme.asset.packagepath" />
-            <!--<argument>%framework.assets.base_path%</argument>-->
+            <argument type="service" id="assets.packages" />
         </service>
 
         <!-- Alias for services. These service names are @deprecated and will be removed in Core-2.0 -->
@@ -122,7 +116,6 @@
         <service id="theme.js_resolver" alias="zikula_core.internal.theme.js_resolver" />
         <service id="theme.css_resolver" alias="zikula_core.internal.theme.css_resolver" />
         <service id="theme.themevars" alias="zikula_core.common.theme.themevars" />
-        <service id="theme.asset.packagepath" alias="zikula_core.internal.theme.asset.packagepath" />
         <!-- end alias definitions -->
     </services>
 </container>
