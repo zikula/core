@@ -18,6 +18,7 @@ use Gedmo\Blameable\BlameableListener;
 use ServiceUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use UserUtil;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -34,7 +35,7 @@ class BlameListener implements EventSubscriberInterface
      */
     private $blameableListener;
 
-    public function __construct(BlameableListener $blameableListener, SecurityContextInterface $securityContext = null)
+    public function __construct(BlameableListener $blameableListener, $tokenStorage = null, AuthorizationCheckerInterface $authorizationChecker = null)
     {
         $this->blameableListener = $blameableListener;
     }

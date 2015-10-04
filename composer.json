@@ -59,8 +59,8 @@
 
         "doctrine/orm": "2.4.*",
         "doctrine/doctrine-bundle": "1.3.*",
-        "stof/doctrine-extensions-bundle": "1.1.*",
-        "gedmo/doctrine-extensions": "2.3.*",
+        "stof/doctrine-extensions-bundle": "~1.2.1",
+        "gedmo/doctrine-extensions": "2.4.*",
 
 
         "imagine/Imagine": "0.6.*",
