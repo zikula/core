@@ -35,7 +35,7 @@ class BlameListener implements EventSubscriberInterface
      */
     private $blameableListener;
 
-    public function __construct(BlameableListener $blameableListener,  $tokenStorage = null, AuthorizationCheckerInterface $authorizationChecker = null)
+    public function __construct(BlameableListener $blameableListener, $tokenStorage = null, AuthorizationCheckerInterface $authorizationChecker = null)
     {
         $this->blameableListener = $blameableListener;
     }
