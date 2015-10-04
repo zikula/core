@@ -16,7 +16,7 @@ framework:
         engines: ['twig']
     assets:
         base_path: web/
-        version: ~ #e.g. 'v1'
+        version: %assets_version%
         packages:
             zikula_default:
                 base_path: ''

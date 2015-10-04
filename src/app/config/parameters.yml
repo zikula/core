@@ -32,3 +32,4 @@ parameters:
     url_secret:        ~
 
     zikula.session.name: _zsid
+    assets_version: ~ #e.g. 'v1'
