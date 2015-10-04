@@ -16,6 +16,10 @@ framework:
         engines: ['twig']
     assets:
         base_path: web/
+        version: %assets_version%
+        packages:
+            zikula_default:
+                base_path: ''
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
