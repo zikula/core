@@ -163,7 +163,7 @@ class Bootstrap
             }
         }
         if (isset($autoload['classmap'])) {
-            $kernel->getAutoloader()->addClassMap($autoload['classmaps']);
+            $kernel->getAutoloader()->addClassMap($autoload['classmap']);
         }
         if (isset($autoload['files'])) {
             foreach ($autoload['files'] as $path) {
