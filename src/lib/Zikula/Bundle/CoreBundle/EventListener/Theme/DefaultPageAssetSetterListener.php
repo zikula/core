@@ -115,7 +115,10 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addBootstrapCss($basePath)
     {
-        $overrideBootstrapPath = \ThemeUtil::getVar('bootstrapPath', ''); // allows for theme override of bootstrap css path
+        $overrideBootstrapPath = '';
+        if (!\System::isInstalling()) {
+            $overrideBootstrapPath = \ThemeUtil::getVar('bootstrapPath', ''); // allows for theme override of bootstrap css path
+        }
         if (empty($overrideBootstrapPath)) {
             $bootstrapFontAwesomePath = $this->params['zikula.stylesheet.bootstrap-font-awesome.path'];
             $this->cssAssetBag->add(["$basePath/$bootstrapFontAwesomePath" => 0]);
