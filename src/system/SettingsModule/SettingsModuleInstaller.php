@@ -166,8 +166,8 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 // update certain System vars to multilingual. provide default values for all locales using current value.
                 // must directly manipulate System vars at DB level because using System::getVar() returns empty values due to ModUtil::setupMultilingual()
                 $varsToChange = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
-                $SystemVars = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findBy(array('modname' => ModUtil::CONFIG_MODULE));
-                /** @var \Zikula\Core\Doctrine\Entity\ExtensionVarEntity $modVar */
+                $SystemVars = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(array('modname' => ModUtil::CONFIG_MODULE));
+                /** @var \Zikula\ExtensionsModule\Entity\ExtensionVarEntity $modVar */
                 foreach ($SystemVars as $modVar) {
                     if (in_array($modVar->getName(), $varsToChange)) {
                         foreach (ZLanguage::getInstalledLanguages() as $langcode) {

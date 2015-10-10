@@ -34,6 +34,9 @@ class ThemeUtil
 
     /**
      * Return a theme variable.
+     * @deprecated at Core-1.4.1
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::get()
+     * @see service zikula_extensions_module.api.variable
      *
      * @param string $name    Variable name.
      * @param mixed  $default Default return value.
@@ -60,6 +63,9 @@ class ThemeUtil
 
     /**
      * Sets a theme variable.
+     * @deprecated at Core-1.4.1
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::set()
+     * @see service zikula_extensions_module.api.variable
      *
      * @param string $name  Variable name.
      * @param mixed  $value Value to set.

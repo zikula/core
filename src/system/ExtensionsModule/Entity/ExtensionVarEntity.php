@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Doctrine\Entity;
+namespace Zikula\ExtensionsModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
@@ -20,7 +20,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 /**
  * Extension var registry.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository")
  * @ORM\Table(name="module_vars")
  */
 class ExtensionVarEntity extends EntityAccess

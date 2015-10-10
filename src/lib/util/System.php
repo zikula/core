@@ -45,6 +45,9 @@ class System
 
     /**
      * Get a configuration variable.
+     * @deprecated at Core-1.4.1
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::get()
+     * @see service zikula_extensions_module.api.variable
      *
      * @param string $name    The name of the variable.
      * @param mixed  $default The default value to return if the requested param is not set.
@@ -78,6 +81,9 @@ class System
 
     /**
      * Set a configuration variable.
+     * @deprecated at Core-1.4.1
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::set()
+     * @see service zikula_extensions_module.api.variable
      *
      * @param string $name  The name of the variable.
      * @param mixed  $value The value of the variable.
@@ -106,6 +112,9 @@ class System
 
     /**
      * Delete a configuration variable.
+     * @deprecated at Core-1.4.1
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::del()
+     * @see service zikula_extensions_module.api.variable
      *
      * @param string $name The name of the variable.
      *

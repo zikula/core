@@ -115,8 +115,8 @@ class ModUtil
 
         // This loads all module variables into the modvars static class variable.
         $em = ServiceUtil::get('doctrine.entitymanager');
-        /** @var \Zikula\Core\Doctrine\Entity\ExtensionVarEntity[] $modvars */
-        $modvars = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findAll();
+        /** @var \Zikula\ExtensionsModule\Entity\ExtensionVarEntity[] $modvars */
+        $modvars = $em->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findAll();
         foreach ($modvars as $var) {
             if (!array_key_exists($var->getModname(), self::$modvars)) {
                 self::$modvars[$var->getModname()] = array();
@@ -165,6 +165,9 @@ class ModUtil
 
     /**
      * Checks to see if a module variable is set.
+     * @deprecated at Core-1.4.1
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::has()
+     * @see service zikula_extensions_module.api.variable
      *
      * @param string $modname The name of the module.
      * @param string $name    The name of the variable.
@@ -196,6 +199,10 @@ class ModUtil
 
     /**
      * The getVar method gets a module variable.
+     * @deprecated at Core-1.4.1
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::get()
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::getAll()
+     * @see service zikula_extensions_module.api.variable
      *
      * If the name parameter is included then method returns the
      * module variable value.
@@ -254,6 +261,9 @@ class ModUtil
 
     /**
      * The setVar method sets a module variable.
+     * @deprecated at Core-1.4.1
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::set()
+     * @see service zikula_extensions_module.api.variable
      *
      * @param string $modname The name of the module.
      * @param string $name    The name of the variable.
@@ -273,14 +283,14 @@ class ModUtil
         }
 
         $em = ServiceUtil::get('doctrine.entitymanager');
-        $entities = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findBy(array('modname' => $modname, 'name' => $name));
+        $entities = $em->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(array('modname' => $modname, 'name' => $name));
         if (count($entities) > 0) {
             foreach ($entities as $entity) {
                 // possible duplicates exist. update all (refs #2385)
                 $entity->setValue($value);
             }
         } else {
-            $entity = new \Zikula\Core\Doctrine\Entity\ExtensionVarEntity();
+            $entity = new \Zikula\ExtensionsModule\Entity\ExtensionVarEntity();
             $entity->setModname($modname);
             $entity->setName($name);
             $entity->setValue($value);
@@ -296,6 +306,9 @@ class ModUtil
 
     /**
      * The setVars method sets multiple module variables.
+     * @deprecated at Core-1.4.1
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::setAll()
+     * @see service zikula_extensions_module.api.variable
      *
      * @param string $modname The name of the module.
      * @param array  $vars    An associative array of varnames/varvalues.
@@ -314,6 +327,10 @@ class ModUtil
 
     /**
      * The delVar method deletes a module variable.
+     * @deprecated at Core-1.4.1
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::del()
+     * @see \Zikula\ExtensionsModule\Api\VariableApi::delAll()
+     * @see service zikula_extensions_module.api.variable
      *
      * Delete a module variables. If the optional name parameter is not supplied all variables
      * for the module 'modname' are deleted.
@@ -359,7 +376,7 @@ class ModUtil
         // else just delete this specific variable
         /** @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->createQueryBuilder()
-                 ->delete('Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
+                 ->delete('Zikula\ExtensionsModule\Entity\ExtensionVarEntity', 'v')
                  ->where('v.modname = :modname')
                  ->setParameter('modname', $modname);
 

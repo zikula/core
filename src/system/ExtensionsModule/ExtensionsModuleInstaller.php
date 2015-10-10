@@ -37,7 +37,7 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
         $tables = array(
             'Zikula\Core\Doctrine\Entity\ExtensionEntity',
             'Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity',
-            'Zikula\Core\Doctrine\Entity\ExtensionVarEntity',
+            'Zikula\ExtensionsModule\Entity\ExtensionVarEntity',
             'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
             'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity',
             'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity',

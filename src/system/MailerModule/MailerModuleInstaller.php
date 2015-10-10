@@ -52,7 +52,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
             case '1.3.2':
                 // clear old modvars
                 // use manual method because getVars() is not available during system upgrade
-                $modVarEntities = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findBy(array('modname' => $this->name));
+                $modVarEntities = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(array('modname' => $this->name));
                 $modVars = array();
                 foreach ($modVarEntities as $var) {
                     $modVars[$var['name']] = $var['value'];
