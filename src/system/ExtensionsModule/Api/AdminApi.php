@@ -397,7 +397,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Delete any module variables that the module cleanup function might have missed
         $query = $this->entityManager->createQueryBuilder()
                                      ->delete()
-                                     ->from('Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
+                                     ->from('Zikula\ExtensionsModule\Entity\ExtensionVarEntity', 'v')
                                      ->where('v.modname = :modname')
                                      ->setParameter('modname', $modinfo['name'])
                                      ->getQuery();
@@ -746,7 +746,7 @@ class AdminApi extends \Zikula_AbstractApi
                     if (isset($dbmodinfo['name']) && in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
                         // migrate its modvars
                         $query = $this->entityManager->createQueryBuilder()
-                             ->update('Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
+                             ->update('Zikula\ExtensionsModule\Entity\ExtensionVarEntity', 'v')
                              ->set('v.modname', ':modname')
                              ->setParameter('modname', $modinfo['name'])
                              ->where('v.modname = :dbname')

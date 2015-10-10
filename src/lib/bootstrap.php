@@ -24,6 +24,7 @@ ZLoader::register($loader);
  */
 class_alias('\Zikula\CategoriesModule\Entity\CategoryEntity', '\Zikula\Module\CategoriesModule\Entity\CategoryEntity', true);
 class_alias('\Zikula\UsersModule\Entity\UserEntity', '\Zikula\Module\UsersModule\Entity\UserEntity', true);
+class_alias('\Zikula\ExtensionsModule\Entity\ExtensionVarEntity', '\Zikula\Core\Doctrine\Entity\ExtensionVarEntity', true);
 
 $kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
 if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {

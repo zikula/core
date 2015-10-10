@@ -40,7 +40,7 @@ class CoreExtension extends Extension
         $loader->load('twig.xml');
         $loader->load('theme.xml');
         $loader->load('translation.xml');
-        
+
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
         

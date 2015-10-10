@@ -171,4 +171,64 @@ abstract class AbstractController extends Controller
     {
         $this->translator = $translator;
     }
+
+    /**
+     * Convenience shortcut to get Extension Variable.
+     * @param string $variableName
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getVar($variableName, $default = false)
+    {
+        return $this->container->get('zikula_extensions_module.api.variable')->get($this->name, $variableName, $default);
+    }
+
+    /**
+     * Convenience shortcut to get all Extension Variables.
+     * @return array
+     */
+    public function getVars()
+    {
+        return $this->container->get('zikula_extensions_module.api.variable')->getAll($this->name);
+    }
+
+    /**
+     * Convenience shortcut to set Extension Variable.
+     * @param string $variableName
+     * @param string $value
+     * @return bool
+     */
+    public function setVar($variableName, $value = '')
+    {
+        return $this->container->get('zikula_extensions_module.api.variable')->set($this->name, $variableName, $value);
+    }
+
+    /**
+     * Convenience shortcut to set many Extension Variables.
+     * @param array $variables
+     * @return bool
+     */
+    public function setVars(array $variables)
+    {
+        return $this->container->get('zikula_extensions_module.api.variable')->setAll($this->name, $variables);
+    }
+
+    /**
+     * Convenience shortcut to delete an Extension Variable.
+     * @param $variableName
+     * @return bool
+     */
+    public function delVar($variableName)
+    {
+        return $this->container->get('zikula_extensions_module.api.variable')->del($this->name, $variableName);
+    }
+
+    /**
+     * Convenience shortcut to delete all Extension Variables.
+     * @return bool
+     */
+    public function delVars()
+    {
+        return $this->container->get('zikula_extensions_module.api.variable')->delAll($this->name);
+    }
 }
