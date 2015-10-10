@@ -19,3 +19,13 @@ The class makes the following methods available:
     - delAll($extensionName)
 
 The class is fully tested.
+
+From classes extending \Zikula\Core\Controller\AbstractController several convenience methods are available:
+
+    - hasVar($variableName)
+    - getVar($variableName, $default = false)
+    - getVars()
+    - setVar($variableName, $value = '')
+    - setVars(array $vars)
+    - delVar($variableName)
+    - delVars()
