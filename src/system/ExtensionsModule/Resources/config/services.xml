@@ -10,12 +10,11 @@
     </parameters>
 
     <services>
-        <service id="zikula_extensions_module.extension_var_repository"
-                class="%zikula_extensions_module.extension_var_repository.class%"
-                factory-service="doctrine.orm.default_entity_manager"
-                factory-method="getRepository">
+        <service id="zikula_extensions_module.extension_var_repository" class="%zikula_extensions_module.extension_var_repository.class%">
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
             <argument type="string">Zikula\ExtensionsModule\Entity\ExtensionVarEntity</argument>
         </service>
+
         <service id="zikula_extensions_module.api.variable" class="%zikula_extensions_module.api.variable.class%">
             <argument type="service" id="zikula_extensions_module.extension_var_repository" />
             <argument type="service" id="kernel" />
