@@ -313,7 +313,7 @@ class CoreExtension extends \Twig_Extension
 
         // @todo remove this code block at Core-2.0 because all themes are twig based
         $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
-        if (!$themeBundle->isTwigBased()) {
+        if (isset($themeBundle) && !$themeBundle->isTwigBased()) {
             \PageUtil::addVar($type, $value);
             return;
         }

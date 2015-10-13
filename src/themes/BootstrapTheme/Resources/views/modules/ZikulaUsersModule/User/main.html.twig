@@ -8,7 +8,7 @@
             <div class="media">
                 <div class="media-left">
                 {% if modvars.ZikulaUsersModule.accountdisplaygraphics == 1 %}
-                    {% if isset(accountLink.set) && !empty(accountLink.set) %}
+                    {% if accountLink.set is defined and accountLink.set is not empty %}
                         {% set iconset = accountLink.set %}
                     {% else %}
                         {% set iconset = 'null' %}
