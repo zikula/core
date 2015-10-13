@@ -117,7 +117,8 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
             $group->setDescription($record['description']);
             $group->setPrefix($record['prefix']);
             foreach ($record['users'] as $uid) {
-                $group->addUser($this->entityManager->getReference('ZikulaUsersModule:UserEntity', $uid));
+                $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $uid);
+                $user->addGroup($group);
             }
             $this->entityManager->persist($group);
         }
