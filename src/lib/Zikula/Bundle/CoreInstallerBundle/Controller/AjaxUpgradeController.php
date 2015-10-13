@@ -143,6 +143,20 @@ class AjaxUpgradeController extends AbstractController
 
     private function from140to141()
     {
+        // perform the following SQL
+//ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F88304AF18 FOREIGN KEY (cr_uid) REFERENCES users (uid);
+//ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F8C072C1DD FOREIGN KEY (lu_uid) REFERENCES users (uid);
+//ALTER TABLE categories_registry ADD CONSTRAINT FK_1B56B4338304AF18 FOREIGN KEY (cr_uid) REFERENCES users (uid);
+//ALTER TABLE categories_registry ADD CONSTRAINT FK_1B56B433C072C1DD FOREIGN KEY (lu_uid) REFERENCES users (uid);
+//ALTER TABLE sc_intrusion ADD CONSTRAINT FK_8595CE46539B0606 FOREIGN KEY (uid) REFERENCES users (uid);
+//DROP INDEX gid_uid ON group_membership;
+//ALTER TABLE group_membership DROP PRIMARY KEY;
+//ALTER TABLE group_membership ADD CONSTRAINT FK_5132B337539B0606 FOREIGN KEY (uid) REFERENCES users (uid);
+//ALTER TABLE group_membership ADD CONSTRAINT FK_5132B3374C397118 FOREIGN KEY (gid) REFERENCES groups (gid);
+//CREATE INDEX IDX_5132B337539B0606 ON group_membership (uid);
+//CREATE INDEX IDX_5132B3374C397118 ON group_membership (gid);
+//ALTER TABLE group_membership ADD PRIMARY KEY (uid, gid);
+
         // take whatever additional actions necessary to upgrade from 140 to 141
         return true;
     }

@@ -16,7 +16,7 @@ namespace Zikula\GroupsModule\Api;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
-use Zikula\GroupsModule\Entity\GroupMembershipEntity;
+use Zikula\UsersModule\Entity\UserEntity;
 use SecurityUtil;
 use UserUtil;
 use ModUtil;
@@ -104,14 +104,14 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // get item
-        $result = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
+        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
-        if (!$result) {
+        if (!$group) {
             return false;
         }
 
         // convert to array
-        $result = $result->toArray();
+        $result = $group->toArray();
 
         // Get group membership
         // Optional arguments.
@@ -128,21 +128,13 @@ class UserApi extends \Zikula_AbstractApi
 
         $uidsArray = array();
         if ($args['group_membership']) {
-            $gmFilterParameters = array('gid' => $args['gid']);
-            if (!is_null($args['uid'])) {
-                $gmFilterParameters['uid'] = $args['uid'];
-            }
-
-            $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy($gmFilterParameters, array(), $args['numitems'], $args['startnum']);
-
-            if (is_array($groupmembership)) {
-                foreach ($groupmembership as $gm) {
-                    $gm = $gm->toArray();
-                    $uidsArray[$gm['uid']] = $gm;
+            $groupUsers = $group->getUsers();
+            /** @var UserEntity $user */
+            foreach ($groupUsers as $user) {
+                if (!is_null($args['uid']) && ($user->getUid() != $args['uid'])) {
+                    continue;
                 }
-            } else {
-                // An error getting data from the database
-                return false;
+                $uidsArray[$user->getUid()] = $user->toArray();
             }
         }
 
@@ -205,14 +197,8 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('count(m.gid)')
-           ->from('ZikulaGroupsModule:GroupMembershipEntity', 'm')
-           ->where('m.gid = :gid')
-           ->setParameter('gid', $args['gid']);
-
-        $query = $qb->getQuery();
-        return (int)$query->getSingleScalarResult();
+        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
+        return $group->getUsers()->count();
     }
 
     /**
@@ -237,37 +223,20 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $items = array();
-
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
-            return $items;
+            return [];
         }
 
-        $groupmembership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findBy(array('uid' => $args['uid']));
+        $userGroups = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid'])->getGroups();
 
-        // Check for an error with the database code
-        if ($groupmembership === false) {
-            return false;
-        }
-
-        $objArray = array();
-        foreach ($groupmembership as $gm) {
-            $objArray[] = $gm->toArray();
-        }
-
-        if (isset($args['clean']) && $args['clean']) {
-            $newArray = array();
-
-            foreach ($objArray as $obj) {
-                $newArray[] = $obj['gid'];
-            }
-
-            $objArray = $newArray;
+        $groupsArray = array();
+        foreach ($userGroups as $gid => $group) {
+            $groupsArray[$gid] = $group->toArray();
         }
 
         // Return the items
-        return $objArray;
+        return (isset($args['clean']) && $args['clean']) ? array_keys($groupsArray) : $groupsArray;
     }
 
     /**
@@ -637,7 +606,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
+        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
         if (!$group) {
             return false;
@@ -649,18 +618,16 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // verify if the user is alredy a member of this group
-        $is_member = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
+        $isMember = $group->getUsers()->contains($user);
 
         // Add item
-        if (!$is_member) {
-            $membership = new GroupMembershipEntity;
-            $membership['gid'] = $args['gid'];
-            $membership['uid'] = $args['uid'];
-            $this->entityManager->persist($membership);
+        if (!$isMember) {
+            $user->addGroup($group);
             $this->entityManager->flush();
 
             // Let other modules know that we have updated a group.
-            $adduserEvent = new GenericEvent($membership);
+            $adduserEvent = new GenericEvent(['gid' => $args['gid'], 'uid' => $args['uid']]);
             $this->getDispatcher()->dispatch('group.adduser', $adduserEvent);
         } else {
             if (isset($args['verbose']) && !$args['verbose']) {
@@ -695,7 +662,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
+        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
         if (!$group) {
             return false;
@@ -707,8 +674,8 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // delete user from group
-        $membership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
-        $this->entityManager->remove($membership);
+        $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
+        $user->removeGroup($group);
         $this->entityManager->flush();
 
         // Let other modules know we have updated a group

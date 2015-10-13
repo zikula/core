@@ -343,19 +343,16 @@ class SecurityUtil
             $vars['Active User'] = (int)$user;
         }
 
+        /** @var \Doctrine\ORM\EntityManager $em */
         $em = ServiceUtil::get('doctrine.entitymanager');
 
         // Get all groups that user is in
-        $qb = $em->createQueryBuilder();
-        $query = $qb->select('g.gid')
-                    ->from('ZikulaGroupsModule:GroupMembershipEntity', 'g')
-                    ->where($qb->expr()->in('g.uid', ':uids'))
-                    ->setParameter('uids', $uids)
-                    ->getQuery();
-
-        $fldArray = $query->getResult();
-        if ($fldArray === false) {
-            return $groupperms;
+        $foundUsers = $em->getRepository('ZikulaUsersModule:UserEntity')->findBy(['uid' => $uids]);
+        $fldArray = [];
+        foreach($foundUsers as $foundUser) {
+            foreach($foundUser->getGroups() as $gid => $group) {
+                $fldArray[] = $gid;
+            }
         }
 
         $usergroups = array();

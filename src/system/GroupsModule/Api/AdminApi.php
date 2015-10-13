@@ -15,7 +15,6 @@ namespace Zikula\GroupsModule\Api;
 
 use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Entity\GroupMembershipEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use SecurityUtil;
 use Zikula;
@@ -106,14 +105,11 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get item
-        $item = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
+        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
-        if (!$item) {
+        if (!$group) {
             return false;
         }
-
-        // keep item to pass it to dispatcher later
-        $deletedItem = $item->toArray();
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_DELETE)) {
@@ -122,30 +118,21 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Special groups check
         $defaultgroupid = $this->getVar('defaultgroup', 0);
-        if ($item['gid'] == $defaultgroupid) {
+        if ($group['gid'] == $defaultgroupid) {
             throw new \RuntimeException($this->__('Sorry! You cannot delete the default users group.'));
         }
 
         $primaryadmingroupid = $this->getVar('primaryadmingroup', 0);
-        if ($item['gid'] == $primaryadmingroupid) {
+        if ($group['gid'] == $primaryadmingroupid) {
             throw new \RuntimeException($this->__('Sorry! You cannot delete the primary administrators group.'));
         }
 
         // Delete the group
-        $this->entityManager->remove($item);
+        $group->removeAllUsers();
+        // @todo Is there any reason why we don't delete group applications?
+        $this->entityManager->remove($group);
+        // this could be quite memory intensive for large groups managing large collections.
         $this->entityManager->flush();
-
-        // remove all memberships of this group
-        $query = $this->entityManager->createQueryBuilder()
-                                     ->delete()
-                                     ->from('ZikulaGroupsModule:GroupMembershipEntity', 'm')
-                                     ->where('m.gid = :gid')
-                                     ->setParameter('gid', $args['gid'])
-                                     ->getQuery();
-        $query->getResult();
-
-        // TODO: Is there any reason why we don't delete group applications?
-        //
 
         // Remove any group permissions for this group
         $query = $this->entityManager->createQueryBuilder()
@@ -157,7 +144,7 @@ class AdminApi extends \Zikula_AbstractApi
         $query->getResult();
 
         // Let other modules know that we have deleted a group.
-        $deleteEvent = new GenericEvent($deletedItem);
+        $deleteEvent = new GenericEvent($group->toArray());
         $this->getDispatcher()->dispatch('group.delete', $deleteEvent);
 
         // Let the calling process know that we have finished successfully
@@ -257,15 +244,13 @@ class AdminApi extends \Zikula_AbstractApi
             throw new AccessDeniedException();
         }
 
+        $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
         // Add user to group
-        $membership = new GroupMembershipEntity;
-        $membership['gid'] = $args['gid'];
-        $membership['uid'] = $args['uid'];
-        $this->entityManager->persist($membership);
+        $user->addGroup($this->entityManager->getReference('ZikulaGroupsModule:GroupEntity', $args['gid']));
         $this->entityManager->flush();
 
         // Let other modules know that we have updated a group.
-        $adduserEvent = new GenericEvent($membership);
+        $adduserEvent = new GenericEvent(['gid' => $args['gid'], 'uid' => $args['uid']]);
         $this->getDispatcher()->dispatch('group.adduser', $adduserEvent);
 
         // Let the calling process know that we have finished successfully
@@ -293,7 +278,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid'], 'group_membership' => false));
+        $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
 
         if (!$group) {
             return false;
@@ -304,14 +289,10 @@ class AdminApi extends \Zikula_AbstractApi
             throw new AccessDeniedException();
         }
 
+        $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $args['uid']);
         // delete user from group
-        $membership = $this->entityManager->getRepository('ZikulaGroupsModule:GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
-        if (null !== $membership) {
-            $this->entityManager->remove($membership);
-            $this->entityManager->flush();
-        } else {
-            return false;
-        }
+        $user->removeGroup($group);
+        $this->entityManager->flush();
 
         // Let other modules know we have updated a group
         $removeuserEvent = new GenericEvent(array('gid' => $args['gid'], 'uid' => $args['uid']));

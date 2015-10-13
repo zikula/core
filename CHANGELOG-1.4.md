@@ -8,6 +8,9 @@ CHANGELOG - ZIKULA 1.4.x
      - If you use the Imagine System plugin and add custom transformations with a priority greater than 50,
        these are now applied *after* the thumbnail is generated. (#2594)
      - Removed `app/CustomBundle` but likely this was not used by anyone. (#2622)
+     - Removed GroupMembershipEntity. This is very unlikely to have been used outside the Core.
+       Group membership is now available directly from GroupEntity::users. A user's memberships are available
+       from UserEntity::groups.
  - Deprecated:
      - Twig function `pageAddVar()` deprecated. Use `pageAddAsset()` or `pageSetVar()` instead.
  - Fixes:
