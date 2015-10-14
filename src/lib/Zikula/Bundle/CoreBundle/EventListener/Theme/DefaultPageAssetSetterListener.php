@@ -75,13 +75,11 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
         // add default stylesheets to cssAssetBag
         $this->addBootstrapCss($basePath);
-        if (!\ThemeUtil::getVar('noCoreCss', false)) {
-            $this->cssAssetBag->add(
-                [
-                    $basePath . '/style/core.css' => 1,
-                ]
-            );
-        }
+        $this->cssAssetBag->add(
+            [
+                $basePath . '/style/core.css' => 1,
+            ]
+        );
         // Add legacy stylesheet
         if (\System::isLegacyMode('1.4.0')) {
             $this->cssAssetBag->add(
