@@ -85,25 +85,25 @@ class AjaxInstallerStage implements StageInterface
                 self::FAIL => __('There was an error installing Zikula Permissions Module')
             ),
             7 => array(
+                self::NAME => "users",
+                self::PRE => __('Zikula Users Module'),
+                self::DURING => __('Installing Zikula Users Module'),
+                self::SUCCESS => __('Zikula Users Module installed'),
+                self::FAIL => __('There was an error installing Zikula Users Module')
+            ),
+            8 => array(
                 self::NAME => "groups",
                 self::PRE => __('Zikula Groups Module'),
                 self::DURING => __('Installing Zikula Groups Module'),
                 self::SUCCESS => __('Zikula Groups Module installed'),
                 self::FAIL => __('There was an error installing Zikula Groups Module')
             ),
-            8 => array(
+            9 => array(
                 self::NAME => "blocks",
                 self::PRE => __('Zikula Blocks Module'),
                 self::DURING => __('Installing Zikula Blocks Module'),
                 self::SUCCESS => __('Zikula Blocks Module installed'),
                 self::FAIL => __('There was an error installing Zikula Blocks Module')
-            ),
-            9 => array(
-                self::NAME => "users",
-                self::PRE => __('Zikula Users Module'),
-                self::DURING => __('Installing Zikula Users Module'),
-                self::SUCCESS => __('Zikula Users Module installed'),
-                self::FAIL => __('There was an error installing Zikula Users Module')
             ),
             10 => array(
                 self::NAME => "security",

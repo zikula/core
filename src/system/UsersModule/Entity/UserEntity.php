@@ -13,8 +13,10 @@
 
 namespace Zikula\UsersModule\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\GroupsModule\Entity\GroupEntity;
 
 /**
  * User entity class.
@@ -179,6 +181,14 @@ class UserEntity extends EntityAccess
      */
     private $attributes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Zikula\GroupsModule\Entity\GroupEntity", inversedBy="users", indexBy="gid")
+     * @ORM\JoinTable(name="group_membership",
+     *      joinColumns={@ORM\JoinColumn(name="uid", referencedColumnName="uid")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="gid", referencedColumnName="gid")}
+     *      )
+     **/
+    private $groups;
 
     /**
      * constructor
@@ -200,7 +210,8 @@ class UserEntity extends EntityAccess
         $this->tz = '';
         $this->locale = '';
 
-        $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->attributes = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     /**
@@ -548,5 +559,39 @@ class UserEntity extends EntityAccess
         if (isset($this->attributes[$name])) {
             $this->attributes->remove($name);
         }
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * UserEntity is the 'Owning side'
+     * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html#owning-and-inverse-side-on-a-manytomany-association
+     * @param GroupEntity $group
+     */
+    public function addGroup(GroupEntity $group)
+    {
+        $group->addUser($this);
+        $this->groups[] = $group;
+    }
+
+    public function removeGroup(GroupEntity $group)
+    {
+        $group->removeUser($this);
+        $this->groups->removeElement($group);
+    }
+
+    public function removeGroups()
+    {
+        /** @var GroupEntity $group */
+        foreach($this->groups as $group) {
+            $group->removeUser($this);
+        }
+        $this->groups->clear();
     }
 }

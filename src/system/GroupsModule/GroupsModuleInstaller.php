@@ -14,6 +14,7 @@
 namespace Zikula\GroupsModule;
 
 use DoctrineHelper;
+use Zikula\GroupsModule\Entity\GroupEntity;
 
 /**
  * Installation and upgrade routines for the groups module
@@ -30,7 +31,6 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
         // create tables
         $classes = array(
             'Zikula\GroupsModule\Entity\GroupEntity',
-            'Zikula\GroupsModule\Entity\GroupMembershipEntity',
             'Zikula\GroupsModule\Entity\GroupApplicationEntity'
         );
 
@@ -94,42 +94,33 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function defaultdata()
     {
-        $records = array(
-            array(  'name'        => $this->__('Users'),
-                    'description' => $this->__('By default, all users are made members of this group.'),
-                    'prefix'      => $this->__('usr')),
-            array(  'name'        => $this->__('Administrators'),
-                    'description' => $this->__('Group of administrators of this site.'),
-                    'prefix'      => $this->__('adm'))
-        );
+        $records = [
+            ['name' => $this->__('Users'),
+                'description' => $this->__('By default, all users are made members of this group.'),
+                'prefix' => $this->__('usr'),
+                // Anonymous user (1), member of Users group (This is required. Handling of 'unregistered' state for
+                // permissions is handled separately.)
+                // Admin user (2), member of Users group (Not strictly necessary, but for completeness.)
+                'users' => [1, 2]
+            ],
+            ['name' => $this->__('Administrators'),
+                'description' => $this->__('Group of administrators of this site.'),
+                'prefix' => $this->__('adm'),
+                // Admin user (2), member of Administrators group
+                'users' => [2]
+            ]
+        ];
 
         foreach ($records as $record) {
-            $item = new \Zikula\GroupsModule\Entity\GroupEntity;
-            $item['name'] = $record['name'];
-            $item['description'] = $record['description'];
-            $item['prefix'] = $record['prefix'];
-            $this->entityManager->persist($item);
-        }
-
-        // Insert Anonymous and Admin users
-        $records = array(
-            // Anonymous user, member of Users group (This is required. Handling of 'unregistered' state for
-            // permissions is handled separately.)
-            array('gid' => '1',
-                  'uid' => '1'),
-            // Admin user, member of Users group (Not strictly necessary, but for completeness.)
-            array('gid' => '1',
-                  'uid' => '2'),
-            // Admin user, member of Administrators group
-            array('gid' => '2',
-                  'uid' => '2')
-        );
-
-        foreach ($records as $record) {
-            $item = new \Zikula\GroupsModule\Entity\GroupMembershipEntity;
-            $item['gid'] = $record['gid'];
-            $item['uid'] = $record['uid'];
-            $this->entityManager->persist($item);
+            $group = new GroupEntity();
+            $group->setName($record['name']);
+            $group->setDescription($record['description']);
+            $group->setPrefix($record['prefix']);
+            foreach ($record['users'] as $uid) {
+                $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $uid);
+                $user->addGroup($group);
+            }
+            $this->entityManager->persist($group);
         }
 
         $this->entityManager->flush();

@@ -196,16 +196,6 @@ class AdminApi extends \Zikula_AbstractApi
             if ($markOnly) {
                 UserUtil::setVar('activated', UsersConstant::ACTIVATED_PENDING_DELETE, $userObj['uid']);
             } else {
-                // remove all memberships of this user
-                // TODO? - This should be in the Groups module, and happen as a result of an event.
-                $query = $this->entityManager->createQueryBuilder()
-                                             ->delete()
-                                             ->from('ZikulaGroupsModule:GroupMembershipEntity', 'm')
-                                             ->where('m.uid = :uid')
-                                             ->setParameter('uid', $userObj['uid'])
-                                             ->getQuery();
-                $query->getResult();
-
                 // delete verification records for this user
                 ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $userObj['uid']));
 
@@ -220,6 +210,7 @@ class AdminApi extends \Zikula_AbstractApi
 
                 // delete user
                 $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $userObj['uid']);
+                $user->removeGroups();
                 $this->entityManager->remove($user);
                 $this->entityManager->flush();
 

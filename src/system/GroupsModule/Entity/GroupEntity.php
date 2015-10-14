@@ -15,6 +15,8 @@ namespace Zikula\GroupsModule\Entity;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Zikula\UsersModule\Entity\UserEntity;
 
 /**
  * Group entity class.
@@ -97,6 +99,14 @@ class GroupEntity extends EntityAccess
      */
     private $uidmaster;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Zikula\UsersModule\Entity\UserEntity", mappedBy="groups")
+     * @ORM\JoinTable(
+     *      joinColumns={@ORM\JoinColumn(name="gid", referencedColumnName="gid", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="uid", referencedColumnName="uid")}
+     *      )
+     **/
+    private $users;
 
     /**
      * constructor
@@ -112,6 +122,7 @@ class GroupEntity extends EntityAccess
         $this->nbumax = 0;
         $this->link = 0;
         $this->uidmaster = 0;
+        $this->users = new ArrayCollection();
     }
 
     /**
@@ -312,5 +323,33 @@ class GroupEntity extends EntityAccess
     public function setUidmaster($uidmaster)
     {
         $this->uidmaster = $uidmaster;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * GroupEntity is the 'Inverse side'
+     * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html#owning-and-inverse-side-on-a-manytomany-association
+     * @param UserEntity $user
+     */
+    public function addUser(UserEntity $user)
+    {
+        $this->users[] = $user;
+    }
+
+    public function removeUser(UserEntity $user)
+    {
+        $this->users->removeElement($user);
+    }
+
+    public function removeAllUsers()
+    {
+        $this->users->clear();
     }
 }
