@@ -33,8 +33,11 @@ CHANGELOG - ZIKULA 1.4.x
     - Add `pageAddAsset()` Twig function and enable 'weighting' of assets to specify load order. (#2606, #2596, #1324)
     - [Imagine Plugin] Possibility to add transformations which are applied after the thumbnail 
         is generated. (#2594)
-    - Gedmo Doctrine Extensions updated to version 2.4.x,
-    - Twig Extensions updated to version ~1.3.0
+    - Gedmo Doctrine Extensions updated to version 2.4.x.
+    - Twig Extensions updated to version ~1.3.0.
+    - Doctrine ORM updated to 2.5.x. (#2613)
+        - Includes 'minor' security fix for local access exploits. see http://www.doctrine-project.org/2015/08/31/doctrine_orm_2_5_1_and_2_4_8_released.html
+    - Doctrine Bundle updated to 1.5.x (#2614)
     - Add VariableApi to manage Extension Vars for Core-2.0 applications.
  
 
