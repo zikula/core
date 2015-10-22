@@ -28,7 +28,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     /**
      * VariableApiTest constructor.
      */
-    public function __construct()
+    public function setUp()
     {
         $kernel = $this
             ->getMockBuilder('Symfony\Component\HttpKernel\Kernel')
