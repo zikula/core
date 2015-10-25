@@ -21,7 +21,7 @@ use Zikula\GroupsModule\Entity\GroupEntity;
 /**
  * User entity class.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\UsersModule\Entity\Repository\UserRepository")
  * @ORM\Table(name="users",indexes={@ORM\Index(name="uname",columns={"uname"}), @ORM\Index(name="email",columns={"email"})})
  *
  * Main Users table.

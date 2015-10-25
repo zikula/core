@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace ExtensionsModule\Tests\Api;
+namespace Zikula\ExtensionsModule\Tests\Api;
 
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Tests\Api\Fixtures\StubRepository;
