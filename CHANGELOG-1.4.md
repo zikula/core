@@ -18,30 +18,32 @@ CHANGELOG - ZIKULA 1.4.x
     - Corrected variable name in BootstrapTheme template override (#2557)
     - Update JQuery MMenu to 5.5.1 to fix Prototype compatibility.
  - Features:
-    - Symfony update to 2.7.5 (#2551, #2582)
     - All system modules and themes updated to PSR-4 (#2563, #2424)
     - TranslatorTrait added (#2560)
     - Categorization of Entities enabled (#411)
-    - Add Twig-based theme engine (refs #1753)
     - Add vierbergenlars/php-semver vendor lib for version comparison (#2560)
+    - Combined and customized bootstrap/font-awesome css using Less.
+    - Improved multilingual UI in general settings (#2547)
+    - [Imagine Plugin] Possibility to add transformations which are applied after the thumbnail 
+        is generated. (#2594)
+    - Add umask support
+ - Core-2.0 Features:
+    - Add Twig-based theme engine (refs #1753)
+    - Add `pageAddAsset()` Twig function and enable 'weighting' of assets to specify load order. (#2606, #2596, #1324)
     - Core-2.0 Theme Specification finalized and enabled (#1753, #2500, #2560)
        - All core themes updated to new spec
        - ZikulaAndreas08Theme updated to new spec and bootstrap (#2428)
     - Core-2.0 Module Specification finalized and enabled (#2500, #2560)
-    - Combined and customized bootstrap/font-awesome css using Less.
-    - Improved multilingual UI in general settings (#2547)
-    - Add `pageAddAsset()` Twig function and enable 'weighting' of assets to specify load order. (#2606, #2596, #1324)
-    - [Imagine Plugin] Possibility to add transformations which are applied after the thumbnail 
-        is generated. (#2594)
+    - Add VariableApi to manage Extension Vars for Core-2.0 applications.
+    - Add PermissionApi to manage Rights/Access determination for Core-2.0 applications.
+ - Vendor updates:
+    - Symfony update to 2.7.5 (#2551, #2582)
     - Gedmo Doctrine Extensions updated to version 2.4.x.
     - Twig Extensions updated to version ~1.3.0.
     - Doctrine ORM updated to 2.5.x. (#2613)
         - Includes 'minor' security fix for local access exploits. see http://www.doctrine-project.org/2015/08/31/doctrine_orm_2_5_1_and_2_4_8_released.html
     - Doctrine Bundle updated to 1.5.x (#2614)
-    - Add umask support
-    - Add VariableApi to manage Extension Vars for Core-2.0 applications.
-    - Add PermissionApi to manage Rights/Access determination for Core-2.0 applications.
- 
+
 
 * 1.4.0 (2015-07-20)
 
