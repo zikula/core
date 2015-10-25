@@ -952,6 +952,9 @@ class UserUtil
 
         // now that we've logged in the permissions previously calculated (if any) are invalid
         $GLOBALS['authinfogathered'][$userObj['uid']] = 0;
+        // FC Core-2.0
+        $container = \ServiceUtil::getManager();
+        $container->get('zikula_permissions_module.api.permission')->resetPermissionsForUser($userObj['uid']);
     }
 
     /**

@@ -295,6 +295,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars['menutree_settingsperms'] = !empty($vars['menutree_settingsperms']) ? $vars['menutree_settingsperms'] : 'ACCESS_EDIT';
 
         // check user permissions for settings sections
+        // @todo these methods are not visible in Core-2.0 and must be accomplished another way.
         $useraccess = SecurityUtil::getSecurityLevel(SecurityUtil::getAuthInfo(), 'ZikulaBlocksModule::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]");
         $vars['menutree_titlesaccess']      = $useraccess >= constant($vars['menutree_titlesperms']);
         $vars['menutree_displayaccess']     = $useraccess >= constant($vars['menutree_displayperms']);

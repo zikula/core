@@ -231,4 +231,17 @@ abstract class AbstractController extends Controller
     {
         return $this->container->get('zikula_extensions_module.api.variable')->delAll($this->name);
     }
+
+    /**
+     * Convenience shortcut to check if user has requested permissions.
+     * @param null $component
+     * @param null $instance
+     * @param null $level
+     * @param null $user
+     * @return bool
+     */
+    public function hasPermission($component = null, $instance = null, $level = null, $user = null)
+    {
+        return $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, $level, $user);
+    }
 }
