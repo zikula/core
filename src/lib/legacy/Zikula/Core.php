@@ -522,6 +522,7 @@ class Zikula_Core
             PageUtil::registerVar('title');
             PageUtil::setVar('title', System::getVar('defaultpagetitle'));
             PageUtil::registerVar('keywords', true);
+            PageUtil::registerVar('font', true);
             PageUtil::registerVar('stylesheet', true);
             PageUtil::registerVar('javascript', true);
             PageUtil::registerVar('jsgettext', true);
