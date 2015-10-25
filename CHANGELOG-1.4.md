@@ -38,6 +38,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Doctrine ORM updated to 2.5.x. (#2613)
         - Includes 'minor' security fix for local access exploits. see http://www.doctrine-project.org/2015/08/31/doctrine_orm_2_5_1_and_2_4_8_released.html
     - Doctrine Bundle updated to 1.5.x (#2614)
+    - Add umask support
     - Add VariableApi to manage Extension Vars for Core-2.0 applications.
     - Add PermissionApi to manage Rights/Access determination for Core-2.0 applications.
  

@@ -37,6 +37,10 @@ if ($kernelConfig['env'] !== 'prod') {
     Debug::enable(E_ALL & ~E_USER_DEPRECATED);
 }
 
+if ((isset($kernelConfig['umask'])) && (!is_null($kernelConfig['umask']))) {
+    umask($kernelConfig['umask']);
+}
+
 require __DIR__.'/../app/ZikulaKernel.php';
 
 $kernel = new ZikulaKernel($kernelConfig['env'], $kernelConfig['debug']);

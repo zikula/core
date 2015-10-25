@@ -303,6 +303,7 @@ class AjaxInstallController extends AbstractController
         $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $this->container->get('request')->getHost();
         $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
         $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $this->container->get('request')->getBasePath();
+        $params['umask'] = isset($params['umask']) ? $params['umask'] : null;
         $this->yamlManager->setParameters($params);
 
         // clear the cache
