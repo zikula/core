@@ -15,6 +15,12 @@
 
 namespace Zikula\Core\LinkContainer;
 
+/**
+ * Interface LinkContainerInterface
+ * @package Zikula\Core\LinkContainer
+ *
+ * This interface is used to implement the Extension LinkContainer
+ */
 interface LinkContainerInterface
 {
     const EVENT_NAME = 'zikula.link_collector';
@@ -22,11 +28,23 @@ interface LinkContainerInterface
     const TYPE_USER = 'user';
 
     /**
+     * Return the name of the providing bundle.
      * @return string
      */
     public function getBundleName();
 
     /**
+     * Return an array of arrays based on the `type` parameter.
+     * <code>
+     * [
+     *   ['url' => '/bar',
+     *     'text' => 'Bar',
+     *     'icon' => 'check'],
+     *   ['url' => '/bar2',
+     *     'text' => 'Bar 2',
+     *     'icon' => 'check'],
+     * ]
+     * </code>
      * @param string $type
      * @return array
      */
