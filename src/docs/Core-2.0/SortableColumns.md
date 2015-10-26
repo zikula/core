@@ -6,6 +6,9 @@ Sortable Column is a zikula component to help manage datatable column headings t
 # Controller:
 
 ```php
+    use Zikula\Component\SortableColumns\SortableColumns;
+    // -
+    
     $sortableColumns = new SortableColumns($this->get('router'), 'zikulapagesmodule_admin_index', 'orderby', 'sdir');
     $sortableColumns->addColumn(new Column('pageid')); // first added is automatically the default
     $sortableColumns->addColumn(new Column('title'));
