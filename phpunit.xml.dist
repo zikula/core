@@ -12,9 +12,13 @@
          bootstrap="src/lib/bootstrap.php"
 >
     <testsuites>
-        <testsuite name="Zikula Test Suite">
+        <testsuite name="Zikula Bundle Tests">
             <directory>./src/lib/Zikula/Bundle/*/Tests/</directory>
+        </testsuite>
+        <testsuite name="Zikula Component Tests">
             <directory>./src/lib/Zikula/Component/*/Tests/</directory>
+        </testsuite>
+        <testsuite name="Zikula Core Tests">
             <directory>./src/lib/Zikula/Core/Tests/</directory>
         </testsuite>
     </testsuites>
