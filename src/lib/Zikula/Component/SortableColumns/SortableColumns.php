@@ -17,6 +17,15 @@ namespace Zikula\Component\SortableColumns;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Class SortableColumns
+ * @package Zikula\Component\SortableColumns
+ *
+ * SortableColumns is a zikula component to help manage data table column headings that can be clicked to sort the data.
+ * The collection is an ArrayCollection of Zikula\Component\SortableColumns\Column objects.
+ * Use the ::generateSortableColumns method to create an array of attributes (url, css class) indexed by column name
+ * which can be used in the generation of table headings/links.
+ */
 class SortableColumns
 {
 
@@ -48,7 +57,7 @@ class SortableColumns
      * The direction to sorted (constant from Column class)
      * @var string
      */
-    private $sortDirection;
+    private $sortDirection = Column::DIRECTION_ASCENDING;
     /**
      * The name of the html field that holds the selected orderBy field (default: `sort-field`)
      * @var string
@@ -74,6 +83,18 @@ class SortableColumns
         $this->columnCollection = new ArrayCollection();
     }
 
+    /**
+     * Create an array of column definitions indexed by column name
+     * <code>
+     *   ['a' =>
+     *     ['url' => '/foo?sort-direction=ASC&sort-field=a',
+     *      'class' => 'z-order-unsorted'
+     *     ],
+     *   ]
+     * </code>
+     *
+     * @return array
+     */
     public function generateSortableColumns()
     {
         $resultArray = array();
@@ -115,8 +136,16 @@ class SortableColumns
         return $this->columnCollection->get($name);
     }
 
-    public function setOrderBy(Column $sortColumn, $sortDirection)
+    /**
+     * Set the column to sort by and the sort direction.
+     *
+     * @param Column|null $sortColumn
+     * @param null $sortDirection
+     */
+    public function setOrderBy(Column $sortColumn = null, $sortDirection = null)
     {
+        $sortDirection = !empty($sortDirection) ? $sortDirection : Column::DIRECTION_ASCENDING;
+        $sortColumn = !empty($sortColumn) ? $sortColumn : $this->getDefaultColumn();
         $this->setSortDirection($sortDirection);
         $this->setSortColumn($sortColumn);
     }
