@@ -37,7 +37,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Add VariableApi to manage Extension Vars for Core-2.0 applications.
     - Add PermissionApi to manage Rights/Access determination for Core-2.0 applications.
  - Vendor updates:
-    - Symfony update to 2.7.5 (#2551, #2582)
+    - Symfony update to 2.7.6 (#2551, #2582)
     - Gedmo Doctrine Extensions updated to version 2.4.x.
     - Twig Extensions updated to version ~1.3.0.
     - Doctrine ORM updated to 2.5.x. (#2613)
