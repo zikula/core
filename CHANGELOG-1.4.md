@@ -43,7 +43,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Doctrine ORM updated to 2.5.x. (#2613)
         - Includes 'minor' security fix for local access exploits. see http://www.doctrine-project.org/2015/08/31/doctrine_orm_2_5_1_and_2_4_8_released.html
     - Doctrine Bundle updated to 1.5.x (#2614)
-    - jsTree ugpraded to latest 3.x version (#2616)
+    - jsTree updated to latest 3.x version (#2616)
+    - php-markdown updated to 1.5.x (#2617)
 
 
 * 1.4.0 (2015-07-20)
