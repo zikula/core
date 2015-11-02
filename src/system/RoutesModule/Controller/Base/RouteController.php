@@ -66,7 +66,7 @@ class RouteController extends Zikula_AbstractController
      */
     public function indexAction(Request $request)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+        $legacyControllerType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
         System::queryStringSetVar('type', $legacyControllerType);
         $request->query->set('type', $legacyControllerType);
     
@@ -111,7 +111,7 @@ class RouteController extends Zikula_AbstractController
      */
     public function viewAction(Request $request, $sort, $sortdir, $pos, $num)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+        $legacyControllerType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
         System::queryStringSetVar('type', $legacyControllerType);
         $request->query->set('type', $legacyControllerType);
     
@@ -262,7 +262,7 @@ class RouteController extends Zikula_AbstractController
      */
     public function editAction(Request $request)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+        $legacyControllerType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
         System::queryStringSetVar('type', $legacyControllerType);
         $request->query->set('type', $legacyControllerType);
     
@@ -306,7 +306,7 @@ class RouteController extends Zikula_AbstractController
      */
     public function displayAction(Request $request, RouteEntity $route)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+        $legacyControllerType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
         System::queryStringSetVar('type', $legacyControllerType);
         $request->query->set('type', $legacyControllerType);
     
@@ -377,7 +377,7 @@ class RouteController extends Zikula_AbstractController
      */
     public function deleteAction(Request $request, RouteEntity $route)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+        $legacyControllerType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
         System::queryStringSetVar('type', $legacyControllerType);
         $request->query->set('type', $legacyControllerType);
     
@@ -479,7 +479,7 @@ class RouteController extends Zikula_AbstractController
      */
     public function reloadAction(Request $request)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+        $legacyControllerType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
         System::queryStringSetVar('type', $legacyControllerType);
         $request->query->set('type', $legacyControllerType);
     
@@ -509,7 +509,7 @@ class RouteController extends Zikula_AbstractController
      */
     public function renewAction(Request $request)
     {
-        $legacyControllerType = $request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+        $legacyControllerType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
         System::queryStringSetVar('type', $legacyControllerType);
         $request->query->set('type', $legacyControllerType);
     
@@ -651,6 +651,6 @@ class RouteController extends Zikula_AbstractController
                    ->assign('commandName', $commandName)
                    ->assign('jcssConfig', JCSSUtil::getJSConfig());
         
-        return new PlainResponse($this->view->display('Route/inlineRedirectHandler.tpl'));
+        return new PlainResponse($this->view->fetch('Route/inlineRedirectHandler.tpl'));
     }
 }

@@ -34,7 +34,14 @@ class LinkContainer implements LinkContainerInterface
      */
     protected $router;
 
-    public function __construct($translator, RouterInterface $router)
+    /**
+     * Constructor.
+     * Initialises member vars.
+     *
+     * @param Translator      $translator Translator service instance.
+     * @param Routerinterface $router     The router service.
+     */
+    public function __construct(Translator $translator, RouterInterface $router)
     {
         $this->translator = $translator;
         $this->router = $router;

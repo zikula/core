@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 use DataUtil;
 use FormUtil;
@@ -143,7 +144,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
-     * @Assert\Choice(callback="getSchemesAllowedValues", multiple=true)
      * @var string $schemes.
      */
     protected $schemes = 'http';
@@ -151,7 +151,6 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
-     * @Assert\Choice(callback="getMethodsAllowedValues", multiple=true)
      * @var string $methods.
      */
     protected $methods = 'GET';
@@ -1312,39 +1311,59 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     }
     
     /**
-     * Returns a list of possible choices for the schemes list field.
-     * This method is used for validation.
+     * @Assert\Callback()
      */
-    public static function getSchemesAllowedValues()
+    public function isSchemesValueAllowed(ExecutionContextInterface $context)
     {
         $serviceManager = ServiceUtil::getManager();
         $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
         $listEntries = $helper->getSchemesEntriesForRoute();
+        $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
     
         $allowedValues = array();
         foreach ($listEntries as $entry) {
             $allowedValues[] = $entry['value'];
         }
     
-        return $allowedValues;
+        $selected = explode('###', $this->schemes);
+        foreach ($selected as $value) {
+            if ($value == '') {
+                continue;
+            }
+            if (!in_array($value, $allowedValues, true)) {
+                $context->buildViolation(__('Invalid value provided', $dom))
+                    ->atPath('schemes')
+                    ->addViolation();
+            }
+        }
     }
     
     /**
-     * Returns a list of possible choices for the methods list field.
-     * This method is used for validation.
+     * @Assert\Callback()
      */
-    public static function getMethodsAllowedValues()
+    public function isMethodsValueAllowed(ExecutionContextInterface $context)
     {
         $serviceManager = ServiceUtil::getManager();
         $helper = $serviceManager->get('zikularoutesmodule.listentries_helper');
         $listEntries = $helper->getMethodsEntriesForRoute();
+        $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
     
         $allowedValues = array();
         foreach ($listEntries as $entry) {
             $allowedValues[] = $entry['value'];
         }
     
-        return $allowedValues;
+        $selected = explode('###', $this->methods);
+        foreach ($selected as $value) {
+            if ($value == '') {
+                continue;
+            }
+            if (!in_array($value, $allowedValues, true)) {
+                $context->buildViolation(__('Invalid value provided', $dom))
+                    ->atPath('methods')
+                    ->addViolation();
+            }
+        }
     }
     
     /**

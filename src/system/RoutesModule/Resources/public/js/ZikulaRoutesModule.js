@@ -10,7 +10,7 @@ function zikulaRoutesCapitaliseFirstLetter(string)
  */
 function zikulaRoutesSubmitQuickNavForm(objectType)
 {
-    $('#zikularoutesmodule' + zikulaRoutesCapitaliseFirstLetter(objectType) + 'QuickNavForm').submit();
+    jQuery('#zikularoutesmodule' + zikulaRoutesCapitaliseFirstLetter(objectType) + 'QuickNavForm').submit();
 }
 
 /**
@@ -79,6 +79,6 @@ function zikulaRoutesSimpleAlert(beforeElem, title, content, alertId, cssClass)
     beforeElem.before(alertBox);
 
     jQuery('#' + alertId).delay(200).addClass('in').fadeOut(4000, function () {
-        $(this).remove();
+        jQuery(this).remove();
     });
 }
