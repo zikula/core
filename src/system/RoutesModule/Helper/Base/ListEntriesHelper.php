@@ -32,7 +32,7 @@ class ListEntriesHelper
      *
      * @return void
      */
-    public function __construct(Translator $translator)
+    public function __construct($translator)
     {
         $this->translator = $translator;
     }

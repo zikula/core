@@ -50,7 +50,7 @@ class WorkflowHelper
      *
      * @return void
      */
-    public function __construct(\Zikula_ServiceManager $serviceManager, Translator $translator)
+    public function __construct(\Zikula_ServiceManager $serviceManager, $translator)
     {
         $this->name = 'ZikulaRoutesModule';
         $this->container = $serviceManager;

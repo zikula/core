@@ -48,7 +48,7 @@ class ControllerHelper
      *
      * @return void
      */
-    public function __construct(Translator $translator, Session $session, Logger $logger)
+    public function __construct($translator, Session $session, Logger $logger)
     {
         $this->translator = $translator;
         $this->session = $session;
