@@ -34,5 +34,7 @@ class RoutesModuleInstaller extends BaseRoutesModuleInstaller
             default:
                 return false;
         }
+
+        return true;
     }
 }

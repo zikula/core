@@ -19,5 +19,14 @@ use Zikula\RoutesModule\Base\RoutesModuleVersion as BaseRoutesModuleVersion;
  */
 class RoutesModuleVersion extends BaseRoutesModuleVersion
 {
-    // custom enhancements can go here
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetaData()
+    {
+        $meta = parent::getMetaData();
+        $meta['version'] = '1.0.1';
+
+        return $meta;
+    }
 }
