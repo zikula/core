@@ -17,6 +17,6 @@
         <h2>{$templateTitle}</h2>
     {/if}
 
-    <p>Please override this template by moving it from <em>/system/ZikulaRoutesModule/Resources/views/Route/renew.tpl</em> to either your <em>/themes/YourTheme/templates/modules/ZikulaRoutesModule/Route/renew.tpl</em> or <em>/config/templates/ZikulaRoutesModule/Route/renew.tpl</em>.</p>
+    <p>Please override this template by moving it from <em>/system/RoutesModule/Resources/views/Route/renew.tpl</em> to either your <em>/themes/YourTheme/templates/modules/ZikulaRoutesModule/Route/renew.tpl</em> or <em>/config/templates/ZikulaRoutesModule/Route/renew.tpl</em>.</p>
 </div>
 {include file="`$lctUc`/footer.tpl"}
