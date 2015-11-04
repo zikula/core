@@ -89,27 +89,35 @@ services:
             - { name: kernel.event_subscriber }
     
 
-    # Util classes
+    # Utility classes
     zikularoutesmodule.model_helper:
-        class: "Zikula\\RoutesModule\\Util\\ModelUtil"
-        arguments: ["@service_container", "@=service('kernel').getBundle('ZikulaRoutesModule')"]
+        class: "Zikula\\RoutesModule\\Helper\\ModelHelper"
+        arguments:
+            serviceManager: "@service_container"
     
     zikularoutesmodule.controller_helper:
-        class: "Zikula\\RoutesModule\\Util\\ControllerUtil"
-        arguments: ["@service_container", "@=service('kernel').getBundle('ZikulaRoutesModule')"]
+        class: "Zikula\\RoutesModule\\Helper\\ControllerHelper"
+        arguments:
+            translator: "@translator"
+            session: "@session"
+            logger: "@logger"
     
     zikularoutesmodule.view_helper:
-        class: "Zikula\\RoutesModule\\Util\\ViewUtil"
-        arguments: ["@service_container", "@=service('kernel').getBundle('ZikulaRoutesModule')"]
+        class: "Zikula\\RoutesModule\\Helper\\ViewHelper"
+        arguments:
+            serviceManager: "@service_container"
+            translator: "@translator"
     
     zikularoutesmodule.workflow_helper:
-        class: "Zikula\\RoutesModule\\Util\\WorkflowUtil"
-        arguments: ["@service_container", "@=service('kernel').getBundle('ZikulaRoutesModule')"]
+        class: "Zikula\\RoutesModule\\Helper\\WorkflowHelper"
+        arguments:
+            serviceManager: "@service_container"
+            translator: "@translator"
     
     zikularoutesmodule.listentries_helper:
-        class: "Zikula\\RoutesModule\\Util\\ListEntriesUtil"
-        arguments: ["@service_container", "@=service('kernel').getBundle('ZikulaRoutesModule')"]
-    
+        class: "Zikula\\RoutesModule\\Helper\\ListEntriesHelper"
+        arguments:
+            translator: "@translator"
 
     # Log processor
     zikularoutesmodule.log.processor:
