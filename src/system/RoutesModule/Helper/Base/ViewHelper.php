@@ -45,12 +45,12 @@ class ViewHelper
      * Constructor.
      * Initialises member vars.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
+     * @param \Zikula_ServiceManager $serviceManager ServiceManager instance.
      * @param Translator            $translator     Translator service instance.
      *
      * @return void
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, Translator $translator)
+    public function __construct(\Zikula_ServiceManager $serviceManager, Translator $translator)
     {
         $this->container = $serviceManager;
         $this->translator = $translator;
