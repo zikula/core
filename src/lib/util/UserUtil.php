@@ -1839,6 +1839,12 @@ class UserUtil
      */
     public static function getTheme($force = false)
     {
+        // if this method is called from the command line scope, always return a default core theme (ZikulaAndreas08Theme)
+        // this prevents calls for the Request object or other unwanted behaviors.
+        if (php_sapi_name() == 'cli') {
+            return 'ZikulaAndreas08Theme';
+        }
+
         static $pagetheme;
 
         if (isset($pagetheme) && !$force) {
