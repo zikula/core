@@ -1,6 +1,7 @@
 application Routes {
 	vendor Zikula
 	author "Zikula contributors"
+	version "1.0.1"
 	email "support@zikula.org"
 	url "http://www.zikula.org"
 	prefix routes

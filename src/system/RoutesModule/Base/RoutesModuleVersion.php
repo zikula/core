@@ -32,7 +32,7 @@ class RoutesModuleVersion extends Zikula_AbstractVersion
     {
         $meta = array();
         // the current module version
-        $meta['version']              = '1.0.0';
+        $meta['version']              = '1.0.1';
         // the displayed name of the module
         $meta['displayname']          = $this->__('Routes');
         // the module description
