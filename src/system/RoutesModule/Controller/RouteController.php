@@ -180,14 +180,14 @@ class RouteController extends BaseRouteController
         }
 
         $cacheClearer = $this->get('zikula.cache_clearer');
-        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
+        $routeDumperHelper = $this->get('zikula_routes_module.route_dumper_helper');
 
         $cacheClearer->clear("symfony.routing");
         $this->view->clear_cache();
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Routes reloaded.'));
 
         // reload **all** JS routes
-        $result = $controllerHelper->dumpJsRoutes();
+        $result = $routeDumperHelper->dumpJsRoutes();
         if($result == '') {
             $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Exposed JS Routes dumped to %s.', 'web/js/fos_js_routes.js'));
         } else {
@@ -250,8 +250,8 @@ class RouteController extends BaseRouteController
             throw new AccessDeniedException();
         }
 
-        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
-        $result = $controllerHelper->dumpJsRoutes($lang);
+        $routeDumperHelper = $this->get('zikula_routes_module.route_dumper_helper');
+        $result = $routeDumperHelper->dumpJsRoutes($lang);
 
         if ($result == '') {
             $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Exposed JS Routes dumped to %s.', 'web/js/fos_js_routes.js'));

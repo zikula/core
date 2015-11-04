@@ -16,6 +16,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
+use Zikula\RoutesModule\Helper\RouteDumperHelper;
 use Zikula\RoutesModule\Listener\Base\InstallerListener as BaseInstallerListener;
 use Zikula\RoutesModule\Routing\RouteFinder;
 use Zikula\Core\AbstractModule;
@@ -23,7 +24,6 @@ use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\RoutesModule\Util\ControllerUtil;
 
 /**
  * Event handler implementation class for module installer events.
@@ -36,7 +36,7 @@ class InstallerListener extends BaseInstallerListener
 
     private $cacheClearer;
 
-    private $controllerHelper;
+    private $routeDumperHelper;
 
     public static function getSubscribedEvents()
     {
@@ -46,12 +46,12 @@ class InstallerListener extends BaseInstallerListener
         return $events;
     }
 
-    public function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer, ControllerUtil $controllerHelper)
+    public function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer, RouteDumperHelper $routeDumperHelper)
     {
         $this->em = $em;
         $this->routeFinder = $routeFinder;
         $this->cacheClearer = $cacheClearer;
-        $this->controllerHelper = $controllerHelper;
+        $this->routeDumperHelper = $routeDumperHelper;
     }
 
     /**
@@ -101,7 +101,7 @@ class InstallerListener extends BaseInstallerListener
         $this->cacheClearer->clear('symfony.routing');
 
         // reload **all** JS routes
-        $this->controllerHelper->dumpJsRoutes();
+        $this->routeDumperHelper->dumpJsRoutes();
     }
 
     /**
@@ -148,7 +148,7 @@ class InstallerListener extends BaseInstallerListener
         }
 
         // reload **all** JS routes
-        $this->controllerHelper->dumpJsRoutes();
+        $this->routeDumperHelper->dumpJsRoutes();
 
         $this->cacheClearer->clear('symfony.routing');
     }
@@ -176,6 +176,6 @@ class InstallerListener extends BaseInstallerListener
     public function newRoutesAvail(GenericEvent $event)
     {
         // reload **all** JS routes
-        $this->controllerHelper->dumpJsRoutes();
+        $this->routeDumperHelper->dumpJsRoutes();
     }
 }
