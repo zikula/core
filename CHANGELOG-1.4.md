@@ -17,7 +17,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed 'Removetrailingslash' error (#2552)
     - Corrected variable name in BootstrapTheme template override (#2557)
     - Fixed `categories_admin_view.js` not present in 1.4.0 dist (#2637)
-    - Update JQuery MMenu to 5.5.1 to fix Prototype compatibility.
+    - Routes Module updated to v1.0.1
+        - Non-custom routes are no longer stored in the DB. This increases pageload speed and reduces need for reloading often.
  - Features:
     - All system modules and themes updated to PSR-4 (#2563, #2424)
     - TranslatorTrait added (#2560)
@@ -46,6 +47,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Doctrine ORM updated to 2.5.x. (#2613)
         - Includes 'minor' security fix for local access exploits. see http://www.doctrine-project.org/2015/08/31/doctrine_orm_2_5_1_and_2_4_8_released.html
     - Doctrine Bundle updated to 1.5.x (#2614)
+    - JQuery MMenu updated to 5.5.1 to fix Prototype compatibility.
     - jsTree updated to latest 3.x version (#2616)
     - php-markdown updated to 1.5.x (#2617)
 

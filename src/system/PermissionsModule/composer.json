@@ -17,6 +17,7 @@
     },
     "extra": {
         "zikula": {
+            "url": "permissions",
             "class": "Zikula\\PermissionsModule\\ZikulaPermissionsModule"
         }
     }

@@ -121,7 +121,7 @@
             <argument type="service" id="logger" on-invalid="ignore" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
-            <argument type="service" id="zikularoutesmodule.controller_helper" />
+            <!--<argument type="service" id="zikularoutesmodule.controller_helper" />-->
             <argument type="service" id="zikula.cache_clearer" />
         </service>
 

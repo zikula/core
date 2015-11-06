@@ -51,24 +51,6 @@ class RouteEntity extends BaseAbstractRouteEntity
 
         // Always add route to the end of the list.
         $this->sort = -1;
-
-        $this->userRoute = true;
-    }
-
-    public function prepareItemActions()
-    {
-        parent::prepareItemActions();
-
-        if ($this->userRoute) {
-            return;
-        }
-
-        // Remove edit and delete action for non user routes.
-        foreach ($this->_actions as $key => $action) {
-            if ($action['icon'] == 'pencil-square-o' || $action['icon'] == 'trash-o') {
-                unset($this->_actions[$key]);
-            }
-        }
     }
 
     /**

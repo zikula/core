@@ -86,9 +86,9 @@ class AdminController extends Zikula_AbstractController
      */
     public function handleInlineRedirectAction($idPrefix, $commandName, $id = 0)
     {
-        $id = (int) $this->request->query->filter('id', 0, FILTER_VALIDATE_INT);
-        $idPrefix = $this->request->query->filter('idPrefix', '', FILTER_SANITIZE_STRING);
-        $commandName = $this->request->query->filter('commandName', '', FILTER_SANITIZE_STRING);
+        $id = (int) $this->request->query->filter('id', 0, false, FILTER_VALIDATE_INT);
+        $idPrefix = $this->request->query->filter('idPrefix', '', false, FILTER_SANITIZE_STRING);
+        $commandName = $this->request->query->filter('commandName', '', false, FILTER_SANITIZE_STRING);
         if (empty($idPrefix)) {
             return false;
         }
@@ -98,6 +98,6 @@ class AdminController extends Zikula_AbstractController
                    ->assign('commandName', $commandName)
                    ->assign('jcssConfig', JCSSUtil::getJSConfig());
         
-        return new PlainResponse($this->view->display('Admin/inlineRedirectHandler.tpl'));
+        return new PlainResponse($this->view->fetch('Admin/inlineRedirectHandler.tpl'));
     }
 }

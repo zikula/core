@@ -17,6 +17,7 @@
     },
     "extra": {
         "zikula": {
+            "url": "pagelock",
             "class": "Zikula\\PageLockModule\\ZikulaPageLockModule"
         }
     }

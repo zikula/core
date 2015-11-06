@@ -35,15 +35,15 @@ class ExceptionListener implements EventSubscriberInterface
     private $logger;
     private $router;
     private $dispatcher;
-    private $routesControllerUtil;
+//    private $routesControllerUtil;
     private $cacheClearer;
 
-    public function __construct(LoggerInterface $logger = null, RouterInterface $router = null, EventDispatcherInterface $dispatcher = null, ControllerUtil $util, CacheClearer $cacheClearer)
+    public function __construct(LoggerInterface $logger = null, RouterInterface $router = null, EventDispatcherInterface $dispatcher = null, /*ControllerUtil $util,*/ CacheClearer $cacheClearer)
     {
         $this->logger = $logger;
         $this->router = $router;
         $this->dispatcher = $dispatcher;
-        $this->routesControllerUtil = $util;
+//        $this->routesControllerUtil = $util;
         $this->cacheClearer = $cacheClearer;
     }
 

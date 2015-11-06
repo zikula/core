@@ -13,12 +13,12 @@
 namespace Zikula\RoutesModule\Api\Base;
 
 use ModUtil;
-use Zikula_AbstractApi;
+use Zikula_AbstractBase;
 
 /**
  * Selection api base class.
  */
-class SelectionApi extends Zikula_AbstractApi
+class SelectionApi extends Zikula_AbstractBase
 {
     /**
      * Gets the list of identifier fields for a given object type.
@@ -32,7 +32,9 @@ class SelectionApi extends Zikula_AbstractApi
         $objectType = $this->determineObjectType($args, 'getIdFields');
         $entityClass = 'ZikulaRoutesModule:' . ucfirst($objectType) . 'Entity';
     
-        $meta = $this->entityManager->getClassMetadata($entityClass);
+        $em = $this->get('doctrine.entitymanager');
+        $meta = $em->getClassMetadata($entityClass);
+    
         if ($this->hasCompositeKeys($objectType)) {
             $idFields = $meta->getIdentifierFieldNames();
         } else {
@@ -51,7 +53,7 @@ class SelectionApi extends Zikula_AbstractApi
      */
     protected function hasCompositeKeys($objectType)
     {
-        $controllerHelper = $this->serviceManager->get('zikularoutesmodule.controller_helper');
+        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
     
         return $controllerHelper->hasCompositeKeys($objectType);
     }
@@ -152,7 +154,7 @@ class SelectionApi extends Zikula_AbstractApi
     protected function determineObjectType(array $args = array(), $methodName = '')
     {
         $objectType = isset($args['ot']) ? $args['ot'] : '';
-        $controllerHelper = $this->serviceManager->get('zikularoutesmodule.controller_helper');
+        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
         $utilArgs = array('api' => 'selection', 'action' => $methodName);
         if (!in_array($objectType, $controllerHelper->getObjectTypes('api', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('api', $utilArgs);
@@ -174,7 +176,7 @@ class SelectionApi extends Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid object type received.'));
         }
     
-        $repository = $this->serviceManager->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
+        $repository = $this->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
     
         return $repository;
     }

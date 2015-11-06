@@ -47,7 +47,7 @@ class EditHandler extends BaseEditHandler
     
         $this->hasPageLockSupport = true;
         // array with list fields and multiple flags
-        $this->listFields = array('workflowState' => false);
+        $this->listFields = array('workflowState' => false, 'routeType' => false, 'schemes' => true, 'methods' => true);
     }
 
     /**
@@ -140,7 +140,7 @@ class EditHandler extends BaseEditHandler
     {
         $serviceManager = $this->view->getServiceManager();
     
-        $legacyControllerType = $this->request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+        $legacyControllerType = $this->request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
     
         // redirect to the list of routes
         $viewArgs = array('lct' => $legacyControllerType);
@@ -219,6 +219,7 @@ class EditHandler extends BaseEditHandler
     
         $action = $args['commandName'];
     
+        $success = false;
         try {
             // execute the workflow action
             $workflowHelper = $this->view->getServiceManager()->get('zikularoutesmodule.workflow_helper');

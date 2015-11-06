@@ -22,6 +22,25 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AdminController extends BaseAdminController
 {
+    /**
+     * This method is the default function handling the main area called without defining arguments.
+     *
+     * @Route("/admin",
+     *        methods = {"GET"}
+     * )
+     *
+     * @param Request  $request      Current request instance
+     * @param string  $ot           Treated object type.
+     *
+     * @return mixed Output.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
+     */
+    public function indexAction(Request $request)
+    {
+        return parent::indexAction($request);
+    }
+    
 
     /**
      * This method cares for a redirect within an inline frame.

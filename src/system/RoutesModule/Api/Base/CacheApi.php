@@ -14,14 +14,14 @@ namespace Zikula\RoutesModule\Api\Base;
 
 use ModUtil;
 use UserUtil;
-use Zikula_AbstractApi;
+use Zikula_AbstractBase;
 use Zikula_View;
 use Zikula_View_Theme;
 
 /**
  * Cache api base class.
  */
-class CacheApi extends Zikula_AbstractApi
+class CacheApi extends Zikula_AbstractBase
 {
     /**
      * Clear cache for given item. Can be called from other modules to clear an item cache.
@@ -38,7 +38,7 @@ class CacheApi extends Zikula_AbstractApi
         $objectType = $args['ot'];
         $item = $args['item'];
     
-        $controllerHelper = $this->serviceManager->get('zikularoutesmodule.controller_helper');
+        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
         $utilArgs = array('api' => 'cache', 'action' => 'clearItemCache');
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
             return;
@@ -54,7 +54,7 @@ class CacheApi extends Zikula_AbstractApi
     
         $instanceId = $item->createCompositeIdentifier();
     
-        $logger = $this->serviceManager->get('logger');
+        $logger = $this->get('logger');
         $logger->info('{app}: User {user} caused clearing the cache for entity {entity} with id {id}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => $objectType, 'id' => $instanceId));
     
         // Clear View_cache

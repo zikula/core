@@ -17,6 +17,7 @@
     },
     "extra": {
         "zikula": {
+            "url": "search",
             "class": "Zikula\\SearchModule\\ZikulaSearchModule"
         }
     }

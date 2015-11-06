@@ -55,7 +55,8 @@ class Route extends SortableRepository
         return array(
             'id',
             'workflowState',
-            'name',
+            'routeType',
+            'replacedRouteName',
             'bundle',
             'controller',
             'action',
@@ -63,12 +64,13 @@ class Route extends SortableRepository
             'host',
             'schemes',
             'methods',
+            'prependBundlePrefix',
+            'translatable',
+            'translationPrefix',
             'defaults',
             'requirements',
-            'options',
             'condition',
             'description',
-            'userRoute',
             'sort',
             'group',
             'createdUserId',
@@ -130,7 +132,7 @@ class Route extends SortableRepository
      */
     public function getTitleFieldName()
     {
-        $fieldName = 'name';
+        $fieldName = 'replacedRouteName';
     
         return $fieldName;
     }
@@ -197,11 +199,15 @@ class Route extends SortableRepository
                 $templateParameters = $this->getViewQuickNavParameters($context, $args);
                 $listHelper = $serviceManager->get('zikularoutesmodule.listentries_helper');
                 $templateParameters['workflowStateItems'] = $listHelper->getEntries('route', 'workflowState');
+                $templateParameters['routeTypeItems'] = $listHelper->getEntries('route', 'routeType');
+                $templateParameters['schemesItems'] = $listHelper->getEntries('route', 'schemes');
+                $templateParameters['methodsItems'] = $listHelper->getEntries('route', 'methods');
                 $booleanSelectorItems = array(
                     array('value' => 'no', 'text' => __('No')),
                     array('value' => 'yes', 'text' => __('Yes'))
                 );
-                $templateParameters['userRouteItems'] = $booleanSelectorItems;
+                $templateParameters['prependBundlePrefixItems'] = $booleanSelectorItems;
+                $templateParameters['translatableItems'] = $booleanSelectorItems;
             }
     
         }
@@ -229,9 +235,13 @@ class Route extends SortableRepository
     
         $parameters = array();
         $parameters['workflowState'] = $this->request->query->get('workflowState', '');
+        $parameters['routeType'] = $this->request->query->get('routeType', '');
+        $parameters['schemes'] = $this->request->query->get('schemes', '');
+        $parameters['methods'] = $this->request->query->get('methods', '');
         $parameters['q'] = $this->request->query->get('q', '');
         
-        $parameters['userRoute'] = $this->request->query->get('userRoute', '');
+        $parameters['prependBundlePrefix'] = $this->request->query->get('prependBundlePrefix', '');
+        $parameters['translatable'] = $this->request->query->get('translatable', '');
     
         // in the concrete child class you could do something like
         // $parameters = parent::getViewQuickNavParameters($context, $args);
@@ -620,7 +630,7 @@ class Route extends SortableRepository
                 if (!empty($v)) {
                     $qb = $this->addSearchFilter($qb, $v);
                 }
-            } elseif (in_array($k, array('userRoute'))) {
+            } elseif (in_array($k, array('prependBundlePrefix', 'translatable'))) {
                 // boolean filter
                 if ($v == 'no') {
                     $qb->andWhere('tbl.' . $k . ' = 0');
@@ -723,7 +733,9 @@ class Route extends SortableRepository
         $where = '';
         if (!$fragmentIsNumeric) {
             $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.name LIKE \'%' . $fragment . '%\'';
+            $where .= 'tbl.routeType = \'' . $fragment . '\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.replacedRouteName LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.bundle LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
@@ -734,6 +746,12 @@ class Route extends SortableRepository
             $where .= 'tbl.path LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.host LIKE \'%' . $fragment . '%\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.schemes = \'' . $fragment . '\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.methods = \'' . $fragment . '\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.translationPrefix LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.condition LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
@@ -742,7 +760,9 @@ class Route extends SortableRepository
             $where .= 'tbl.group LIKE \'%' . $fragment . '%\'';
         } else {
             $where .= ((!empty($where)) ? ' OR ' : '');
-            $where .= 'tbl.name LIKE \'%' . $fragment . '%\'';
+            $where .= 'tbl.routeType = \'' . $fragment . '\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.replacedRouteName LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.bundle LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
@@ -753,6 +773,12 @@ class Route extends SortableRepository
             $where .= 'tbl.path LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.host LIKE \'%' . $fragment . '%\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.schemes = \'' . $fragment . '\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.methods = \'' . $fragment . '\'';
+            $where .= ((!empty($where)) ? ' OR ' : '');
+            $where .= 'tbl.translationPrefix LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');
             $where .= 'tbl.condition LIKE \'%' . $fragment . '%\'';
             $where .= ((!empty($where)) ? ' OR ' : '');

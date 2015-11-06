@@ -1,6 +1,7 @@
 application Routes {
 	vendor Zikula
 	author "Zikula contributors"
+	version "1.0.1"
 	email "support@zikula.org"
 	url "http://www.zikula.org"
 	prefix routes
@@ -17,6 +18,7 @@ application Routes {
 		generateNewsletterPlugin false
 		generateModerationPanel false
 		generatePendingContentSupport false
+		generateExternalControllerAndFinder false
 		generateScribitePlugins false
 		generateTagSupport false
 		generateRssTemplates false
@@ -26,10 +28,12 @@ application Routes {
 		generateJsonTemplates false
 		generatePoweredByBacklinksIntoFooterTemplates false
 		writeModelToDocs true
-		markFiles "
+		skipFiles "
 			README.md,
-			CHANGELOG.md,
-			Api/AdminApi.php,
+			CHANGELOG.md
+		"
+		markFiles "
+			Container/LinkContainer.php,
 			Controller/AjaxController.php,
 			Controller/RouteController.php,
 			DependencyInjection/ZikulaRoutesExtension.php,
@@ -41,8 +45,8 @@ application Routes {
 			Resources/views/Route/view.tpl,
 			Resources/views/Route/display.tpl,
 			Resources/views/Route/edit.tpl,
-			Util/ControllerUtil.php,
-			workflows/function.none_permissioncheck.php
+			Resources/views/Route/reload.tpl,
+			RoutesModuleInstaller.php
 		"
 	}
 	entities {
@@ -50,10 +54,19 @@ application Routes {
 			nameMultiple routes
 			displayPattern "#path# (#sort#)"
 			fields {
-				string name {
-					dbName route_name
+				list "routeType" {
+					defaultValue "additional"
+					items {
+						default listItem "additional" ("additional"),
+						listItem "temporaryRedirect" ("temporaryRedirect"),
+						listItem "permanentRedirect" ("permanentRedirect"),
+						listItem "replace" ("replace")
+					}
 				},
-				string bundle,
+				string replacedRouteName nullable {
+					mandatory false
+				},
+				string "bundle",
 				string "controller",
 				string "action" {
 					dbName route_action
@@ -64,10 +77,31 @@ application Routes {
 				string host nullable {
 					mandatory false
 				},
-				array schemes {
-					mandatory false
+				list "schemes" multiple {
+					defaultValue "http"
+					items {
+						default listItem http ("http"),
+						default listItem https ("https")
+					}
 				},
-				array methods {
+				list "methods" multiple {
+					defaultValue "GET"
+					items {
+						default listItem "GET" ("GET"),
+						listItem "POST" ("POST"),
+						listItem "HEAD" ("HEAD"),
+						listItem "PUT" ("PUT"),
+						listItem "DELETE" ("DELETE"),
+						listItem "OPTIONS" ("OPTIONS")
+					}
+				},
+				boolean "prependBundlePrefix" {
+					defaultValue true
+				},
+				boolean "translatable" {
+					defaultValue true
+				},
+				string translationPrefix nullable {
 					mandatory false
 				},
 				array defaults {
@@ -76,17 +110,11 @@ application Routes {
 				array requirements {
 					mandatory false
 				},
-				array options {
-					mandatory false
-				},
 				string "condition" nullable {
 					dbName route_condition
 		 	 		mandatory false
 				},
 				string description nullable {
-					mandatory false
-				},
-				boolean userRoute {
 					mandatory false
 				},
 				integer sort sortablePosition {

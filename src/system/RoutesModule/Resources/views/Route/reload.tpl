@@ -1,5 +1,5 @@
 {include file="Admin/header.tpl"}
-<div class="zikularoutesmodule-route zikularoutesmodule-delete">
+<div class="zikularoutesmodule-reload zikularoutesmodule-reload">
     {gt text='Reload routes' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
     <h3>
