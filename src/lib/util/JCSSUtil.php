@@ -37,6 +37,9 @@ class JCSSUtil
         );
 
         $polyfill_features = PageUtil::getVar('polyfill_features');
+        // merge in features added via twig
+        $featuresFromTwig = ServiceUtil::get('zikula_core.common.theme.pagevars')->get('polyfill_features', []);
+        $polyfill_features = array_unique(array_merge($polyfill_features, $featuresFromTwig));
 
         if (!empty($polyfill_features)) {
             $config['polyfillFeatures'] = implode(' ', $polyfill_features);

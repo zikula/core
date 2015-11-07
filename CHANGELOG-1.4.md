@@ -30,6 +30,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Core-2.0 Features:
     - Add Twig-based theme engine (refs #1753)
     - Add `pageAddAsset()` Twig function and enable 'weighting' of assets to specify load order. (#2606, #2596, #1324)
+    - Add `polyfill()` Twig tag to enable JS library inclusion. (#2629)
     - Core-2.0 Theme Specification finalized and enabled (#1753, #2500, #2560)
        - All core themes updated to new spec
        - ZikulaAndreas08Theme updated to new spec and bootstrap (#2428)
