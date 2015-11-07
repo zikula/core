@@ -304,13 +304,6 @@ class CoreExtension extends \Twig_Extension
         $type = (string) $type;
         $weight = (integer) $weight;
 
-        // @todo handle this polyfill feature issue
-        if ($value == 'polyfill') {
-            $features = isset($params['features']) ? $params['features'] : 'forms';
-        } else {
-            $features = null;
-        }
-
         // @todo remove this code block at Core-2.0 because all themes are twig based
         $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
         if (isset($themeBundle) && !$themeBundle->isTwigBased()) {
