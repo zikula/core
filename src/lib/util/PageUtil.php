@@ -330,6 +330,9 @@ class PageUtil
      */
     public static function addVar($varname, $value, $features = 'forms')
     {
+        if (empty($varname) || empty($value)) {
+            throw new \InvalidArgumentException('empty parameter!');
+        }
         global $_pageVars;
 
         if (System::isLegacyMode()) {

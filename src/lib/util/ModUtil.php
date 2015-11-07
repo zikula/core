@@ -916,7 +916,10 @@ class ModUtil
     private static function _loadStyleSheets($modname, $api, $type)
     {
         if (!System::isInstalling() && !$api) {
-            PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
+            $moduleStylesheet = ThemeUtil::getModuleStylesheet($modname);
+            if (!empty($moduleStylesheet)) {
+                PageUtil::addVar('stylesheet', $moduleStylesheet);
+            }
             if (strpos($type, 'admin') === 0) {
                 // load special admin stylesheets for administrator controllers
                 PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('ZikulaAdminModule'));
