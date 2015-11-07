@@ -16,6 +16,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Fixes:
     - Fixed 'Removetrailingslash' error (#2552)
     - Corrected variable name in BootstrapTheme template override (#2557)
+    - Fixed `categories_admin_view.js` not present in 1.4.0 dist (#2637)
     - Update JQuery MMenu to 5.5.1 to fix Prototype compatibility.
  - Features:
     - All system modules and themes updated to PSR-4 (#2563, #2424)
