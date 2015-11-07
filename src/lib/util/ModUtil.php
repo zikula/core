@@ -1307,6 +1307,14 @@ class ModUtil
             $router->getContext()->setScheme('https');
         }
 
+        // check for default route provided by capabilities array, unshift to beginning of search array.
+        if ($func == 'index') {
+            $modInfo = ModUtil::getInfoFromName($modname);
+            if (isset($modInfo['capabilities'][$type]['route'])) {
+                array_unshift($routeNames, $modInfo['capabilities'][$type]['route']);
+            }
+        }
+
         $found = false;
         foreach ($routeNames as $routeName) {
             try {
