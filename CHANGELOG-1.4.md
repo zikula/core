@@ -38,6 +38,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Core-2.0 Module Specification finalized and enabled (#2500, #2560)
     - Add VariableApi to manage Extension Vars for Core-2.0 applications.
     - Add PermissionApi to manage Rights/Access determination for Core-2.0 applications.
+    - Implement method for a module to declare the Entities that are categorizable (#411 - was actually done in Core-1.4.0)
  - Vendor updates:
     - Symfony update to 2.7.6 (#2551, #2582)
     - Gedmo Doctrine Extensions updated to version 2.4.x.
