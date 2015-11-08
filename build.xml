@@ -34,7 +34,7 @@
     javascript/helpers/Zikula.UI.js,
     system/AdminModule/Resources/public/js/admin_admin_admintabs.js,
     system/AdminModule/Resources/public/js/admin_admin_systemnotices.js,
-    system/AdminModule/Resources/public/js/jQuery.mmenu-5.5.1/dist/core/js/jquery.mmenu.min.all.js
+    system/AdminModule/Resources/public/js/jQuery.mmenu-5.5.1/dist/core/js/jquery.mmenu.min.all.js,
     system/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js,
     system/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Modifyposition.js,
     system/BlocksModule/Resources/public/js/contextmenu.js,
