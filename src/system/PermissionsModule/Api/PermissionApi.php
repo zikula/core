@@ -337,18 +337,20 @@ class PermissionApi
     }
 
     /**
-     * Get group permissions for one user or for all.
+     * Get group permissions for one user.
      * (not an @api method)
      *
      * @param null $user
      * @return array|null
      */
-    public function getGroupPerms($user = null)
+    public function getGroupPerms($user)
     {
-        return (isset($user))
-            ? (isset($this->groupPermsByUser[$user]))
-                ? $this->groupPermsByUser[$user]
-                : null
-            : $this->groupPermsByUser;
+        if (!isset($user)) {
+            throw new \InvalidArgumentException('User must be set.');
+        }
+
+        return (isset($this->groupPermsByUser[$user]))
+            ? $this->groupPermsByUser[$user]
+            : [];
     }
 }

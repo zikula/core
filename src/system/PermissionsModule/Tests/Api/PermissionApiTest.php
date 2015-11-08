@@ -116,7 +116,9 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
         $this->session
             ->method('get')
             ->with($this->equalTo('uid'))
-            ->will($this->returnValue($uid));
+            ->will($this->returnCallback(function () use ($uid) {
+                return isset($uid) ? $uid : false; // when no uid is available, Zikula_Session::get() returns `false`
+            }));
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->session, $this->translator);
         $this->assertEquals($result, $api->hasPermission($component, $instance, $level, $uid));
     }
@@ -156,18 +158,16 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
                     "instance" => ".*",
                     "level" => ACCESS_READ],
             ]],
-            [null/* ALL perms ALL USERS */, [
-                [
-                    ["component" => "ExtendedMenublock:.*:.*",
-                        "instance" => "1:1:.*",
-                        "level" => ACCESS_NONE],
-                    ["component" => "ExtendedMenublock:.*:.*",
-                        "instance" => "1:(1|2|3):.*",
-                        "level" => ACCESS_NONE],
-                    ["component" => ".*",
-                        "instance" => ".*",
-                        "level" => ACCESS_READ],
-                ]
+            [99/* Random UID */, [
+                ["component" => "ExtendedMenublock:.*:.*",
+                    "instance" => "1:1:.*",
+                    "level" => ACCESS_NONE],
+                ["component" => "ExtendedMenublock:.*:.*",
+                    "instance" => "1:(1|2|3):.*",
+                    "level" => ACCESS_NONE],
+                ["component" => ".*",
+                    "instance" => ".*",
+                    "level" => ACCESS_READ],
             ]],
             [1/* GUEST */, [
                 ["component" => "ExtendedMenublock:.*:.*",
@@ -186,17 +186,14 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
             [2, '.*', '.*', ACCESS_ADMIN],
             [1, '.*', '.*', ACCESS_COMMENT],
             [PermissionApi::UNREGISTERED_USER, '.*', '.*', ACCESS_READ],
-            [null, '.*', '.*', ACCESS_INVALID],
 
             [2, 'ExtendedMenublock::', '1:1:', ACCESS_ADMIN],
             [1, 'ExtendedMenublock::', '1:1:', ACCESS_NONE],
             [PermissionApi::UNREGISTERED_USER, 'ExtendedMenublock::', '1:1:', ACCESS_NONE],
-            [null, 'ExtendedMenublock::', '1:1:', ACCESS_INVALID],
 
             [2, 'ExtendedMenublock::', '1:2:', ACCESS_ADMIN],
             [1, 'ExtendedMenublock::', '1:2:', ACCESS_COMMENT],
             [PermissionApi::UNREGISTERED_USER, 'ExtendedMenublock::', '1:2:', ACCESS_NONE],
-            [null, 'ExtendedMenublock::', '1:2:', ACCESS_INVALID],
         ];
     }
 
@@ -221,14 +218,23 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
             ['.*', '.*', ACCESS_DELETE, 1, false],
             ['.*', '.*', ACCESS_ADMIN, 1, false],
 
-            ['.*', '.*', ACCESS_OVERVIEW, null, false],
-            ['.*', '.*', ACCESS_READ, null, false],
+            ['.*', '.*', ACCESS_OVERVIEW, null, true],
+            ['.*', '.*', ACCESS_READ, null, true],
             ['.*', '.*', ACCESS_COMMENT, null, false],
             ['.*', '.*', ACCESS_MODERATE, null, false],
             ['.*', '.*', ACCESS_EDIT, null, false],
             ['.*', '.*', ACCESS_ADD, null, false],
             ['.*', '.*', ACCESS_DELETE, null, false],
             ['.*', '.*', ACCESS_ADMIN, null, false],
+
+            ['.*', '.*', ACCESS_OVERVIEW, 99, true],
+            ['.*', '.*', ACCESS_READ, 99, true],
+            ['.*', '.*', ACCESS_COMMENT, 99, false],
+            ['.*', '.*', ACCESS_MODERATE, 99, false],
+            ['.*', '.*', ACCESS_EDIT, 99, false],
+            ['.*', '.*', ACCESS_ADD, 99, false],
+            ['.*', '.*', ACCESS_DELETE, 99, false],
+            ['.*', '.*', ACCESS_ADMIN, 99, false],
 
             ['ExtendedMenublock::', '1:1:', ACCESS_OVERVIEW, 2, true],
             ['ExtendedMenublock::', '1:1:', ACCESS_READ, 2, true],
@@ -257,6 +263,15 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
             ['ExtendedMenublock::', '1:1:', ACCESS_DELETE, null, false],
             ['ExtendedMenublock::', '1:1:', ACCESS_ADMIN, null, false],
 
+            ['ExtendedMenublock::', '1:1:', ACCESS_OVERVIEW, 99, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_READ, 99, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_COMMENT, 99, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_MODERATE, 99, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_EDIT, 99, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_ADD, 99, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_DELETE, 99, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_ADMIN, 99, false],
+
             ['ExtendedMenublock::', '1:2:', ACCESS_OVERVIEW, 2, true],
             ['ExtendedMenublock::', '1:2:', ACCESS_READ, 2, true],
             ['ExtendedMenublock::', '1:2:', ACCESS_COMMENT, 2, true],
@@ -284,6 +299,15 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
             ['ExtendedMenublock::', '1:2:', ACCESS_DELETE, null, false],
             ['ExtendedMenublock::', '1:2:', ACCESS_ADMIN, null, false],
 
+            ['ExtendedMenublock::', '1:2:', ACCESS_OVERVIEW, 99, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_READ, 99, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_COMMENT, 99, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_MODERATE, 99, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_EDIT, 99, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_ADD, 99, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_DELETE, 99, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_ADMIN, 99, false],
+
             ['ExtendedMenublock::', '1:3:', ACCESS_OVERVIEW, 2, true],
             ['ExtendedMenublock::', '1:3:', ACCESS_READ, 2, true],
             ['ExtendedMenublock::', '1:3:', ACCESS_COMMENT, 2, true],
@@ -310,6 +334,15 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
             ['ExtendedMenublock::', '1:3:', ACCESS_ADD, null, false],
             ['ExtendedMenublock::', '1:3:', ACCESS_DELETE, null, false],
             ['ExtendedMenublock::', '1:3:', ACCESS_ADMIN, null, false],
+
+            ['ExtendedMenublock::', '1:3:', ACCESS_OVERVIEW, 99, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_READ, 99, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_COMMENT, 99, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_MODERATE, 99, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_EDIT, 99, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_ADD, 99, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_DELETE, 99, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_ADMIN, 99, false],
         ];
     }
 

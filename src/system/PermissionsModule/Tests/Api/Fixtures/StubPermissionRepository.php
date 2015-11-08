@@ -14,6 +14,7 @@
 
 namespace Zikula\PermissionsModule\Tests\Api\Fixtures;
 
+use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 
@@ -28,7 +29,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
     {
         $datas = [
             [
-                'gid' => 2,
+                'gid' => 2, // 'Administrators' group
                 'sequence' => 1,
                 'realm' => 0,
                 'component' => '.*',
@@ -37,7 +38,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'bond' => 0,
             ],
             [
-                'gid' => -1,
+                'gid' => PermissionApi::ALL_GROUPS, // -1
                 'sequence' => 2,
                 'realm' => 0,
                 'component' => 'ExtendedMenublock::',
@@ -46,7 +47,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'bond' => 0,
             ],
             [
-                'gid' => 1,
+                'gid' => 1, // 'Users' group
                 'sequence' => 3,
                 'realm' => 0,
                 'component' => '.*',
@@ -55,7 +56,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'bond' => 0,
             ],
             [
-                'gid' => 0,
+                'gid' => PermissionApi::UNREGISTERED_USER_GROUP, // 0
                 'sequence' => 4,
                 'realm' => 0,
                 'component' => 'ExtendedMenublock::',
@@ -64,7 +65,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'bond' => 0,
             ],
             [
-                'gid' => 0,
+                'gid' => PermissionApi::UNREGISTERED_USER_GROUP, // 0
                 'sequence' => 5,
                 'realm' => 0,
                 'component' => '.*',

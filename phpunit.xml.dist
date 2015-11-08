@@ -9,8 +9,11 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="src/lib/bootstrap.php"
+         bootstrap="./src/lib/bootstrap.php"
 >
+    <php>
+        <server name="KERNEL_DIR" value="./src/app/" />
+    </php>
     <testsuites>
         <testsuite name="Zikula Bundle Tests">
             <directory>./src/lib/Zikula/Bundle/*/Tests/</directory>
@@ -20,6 +23,9 @@
         </testsuite>
         <testsuite name="Zikula Core Tests">
             <directory>./src/lib/Zikula/Core/Tests/</directory>
+        </testsuite>
+        <testsuite name="Zikula System Tests">
+            <directory>./src/system/*/Tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>
