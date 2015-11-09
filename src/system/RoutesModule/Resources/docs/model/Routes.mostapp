@@ -46,7 +46,8 @@ application Routes {
 			Resources/views/Route/display.tpl,
 			Resources/views/Route/edit.tpl,
 			Resources/views/Route/reload.tpl,
-			RoutesModuleInstaller.php
+			RoutesModuleInstaller.php,
+			RoutesModuleVersion.php
 		"
 	}
 	entities {

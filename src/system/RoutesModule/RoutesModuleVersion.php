@@ -19,5 +19,15 @@ use Zikula\RoutesModule\Base\RoutesModuleVersion as BaseRoutesModuleVersion;
  */
 class RoutesModuleVersion extends BaseRoutesModuleVersion
 {
-    // custom enhancements can go here
+    public function getMetaData()
+    {
+        $meta = parent::getMetaData();
+        unset($meta['capabilities'][\HookUtil::SUBSCRIBER_CAPABLE]);
+        unset($meta['capabilities'][\HookUtil::PROVIDER_CAPABLE]);
+        if (count($meta['capabilities']) == 0) {
+            unset($meta['capabilities']);
+        }
+
+        return $meta;
+    }
 }
