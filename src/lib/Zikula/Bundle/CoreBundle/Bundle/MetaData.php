@@ -47,7 +47,7 @@ class MetaData
         $this->oldNames = isset($json['extra']['zikula']['oldnames']) ? $json['extra']['zikula']['oldnames'] : array();
         $this->capabilities = isset($json['extra']['zikula']['capabilities']) ? $json['extra']['zikula']['capabilities'] : array();
         $this->securitySchema = isset($json['extra']['zikula']['securityschema']) ? $json['extra']['zikula']['securityschema'] : array();
-        $this->extensionType = $json['extensionType'];
+        $this->extensionType = isset($json['extensionType']) ? $json['extensionType'] : 2; // ModUtil::TYPE_MODULE
         $this->directory = $json['name'];
         $this->coreCompatibility = isset($json['extra']['zikula']['core-compatibility']) ? $json['extra']['zikula']['core-compatibility'] : '>=1.4.0 <3.0.0'; // @todo >=1.4.1
     }
