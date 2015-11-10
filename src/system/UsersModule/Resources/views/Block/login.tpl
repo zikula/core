@@ -40,15 +40,15 @@
                 {gt text="Keep me logged in on this computer"}
             </label>
         </div>
+        {/if}
 
-        {notifyevent eventname='module.users.ui.form_edit.login_block' assign="eventData"}
+        {notifyevent eventname='module.users.ui.form_edit.login_block' assign='eventData'}
         {foreach item='eventDisplay' from=$eventData}
             {$eventDisplay}
         {/foreach}
 
         {notifydisplayhooks eventname='users.ui_hooks.login_block.form_edit' id=null}
 
-        {/if}
         <button class="btn btn-success btn-sm btn-block" id="users_loginblock_submit" name="users_loginblock_submit" type="submit">
             <i class="fa fa-arrow-right"></i> {gt text="Log in"}
         </button>
