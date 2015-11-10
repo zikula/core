@@ -84,12 +84,17 @@
     </div>
 
 
-    {if $canBeCreated}
-        {checkpermissionblock component='ZikulaRoutesModule:Route:' instance='::' level='ACCESS_EDIT'}
-            {gt text='Create route' assign='createTitle'}
-            <a href="{route name='zikularoutesmodule_route_edit' lct=$lct}" title="{$createTitle}" class="fa fa-plus">{$createTitle}</a>
-        {/checkpermissionblock}
-    {/if}
+    <div class="alert alert-info">
+        {gt text='Custom route functionality is currently disabled.'}
+    </div>
+    {* the block below is only temporarily disabled @todo enable in Core-1.4.2 *}
+    {*{if $canBeCreated}*}
+        {*{checkpermissionblock component='ZikulaRoutesModule:Route:' instance='::' level='ACCESS_EDIT'}*}
+            {*{gt text='Create route' assign='createTitle'}*}
+            {*<a href="{route name='zikularoutesmodule_route_edit' lct=$lct}" title="{$createTitle}" class="fa fa-plus">{$createTitle}</a>*}
+        {*{/checkpermissionblock}*}
+    {*{/if}*}
+
     {*assign var='own' value=0}
     {if isset($showOwnEntries) && $showOwnEntries eq 1}
         {assign var='own' value=1}
