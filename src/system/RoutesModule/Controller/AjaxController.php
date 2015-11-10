@@ -13,35 +13,41 @@
 namespace Zikula\RoutesModule\Controller;
 
 use SecurityUtil;
-use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\RoutesModule\Controller\Base\AjaxController as BaseAjaxController;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Ajax controller class providing navigation and interaction functionality.
  *
- * @Route("/%zikularoutesmodule.routing.ajax%")
+ * @Route("/ajax")
  */
 class AjaxController extends BaseAjaxController
 {
     /**
-     * Retrieve item list for finder selections in Forms, Content type plugin and Scribite.
+     * This method is the default function handling the main area called without defining arguments.
      *
-     * @Route("/getItemListFinder", options={"expose"=true})
-
+     * @Route("/ajax",
+     *        methods = {"GET"}
+     * )
      *
-     * @param string $ot      Name of currently used object type.
-     * @param string $sort    Sorting field.
-     * @param string $sortdir Sorting direction.
+     * @param Request  $request      Current request instance
+     * @param string  $ot           Treated object type.
      *
-     * @return AjaxResponse
+     * @return mixed Output.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
      */
-    public function getItemListFinderAction(Request $request)
+    public function indexAction(Request $request)
     {
-        return parent::getItemListFinderAction($request);
+        return parent::indexAction($request);
     }
+
     // feel free to add your own controller methods here
+
 
     public function sort(Request $request)
     {

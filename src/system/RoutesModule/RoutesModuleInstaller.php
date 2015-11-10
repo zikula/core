@@ -19,5 +19,22 @@ use Zikula\RoutesModule\Base\RoutesModuleInstaller as BaseRoutesModuleInstaller;
  */
 class RoutesModuleInstaller extends BaseRoutesModuleInstaller
 {
-    // feel free to extend the installer here
+    /**
+     * {@inheritdoc}
+     */
+    public function upgrade($oldVersion)
+    {
+        switch ($oldVersion) {
+            case '1.0.0':
+                $sql = "DELETE FROM zikula_routes_route WHERE userRoute = 0";
+                $this->entityManager->getConnection()->exec($sql);
+
+                $this->get('zikula.doctrine.schema_tool')->update(['\Zikula\RoutesModule\Entity\RouteEntity']);
+                break;
+            default:
+                return false;
+        }
+
+        return true;
+    }
 }

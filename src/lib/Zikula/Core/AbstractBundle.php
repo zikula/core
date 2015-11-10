@@ -198,6 +198,9 @@ abstract class AbstractBundle extends Bundle
         $jsonPath = $this->getPath() . '/composer.json';
         $jsonContent = $scanner->decode($jsonPath);
         $metaData = new MetaData($jsonContent);
+        if (!empty($this->container)) {
+            $metaData->setTranslator($this->container->get('translator'));
+        }
         $metaData->setDirectoryFromBundle($this);
 
         return $metaData;

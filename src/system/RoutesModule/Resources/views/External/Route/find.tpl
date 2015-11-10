@@ -10,7 +10,7 @@
     <script type="text/javascript">/* <![CDATA[ */
         if (typeof(Zikula) == 'undefined') {var Zikula = {};}
         Zikula.Config = {'entrypoint': '{{$ourEntry|default:'index.php'}}', 'baseURL': '{{$baseurl}}'}; /* ]]> */</script>
-        <link rel="stylesheet" href="web/bootstrap-font-awesome.css" type="text/css" />
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.min.css" type="text/css" />
         <link rel="stylesheet" href="web/bootstrap/css/bootstrap-theme.css" type="text/css" />
         <script type="text/javascript" src="web/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="web/bootstrap/js/bootstrap.min.js"></script>
@@ -29,8 +29,8 @@
             <legend>{gt text='Search and select route'}</legend>
 
             <div class="form-group">
-                <label for="zikulaRoutesModulePasteAs" class="col-lg-3 control-label">{gt text='Paste as'}:</label>
-                <div class="col-lg-9">
+                <label for="zikulaRoutesModulePasteAs" class="col-sm-3 control-label">{gt text='Paste as'}:</label>
+                <div class="col-sm-9">
                     <select id="zikulaRoutesModulePasteAs" name="pasteas" class="form-control">
                         <option value="1">{gt text='Link to the route'}</option>
                         <option value="2">{gt text='ID of route'}</option>
@@ -40,8 +40,8 @@
             <br />
 
             <div class="form-group">
-                <label for="zikulaRoutesModuleObjectId" class="col-lg-3 control-label">{gt text='Route'}:</label>
-                <div class="col-lg-9">
+                <label for="zikulaRoutesModuleObjectId" class="col-sm-3 control-label">{gt text='Route'}:</label>
+                <div class="col-sm-9">
                     <div id="zikularoutesmoduleItemContainer">
                         <ul>
                         {foreach item='route' from=$items}
@@ -61,8 +61,8 @@
             </div>
 
             <div class="form-group">
-                <label for="zikulaRoutesModuleSort" class="col-lg-3 control-label">{gt text='Sort by'}:</label>
-                <div class="col-lg-9">
+                <label for="zikulaRoutesModuleSort" class="col-sm-3 control-label">{gt text='Sort by'}:</label>
+                <div class="col-sm-9">
                     <select id="zikulaRoutesModuleSort" name="sort" style="width: 150px" class="pull-left" style="margin-right: 10px">
                     <option value="id"{if $sort eq 'id'} selected="selected"{/if}>{gt text='Id'}</option>
                     <option value="workflowState"{if $sort eq 'workflowState'} selected="selected"{/if}>{gt text='Workflow state'}</option>
@@ -94,8 +94,8 @@
             </div>
 
             <div class="form-group">
-                <label for="zikulaRoutesModulePageSize" class="col-lg-3 control-label">{gt text='Page size'}:</label>
-                <div class="col-lg-9">
+                <label for="zikulaRoutesModulePageSize" class="col-sm-3 control-label">{gt text='Page size'}:</label>
+                <div class="col-sm-9">
                     <select id="zikulaRoutesModulePageSize" name="num" style="width: 50px; text-align: right" class="form-control">
                         <option value="5"{if $pager.itemsperpage eq 5} selected="selected"{/if}>5</option>
                         <option value="10"{if $pager.itemsperpage eq 10} selected="selected"{/if}>10</option>
@@ -109,8 +109,8 @@
             </div>
 
             <div class="form-group">
-                <label for="zikulaRoutesModuleSearchTerm" class="col-lg-3 control-label">{gt text='Search for'}:</label>
-            <div class="col-lg-9">
+                <label for="zikulaRoutesModuleSearchTerm" class="col-sm-3 control-label">{gt text='Search for'}:</label>
+            <div class="col-sm-9">
                     <input type="text" id="zikulaRoutesModuleSearchTerm" name="q" style="width: 150px" class="form-control pull-left" style="margin-right: 10px" />
                     <input type="button" id="zikulaRoutesModuleSearchGo" name="gosearch" value="{gt text='Filter'}" style="width: 80px" class="btn btn-default" />
             </div>

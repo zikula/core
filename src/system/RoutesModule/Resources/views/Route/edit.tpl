@@ -1,6 +1,6 @@
 {* purpose of this template: build the Form to edit an instance of route *}
 {pageaddvar name='javascript' value='jquery'}
-{pageaddvarblock}
+{pageaddvarblock name='header'}
     <script type="text/javascript">
         (function($) {
             $(function(){
@@ -63,7 +63,7 @@
     {pagesetvar name='title' value=$templateTitle}
     {if $lct eq 'admin'}
         <h3>
-            <span class="icon icon-{$adminPageIcon}"></span>
+            <span class="fa fa-{$adminPageIcon}"></span>
             {$templateTitle}
         </h3>
     {else}
@@ -72,62 +72,52 @@
 {form cssClass='form-horizontal' role='form'}
     {* add validation summary and a <div> element for styling the form *}
     {zikularoutesmoduleFormFrame}
-    {formsetinitialfocus inputId='bundle'}
+    {formsetinitialfocus inputId='routeType' doSelect=true}
 
     <fieldset>
         <legend>{gt text='Content'}</legend>
 
-        <div>
-            {formtextinput group='route' id='name' mandatory=false readOnly=false textMode='hidden' maxLength=255}
+        <div class="form-group">
+            {formlabel for='routeType' __text='Route type' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formdropdownlist group='route' id='routeType' mandatory=true __title='Choose the route type' selectionMode='single' cssClass='form-control'}
+            </div>
         </div>
 
-        {*<div class="form-group">
-            {formlabel for='name' __text='Name' mandatorysym='1' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
-                {formtextinput group='route' id='name' mandatory=true readOnly=false __title='Enter the name of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
+        <div class="form-group">
+            {formlabel for='replacedRouteName' __text='Replaced route name' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+            {formtextinput group='route' id='replacedRouteName' mandatory=false readOnly=false __title='Enter the replaced route name of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
             </div>
-        </div>*}
+        </div>
 
         <div class="form-group">
-            {formlabel for='bundle' __text='Bundle' mandatorysym='1' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='bundle' __text='Bundle' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
                 {*formtextinput group='route' id='bundle' mandatory=true readOnly=false __title='Enter the bundle of the route' textMode='singleline' maxLength=255 cssClass='form-control required' *}
                 {formdropdownlist items=$modules group='route' id='bundle' mandatory=true readOnly=false __title='Enter the bundle of the route' cssClass='form-control required' }
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='controller' __text='Controller' mandatorysym='1' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='controller' __text='Controller' mandatorysym='1' cssClass=' col-sm-3 control-label' placeholder='UserController'}
+            <div class="col-sm-9">
                 {formtextinput group='route' id='controller' mandatory=true readOnly=false __title='Enter the controller of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
-                <em class="z-sub">{gt text='Insert the name of the controller, which was called "type" in earlier versions of Zikula. Example: "UserController"'}</em>
+                <em class="z-sub">{gt text='Insert the name of the controller, which was called "type" in earlier versions of Zikula.'}</em>
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='action' __text='Action' mandatorysym='1' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
-                {formtextinput group='route' id='action' mandatory=true readOnly=false __title='Enter the action of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
-                <em class="z-sub">{gt text='Insert the name of the action, which was called "func" in earlier versions of Zikula. Example: "EditAction"'}</em>
+            {formlabel for='action' __text='Action' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formtextinput group='route' id='action' mandatory=true readOnly=false __title='Enter the action of the route' textMode='singleline' maxLength=255 cssClass='form-control required' placeholder='editAction'}
+                <em class="z-sub">{gt text='Insert the name of the action, which was called "func" in earlier versions of Zikula.'}</em>
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='i18n' __text='Translatable' cssClass=' col-lg-3 control-label' mandatorysym=false}
-            <div class="col-lg-9">
-                {formcheckbox group='route' id='i18n' checked=true mandatory=false readOnly=false __title='Decide whether or not the route is translatable'}
-            </div>
-        </div>
-        <div class="form-group">
-            {formlabel for='bundlePrefix' __text='Prepend bundle prefix' cssClass=' col-lg-3 control-label' mandatorysym=false}
-            <div class="col-lg-9">
-                {formcheckbox group='route' id='bundlePrefix' checked=true mandatory=false readOnly=false __title='Decide whether or not to prepend the bundle prefix to the path'}
-            </div>
-        </div>
-
-        <div class="form-group">
-            {formlabel for='path' __text='Path' cssClass=' col-lg-3 control-label' mandatorysym=true}
-            <div class="col-lg-9">
+            {formlabel for='path' __text='Path' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
                 <div class="input-group">
                     <span class="input-group-addon" id="pathPrefix"></span>
                     {formtextinput group='route' id='path' mandatory=true readOnly=false __title='Enter the path of the route' textMode='singleline' maxLength=255 cssClass='form-control required' }
@@ -137,46 +127,74 @@
         </div>
 
         <div class="form-group">
-            {formlabel for='host' __text='Host' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='host' __text='Host' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
             {formtextinput group='route' id='host' mandatory=false readOnly=false __title='Enter the host of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
                 <em class="z-sub">{gt text='Advanced setting, see %s' tag1='<a href="http://symfony.com/doc/current/components/routing/hostname_pattern.html">http://symfony.com/doc/current/components/routing/hostname_pattern.html</a>'}</em>
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='condition' __text='Condition' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='schemes' __text='Schemes' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formdropdownlist group='route' id='schemes' mandatory=true __title='Choose the schemes' selectionMode='multiple' cssClass='form-control'}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {formlabel for='methods' __text='Methods' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formdropdownlist group='route' id='methods' mandatory=true __title='Choose the methods' selectionMode='multiple' cssClass='form-control'}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {formlabel for='prependBundlePrefix' __text='Prepend bundle prefix' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formcheckbox group='route' id='prependBundlePrefix' readOnly=false __title='prepend bundle prefix ?' cssClass='required' }
+            </div>
+        </div>
+
+        <div class="form-group">
+            {formlabel for='translatable' __text='Translatable' mandatorysym='1' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formcheckbox group='route' id='translatable' readOnly=false __title='translatable ?' cssClass='required' }
+            </div>
+        </div>
+
+        <div class="form-group">
+            {formlabel for='translationPrefix' __text='Translation prefix' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
+                {formtextinput group='route' id='translationPrefix' mandatory=false readOnly=false __title='Enter the translation prefix of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
+            </div>
+        </div>
+
+        <div class="form-group">
+            {formlabel for='condition' __text='Condition' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
             {formtextinput group='route' id='condition' mandatory=false readOnly=false __title='Enter the condition of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
                 <em class="z-sub">{gt text='Advanced setting, see %s' tag1='<a href="http://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions">http://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions</a>'}</em>
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='description' __text='Description' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='description' __text='Description' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
             {formtextinput group='route' id='description' mandatory=false readOnly=false __title='Enter the description of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
                 <em class="z-sub">{gt text='Insert a brief description of the route, to explain why you created it. It is only shown in the admin interface.'}</em>
             </div>
         </div>
 
-        {*<div class="form-group">
-            {formlabel for='userRoute' __text='User route' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
-                {formcheckbox group='route' id='userRoute' readOnly=false __title='user route ?' cssClass='' }
-            </div>
-        </div>
-
-        <div class="form-group">
-            {formlabel for='sort' __text='Sort' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+       {*<div class="form-group">
+            {formlabel for='sort' __text='Sort' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
             {formintinput group='route' id='sort' mandatory=false __title='Enter the sort of the route' maxLength=11 cssClass='form-control  validate-digits' }
             </div>
         </div>
 
         <div class="form-group">
-            {formlabel for='group' __text='Group' cssClass=' col-lg-3 control-label'}
-            <div class="col-lg-9">
+            {formlabel for='group' __text='Group' cssClass=' col-sm-3 control-label'}
+            <div class="col-sm-9">
             {formtextinput group='route' id='group' mandatory=false readOnly=false __title='Enter the group of the route' textMode='singleline' maxLength=255 cssClass='form-control ' }
             </div>
         </div>*}
@@ -189,25 +207,28 @@
     {* include display hooks *}
     {if $mode ne 'create'}
         {assign var='hookId' value=$route.id}
-        {notifydisplayhooks eventname='routes.ui_hooks.routes.form_edit' id=$hookId assign='hooks'}
+        {notifydisplayhooks eventname='zikularoutesmodule.ui_hooks.routes.form_edit' id=$hookId assign='hooks'}
     {else}
-        {notifydisplayhooks eventname='routes.ui_hooks.routes.form_edit' id=null assign='hooks'}
+        {notifydisplayhooks eventname='zikularoutesmodule.ui_hooks.routes.form_edit' id=null assign='hooks'}
     {/if}
     {if is_array($hooks) && count($hooks)}
         {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}
-            <fieldset>
-                {$hook}
-            </fieldset>
+            {if $providerArea ne 'provider.scribite.ui_hooks.editor'}{* fix for #664 *}
+                <fieldset>
+                    {$hook}
+                </fieldset>
+            {/if}
         {/foreach}
     {/if}
+
 
     {* include return control *}
     {if $mode eq 'create'}
         <fieldset>
             <legend>{gt text='Return control'}</legend>
             <div class="form-group">
-                {formlabel for='repeatCreation' __text='Create another item after save' cssClass='col-lg-3 control-label'}
-            <div class="col-lg-9">
+                {formlabel for='repeatCreation' __text='Create another item after save' cssClass='col-sm-3 control-label'}
+            <div class="col-sm-9">
                     {formcheckbox group='route' id='repeatCreation' readOnly=false}
             </div>
             </div>
@@ -216,7 +237,7 @@
 
     {* include possible submit actions *}
     <div class="form-group form-buttons">
-    <div class="col-lg-offset-3 col-lg-9">
+    <div class="col-sm-offset-3 col-sm-9">
         {foreach item='action' from=$actions}
             {assign var='actionIdCapital' value=$action.id|@ucfirst}
             {gt text=$action.title assign='actionTitle'}
@@ -228,7 +249,7 @@
                 {formbutton id="btn`$actionIdCapital`" commandName=$action.id text=$actionTitle class=$action.buttonClass}
             {/if}
         {/foreach}
-        {formbutton id='btnCancel' commandName='cancel' __text='Cancel' class='btn btn-default'}
+        {formbutton id='btnCancel' commandName='cancel' __text='Cancel' class='btn btn-default' formnovalidate='formnovalidate'}
     </div>
     </div>
     {/zikularoutesmoduleFormFrame}
@@ -245,41 +266,50 @@
 
             var formButtons;
 
-            function handleFormButton (event) {
+            function executeCustomValidationConstraints()
+            {
                 zikulaRoutesPerformCustomValidationRules('route', '{{if $mode ne 'create'}}{{$route.id}}{{/if}}');
-                var result = document.getElementById('{{$__formid}}').checkValidity();
-                if (!result) {
-                    // validation error, abort form submit
-                    event.stopPropagation();
-                } else {
-                    // hide form buttons to prevent double submits by accident
-                    formButtons.each(function (btn) {
-                        btn.addClass('hidden');
-                    });
+            }
+
+            function triggerFormValidation()
+            {
+                executeCustomValidationConstraints();
+                if (!document.getElementById('{{$__formid}}').checkValidity()) {
+                    // This does not really submit the form,
+                    // but causes the browser to display the error message
+                    jQuery('#{{$__formid}}').find(':submit').not(jQuery('#btnDelete')).click();
+                }
+            }
+
+            function handleFormSubmit (event) {
+                triggerFormValidation();
+                if (!document.getElementById('{{$__formid}}').checkValidity()) {
+                    event.preventDefault();
+                    return false;
                 }
 
-                return result;
+                // hide form buttons to prevent double submits by accident
+                formButtons.each(function (index) {
+                    jQuery(this).addClass('hidden');
+                });
+
+                return true;
             }
 
             ( function($) {
                 $(document).ready(function() {
 
-                    {{* observe validation on button events instead of form submit to exclude the cancel command *}}
+                    var allFormFields = $('#{{$__formid}} input, #{{$__formid}} select, #{{$__formid}} textarea');
+                    allFormFields.change(executeCustomValidationConstraints);
+
+                    formButtons = $('#{{$__formid}} .form-buttons input');
+                    $('#{{$__formid}}').submit(handleFormSubmit);
+
                     {{if $mode ne 'create'}}
-                        if (!document.getElementById('{{$__formid}}').checkValidity()) {
-                            document.getElementById('{{$__formid}}').submit();
-                        }
+                        triggerFormValidation();
                     {{/if}}
 
-                    formButtons = $('#{{$__formid}}').find('div.form-buttons input');
-
-                    formButtons.each(function (elem) {
-                        if (elem.attr('id') != 'btnCancel') {
-                            elem.click(handleFormButton);
-                        }
-                    });
-
-                    $('.zikularoutesmodule-form-tooltips').tooltip();
+                    $('#{{$__formid}} label').tooltip();
                 });
             })(jQuery);
 /* ]]> */

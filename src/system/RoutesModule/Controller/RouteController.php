@@ -33,8 +33,7 @@ class RouteController extends BaseRouteController
     /**
      * This method is the default function handling the main area called without defining arguments.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%",
-     *        name = "zikularoutesmodule_route_index",
+     * @Route("/routes",
      *        methods = {"GET"}
      * )
      *
@@ -52,9 +51,8 @@ class RouteController extends BaseRouteController
     /**
      * This method provides a item list overview.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/%zikularoutesmodule.routing.view.suffix%/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        name = "zikularoutesmodule_route_view",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "%zikularoutesmodule.routing.formats.view%"},
+     * @Route("/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|kml"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 0, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -93,8 +91,7 @@ class RouteController extends BaseRouteController
     /**
      * This method provides a handling of edit requests.
      *
-     * @Route("/%zikularoutesmodule.routing.route.singular%/edit/{id}.{_format}",
-     *        name = "zikularoutesmodule_route_edit",
+     * @Route("/route/edit/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
@@ -117,9 +114,8 @@ class RouteController extends BaseRouteController
     /**
      * This method provides a item detail view.
      *
-     * @Route("/%zikularoutesmodule.routing.route.singular%/{id}.{_format}",
-     *        name = "zikularoutesmodule_route_display",
-     *        requirements = {"id" = "\d+", "_format" = "%zikularoutesmodule.routing.formats.display%"},
+     * @Route("/route/{id}.{_format}",
+     *        requirements = {"id" = "\d+", "_format" = "html|kml|ics"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -141,8 +137,7 @@ class RouteController extends BaseRouteController
     /**
      * This method provides a handling of simple delete requests.
      *
-     * @Route("/%zikularoutesmodule.routing.route.singular%/delete/{id}.{_format}",
-     *        name = "zikularoutesmodule_route_delete",
+     * @Route("/route/delete/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
@@ -167,25 +162,17 @@ class RouteController extends BaseRouteController
     /**
      * This is a custom method.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/reload/{stage}/{module}",
-     *        name = "zikularoutesmodule_route_reload",
+     * @Route("/routes/reload",
      *        methods = {"GET", "POST"}
      * )
      *
      * @param Request  $request      Current request instance
-     * @param int $stage
-     * @param null $module
      *
      * @return mixed Output.
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions.
-     *
-     * This method has three stages:
-     * 1. Showing the dropdown with all the bundles to the user.
-     * 2. Clearing the annotation cache.
-     * 3. Reloading routes.
      */
-    public function reloadAction(Request $request, $stage = 0, $module = null)
+    public function reloadAction(Request $request)
     {
         $objectType = 'route';
         if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', ACCESS_ADMIN)) {
@@ -193,60 +180,14 @@ class RouteController extends BaseRouteController
         }
 
         $cacheClearer = $this->get('zikula.cache_clearer');
-        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
-        if ($stage == 0) {
-            $legacyControllerType = 'admin';
-            \System::queryStringSetVar('type', $legacyControllerType);
-            $request->query->set('type', $legacyControllerType);
-
-            $viewHelper = $this->serviceManager->get('zikularoutesmodule.view_helper');
-            $templateFile = $viewHelper->getViewTemplate($this->view, $objectType, 'reload', $request);
-
-            $this->view->setCacheId($objectType . '|reload');
-
-            $kernel = $this->get('kernel');
-            $modules = $kernel->getModules();
-            $options = array(array(
-                'text' => $this->__('All'),
-                'value' => -1
-            ));
-            foreach ($modules as $module) {
-                $options[] = array('text' => $module->getName(), 'value' => $module->getName());
-            }
-            $this->view->assign('options', $options);
-
-            // fetch and return the appropriate template
-            return $viewHelper->processTemplate($this->view, $objectType, 'reload', $request, $templateFile);
-        } else if ($stage == 1) {
-            $cacheClearer->clear('symfony.annotations');
-
-            $module = $this->request->request->get('reload-module', "-1");
-            $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_reload', array(
-                'stage' => 2,
-                'module' => $module,
-                'lct' => 'admin'
-            ), UrlGeneratorInterface::ABSOLUTE_URL);
-
-            return new RedirectResponse($redirectUrl);
-        }
-
-        /** @var \Zikula\RoutesModule\Entity\Repository\Route $routeRepository */
-        $routeRepository = $this->entityManager->getRepository('ZikulaRoutesModule:RouteEntity');
-        if ($module == "-1") {
-            $routeRepository->reloadAllRoutes($this->getContainer());
-            $request->getSession()->getFlashBag()->add('status', $this->__('Done! All routes reloaded.'));
-            $hadRoutes = false;
-        } else {
-            $hadRoutes = $controllerHelper->reloadRoutesByModule($module);
-            $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Routes reloaded for %s.', '<strong>' . $module . '</strong>'));
-        }
+        $routeDumperHelper = $this->get('zikula_routes_module.route_dumper_helper');
 
         $cacheClearer->clear("symfony.routing");
-
         $this->view->clear_cache();
+        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Routes reloaded.'));
 
         // reload **all** JS routes
-        $result = $controllerHelper->dumpJsRoutes();
+        $result = $routeDumperHelper->dumpJsRoutes();
         if($result == '') {
             $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Exposed JS Routes dumped to %s.', 'web/js/fos_js_routes.js'));
         } else {
@@ -255,23 +196,14 @@ class RouteController extends BaseRouteController
 
         $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => 'admin'), UrlGeneratorInterface::ABSOLUTE_URL);
 
-        if ($hadRoutes) {
-            // no need to pass through to nakedmessage if module previously had routes loaded.
-            return new RedirectResponse($redirectUrl);
-        } else {
-            $this->view->assign('delay', 2);
-            $this->view->assign('url', $redirectUrl);
-            $response = new PlainResponse($this->view->fetch('Admin/nakedmessage.tpl'));
-            return $response;
-        }
+        return new RedirectResponse($redirectUrl);
     }
 
     /**
      * This is a custom method.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/renew",
-     *        name = "zikularoutesmodule_route_renew",
-     *        methods = {"GET"}
+     * @Route("/routes/renew",
+     *        methods = {"GET", "POST"}
      * )
      *
      * @param Request  $request      Current request instance
@@ -300,7 +232,7 @@ class RouteController extends BaseRouteController
      * This is a custom method.
      * Dump the routes exposed to javascript to '/web/js/fos_js_routes.js'
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/dump/{lang}",
+     * @Route("/routes/dump/{lang}",
      *        name = "zikularoutesmodule_route_dumpjsroutes",
      *        methods = {"GET"}
      * )
@@ -318,8 +250,8 @@ class RouteController extends BaseRouteController
             throw new AccessDeniedException();
         }
 
-        $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
-        $result = $controllerHelper->dumpJsRoutes($lang);
+        $routeDumperHelper = $this->get('zikula_routes_module.route_dumper_helper');
+        $result = $routeDumperHelper->dumpJsRoutes($lang);
 
         if ($result == '') {
             $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Exposed JS Routes dumped to %s.', 'web/js/fos_js_routes.js'));
@@ -337,8 +269,7 @@ class RouteController extends BaseRouteController
      * This function processes the items selected in the admin view page.
      * Multiple items may have their state changed or be deleted.
      *
-     * @Route("/%zikularoutesmodule.routing.route.plural%/handleSelectedEntries",
-     *        name = "zikularoutesmodule_route_handleSelectedEntries",
+     * @Route("/routes/handleSelectedEntries",
      *        methods = {"POST"}
      * )
      *
@@ -357,8 +288,7 @@ class RouteController extends BaseRouteController
     /**
      * This method cares for a redirect within an inline frame.
      *
-     * @Route("/%zikularoutesmodule.routing.route.singular%/handleInlineRedirect/{idPrefix}/{commandName}/{id}",
-     *        name = "zikularoutesmodule_route_handleInlineRedirect",
+     * @Route("/route/handleInlineRedirect/{idPrefix}/{commandName}/{id}",
      *        requirements = {"id" = "\d+"},
      *        defaults = {"commandName" = "", "id" = 0},
      *        methods = {"GET"}

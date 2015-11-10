@@ -26,7 +26,7 @@
             <fieldset>
                 <legend>{gt text='Confirmation prompt'}</legend>
                 <div class="form-group form-buttons">
-                <div class="col-lg-offset-3 col-lg-9">
+                <div class="col-sm-offset-3 col-sm-9">
                     {gt text='Delete' assign='deleteTitle'}
                     {button src='14_layer_deletelayer.png' set='icons/small' text=$deleteTitle title=$deleteTitle class='btn btn-danger'}
                     <a href="{route name='zikularoutesmodule_route_view' lct=$lct}" class="btn btn-default" role="button"><span class="fa fa-times"></span> {gt text='Cancel'}</a>

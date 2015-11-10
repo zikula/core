@@ -12,34 +12,13 @@
 
 namespace Zikula\RoutesModule\Api;
 
-use ModUtil;
 use SecurityUtil;
-use Zikula\RoutesModule\Api\Base\AdminApi as BaseAdminApi;
 
 /**
  * This is the Admin api helper class.
  */
-class AdminApi extends BaseAdminApi
+class AdminApi extends \Zikula_AbstractApi
 {
-    public function getLinks()
-    {
-        $links = parent::getLinks();
-
-        if (SecurityUtil::checkPermission($this->name . ':Route:', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => $this->serviceManager->get('router')->generate('zikularoutesmodule_route_reload', array('lct' => 'admin')),
-                'text' => $this->__('Reload routes'),
-                'title' => $this->__('Reload routes'));
-            $links[] = array('url' => $this->serviceManager->get('router')->generate('zikularoutesmodule_route_renew', array('lct' => 'admin')),
-                'text' => $this->__('Reload multilingual routing settings'),
-                'title' => $this->__('Reload multilingual routing settings'));
-            $links[] = array('url' => $this->serviceManager->get('router')->generate('zikularoutesmodule_route_dumpjsroutes', array('lct' => 'admin')),
-                'text' => $this->__('Dump exposed js routes to file'),
-                'title' => $this->__('Dump exposed js routes to file'));
-        }
-
-        return $links;
-    }
-
     /**
      * Reloads the multilingual routing settings by reading system variables and checking installed languages.
      *

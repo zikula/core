@@ -337,11 +337,18 @@ class ThemeUtil
      */
     public static function getTheme($themeName)
     {
-        /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
-        $kernel = ServiceUtil::getManager()->get('kernel');
         try {
+            $sm = ServiceUtil::getManager();
+            if (null === $sm) {
+                // attenpting to `get` from a nullObject below will produce a fatalException which is 'uncatchable'
+                // so check for that here and throw exception now.
+                throw new \Exception('There is no Service Manager');
+            }
+            /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
+            $kernel = $sm->get('kernel');
+
             return $kernel->getTheme($themeName);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\Exception $e) {
         }
 
         return null;

@@ -12,7 +12,6 @@
 
 namespace Zikula\RoutesModule\Base;
 
-use DoctrineHelper;
 use EventUtil;
 use HookUtil;
 use ModUtil;
@@ -37,7 +36,7 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     {
         // create all tables from according entity definitions
         try {
-            DoctrineHelper::createSchema($this->entityManager, $this->listEntityClasses());
+            $this->get('zikula.doctrine.schema_tool')->create($this->listEntityClasses());
         } catch (\Exception $e) {
             if (System::isDevelopmentMode()) {
                 $this->request->getSession()->getFlashBag()->add('error', $this->__('Doctrine Exception: ') . $e->getMessage());
@@ -47,7 +46,7 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
             }
             $returnMessage = $this->__f('An error was encountered while creating the tables for the %s extension.', array($this->name));
             if (!System::isDevelopmentMode()) {
-                $returnMessage .= ' ' . $this->__('Please enable the development mode by editing the /app/config/parameters.yml file (change the env variable to dev) in order to reveal the error details.');
+                $returnMessage .= ' ' . $this->__('Please enable the development mode by editing the /app/config/parameters.yml file (change the env variable to dev) in order to reveal the error details (or look into the log files at /app/logs/).');
             }
             $this->request->getSession()->getFlashBag()->add('error', $returnMessage);
             $logger = $this->serviceManager->get('logger');
@@ -89,7 +88,7 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
                 // ...
                 // update the database schema
                 try {
-                    DoctrineHelper::updateSchema($this->entityManager, $this->listEntityClasses());
+                    $this->get('zikula.doctrine.schema_tool')->update($this->listEntityClasses());
                 } catch (\Exception $e) {
                     if (System::isDevelopmentMode()) {
                         $this->request->getSession()->getFlashBag()->add('error', $this->__('Doctrine Exception: ') . $e->getMessage());
@@ -130,6 +129,9 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
             
             // update module name in the hook tables
             $this->updateHookNamesFor140();
+            
+            // update module name in the workflows table
+            $this->updateWorkflowsFor140();
         } * /
     */
     
@@ -282,6 +284,20 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
     }
     
     /**
+     * Updates the module name in the workflows table.
+     */
+    protected function updateWorkflowsFor140()
+    {
+        $conn = $this->getConnection();
+        $dbName = $this->getDbName();
+    
+        $conn->executeQuery("UPDATE $dbName.workflows
+                             SET module = 'ZikulaRoutesModule'
+                             WHERE module = 'Routes';
+        ");
+    }
+    
+    /**
      * Returns connection to the database.
      *
      * @return Connection the current connection.
@@ -323,7 +339,7 @@ class RoutesModuleInstaller extends Zikula_AbstractInstaller
         }
     
         try {
-            DoctrineHelper::dropSchema($this->entityManager, $this->listEntityClasses());
+            $this->get('zikula.doctrine.schema_tool')->drop($this->listEntityClasses());
         } catch (\Exception $e) {
             if (System::isDevelopmentMode()) {
                 $this->request->getSession()->getFlashBag()->add('error', $this->__('Doctrine Exception: ') . $e->getMessage());

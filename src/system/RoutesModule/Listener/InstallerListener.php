@@ -16,6 +16,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouteCollection;
+use Zikula\RoutesModule\Helper\RouteDumperHelper;
 use Zikula\RoutesModule\Listener\Base\InstallerListener as BaseInstallerListener;
 use Zikula\RoutesModule\Routing\RouteFinder;
 use Zikula\Core\AbstractModule;
@@ -23,7 +24,6 @@ use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\RoutesModule\Util\ControllerUtil;
 
 /**
  * Event handler implementation class for module installer events.
@@ -36,23 +36,39 @@ class InstallerListener extends BaseInstallerListener
 
     private $cacheClearer;
 
-    private $controllerHelper;
+    private $routeDumperHelper;
 
     public static function getSubscribedEvents()
     {
-        $events = parent::getSubscribedEvents();
-        $events['new.routes.avail'] = array('newRoutesAvail', 5);
-
-        return $events;
+        // override subscription to ALL available events to only needed events.
+        return array(
+            CoreEvents::MODULE_POSTINSTALL => array('modulePostInstalled', 5),
+            CoreEvents::MODULE_UPGRADE => array('moduleUpgraded', 5),
+            CoreEvents::MODULE_REMOVE => array('moduleRemoved', 5),
+            'new.routes.avail' => array('newRoutesAvail', 5)
+        );
     }
 
-    public function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer, ControllerUtil $controllerHelper)
+    public function __construct(EntityManagerInterface $em, RouteFinder $routeFinder, CacheClearer $cacheClearer, RouteDumperHelper $routeDumperHelper)
     {
         $this->em = $em;
         $this->routeFinder = $routeFinder;
         $this->cacheClearer = $cacheClearer;
-        $this->controllerHelper = $controllerHelper;
+        $this->routeDumperHelper = $routeDumperHelper;
     }
+
+    /**
+     * Listener for the `module.install` event.
+     *
+     * Called after a module has been successfully installed.
+     * Receives `$modinfo` as args.
+     *
+     * @param ModuleStateEvent $event The event instance.
+     */
+//    public function moduleInstalled(ModuleStateEvent $event)
+//    {
+//        parent::moduleInstalled($event);
+//    }
 
     /**
      * Listener for the `module.postinstall` event.
@@ -72,12 +88,8 @@ class InstallerListener extends BaseInstallerListener
         }
 
         if ($module->getName() === 'ZikulaRoutesModule') {
-            // The module itself just got installed, reload all routes.
-            $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->reloadAllRoutes();
             // Reload multilingual routing settings.
             \ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
-        } else {
-            $this->addRoutesToCache($module);
         }
 
         $this->cacheClearer->clear('symfony.routing');
@@ -102,22 +114,10 @@ class InstallerListener extends BaseInstallerListener
             return;
         }
 
-        try {
-            $this->removeRoutesFromCache($module);
-        } catch (DBALException $e) {
-            if (\System::isUpgrading()) {
-                // This happens when the RoutesModule isn't installed.
-                return;
-            } else {
-                throw $e;
-            }
-        }
-        $this->addRoutesToCache($module);
-
         $this->cacheClearer->clear('symfony.routing');
 
         // reload **all** JS routes
-        $this->controllerHelper->dumpJsRoutes();
+        $this->routeDumperHelper->dumpJsRoutes();
     }
 
     /**
@@ -128,10 +128,10 @@ class InstallerListener extends BaseInstallerListener
      *
      * @param ModuleStateEvent $event The event instance.
      */
-    public function moduleEnabled(ModuleStateEvent $event)
-    {
-        parent::moduleEnabled($event);
-    }
+//    public function moduleEnabled(ModuleStateEvent $event)
+//    {
+//        parent::moduleEnabled($event);
+//    }
 
     /**
      * Listener for the `module.disable` event.
@@ -141,10 +141,10 @@ class InstallerListener extends BaseInstallerListener
      *
      * @param ModuleStateEvent $event The event instance.
      */
-    public function moduleDisabled(ModuleStateEvent $event)
-    {
-        parent::moduleDisabled($event);
-    }
+//    public function moduleDisabled(ModuleStateEvent $event)
+//    {
+//        parent::moduleDisabled($event);
+//    }
 
     /**
      * Listener for the `module.remove` event.
@@ -163,10 +163,8 @@ class InstallerListener extends BaseInstallerListener
             return;
         }
 
-        $this->removeRoutesFromCache($module);
-
         // reload **all** JS routes
-        $this->controllerHelper->dumpJsRoutes();
+        $this->routeDumperHelper->dumpJsRoutes();
 
         $this->cacheClearer->clear('symfony.routing');
     }
@@ -179,10 +177,10 @@ class InstallerListener extends BaseInstallerListener
      *
      * @param GenericEvent $event The event instance.
      */
-    public function subscriberAreaUninstalled(GenericEvent $event)
-    {
-        parent::subscriberAreaUninstalled($event);
-    }
+//    public function subscriberAreaUninstalled(GenericEvent $event)
+//    {
+//        parent::subscriberAreaUninstalled($event);
+//    }
 
     /**
      * Listener for the `new.routes.avail` generic event
@@ -194,30 +192,6 @@ class InstallerListener extends BaseInstallerListener
     public function newRoutesAvail(GenericEvent $event)
     {
         // reload **all** JS routes
-        $this->controllerHelper->dumpJsRoutes();
-    }
-
-    /**
-     * Add the specified routes to the cache.
-     *
-     * @param AbstractModule $module
-     */
-    private function addRoutesToCache(AbstractModule $module)
-    {
-        $routeCollection = $this->routeFinder->find($module);
-
-        if ($routeCollection->count() > 0) {
-            $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->addRouteCollection($module, $routeCollection);
-        }
-    }
-
-    /**
-     * Remove all routes of the specified module from cache.
-     *
-     * @param AbstractModule $module
-     */
-    private function removeRoutesFromCache(AbstractModule $module)
-    {
-        $this->em->getRepository('ZikulaRoutesModule:RouteEntity')->removeAllOfModule($module);
+        $this->routeDumperHelper->dumpJsRoutes();
     }
 }

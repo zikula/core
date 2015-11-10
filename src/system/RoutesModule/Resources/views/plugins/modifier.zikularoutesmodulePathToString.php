@@ -2,13 +2,12 @@
 
 function smarty_modifier_zikularoutesmodulePathToString($path, \Zikula\RoutesModule\Entity\RouteEntity $route)
 {
-    $options = $route->getOptions();
-
     $prefix = '';
-    if (isset($options['i18n_prefix'])) {
-        $prefix = '/' . $options['i18n_prefix'];
+    $translationPrefix = $route->getTranslationPrefix();
+    if (!empty($translationPrefix)) {
+        $prefix = '/' . $translationPrefix;
     }
-    if (!isset($options['i18n']) || $options['i18n']) {
+    if ($route->getTranslatable()) {
         $languages = ZLanguage::getInstalledLanguages();
         $isRequiredLangParam = ZLanguage::isRequiredLangParam();
         if (!$isRequiredLangParam) {

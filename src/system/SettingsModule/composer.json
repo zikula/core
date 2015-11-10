@@ -17,6 +17,7 @@
     },
     "extra": {
         "zikula": {
+            "url": "settings",
             "class": "Zikula\\SettingsModule\\ZikulaSettingsModule"
         }
     }

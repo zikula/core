@@ -126,8 +126,20 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     private function getModUrlString($moduleName)
     {
         if (!isset($this->modUrlMap[$moduleName])) {
-            $modInfo = \ModUtil::getInfoFromName($moduleName);
-            $this->modUrlMap[$moduleName] = $modInfo['url'];
+            /** @var \ZikulaKernel $kernel */
+            $kernel = $GLOBALS['kernel'];
+            $module = $kernel->getModule($moduleName);
+            // First get url from metaData.
+            $url = $module->getMetaData()->getUrl();
+            if (empty($url)) {
+                try {
+                    // try to get the url from modinfo. This accesses the DB, which is not available during install.
+                    $modInfo = \ModUtil::getInfoFromName($moduleName);
+                    $url = $modInfo['url'];
+                } catch (\Exception $e) {
+                }
+            }
+            $this->modUrlMap[$moduleName] = $url;
         }
 
         return $this->modUrlMap[$moduleName];

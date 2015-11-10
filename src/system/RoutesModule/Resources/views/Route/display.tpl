@@ -65,8 +65,10 @@
     {/if}
 
     <dl>
-        <dt>{gt text='Name'}</dt>
-        <dd>{$route.name}</dd>
+        <dt>{gt text='Route type'}</dt>
+        <dd>{$route.routeType|zikularoutesmoduleGetListEntry:'route':'routeType'|safetext}</dd>
+        <dt>{gt text='Replaced route name'}</dt>
+        <dd>{$route.replacedRouteName}</dd>
         <dt>{gt text='Bundle'}</dt>
         <dd>{$route.bundle}</dd>
         <dt>{gt text='Controller'}</dt>
@@ -78,21 +80,23 @@
         <dt>{gt text='Host'}</dt>
         <dd>{$route.host}</dd>
         <dt>{gt text='Schemes'}</dt>
-        <dd>{$route.schemes|@zikularoutesmoduleToString}</dd>
+        <dd>{$route.schemes|zikularoutesmoduleGetListEntry:'route':'schemes'|safetext}</dd>
         <dt>{gt text='Methods'}</dt>
-        <dd>{$route.methods|@zikularoutesmoduleToString}</dd>
+        <dd>{$route.methods|zikularoutesmoduleGetListEntry:'route':'methods'|safetext}</dd>
+        <dt>{gt text='Prepend bundle prefix'}</dt>
+        <dd>{$route.prependBundlePrefix|yesno:true}</dd>
+        <dt>{gt text='Translatable'}</dt>
+        <dd>{$route.translatable|yesno:true}</dd>
+        <dt>{gt text='Translation prefix'}</dt>
+        <dd>{$route.translationPrefix}</dd>
         <dt>{gt text='Defaults'}</dt>
         <dd>{$route.defaults|@zikularoutesmoduleToString}</dd>
         <dt>{gt text='Requirements'}</dt>
         <dd>{$route.requirements|@zikularoutesmoduleToString}</dd>
-        <dt>{gt text='Options'}</dt>
-        <dd>{$route.options|@zikularoutesmoduleToString}</dd>
         <dt>{gt text='Condition'}</dt>
         <dd>{$route.condition}</dd>
         <dt>{gt text='Description'}</dt>
         <dd>{$route.description}</dd>
-        <dt>{gt text='User route'}</dt>
-        <dd>{$route.userRoute|yesno:true}</dd>
         <dt>{gt text='Sort'}</dt>
         <dd>{$route.sort}</dd>
         <dt>{gt text='Group'}</dt>

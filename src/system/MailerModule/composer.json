@@ -17,6 +17,7 @@
     },
     "extra": {
         "zikula": {
+            "url": "mailer",
             "class": "Zikula\\MailerModule\\ZikulaMailerModule"
         }
     }
