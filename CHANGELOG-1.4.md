@@ -11,6 +11,7 @@ CHANGELOG - ZIKULA 1.4.x
      - Removed GroupMembershipEntity. This is very unlikely to have been used outside the Core.
        Group membership is now available directly from GroupEntity::users. A user's memberships are available
        from UserEntity::groups.
+     - The change to PSR-4 for system modules (see below) will require fixing template override paths in existing themes.
  - Deprecated:
      - Twig function `pageAddVar()` deprecated. Use `pageAddAsset()` or `pageSetVar()` instead.
  - Fixes:
