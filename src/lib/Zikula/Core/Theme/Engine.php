@@ -345,7 +345,8 @@ class Engine
         $i = 60;
         $legacyAjaxScripts = 0;
         foreach ($javascripts as $javascript) {
-            $javascript = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? "$baseUri/$javascript" : "/$javascript";
+            $javascript = (!empty($baseUri) && (false === strpos($javascript, $baseUri))) ? "$baseUri/$javascript" : "$javascript";
+            $javascript = $javascript[0] == '/' ? $javascript : "/$javascript"; // add slash to start if not present.
             // Add legacy ajax scripts (like prototype/scriptaculous) at the lightest weight (0) and in order from there.
             // Add others after core default assets (like jQuery) but before pageAddAsset default weight (100) and in order from there.
             $jsAssets[$javascript] = (false !== strpos($javascript, 'javascript/ajax/')) ? $legacyAjaxScripts++ : $i++;
