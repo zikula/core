@@ -71,7 +71,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
     private function fetchDBLocale()
     {
         $conn = $this->container->get('doctrine.dbal.default_connection');
-        $serializedValue = $conn->fetchColumn("SELECT value FROM module_vars WHERE name='locale' AND modname='ZConfig'");
+        $serializedValue = $conn->fetchColumn("SELECT value FROM module_vars WHERE name='language_i18n' AND modname='ZConfig'");
         if ($serializedValue) {
             return unserialize($serializedValue);
         } else {
