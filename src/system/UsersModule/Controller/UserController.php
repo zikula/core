@@ -667,15 +667,14 @@ class UserController extends \Zikula_AbstractController
                     // At the end of the registration process that was successful with the user in a state where
                     // he can log in, and auto-login enabled. Log the user in, sending him to the page specified.
                     $state = 'stop';
-                    $path = array(
-                        '_controller' => 'zikulausersmodule_user_login',
+                    $post = array(
                         'authentication_method' => $selectedAuthenticationMethod,
                         'authentication_info' => $authenticationInfo,
                         'rememberme' => false,
                         'returnpage' => $redirectUrl,
                     );
 
-                    $subRequest = $request->duplicate(array(), null, $path);
+                    $subRequest = $request->duplicate(array(), $post, ['_controller' => 'ZikulaUsersModule:User:login']);
                     $httpKernel = $this->get('http_kernel');
                     $response = $httpKernel->handle(
                         $subRequest,
@@ -2231,14 +2230,13 @@ class UserController extends \Zikula_AbstractController
 
         if ($passwordChanged) {
             if ($login) {
-                $path = $request->getSession()->get('User_login', array(), UsersConstant::SESSION_VAR_NAMESPACE);
-                $path['authentication_method'] = $sessionVars['authentication_method'];
-                $path['authentication_info'] = $sessionVars['authentication_info'];
-                $path['rememberme'] = $sessionVars['rememberme'];
-                $path['from_password_change'] = true;
-                $path['_controller'] = 'zikulausersmodule_user_login';
+                $sessionVars = $request->getSession()->get('User_login', array(), UsersConstant::SESSION_VAR_NAMESPACE);
+                $post['authentication_method'] = $sessionVars['authentication_method'];
+                $post['authentication_info'] = $sessionVars['authentication_info'];
+                $post['rememberme'] = $sessionVars['rememberme'];
+                $post['from_password_change'] = true;
 
-                $subRequest = $request->duplicate(array(), null, $path);
+                $subRequest = $request->duplicate(array(), $post, ['_controller' => 'ZikulaUsersModule:User:login']);
                 $httpKernel = $this->get('http_kernel');
                 $response = $httpKernel->handle(
                     $subRequest,
