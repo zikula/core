@@ -20,6 +20,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fixed `categories_admin_view.js` not present in 1.4.0 dist (#2637)
     - Routes Module updated to v1.0.1
         - Non-custom routes are no longer stored in the DB. This increases pageload speed and reduces need for reloading often.
+    - Fixed 'auto-login' after user registration (#2646)
  - Features:
     - All system modules and themes updated to PSR-4 (#2563, #2424)
     - TranslatorTrait added (#2560)
