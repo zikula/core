@@ -33,6 +33,11 @@ CHANGELOG - ZIKULA 1.4.x
     - Add umask support
  - Core-2.0 Features:
     - Add Twig-based theme engine (refs #1753)
+         - Please note that the Blocks functionality of the theme engine is still in heavy development and shouldn't be
+           relied upon as a permanent API. Method names and/or signature may change. The following are likely unstable:
+            - Zikula\Core\Controller\AbstractBlockController (entire class)
+            - Zikula\Core\AbstractTheme::generateThemedBlock
+            - Zikula\Core\Theme\Engine::wrapBlockInTheme
     - Add `pageAddAsset()` Twig function and enable 'weighting' of assets to specify load order. (#2606, #2596, #1324)
     - Add `polyfill()` Twig tag to enable JS library inclusion. (#2629)
     - Core-2.0 Theme Specification finalized and enabled (#1753, #2500, #2560)
