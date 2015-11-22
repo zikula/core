@@ -80,9 +80,16 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
 
             // prefix with zikula module url if requested
             if ($route->hasDefault('_zkModule')) {
+                $module = $route->getDefault('_zkModule');
                 $zkNoBundlePrefix = $route->getOption('zkNoBundlePrefix');
                 if (!isset($zkNoBundlePrefix) || !$zkNoBundlePrefix) {
-                    $i18nPattern = "/" . $this->getModUrlString($route->getDefault('_zkModule')) . $i18nPattern;
+                    $untranslatedPrefix = $this->getModUrlString($module);
+                    if ($this->translator->getCatalogue($locale)->has($untranslatedPrefix, strtolower($module))) {
+                        $prefix = $this->translator->trans(/** @Ignore */$untranslatedPrefix, [], strtolower($module), $locale);
+                    } else {
+                        $prefix = $untranslatedPrefix;
+                    }
+                    $i18nPattern = "/" . $prefix . $i18nPattern;
                 }
             }
 
@@ -128,9 +135,9 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
         if (!isset($this->modUrlMap[$moduleName])) {
             /** @var \ZikulaKernel $kernel */
             $kernel = $GLOBALS['kernel'];
-            $module = $kernel->getModule($moduleName);
-            // First get url from metaData.
-            $url = $module->getMetaData()->getUrl();
+            $module = $kernel->getModule($moduleName); // @todo can this throw exception if module doesn't exist in kernel?
+            // First get untranslated url from metaData.
+            $url = $module->getMetaData()->getUrl(false);
             if (empty($url)) {
                 try {
                     // try to get the url from modinfo. This accesses the DB, which is not available during install.

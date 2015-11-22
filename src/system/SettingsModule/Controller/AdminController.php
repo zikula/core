@@ -29,9 +29,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use ZLanguage;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 
-/**
- * @Route("/admin")
- */
 class AdminController extends \Zikula_AbstractController
 {
     /**
@@ -46,7 +43,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("")
+     * @Route("/admin")
      *
      * entry point for the module
      *
@@ -59,7 +56,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/config")
+     * @Route("/admin/config")
      * @Method("GET")
      *
      * display the main site settings form
@@ -106,7 +103,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/config")
+     * @Route("/admin/config")
      * @Method("POST")
      *
      * update main site settings
@@ -203,7 +200,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/ml", options={"i18n"=false})
+     * @Route("/settings/admin/multilingual", options={"i18n"=false, "zkNoBundlePrefix"=true})
      * @Method("GET")
      *
      * i18n = false so route can be found when changing languages
@@ -228,7 +225,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/ml")
+     * @Route("/settings/admin/multilingual", options={"i18n"=false, "zkNoBundlePrefix"=true})
      * @Method("POST")
      *
      * update ML settings
@@ -275,6 +272,8 @@ class AdminController extends \Zikula_AbstractController
             SessionUtil::delVar('language');
         }
 
+        /** @var \JMS\I18nRoutingBundle\Router\I18nRouter $router */
+        $router = $this->get('router');
         // Write the vars
         foreach ($settings as $formname => $varname) {
             $newvalue = $request->request->get($formname, null);
@@ -287,21 +286,19 @@ class AdminController extends \Zikula_AbstractController
         $yamlManager = new YamlDumper($this->get('kernel')->getRootDir() .'/config');
         $yamlManager->setParameter('locale', $locale);
 
-        // Reload multilingual routing settings.
-        ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings');
-
-        // clear all cache and compile directories
-        ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
+        ModUtil::apiFunc('ZikulaRoutesModule', 'admin', 'reloadMultilingualRoutingSettings'); // resets config/dynamic/generated.yml
+        $url = $router->generate('zikulasettingsmodule_admin_multilingual', array(), RouterInterface::ABSOLUTE_URL);
 
         // all done successfully
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved localisation settings.'));
-        $url = $this->get('router')->generate('zikulasettingsmodule_admin_multilingual', array(), RouterInterface::ABSOLUTE_URL);
+        /** @var \Symfony\Component\Translation\TranslatorInterface $translator */
+        $translator = $this->get('translator');
+        $request->getSession()->getFlashBag()->add('status', $translator->trans('Done! Saved localisation settings.', [], 'zikula', $locale));
 
         return new RedirectResponse($url);
     }
 
     /**
-     * @Route("/phpinfo")
+     * @Route("/admin/phpinfo")
      *
      * Displays the content of {@link phpinfo()}.
      *

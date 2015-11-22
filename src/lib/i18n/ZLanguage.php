@@ -163,7 +163,7 @@ class ZLanguage
         ModUtil::setupMultilingual();
         $this->setLocale($this->languageCode);
         $request->setLocale($this->languageCode);
-        $request->setDefaultLocale($this->languageCode);
+        $request->setDefaultLocale('en');
         $this->bindCoreDomain();
         $this->processErrors();
     }
