@@ -25,6 +25,8 @@ class RouteLoader extends Loader
 
     private $container;
 
+    private $translator;
+
     /**
      * @var \ZikulaKernel
      */
@@ -35,6 +37,7 @@ class RouteLoader extends Loader
         $this->em = $em;
         $this->container = $container;
         $this->zikulaKernel = $zikulaKernel;
+        $this->translator = $container->get('translator');
     }
 
     /**
@@ -277,22 +280,30 @@ class RouteLoader extends Loader
      */
     private function prependBundlePrefix(Route $route, AbstractBundle $bundle)
     {
+        $prefix = '';
         $options = $route->getOptions();
         $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
         if ($prependBundle && (!isset($options['zkNoBundlePrefix']) || !$options['zkNoBundlePrefix'])) {
             // get url from MetaData first. May be empty.
-            $url = $bundle->getMetaData()->getUrl();
-            if (empty($url)) {
+            $untranslatedPrefix = $bundle->getMetaData()->getUrl(false);
+            if (empty($untranslatedPrefix)) {
                 try {
                     // MetaData will be empty for extensions not Spec-2.0. Try to get from modinfo.
                     // this calls the DB which is not available during install.
                     $modinfo = \ModUtil::getInfoFromName($bundle->getName());
-                    $url = $modinfo['url'];
+                    $prefix = $modinfo['url'];
                 } catch (\Exception $e) {
+                }
+            } else {
+                $locale = $this->container->getParameter('locale');
+                if ($this->translator->getCatalogue($locale)->has($untranslatedPrefix, strtolower($bundle->getName()))) {
+                    $prefix = $this->translator->trans(/** @Ignore */$untranslatedPrefix, [], strtolower($bundle->getName()), $locale);
+                } else {
+                    $prefix = $untranslatedPrefix;
                 }
             }
 
-            $path = "/" . $url . $route->getPath();
+            $path = "/" . $prefix . $route->getPath();
             $route->setPath($path);
         }
     }

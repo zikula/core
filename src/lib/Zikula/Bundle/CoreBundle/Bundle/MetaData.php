@@ -124,10 +124,10 @@ class MetaData
         return $this->__(/** @Ignore */$this->displayName);
     }
 
-    public function getUrl()
+    public function getUrl($translated = true)
     {
         $this->confirmTranslator();
-        return $this->__(/** @Ignore */$this->url);
+        return $translated ? $this->__(/** @Ignore */$this->url) : $this->url;
     }
 
     public function getOldNames()
