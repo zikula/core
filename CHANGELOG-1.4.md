@@ -48,7 +48,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Add PermissionApi to manage Rights/Access determination for Core-2.0 applications.
     - Implement method for a module to declare the Entities that are categorizable (#411 - was actually done in Core-1.4.0)
  - Vendor updates:
-    - Symfony update to 2.7.6 (#2551, #2582)
+    - Symfony update to 2.7.7 (#2551, #2582)
+        - 2.7.7 includes security fixes.
     - Gedmo Doctrine Extensions updated to version 2.4.x.
     - Twig Extensions updated to version ~1.3.0.
     - Doctrine ORM updated to 2.5.x. (#2613)
