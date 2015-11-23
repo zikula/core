@@ -1,7 +1,7 @@
 CHANGELOG - ZIKULA 1.4.x
 ------------------------
 
-* 1.4.1 ()
+* 1.4.1 (2015-11-23)
 
  - BC Breaks:
      - Removed `Zikula\Core\Api\AbstractApi` that was introduced only in 1.4.0 (#2494)
