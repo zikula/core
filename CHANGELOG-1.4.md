@@ -15,6 +15,7 @@ CHANGELOG - ZIKULA 1.4.x
     - n/a
  - Vendor updates:
     - Font-Awesome updated to 4.5.0
+    - Bootstrap updated to 3.3.6
 
 * 1.4.1 (2015-11-23)
 
