@@ -14,7 +14,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Core-2.0 Features:
     - n/a
  - Vendor updates:
-    - n/a
+    - Font-Awesome updated to 4.5.0
 
 * 1.4.1 (2015-11-23)
 
