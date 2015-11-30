@@ -14,6 +14,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Core-2.0 Features:
     - n/a
  - Vendor updates:
+    - Symfony updated to 2.8.0
     - Font-Awesome updated to 4.5.0
     - Bootstrap updated to 3.3.6
 
