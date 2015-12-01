@@ -1906,7 +1906,7 @@ class UserUtil
             $detect = new Mobile_Detect();
             if ($detect->isMobile()) {
                 $pagetheme = 'Mobile';
-`           } else {
+            } else {
                 $pagetheme = FormUtil::getPassedValue('theme', null, 'GETPOST');
             }
         } else {
