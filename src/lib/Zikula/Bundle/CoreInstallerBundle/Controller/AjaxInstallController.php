@@ -169,7 +169,7 @@ class AjaxInstallController extends AbstractController
     {
         // regenerate modules list
         $modApi = new ExtensionsAdminApi($this->container, new ZikulaExtensionsModule());
-        $modApi->regenerate(array('filemodules' => $modApi->getfilemodules(array('system'))));
+        $modApi->regenerate(array('filemodules' => $modApi->getfilemodules()));
 
         // set each of the core modules to active
         reset($this->systemModules);
