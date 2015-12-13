@@ -19,10 +19,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BlockPlacement entity class.
  *
- * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
- *
  * @ORM\Entity
  * @ORM\Table(name="block_placements",indexes={@ORM\Index(name="bid_pid_idx",columns={"bid","pid"})})
+ *
+ * @ORM\HasLifecycleCallbacks
  */
 class BlockPlacementEntity extends EntityAccess
 {
@@ -30,17 +30,20 @@ class BlockPlacementEntity extends EntityAccess
      * The id of the block postion
      *
      * @ORM\Id
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="Zikula\BlocksModule\Entity\BlockPositionEntity", inversedBy="placements")
+     * @ORM\JoinColumn(name="pid", referencedColumnName="pid", nullable=false)
      */
-    private $pid;
+    private $position;
 
     /**
      * The id of the block
      *
+     * @var \Zikula\BlocksModule\Entity\BlockEntity
      * @ORM\Id
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="Zikula\BlocksModule\Entity\BlockEntity", inversedBy="placements")
+     * @ORM\JoinColumn(name="bid", referencedColumnName="bid", nullable=false)
      */
-    private $bid;
+    private $block;
 
     /**
      * The sort order of the block within the position
@@ -55,55 +58,59 @@ class BlockPlacementEntity extends EntityAccess
      */
     public function __construct()
     {
-        $this->pid = 0;
-        $this->bid = 0;
         $this->sortorder = 0;
     }
 
     /**
-     * get the id of the placement in the placement/block association
-     *
-     * @return integer the placement's id in the placement/block association
+     * @return BlockPositionEntity
      */
-    public function getPid()
+    public function getPosition()
     {
-        return $this->pid;
+        return $this->position;
+    }
+
+    public function setPosition(BlockPositionEntity $position = null)
+    {
+        if ($this->position !== null) {
+            $this->position->removePlacement($this);
+        }
+
+        if ($position !== null) {
+            $position->addPlacement($this);
+        }
+
+        $this->position = $position;
+
+        return $this;
     }
 
     /**
-     * set the id for the placement in the placement/block association
-     *
-     * @param integer $pid the placement's id in the placement/block association
+     * @return BlockEntity
      */
-    public function setPid($pid)
+    public function getBlock()
     {
-        $this->pid = $pid;
+        return $this->block;
+    }
+
+    public function setBlock(BlockEntity $block = null)
+    {
+        if ($this->block !== null) {
+            $this->block->removePlacement($this);
+        }
+
+        if ($block !== null) {
+            $block->addPlacement($this);
+        }
+
+        $this->block = $block;
+
+        return $this;
     }
 
     /**
-     * get the id of the block in the placement/block association
+     * get the sortorder of the placement
      *
-     * @return integer the block's id in the placement/block association
-     */
-    public function getBid()
-    {
-        return $this->bid;
-    }
-
-    /**
-     * set the id for the block in the placement/block association
-     *
-     * @param integer $bid the block's id in the placement/block association
-     */
-    public function setBid($bid)
-    {
-        $this->bid = $bid;
-    }
-
-    /**
-     * get the sortorder of the placement/block association
-     *
-     * @return integer the placement/block association sortorder
+     * @return integer the placement
      */
     public function getSortorder()
     {
@@ -111,12 +118,39 @@ class BlockPlacementEntity extends EntityAccess
     }
 
     /**
-     * set the sortorder for the placement/block association
+     * set the sortorder for the placement
      *
-     * @param integer $sortorder the placement/block association sortorder
+     * @param integer $sortorder the placement
      */
     public function setSortorder($sortorder)
     {
         $this->sortorder = $sortorder;
+    }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function preRemoveCallback()
+    {
+        $this->setPosition(null);
+        $this->setBlock(null);
+    }
+
+    /**
+     * @deprecated
+     * @return mixed
+     */
+    public function getPid()
+    {
+        return $this->position->getPid();
+    }
+
+    /**
+     * @deprecated
+     * @return int
+     */
+    public function getBid()
+    {
+        return $this->block->getBid();
     }
 }

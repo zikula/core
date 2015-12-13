@@ -1750,7 +1750,7 @@ class ModUtil
             $entityManager = $sm->get('doctrine.entitymanager');
 
             // get all modules
-            $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findAll();
+            $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findAll();
 
             foreach ($modules as $module) {
                 $module = $module->toArray();
@@ -1792,7 +1792,7 @@ class ModUtil
         $entityManager = $sm->get('doctrine.entitymanager');
 
         // get all modules
-        $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findBy($where, array($sort => 'ASC'));
+        $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy($where, array($sort => 'ASC'));
 
         return $modules;
     }
@@ -1812,7 +1812,7 @@ class ModUtil
     {
         $sm = ServiceUtil::getManager();
         $entityManager = $sm->get('doctrine.entitymanager');
-        $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findBy(array('state' => $state), array($sort => 'ASC'));
+        $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy(array('state' => $state), array($sort => 'ASC'));
 
         return $modules;
     }

@@ -419,10 +419,6 @@ class Zikula_View_Theme extends Zikula_View
         // HACK: Save/restore cache settings
         $this->caching = $caching;
 
-        if ((bool)$this->themeconfig['blockwrapper']) {
-            $return = '<div class="z-block '. 'z-blockposition-'.DataUtil::formatForDisplay($position).' z-bkey-' . DataUtil::formatForDisplay(strtolower($block['bkey'])) . ' z-bid-' . DataUtil::formatForDisplay($block['bid']) . '">' . "\n" . $return . "</div>\n";
-        }
-
         return $return;
     }
 

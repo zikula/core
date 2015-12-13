@@ -51,37 +51,34 @@ abstract class AbstractTheme extends AbstractBundle
     {
         $template = $this->config[$realm]['page'];
 
-        // @todo NOTE: 'pagetype' is temporary var in the template
-        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => $response->getContent(), 'pagetype' => 'admin'));
+        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => $response->getContent()));
     }
 
     /**
      * convert the block content to a theme-wrapped Response
      * @param string $realm
-     * @param array $block
+     * @param $positionName
+     * @param string $blockContent
+     * @param $blockTitle
      * @return string
      */
-    public function generateThemedBlock($realm, array $block)
+    public function generateThemedBlockContent($realm, $positionName, $blockContent, $blockTitle)
     {
-        if (isset($this->config[$realm]['block']['positions'][$block['position']])) {
-            $template = $this->name . ':' . $this->config[$realm]['block']['positions'][$block['position']];
+        if (isset($this->config[$realm]['block']['positions'][$positionName])) {
+            $template = $this->name . ':' . $this->config[$realm]['block']['positions'][$positionName];
         } else {
-            // block position not defined.
-            // @todo return with no content, throw an exception or provide a default block?
-            // for now, provide a default
+            // block position not defined, provide a default template
             $template = 'CoreBundle:Default:block.html.twig';
         }
-        $content = $this->getContainer()->get('templating')->render($template, $block); // @todo renderView? renderResponse?
-        // wrap block with unique div
-        $position = !empty($block['position']) ? $block['position'] : 'none';
-        $content = '<div class="z-block'
-            . ' z-blockposition-' . $position
-            . ' z-bkey-' . strtolower($block['bkey'])
-            . ' z-bid-' . $block['bid'] . '">' . "\n"
-            . $content
-            . "</div>\n";
 
-        return $content;
+        $templateParameters = [
+            'title' => $blockTitle,
+            'content' => $blockContent
+        ];
+        // @todo add collapsable block code see \BlockUtil::themeBlock
+        // @todo including check for `isCollapsed` like \BlockUtil::checkUserBlock
+
+        return $this->getContainer()->get('templating')->render($template, $templateParameters);
     }
 
     /**

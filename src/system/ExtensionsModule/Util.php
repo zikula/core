@@ -19,6 +19,7 @@ use Zikula_AbstractVersion;
 use ServiceUtil;
 use ModUtil;
 use System;
+use Zikula\Core\AbstractModule;
 
 /**
  * Helper functions for the extensions module
@@ -27,6 +28,7 @@ class Util
 {
     /**
      * Get version metadata for a module.
+     * @todo refactor at Core-2.0 to eliminate legacy
      *
      * @param string $moduleName Module Name.
      * @param string $rootdir    Root directory of the module (default: modules).
@@ -56,6 +58,9 @@ class Util
             if (!$modversion instanceof Zikula_AbstractVersion) {
                 throw new \InvalidArgumentException(__f('%s is not an instance of Zikula_AbstractVersion', get_class($modversion)));
             }
+        } elseif ($module instanceof AbstractModule) {
+            // Core-2.0 spec
+            $modversion = $module->getMetaData()->getFilteredVersionInfoArray();
         } elseif (!is_dir("$rootdir/$moduleName")) {
             $modversion = array(
                     'name' => $moduleName,

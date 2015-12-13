@@ -8,11 +8,17 @@ CHANGELOG - ZIKULA 1.4.x
  - Deprecated:
     - n/a
  - Fixes:
-    - n/a
+    - Fix module stylesheet not being loaded automatically for Core-2.0 modules.
  - Features:
-    - n/a
+    - New advanced block filtering based on a combination of any query parameter or request attributes.
  - Core-2.0 Features:
-    - n/a
+    - Implement new BlockApi and all corresponding methods.
+        - BlockControllerInterface
+        - AbstractBlockController
+        - Updated BlocksModule Admin UI.
+        - BlocksModule updated to Core-2.0 Spec.
+    - Added AbstractExtensionInstaller for use by third-party developers.
+    - Added ExtensionVariablesTrait for developers to insert into classes where Extension Variable management is needed.
  - Vendor updates:
     - Symfony updated to 2.8.0
     - Font-Awesome updated to 4.5.0

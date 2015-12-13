@@ -23,6 +23,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * API functions used by administrative controllers
+ * @deprecated remove at Core-2.0
  */
 class AdminApi extends \Zikula_AbstractApi
 {
@@ -64,46 +65,34 @@ class AdminApi extends \Zikula_AbstractApi
             throw new AccessDeniedException();
         }
 
-        // remove old placements and insert the new ones
-        /** @var BlockPlacementEntity[] $items */
-        $items = $this->entityManager->getRepository('ZikulaBlocksModule:BlockPlacementEntity')
-                                     ->findBy(array('bid'=>$args['bid']));
+        $block = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findOneBy(['bid' => $args['bid']]);
 
-        // refactor position array (keys=values)
-        $positions = $args['positions'];
-        $args['positions'] = array();
-        foreach ($positions as $value) {
-            $args['positions'][$value] = $value;
-        }
-
-        foreach ($items as $item) {
-            $pid = $item->getPid();
-            if (!in_array($pid,$args['positions'])) {
-                $this->entityManager->remove($item);
+        // remove old placements that are not wanted
+        foreach ($block->getPlacements() as $placement) {
+            $pid = $placement->getPosition()->getPid();
+            if (!in_array($pid, $args['positions'])) {
+                $this->entityManager->remove($placement);
+                $block->removePlacement($placement);
             } else {
-                unset($args['positions'][$pid]);
+                $key = array_search($pid, $args['positions']);
+                unset($args['positions'][$key]);
             }
         }
 
-        if (isset($args['positions']) && is_array($args['positions'])) {
-
+        // add new placements as requested
+        if (!empty($args['positions']) && is_array($args['positions'])) {
             foreach ($args['positions'] as $position) {
                 $placement = new BlockPlacementEntity();
-                $placement->setPid($position);
-                $placement->setBid($args['bid']);
+                $placement->setPosition($this->entityManager->getReference('ZikulaBlocksModule:BlockPositionEntity', $position));
+                $placement->setBlock($block);
                 $this->entityManager->persist($placement);
+                $block->addPlacement($placement);
             }
         }
-
-        // unset positions
-        if (isset($args['positions'])) {
-            unset($args['positions']);
-        }
+        unset ($args['positions'], $args['placements']);
 
         // update item
-        $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'get', array('bid' => $args['bid']));
-        $item->merge($args);
-
+        $block->merge($args);
         $this->entityManager->flush();
 
         return true;
@@ -147,36 +136,33 @@ class AdminApi extends \Zikula_AbstractApi
             $args['content'] = '';
         }
 
-        $block = array(
+        $blockData = array(
             'title' => $args['title'],
             'description' => $args['description'],
             'language' => $args['language'],
             'collapsable' => $args['collapsable'],
-            'mid' => $args['mid'],
+            'module' => $this->entityManager->getReference('Zikula\ExtensionsModule\Entity\ExtensionEntity', $args['mid']),
             'defaultstate' => $args['defaultstate'],
             'bkey' => $args['bkey'],
             'content' => $args['content']
         );
 
-        $item = new BlockEntity();
-        $item->merge($block);
-        $this->entityManager->persist($item);
-        $this->entityManager->flush();
+        $block = new BlockEntity();
+        $block->merge($blockData);
+        $this->entityManager->persist($block);
 
         // insert block positions for this block
         if (isset($args['positions']) && is_array($args['positions'])) {
-
             foreach ($args['positions'] as $position) {
                 $placement = new BlockPlacementEntity();
-                $placement->setPid($position);
-                $placement->setBid($item['bid']);
+                $placement->setPosition($this->entityManager->getReference('ZikulaBlocksModule:BlockPositionEntity', $position));
+                $placement->setBlock($block);
                 $this->entityManager->persist($placement);
             }
-
-            $this->entityManager->flush();
         }
+        $this->entityManager->flush();
 
-        return $item['bid'];
+        return $block->getBid();
     }
 
     /**
@@ -287,14 +273,14 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete block's placements
-        $query = $this->entityManager->createQueryBuilder()
-                                     ->delete()
-                                     ->from('ZikulaBlocksModule:BlockPlacementEntity', 'p')
-                                     ->where('p.bid = :bid')
-                                     ->setParameter('bid', $block['bid'])
-                                     ->getQuery();
-
-        $query->getResult();
+//        $query = $this->entityManager->createQueryBuilder()
+//                                     ->delete()
+//                                     ->from('ZikulaBlocksModule:BlockPlacementEntity', 'p')
+//                                     ->where('p.bid = :bid')
+//                                     ->setParameter('bid', $block['bid'])
+//                                     ->getQuery();
+//
+//        $query->getResult();
 
         // Now actually delete the block
         $this->entityManager->remove($block);
@@ -443,56 +429,5 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Let the calling process know that we have finished successfully
         return true;
-    }
-
-    /**
-     * Get available admin panel links.
-     *
-     * @return array array of admin links.
-     */
-    public function getLinks()
-    {
-        $links = array();
-        $submenulinks = array();
-
-        // get all possible block positions
-        $blockspositions = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getallpositions');
-
-        // Create array for dropdown menu links
-        foreach ($blockspositions as $blocksposition) {
-            $filter['blockposition_id'] = $blocksposition['pid'];
-            $submenulinks[] = array(
-                'url' => $this->get('router')->generate('zikulablocksmodule_admin_view', array('filter' => $filter)),
-                'text' => $this->__f('Position "%s"', $blocksposition['name']));
-        }
-
-        if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulablocksmodule_admin_view'),
-                'text' => $this->__('Blocks list'),
-                'icon' => 'table',
-                'links' => $submenulinks);
-        }
-
-        if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADD)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulablocksmodule_admin_newblock'),
-                'text' => $this->__('Create new block'),
-                'icon' => 'plus');
-        }
-        if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADD)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulablocksmodule_admin_newposition'),
-                'text' => $this->__('Create new block position'),
-                'icon' => 'plus');
-        }
-        if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulablocksmodule_admin_modifyconfig'),
-                'text' => $this->__('Settings'),
-                'icon' => 'wrench');
-        }
-
-        return $links;
     }
 }

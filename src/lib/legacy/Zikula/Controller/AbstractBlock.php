@@ -15,6 +15,7 @@
 
 /**
  * Abstract controller for blocks.
+ * @deprecated
  */
 abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
 {
@@ -84,5 +85,10 @@ abstract class Zikula_Controller_AbstractBlock extends Zikula_AbstractController
         }
 
         throw new BadMethodCallException(__f('%1$s::%2$s() does not exist.', array(get_class($this), $method)));
+    }
+
+    public function getType()
+    {
+        return $this->info()['text_type'];
     }
 }

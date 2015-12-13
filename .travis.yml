@@ -50,5 +50,6 @@ install:
 #    - sudo service apache2 restart
 #
 script:
-     - echo "Nothing to do.. yet!"
+  - phpunit
+#     - echo "Nothing to do.. yet!"
 #    - wget -dO - localhost/src

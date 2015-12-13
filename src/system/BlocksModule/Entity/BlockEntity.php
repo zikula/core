@@ -13,15 +13,17 @@
 
 namespace Zikula\BlocksModule\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Zikula\BlocksModule\Entity\BlockPlacementEntity;
+use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
  * Block entity class.
  *
- * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
- *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\BlocksModule\Entity\Repository\BlockRepository")
  * @ORM\Table(name="blocks",indexes={@ORM\Index(name="active_idx",columns={"active"})})
  */
 class BlockEntity extends EntityAccess
@@ -38,9 +40,16 @@ class BlockEntity extends EntityAccess
     /**
      * The block key
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $bkey;
+
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255)
+     */
+    private $blocktype;
 
     /**
      * The block title
@@ -61,30 +70,24 @@ class BlockEntity extends EntityAccess
      *
      * A seralized array of block content variables
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="array")
      */
     private $content;
 
     /**
-     * The block url
-     *
-     * @ORM\Column(type="text")
-     */
-    private $url;
-
-    /**
      * The id of the module owning the block
      *
-     * @ORM\Column(type="integer")
-     */
-    private $mid;
+     * @ORM\ManyToOne(targetEntity="Zikula\ExtensionsModule\Entity\ExtensionEntity")
+     * @ORM\JoinColumn(name="mid", referencedColumnName="id")
+     **/
+    private $module;
 
     /**
      * The display filter to apply to the block
      *     
-     * @ORM\Column(type="array")
+     * @ORM\Column(name="filter", type="array")
      */
-    private $filter;
+    private $filters;
 
     /**
      * The active status of the block
@@ -92,27 +95,6 @@ class BlockEntity extends EntityAccess
      * @ORM\Column(type="integer")
      */
     private $active;
-
-    /**
-     * Is the block collapseable
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $collapsable;
-
-    /**
-     * The default display state of the block (collapsed, uncollapsed)
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $defaultstate;
-
-    /**
-     * The refresh time for the block content
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $refresh;
 
     /**
      * The last updated timestamp of the block
@@ -128,6 +110,14 @@ class BlockEntity extends EntityAccess
      */
     private $language;
 
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="Zikula\BlocksModule\Entity\BlockPlacementEntity",
+     *     mappedBy="block",
+     *     cascade={"remove", "persist"},
+     *     orphanRemoval=true)
+     */
+    private $placements;
 
     /**
      * constructor
@@ -137,16 +127,14 @@ class BlockEntity extends EntityAccess
         $this->bkey = '';
         $this->title = '';
         $this->description = '';
-        $this->content = '';
-        $this->url = '';
-        $this->mid = 0;
-        $this->filter = array();
+        $this->blocktype = '';
+        $this->content = [];
+        $this->module = 0;
+        $this->filters = array();
         $this->active = 1;
-        $this->collapsable = 1;
-        $this->defaultstate = 1;
-        $this->refresh = 3600;
         $this->last_update = new \DateTime("now");
         $this->language = '';
+        $this->placements = new ArrayCollection();
     }
 
     /**
@@ -187,6 +175,22 @@ class BlockEntity extends EntityAccess
     public function setBkey($bkey)
     {
         $this->bkey = $bkey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlocktype()
+    {
+        return $this->blocktype;
+    }
+
+    /**
+     * @param string $blocktype
+     */
+    public function setBlocktype($blocktype)
+    {
+        $this->blocktype = $blocktype;
     }
 
     /**
@@ -250,43 +254,23 @@ class BlockEntity extends EntityAccess
     }
 
     /**
-     * get the url of the block
+     * get the module that the block belongs to
      *
-     * @return string the block's url
+     * @return ExtensionEntity
      */
-    public function getUrl()
+    public function getModule()
     {
-        return $this->url;
+        return $this->module;
     }
 
     /**
-     * set the url for the block
+     * set the module that the block belongs to
      *
-     * @param string $url the block's url
+     * @param \Zikula\ExtensionsModule\Entity\ExtensionEntity $module
      */
-    public function setUrl($url)
+    public function setModule(ExtensionEntity $module)
     {
-        $this->url = $url;
-    }
-
-    /**
-     * get the id of the module that the block belongs to
-     *
-     * @return integer the module's id
-     */
-    public function getMid()
-    {
-        return $this->mid;
-    }
-
-    /**
-     * set the id of the module that the block belongs to
-     *
-     * @param integer $mid the module's id
-     */
-    public function setMid($mid)
-    {
-        $this->mid = $mid;
+        $this->module = $module;
     }
 
     /**
@@ -294,9 +278,9 @@ class BlockEntity extends EntityAccess
      *
      * @return array the block's filters
      */
-    public function getFilter()
+    public function getFilters()
     {
-        return $this->filter;
+        return $this->filters;
     }
 
     /**
@@ -304,9 +288,9 @@ class BlockEntity extends EntityAccess
      *
      * @param array $filter the blocks's filters
      */
-    public function setFilter($filter)
+    public function setFilters($filters)
     {
-        $this->filter = $filter;
+        $this->filters = $filters;
     }
 
     /**
@@ -330,69 +314,9 @@ class BlockEntity extends EntityAccess
     }
 
     /**
-     * get the collapsable status of the block
-     *
-     * @return integer the collapsable status number (0=not collapsable, 1=collapsable)
-     */
-    public function getCollapsable()
-    {
-        return $this->collapsable;
-    }
-
-    /**
-     * set the collapsable status of the block
-     *
-     * @param integer $collapsable the collapsable status number (0=inactive, 1=active)
-     */
-    public function setCollapsable($collapsable)
-    {
-        $this->collapsable = $collapsable;
-    }
-
-    /**
-     * get the default activation state of the block
-     *
-     * @return integer the state number (0=inactive, 1=active)
-     */
-    public function getDefaultstate()
-    {
-        return $this->defaultstate;
-    }
-
-    /**
-     * set the default activation state of the block
-     *
-     * @param integer $defaultstate the default activation state (0=inactive, 1=active)
-     */
-    public function setDefaultstate($defaultstate)
-    {
-        $this->defaultstate = $defaultstate;
-    }
-
-    /**
-     * get the refresh rate of the block
-     *
-     * @return integer the refresh rate number
-     */
-    public function getRefresh()
-    {
-        return $this->refresh;
-    }
-
-    /**
-     * set the refresh rate of the block
-     *
-     * @param integer $refresh the refresh rate in milliseconds (1sec=1000ms)
-     */
-    public function setRefresh($refresh)
-    {
-        $this->refresh = $refresh;
-    }
-
-    /**
      * get last update time of the block
      *
-     * @return datetime the block's last updated time
+     * @return \DateTime the block's last updated time
      */
     public function getLast_Update()
     {
@@ -427,5 +351,66 @@ class BlockEntity extends EntityAccess
     public function setLanguage($language)
     {
         $this->language = $language;
+    }
+
+    public function getPlacements()
+    {
+        return $this->placements;
+    }
+
+    public function addPlacement(BlockPlacementEntity $placement)
+    {
+        if (!$this->placements->contains($placement)) {
+            $this->placements->add($placement);
+        }
+    }
+
+    public function removePlacement(BlockPlacementEntity $placement)
+    {
+        if ($this->placements->contains($placement)) {
+            $this->placements->removeElement($placement);
+        }
+    }
+
+    /**
+     * Get an ArrayCollection of BlockPositionEntity that are assigned to this Block
+     * @return ArrayCollection
+     */
+    public function getPositions()
+    {
+        $positions = new ArrayCollection();
+        foreach($this->getPlacements() as $placement) {
+            $positions->add($placement->getPosition());
+        }
+
+        return $positions;
+    }
+
+    /**
+     * Set BlockPlacementsEntity from provided ArrayCollection of positionEntity
+     * requires
+     *   cascade={"remove, "persist"}
+     *   orphanRemoval=true
+     *   on the association of $this->placements
+     * @param ArrayCollection $positions
+     */
+    public function setPositions(ArrayCollection $positions)
+    {
+        // remove placements and skip existing placements.
+        foreach ($this->placements as $placement) {
+            if (!$positions->contains($placement->getPosition())) {
+                $this->placements->removeElement($placement);
+            } else {
+                $positions->removeElement($placement->getPosition()); // remove from positions to add.
+            }
+        }
+
+        // add new placements
+        foreach ($positions as $position) {
+            $placement = new BlockPlacementEntity();
+            $placement->setPosition($position);
+            // sortorder is irrelevant at this stage.
+            $placement->setBlock($this); // auto-adds placement
+        }
     }
 }

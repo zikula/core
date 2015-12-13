@@ -19,6 +19,7 @@ use ModUtil;
 
 /**
  * API functions used by user controllers
+ * @deprecated remove at Core-2.0
  */
 class UserApi extends \Zikula_AbstractApi
 {
@@ -82,7 +83,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add clause for filtering module
         if (isset($args['module_id']) && is_numeric($args['module_id']) && $args['module_id']) {
-            $qb->andWhere($qb->expr()->eq('b.mid', ':mid'))->setParameter('mid', $args['module_id']);
+            $qb->andWhere($qb->expr()->eq('b.module', ':mid'))->setParameter('mid', $args['module_id']);
         }
 
         // add clause for filtering language

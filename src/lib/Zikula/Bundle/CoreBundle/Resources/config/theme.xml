@@ -12,6 +12,7 @@
         <parameter key="zikula_core.internal.theme.default_page_var_setter_listener.class">Zikula\Bundle\CoreBundle\EventListener\Theme\DefaultPageVarSetterListener</parameter>
         <parameter key="zikula_core.internal.theme.controller_annotation_reader_listener.class">Zikula\Bundle\CoreBundle\EventListener\Theme\ControllerAnnotationReaderListener</parameter>
         <parameter key="zikula_core.internal.theme.template_path_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\Theme\TemplatePathOverrideListener</parameter>
+        <parameter key="zikula_core.internal.theme.module_stylesheet_insert_listener.class">Zikula\Bundle\CoreBundle\EventListener\Theme\ModuleStylesheetInsertListener</parameter>
         <parameter key="zikula_core.common.theme.assets.js.class">Zikula\Core\Theme\AssetBag</parameter>
         <parameter key="zikula_core.common.theme.assets.css.class">Zikula\Core\Theme\AssetBag</parameter>
         <parameter key="zikula_core.common.theme.assets.header.class">Zikula\Core\Theme\AssetBag</parameter>
@@ -35,6 +36,7 @@
             <argument type="service" id="annotation_reader" />
             <argument type="service" id="kernel" strict="false" />
             <argument type="service" id="zikula_core.internal.theme_filter" />
+            <argument type="service" id="zikula_blocks_module.api.block" />
         </service>
 
         <service id="zikula_core.internal.theme.create_themed_response_listener" class="%zikula_core.internal.theme.create_themed_response_listener.class%">
@@ -72,6 +74,11 @@
             <tag name="monolog.logger" channel="request" />
             <argument type="service" id="twig.loader" />
             <argument type="service" id="zikula_core.common.theme_engine" />
+        </service>
+
+        <service id="zikula_core.internal.theme.module_stylesheet_insert_listener" class="%zikula_core.internal.theme.module_stylesheet_insert_listener.class%">
+            <argument id="kernel" type="service"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
 
         <service id="zikula_core.common.theme.assets_js" class="%zikula_core.common.theme.assets.js.class%" />

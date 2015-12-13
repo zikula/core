@@ -1,54 +1,54 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Core\Controller;
 
-abstract class AbstractBlockController extends AbstractController
+use Symfony\Component\HttpFoundation\Request;
+use Zikula\Core\BlockControllerInterface;
+
+abstract class AbstractBlockController extends AbstractController implements BlockControllerInterface
 {
     /**
-     * Initialise interface.
-     *
-     * @return void
-     */
-    abstract public function init();
-
-    /**
-     * Get info interface.
-     *
-     * @return array BlockInfo.
-     */
-    abstract public function info();
-
-    /**
-     * Display block.
-     *
-     * @param array $blockInfo blockInfo.
-     *
-     * @return array blockInfo.
-     */
-    abstract public function display($blockInfo);
-
-    /**
-     * Modify block interface.
-     *
-     * @param array $blockInfo Block info.
-     *
+     * Modify the block content.
+     * @param Request $request
      * @return string
      */
-    public function modify($blockInfo)
+    public function modify(Request $request, $content)
     {
-        return '';
+        return $request->request->get('content', '');
     }
 
     /**
-     * Update block interface.
-     *
-     * @param array $blockInfo Block info.
-     *
-     * @return array blockInfo.
+     * Display the block content.
+     * @param array|string $content
+     * @return array|string
      */
-    public function update($blockInfo)
+    public function display($content)
     {
-        return $blockInfo;
+        return $content;
     }
 
+    /**
+     * Get the type of the block (e.g. the 'name').
+     * @return string
+     */
+    public function getType()
+    {
+        // default to the ClassName without the `Block` suffix
+        // note: This string is intentionally left untranslated.
+        $fqCn = get_class($this);
+        $pos = strrpos($fqCn, '\\');
+
+        return substr($fqCn, $pos + 1, -5);
+    }
 }

@@ -6,7 +6,9 @@
 
     <parameters>
         <parameter key="zikula_extensions_module.api.variable.class">Zikula\ExtensionsModule\Api\VariableApi</parameter>
+        <parameter key="zikula_extensions_module.api.extension.class">Zikula\ExtensionsModule\Api\ExtensionApi</parameter>
         <parameter key="zikula_extensions_module.extension_var_repository.class">Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository</parameter>
+        <parameter key="zikula_extensions_module.extension_repository.class">Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository</parameter>
     </parameters>
 
     <services>
@@ -15,9 +17,19 @@
             <argument type="string">Zikula\ExtensionsModule\Entity\ExtensionVarEntity</argument>
         </service>
 
+        <service id="zikula_extensions_module.extension_repository" class="%zikula_extensions_module.extension_repository.class%">
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
+            <argument type="string">Zikula\ExtensionsModule\Entity\ExtensionEntity</argument>
+        </service>
+
         <service id="zikula_extensions_module.api.variable" class="%zikula_extensions_module.api.variable.class%">
             <argument type="service" id="zikula_extensions_module.extension_var_repository" />
             <argument type="service" id="kernel" />
+        </service>
+
+        <service id="zikula_extensions_module.api.extension" class="%zikula_extensions_module.api.extension.class%">
+            <argument type="service" id="zikula_extensions_module.extension_repository"/>
+            <argument type="service" id="kernel"/>
         </service>
     </services>
 

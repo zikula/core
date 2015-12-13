@@ -159,7 +159,7 @@ class SearchBlock extends \Zikula_Controller_AbstractBlock
     {
         // list of vars that don't need to be saved
         $search_reserved_vars = array('authid', 'csrftoken', 'bid', 'title', 'positions', 'language', 'submit',
-                                      'refresh', 'filter', 'type', 'functions', 'customargs');
+                                      'filter', 'type', 'functions', 'customargs');
 
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);

@@ -1,0 +1,68 @@
+{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Edit.js')) }}
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-edit"></span>
+            {% if form.vars.value.bid %}{{ __('Modify') }}{% else %}{{ __('Create') }}{% endif %} {{ __('Block') }}
+        </h3>
+        {{ showflashes() }}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>{{ __('Properties') }}</legend>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">{{ __('Block Type') }}</label>
+                <div class="col-lg-9">
+                    <p class="form-control-static label label-info" style="font-size: 130%">{{ moduleName }}/{{ form.vars.value.blocktype }}</p>
+                </div>
+            </div>
+            {{ form_row(form.bkey) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.description) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Content') }}</legend>
+            {{ renderedOutput|default('')|raw }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Filters') }}</legend>
+            {{ form_row(form.positions) }}
+            {{ form_row(form.language) }}
+            <script>var filterCount = '{{ form.filters|length }}';</script>
+            <div class="form-group">
+                {{ form_label(form.filters) }}
+                <div class="col-lg-9">
+                    <ul id="filters" data-prototype="&lt;li class=&quot;form-inline&quot;&gt;{{ form_widget(form.filters.vars.prototype.attribute, { 'attr': {'class': 'attribute-selector'} })|e }} {{ form_widget(form.filters.vars.prototype.queryParameter, { 'attr': {'disabled': true, 'class': 'queryParameter'} })|e }} {{ form_widget(form.filters.vars.prototype.comparator)|e }} {{ form_widget(form.filters.vars.prototype.value)|e }}&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;delete-filter fa fa-trash fa-lg text-danger&quot;&gt;&lt;/a&gt;&lt;/li&gt;">
+                        {% for filter in form.filters %}
+                        {% form_theme form _self %}
+                        {% block _filters_entry_widget %}
+                        <li class="form-inline">{{ form_widget(filter.attribute, { 'attr': {'class': 'attribute-selector'} }) }} {{ form_widget(filter.queryParameter, { 'attr': {'disabled': filter.vars.value.queryParameter is empty, 'class': 'queryParameter'} }) }} {{ form_widget(filter.comparator) }} {{ form_widget(filter.value) }}&nbsp;&nbsp;<a href="#" class="delete-filter fa fa-trash fa-lg text-danger"></a></li>
+                        {% endblock %}
+                        {% endfor %}
+                        <li style="display:none">{{ form_row(form.filters) }}</li><!-- hack to hide repeated display of filters label -->
+                    </ul>
+                    <a href="#" id="add-filter" class="btn btn-default btn-sm fa fa-plus"> Add Filter</a>
+                </div>
+            </div>
+        </fieldset>
+        {# @TODO neither of the methods below will be needed when html block is refactored to supply its own template #}
+        {#{if $bkey eq 'HtmlBlock'}{* notify hooks here strictly for html block *}#}
+            {#{notifydisplayhooks eventname='blocks.ui_hooks.htmlblock.content.form_edit' id=$bid}#}
+        {#{/if}#}
+        {#{{ notifyDisplayHooks('pages.ui_hooks.pages.form_edit', form.vars.value.pageid|default(null)) }}#}
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {{ form_widget(form.save, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
+                {{ form_widget(form.cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
