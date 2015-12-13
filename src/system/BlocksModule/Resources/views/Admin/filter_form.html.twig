@@ -1,0 +1,16 @@
+{% form_theme filterForm with [
+    'ZikulaCategoriesModule:Form:filter_layout_customizations.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ form_start(filterForm) }}
+    <fieldset{% if filter_active %} class='filteractive'{% endif %}>
+        {% if filter_active %}{% set filteractive = __('active') %}{% else %}{% set filteractive = __('inactive') %}{% endif %}
+        <legend style="margin-bottom:0">{{ __f("Filter %active%", { '%active%': filteractive } ) }}</legend>
+        <strong>{{ __('Position') }}</strong> {{ form_widget(filterForm.position) }}&nbsp;&nbsp;
+        <strong>{{ __('Module') }}</strong> {{ form_widget(filterForm.module) }}&nbsp;&nbsp;
+        <strong>{{ __('Language') }}</strong> {{ form_widget(filterForm.language) }}&nbsp;&nbsp;
+        <strong>{{ __('Active') }}</strong> {{ form_widget(filterForm.active) }}&nbsp;&nbsp;
+        {{ form_widget(filterForm.filterButton) }}
+        <button class="btn btn-default btn-sm" name="clear" type="submit" value="1"><i class="fa fa-times fa-lg"></i> {{ __('Clear') }}</button>
+    </fieldset>
+{{ form_end(filterForm) }}

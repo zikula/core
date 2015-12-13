@@ -17,6 +17,7 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\AdminMenuPanelSimpleFunction;
+use Zikula\Core\AbstractModule;
 use Zikula\Core\Theme\AssetBag;
 
 class CoreExtension extends \Twig_Extension
@@ -70,9 +71,6 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('icon', [$this, 'icon']),
             new \Twig_SimpleFunction('lang', [$this, 'lang']),
             new \Twig_SimpleFunction('langdirection', [$this, 'langDirection']),
-            new \Twig_SimpleFunction('showblockposition', [$this, 'showBlockPosition'], array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('showblock', [$this, 'showBlock']),
-            new \Twig_SimpleFunction('blockinfo', [$this, 'getBlockInfo']),
             new \Twig_SimpleFunction('zasset', [$this, 'getAssetPath']),
             new \Twig_SimpleFunction('showflashes', [$this, 'showFlashes'], array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('array_unset', [$this, 'arrayUnset']),
@@ -98,30 +96,6 @@ class CoreExtension extends \Twig_Extension
     public function getAssetPath($path)
     {
         return $this->container->get('zikula_core.common.theme.asset_helper')->resolve($path);
-    }
-
-    public function showBlockPosition($name, $implode = true)
-    {
-        return \BlockUtil::displayPosition($name, false, $implode);
-    }
-
-    public function getBlockInfo($bid = 0, $name = null)
-    {
-        // get the block info array
-        $blockinfo = \BlockUtil::getBlockInfo($bid);
-
-        if ($name) {
-            return $blockinfo[$name];
-        }
-    }
-
-    public function showBlock($block, $blockname, $module)
-    {
-        if (!is_array($block)) {
-            $block = \BlockUtil::getBlockInfo($block);
-        }
-
-        return \BlockUtil::show($module, $blockname, $block);
     }
 
     /**

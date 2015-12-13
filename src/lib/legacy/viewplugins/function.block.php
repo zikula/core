@@ -99,7 +99,7 @@ function smarty_function_block($params, Zikula_View $view)
     }
 
     // We need the module name.
-    $modinfo = ModUtil::getInfo($blockinfo['mid']);
+    $modinfo = ModUtil::getInfo($blockinfo['module']->getId());
     if (!is_array($modinfo) || !isset($modinfo['name'])) {
         $modinfo = array('name' => 'core');
     }

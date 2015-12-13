@@ -13,15 +13,15 @@
 
 namespace Zikula\BlocksModule\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * BlockPosition entity class.
  *
- * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
- *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\BlocksModule\Entity\Repository\BlockPositionRepository")
  * @ORM\Table(name="block_positions",indexes={@ORM\Index(name="name_idx",columns={"name"})})
  */
 class BlockPositionEntity extends EntityAccess
@@ -38,6 +38,8 @@ class BlockPositionEntity extends EntityAccess
     /**
      * The name of the block position
      *
+     * @Assert\Regex("/^[a-zA-Z0-9\-\_]+$/")
+     * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -45,10 +47,19 @@ class BlockPositionEntity extends EntityAccess
     /**
      * The description of the block position
      *
+     * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="Zikula\BlocksModule\Entity\BlockPlacementEntity",
+     *     mappedBy="position",
+     *     cascade={"remove"})
+     * @ORM\OrderBy({"sortorder" = "ASC"})
+     */
+    private $placements;
 
     /**
      * constructor
@@ -57,6 +68,7 @@ class BlockPositionEntity extends EntityAccess
     {
         $this->name = '';
         $this->description = '';
+        $this->placements = new ArrayCollection();
     }
 
     /**
@@ -117,5 +129,24 @@ class BlockPositionEntity extends EntityAccess
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    public function getPlacements()
+    {
+        return $this->placements;
+    }
+
+    public function addPlacement(BlockPlacementEntity $placement)
+    {
+        if (!$this->placements->contains($placement)) {
+            $this->placements->add($placement);
+        }
+    }
+
+    public function removePlacement(BlockPlacementEntity $placement)
+    {
+        if ($this->placements->contains($placement)) {
+            $this->placements->removeElement($placement);
+        }
     }
 }

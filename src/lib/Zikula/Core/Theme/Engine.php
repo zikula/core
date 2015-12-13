@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\Reader;
+use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 /**
@@ -80,13 +81,19 @@ class Engine
     private $filterService;
 
     /**
+     * @var BlockApi
+     */
+    private $blockApi;
+
+    /**
      * Engine constructor.
      * @param RequestStack $requestStack
      * @param Reader $annotationReader
      * @param ZikulaKernel $kernel
-     * @param \Zikula\Core\Theme\Filter $filter
+     * @param Filter $filter
+     * @param BlockApi $blockApi
      */
-    public function __construct(RequestStack $requestStack, Reader $annotationReader, ZikulaKernel $kernel, $filter)
+    public function __construct(RequestStack $requestStack, Reader $annotationReader, ZikulaKernel $kernel, $filter, BlockApi $blockApi)
     {
         $this->annotationReader = $annotationReader;
         $this->kernel = $kernel;
@@ -94,6 +101,7 @@ class Engine
         if (null !== $requestStack->getCurrentRequest()) {
             $this->setRequestAttributes($requestStack->getCurrentRequest());
         }
+        $this->blockApi = $blockApi;
     }
 
     /**
@@ -139,20 +147,62 @@ class Engine
     }
 
     /**
-     * Wrap a block in the theme's block template.
-     * @api Core-2.0
-     * @todo consider changing block to a Response
-     * @param array $block
-     * @return bool|string (false if theme is not twigBased)
+     * BC method to wrap a block in the theme's block template if theme is twig-based.
+     * @deprecated
+     * @param array $blockInfo
+     * @return string
      */
-    public function wrapBlockInTheme(array $block)
+    public function wrapBcBlockInTheme(array $blockInfo)
     {
         // @todo remove twigBased check in 2.0
         if (!isset($this->activeThemeBundle) || !$this->activeThemeBundle->isTwigBased()) {
             return false;
         }
+        $position = !empty($blockInfo['position']) ? $blockInfo['position'] : 'none';
+        $content = $this->activeThemeBundle->generateThemedBlockContent($this->getRealm(), $position, $blockInfo['content'], $blockInfo['title']);
 
-        return $this->activeThemeBundle->generateThemedBlock($this->getRealm(), $block);
+        return $content;
+    }
+
+    /**
+     * Wrap the block content in the theme block template and wrap that with a unique div.
+     * @api Core-2.0
+     * @param string $content
+     * @param string $title
+     * @param string $blockType
+     * @param integer $bid
+     * @param string $positionName
+     * @param bool $legacy @deprecated param
+     * @return Response
+     */
+    public function wrapBlockContentInTheme($content, $title, $blockType, $bid, $positionName, $legacy)
+    {
+        if (!$legacy) {
+            // legacy blocks are already themed at this point. @todo at Core-2.0 remove $legacy param and this check.
+            $content = $this->activeThemeBundle->generateThemedBlockContent($this->getRealm(), $positionName, $content, $title);
+        }
+
+        // always wrap the block (in the previous versions this was configurable, but no longer) @todo remove comment
+        return $this->wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid);
+    }
+
+    /**
+     * Enclose themed block content in a unique div which is useful in applying styling.
+     *
+     * @param string $content
+     * @param string $positionName
+     * @param string $blockType
+     * @param integer $bid
+     * @return string
+     */
+    private function wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid)
+    {
+        return '<div class="z-block '
+            . 'z-blockposition-' . strtolower($positionName)
+            .' z-bkey-' . strtolower($blockType)
+            . ' z-bid-' . $bid . '">' . "\n"
+            . $content
+            . "</div>\n";
     }
 
     /**
@@ -232,6 +282,26 @@ class Engine
                 $this->setActiveTheme($newThemeName);
 
                 return $newThemeName;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function positionIsAvailableInTheme($name) {
+        $config = $this->activeThemeBundle->getConfig();
+        if (empty($config)) {
+
+            return true;
+        }
+        foreach ($config as $realm => $definition) {
+            if (isset($definition['block']['positions'][$name])) {
+
+                return true;
             }
         }
 

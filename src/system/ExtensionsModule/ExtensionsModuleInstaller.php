@@ -19,7 +19,7 @@ use System;
 use Zikula_Event;
 use Zikula\ExtensionsModule\ExtensionsModuleVersion;
 use ModUtil;
-use Zikula\Core\Doctrine\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
  * Installation and upgrade routines for the extensions module
@@ -35,8 +35,8 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create tables
         $tables = array(
-            'Zikula\Core\Doctrine\Entity\ExtensionEntity',
-            'Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity',
+            'Zikula\ExtensionsModule\Entity\ExtensionEntity',
+            'Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionVarEntity',
             'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
             'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity',
@@ -86,7 +86,7 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
                     $stmt = $connection->executeQuery($sql);
                 }
             case '3.7.11':
-                \DoctrineHelper::updateSchema($this->entityManager, array('Zikula\Core\Doctrine\Entity\ExtensionEntity'));
+                \DoctrineHelper::updateSchema($this->entityManager, array('Zikula\ExtensionsModule\Entity\ExtensionEntity'));
             case '3.7.12':
                 // future upgrade routines
         }

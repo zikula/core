@@ -1,0 +1,212 @@
+<?php
+/**
+ * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
+
+namespace Zikula\BlocksModule\Api;
+
+use Symfony\Component\Finder\Finder;
+use Zikula\BlocksModule\Collector\BlockCollector;
+use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
+use Zikula\Core\AbstractModule;
+use Zikula\Core\BlockControllerInterface;
+use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+
+/**
+ * Class BlockApi
+ * @package Zikula\BlocksModule\Api
+ *
+ * This class provides an API for interaction with and management of blocks. The class is mainly used internally
+ * by Twig-based theme tags in order to 'decorate' a page with the requested blocks.
+ */
+class BlockApi
+{
+    const BLOCK_ACTIVE = 1;
+    const BLOCK_INACTIVE = 0;
+    /**
+     * @var BlockPositionRepositoryInterface
+     */
+    private $blockPositionRepository;
+    /**
+     * @var BlockFilterApi
+     */
+    private $blockFilter;
+    /**
+     * @var BlockFactoryApi
+     */
+    private $blockFactory;
+    /**
+     * @var \Zikula\ExtensionsModule\Api\ExtensionApi
+     */
+    private $extensionApi;
+    /**
+     * @var BlockCollector;
+     */
+    private $blockCollector;
+    /**
+     * @var string the kernel root dir (%kernel.root_dir%)
+     * @deprecated remove at Core 2-.0
+     */
+    private $kernelRootDir;
+
+    /**
+     * BlockApi constructor.
+     * @param BlockPositionRepositoryInterface $blockPositionRepository
+     * @param BlockFilterApi $blockFilterApi
+     * @param BlockFactoryApi $blockFactoryApi
+     * @param ExtensionApi $extensionApi
+     * @param BlockCollector $blockCollector
+     * @param string $kernelRootDir
+     */
+    public function __construct(BlockPositionRepositoryInterface $blockPositionRepository, BlockFilterApi $blockFilterApi, BlockFactoryApi $blockFactoryApi, ExtensionApi $extensionApi, BlockCollector $blockCollector, $kernelRootDir)
+    {
+        $this->blockPositionRepository = $blockPositionRepository;
+        $this->blockFilter = $blockFilterApi;
+        $this->blockFactory = $blockFactoryApi;
+        $this->extensionApi = $extensionApi;
+        $this->blockCollector = $blockCollector;
+        $this->kernelRootDir = $kernelRootDir; // parameter is deprecated. remove at Core-2.0
+    }
+
+    /**
+     * Get a filtered array of block entities that have been assigned to a block position.
+     * @param $positionName
+     * @return array
+     */
+    public function getBlocksByPosition($positionName)
+    {
+        if (empty($positionName)) {
+            throw new \InvalidArgumentException('Name must not be empty.');
+        }
+
+        /** @var \Zikula\BlocksModule\Entity\BlockPositionEntity $position */
+        $position = $this->blockPositionRepository->findByName($positionName);
+        $blocks = [];
+        if (empty($position)) {
+            return $blocks;
+        }
+        foreach ($position->getPlacements() as $placement) {
+            if ($placement->getBlock()->getActive() && $this->blockFilter->isDisplayable($placement->getBlock())) {
+                $blocks[$placement->getBlock()->getBid()] = $placement->getBlock();
+            }
+        }
+
+        return $blocks;
+    }
+
+    /**
+     * Create an instance of a the block Object given a 'bKey' string like AcmeFooModule:Acme\FooModule\Block\FooBlock
+     *   which is the Common ModuleName and the FullyQualifiedClassName of the block.
+     * @param string $bKey
+     * @return \Zikula_Controller_AbstractBlock|BlockControllerInterface
+     */
+    public function createInstanceFromBKey($bKey)
+    {
+        list($moduleName, $blockFqCn) = explode(':', $bKey);
+        $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($moduleName);
+
+        return $this->blockFactory->getInstance($blockFqCn, $moduleInstance);
+    }
+
+    /**
+     * Get an array of Blocks that are available by scanning the filesystem.
+     * Optionally only retrieve the blocks of one module.
+     *
+     * @param ExtensionEntity|null $module
+     * @return array [[ModuleName:FqBlockClassName => ModuleDisplayName/BlockDisplayName]]
+     */
+    public function getAvailableBlockTypes(ExtensionEntity $module = null)
+    {
+        $foundBlocks = [];
+        $modules = isset($module) ? [$module] : $this->extensionApi->getModulesBy(['state' => ExtensionApi::STATE_ACTIVE]);
+        /** @var \Zikula\ExtensionsModule\Entity\ExtensionEntity $module */
+        foreach ($modules as $module) {
+            $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($module->getName());
+            list ($nameSpace, $path) = $this->getModuleBlockPath($moduleInstance, $module->getName());
+            if (!isset($path)) {
+                continue;
+            }
+            $finder = new Finder();
+            $foundFiles = $finder
+                ->files()
+                ->name('*.php')
+                ->in($path)
+                ->depth(0);
+            foreach ($foundFiles as $file) {
+                preg_match("/class (\\w+) (?:extends|implements) \\\\?(\\w+)/", $file->getContents(), $matches);
+                $blockInstance = $this->blockFactory->getInstance($nameSpace . $matches[1], $moduleInstance);
+                $foundBlocks[$module->getName() . ':' . $nameSpace . $matches[1]] = $module->getDisplayname() . '/' . $blockInstance->getType();
+            }
+        }
+        // Add service defined blocks.
+        foreach ($this->blockCollector->getBlocks() as $id => $blockInstance) {
+            $className = get_class($blockInstance);
+            list ($moduleName, $serviceId) = explode(':', $id);
+            if (isset($foundBlocks["$moduleName:$className"])) {
+                // remove blocks found in file search with same class name
+                unset($foundBlocks["$moduleName:$className"]);
+            }
+            $moduleEntity = $this->extensionApi->getModule($moduleName);
+            $foundBlocks[$id] = $moduleEntity->getDisplayname() . '/' . $blockInstance->getType();
+        }
+
+        return $foundBlocks;
+    }
+
+    /**
+     * Get an alphabetically sorted array of module names indexed by id that provide blocks.
+     *
+     * @return array
+     */
+    public function getModulesContainingBlocks()
+    {
+        $modules = $this->extensionApi->getModulesBy(['state' => ExtensionApi::STATE_ACTIVE]);
+        $modulesContainingBlocks = [];
+        foreach ($modules as $module) {
+            $blocks = $this->getAvailableBlockTypes($module);
+            if (!empty($blocks)) {
+                $modulesContainingBlocks[$module->getId()] = $module->getName();
+            }
+        }
+        asort($modulesContainingBlocks);
+
+        return $modulesContainingBlocks;
+    }
+
+    /**
+     * Get the block directory for a module given an instance of the module or (for BC purposes), the module name.
+     *  The $moduleName parameter is deprecated and will be removed at Core-2.0
+     *
+     * @param AbstractModule|null $moduleInstance
+     * @param null $moduleName (parameter is @deprecated)
+     * @return array
+     */
+    public function getModuleBlockPath(AbstractModule $moduleInstance = null, $moduleName = null)
+    {
+        $path = null;
+        $nameSpace = null;
+        if (isset($moduleInstance)) {
+            if (is_dir($moduleInstance->getPath() . '/Block')) {
+                $path = $moduleInstance->getPath() . '/Block';
+                $nameSpace = $moduleInstance->getNamespace() . '\Block\\';
+            }
+        } elseif (isset($moduleName)) { // @todo remove at Core-2.0
+            $testPath = realpath($this->kernelRootDir . '/../modules/' . $moduleName . '/lib/' . $moduleName . '/Block');
+            if (is_dir($testPath)) {
+                $path = $testPath;
+                $nameSpace = '\\';
+            }
+        }
+
+        return [$nameSpace, $path];
+    }
+}

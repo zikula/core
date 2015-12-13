@@ -1,6 +1,7 @@
 {
     "name": "zikula/blocks-module",
     "description": "Blocks Administration Module",
+    "version": "3.9.2",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
@@ -15,10 +16,34 @@
     "require": {
         "php": ">5.4.0"
     },
+    "suggest": {
+        "Scribite:>=5.0.0": "To allow WYSIWYG HTML block editing."
+    },
     "extra": {
         "zikula": {
+            "class": "Zikula\\BlocksModule\\ZikulaBlocksModule",
+            "core-compatibility": ">=1.4.1",
+            "displayname": "BlocksModule",
             "url": "blocks",
-            "class": "Zikula\\BlocksModule\\ZikulaBlocksModule"
+            "oldnames": [],
+            "capabilities": {
+                "admin": {"route": "zikulablocksmodule_admin_view"},
+                "hook_subscriber": {"enabled": true}
+            },
+            "securityschema": {
+                "ZikulaBlocksModule::": "Block key:Block title:Block ID",
+                "ZikulaBlocksModule::position": "Position name::Position ID",
+                "ExtendedMenublock::": "Block ID:Link ID:",
+                "fincludeblock::": "Block title::",
+                "HTMLblock::": "Block title::",
+                "Languageblock::": "Block title::",
+                "Menublock::": "Block title:Link name:",
+                "Menutree:menutreeblock:": "Block ID:Link Name:Link ID",
+                "PendingContent::": "Block title::",
+                "Textblock::": "Block title::",
+                "xsltblock::": "Block title::"
+            }
+
         }
     }
 }

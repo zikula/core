@@ -1,0 +1,122 @@
+{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Common.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.View.js')) }}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<h3>
+    <span class="fa fa-list"></span>
+    {{ __('Blocks list') }}
+</h3>
+
+<p class="alert alert-info">
+    {{ __("This is the list of blocks present in your system, you can use the filter to display only certain blocks.
+    The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages.
+    To manage the display order of the blocks click the position name in this table or on the 'edit block placements'
+    in the position list table below.") }}
+</p>
+
+{% include 'ZikulaBlocksModule:Admin:filter_form.html.twig' %}
+
+<table id="block-list" class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th><a class='{{ sort.bid.class }}' href='{{ sort.bid.url }}'>{{ __('ID') }}</a></th>
+        <th><a class='{{ sort.title.class }}' href='{{ sort.title.url }}'>{{ __('Title') }}</a></th>
+        <th>{{ __('Description') }}</th>
+        <th>{{ __('Module') }}</th>
+        <th><a class='{{ sort.blocktype.class }}' href='{{ sort.blocktype.url }}'>{{ __('Type') }}</a></th>
+        <th>{{ __('Positions') }}</th>
+        <th><a class='{{ sort.language.class }}' href='{{ sort.language.url }}'>{{ __('Language') }}</a></th>
+        <th><a class='{{ sort.state.class }}' href='{{ sort.state.url }}'>{{ __('State') }}</a></th>
+        <th class="text-right">{{ __('Actions') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for block in blocks %}
+    <tr>
+        <td>{{ block.bid }}</td>
+        <td>{{ block.title|safeHtml }}</td>
+        <td>{{ block.description|safeHtml }}</td>
+        <td>{{ block.module.name }}</td>
+        <td>{{ block.blocktype }}</td>
+        <td>
+            {% for position in block.positions %}
+                <a href="{{ path('zikulablocksmodule_placement_edit', {pid:position.pid}) }}">{{ position.name }}</a>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            {% if block.filters|length > 0 %} <i class="fa fa-filter fa-lg text-success pull-right"></i>{% endif %}
+        </td>
+        <td>{{ block.language|default( __('All') ) }}</td>
+        <td>
+            <a class="label label-success tooltips{% if not block.active %} hide{% endif %}" href="#" title="{{ __('Click to deactivate block') }}" data-bid="{{ block.bid }}">{{ __('Active') }}</a>
+            <a class="label label-danger tooltips{% if block.active %} hide{% endif %}" href="#" title="{{ __('Click to activate block') }}" data-bid="{{ block.bid }}">{{ __('Inactive') }}</a>
+        </td>
+        <td class="actions">
+            <a class="fa fa-eye tooltips block-preview" href="{{ path('zikulablocksmodule_block_view', {bid:block.bid}) }}" data-toggle="modal" data-target="#zikulablocksmodule-block-view-modal" data-remote="false" title="preview block"></a>
+            <a class="fa fa-pencil tooltips" href="{{ path('zikulablocksmodule_block_edit', {blockEntity:block.bid}) }}" title="edit block"></a>
+            <a class="fa fa-trash-o tooltips" href="{{ path('zikulablocksmodule_block_delete', {bid:block.bid}) }}" title="delete block"></a>
+        </td>
+    </tr>
+    {% else %}
+    <tr class="table table-borderedempty"><td colspan="9">{{ __('No items found.') }}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h3 id="blockpositions">{{ __('Block positions list') }}</h3>
+
+<p class="alert alert-info">{{ __("This is the list of block positions currently existing for your site's pages.
+You can create a new block position by clicking 'Create block position' in the menu. To edit the settings for a block position,
+click on the 'Edit' icon beside that particular position. To reorder the blocks within a block position, click on the
+'Edit placements' (blocks) icon for that position or on the position name in the block list above.
+To delete a block position, click on the 'Delete' icon and confirm the action in the confirmation prompt that will display.") }}</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>{{ __('Name') }}</th>
+        <th>{{ __('Description') }}</th>
+        <th>{{ __('Smarty tag') }}</th>
+        <th>{{ __('Twig tag') }}</th>
+        <th class="text-right">{{ __('Actions') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for position in positions %}
+    <tr{% if not positionavailable(position.name) %} class="danger"{% endif %}>
+        <td>
+            {{ position.name }}
+            {% if not positionavailable(position.name) %} <i class="fa fa-exclamation-triangle text-danger tooltips" title="{{ __('Position not available in current default theme.') }}"></i>{% endif %}
+        </td>
+        <td>{{ position.description|slice(0, 25)|safeHtml }}</td>
+        <td><code>&#123;blockposition name='{{ position.name }}'&#125;</code></td>
+        <td><code>&#123;&#123; showblockposition('{{ position.name }}') &#125;&#125;</code></td>
+        <td class="actions">
+            <a class="fa fa-cubes tooltips" href="{{ path('zikulablocksmodule_placement_edit', {pid:position.pid}) }}" title="{{ __('Edit block placements') }}"></a>
+            <a class="fa fa-pencil tooltips" href="{{ path('zikulablocksmodule_position_edit', {positionEntity:position.pid}) }}" title="{{ __('Edit block position') }}"></a>
+            <a class="fa fa-trash-o tooltips" href="{{ path('zikulablocksmodule_position_delete', {pid:position.pid}) }}" title="{{ __('Delete block position') }}"></a>
+        </td>
+    </tr>
+    {% else %}
+    <tr class="table table-borderedempty"><td colspan="4">{{ __('No items found.') }}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p class="alert alert-warning"><i class="fa fa-exclamation-triangle text-danger"></i> {{ __('Marked positions are not available in the current default theme.') }}</p>
+
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+
+{# block preview modal #}
+<div class="modal fade" id="zikulablocksmodule-block-view-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{ __('Block View') }}</h4>
+            </div>
+            <div class="modal-body">
+                {# content #}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ __("Close") }}</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -81,7 +81,7 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
             $cacheid = $blockinfo['bkey'].'/bid'.$blockinfo['bid'].'/'.($uid ? $uid : 'guest');
             // We use an individual cache with a lifetime specified on the block configuration.
             $this->view->setCaching(Zikula_View::CACHE_INDIVIDUAL)
-                       ->setCacheLifetime($blockinfo['refresh'])
+//                       ->setCacheLifetime($blockinfo['refresh'])
                        ->setCacheId($cacheid);
 
             // check out if the contents are cached.

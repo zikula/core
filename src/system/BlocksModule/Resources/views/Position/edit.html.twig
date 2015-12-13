@@ -1,0 +1,37 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+
+<p class="alert alert-info">
+    {% if form.vars.value.pid is empty %}
+    {{ __('After creating this block position, blocks can be assigned to it and the order they are to be displayed can be adjusted.') }}<br />
+    {% endif %}
+    {{ __('The theme in use must implement the block position or the assigned blocks will never be displayed.') }}
+</p>
+
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-edit"></span>
+            {% if form.vars.value.pid %}{{ __('Modify') }}{% else %}{{ __('Create') }}{% endif %} {{ __('Position') }}
+        </h3>
+        {{ showflashes() }}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.name) }}
+            <em class="help-block sub">{{  __('Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_).') }}</em>
+        {{ form_row(form.description) }}
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {{ form_widget(form.save, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
+                {{ form_widget(form.cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

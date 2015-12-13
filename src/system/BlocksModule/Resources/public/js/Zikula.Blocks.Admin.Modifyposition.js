@@ -35,12 +35,20 @@
                 });
 
                 $.ajax({
-                    url: Routing.generate('zikulablocksmodule_ajax_changeblockorder'),
+                    url: Routing.generate('zikulablocksmodule_placement_changeblockorder'),
                     data: {
-                        position: $('#position').val(),
+                        position: $('#position').data('position'),
                         blockorder: blockorder
                     }
-                });
+                })
+                .done(function(message) {
+                    $('#feedback').fadeIn(200).fadeOut(3500);
+                    //var descriptionDiv = $('#zikulablocksmodule_block_description').parents('.form-group');
+                    //descriptionDiv.after(message.result);
+                })
+                .fail(function(jqXHR, textStatus) {
+                    alert( "error: " + textStatus );
+                })
             }
         }).disableSelection();
 

@@ -13,16 +13,21 @@
             a.after('<i id="spin' + bid + '" class="fa fa-cog fa-spin"></i>');
 
             $.ajax({
-                url: Routing.generate('zikulablocksmodule_ajax_toggleblock'),
+                url: Routing.generate('zikulablocksmodule_block_toggleblock'),
                 data: {
                     bid: bid
-                },
-                success: function(response) {
-                    $('#spin' + bid).remove();
-                    // toggle label
-                    a.parent().find('a').toggleClass('hide');
                 }
-            });
+            })
+            .done(function(response) {
+                // toggle label
+                a.parent().find('a').toggleClass('hide');
+            })
+            .fail(function(jqXHR, textStatus) {
+                alert( "error: " + textStatus );
+            })
+            .always(function() {
+                $('#spin' + bid).remove();
+            })
         });
     });
 })(jQuery);

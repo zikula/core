@@ -32,8 +32,8 @@ use FileUtil;
 use Zikula_AbstractVersion;
 use Zikula_Core;
 use PluginUtil;
-use Zikula\Core\Doctrine\Entity\ExtensionEntity;
-use Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -48,7 +48,7 @@ use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
  */
 class AdminApi extends \Zikula_AbstractApi
 {
-    const EXTENSION_ENTITY = 'Zikula\Core\Doctrine\Entity\ExtensionEntity';
+    const EXTENSION_ENTITY = 'Zikula\ExtensionsModule\Entity\ExtensionEntity';
     /**
      * Update module information
      *
@@ -1341,7 +1341,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getalldependencies()
     {
-        $dependencies = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity')->findBy(array(), array('modid' => 'ASC'));
+        $dependencies = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity')->findBy(array(), array('modid' => 'ASC'));
 
         return $dependencies;
     }
@@ -1364,7 +1364,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $dependencies = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity')->findBy(array('modid' => $args['modid']));
+        $dependencies = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity')->findBy(array('modid' => $args['modid']));
 
         return $dependencies;
     }
@@ -1389,7 +1389,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $modinfo = ModUtil::getInfo($args['modid']);
 
-        $dependents = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity')->findBy(array('modname' => $modinfo['name']));
+        $dependents = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity')->findBy(array('modname' => $modinfo['name']));
 
         return $dependents;
     }

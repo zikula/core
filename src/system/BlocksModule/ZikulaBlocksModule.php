@@ -13,6 +13,8 @@
 
 namespace Zikula\BlocksModule;
 
+use Zikula\BlocksModule\DependencyInjection\Compiler\BlockCollectorPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
@@ -20,4 +22,10 @@ use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
  */
 class ZikulaBlocksModule extends AbstractCoreModule
 {
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new BlockCollectorPass());
+    }
 }

@@ -268,7 +268,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $registries = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(array(), array('modname' => 'ASC', 'property' => 'ASC'));
-        $modules = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findBy(array('state' => 3), array('displayname' => 'ASC'));
+        $modules = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy(array('state' => 3), array('displayname' => 'ASC'));
         $moduleOptions = array();
         foreach ($modules as $module) {
             $bundle = \ModUtil::getModule($module['name']);

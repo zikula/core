@@ -14,6 +14,7 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -156,8 +157,23 @@ class AjaxInstallController extends AbstractController
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
-        $instance = new $className($this->container, $module);
-        if ($instance->install()) {
+
+        // support both Legacy and Core-2.0 Spec system modules until fully refactored.
+        // @todo remove legacy support when refactoring is complete.
+        $reflectionInstaller = new \ReflectionClass($className);
+        if ($reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+            $installer = $reflectionInstaller->newInstanceArgs(array($this->container, $module));
+        } elseif ($reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
+            $installer = $reflectionInstaller->newInstance();
+            $installer->setBundle($module);
+            if ($installer instanceof ContainerAwareInterface) {
+                $installer->setContainer($this->container);
+            }
+        } else {
+            throw new \Exception('Installer class must be subclass of Zikula_AbstractInstaller or implement Zikula\Core\ExtensionInstallerInterface.');
+        }
+
+        if ($installer->install()) {
 
             return true;
         }
@@ -218,9 +234,10 @@ class AjaxInstallController extends AbstractController
 
     private function createBlocks()
     {
+        $installer = new \Zikula\BlocksModule\BlocksModuleInstaller();
+        $installer->setBundle($this->container->get('kernel')->getModule('ZikulaBlocksModule'));
         // create the default blocks.
-        $blockInstance = new \Zikula\BlocksModule\BlocksModuleInstaller($this->container, $this->container->get('kernel')->getModule('ZikulaBlocksModule'));
-        $blockInstance->defaultdata();
+        $installer->defaultdata();
 
         return true;
     }
