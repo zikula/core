@@ -172,7 +172,7 @@ var cloneDraggedItem = true;
                 }
             }
         }).error(function(result) {
-            Zikula.showajaxerror(result.status + ': ' + result.statusText);
+            alert(result.status + ': ' + result.statusText);
         });
     };
 
@@ -312,7 +312,7 @@ var cloneDraggedItem = true;
             // update new sort order
             recolorListElements(data.ol_id, $('#' + data.ol_id).down(0).attr('id'));
         }).error(function(result) {
-            Zikula.showajaxerror(result.status + ': ' + result.statusText);
+            alert(result.status + ': ' + result.statusText);
         });
     };
 
