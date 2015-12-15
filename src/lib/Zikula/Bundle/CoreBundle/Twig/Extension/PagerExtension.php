@@ -60,18 +60,16 @@ class PagerExtension extends \Twig_Extension
         /** @var Request $request */
         $request = $this->container->get('request');
 
-        if (empty($params['rowcount']) || empty($params['limit'])) {
-            throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        if (is_array($params['rowcount'])) {
+        if (empty($params['rowcount'])) {
+            $params['rowcount'] = 0;
+        } elseif (is_array($params['rowcount'])) {
             $params['rowcount'] = count($params['rowcount']);
         }
 
         // set default values - $pager is sent to template
         $pager = array();
         $pager['total'] = $params['rowcount'];
-        $pager['perpage'] = $params['limit'];
+        $pager['perpage'] = isset($params['limit']) ? $params['limit'] : 20;
         $pager['class'] = isset($params['class']) ? $params['class'] : 'z-pager';
         $pager['optimize'] = isset($params['optimize']) ? $params['optimize'] : true;
         $pager['posvar'] = isset($params['posvar']) ? $params['posvar'] : 'pos';
