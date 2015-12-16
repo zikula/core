@@ -9,6 +9,7 @@ CHANGELOG - ZIKULA 1.4.x
     - n/a
  - Fixes:
     - Fix module stylesheet not being loaded automatically for Core-2.0 modules.
+    - Fix SearchModule not working for older modules required tables.php (#2643)
  - Features:
     - New advanced block filtering based on a combination of any query parameter or request attributes.
  - Core-2.0 Features:
