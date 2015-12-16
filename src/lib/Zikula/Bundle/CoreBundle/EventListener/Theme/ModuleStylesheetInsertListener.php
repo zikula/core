@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Core\AbstractModule;
 use Zikula\Core\Controller\AbstractController;
 
 /**
@@ -43,8 +44,13 @@ class ModuleStylesheetInsertListener implements EventSubscriberInterface
         }
         $controller = $event->getController()[0];
         if ($controller instanceof AbstractController) {
+            /** @var AbstractModule $module */
             $module = $this->kernel->getModule($controller->getName());
-            $module->addStylesheet();
+            try {
+                $module->addStylesheet();
+            } catch (\InvalidArgumentException $e) {
+                // The module doesn't contain the default stylesheet.
+            }
         }
     }
 
