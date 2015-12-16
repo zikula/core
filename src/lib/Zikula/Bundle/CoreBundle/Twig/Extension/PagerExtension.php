@@ -41,7 +41,7 @@ class PagerExtension extends \Twig_Extension
      *                       (if an array is assigned, it's count will be used)
      *  limit              Number of items on a page (if <0 unlimited)
      *  posvar             Name of the variable that contains the position data, eg "offset"
-     *  template           Optional name of a template file (default: 'pagercss.html.twig')
+     *  template           Optional name of a template file (default: 'CoreBundle:Pager:pagercss.html.twig')
      *  includeStylesheet  Use predefined stylesheet file? Default is yes.
      *  anchorText         Optional text for hyperlink anchor (e.g. 'comments' for the anchor #comments) (default: '')
      *  maxpages           Optional maximum number of displayed pages, others will be hidden / suppressed
@@ -78,8 +78,8 @@ class PagerExtension extends \Twig_Extension
         $displayType = isset($params['display']) ? $params['display'] : 'startnum';
         $includePostVars = isset($params['includePostVars']) ? $params['includePostVars'] : true;
         $routeName = isset($params['route']) ? $params['route'] : false;
-        $templateName = (isset($params['template'])) ? $params['template'] : 'pagercss.html.twig';
-        $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($templateName != 'pagerimage.html.twig');
+        $templateName = (isset($params['template'])) ? $params['template'] : 'CoreBundle:Pager:pagercss.html.twig';
+        $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($templateName != 'CoreBundle:Pager:pagerimage.html.twig');
         $anchorText = isset($params['anchorText']) ? '#' . $params['anchorText'] : '';
 
         $routeParams = array();
@@ -265,7 +265,7 @@ class PagerExtension extends \Twig_Extension
         $templateParameters['hiddenPageBoxOpened'] = 0;
         $templateParameters['hiddenPageBoxClosed'] = 0;
 
-        return $this->container->get('templating')->renderResponse('CoreBundle:Pager:' . $templateName, $templateParameters)->getContent();
+        return $this->container->get('templating')->renderResponse($templateName, $templateParameters)->getContent();
     }
 
     /**
