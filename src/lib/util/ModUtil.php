@@ -695,7 +695,8 @@ class ModUtil
         }
 
         // all system modules do not require tables.php, return immediately
-        if ($modpath == 'system') {
+        // but (old) third party modules may require search table info
+        if ($modpath == 'system' && $modname != 'zikulasearchmodule') {
             return true;
         }
 
