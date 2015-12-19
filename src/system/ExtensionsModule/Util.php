@@ -38,7 +38,7 @@ class Util
      *                                          if the version class isn't of the correct type or
      *                                          if the lib directory cannot be found for v1.3 style modules 
      *
-     * @return Zikula_AbstractVersion|array
+     * @return Zikula_AbstractVersion|\Zikula\Bundle\CoreBundle\Bundle\MetaData|array
      */
     public static function getVersionMeta($moduleName, $rootdir = 'modules', $module = null)
     {
@@ -60,7 +60,7 @@ class Util
             }
         } elseif ($module instanceof AbstractModule) {
             // Core-2.0 spec
-            $modversion = $module->getMetaData()->getFilteredVersionInfoArray();
+            $modversion = $module->getMetaData();
         } elseif (!is_dir("$rootdir/$moduleName")) {
             $modversion = array(
                     'name' => $moduleName,

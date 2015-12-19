@@ -5,7 +5,7 @@ namespace Zikula\Bundle\CoreBundle\Bundle;
 use Symfony\Component\HttpKernel\Exception\PreconditionRequiredHttpException;
 use Zikula\Common\Translator\TranslatorTrait;
 
-class MetaData
+class MetaData implements \ArrayAccess
 {
     use TranslatorTrait;
 
@@ -259,5 +259,28 @@ class MetaData
             'corecompatibility' => $this->getCoreCompatibility(),
             'core_max' => '' // core_min is set from corecompatibility
         );
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->$offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        $method = "get" . ucwords($offset);
+        return $this->$method();
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        // not allowed
+        throw new \Exception('Setting values by array access is not allowed.');
+    }
+
+    public function offsetUnset($offset)
+    {
+        // not allowed
+        throw new \Exception('Unsetting values by array access is not allowed.');
     }
 }
