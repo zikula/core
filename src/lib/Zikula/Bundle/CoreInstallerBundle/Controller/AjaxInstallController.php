@@ -236,6 +236,7 @@ class AjaxInstallController extends AbstractController
     {
         $installer = new \Zikula\BlocksModule\BlocksModuleInstaller();
         $installer->setBundle($this->container->get('kernel')->getModule('ZikulaBlocksModule'));
+        $installer->setContainer($this->container);
         // create the default blocks.
         $installer->defaultdata();
 

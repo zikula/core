@@ -16,7 +16,7 @@ namespace Zikula\BlocksModule;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
-use Zikula\BlocksModule\Helper\HookHelper;
+use Zikula\BlocksModule\Container\HookContainer;
 use Zikula\BlocksModule\Helper\InstallerHelper;
 use Zikula\Core\AbstractExtensionInstaller;
 use ZLanguage;
@@ -52,8 +52,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         // Set a default value for a module variable
         $this->setVar('collapseable', false);
 
-        $hookHelper = new HookHelper($this->getTranslator());
-        HookUtil::registerSubscriberBundles($hookHelper->getHookSubscriberBundles());
+        $hookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData());
+        HookUtil::registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
 
         // Initialisation successful
         return true;
@@ -71,8 +71,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '3.8.1':
-                $hookHelper = new HookHelper($this->getTranslator());
-                HookUtil::registerSubscriberBundles($hookHelper->getHookSubscriberBundles());
+                $HookContainer = new HookContainer($this->getTranslator());
+                HookUtil::registerSubscriberBundles($HookContainer->getHookSubscriberBundles());
             case '3.8.2':
             case '3.9.0':
                 $blocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findAll();

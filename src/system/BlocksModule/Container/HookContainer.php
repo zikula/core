@@ -11,12 +11,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\BlocksModule\Helper;
+namespace Zikula\BlocksModule\Container;
 
-use Zikula\Component\HookDispatcher\AbstractContainer as HookContainer;
+use Zikula\Component\HookDispatcher\AbstractContainer;
 use Zikula\Component\HookDispatcher\SubscriberBundle;
 
-class HookHelper extends HookContainer
+class HookContainer extends AbstractContainer
 {
     protected function setupHookBundles()
     {
