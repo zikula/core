@@ -14,6 +14,7 @@ CHANGELOG - ZIKULA 1.4.x
  - Features:
     - New advanced block filtering based on a combination of any query parameter or request attributes.
  - Core-2.0 Features:
+    - Implement new definition spec for Hook capabilities.
     - Implement new BlockApi and all corresponding methods.
         - BlockControllerInterface
         - AbstractBlockController
