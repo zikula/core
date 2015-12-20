@@ -38,6 +38,7 @@ use Symfony\Component\Routing\RouterInterface;
 use HookUtil;
 use vierbergenlars\SemVer\expression;
 use vierbergenlars\SemVer\version;
+use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 
 /**
  * No need for a route prefix, as there isn't a user controller.
@@ -1595,6 +1596,10 @@ class AdminController extends \Zikula_AbstractController
         // create an instance of the module's version
         // we will use it to get the bundles
         $moduleVersionObj = ExtensionsUtil::getVersionMeta($moduleName);
+        if ($moduleVersionObj instanceof MetaData) {
+            // Core-2.0 Spec module
+            $moduleVersionObj = $this->get('zikula_extensions_module.api.hook')->getHookContainerInstance($moduleVersionObj);
+        }
 
         // find out the capabilities of the module
         $isProvider = (HookUtil::isProviderCapable($moduleName)) ? true : false;
@@ -1663,6 +1668,10 @@ class AdminController extends \Zikula_AbstractController
 
                 // create an instance of the subscriber's version
                 $hooksubscriberVersionObj = ExtensionsUtil::getVersionMeta($hooksubscribers[$i]['name']);
+                if ($hooksubscriberVersionObj instanceof MetaData) {
+                    // Core-2.0 Spec module
+                    $hooksubscriberVersionObj = $this->get('zikula_extensions_module.api.hook')->getHookContainerInstance($hooksubscriberVersionObj);
+                }
 
                 // get the areas of the subscriber
                 $hooksubscriberAreas = HookUtil::getSubscriberAreasByOwner($hooksubscribers[$i]['name']);
@@ -1719,6 +1728,10 @@ class AdminController extends \Zikula_AbstractController
 
                     // create an instance of the provider's version
                     $sbaProviderModuleVersionObj = ExtensionsUtil::getVersionMeta($sbaProviderModule);
+                    if ($sbaProviderModuleVersionObj instanceof MetaData) {
+                        // Core-2.0 Spec module
+                        $sbaProviderModuleVersionObj = $this->get('zikula_extensions_module.api.hook')->getHookContainerInstance($sbaProviderModuleVersionObj);
+                    }
 
                     // get the bundle title
                     $currentSortingTitles[$areaname] = $this->view->__(/** @Ignore */$sbaProviderModuleVersionObj->getHookProviderBundle($areaname)->getTitle());
@@ -1748,6 +1761,10 @@ class AdminController extends \Zikula_AbstractController
 
                 // create an instance of the provider's version
                 $hookproviderVersionObj = ExtensionsUtil::getVersionMeta($hookproviders[$i]['name']);
+                if ($hookproviderVersionObj instanceof MetaData) {
+                    // Core-2.0 Spec module
+                    $hookproviderVersionObj = $this->get('zikula_extensions_module.api.hook')->getHookContainerInstance($hookproviderVersionObj);
+                }
 
                 // get the areas of the provider
                 $hookproviderAreas = HookUtil::getProviderAreasByOwner($hookproviders[$i]['name']);
