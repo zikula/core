@@ -45,12 +45,11 @@ class Zikula_Bag_ParameterBag extends \Symfony\Component\HttpFoundation\Paramete
             } else {
                 // using old signature - third param exists and is a constant, not a bool
                 LogUtil::log('The method signature for filter() has changed. See \Symfony\Component\HttpFoundation\ParameterBag::filter().', E_USER_DEPRECATED);
-                $deep = false;
                 $filter = (func_num_args() >= 3) && (func_get_arg(2) !== false) ? func_get_arg(2) : FILTER_DEFAULT;
                 $options = (func_num_args() >= 4) && (func_get_arg(3) !== false) ? func_get_arg(3) : array();
             }
         }
 
-        return parent::filter($key, $default, $deep, $filter, $options);
+        return parent::filter($key, $default, $filter, $options, $deep);
     }
 }
