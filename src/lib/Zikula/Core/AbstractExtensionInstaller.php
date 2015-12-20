@@ -13,13 +13,15 @@
 
 namespace Zikula\Core;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 
 /**
  * Installation and upgrade routines for the blocks extension
  */
-abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
+abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface, ContainerAwareInterface
 {
     use TranslatorTrait;
     use ExtensionVariablesTrait;
@@ -44,6 +46,10 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
      * @var \Zikula\Core\Doctrine\Helper\SchemaHelper
      */
     protected $schemaTool;
+    /**
+     * @var \Zikula\ExtensionsModule\Api\HookApi
+     */
+    protected $hookApi;
 
     /**
      * initialise the extension
@@ -73,13 +79,27 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     {
         $this->bundle = $bundle;
         $this->name = $bundle->getName();
-        $this->container = $bundle->getContainer();
-        $this->container->get('translator')->setDomain($this->bundle->getTranslationDomain());
-        $this->setTranslator($this->container->get('translator'));
-        $this->entityManager = $this->container->get('doctrine.entitymanager');
-        $this->schemaTool = $this->container->get('zikula.doctrine.schema_tool');
+        if ($this->container) {
+            // both here and in `setContainer` so either method can be called first.
+            $this->container->get('translator')->setDomain($this->bundle->getTranslationDomain());
+        }
+    }
+
+    /**
+     * @param ContainerInterface|null $container
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+        $this->setTranslator($container->get('translator'));
+        $this->entityManager = $container->get('doctrine.entitymanager');
+        $this->schemaTool = $container->get('zikula.doctrine.schema_tool');
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
-        $this->variableApi = $bundle->getContainer()->get('zikula_extensions_module.api.variable'); // for ExtensionVariablesTrait
+        $this->variableApi = $container->get('zikula_extensions_module.api.variable'); // for ExtensionVariablesTrait
+        $this->hookApi = $container->get('zikula_extensions_module.api.hook');
+        if ($this->bundle) {
+            $container->get('translator')->setDomain($this->bundle->getTranslationDomain());
+        }
     }
 
     public function setTranslator($translator)

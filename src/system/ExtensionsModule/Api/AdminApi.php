@@ -380,6 +380,10 @@ class AdminApi extends \Zikula_AbstractApi
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
 
         $version = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath, $module);
+        if ($version instanceof MetaData) {
+            // Core-2.0 Spec module
+            $version = $this->get('zikula_extensions_module.api.hook')->getHookContainerInstance($version);
+        }
 
         // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
