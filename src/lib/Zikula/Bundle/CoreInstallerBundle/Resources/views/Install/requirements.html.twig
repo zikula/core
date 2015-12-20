@@ -23,20 +23,6 @@
                 {% endif %}
                 {% set checks = array_unset(checks, 'datetimezone') %}
 
-                {% if checks.register_globals %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __("PHP register_globals = Off") }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("PHP register_globals = On and must be turned off in php.ini, or .htaccess") }}
-                {% endif %}
-                    {% set checks = array_unset(checks, 'register_globals') %}
-
-                {% if checks.magic_quotes_gpc %}
-                <li><span class="fa fa-fw fa-check text-success"></span> {{ __("PHP magic_quotes_gpc = Off") }}</li>
-                {% else %}
-                <li><span class="fa fa-fw fa-times text-danger"></span> {{ __("PHP magic_quotes_gpc = On and must be turned off in php.ini") }}</li>
-                {% endif %}
-                {% set checks = array_unset(checks, 'magic_quotes_gpc') %}
-
                 {% if checks.pdo %}
                 <li><span class="fa fa-fw fa-check text-success"></span> {{ __("PDO extension loaded.") }}</li>
                 {% else %}

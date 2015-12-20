@@ -151,8 +151,6 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         $messages = array(
             'phpsatisfied' => __f("You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version %s or later.", array(phpversion(), Zikula_Core::PHP_MINIMUM_VERSION)),
             'datetimezone' => __("date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."),
-            'register_globals' => __("PHP register_globals = On and must be turned off in php.ini, or .htaccess"),
-            'magic_quotes_gpc' => __("PHP magic_quotes_gpc = On and must be turned off in php.ini"),
             'pdo' => __("Your PHP installation doesn't have the PDO extension loaded."),
             'phptokens' => __("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),
             'mbstring' => __("Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets."),

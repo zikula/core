@@ -90,8 +90,6 @@ class ControllerUtil
 
         $results['datetimezone'] = ini_get('date.timezone');
         $results['pdo'] = extension_loaded('pdo');
-        $results['register_globals'] = !ini_get('register_globals');
-        $results['magic_quotes_gpc'] = !ini_get('magic_quotes_gpc');
         $results['phptokens'] = function_exists('token_get_all');
         $results['mbstring'] = function_exists('mb_get_info');
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
