@@ -8,7 +8,7 @@ In order for hooks to function, the `composer.json` file must define the extensi
     "extra": {
         "zikula": {
             "capabilities": {
-                "hook_subscriber": {"class": "Zikula\\BlocksModule\\Container\\HookContainer"}
+                "hook_subscriber": {"class": "Zikula\\BlocksModule\\Container\\HookContainer"},
                 "hook_provider": {"class": "Zikula\\BlocksModule\\Container\\HookContainer"}
             }
         }
