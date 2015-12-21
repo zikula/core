@@ -18,7 +18,6 @@ use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
 /**
  * Class ConsoleCommandListener.
  */
@@ -26,7 +25,7 @@ class ConsoleCommandListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        return array (
+        return array(
             ConsoleEvents::COMMAND => array('checkBundleForTranslatingRoutes')
         );
     }

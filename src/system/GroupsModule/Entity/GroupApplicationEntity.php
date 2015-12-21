@@ -63,7 +63,6 @@ class GroupApplicationEntity extends EntityAccess
      */
     private $status;
 
-
     /**
      * constructor
      */

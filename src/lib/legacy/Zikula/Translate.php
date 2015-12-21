@@ -32,7 +32,7 @@ class Zikula_Translate implements Zikula_TranslatableInterface
      *
      * @param string $domain Gettext domain.
      */
-    private function __construct($domain=null)
+    private function __construct($domain = null)
     {
         $this->domain = $domain;
     }
@@ -44,7 +44,7 @@ class Zikula_Translate implements Zikula_TranslatableInterface
      *
      * @return void
      */
-    public function setDomain($domain=null)
+    public function setDomain($domain = null)
     {
         $this->domain = $domain;
     }
@@ -112,5 +112,4 @@ class Zikula_Translate implements Zikula_TranslatableInterface
     {
         return _fn($m1, $m2, $n, $param, $this->domain);
     }
-
 }

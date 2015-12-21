@@ -14,7 +14,6 @@
 
 namespace Zikula\BlocksModule\Tests\Api;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\BlocksModule\Api\BlockFilterApi;
 

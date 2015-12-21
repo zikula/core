@@ -39,7 +39,7 @@ abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
      *
      * @return void
      */
-    public function checkAjaxToken($token=null)
+    public function checkAjaxToken($token = null)
     {
         $headerToken = isset($_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN']) ? $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] : null;
 

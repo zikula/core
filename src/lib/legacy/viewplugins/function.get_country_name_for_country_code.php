@@ -41,7 +41,7 @@ function smarty_function_get_country_name_for_country_code($params, Zikula_View 
     }
 
     if ($assign) {
-        $view->assign ($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

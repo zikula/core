@@ -5,8 +5,6 @@ namespace Zikula\RoutesModule\Routing;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\Loader\Loader;
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -55,7 +53,7 @@ class RouteLoader extends Loader
         $middleRouteCollection = new RouteCollection();
         $bottomRouteCollection = new RouteCollection();
         foreach ($bundles as $bundle) {
-            list ($currentMiddleRouteCollection, $currentTopRouteCollection, $currentBottomRouteCollection) = $this->find($bundle);
+            list($currentMiddleRouteCollection, $currentTopRouteCollection, $currentBottomRouteCollection) = $this->find($bundle);
             $middleRouteCollection->addCollection($currentMiddleRouteCollection);
             $topRouteCollection->addCollection($currentTopRouteCollection);
             $bottomRouteCollection->addCollection($currentBottomRouteCollection);
@@ -90,7 +88,7 @@ class RouteLoader extends Loader
 
         /**
          * These are all routes of the module, as loaded by Symfony.
-         * @var RouteCollection $routeCollection
+         * @var RouteCollection
          */
         $routeCollection = $this->import($path);
 
@@ -109,7 +107,7 @@ class RouteLoader extends Loader
 
         /** @var Route $route */
         foreach ($routeCollection as $oldRouteName => $route) {
-//          set break here with $oldRouteName == 'zikula_routesmodule_route_renew'
+            //          set break here with $oldRouteName == 'zikula_routesmodule_route_renew'
             $this->fixRequirements($route);
             $this->prependBundlePrefix($route, $bundle);
             list($type, $func) = $this->setZikulaDefaults($route, $bundle, $name);
@@ -143,7 +141,7 @@ class RouteLoader extends Loader
 
         $routeCollection = new RouteCollection();
 
-        list ($newRouteCollection, $topRouteCollection, $bottomRouteCollection) = $this->findAll();
+        list($newRouteCollection, $topRouteCollection, $bottomRouteCollection) = $this->findAll();
 
         $routeCollection->addCollection($topRouteCollection);
 
@@ -230,7 +228,7 @@ class RouteLoader extends Loader
         $defaults['_zkBundle'] = $bundleName;
         if ($bundle instanceof AbstractModule) {
             $defaults['_zkModule'] = $bundleName;
-        } else if ($bundle instanceof AbstractTheme) {
+        } elseif ($bundle instanceof AbstractTheme) {
             $defaults['_zkTheme'] = $bundleName;
         }
 
@@ -350,6 +348,7 @@ class RouteLoader extends Loader
             // This allows multiple routes for the same action.
             $suffix = '_' . $lastPart;
         }
+
         return strtolower($bundleName . '_' . $type . '_' . $func) . $suffix;
     }
 

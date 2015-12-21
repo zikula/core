@@ -14,7 +14,6 @@ namespace Zikula\RoutesModule\Listener\Base;
 
 use ModUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -35,7 +34,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
             'module_dispatch.service_links'    => array('serviceLinks', 5)
         );
     }
-    
+
     /**
      * Listener for the `module_dispatch.postloadgeneric` event.
      *
@@ -47,7 +46,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
     public function postLoadGeneric(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module_dispatch.preexecute` event.
      *
@@ -65,7 +64,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
     public function preExecute(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module_dispatch.postexecute` event.
      *
@@ -85,7 +84,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
     public function postExecute(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module_dispatch.custom_classname` event.
      *
@@ -100,7 +99,7 @@ class ModuleDispatchListener implements EventSubscriberInterface
     public function customClassname(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module_dispatch.service_links` event.
      *

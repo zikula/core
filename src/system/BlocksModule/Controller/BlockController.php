@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\BlocksModule\Form\Type\BlockType;
 use Zikula\Core\BlockControllerInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\FatalResponse;
@@ -78,7 +77,6 @@ class BlockController extends AbstractController
         if (null === $blockEntity) {
             $bKey = json_decode($request->query->get('bkey'));
             if (empty($bKey)) {
-
                 return $this->redirect('zikulablocksmodule_block_new');
             }
             $blockEntity = new BlockEntity(); // sets defaults in constructor
@@ -201,12 +199,10 @@ class BlockController extends AbstractController
     public function toggleblockAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-
             return new ForbiddenResponse($this->__('No permission for this action.'));
         }
         $bid = $request->request->get('bid', -1);
         if ($bid == -1) {
-
             return new FatalResponse($this->__('No block ID passed.'));
         }
         $em = $this->getDoctrine()->getManager();
@@ -258,7 +254,6 @@ class BlockController extends AbstractController
         $form = $this->createFormBuilder()->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', $options)->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
-
             return $form->getData()['content'];
         }
 
@@ -282,5 +277,4 @@ class BlockController extends AbstractController
                 'block' => $blockEntity,
             ]);
     }
-
 }

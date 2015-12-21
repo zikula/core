@@ -12,18 +12,9 @@
 
 namespace Zikula\RoutesModule\Entity;
 
-use DataUtil;
-use FormUtil;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Routing\Route;
 use Zikula\RoutesModule\Entity\Base\AbstractRouteEntity as BaseAbstractRouteEntity;
-
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Entity class that defines the entity structure and behaviours.
@@ -195,5 +186,4 @@ class RouteEntity extends BaseAbstractRouteEntity
     {
         $this->performPostSaveCallback();
     }
-
 }

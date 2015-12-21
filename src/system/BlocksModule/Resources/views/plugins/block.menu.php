@@ -60,7 +60,7 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
         $currentKey = null;
     }
     try {
-        $iterator->seek($index-1);
+        $iterator->seek($index - 1);
         $lastKey = $iterator->key();
     } catch (Exception $e) {
         $lastKey = null;
@@ -69,10 +69,10 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
     if (isset($params['name'])) {
         $menuProps = array(
             'index' => $index,
-            'iteration' => $index+1,
+            'iteration' => $index + 1,
             'total' => $total,
             'first' => (bool)is_null($content),
-            'last' =>  $index+1 >= $total
+            'last' =>  $index + 1 >= $total
         );
     }
 
@@ -84,9 +84,9 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
             $smarty->assign($params['name'], $menuProps);
         }
         if (isset($key)) {
-            $smarty->assign($key,$currentKey);
+            $smarty->assign($key, $currentKey);
         }
-        $smarty->_tag_stack[$menuTagStackKey][1]['_index'] = $index+1;
+        $smarty->_tag_stack[$menuTagStackKey][1]['_index'] = $index + 1;
         if (!is_null($content)) {
             $smarty->_tag_stack[$menuTagStackKey][1]['_content'][$lastKey] = $content;
         }
@@ -102,7 +102,7 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
             $result = _smarty_block_menu_parsemenu($params);
         }
         if (isset($params['assign'])) {
-            $smarty->assign($params['assign'],$result);
+            $smarty->assign($params['assign'], $result);
         } else {
             return $result;
         }
@@ -145,12 +145,12 @@ function _smarty_block_menu_parsemenu($params)
         } else {
             $path = $map[$item['parentid']];
             $path[] = $item['parentid'];
-            $handle =& $tree;
+            $handle = &$tree;
             while (list($key, $value) = each($path)) {
                 if ($value === null) {
                     continue;
                 }
-                $handle =& $handle[$value]['nodes'];
+                $handle = &$handle[$value]['nodes'];
             }
             $handle[$item['id']] = $_node;
         }
@@ -161,7 +161,7 @@ function _smarty_block_menu_parsemenu($params)
     $listId    = isset($params['id']) ? $params['id'] : null;
     $listTag   = isset($params['tag']) ? $params['tag'] : 'ul';
 
-    return _smarty_block_menu_parsemenu_html($tree,$listTag,$listClass,$listId);
+    return _smarty_block_menu_parsemenu_html($tree, $listTag, $listClass, $listId);
 }
 
 /**
@@ -172,7 +172,7 @@ function _smarty_block_menu_parsemenu($params)
  * @param string $listClass the css class to apply to the list
  * @param string $listId    the css id to apply to the list
  */
-function _smarty_block_menu_parsemenu_html($tree,$listTag,$listClass=null,$listId=null)
+function _smarty_block_menu_parsemenu_html($tree, $listTag, $listClass = null, $listId = null)
 {
     $html  = '<'.$listTag;
     $html .= !empty($listId) ? ' id="'.$listId.'"' : '';
@@ -181,8 +181,8 @@ function _smarty_block_menu_parsemenu_html($tree,$listTag,$listClass=null,$listI
 
     foreach ($tree as $tab) {
         if (!empty($tab['nodes'])) {
-            $subhtml = _smarty_block_menu_parsemenu_html($tab['nodes'],$listTag);
-            $html   .= preg_replace('/<\/li>\s*$/Di', $subhtml.'</li>', $tab['item']['content'],1);
+            $subhtml = _smarty_block_menu_parsemenu_html($tab['nodes'], $listTag);
+            $html   .= preg_replace('/<\/li>\s*$/Di', $subhtml.'</li>', $tab['item']['content'], 1);
         } else {
             $html .= $tab['item']['content'];
         }

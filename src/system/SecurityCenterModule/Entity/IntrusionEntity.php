@@ -27,7 +27,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * ID of the entity
      *
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -38,7 +38,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * name of the entity
      *
-     * @var string $name
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=128, nullable=false)
      */
@@ -47,7 +47,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * tag
      *
-     * @var string $tag
+     * @var string
      *
      * @ORM\Column(name="tag", type="string", length=40, nullable=true)
      */
@@ -56,7 +56,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * value
      *
-     * @var text $value
+     * @var text
      *
      * @ORM\Column(name="value", type="text", nullable=false)
      */
@@ -65,7 +65,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * page called when intrusion was detected
      *
-     * @var text $page
+     * @var text
      *
      * @ORM\Column(name="page", type="text", nullable=false)
      */
@@ -82,7 +82,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * ip address of the intrustion
      *
-     * @var string $ip
+     * @var string
      *
      * @ORM\Column(name="ip", type="string", length=40, nullable=false)
      */
@@ -91,7 +91,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * impact
      *
-     * @var integer $impact
+     * @var integer
      *
      * @ORM\Column(name="impact", type="integer", nullable=false)
      */
@@ -100,7 +100,7 @@ class IntrusionEntity extends EntityAccess
     /**
      * filters
      *
-     * @var text $filters
+     * @var text
      *
      * @ORM\Column(name="filters", type="text", nullable=false)
      */
@@ -109,12 +109,11 @@ class IntrusionEntity extends EntityAccess
     /**
      * timestamp of the intrusion
      *
-     * @var \Datetime $date
+     * @var \Datetime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
      */
     private $date;
-
 
     /**
      * Get id
@@ -135,6 +134,7 @@ class IntrusionEntity extends EntityAccess
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -157,6 +157,7 @@ class IntrusionEntity extends EntityAccess
     public function setTag($tag)
     {
         $this->tag = $tag;
+
         return $this;
     }
 
@@ -179,6 +180,7 @@ class IntrusionEntity extends EntityAccess
     public function setValue($value)
     {
         $this->value = $value;
+
         return $this;
     }
 
@@ -201,6 +203,7 @@ class IntrusionEntity extends EntityAccess
     public function setPage($page)
     {
         $this->page = $page;
+
         return $this;
     }
 
@@ -223,6 +226,7 @@ class IntrusionEntity extends EntityAccess
     public function setUser($user)
     {
         $this->user = $user;
+
         return $this;
     }
 
@@ -255,6 +259,7 @@ class IntrusionEntity extends EntityAccess
     public function setIp($ip)
     {
         $this->ip = $ip;
+
         return $this;
     }
 
@@ -277,6 +282,7 @@ class IntrusionEntity extends EntityAccess
     public function setImpact($impact)
     {
         $this->impact = $impact;
+
         return $this;
     }
 
@@ -299,6 +305,7 @@ class IntrusionEntity extends EntityAccess
     public function setFilters($filters)
     {
         $this->filters = $filters;
+
         return $this;
     }
 
@@ -321,6 +328,7 @@ class IntrusionEntity extends EntityAccess
     public function setDate($date)
     {
         $this->date = $date;
+
         return $this;
     }
 

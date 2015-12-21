@@ -1,4 +1,5 @@
 <?php
+
 namespace Zikula\Component\HookDispatcher\Tests;
 
 use Zikula\Component\HookDispatcher\Hook;
@@ -20,7 +21,7 @@ class HookTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Hook;
+        $this->object = new Hook();
     }
 
     /**

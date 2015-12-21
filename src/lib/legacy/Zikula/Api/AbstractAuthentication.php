@@ -277,5 +277,4 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * @return An array of account recovery information.
      */
     abstract public function getAccountRecoveryInfoForUid(array $args);
-
 }

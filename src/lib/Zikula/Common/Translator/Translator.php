@@ -9,6 +9,7 @@
  *          Please see the NOTICE file distributed with this source code for further
  *          information regarding copyright and licensing.
  */
+
 namespace Zikula\Common\Translator;
 
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
@@ -42,7 +43,6 @@ class Translator extends BaseTranslator implements WarmableInterface
         'resource_files' => array()
     );
     /**
-     *
      * @var array
      */
     private $resourceLocales;
@@ -68,14 +68,14 @@ class Translator extends BaseTranslator implements WarmableInterface
         if ($diff = array_diff(array_keys($options), array_keys($this->options))) {
             throw new \InvalidArgumentException(sprintf('The Translator does not support the following options: \'%s\'.', implode('\', \'', $diff)));
         }
-        
-        $this->domain = 'zikula';        
+
+        $this->domain = 'zikula';
         $this->options = array_merge($this->options, $options);
         $this->resourceLocales = array_keys($this->options['resource_files']);
         if (null !== $this->options['cache_dir'] && $this->options['debug']) {
             $this->loadResources();
         }
-        
+
         parent::__construct($container->getParameter('kernel.default_locale'), $selector, $this->options['cache_dir'], $this->options['debug']);
     }
 
@@ -126,19 +126,18 @@ class Translator extends BaseTranslator implements WarmableInterface
     {
         foreach ($this->options['resource_files'] as $locale => $files) {
             foreach ($files as $key => $file) {
-                
                 $c = substr_count($file, ".");
-                
+
                 if ($c < 2) {
                     // filename is domain.format
-                    list ($domain, $format) = explode('.', basename($file), 2);
+                    list($domain, $format) = explode('.', basename($file), 2);
                 } else {
                     // filename is domain.locale.format
-                    list ($domain, $locale, $format) = explode('.', basename($file), 3);
+                    list($domain, $locale, $format) = explode('.', basename($file), 3);
                 }
-                
+
 //                list ($domain, $format) = explode('.', basename($file), 2);
-                
+
                 $this->addResource($format, $file, $locale, $domain);
                 unset($this->options['resource_files'][$locale][$key]);
             }

@@ -97,8 +97,7 @@ function smarty_function_selectmodobjectarray($params, Zikula_View $view)
         // get() returns the cached object fetched from the DB during object instantiation
         // get() with parameters always performs a new select
         // while the result will be saved in the object, we assign in to a local variable for convenience.
-        $objectData = $objectArray->get($where, $sort, $pos-1, $num);
-
+        $objectData = $objectArray->get($where, $sort, $pos - 1, $num);
     } else {
         $query = Doctrine_Core::getTable($params['recordClass'])->createQuery();
 

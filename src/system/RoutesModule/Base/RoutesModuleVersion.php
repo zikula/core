@@ -14,9 +14,7 @@ namespace Zikula\RoutesModule\Base;
 
 use HookUtil;
 use Zikula_AbstractVersion;
-use Zikula\Component\HookDispatcher\ProviderBundle;
 use Zikula\Component\HookDispatcher\SubscriberBundle;
-use Zikula\SearchModule\AbstractSearchable;
 
 /**
  * Version information base class.
@@ -57,7 +55,6 @@ class RoutesModuleVersion extends Zikula_AbstractVersion
             'ZikulaRoutesModule:Route:' => 'Route ID::',
         );
 
-
         return $meta;
     }
 
@@ -67,7 +64,7 @@ class RoutesModuleVersion extends Zikula_AbstractVersion
     protected function setupHookBundles()
     {
         $bundle = new SubscriberBundle($this->name, 'subscriber.zikularoutesmodule.ui_hooks.routes', 'ui_hooks', $this->__('zikularoutesmodule Routes Display Hooks'));
-        
+
         // Display hook for view/display templates.
         $bundle->addEvent('display_view', 'zikularoutesmodule.ui_hooks.routes.display_view');
         // Display hook for create/edit forms.
@@ -88,7 +85,5 @@ class RoutesModuleVersion extends Zikula_AbstractVersion
         // A filter applied to the given area.
         $bundle->addEvent('filter', 'zikularoutesmodule.filter_hooks.routes.filter');
         $this->registerHookSubscriberBundle($bundle);
-
-        
     }
 }

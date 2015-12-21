@@ -19,7 +19,7 @@
  */
 class Categories_DBObject_CategoryArray extends DBObjectArray
 {
-    public function __construct($init=null, $where='')
+    public function __construct($init = null, $where = '')
     {
         parent::__construct();
 
@@ -37,16 +37,17 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         $this->_init($init, $where);
     }
 
-    public function buildRelativePaths($rootCategory, $includeRoot=false)
+    public function buildRelativePaths($rootCategory, $includeRoot = false)
     {
         CategoryUtil::buildRelativePaths($rootCategory, $this->_objData, $includeRoot);
     }
 
     // checkbox has to be explicitly processed
-    public function getDataFromInputPostProcess($objArray=null)
+
+    public function getDataFromInputPostProcess($objArray = null)
     {
         if (!$objArray) {
-            $objArray = & $this->_objData;
+            $objArray = &$this->_objData;
         }
 
         if (!$objArray) {
@@ -65,10 +66,11 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
     }
 
     // the only reason we need al this stuff beflow is the because of the serialization
-    public function selectPostProcess($objArray=null)
+
+    public function selectPostProcess($objArray = null)
     {
         if (!$objArray) {
-            $objArray = & $this->_objData;
+            $objArray = &$this->_objData;
         }
 
         if (!$objArray) {
@@ -83,10 +85,10 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         return $objArray;
     }
 
-    public function insertPreProcess($objArray=null)
+    public function insertPreProcess($objArray = null)
     {
         if (!$objArray) {
-            $objArray = & $this->_objData;
+            $objArray = &$this->_objData;
         }
 
         if (!$objArray) {
@@ -103,10 +105,10 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         return $objArray;
     }
 
-    public function insertPostProcess($objArray=null)
+    public function insertPostProcess($objArray = null)
     {
         if (!$objArray) {
-            $objArray = & $this->_objData;
+            $objArray = &$this->_objData;
         }
 
         if (!$objArray) {
@@ -123,10 +125,10 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         return $objArray;
     }
 
-    public function updatePreProcess($objArray=null)
+    public function updatePreProcess($objArray = null)
     {
         if (!$objArray) {
-            $objArray = & $this->_objData;
+            $objArray = &$this->_objData;
         }
 
         if (!$objArray) {
@@ -145,7 +147,7 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         return $objArray;
     }
 
-    public function updatePostProcess($objArray=null)
+    public function updatePostProcess($objArray = null)
     {
         if ($objArray) {
             return $this->insertPostProcess($objArray);
@@ -154,7 +156,7 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         return $this->insertPostProcess();
     }
 
-    public function delete($deleteSubcats=false, $newParentID=0)
+    public function delete($deleteSubcats = false, $newParentID = 0)
     {
         $objArray = $this->_objData;
 
@@ -173,5 +175,4 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
             }
         }
     }
-
 }

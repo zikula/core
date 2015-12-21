@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\BlocksModule\Helper\ServiceNameHelper;
 use Zikula\Core\AbstractModule;
 use Zikula\Core\BlockControllerInterface;
-use Zikula\Core\Controller\AbstractBlockController;
 
 /**
  * Class BlockFactoryApi

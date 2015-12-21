@@ -13,7 +13,6 @@
 
 namespace Zikula\ThemeModule\Api;
 
-use LogUtil;
 use ModUtil;
 use ThemeUtil;
 use DataUtil;
@@ -48,7 +47,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $args['variables'] = $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themevariables.ini', 'sections' => true));
+        $args['variables'] = $this->_readinifile(array('theme' => $args['theme'], 'file' => 'themevariables.ini', 'sections' => true));
 
         if (isset($args['formatting']) && is_bool($args['formatting']) && $args['formatting']) {
             $args['variables'] = $this->formatvariables($args);
@@ -80,7 +79,7 @@ class UserApi extends \Zikula_AbstractApi
         $dom = $this->_getthemedomain($args['theme']);
 
         // take any variables specification from the themevars
-        $themevars = $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themevariables.ini', 'sections' => true));
+        $themevars = $this->_readinifile(array('theme' => $args['theme'], 'file' => 'themevariables.ini', 'sections' => true));
         unset($themevars['variables']);
 
         $variables = array_merge($themevars, $args['variables']);
@@ -100,7 +99,6 @@ class UserApi extends \Zikula_AbstractApi
                     $this->_variable_options($variables["{$var}[{$k}]"], $args, $dom);
                 }
                 unset($variables['variables'][$var]);
-
             } else {
                 // process the options of the single value
                 if (!isset($variables[$var])) {
@@ -153,7 +151,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        return $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themepalettes.ini', 'sections' => true));
+        return $this->_readinifile(array('theme' => $args['theme'], 'file' => 'themepalettes.ini', 'sections' => true));
     }
 
     /**
@@ -225,7 +223,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        return $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'pageconfigurations.ini', 'sections' => true));
+        return $this->_readinifile(array('theme' => $args['theme'], 'file' => 'pageconfigurations.ini', 'sections' => true));
     }
 
     /**
@@ -250,7 +248,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $config = $this->_readinifile(array('theme'=> $args['theme'], 'file' => $args['filename'], 'sections' => true));
+        $config = $this->_readinifile(array('theme' => $args['theme'], 'file' => $args['filename'], 'sections' => true));
 
         $default = array(
                        'page' => '',
@@ -433,7 +431,6 @@ class UserApi extends \Zikula_AbstractApi
 
         if (is_writable($tpath.'/'.$osfile)) {
             $handle = fopen($tpath.'/'.$osfile, 'w+');
-
         } else {
             if (!file_exists($zpath = $ostemp.'/Theme_Config/'.$ostheme)) {
                 mkdir($zpath, $this->serviceManager['system.chmod_dir'], true);
@@ -449,7 +446,6 @@ class UserApi extends \Zikula_AbstractApi
         // validate the resulting handler and the write operation result
         if (!isset($handle) || !is_resource($handle)) {
             throw new \RuntimeException($this->__f('Error! Could not open file so that it could be written to: %s', $osfile));
-
         } else {
             if (fwrite($handle, $content) === false) {
                 fclose($handle);

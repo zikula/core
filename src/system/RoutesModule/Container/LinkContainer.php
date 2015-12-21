@@ -42,5 +42,6 @@ class LinkContainer extends BaseLinkContainer
 
         return $links;
     }
+
     // feel free to add own extensions here
 }

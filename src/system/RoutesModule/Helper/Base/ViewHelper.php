@@ -13,8 +13,6 @@
 namespace Zikula\RoutesModule\Helper\Base;
 
 use DataUtil;
-use FormUtil;
-use ModUtil;
 use PageUtil;
 use SecurityUtil;
 use System;
@@ -23,7 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Common\Translator\Translator;
 use Zikula\Core\Response\PlainResponse;
-use Zikula_ServiceManager;
 use Zikula_View;
 
 /**
@@ -70,10 +67,10 @@ class ViewHelper
     {
         // create the base template name
         $template = DataUtil::formatForOS(ucfirst($type) . '/' . $func);
-    
+
         // check for template extension
         $templateExtension = $this->determineExtension($view, $type, $func, $request);
-    
+
         // check whether a special template is used
         $tpl = '';
         if ($request->isMethod('POST')) {
@@ -81,17 +78,17 @@ class ViewHelper
         } elseif ($request->isMethod('GET')) {
             $tpl = $request->query->filter('tpl', '', false, FILTER_SANITIZE_STRING);
         }
-    
+
         $templateExtension = '.' . $templateExtension;
         if ($templateExtension != '.tpl') {
             $templateExtension .= '.tpl';
         }
-    
+
         if (!empty($tpl) && $view->template_exists($template . '_' . DataUtil::formatForOS($tpl) . $templateExtension)) {
             $template .= '_' . DataUtil::formatForOS($tpl);
         }
         $template .= $templateExtension;
-    
+
         return $template;
     }
 
@@ -112,7 +109,7 @@ class ViewHelper
         if (empty($template)) {
             $template = $this->getViewTemplate($view, $type, $func, $request);
         }
-    
+
         // look whether we need output with or without the theme
         $raw = false;
         if ($request->isMethod('POST')) {
@@ -123,17 +120,18 @@ class ViewHelper
         if (!$raw && $templateExtension != 'tpl') {
             $raw = true;
         }
-    
+
         if ($raw == true) {
             // standalone output
             if ($templateExtension == 'pdf') {
                 $template = str_replace('.pdf', '', $template);
+
                 return $this->processPdf($view, $request, $template);
             } else {
                 return new PlainResponse($view->fetch($template));
             }
         }
-    
+
         // normal output
         return new Response($view->fetch($template));
     }
@@ -154,13 +152,13 @@ class ViewHelper
         if (!in_array($func, array('view', 'display'))) {
             return $templateExtension;
         }
-    
+
         $extensions = $this->availableExtensions($type, $func);
         $format = $request->getRequestFormat();
         if ($format != 'html' && in_array($format, $extensions)) {
             $templateExtension = $format;
         }
-    
+
         return $templateExtension;
     }
 
@@ -189,7 +187,7 @@ class ViewHelper
                 $extensions = array('ics');
             }
         }
-    
+
         return $extensions;
     }
 
@@ -206,25 +204,25 @@ class ViewHelper
     {
         // first the content, to set page vars
         $output = $view->fetch($template);
-    
+
         // make local images absolute
         $output = str_replace('img src="/', 'img src="' . $request->server->get('DOCUMENT_ROOT') . '/', $output);
-    
+
         // see http://codeigniter.com/forums/viewthread/69388/P15/#561214
         //$output = utf8_decode($output);
-    
+
         // then the surrounding
         $output = $view->fetch('include_pdfheader.tpl') . $output . '</body></html>';
-    
+
         $controllerHelper = $this->container->get('zikularoutesmodule.controller_helper');
         // create name of the pdf output file
         $fileTitle = $controllerHelper->formatPermalink(System::getVar('sitename'))
                    . '-'
                    . $controllerHelper->formatPermalink(PageUtil::getVar('title'))
                    . '-' . date('Ymd') . '.pdf';
-    
+
         // if ($_GET['dbg'] == 1) die($output);
-    
+
         // instantiate pdf object
         $pdf = new \DOMPDF();
         // define page properties
@@ -235,10 +233,10 @@ class ViewHelper
         $pdf->render();
         // stream output to browser
         $pdf->stream($fileTitle);
-    
+
         // prevent additional output by shutting down the system
         System::shutDown();
-    
+
         return true;
     }
 }

@@ -344,7 +344,7 @@ class Field extends \Zikula_AbstractBase
      */
     public function hasErrorMessage()
     {
-        return ($this->hasBeenValidated && isset($this->errorMessage));
+        return $this->hasBeenValidated && isset($this->errorMessage);
     }
 
     /**

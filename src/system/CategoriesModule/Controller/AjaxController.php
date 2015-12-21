@@ -26,7 +26,6 @@ use Zikula\Core\Response\Ajax\BadDataResponse;
 use Zikula\CategoriesModule\GenericUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/ajax")
@@ -117,7 +116,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // indicates that we're editing
         if ($mode == 'edit') {
             if (!$cid) {
-
                 return new BadDataResponse($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
             }
             $editCat = CategoryUtil::getCategoryByID($cid);
@@ -454,7 +452,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if ($mode == 'edit') {
             $category = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $data['id']);
         } else {
-            $category = new \Zikula\CategoriesModule\Entity\CategoryEntity;
+            $category = new \Zikula\CategoriesModule\Entity\CategoryEntity();
         }
         $prevCategoryName = $category['name'];
         $category->merge($data);

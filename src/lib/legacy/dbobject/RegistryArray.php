@@ -19,7 +19,7 @@
  */
 class Categories_DBObject_RegistryArray extends DBObjectArray
 {
-    public function __construct($init=null, $where='')
+    public function __construct($init = null, $where = '')
     {
         parent::__construct();
 
@@ -29,5 +29,4 @@ class Categories_DBObject_RegistryArray extends DBObjectArray
 
         $this->_init($init, $where);
     }
-
 }

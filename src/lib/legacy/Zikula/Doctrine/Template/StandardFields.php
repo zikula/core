@@ -49,7 +49,7 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
     public function setTableDefinition()
     {
         // historical prefix
-        $oldPrefix = isset($this->_options['oldColumnPrefix'])? $this->_options['oldColumnPrefix'] : '';
+        $oldPrefix = isset($this->_options['oldColumnPrefix']) ? $this->_options['oldColumnPrefix'] : '';
 
         $this->hasColumn($oldPrefix . 'obj_status as obj_status', 'string', 1, array('type' => 'string', 'length' => 1, 'notnull' => true, 'default' => 'A'));
         $this->hasColumn($oldPrefix . 'cr_date as cr_date', 'timestamp', null, array('type' => 'timestamp', 'notnull' => true, 'default' => '1970-01-01 00:00:00'));
@@ -69,4 +69,3 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
         $this->addListener(new Zikula_Doctrine_Template_Listener_StandardFields());
     }
 }
-

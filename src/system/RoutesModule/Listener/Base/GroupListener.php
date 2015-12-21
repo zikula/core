@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -34,8 +33,7 @@ class GroupListener implements EventSubscriberInterface
             'group.removeuser' => array('removeUser', 5)
         );
     }
-    
-    
+
     /**
      * Listener for the `group.create` event.
      *
@@ -47,7 +45,7 @@ class GroupListener implements EventSubscriberInterface
     public function create(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `group.update` event.
      *
@@ -59,7 +57,7 @@ class GroupListener implements EventSubscriberInterface
     public function update(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `group.delete` event.
      *
@@ -72,7 +70,7 @@ class GroupListener implements EventSubscriberInterface
     public function delete(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `group.adduser` event.
      *
@@ -86,7 +84,7 @@ class GroupListener implements EventSubscriberInterface
     public function addUser(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `group.removeuser` event.
      *

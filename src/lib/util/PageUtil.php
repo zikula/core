@@ -223,6 +223,7 @@ class PageUtil
                     return $title;
                 }
             }
+
             return $_pageVars[$varname]['contents'];
         } elseif (isset($_pageVars[$varname]['default'])) {
             return $_pageVars[$varname]['default'];
@@ -244,7 +245,6 @@ class PageUtil
      *
      * @see    PageUtil::addVar
      * @return boolean true On success, false of the page variable is not registered.
-     *
      */
     public static function setVar($varname, $value)
     {
@@ -309,6 +309,7 @@ class PageUtil
             foreach ($path as $key => $value) {
                 $return[$key] = self::fixJQueryThemesPath($value);
             }
+
             return $return;
         }
 
@@ -373,7 +374,7 @@ class PageUtil
                     $features = explode(' ', $features);
 
                     foreach ($features as $feature) {
-                        PageUtil::addVar('polyfill_features', $feature);
+                        self::addVar('polyfill_features', $feature);
                     }
 
                     $_pageVars[$varname]['contents'] = array_merge($_pageVars[$varname]['contents'], $value);
@@ -411,6 +412,7 @@ class PageUtil
             foreach ($path as $key => $value) {
                 $return[$key] = self::resolveSymfonyAsset($value);
             }
+
             return $return;
         }
 

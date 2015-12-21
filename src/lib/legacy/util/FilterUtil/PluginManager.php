@@ -189,7 +189,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     {
         $module = $this->getConfig()->getModule();
         if (strpos($name, '@')) {
-            list ($module, $name) = explode('@', $name, 2);
+            list($module, $name) = explode('@', $name, 2);
         }
 
         if ($this->isLoaded("$module@$name")) {
@@ -223,7 +223,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
         $this->_plg[] = $obj;
         end($this->_plg);
         $key = key($this->_plg);
-        $obj = & $this->_plg[$key];
+        $obj = &$this->_plg[$key];
 
         $obj->setID($key);
         $this->_registerPlugin($key);
@@ -243,7 +243,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      */
     private function _registerPlugin($k)
     {
-        $obj = & $this->_plg[$k];
+        $obj = &$this->_plg[$k];
 
         if ($obj instanceof FilterUtil_BuildInterface) {
             $ops = $obj->getOperators();
@@ -317,7 +317,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     {
         if (is_array($this->_replaces)) {
             foreach ($this->_replaces as $k) {
-                $obj = & $this->_plg[$k];
+                $obj = &$this->_plg[$k];
                 list($field, $op, $value) = $obj->replace($field, $op, $value);
             }
         }

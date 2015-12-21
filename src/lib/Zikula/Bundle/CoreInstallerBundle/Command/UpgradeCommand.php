@@ -21,7 +21,6 @@ use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\InitStage;
-use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
@@ -69,6 +68,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     {
         if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
             $output->writeln(__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION)));
+
             return false;
         }
 
@@ -91,11 +91,13 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $warnings = $this->getContainer()->get('core_installer.controller.util')->initPhp();
         if (!empty($warnings)) {
             $this->printWarnings($output, $warnings);
+
             return;
         }
         $checks = $this->getContainer()->get('core_installer.controller.util')->requirementsMet($this->getContainer());
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
+
             return;
         }
 
@@ -135,5 +137,4 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         $output->writeln("UPGRADE COMPLETE!");
     }
-
 }

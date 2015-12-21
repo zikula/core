@@ -16,7 +16,6 @@ use ModUtil;
 use ServiceUtil;
 use UserUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -36,7 +35,7 @@ class UserListener implements EventSubscriberInterface
             'user.account.delete' => array('delete', 5)
         );
     }
-    
+
     /**
      * Listener for the `user.gettheme` event.
      *
@@ -50,7 +49,7 @@ class UserListener implements EventSubscriberInterface
     public function getTheme(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `user.account.create` event.
      *
@@ -65,7 +64,7 @@ class UserListener implements EventSubscriberInterface
     public function create(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `user.account.update` event.
      *
@@ -79,7 +78,7 @@ class UserListener implements EventSubscriberInterface
     public function update(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `user.account.delete` event.
      *
@@ -94,19 +93,19 @@ class UserListener implements EventSubscriberInterface
     public function delete(GenericEvent $event)
     {
         ModUtil::initOOModule('ZikulaRoutesModule');
-    
+
         $userRecord = $event->getSubject();
         $uid = $userRecord['uid'];
         $serviceManager = ServiceUtil::getManager();
         $entityManager = $serviceManager->get('doctrine.entitymanager');
-        
+
         $repo = $entityManager->getRepository('Zikula\RoutesModule\Entity\RouteEntity');
         // set creator to admin (2) for all routes created by this user
         $repo->updateCreator($uid, 2);
-        
+
         // set last editor to admin (2) for all routes updated by this user
         $repo->updateLastEditor($uid, 2);
-        
+
         $logger = $serviceManager->get('logger');
         $logger->notice('{app}: User {user} has been deleted, so we deleted corresponding {entities}, too.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entities' => 'routes'));
     }

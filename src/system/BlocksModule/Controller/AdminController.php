@@ -104,7 +104,7 @@ class AdminController extends AbstractController
 
         $templateParameters = [];
         $templateParameters['blocks'] = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockEntity')->getFilteredBlocks($filterData);
-        $templateParameters['positions'] = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockPositionEntity')->findAll();;
+        $templateParameters['positions'] = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockPositionEntity')->findAll();
         $templateParameters['filter_active'] = !empty($filterData['position']) || !empty($filterData['module']) || !empty($filterData['language']) || (!empty($filterData['active']) && in_array($filterData['active'], [0, 1]));
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['filterForm'] = $filterForm->createView();

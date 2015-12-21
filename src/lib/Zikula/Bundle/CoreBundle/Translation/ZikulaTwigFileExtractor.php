@@ -109,7 +109,7 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
         $this->traverser->traverse($ast);
         $this->traverseEmbeddedTemplates($ast);
     }
-    
+
     /**
      * If the current Twig Node has embedded templates, we want to travese these templates
      * in the same manner as we do the main twig template to ensure all translations are 
@@ -120,8 +120,8 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
     private function traverseEmbeddedTemplates(\Twig_Node $node)
     {
         $templates = $node->getAttribute('embedded_templates');
-        
-        foreach($templates as $template) {
+
+        foreach ($templates as $template) {
             $this->traverser->traverse($template);
             if ($template->hasAttribute('embedded_templates')) {
                 $this->traverseEmbeddedTemplates($template);
@@ -136,6 +136,11 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
         return $node;
     }
 
-    public function visitFile(\SplFileInfo $file, MessageCatalogue $catalogue) { }
-    public function visitPhpFile(\SplFileInfo $file, MessageCatalogue $catalogue, array $ast) { }
+    public function visitFile(\SplFileInfo $file, MessageCatalogue $catalogue)
+    {
+    }
+
+    public function visitPhpFile(\SplFileInfo $file, MessageCatalogue $catalogue, array $ast)
+    {
+    }
 }

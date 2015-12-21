@@ -76,7 +76,6 @@ class UserSessionEntity extends EntityAccess
      */
     private $vars;
 
-
     /**
      * constructor
      */

@@ -151,5 +151,4 @@ class Zikula_View_MockTheme extends Zikula_View_Theme
     public function setThemeConfig($themeconfig)
     {
     }
-
 }

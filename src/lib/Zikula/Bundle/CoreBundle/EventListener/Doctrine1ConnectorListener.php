@@ -240,7 +240,6 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
             // affect importing schemas from the database to classes
             // as well as exporting classes into database tables.
 
-
             // Index names (default: [name]_idx)
             $object->setAttribute(Doctrine_Core::ATTR_IDXNAME_FORMAT, '%s');
 
@@ -274,11 +273,9 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
         if ($object instanceof \Doctrine_Connection) {
             // set connection options
 
-
             // fetch / hydration mode
             //            $object->setAttribute(Doctrine_Core::ATTR_FETCHMODE, Doctrine_Core::FETCH_ASSOC);
             //            $object->setAttribute(Doctrine_Core::ATTR_HYDRATE_OVERWRITE, Doctrine_Core::HYDRATE_RECORD);
-
 
             // default column options
             //            $object->setAttribute(Doctrine_Core::ATTR_DEFAULT_COLUMN_OPTIONS,
@@ -301,5 +298,4 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
 
         throw new \Exception(get_class($object) . ' is not valid in configureDoctrine()');
     }
-
 }

@@ -23,7 +23,7 @@ include 'lib/bootstrap.php';
  * @link http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.internal-encoding
  */
 if (version_compare(\PHP_VERSION, '5.6.0', '<')) {
-    ini_set('mbstring.internal_encoding', 'UTF-8'); 
+    ini_set('mbstring.internal_encoding', 'UTF-8');
 }
 
 ini_set('default_charset', 'UTF-8');
@@ -86,7 +86,6 @@ exit;
  */
 class SecurityUtil
 {
-
     /**
      * Fake checkPermission function.
      *
@@ -94,7 +93,7 @@ class SecurityUtil
      *
      * @return boolean true.
      */
-    function checkPermission()
+    public function checkPermission()
     {
         return true;
     }

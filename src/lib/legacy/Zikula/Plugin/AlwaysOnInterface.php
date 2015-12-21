@@ -19,5 +19,4 @@
  */
 interface Zikula_Plugin_AlwaysOnInterface
 {
-
 }

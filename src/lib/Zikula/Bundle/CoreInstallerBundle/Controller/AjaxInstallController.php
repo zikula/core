@@ -16,10 +16,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper as CoreBundleBootstrapHelper;
@@ -56,7 +53,7 @@ class AjaxInstallController extends AbstractController
         'ZikulaRoutesModule',
     );
 
-    function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
@@ -77,7 +74,7 @@ class AjaxInstallController extends AbstractController
 
     private function executeStage($stageName)
     {
-        switch($stageName) {
+        switch ($stageName) {
             case "bundles":
                 return $this->createBundles();
             case "extensions":
@@ -126,6 +123,7 @@ class AjaxInstallController extends AbstractController
                 return $this->protectFiles();
         }
         \System::setInstalling(false);
+
         return true;
     }
 
@@ -174,7 +172,6 @@ class AjaxInstallController extends AbstractController
         }
 
         if ($installer->install()) {
-
             return true;
         }
 
@@ -215,7 +212,7 @@ class AjaxInstallController extends AbstractController
             'ZikulaSearchModule' => __('Content'),
             'ZikulaAdminModule' => __('System'),
             'ZikulaSettingsModule' => __('System'),
-            'ZikulaRoutesModule' => __('System'),);
+            'ZikulaRoutesModule' => __('System'), );
 
         $categories = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
         $modulesCategories = array();

@@ -250,9 +250,9 @@ class Zikula_Tree
         $levels = array();
         foreach ($lines as $id => $line) {
             $line = array_combine($keys, explode('|', trim($line)));
-            $line['id'] = $id+1;
+            $line['id'] = $id + 1;
             $line['level'] = strlen($line['level']);
-            $line['parent_id'] = isset($levels[$line['level']-1]) ? $levels[$line['level']-1] : $this->config['nullParent'];
+            $line['parent_id'] = isset($levels[$line['level'] - 1]) ? $levels[$line['level'] - 1] : $this->config['nullParent'];
             $levels[$line['level']] = $line['id'];
             $this->data[$line['id']] = $line;
         }
@@ -319,12 +319,12 @@ class Zikula_Tree
             } else {
                 $path   = $map[$item['parent_id']];
                 $path[] = $item['parent_id'];
-                $handle =& $this->tree;
+                $handle = &$this->tree;
                 while (list($key, $value) = each($path)) {
                     if ($value === $this->config['nullParent']) {
                         continue;
                     }
-                    $handle =& $handle[$value]['nodes'];
+                    $handle = &$handle[$value]['nodes'];
                 }
                 $handle[$item['id']] = $node;
             }
@@ -352,11 +352,11 @@ class Zikula_Tree
         foreach ($tree as $id => $tab) {
             if (!$this->config['renderRoot'] && $root) {
                 if (!empty($tab['nodes'])) {
-                    $liHtml[] = $this->_toHTML($tab['nodes'], $indentLevel+1, $treeId);
+                    $liHtml[] = $this->_toHTML($tab['nodes'], $indentLevel + 1, $treeId);
                 }
             } else {
-                $subhtml  = !empty($tab['nodes']) ? $this->_toHTML($tab['nodes'], $indentLevel+2) : '';
-                $liHtml[] = $this->_nodeToHTML($id, $tab, $size, $i, $subhtml, $indentLevel+1);
+                $subhtml  = !empty($tab['nodes']) ? $this->_toHTML($tab['nodes'], $indentLevel + 2) : '';
+                $liHtml[] = $this->_nodeToHTML($id, $tab, $size, $i, $subhtml, $indentLevel + 1);
             }
             $i++;
         }
@@ -365,7 +365,7 @@ class Zikula_Tree
         if ($root && (!$this->config['withWraper'] || !$this->config['renderRoot'])) {
             $html = $liHtml;
         } else {
-            $indent  = str_repeat(' ', $indentLevel*4);
+            $indent  = str_repeat(' ', $indentLevel * 4);
             $ulID    = !empty($treeId) ? ' id="'.$treeId.'"' : '';
             $ulClass = !empty($this->config['treeClass']) ? ' class="'.$this->config['treeClass'].'"' : '';
             $html    = "{$indent}<ul{$ulID}{$ulClass}>\n{$liHtml}\n{$indent}</ul>\n";
@@ -373,7 +373,6 @@ class Zikula_Tree
 
         return $html;
     }
-
 
     /**
      * Parse single tree node to HTML
@@ -390,7 +389,7 @@ class Zikula_Tree
     protected function _nodeToHTML($id, $tab, $size, $i, $nodeSub = null, $indentLevel = 1)
     {
         $item   = $tab['item'];
-        $indent = str_repeat(' ', ($indentLevel+1)*4);
+        $indent = str_repeat(' ', ($indentLevel + 1) * 4);
 
         $toggle = $indent.'<img class="'.$this->config['toggler'].'" alt="" src="'.$this->config['imagesDir'].$this->config['minus'].'" />';
 
@@ -413,7 +412,7 @@ class Zikula_Tree
         $liClass = trim(implode(' ', array_filter($liClass)));
         $liClass = ' class="'.$liClass.'"';
 
-        $indent = str_repeat(' ', $indentLevel*4);
+        $indent = str_repeat(' ', $indentLevel * 4);
 
         return "{$indent}<li{$liId}{$liClass}>\n{$toggle}\n{$icon}\n{$link}\n{$nodeSub}{$indent}</li>";
     }

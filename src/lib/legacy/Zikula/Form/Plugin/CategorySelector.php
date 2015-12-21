@@ -76,7 +76,6 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
 
     public $registryId;
 
-
     /**
      * Get filename of this file.
      *
@@ -120,17 +119,14 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
         if (!$list->category && $path) {
             $list->category = CategoryUtil::getCategoryByPath($path, $pathfield);
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
-
-        } elseif (is_array($list->category) && isset($list->category['id']) && is_integer($list->category['id'])) {
+        } elseif (is_array($list->category) && isset($list->category['id']) && is_int($list->category['id'])) {
             // check if we have an actual category object with a numeric ID set
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
-
         } elseif (is_numeric($list->category)) {
             // check if we have a numeric category
             $list->category = CategoryUtil::getCategoryByID($list->category);
             unset($list->category['parent'], $list->category['cr_uid'], $list->category['lu_uid']); // prevent form serialization errors in session
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
-
         } elseif (is_string($list->category) && strpos($list->category, '/') === 0) {
             // check if we have a string/path category
             $list->category = CategoryUtil::getCategoryByPath($list->category, $pathfield);
@@ -250,7 +246,6 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                    ->setFieldValue($entity, $this->dataField, $collection);
             }
 
-
             if (is_array($this->getSelectedValue())) {
                 $selectedValues = $this->getSelectedValue();
             } else {
@@ -336,7 +331,6 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             }
 
             $this->setSelectedValue($value);
-
         } elseif ($this->enableDoctrine && $this->dataBased) {
             $items = null;
             $value = null;
@@ -365,7 +359,6 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             }
 
             $this->setSelectedValue($value);
-
         } elseif ($this->doctrine2) {
             // TODO doesn't seem to check where this is no group like other options above...
             if (isset($values[$this->group])) {

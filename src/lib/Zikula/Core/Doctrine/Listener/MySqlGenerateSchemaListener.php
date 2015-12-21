@@ -22,15 +22,15 @@ use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 class MySqlGenerateSchemaListener
 {
     const postGenerateSchemaTable = 'postGenerateSchema';
-    
+
     public function __construct(EventManager $evm)
     {
         $evm->addEventListener(array(self::postGenerateSchemaTable), $this);
     }
-    
+
     public function postGenerateSchema(GenerateSchemaEventArgs $event)
     {
-        foreach($event->getSchema()->getTables() as $table) {
+        foreach ($event->getSchema()->getTables() as $table) {
             $table->addOption('engine', $GLOBALS['ZConfig']['DBInfo']['databases']['default']['dbtabletype']);
             $table->addOption('charset', $GLOBALS['ZConfig']['DBInfo']['databases']['default']['charset']);
             $table->addOption('collate', $GLOBALS['ZConfig']['DBInfo']['databases']['default']['collate']);

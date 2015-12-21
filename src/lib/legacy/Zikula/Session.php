@@ -91,9 +91,9 @@ class Zikula_Session extends Session
         $config['cookie_lifetime'] = $lifetime;
 
         $this->storage->setOptions($config);
+
         return parent::start();
     }
-
 
     /**
      * Check if session has started.

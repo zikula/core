@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-use Doctrine\ORM\Query;
 use Zikula\ThemeModule\Entity\ThemeEntity;
 
 /**
@@ -103,14 +102,13 @@ class ThemeUtil
 
         $key = md5((string)$filter . (string)$state . (string)$type);
 
-        if (empty($themesarray[$key]))
-        {
+        if (empty($themesarray[$key])) {
             /** @var $em Doctrine\ORM\EntityManager */
             $em = ServiceUtil::get('doctrine.entitymanager');
             $qb = $em->createQueryBuilder()
                      ->select('t')
                      ->from('ZikulaThemeModule:ThemeEntity', 't');
-                     
+
             if ($state != self::STATE_ALL) {
                 $qb->andWhere('t.state = :state')
                    ->setParameter('state', $state);
@@ -147,7 +145,7 @@ class ThemeUtil
 
         foreach ($themesarray[$key] as $theme => $values) {
             $themesarray[$key][$theme]['structure'] = true;
-            $themeBundle = ThemeUtil::getTheme($values['name']);
+            $themeBundle = self::getTheme($values['name']);
             $themesarray[$key][$theme]['isTwigBased'] = isset($themeBundle) ? $themeBundle->isTwigBased() : false;
         }
 
@@ -240,7 +238,6 @@ class ThemeUtil
      *
      * Small wrapper function to avoid duplicate sql.
      *
-     * @access private
      * @return array Modules table.
      */
     public static function getThemesTable()

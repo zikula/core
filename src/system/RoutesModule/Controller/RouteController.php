@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Zikula\Core\Response\PlainResponse;
 
 /**
  * Route controller class providing navigation and interaction functionality.
@@ -188,7 +187,7 @@ class RouteController extends BaseRouteController
 
         // reload **all** JS routes
         $result = $routeDumperHelper->dumpJsRoutes();
-        if($result == '') {
+        if ($result == '') {
             $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Exposed JS Routes dumped to %s.', 'web/js/fos_js_routes.js'));
         } else {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Error! There was an error dumping exposed JS Routes: %s', $result));

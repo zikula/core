@@ -34,7 +34,6 @@
  */
 class Zikula_ClassProperties
 {
-
     /**
      * Load all keys from properties to resepective properties using set{$key}.
      *

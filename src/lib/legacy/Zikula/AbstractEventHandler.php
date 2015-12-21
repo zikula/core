@@ -110,7 +110,7 @@ abstract class Zikula_AbstractEventHandler
      *
      * @return void
      */
-    protected function addHandlerDefinition($name, $method, $weight=10)
+    protected function addHandlerDefinition($name, $method, $weight = 10)
     {
         if (!method_exists($this, $method)) {
             throw new InvalidArgumentException(sprintf('Method %1$s does not exist in this EventHandler class %2$s', $method, get_class($this)));
@@ -148,7 +148,7 @@ abstract class Zikula_AbstractEventHandler
     {
         return $this->serviceManager;
     }
-    
+
     /**
      * Get servicemanager.
      *
@@ -167,7 +167,7 @@ abstract class Zikula_AbstractEventHandler
     public function attach()
     {
         foreach ($this->eventNames as $callable) {
-            $this->eventManager->addListener($callable['name'], array($this, $callable['method']), 0-(int)$callable['weight']);
+            $this->eventManager->addListener($callable['name'], array($this, $callable['method']), 0 - (int)$callable['weight']);
         }
     }
 

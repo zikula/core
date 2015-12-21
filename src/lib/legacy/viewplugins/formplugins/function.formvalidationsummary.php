@@ -13,7 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
  * Validation summary.
  *

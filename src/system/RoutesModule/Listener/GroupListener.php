@@ -27,8 +27,7 @@ class GroupListener extends BaseGroupListener
     {
         return parent::getSubscribedEvents();
     }
-    
-    
+
     /**
      * Listener for the `group.create` event.
      *
@@ -40,12 +39,12 @@ class GroupListener extends BaseGroupListener
     public function create(GenericEvent $event)
     {
         parent::create($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -53,14 +52,14 @@ class GroupListener extends BaseGroupListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `group.update` event.
      *
@@ -72,12 +71,12 @@ class GroupListener extends BaseGroupListener
     public function update(GenericEvent $event)
     {
         parent::update($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -85,14 +84,14 @@ class GroupListener extends BaseGroupListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `group.delete` event.
      *
@@ -105,12 +104,12 @@ class GroupListener extends BaseGroupListener
     public function delete(GenericEvent $event)
     {
         parent::delete($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -118,14 +117,14 @@ class GroupListener extends BaseGroupListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `group.adduser` event.
      *
@@ -139,12 +138,12 @@ class GroupListener extends BaseGroupListener
     public function addUser(GenericEvent $event)
     {
         parent::addUser($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -152,14 +151,14 @@ class GroupListener extends BaseGroupListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `group.removeuser` event.
      *
@@ -172,12 +171,12 @@ class GroupListener extends BaseGroupListener
     public function removeUser(GenericEvent $event)
     {
         parent::removeUser($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -185,10 +184,10 @@ class GroupListener extends BaseGroupListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }

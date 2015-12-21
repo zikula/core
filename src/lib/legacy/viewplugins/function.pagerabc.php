@@ -115,7 +115,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         // predefined abc
         if (strtolower($params['skin']) == 'hu') {
             // Hungarian
-            $pager['names']  = $pager['values'] = array('A','?','B','C','D','E','?','F','G','H','I','?','J','K','L','M','N','O','?','?','O','P','Q','R','S','T','U','?','?','U','V','W','X','Y','Z');
+            $pager['names']  = $pager['values'] = array('A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z');
             //$params['names']  = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z');
             //$params['values'] = array('A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z');
         } else {
@@ -149,9 +149,9 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         if (!isset($pager['route'])) {
             return ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']);
         }
+
         return $view->getContainer()->get('router')->generate($pager['route'], $pager['args']);
     };
-
 
     $allVars = array_merge($view->getRequest()->request->all(), $view->getRequest()->query->all(), $view->getRequest()->attributes->get('_route_params', array()));
 
@@ -224,7 +224,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         $urltemp = DataUtil::formatForDisplay($pagerUrl($pager));
         $output .= '<li '.$active.'><a '.$style.' href="'.$urltemp.'"> -'."\n</a></li>";
     }
-    
+
     $style = '';
     foreach (array_keys($pager['names']) as $i) {
         $active = '';

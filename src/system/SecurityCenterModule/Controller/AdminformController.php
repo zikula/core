@@ -14,8 +14,6 @@
 namespace Zikula\SecurityCenterModule\Controller;
 
 use SecurityUtil;
-use ModUtil;
-use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;

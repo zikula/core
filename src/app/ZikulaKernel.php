@@ -91,6 +91,7 @@ class ZikulaKernel extends Kernel
     {
         try {
             $this->getBundle($name, $first);
+
             return true;
         } catch (\Exception $e) {
             return false;

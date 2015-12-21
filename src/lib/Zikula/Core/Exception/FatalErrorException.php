@@ -37,4 +37,4 @@ class FatalErrorException extends SymfonyFatalErrorException
     {
         parent::__construct($message, $code, $severity, $filename, $lineno);
     }
-} 
+}

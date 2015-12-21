@@ -129,7 +129,7 @@ class DataUtil
             return LogUtil::registerError('Invalid NVP key received');
         }
         if ($includeEmpty || ($value != null && strlen($value) > 1)) {
-            return ("&" . urlencode($key) . "=" . urlencode($value));
+            return "&" . urlencode($key) . "=" . urlencode($value);
         }
 
         return '';
@@ -180,7 +180,7 @@ class DataUtil
             throw new \RuntimeException('PHP MCrypt extension is not installed');
         }
 
-        return ($encoded && $res ? self::encode($res) : $res);
+        return $encoded && $res ? self::encode($res) : $res;
     }
 
     /**
@@ -203,7 +203,7 @@ class DataUtil
             // email harvesters
             $var = preg_replace_callback(
                 '/(.)@(.)/s',
-                function($m) {
+                function ($m) {
                     return "&#".sprintf("%03d", ord($m[1])).";&#064;&#" .sprintf("%03d", ord($m[2])) . ";";
                 },
                 $var);
@@ -295,7 +295,6 @@ class DataUtil
      *
      * @param array $m String to format.
      *
-     * @access private
      *
      * @return mixed The formatted string, or null on empty.
      */
@@ -572,7 +571,6 @@ class DataUtil
      *
      * @param string $match String to use.
      *
-     * @access private
      * @return string
      */
     public static function _mb_unserialize_callback($match)

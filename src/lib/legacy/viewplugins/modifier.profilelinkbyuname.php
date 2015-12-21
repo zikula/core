@@ -50,11 +50,11 @@ function smarty_modifier_profilelinkbyuname($uname, $class = '', $image = '', $m
 
     if ($uid && ($uid > 1) && !empty($profileModule) && ModUtil::available($profileModule)) {
         $userDisplayName = ModUtil::apiFunc($profileModule, 'user', 'getUserDisplayName', array('uid' => $uid));
-        
+
         if (empty($userDisplayName)) {
             $userDisplayName = $uname;
         }
-                            
+
         if (!empty($class)) {
             $class = ' class="' . DataUtil::formatForDisplay($class) . '"';
         }

@@ -21,7 +21,6 @@
  */
 class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements FilterUtil_BuildInterface, FilterUtil_ReplaceInterface
 {
-
     /**
      * Enabled operators.
      *
@@ -126,7 +125,6 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     /**
      * Get operators
      *
-     * @access public
      * @return array Set of Operators and Arrays
      */
     public function getOperators()

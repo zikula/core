@@ -14,7 +14,6 @@
 namespace Zikula\UsersModule\Controller\FormData;
 
 use Zikula\UsersModule\Constant as UsersConstant;
-use ModUtil;
 
 /**
  * Contains and validates the data found on the Users module's user registration form.
@@ -89,7 +88,7 @@ class RegistrationForm extends AbstractFormData
                 false,
                 $this->serviceManager
             );
-            
+
             $passReminderField->setNullAllowed(false)
                 ->addValidator(new Validator\StringType(
                     $this->serviceManager,

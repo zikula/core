@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Controller;
 
 use Zikula\RoutesModule\Controller\Base\RouteController as BaseRouteController;
-
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -43,7 +42,7 @@ class RouteController extends BaseRouteController
     {
         return parent::indexAction($request);
     }
-    
+
     /**
      * This method provides a item list overview.
      *
@@ -68,7 +67,7 @@ class RouteController extends BaseRouteController
     {
         return parent::viewAction($request, $sort, $sortdir, $pos, $num);
     }
-    
+
     /**
      * This method provides a handling of edit requests.
      *
@@ -91,7 +90,7 @@ class RouteController extends BaseRouteController
     {
         return parent::editAction($request);
     }
-    
+
     /**
      * This method provides a item detail view.
      *
@@ -114,7 +113,7 @@ class RouteController extends BaseRouteController
     {
         return parent::displayAction($request, $route);
     }
-    
+
     /**
      * This method provides a handling of simple delete requests.
      *
@@ -139,7 +138,7 @@ class RouteController extends BaseRouteController
     {
         return parent::deleteAction($request, $route);
     }
-    
+
     /**
      * This is a custom method.
      *
@@ -157,7 +156,7 @@ class RouteController extends BaseRouteController
     {
         return parent::reloadAction($request);
     }
-    
+
     /**
      * This is a custom method.
      *
@@ -175,7 +174,6 @@ class RouteController extends BaseRouteController
     {
         return parent::renewAction($request);
     }
-    
 
     /**
      * Process status changes for multiple items.

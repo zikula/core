@@ -87,4 +87,3 @@ abstract class AbstractEntityCategory extends EntityAccess
         $this->category = $category;
     }
 }
-

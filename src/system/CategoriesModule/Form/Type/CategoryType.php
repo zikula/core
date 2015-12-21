@@ -44,7 +44,7 @@ class CategoryType extends AbstractType
      */
     private $lang;
 
-    function __construct($registryId = null, $parentId = null)
+    public function __construct($registryId = null, $parentId = null)
     {
         if (!empty($parentId)) {
             $this->parentId = $parentId;

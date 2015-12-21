@@ -31,7 +31,7 @@ class AjaxUpgradeController extends AbstractController
      */
     private $yamlManager;
 
-    function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
@@ -57,15 +57,17 @@ class AjaxUpgradeController extends AbstractController
 
     private function executeStage($stageName)
     {
-        switch($stageName) {
+        switch ($stageName) {
             case "loginadmin":
                 $this->yamlManager->setParameter('upgrading', true);
+
                 return $this->container->get('core_installer.controller.ajaxinstall')->loginAdmin();
             case "upgrademodules":
                 $result = $this->upgradeModules();
                 if (count($result) === 0) {
                     return true;
                 }
+
                 return $result;
             case "installroutes":
                 return $this->installRoutesModule();
@@ -81,6 +83,7 @@ class AjaxUpgradeController extends AbstractController
                 return $this->clearCaches();
         }
         \System::setInstalling(false);
+
         return true;
     }
 
@@ -184,7 +187,7 @@ class AjaxUpgradeController extends AbstractController
         }
         // Configure the Request Context
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
-        $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] :$this->container->get('request')->getHost();
+        $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $this->container->get('request')->getHost();
         $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
         $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $this->container->get('request')->getBasePath();
         $this->yamlManager->setParameters($params);

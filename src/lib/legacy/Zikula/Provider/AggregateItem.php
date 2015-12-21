@@ -139,5 +139,4 @@ class Zikula_Provider_AggregateItem
     {
         return $this->args;
     }
-
 }

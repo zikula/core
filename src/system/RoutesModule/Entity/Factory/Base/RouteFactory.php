@@ -22,7 +22,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 class RouteFactory
 {
     /**
-     * @var String Full qualified class name to be used for routes.
+     * @var string Full qualified class name to be used for routes.
      */
     protected $className;
 
@@ -40,7 +40,7 @@ class RouteFactory
      * Constructor.
      *
      * @param ObjectManager $om        The object manager to be used for determining the repository.
-     * @param String        $className Full qualified class name to be used for routes.
+     * @param string        $className Full qualified class name to be used for routes.
      */
     public function __construct(ObjectManager $om, $className)
     {
@@ -65,7 +65,7 @@ class RouteFactory
     {
         return $this->className;
     }
-    
+
     /**
      * Set class name.
      *
@@ -77,7 +77,7 @@ class RouteFactory
     {
         $this->className = $className;
     }
-    
+
     /**
      * Get object manager.
      *
@@ -87,7 +87,7 @@ class RouteFactory
     {
         return $this->objectManager;
     }
-    
+
     /**
      * Set object manager.
      *
@@ -99,7 +99,7 @@ class RouteFactory
     {
         $this->objectManager = $objectManager;
     }
-    
+
     /**
      * Get repository.
      *
@@ -109,7 +109,7 @@ class RouteFactory
     {
         return $this->repository;
     }
-    
+
     /**
      * Set repository.
      *
@@ -121,5 +121,4 @@ class RouteFactory
     {
         $this->repository = $repository;
     }
-    
 }

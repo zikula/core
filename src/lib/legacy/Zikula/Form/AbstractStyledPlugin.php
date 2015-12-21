@@ -42,7 +42,6 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
      */
     public $styleAttributes = array();
 
-
     /**
      * Retrieve the styles added programatically.
      *

@@ -46,4 +46,3 @@ class Zikula_Doctrine_Template_MetaData extends Doctrine_Template
         $this->getInvoker()->__META__ = $value;
     }
 }
-

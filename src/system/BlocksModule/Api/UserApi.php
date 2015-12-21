@@ -96,7 +96,7 @@ class UserApi extends \Zikula_AbstractApi
             if ($args['active_status'] == 1) {
                 $active = 1;
             } else {
-                 $active = 0;
+                $active = 0;
             }
 
             $qb->andWhere($qb->expr()->eq('b.active', ':active'))->setParameter('active', $active);
@@ -155,7 +155,7 @@ class UserApi extends \Zikula_AbstractApi
                                      ->from('ZikulaBlocksModule:BlockEntity', 'b')
                                      ->getQuery();
 
-        return (int)$query->getSingleScalarResult();;
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -176,7 +176,6 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if (empty($block_positions)) {
-
             $entity = 'ZikulaBlocksModule:BlockPositionEntity';
             $items = $this->entityManager->getRepository($entity)->findBy(array(), array('name' => 'ASC'));
 
@@ -296,7 +295,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // filter out links that begin with `ext` (Menutree)
         // send original string back for later processing
-        if (strpos($url,'{ext:') === 0) {
+        if (strpos($url, '{ext:') === 0) {
             return $url;
         }
 

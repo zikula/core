@@ -33,7 +33,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
 
         $router
             ->method('generate')
-            ->will($this->returnCallback(function($id, $params) {
+            ->will($this->returnCallback(function ($id, $params) {
                 return '/foo?' . http_build_query($params);
             }));
 
@@ -147,7 +147,6 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
         $this->sortableColumns->setOrderBy($this->sortableColumns->getColumn('a'), Column::DIRECTION_ASCENDING);
         $this->sortableColumns->setAdditionalUrlParameters(['x' => 1, 'z' => 0]);
         $this->assertEquals($expected, $this->sortableColumns->generateSortableColumns());
-
     }
 
     public function columnDefProvider()

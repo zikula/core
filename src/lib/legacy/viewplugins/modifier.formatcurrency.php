@@ -22,7 +22,7 @@
  *
  * @return string The modified output.
  */
-function smarty_modifier_formatCurrency ($string)
+function smarty_modifier_formatCurrency($string)
 {
     return DataUtil::formatCurrency($string);
 }

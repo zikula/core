@@ -84,7 +84,6 @@ function smarty_function_modurl($params, Zikula_View $view)
     $ssl = isset($params['ssl']) ? (bool)$params['ssl'] : null;
     $forcelang = isset($params['forcelang']) && $params['forcelang'] ? $params['forcelang'] : false;
 
-
     // avoid passing these to ModUtil::url
     unset($params['modname']);
     unset($params['type']);

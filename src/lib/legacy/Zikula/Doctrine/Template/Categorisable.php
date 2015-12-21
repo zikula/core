@@ -154,4 +154,3 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
         }
     }
 }
-

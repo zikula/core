@@ -56,7 +56,6 @@ class UserBlockEntity extends EntityAccess
      */
     private $last_update;
 
-
     /**
      * constructor
      */

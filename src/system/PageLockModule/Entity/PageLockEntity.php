@@ -26,7 +26,7 @@ class PageLockEntity
     /**
      * Pagelock ID
      *
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -37,7 +37,7 @@ class PageLockEntity
     /**
      * Pagelock name
      *
-     * @var string $name
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
      */
@@ -46,7 +46,7 @@ class PageLockEntity
     /**
      * Creation date of the pagelock
      *
-     * @var \Datetime $cdate
+     * @var \Datetime
      *
      * @ORM\Column(name="cdate", type="datetime", nullable=false)
      */
@@ -55,7 +55,7 @@ class PageLockEntity
     /**
      * Expiry date of the pagelock
      *
-     * @var \Datetime $edate
+     * @var \Datetime
      *
      * @ORM\Column(name="edate", type="datetime", nullable=false)
      */
@@ -64,7 +64,7 @@ class PageLockEntity
     /**
      * Session ID for this pagelock
      *
-     * @var string $session
+     * @var string
      *
      * @ORM\Column(name="session", type="string", length=50, nullable=false)
      */
@@ -73,7 +73,7 @@ class PageLockEntity
     /**
      * Title of the pagelock
      *
-     * @var string $title
+     * @var string
      *
      * @ORM\Column(name="title", type="string", length=100, nullable=false)
      */
@@ -82,12 +82,11 @@ class PageLockEntity
     /**
      * IP address of the machine acquiring the pagelock
      *
-     * @var string $ipno
+     * @var string
      *
      * @ORM\Column(name="ipno", type="string", length=30, nullable=false)
      */
     private $ipno;
-
 
     /**
      * Get id
@@ -108,6 +107,7 @@ class PageLockEntity
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -130,6 +130,7 @@ class PageLockEntity
     public function setCdate($cdate)
     {
         $this->cdate = $cdate;
+
         return $this;
     }
 
@@ -152,6 +153,7 @@ class PageLockEntity
     public function setEdate($edate)
     {
         $this->edate = $edate;
+
         return $this;
     }
 
@@ -174,6 +176,7 @@ class PageLockEntity
     public function setSession($session)
     {
         $this->session = $session;
+
         return $this;
     }
 
@@ -196,6 +199,7 @@ class PageLockEntity
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -218,6 +222,7 @@ class PageLockEntity
     public function setIpno($ipno)
     {
         $this->ipno = $ipno;
+
         return $this;
     }
 

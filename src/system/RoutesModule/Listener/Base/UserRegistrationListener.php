@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -35,7 +34,7 @@ class UserRegistrationListener implements EventSubscriberInterface
             'user.registration.delete'               => array('delete', 5)
         );
     }
-    
+
     /**
      * Listener for the `module.users.ui.registration.started` event.
      *
@@ -46,7 +45,7 @@ class UserRegistrationListener implements EventSubscriberInterface
     public function started(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module.users.ui.registration.succeeded` event.
      *
@@ -118,7 +117,7 @@ class UserRegistrationListener implements EventSubscriberInterface
     public function succeeded(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module.users.ui.registration.failed` event.
      *
@@ -147,7 +146,7 @@ class UserRegistrationListener implements EventSubscriberInterface
     public function failed(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `user.registration.create` event.
      *
@@ -162,7 +161,7 @@ class UserRegistrationListener implements EventSubscriberInterface
     public function create(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `user.registration.update` event.
      *
@@ -175,7 +174,7 @@ class UserRegistrationListener implements EventSubscriberInterface
     public function update(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `user.registration.delete` event.
      *

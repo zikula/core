@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -30,7 +29,7 @@ class MailerListener implements EventSubscriberInterface
             'module.mailer.api.sendmessage' => array('sendMessage', 5)
         );
     }
-    
+
     /**
      * Listener for the `module.mailer.api.sendmessage` event.
      *

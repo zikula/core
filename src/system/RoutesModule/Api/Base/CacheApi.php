@@ -34,29 +34,29 @@ class CacheApi extends Zikula_AbstractBase
         if (!isset($args['ot']) || !isset($args['item'])) {
             return;
         }
-    
+
         $objectType = $args['ot'];
         $item = $args['item'];
-    
+
         $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
         $utilArgs = array('api' => 'cache', 'action' => 'clearItemCache');
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
             return;
         }
-    
+
         if ($item && !is_array($item) && !is_object($item)) {
             $item = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $objectType, 'id' => $item, 'useJoins' => false, 'slimMode' => true));
         }
-    
+
         if (!$item) {
             return;
         }
-    
+
         $instanceId = $item->createCompositeIdentifier();
-    
+
         $logger = $this->get('logger');
         $logger->info('{app}: User {user} caused clearing the cache for entity {entity} with id {id}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => $objectType, 'id' => $instanceId));
-    
+
         // Clear View_cache
         $cacheIds = array();
         switch ($objectType) {
@@ -64,19 +64,17 @@ class CacheApi extends Zikula_AbstractBase
                 $cacheIds[] = 'route_index';
                 $cacheIds[] = $objectType . '_view';
                 $cacheIds[] = $objectType . '_display|' . $instanceId;
-                
-                
+
                 $cacheIds[] = $objectType . '|' . 'reload';
                 $cacheIds[] = $objectType . '|' . 'renew';
                 break;
         }
-    
+
         $view = Zikula_View::getInstance('ZikulaRoutesModule');
         foreach ($cacheIds as $cacheId) {
             $view->clear_cache(null, $cacheId);
         }
-    
-    
+
         // Clear Theme_cache
         $cacheIds = array();
         $cacheIds[] = 'homepage'; // for homepage (can be assigned in the Settings module)
@@ -86,8 +84,7 @@ class CacheApi extends Zikula_AbstractBase
                 $cacheIds[] = $cacheIdPrefix . 'index'; // index function
                 $cacheIds[] = $cacheIdPrefix . 'view/'; // view function (list views)
                 $cacheIds[] = $cacheIdPrefix . 'display/' . $instanceId; // display function (detail views)
-                
-                
+
                 $cacheIds[] = $cacheIdPrefix . 'reload'; // reload function
                 $cacheIds[] = $cacheIdPrefix . 'renew'; // renew function
                 break;

@@ -21,7 +21,6 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -29,7 +28,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class KernelListener implements EventSubscriberInterface
 {
-    
     /**
      * Makes our handlers known to the event system.
      */
@@ -45,7 +43,7 @@ class KernelListener implements EventSubscriberInterface
             KernelEvents::EXCEPTION      => array('onException', 5)
         );
     }
-    
+
     /**
      * Listener for the `kernel.request` event.
      *
@@ -62,7 +60,7 @@ class KernelListener implements EventSubscriberInterface
     public function onRequest(GetResponseEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `kernel.controller` event.
      *
@@ -78,7 +76,7 @@ class KernelListener implements EventSubscriberInterface
     public function onController(FilterControllerEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `kernel.view` event.
      *
@@ -95,7 +93,7 @@ class KernelListener implements EventSubscriberInterface
     public function onView(GetResponseForControllerResultEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `kernel.response` event.
      *
@@ -117,7 +115,7 @@ class KernelListener implements EventSubscriberInterface
     public function onResponse(FilterResponseEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `kernel.finish_request` event.
      *
@@ -131,7 +129,7 @@ class KernelListener implements EventSubscriberInterface
     public function onFinishRequest(FinishRequestEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `kernel.terminate` event.
      *
@@ -148,7 +146,7 @@ class KernelListener implements EventSubscriberInterface
     public function onTerminate(PostResponseEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `kernel.exception` event.
      *

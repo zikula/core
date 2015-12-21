@@ -75,7 +75,7 @@ function smarty_function_userlogin($params, Zikula_View $view)
                    .'<label for="userlogin_plugin_pass">' . __('Password') . '</label>&nbsp;'."\n"
                    .'<input type="password" name="authentication_info[pass]" id="userlogin_plugin_pass" size="'.$size.'" maxlength="'.$maxlengthpass.'" />'."\n";
 
-        if (System::getVar('seclevel') <> 'high') {
+        if (System::getVar('seclevel') != 'high') {
             $loginbox .= '<input type="checkbox" value="1" name="rememberme" id="userlogin_plugin_rememberme" />'."\n"
                         .'<label for="userlogin_plugin_rememberme">' . __('Remember me') . '</label>&nbsp;'."\n";
         }

@@ -121,6 +121,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
             || !in_array(strtolower($node->name), $this->methodNames)
         ) {
             $this->previousNode = $node;
+
             return;
         }
 
@@ -130,9 +131,9 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
             foreach ($this->docParser->parse($docComment, 'file ' . $this->file . ' near line ' . $node->getLine()) as $annot) {
                 if ($annot instanceof Ignore) {
                     $ignore = true;
-                } else if ($annot instanceof Desc) {
+                } elseif ($annot instanceof Desc) {
                     $desc = $annot->text;
-                } else if ($annot instanceof Meaning) {
+                } elseif ($annot instanceof Meaning) {
                     $meaning = $annot->text;
                 }
             }
@@ -147,6 +148,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
 
             if ($this->logger) {
                 $this->logger->err($message);
+
                 return;
             }
 
@@ -172,6 +174,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
 
                 if ($this->logger) {
                     $this->logger->err($message);
+
                     return;
                 }
 
@@ -234,6 +237,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
             return $comment->getText();
         } elseif (null !== $this->previousNode && $this->previousNode->getDocComment() !== null) {
             $comment = $this->previousNode->getDocComment();
+
             return is_object($comment) ? $comment->getText() : $comment;
         }
 

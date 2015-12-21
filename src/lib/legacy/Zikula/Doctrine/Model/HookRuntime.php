@@ -158,5 +158,4 @@ class Zikula_Doctrine_Model_HookRuntime extends Doctrine_Record
     {
         parent::setUp();
     }
-
 }

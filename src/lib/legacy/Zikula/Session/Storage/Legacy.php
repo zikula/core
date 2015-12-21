@@ -13,7 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 /**
@@ -91,6 +90,4 @@ class Zikula_Session_Storage_Legacy extends NativeSessionStorage
     {
         parent::regenerate($destroy);
     }
-
-
 }

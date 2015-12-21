@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -21,7 +20,6 @@ use Zikula\Core\Event\GenericEvent;
  */
 class UserLoginListener implements EventSubscriberInterface
 {
-    
     /**
      * Makes our handlers known to the event system.
      */
@@ -34,7 +32,7 @@ class UserLoginListener implements EventSubscriberInterface
             'module.users.ui.login.failed'    => array('failed', 5)
         );
     }
-    
+
     /**
      * Listener for the `module.users.ui.login.started` event.
      *
@@ -57,7 +55,7 @@ class UserLoginListener implements EventSubscriberInterface
     public function started(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module.users.ui.login.veto` event.
      *
@@ -178,7 +176,7 @@ class UserLoginListener implements EventSubscriberInterface
     public function veto(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module.users.ui.login.succeeded` event.
      *
@@ -215,7 +213,7 @@ class UserLoginListener implements EventSubscriberInterface
     public function succeeded(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module.users.ui.login.failed` event.
      *

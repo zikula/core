@@ -17,7 +17,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula_View;
 use SecurityUtil;
 use FormUtil;
-use System;
 use Zikula\MailerModule\Form\Handler\ModifyConfigHandler;
 use Zikula\MailerModule\Form\Handler\TestConfigHandler;
 use Symfony\Component\HttpFoundation\Response;

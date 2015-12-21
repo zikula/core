@@ -28,7 +28,7 @@ class InstallerListener extends BaseInstallerListener
     {
         return parent::getSubscribedEvents();
     }
-    
+
     /**
      * Listener for the `module.install` event.
      *
@@ -40,12 +40,12 @@ class InstallerListener extends BaseInstallerListener
     public function moduleInstalled(ModuleStateEvent $event)
     {
         parent::moduleInstalled($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -53,14 +53,14 @@ class InstallerListener extends BaseInstallerListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `module.postinstall` event.
      *
@@ -72,12 +72,12 @@ class InstallerListener extends BaseInstallerListener
     public function modulePostInstalled(ModuleStateEvent $event)
     {
         parent::modulePostInstalled($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -85,14 +85,14 @@ class InstallerListener extends BaseInstallerListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `module.upgrade` event.
      *
@@ -104,12 +104,12 @@ class InstallerListener extends BaseInstallerListener
     public function moduleUpgraded(ModuleStateEvent $event)
     {
         parent::moduleUpgraded($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -117,14 +117,14 @@ class InstallerListener extends BaseInstallerListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `module.enable` event.
      *
@@ -136,12 +136,12 @@ class InstallerListener extends BaseInstallerListener
     public function moduleEnabled(ModuleStateEvent $event)
     {
         parent::moduleEnabled($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -149,14 +149,14 @@ class InstallerListener extends BaseInstallerListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `module.disable` event.
      *
@@ -168,12 +168,12 @@ class InstallerListener extends BaseInstallerListener
     public function moduleDisabled(ModuleStateEvent $event)
     {
         parent::moduleDisabled($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -181,14 +181,14 @@ class InstallerListener extends BaseInstallerListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `module.remove` event.
      *
@@ -200,12 +200,12 @@ class InstallerListener extends BaseInstallerListener
     public function moduleRemoved(ModuleStateEvent $event)
     {
         parent::moduleRemoved($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -213,14 +213,14 @@ class InstallerListener extends BaseInstallerListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `installer.subscriberarea.uninstalled` event.
      *
@@ -232,12 +232,12 @@ class InstallerListener extends BaseInstallerListener
     public function subscriberAreaUninstalled(GenericEvent $event)
     {
         parent::subscriberAreaUninstalled($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -245,10 +245,10 @@ class InstallerListener extends BaseInstallerListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }

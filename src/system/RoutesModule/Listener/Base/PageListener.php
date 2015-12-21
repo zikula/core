@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -31,7 +30,7 @@ class PageListener implements EventSubscriberInterface
             'system.outputfilter'    => array('systemOutputfilter', 5)
         );
     }
-    
+
     /**
      * Listener for the `pageutil.addvar_filter` event.
      *
@@ -46,7 +45,7 @@ class PageListener implements EventSubscriberInterface
     public function pageutilAddvarFilter(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `system.outputfilter` event.
      *

@@ -17,7 +17,6 @@ namespace Zikula\RoutesModule\Translation;
 use JMS\I18nRoutingBundle\Router\DefaultRouteExclusionStrategy as BaseDefaultRouteExclusionStrategy;
 use Symfony\Component\Routing\Route;
 
-
 /**
  * Class DefaultRouteExclusionStrategy.
  */

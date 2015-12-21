@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
@@ -38,7 +37,7 @@ class InstallerListener implements EventSubscriberInterface
             'installer.subscriberarea.uninstalled' => array('subscriberAreaUninstalled', 5)
         );
     }
-    
+
     /**
      * Listener for the `module.install` event.
      *
@@ -50,7 +49,7 @@ class InstallerListener implements EventSubscriberInterface
     public function moduleInstalled(ModuleStateEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module.postinstall` event.
      *
@@ -62,7 +61,7 @@ class InstallerListener implements EventSubscriberInterface
     public function modulePostInstalled(ModuleStateEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module.upgrade` event.
      *
@@ -74,7 +73,7 @@ class InstallerListener implements EventSubscriberInterface
     public function moduleUpgraded(ModuleStateEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module.enable` event.
      *
@@ -86,7 +85,7 @@ class InstallerListener implements EventSubscriberInterface
     public function moduleEnabled(ModuleStateEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module.disable` event.
      *
@@ -98,7 +97,7 @@ class InstallerListener implements EventSubscriberInterface
     public function moduleDisabled(ModuleStateEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `module.remove` event.
      *
@@ -110,7 +109,7 @@ class InstallerListener implements EventSubscriberInterface
     public function moduleRemoved(ModuleStateEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `installer.subscriberarea.uninstalled` event.
      *

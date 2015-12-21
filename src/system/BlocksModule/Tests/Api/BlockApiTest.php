@@ -62,10 +62,11 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $blockFilterApi
             ->method('isDisplayable')
-            ->willReturnCallback(function($block) {
+            ->willReturnCallback(function ($block) {
                 if ($block->getBid() == 2) {
                     return false;
                 }
+
                 return true;
             });
         $blockFactory = $this
@@ -125,5 +126,4 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
         $placement->setBlock($block);
         $this->blockPlacements->set(5, $placement);
     }
-
 }

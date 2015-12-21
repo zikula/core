@@ -170,5 +170,4 @@ class Zikula_Doctrine2_Entity_HookArea
     {
         $this->areaname = $areaname;
     }
-
 }

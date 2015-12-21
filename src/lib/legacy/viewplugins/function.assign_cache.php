@@ -34,7 +34,7 @@
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
  *
- * @return Void
+ * @return void
  */
 function smarty_function_assign_cache($params, Zikula_View $view)
 {

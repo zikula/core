@@ -155,9 +155,9 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
             $html = '</ul></div>';
 
             return $html;
-        } else
-
+        } else {
             return '';
+        }
     }
 
     /**
@@ -180,4 +180,3 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
         return true;
     }
 }
-

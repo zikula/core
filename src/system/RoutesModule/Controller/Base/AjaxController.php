@@ -14,30 +14,14 @@ namespace Zikula\RoutesModule\Controller\Base;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use DataUtil;
-use ModUtil;
 use SecurityUtil;
-use System;
-use UserUtil;
 use Zikula_Controller_AbstractAjax;
-use Zikula_View;
-use ZLanguage;
-use Zikula\Core\RouteUrl;
-use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula\Core\Response\Ajax\BadDataResponse;
-use Zikula\Core\Response\Ajax\FatalResponse;
-use Zikula\Core\Response\Ajax\NotFoundResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Zikula\Core\Response\PlainResponse;
 
 /**
  * Ajax controller class.
  */
 class AjaxController extends Zikula_Controller_AbstractAjax
 {
-
-
     /**
      * This method is the default function handling the main area called without defining arguments.
      *
@@ -52,11 +36,10 @@ class AjaxController extends Zikula_Controller_AbstractAjax
     {
         // parameter specifying which type of objects we are treating
         $objectType = $request->query->filter('ot', 'route', false, FILTER_SANITIZE_STRING);
-        
+
         $permLevel = ACCESS_OVERVIEW;
         if (!SecurityUtil::checkPermission($this->name . '::', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
     }
-    
 }

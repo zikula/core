@@ -12,7 +12,6 @@
 
 namespace Zikula\RoutesModule\Container\Base;
 
-use ModUtil;
 use SecurityUtil;
 use ServiceUtil;
 use Symfony\Component\Routing\RouterInterface;
@@ -65,9 +64,7 @@ class LinkContainer implements LinkContainerInterface
         $currentLegacyType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
         $permLevel = in_array('admin', array($type, $currentLegacyType)) ? ACCESS_ADMIN : ACCESS_READ;
 
-        
         if (in_array('admin', array($type, $currentLegacyType))) {
-            
             if (in_array('route', $allowedObjectTypes)
                 && SecurityUtil::checkPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
                 $links[] = array('url' => $this->router->generate('zikularoutesmodule_route_view', array('lct' => 'admin')),

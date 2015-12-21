@@ -19,7 +19,6 @@ namespace Zikula\Core\Event;
  * Event encapsulation class.
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
- *
  */
 class GenericEvent extends \Zikula_Event
 {

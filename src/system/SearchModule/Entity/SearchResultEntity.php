@@ -27,7 +27,7 @@ class SearchResultEntity
     /**
      * ID of the search
      *
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -38,7 +38,7 @@ class SearchResultEntity
     /**
      * title of the search
      *
-     * @var string $title
+     * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      */
@@ -47,7 +47,7 @@ class SearchResultEntity
     /**
      * the matching search text
      *
-     * @var string $text
+     * @var string
      *
      * @ORM\Column(name="text", type="text", nullable=true)
      */
@@ -56,7 +56,7 @@ class SearchResultEntity
     /**
      * the module providing the search hit
      *
-     * @var string $module
+     * @var string
      *
      * @ORM\Column(name="module", type="string", length=100, nullable=true)
      */
@@ -65,7 +65,7 @@ class SearchResultEntity
     /**
      * additional information about this search result 
      *
-     * @var string $extra
+     * @var string
      *
      * @ORM\Column(name="extra", type="string", length=1000, nullable=true)
      */
@@ -74,7 +74,7 @@ class SearchResultEntity
     /**
      * creation timestamp of this search hit
      *
-     * @var \Datetime $created
+     * @var \Datetime
      *
      * @ORM\Column(name="created", type="datetime", nullable=true)
      */
@@ -83,7 +83,7 @@ class SearchResultEntity
     /**
      * Last found timestamp of this search hit
      *
-     * @var \Datetime $found
+     * @var \Datetime
      *
      * @ORM\Column(name="found", type="datetime", nullable=true)
      */
@@ -92,7 +92,7 @@ class SearchResultEntity
     /**
      * Session id associated
      *
-     * @var string $sesid
+     * @var string
      *
      * @ORM\Column(name="sesid", type="string", length=50, nullable=true)
      */

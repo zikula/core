@@ -100,7 +100,6 @@ class ZLocale implements ArrayAccess
         }
     }
 
-
     /**
      * Validate the locale.
      *
@@ -386,7 +385,7 @@ class ZLocale implements ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return (isset($this->$offset));
+        return isset($this->$offset);
     }
 
     /**
@@ -426,4 +425,3 @@ class ZLocale implements ArrayAccess
         unset($this->localeData[$offset]);
     }
 }
-

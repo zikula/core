@@ -1,4 +1,5 @@
 <?php
+
 namespace Zikula\Bundle\CoreBundle\Tests\Twig\Node;
 
 use Zikula\Bundle\CoreBundle\Twig\Node\SwitchNode;

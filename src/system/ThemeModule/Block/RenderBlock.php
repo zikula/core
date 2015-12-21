@@ -133,7 +133,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
         // Get the additional parameters and assign them
         if (isset($vars['parameters']) && !empty($vars['parameters'])) {
             $params = explode(';', $vars['parameters']);
-            if (count($params) > 0 ) {
+            if (count($params) > 0) {
                 foreach ($params as $param) {
                     $assign = explode('=', $param);
                     $this->view->assign(trim($assign[0]), trim($assign[1]));
@@ -219,8 +219,8 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
         $template = $this->request->request->get('rtemplate');
         $parameters = $this->request->request->get('rparameters');
 
-        $blockinfo['content'] = BlockUtil::varsToContent(compact('module', 'template', 'parameters' ));
+        $blockinfo['content'] = BlockUtil::varsToContent(compact('module', 'template', 'parameters'));
 
-        return($blockinfo);
+        return $blockinfo;
     }
 }

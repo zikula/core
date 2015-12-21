@@ -29,7 +29,7 @@ class CategoryUtil
      *
      * @return array|boolean resulting folder object
      */
-    public static function createCategory($rootPath, $name, $value=null, $displayname=null, $description=null, $attributes=null)
+    public static function createCategory($rootPath, $name, $value = null, $displayname = null, $description = null, $attributes = null)
     {
         if (!isset($rootPath) || !$rootPath) {
             return LogUtil::registerError(__f("Error! Received invalid parameter '%s'", 'rootPath'));
@@ -190,7 +190,6 @@ class CategoryUtil
      */
     public static function getCategoryByPath($apath, $field = 'path')
     {
-
         if (!is_array($apath)) {
             $where = "c.$field = '" . DataUtil::formatForStore($apath) . "'";
         } else {
@@ -218,8 +217,9 @@ class CategoryUtil
      */
     public static function getCategoriesByRegistry($registry)
     {
-        if (!$registry || !is_array($registry)) return false;
-
+        if (!$registry || !is_array($registry)) {
+            return false;
+        }
 
         $where = array();
         foreach ($registry as $property => $catID) {
@@ -257,7 +257,6 @@ class CategoryUtil
         if (!$id) {
             return false;
         }
-
 
         $id = (int)$id;
         $where = "c.parent ='" . DataUtil::formatForStore($id) . "'";
@@ -769,7 +768,7 @@ class CategoryUtil
             $cat['id'] = '';
             $cat['parent'] = isset($oldToNewID[$cat['parent']['id']]) ? $oldToNewID[$cat['parent']['id']] : $em->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
 
-            $catObj = new Zikula\CategoriesModule\Entity\CategoryEntity;
+            $catObj = new Zikula\CategoriesModule\Entity\CategoryEntity();
             $catObj->merge($cat);
             $em->persist($catObj);
             $em->flush();
@@ -977,9 +976,10 @@ class CategoryUtil
     public static function getJsTreeNodeFromCategory(\Zikula\CategoriesModule\Entity\CategoryEntity $category)
     {
         $lang = ZLanguage::getLanguageCode();
+
         return array(
             'id' => 'node_' . $category->getId(),
-            'text'=> $category->getDisplay_name($lang),
+            'text' => $category->getDisplay_name($lang),
             'icon' => $category->getIs_leaf() ? false : 'fa fa-folder',
             'state' => array(
                 'open' => false,
@@ -1190,7 +1190,9 @@ class CategoryUtil
      */
     public static function sortCategories($cats, $sortField = '', $assocKey = '')
     {
-        if (!$cats) return $cats;
+        if (!$cats) {
+            return $cats;
+        }
 
         global $_catSortField;
         if ($sortField) {
@@ -1339,7 +1341,9 @@ class CategoryUtil
             } else {
                 $cslash = StringUtil::countInstances(isset($cat['ipath_relative']) ? $cat['ipath_relative'] : $cat['ipath'], '/');
                 $indent = '';
-                if ($cslash > 0) $indent = substr($line, 0, $cslash * 2);
+                if ($cslash > 0) {
+                    $indent = substr($line, 0, $cslash * 2);
+                }
 
                 $indent = '|' . $indent;
 
@@ -1433,7 +1437,7 @@ class CategoryUtil
      * @param array   $cats The categories array.
      * @param integer $step The counting step/interval (optional) (default=1).
      *
-     * @return True if something was done, false if an emtpy $cats was passed in.
+     * @return true if something was done, false if an emtpy $cats was passed in.
      */
     public static function resequence($cats, $step = 1)
     {

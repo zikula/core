@@ -20,8 +20,6 @@ use UserUtil;
 use Zikula_View;
 use System;
 use ModUtil;
-use DateTimeZone;
-use DateTime;
 use Doctrine\ORM\AbstractQuery;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Routing\RouterInterface;
@@ -117,7 +115,7 @@ class UserApi extends \Zikula_AbstractApi
                 $field = 'uid';
             }
         } elseif (!isset($args['uname']) || !is_string($args['uname'])) {
-                throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $key = $args['uname'];
             $field = 'uname';
@@ -314,7 +312,7 @@ class UserApi extends \Zikula_AbstractApi
                 'uname'                 => $userObj['uname'],
                 'email'                 => $userObj['email'],
                 'has_password'          => !empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION),
-                'authentication_methods'=> $authenticationMethods,
+                'authentication_methods' => $authenticationMethods,
                 'sitename'              => System::getVar('sitename'),
                 'hostname'              => System::serverGetVar('REMOTE_ADDR'),
                 'url'                   => $this->getContainer()->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL),
@@ -392,7 +390,7 @@ class UserApi extends \Zikula_AbstractApi
 
                 $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
 
-                $codeSaved = new \Zikula\UsersModule\Entity\UserVerificationEntity;
+                $codeSaved = new \Zikula\UsersModule\Entity\UserVerificationEntity();
                 $codeSaved['changetype'] = UsersConstant::VERIFYCHGTYPE_PWD;
                 $codeSaved['uid'] = $user['uid'];
                 $codeSaved['newemail'] = '';
@@ -407,13 +405,13 @@ class UserApi extends \Zikula_AbstractApi
                     $urlArgs[$args['idfield']] = $args['id'];
 
                     $view = Zikula_View::getInstance($this->name, false);
-                    $viewArgs=array(
+                    $viewArgs = array(
                         'uname'         => $user['uname'],
                         'sitename'      => System::getVar('sitename'),
                         'hostname'      => System::serverGetVar('REMOTE_ADDR'),
                         'code'          => $confirmationCode,
                         'url'           => $this->getContainer()->get('router')->generate('zikulausersmodule_user_lostpasswordcode', $urlArgs, RouterInterface::ABSOLUTE_URL),
-                        'adminRequested'=> $adminRequested,
+                        'adminRequested' => $adminRequested,
                     );
                     $view->assign($viewArgs);
                     $htmlBody = $view->fetch('Email/lostpassword_html.tpl');
@@ -508,6 +506,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $view = Zikula_View::getInstance($this->name, false);
         $view->assign('returnpage', urlencode(System::getCurrentUri()));
+
         return $view->fetch('User/api_expiredsession.tpl');
     }
 
@@ -599,7 +598,7 @@ class UserApi extends \Zikula_AbstractApi
                                      ->getQuery();
         $query->getResult();
 
-        $obj = new \Zikula\UsersModule\Entity\UserVerificationEntity;
+        $obj = new \Zikula\UsersModule\Entity\UserVerificationEntity();
         $obj['changetype'] = UsersConstant::VERIFYCHGTYPE_EMAIL;
         $obj['uid'] = $uid;
         $obj['newemail'] = $args['newemail'];
@@ -748,7 +747,7 @@ class UserApi extends \Zikula_AbstractApi
             $links[] = array(
                 'icon' => 'sign-in',
                 'text' => $this->__('Log in'),
-                'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_login')            
+                'url' => $this->getContainer()->get('router')->generate('zikulausersmodule_user_login')
             );
 
             $links[] = array(
@@ -814,34 +813,33 @@ class UserApi extends \Zikula_AbstractApi
             $links[] = array(
                 'icon' => 'envelope',
                 'text' => $this->__('Messages'),
-                'url' => ModUtil::url($messageModule, 'user', 'main') 
-            );  
+                'url' => ModUtil::url($messageModule, 'user', 'main')
+            );
         }
 
         if (!empty($profileModule) && ModUtil::available($profileModule) && SecurityUtil::checkPermission($profileModule . ':Members:', '::', ACCESS_READ)) {
             $links[9999] = array(
                 'icon' => 'list',
                 'text' => $this->__('Registered Users'),
-                'url' => ModUtil::url($profileModule, 'user', 'viewmembers')                
+                'url' => ModUtil::url($profileModule, 'user', 'viewmembers')
             );
-            
+
             if (SecurityUtil::checkPermission($profileModule . ':Members:recent', '::', ACCESS_READ)) {
                 $links[9999]['links'][] = array(
                     'text' => $this->__f('Last %s Registered Users', ModUtil::getVar($profileModule, 'recentmembersitemsperpage')),
-                    'url' => ModUtil::url($profileModule, 'user', 'recentmembers')      
+                    'url' => ModUtil::url($profileModule, 'user', 'recentmembers')
                 );
             }
 
             if (SecurityUtil::checkPermission($profileModule . ':Members:online', '::', ACCESS_READ)) {
                 $links[9999]['links'][] = array(
                     'text' => $this->__('Users Online'),
-                    'url' => ModUtil::url($profileModule, 'user', 'online')       
+                    'url' => ModUtil::url($profileModule, 'user', 'online')
                 );
             }
         }
 
         return $links;
-
     }
 
     /**

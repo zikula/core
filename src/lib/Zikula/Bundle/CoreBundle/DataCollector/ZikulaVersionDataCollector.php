@@ -8,7 +8,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 class ZikulaVersionDataCollector extends DataCollector
 {
-    public function collect(Request $request, Response $response, \Exception $exception = null) {
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
         $this->data = array(
             'version' => \Zikula_Core::VERSION_NUM,
             'ghZikulaCoreUrl' => 'https://www.github.com/zikula/core',

@@ -11,6 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\Bundle\CoreBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -27,9 +28,9 @@ class Configuration implements ConfigurationInterface
     /**
      * Constructor
      *
-     * @param Boolean $debug Whether to use the debug mode
+     * @param boolean $debug Whether to use the debug mode
      */
-    public function  __construct($debug)
+    public function __construct($debug)
     {
         $this->debug = (Boolean) $debug;
     }
@@ -42,30 +43,30 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('framework');               
+        $rootNode = $treeBuilder->root('framework');
         $this->addTranslatorSection($rootNode);
-              
+
         return $treeBuilder;
     }
-       
+
     private function addTranslatorSection(ArrayNodeDefinition $rootNode)
     {
-    	$rootNode
-    	->children()
-    	->arrayNode('translator')
-    	->info('translator configuration')
-    	->canBeEnabled()
-    	->fixXmlConfig('fallback')
-    	->children()
-    	->arrayNode('fallbacks')
-    	->beforeNormalization()->ifString()->then(function ($v) { return array($v); })->end()
-    	->prototype('scalar')->end()
-    	->defaultValue(array('en'))
-    	->end()
-    	->booleanNode('logging')->defaultValue($this->debug)->end()
-    	->end()
-    	->end()
-    	->end()
-    	;
-    }    
+        $rootNode
+        ->children()
+        ->arrayNode('translator')
+        ->info('translator configuration')
+        ->canBeEnabled()
+        ->fixXmlConfig('fallback')
+        ->children()
+        ->arrayNode('fallbacks')
+        ->beforeNormalization()->ifString()->then(function ($v) { return array($v); })->end()
+        ->prototype('scalar')->end()
+        ->defaultValue(array('en'))
+        ->end()
+        ->booleanNode('logging')->defaultValue($this->debug)->end()
+        ->end()
+        ->end()
+        ->end()
+        ;
+    }
 }

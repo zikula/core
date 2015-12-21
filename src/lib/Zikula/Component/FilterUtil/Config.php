@@ -11,6 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\Component\FilterUtil;
 
 use Doctrine\ORM\EntityManager;

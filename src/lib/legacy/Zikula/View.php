@@ -350,19 +350,45 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $modvars = ModUtil::getModvars(); // Get all modvars from any modules that have accessed their modvars at least once.
         // provide compatibility 'alias' array keys
         // @todo remove after v1.4.0
-        if (isset($modvars['ZikulaAdminModule'])) { $modvars['Admin'] = $modvars['ZikulaAdminModule']; }
-        if (isset($modvars['ZikulaBlocksModule'])) { $modvars['Blocks'] = $modvars['ZikulaBlocksModule']; }
-        if (isset($modvars['ZikulaCategoriesModule'])) { $modvars['Categories'] = $modvars['ZikulaCategoriesModule']; }
-        if (isset($modvars['ZikulaExtensionsModule'])) { $modvars['Extensions'] = $modvars['ZikulaExtensionsModule']; }
-        if (isset($modvars['ZikulaGroupsModule']))  { $modvars['Groups'] = $modvars['ZikulaGroupsModule']; }
-        if (isset($modvars['ZikulaMailerModule'])) { $modvars['Mailer'] = $modvars['ZikulaMailerModule']; }
-        if (isset($modvars['ZikulaPageLockModule'])) { $modvars['PageLock'] = $modvars['ZikulaPageLockModule']; }
-        if (isset($modvars['ZikulaPermissionsModule'])) { $modvars['Permissions'] = $modvars['ZikulaPermissionsModule']; }
-        if (isset($modvars['ZikulaSearchModule'])) { $modvars['Search'] = $modvars['ZikulaSearchModule']; }
-        if (isset($modvars['ZikulaSecurityCenterModule'])) { $modvars['SecurityCenter'] = $modvars['ZikulaSecurityCenterModule']; }
-        if (isset($modvars['ZikulaSettingsModule'])) { $modvars['Settings'] = $modvars['ZikulaSettingsModule']; }
-        if (isset($modvars['ZikulaThemeModule'])) { $modvars['Theme'] = $modvars['ZikulaThemeModule']; }
-        if (isset($modvars['ZikulaUsersModule'])) { $modvars['Users'] = $modvars['ZikulaUsersModule']; }
+        if (isset($modvars['ZikulaAdminModule'])) {
+            $modvars['Admin'] = $modvars['ZikulaAdminModule'];
+        }
+        if (isset($modvars['ZikulaBlocksModule'])) {
+            $modvars['Blocks'] = $modvars['ZikulaBlocksModule'];
+        }
+        if (isset($modvars['ZikulaCategoriesModule'])) {
+            $modvars['Categories'] = $modvars['ZikulaCategoriesModule'];
+        }
+        if (isset($modvars['ZikulaExtensionsModule'])) {
+            $modvars['Extensions'] = $modvars['ZikulaExtensionsModule'];
+        }
+        if (isset($modvars['ZikulaGroupsModule'])) {
+            $modvars['Groups'] = $modvars['ZikulaGroupsModule'];
+        }
+        if (isset($modvars['ZikulaMailerModule'])) {
+            $modvars['Mailer'] = $modvars['ZikulaMailerModule'];
+        }
+        if (isset($modvars['ZikulaPageLockModule'])) {
+            $modvars['PageLock'] = $modvars['ZikulaPageLockModule'];
+        }
+        if (isset($modvars['ZikulaPermissionsModule'])) {
+            $modvars['Permissions'] = $modvars['ZikulaPermissionsModule'];
+        }
+        if (isset($modvars['ZikulaSearchModule'])) {
+            $modvars['Search'] = $modvars['ZikulaSearchModule'];
+        }
+        if (isset($modvars['ZikulaSecurityCenterModule'])) {
+            $modvars['SecurityCenter'] = $modvars['ZikulaSecurityCenterModule'];
+        }
+        if (isset($modvars['ZikulaSettingsModule'])) {
+            $modvars['Settings'] = $modvars['ZikulaSettingsModule'];
+        }
+        if (isset($modvars['ZikulaThemeModule'])) {
+            $modvars['Theme'] = $modvars['ZikulaThemeModule'];
+        }
+        if (isset($modvars['ZikulaUsersModule'])) {
+            $modvars['Users'] = $modvars['ZikulaUsersModule'];
+        }
         // end compatibility aliases
         parent::assign('modvars', $modvars);
 
@@ -812,7 +838,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return string|null The auto_id, or null if neither $cache_id nor $compile_id are set.
      */
-    public function _get_auto_id($cache_id=null, $compile_id=null)
+    public function _get_auto_id($cache_id = null, $compile_id = null)
     {
         if (!empty($cache_id)) {
             $this->_filter_auto_id($cache_id);
@@ -903,7 +929,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $path .= FileUtil::getFilebase($auto_source);
 
             // add theme and language to our path
-            if (empty($themedir)) $themedir = $this->themeinfo['directory'];
+            if (empty($themedir)) {
+                $themedir = $this->themeinfo['directory'];
+            }
             $path .= '--t_'.$themedir.'-l_' . $this->language;
 
             // if we are not compiling, end with a suffix
@@ -950,29 +978,29 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      */
     protected function rmtpl($tplpath, $template, $expire = null)
     {
-       if (!$template || !is_dir($tplpath) || !is_readable($tplpath)) {
-           return false;
-       }
+        if (!$template || !is_dir($tplpath) || !is_readable($tplpath)) {
+            return false;
+        }
 
-       $filebase = FileUtil::getFilebase($template);
+        $filebase = FileUtil::getFilebase($template);
 
-       $dh = opendir($tplpath);
-       while (($entry = readdir($dh)) !== false) {
-           if ($entry != '.' && $entry != '..') {
-               $path = $tplpath . DIRECTORY_SEPARATOR . $entry;
+        $dh = opendir($tplpath);
+        while (($entry = readdir($dh)) !== false) {
+            if ($entry != '.' && $entry != '..') {
+                $path = $tplpath . DIRECTORY_SEPARATOR . $entry;
 
-               if (is_dir($path)) {
-                   // search recusively
+                if (is_dir($path)) {
+                    // search recusively
                    $this->rmtpl($path, $template, $expire);
-               } elseif (strpos($entry, $filebase) === 0) {
-                   // delete the files that matches the template base filename
+                } elseif (strpos($entry, $filebase) === 0) {
+                    // delete the files that matches the template base filename
                    $this->_unlink($path, $expire);
-               }
-           }
-       }
-       closedir($dh);
+                }
+            }
+        }
+        closedir($dh);
 
-       return true;
+        return true;
     }
 
     /**
@@ -986,34 +1014,34 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      */
     protected function rmdir($dirname, $expire = null, $rmbase = true)
     {
-       if (!is_dir($dirname) || !is_readable($dirname)) {
-           return false;
-       }
+        if (!is_dir($dirname) || !is_readable($dirname)) {
+            return false;
+        }
 
-       $dh = opendir($dirname);
-       while (($entry = readdir($dh)) !== false) {
-           if ($entry != '.' && $entry != '..' && $entry != 'index.html') {
-               $path = $dirname . DIRECTORY_SEPARATOR . $entry;
+        $dh = opendir($dirname);
+        while (($entry = readdir($dh)) !== false) {
+            if ($entry != '.' && $entry != '..' && $entry != 'index.html') {
+                $path = $dirname . DIRECTORY_SEPARATOR . $entry;
 
-               if (is_dir($path)) {
-                   // remove recursively
+                if (is_dir($path)) {
+                    // remove recursively
                    $this->rmdir($path, $expire, true);
-               } elseif ($expire !== false) {
-                   // check expiration time of cached templates
+                } elseif ($expire !== false) {
+                    // check expiration time of cached templates
                    $this->_unlink($path, $expire);
-               } else {
-                   // delete compiled templates directly
+                } else {
+                    // delete compiled templates directly
                    unlink($path);
-               }
-           }
-       }
-       closedir($dh);
+                }
+            }
+        }
+        closedir($dh);
 
-       if ($rmbase) {
-           return rmdir($dirname);
-       }
+        if ($rmbase) {
+            return rmdir($dirname);
+        }
 
-       return true;
+        return true;
     }
 
     /**
@@ -1032,7 +1060,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     {
         if (!$auto_id && !$template) {
             $result = $this->rmdir($tmpdir, $expire, false);
-
         } else {
             $autofolder = $this->_get_auto_filename($tmpdir, null, $auto_id, $themedir);
 
@@ -1137,7 +1164,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return Zikula_View This instance.
      */
-    public function addPluginDir($dir, $push=true)
+    public function addPluginDir($dir, $push = true)
     {
         if (in_array($dir, $this->plugins_dir) || !@is_dir($dir)) {
             return $this;
@@ -1176,6 +1203,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         if (is_dir("$modpath/$modinfo[directory]/Resources/views/plugins")) {
             $this->addPluginDir("$modpath/$modinfo[directory]/Resources/views/plugins");
+
             return;
         }
 
@@ -1427,7 +1455,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return array The theme info array.
      */
-    public function getThemeInfo($key=null)
+    public function getThemeInfo($key = null)
     {
         if ($key && array_key_exists($key, $this->themeinfo)) {
             return $this->themeinfo[$key];
@@ -1444,7 +1472,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      *
      * @return void
      */
-    public function setThemeInfo($value, $key=null)
+    public function setThemeInfo($value, $key = null)
     {
         if ($key) {
             $this->themeinfo[$key] = $value;
@@ -2853,7 +2881,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         if ($this->debugging) {
             // capture time for debugging info
             $_params = array();
-            require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+            require_once SMARTY_CORE_DIR . 'core.get_microtime.php';
             $_debug_start_time = smarty_core_get_microtime($_params, $this);
             $this->_smarty_debug_info[] = array('type'      => 'template',
                                                 'filename'  => $resource_name,
@@ -2878,32 +2906,31 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                 'compile_id' => $compile_id,
                 'results' => null
             );
-            require_once(SMARTY_CORE_DIR . 'core.read_cache_file.php');
+            require_once SMARTY_CORE_DIR . 'core.read_cache_file.php';
             if (smarty_core_read_cache_file($_params, $this)) {
                 $_smarty_results = $_params['results'];
                 if (!empty($this->_cache_info['insert_tags'])) {
                     $_params = array('plugins' => $this->_cache_info['insert_tags']);
-                    require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
+                    require_once SMARTY_CORE_DIR . 'core.load_plugins.php';
                     smarty_core_load_plugins($_params, $this);
                     $_params = array('results' => $_smarty_results);
                     // ZIKULA OVERRIDE
-                    require_once('lib/legacy/viewplugins/zikula.process_cached_inserts.php');
+                    require_once 'lib/legacy/viewplugins/zikula.process_cached_inserts.php';
                     $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
                 }
                 if (!empty($this->_cache_info['cache_serials'])) {
                     $_params = array('results' => $_smarty_results);
-                    require_once(SMARTY_CORE_DIR . 'core.process_compiled_include.php');
+                    require_once SMARTY_CORE_DIR . 'core.process_compiled_include.php';
                     $_smarty_results = smarty_core_process_compiled_include($_params, $this);
                 }
-
 
                 if ($display) {
                     if ($this->debugging) {
                         // capture time for debugging info
                         $_params = array();
-                        require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+                        require_once SMARTY_CORE_DIR . 'core.get_microtime.php';
                         $this->_smarty_debug_info[$_included_tpls_idx]['exec_time'] = smarty_core_get_microtime($_params, $this) - $_debug_start_time;
-                        require_once(SMARTY_CORE_DIR . 'core.display_debug_console.php');
+                        require_once SMARTY_CORE_DIR . 'core.display_debug_console.php';
                         $_smarty_results .= smarty_core_display_debug_console($_params, $this);
                     }
                     if ($this->cache_modified_check) {
@@ -2913,17 +2940,17 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                         if (@count($this->_cache_info['insert_tags']) == 0
                             && !$this->_cache_serials
                             && $_gmt_mtime == $_last_modified_date) {
-                            if (php_sapi_name()=='cgi')
+                            if (php_sapi_name() == 'cgi') {
                                 header('Status: 304 Not Modified');
-                            else
+                            } else {
                                 header('HTTP/1.1 304 Not Modified');
-
+                            }
                         } else {
                             header('Last-Modified: '.$_gmt_mtime);
                             echo $_smarty_results;
                         }
                     } else {
-                            echo $_smarty_results;
+                        echo $_smarty_results;
                     }
                     error_reporting($_smarty_old_error_level);
                     // restore initial cache_info
@@ -2962,12 +2989,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->_cache_including = false;
         if ($display && !$this->caching && count($this->_plugins['outputfilter']) == 0) {
             if ($this->_is_compiled($resource_name, $_smarty_compile_path) || $this->_compile_resource($resource_name, $_smarty_compile_path)) {
-                include($_smarty_compile_path);
+                include $_smarty_compile_path;
             }
         } else {
             ob_start();
             if ($this->_is_compiled($resource_name, $_smarty_compile_path) || $this->_compile_resource($resource_name, $_smarty_compile_path)) {
-                include($_smarty_compile_path);
+                include $_smarty_compile_path;
             }
             $_smarty_results = ob_get_contents();
             ob_end_clean();
@@ -2982,17 +3009,15 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                         'cache_id' => $cache_id,
                         'compile_id' => $compile_id,
                         'results' => $_smarty_results);
-            require_once(SMARTY_CORE_DIR . 'core.write_cache_file.php');
+            require_once SMARTY_CORE_DIR . 'core.write_cache_file.php';
             smarty_core_write_cache_file($_params, $this);
             // ZIKULA OVERRIDE
-            require_once('lib/legacy/viewplugins/zikula.process_cached_inserts.php');
+            require_once 'lib/legacy/viewplugins/zikula.process_cached_inserts.php';
             $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
 
             if ($this->_cache_serials) {
                 // strip nocache-tags from output
-                $_smarty_results = preg_replace('!(\{/?nocache\:[0-9a-f]{32}#\d+\})!s'
-                                                ,''
-                                                ,$_smarty_results);
+                $_smarty_results = preg_replace('!(\{/?nocache\:[0-9a-f]{32}#\d+\})!s', '', $_smarty_results);
             }
             // restore initial cache_info
             $this->_cache_info = array_pop($_cache_info);
@@ -3006,9 +3031,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             if ($this->debugging) {
                 // capture time for debugging info
                 $_params = array();
-                require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+                require_once SMARTY_CORE_DIR . 'core.get_microtime.php';
                 $this->_smarty_debug_info[$_included_tpls_idx]['exec_time'] = (smarty_core_get_microtime($_params, $this) - $_debug_start_time);
-                require_once(SMARTY_CORE_DIR . 'core.display_debug_console.php');
+                require_once SMARTY_CORE_DIR . 'core.display_debug_console.php';
                 echo smarty_core_display_debug_console($_params, $this);
             }
             error_reporting($_smarty_old_error_level);

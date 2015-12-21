@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -30,7 +29,7 @@ class UserLogoutListener implements EventSubscriberInterface
             'module.users.ui.logout.succeeded' => array('succeeded', 5)
         );
     }
-    
+
     /**
      * Listener for the `module.users.ui.logout.succeeded` event.
      *

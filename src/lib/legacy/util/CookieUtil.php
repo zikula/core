@@ -30,7 +30,7 @@ class CookieUtil
      *
      * @return boolean
      */
-    public static function setCookie($name, $value='', $expires=null, $path=null, $domain=null, $secure=null, $signed = true)
+    public static function setCookie($name, $value = '', $expires = null, $path = null, $domain = null, $secure = null, $signed = true)
     {
         if (!$name) {
             throw new \Exception(__f("Error! In 'setCookie', you must specify at least the cookie name '%s'.", DataUtil::formatForDisplay($name)));
@@ -57,7 +57,7 @@ class CookieUtil
      *
      * @return mixed Cookie value as string or bool false.
      */
-    public static function getCookie($name, $signed=true, $default='')
+    public static function getCookie($name, $signed = true, $default = '')
     {
         $request = \ServiceUtil::get('request');
 
@@ -87,5 +87,4 @@ class CookieUtil
     {
         return self::setCookie($name, '', time());
     }
-
 }

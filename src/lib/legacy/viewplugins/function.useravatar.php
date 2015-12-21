@@ -60,10 +60,10 @@ function smarty_function_useravatar($params, Zikula_View $view)
             $params['rating'] = false;
         }
         if (!isset($params['size'])) {
-            if(isset($params['width']) || isset($params['height'])) {
+            if (isset($params['width']) || isset($params['height'])) {
                 if ((isset($params['width']) && !isset($params['height'])) || (isset($params['width']) && isset($params['height']) && $params['width'] < $params['size'])) {
                     $params['size'] = $params['width'];
-                } elseif((!isset($params['width']) && isset($params['height'])) || (isset($params['width']) && isset($params['height']) && $params['width'] > $params['size'])) {
+                } elseif ((!isset($params['width']) && isset($params['height'])) || (isset($params['width']) && isset($params['height']) && $params['width'] > $params['size'])) {
                     $params['size'] = $params['height'];
                 } else {
                     $params['size'] = 80;
@@ -80,7 +80,7 @@ function smarty_function_useravatar($params, Zikula_View $view)
             $avatarURL .= "&rating=".$params['rating'];
         }
         if (isset($params['size']) && !empty($params['size'])) {
-            $avatarURL .="&size=".$params['size'];
+            $avatarURL .= "&size=".$params['size'];
         }
         $avatarURL .= "&default=".urlencode(System::getBaseUrl() . $avatarpath . '/' . $gravatarimage);
     } else {
@@ -107,5 +107,4 @@ function smarty_function_useravatar($params, Zikula_View $view)
     } else {
         return $html;
     }
-
 }

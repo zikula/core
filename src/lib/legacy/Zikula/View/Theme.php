@@ -58,7 +58,6 @@ class Zikula_View_Theme extends Zikula_View
      */
     public $xhtml;
 
-
     // base theme properties
 
     /**
@@ -103,7 +102,6 @@ class Zikula_View_Theme extends Zikula_View
      */
     public $themeconfig;
 
-
     // base user information
 
     /**
@@ -119,7 +117,6 @@ class Zikula_View_Theme extends Zikula_View
      * @var boolean.
      */
     public $isloggedin;
-
 
     // publics to identify our page
 
@@ -199,7 +196,7 @@ class Zikula_View_Theme extends Zikula_View
         // if caching and is not an admin controller
         if ($this->caching && strpos($this->type, 'admin') !== 0) {
             $modulesnocache = array_filter(explode(',', ModUtil::getVar('ZikulaThemeModule', 'modulesnocache')));
-            
+
             if (in_array($this->toplevelmodule, $modulesnocache)) {
                 $this->caching = Zikula_View::CACHE_DISABLED;
             }
@@ -316,7 +313,6 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Display the page output.
      *
-     * @access private
      *
      * @return Response
      */
@@ -397,16 +393,12 @@ class Zikula_View_Theme extends Zikula_View
         // determine the correct template and construct the output
         if (isset($this->themeconfig['blockinstances'][$bid]) && !empty($this->themeconfig['blockinstances'][$bid])) {
             $return .= $this->fetch($this->themeconfig['blockinstances'][$bid]);
-
         } elseif (isset($this->themeconfig['blocktypes'][$bkey]) && !empty($this->themeconfig['blocktypes'][$bkey])) {
             $return .= $this->fetch($this->themeconfig['blocktypes'][$bkey]);
-
         } elseif (isset($this->themeconfig['blockpositions'][$position]) && !empty($this->themeconfig['blockpositions'][$position])) {
             $return .= $this->fetch($this->themeconfig['blockpositions'][$position]);
-
         } elseif (!empty($this->themeconfig['block'])) {
             $return .= $this->fetch($this->themeconfig['block']);
-
         } else {
             if (!empty($block['title'])) {
                 $return .= '<h4>' . DataUtil::formatForDisplayHTML($block['title']) . ' ' . $block['minbox'] . '</h4>';
@@ -502,6 +494,7 @@ class Zikula_View_Theme extends Zikula_View
         // add theme specific plugins directories, if they exist
         if (is_dir('themes/' . $this->directory . '/Resources/views/plugins')) {
             $this->addPluginDir('themes/' . $this->directory . '/Resources/views/plugins');
+
             return;
         }
 
@@ -541,7 +534,7 @@ class Zikula_View_Theme extends Zikula_View
             if (!$themes) {
                 $themes = ThemeUtil::getAllThemes();
             }
-            $theme = Zikula_View_Theme::getInstance();
+            $theme = self::getInstance();
             foreach ($themes as $themearr) {
                 foreach ($cache_ids as $cache_id) {
                     $theme->clear_cache(null, $cache_id, null, null, $themearr['directory']);

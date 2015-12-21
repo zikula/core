@@ -32,7 +32,7 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
         $this->hasColumn('tablename as table', 'string', 60, array('primary' => true));
         $this->hasColumn('obj_id as obj_id', 'integer', 4, array('primary' => true));
         $this->hasColumn('category_id as category_id', 'integer', 4, array('primary' => true));
-        $this->hasColumn('reg_id as reg_id','integer', 4, array('primary' => true));
+        $this->hasColumn('reg_id as reg_id', 'integer', 4, array('primary' => true));
 
         $this->hasColumn('reg_property as reg_property', 'string', 60);
         $this->hasColumn('modname as module', 'string', 60);

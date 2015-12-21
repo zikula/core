@@ -89,7 +89,7 @@ class AdminApi extends \Zikula_AbstractApi
                 $block->addPlacement($placement);
             }
         }
-        unset ($args['positions'], $args['placements']);
+        unset($args['positions'], $args['placements']);
 
         // update item
         $block->merge($args);
@@ -123,7 +123,7 @@ class AdminApi extends \Zikula_AbstractApi
             (!isset($args['collapsable'])) ||
             (!isset($args['defaultstate'])) ||
             (!isset($args['bkey']))) {
-                throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Security check
@@ -308,7 +308,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Argument check
         if (!isset($args['name']) || !strlen($args['name']) ||
             !isset($args['description'])) {
-                throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Security check
@@ -355,7 +355,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!isset($args['pid']) || !is_numeric($args['pid']) ||
             !isset($args['name']) ||
             !isset($args['description'])) {
-                throw new \InvalidArgumentException(__('Invalid arguments array received'));
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Get the existing position

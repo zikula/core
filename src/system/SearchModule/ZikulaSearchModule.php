@@ -14,6 +14,7 @@
 /**
  * Base module definition for the search module
  */
+
 namespace Zikula\SearchModule {
 
     use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
@@ -29,6 +30,7 @@ namespace Zikula\SearchModule {
 /**
  * Classes for modules prior to 1.4.0
  */
+
 namespace {
     /**
      * user api functions for the search module

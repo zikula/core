@@ -23,13 +23,12 @@ function ZikulaRoutesModule_operation_update(&$entity, $params)
 {
     $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
 
-
     // initialise the result flag
     $result = false;
 
     $objectType = $entity['_objectType'];
     $currentState = $entity['workflowState'];
-    
+
     // get attributes read from the workflow
     if (isset($params['nextstate']) && !empty($params['nextstate'])) {
         // assign value to the data object
@@ -39,11 +38,11 @@ function ZikulaRoutesModule_operation_update(&$entity, $params)
             $entity['_bypassValidation'] = true;
         }
     }
-    
+
     // get entity manager
     $serviceManager = ServiceUtil::getManager();
     $entityManager = $serviceManager->get('doctrine.entitymanager');
-    
+
     // save entity data
     try {
         //$this->entityManager->transactional(function($entityManager) {
@@ -51,12 +50,12 @@ function ZikulaRoutesModule_operation_update(&$entity, $params)
         $entityManager->flush();
         //});
         $result = true;
-    
+
         $logger = $serviceManager->get('logger');
         $logger->notice('{app}: User {user} updated an entity.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')));
     } catch (\Exception $e) {
         throw new \RuntimeException($e->getMessage());
-    
+
         $logger = $serviceManager->get('logger');
         $logger->error('{app}: User {user} tried to update an entity, but failed.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')));
     }

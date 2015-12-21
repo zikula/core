@@ -11,6 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\Component\FilterUtil;
 
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
@@ -127,7 +128,7 @@ class PluginManager
      */
     private function registerPlugin($k)
     {
-        $plugin = & $this->plugins[$k];
+        $plugin = &$this->plugins[$k];
         if ($plugin instanceof JoinInterface) {
             $plugin->addJoinsToQuery();
         }
@@ -185,7 +186,7 @@ class PluginManager
         if (is_array($this->replaces)) {
             foreach ($this->replaces as $k) {
                 $plugin = $this->plugins[$k];
-                list ($field, $op, $value) = $plugin->replace($field, $op, $value);
+                list($field, $op, $value) = $plugin->replace($field, $op, $value);
             }
         }
 

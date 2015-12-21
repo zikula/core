@@ -270,7 +270,7 @@ class ZMO
     /**
      * Reads a 32bit Integer from the Stream.
      *
-     * @return Integer from the Stream
+     * @return integer from the Stream
      */
     private function readint()
     {
@@ -302,7 +302,6 @@ class ZMO
             return unpack('N' . $count, $this->stream->read(4 * $count));
         }
     }
-
 
     /**
      * Loads the translation tables from the MO file into the cache.

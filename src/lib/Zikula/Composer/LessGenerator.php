@@ -5,8 +5,8 @@ namespace Zikula\Composer;
 /**
  * A class to handle less2css generation by composer
  */
-class LessGenerator {
-
+class LessGenerator
+{
     /**
      * This function generates from the customized bootstrap.less und font-awesome.less a combined css file
      *
@@ -22,5 +22,4 @@ class LessGenerator {
 
         file_put_contents($writeTo, $parser->getCss());
     }
-
 }

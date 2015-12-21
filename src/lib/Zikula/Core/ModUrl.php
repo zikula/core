@@ -29,7 +29,7 @@ class ModUrl implements UrlInterface
     private $language;
     private $fragment;
 
-    public function __construct($application, $controller, $action, $language, array $args=array(), $fragment=null)
+    public function __construct($application, $controller, $action, $language, array $args = array(), $fragment = null)
     {
         $this->application = $application;
         $this->controller = $controller;
@@ -64,7 +64,7 @@ class ModUrl implements UrlInterface
         return $this->fragment;
     }
 
-    public function getUrl($ssl = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
+    public function getUrl($ssl = null, $fqurl = null, $forcelongurl = false, $forcelang = false)
     {
         return \ModUtil::url($this->application, $this->controller, $this->action, $this->args, $ssl, $this->fragment, $fqurl, $forcelongurl, $forcelang);
     }

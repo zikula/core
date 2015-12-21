@@ -119,7 +119,6 @@ class ThemeEntity extends EntityAccess
      */
     private $xhtml;
 
-
     /**
      * constructor
      */

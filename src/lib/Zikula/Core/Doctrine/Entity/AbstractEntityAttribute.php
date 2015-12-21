@@ -85,4 +85,3 @@ abstract class AbstractEntityAttribute extends EntityAccess
         $this->value = $value;
     }
 }
-

@@ -66,7 +66,7 @@ class SchemaHelper
      * @param array $classes
      * @param bool $saveMode
      */
-    public function update(array $classes, $saveMode=true)
+    public function update(array $classes, $saveMode = true)
     {
         $metaClasses = array();
         foreach ($classes as $class) {

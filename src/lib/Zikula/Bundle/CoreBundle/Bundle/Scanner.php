@@ -69,7 +69,7 @@ class Scanner
             if (isset($json['autoload']['psr-0'][$ns])) {
                 $path = $json['extra']['zikula']['root-path'] = substr($base, 0, strpos($base, $nsShort) - 1);
                 $json['autoload']['psr-0'][$ns] = $path;
-            } else if (isset($json['autoload']['psr-4'][$ns])) {
+            } elseif (isset($json['autoload']['psr-4'][$ns])) {
                 $path = $json['extra']['zikula']['root-path'] = $base;
                 $json['autoload']['psr-4'][$ns] = $path;
             }
@@ -114,6 +114,7 @@ class Scanner
             case 'zikula-plugin':
                 break;
             default;
+
                 return false;
         }
 

@@ -1302,7 +1302,6 @@ class ModUtil
             }
         }
 
-
         if ($ssl) {
             $oldScheme = $router->getContext()->getScheme();
             $router->getContext()->setScheme('https');
@@ -1310,7 +1309,7 @@ class ModUtil
 
         // check for default route provided by capabilities array, unshift to beginning of search array.
         if ($func == 'index') {
-            $modInfo = ModUtil::getInfoFromName($modname);
+            $modInfo = self::getInfoFromName($modname);
             if (isset($modInfo['capabilities'][$type]['route'])) {
                 array_unshift($routeNames, $modInfo['capabilities'][$type]['route']);
             }
@@ -1323,7 +1322,6 @@ class ModUtil
                 $found = true;
                 break;
             } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
-
             }
         }
 
@@ -1653,18 +1651,7 @@ class ModUtil
     }
 
     /**
-    public static function registerHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
-    {
-        return true;
-    }
-    public static function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
-    {
-        return '';
-    }
-    public static function isHooked($tmodule, $smodule)
-    {
-        return false;
-    }
+     }
      */
 
     /**
@@ -1684,7 +1671,7 @@ class ModUtil
             if ($module['type'] == self::TYPE_MODULE) {
                 if (is_dir($path)) {
                     ZLoader::addAutoloader($module['directory'], $path);
-                } else if (file_exists("modules/$module[directory]/Version.php")) {
+                } elseif (file_exists("modules/$module[directory]/Version.php")) {
                     ZLoader::addAutoloader($module['directory'], 'modules');
                 }
             }
@@ -1875,7 +1862,7 @@ class ModUtil
      */
     public static function isInitialized($moduleName)
     {
-        return (self::isOO($moduleName) && self::$ooModules[$moduleName]['initialized']);
+        return self::isOO($moduleName) && self::$ooModules[$moduleName]['initialized'];
     }
 
     /**
@@ -2033,7 +2020,7 @@ class ModUtil
                 }
                 $moduleClass = $moduleMetaData->getClass();
 
-                return new $moduleClass;
+                return new $moduleClass();
             }
         }
 

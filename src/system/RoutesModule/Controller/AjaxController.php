@@ -15,7 +15,6 @@ namespace Zikula\RoutesModule\Controller;
 use SecurityUtil;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\RoutesModule\Controller\Base\AjaxController as BaseAjaxController;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +46,6 @@ class AjaxController extends BaseAjaxController
     }
 
     // feel free to add your own controller methods here
-
 
     public function sort(Request $request)
     {

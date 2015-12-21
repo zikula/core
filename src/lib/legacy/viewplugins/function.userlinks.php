@@ -35,7 +35,7 @@ function smarty_function_userlinks($params, Zikula_View $view)
 {
     $start     = isset($params['start'])     ? $params['start']    : '[';
     $end       = isset($params['end'])       ? $params['end']      : ']';
-    $seperator = isset($params['seperator']) ? $params['seperator']: '|';
+    $seperator = isset($params['seperator']) ? $params['seperator'] : '|';
 
     if (UserUtil::isLoggedIn()) {
         $links = "$start ";
@@ -46,7 +46,6 @@ function smarty_function_userlinks($params, Zikula_View $view)
             $links .= "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url('ZikulaUsersModule', 'user', 'index')) . '">' . __('Your Account') . "</a> $seperator ";
         }
         $links .= "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url('ZikulaUsersModule', 'user', 'logout')) . '">'  . __('Log out') . "</a> $end";
-
     } else {
         $links = "$start <a href=\"" . DataUtil::formatForDisplay(ModUtil::url('ZikulaUsersModule', 'user', 'register')) . '">' . __('Register new account') . "</a> $seperator "
                . "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url('ZikulaUsersModule', 'user', 'login')) . '">' . __('Login') . "</a> $end";

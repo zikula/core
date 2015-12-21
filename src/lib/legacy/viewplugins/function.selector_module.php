@@ -29,7 +29,7 @@
  *
  * @return string
  */
-function smarty_function_selector_module ($params, Zikula_View $view)
+function smarty_function_selector_module($params, Zikula_View $view)
 {
     $name          = isset($params['name'])          ? $params['name']          : 'defaultselectorname';
     $field         = isset($params['field'])         ? $params['field']         : 'name';
@@ -42,6 +42,6 @@ function smarty_function_selector_module ($params, Zikula_View $view)
     $disabled      = isset($params['disabled'])      ? $params['disabled']      : false;
     $multipleSize  = isset($params['multipleSize'])  ? $params['multipleSize']  : 1;
 
-    return HtmlUtil::getSelector_Module ($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText,
+    return HtmlUtil::getSelector_Module($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText,
                                            $submit, $disabled, $multipleSize, $field);
 }

@@ -15,7 +15,6 @@ namespace Zikula\UsersModule\Listener;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use UserUtil;
-use SecurityUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
@@ -116,5 +115,4 @@ class UserEventListener implements EventSubscriberInterface
             $this->requestStack->getCurrentRequest()->getSession()->getFlashBag()->add('error', __("Your log-in request was not completed. You must change your web site account's password first."));
         }
     }
-
 }

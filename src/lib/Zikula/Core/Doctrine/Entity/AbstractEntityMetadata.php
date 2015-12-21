@@ -339,4 +339,3 @@ abstract class AbstractEntityMetadata extends EntityAccess
         $this->extra = $extra;
     }
 }
-

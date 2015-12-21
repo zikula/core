@@ -12,7 +12,6 @@
  */
 
 use Symfony\Component\HttpFoundation\Response;
-use Zikula\Core\Exception\FatalErrorException;
 
 /**
  * Display login fields for a given authentication method

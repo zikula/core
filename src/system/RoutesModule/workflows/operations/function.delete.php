@@ -23,25 +23,24 @@ function ZikulaRoutesModule_operation_delete(&$entity, $params)
 {
     $dom = ZLanguage::getModuleDomain('ZikulaRoutesModule');
 
-
     // initialise the result flag
     $result = false;
 
     // get entity manager
     $serviceManager = ServiceUtil::getManager();
     $entityManager = $serviceManager->get('doctrine.entitymanager');
-    
+
     // delete entity
     try {
         $entityManager->remove($entity);
         $entityManager->flush();
         $result = true;
-    
+
         $logger = $serviceManager->get('logger');
         $logger->notice('{app}: User {user} deleted an entity.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')));
     } catch (\Exception $e) {
         throw new \RuntimeException($e->getMessage());
-    
+
         $logger = $serviceManager->get('logger');
         $logger->error('{app}: User {user} tried to delete an entity, but failed.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')));
     }

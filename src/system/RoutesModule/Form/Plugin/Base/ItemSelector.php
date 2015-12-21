@@ -16,7 +16,6 @@ use FormUtil;
 use PageUtil;
 use SecurityUtil;
 use ServiceUtil;
-use ThemeUtil;
 use Zikula_Form_Plugin_TextInput;
 use Zikula_Form_View;
 use Zikula_View;

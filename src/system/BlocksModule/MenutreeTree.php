@@ -82,7 +82,7 @@ class MenutreeTree extends \Zikula_Tree
                     'expanded'  => isset($_item['expanded']) ? $_item['expanded'] : null,
                     'href'      => isset($_item['href']) ? $_item['href'] : '',
                     'lang'      => isset($_item['lang']) ? $_item['lang'] : '',
-                    'dynamic'   => strpos($_item['href'],'{ext:') === 0,
+                    'dynamic'   => strpos($_item['href'], '{ext:') === 0,
                 );
                 if ($this->config['parseURL']) {
                     $item[$lang]['href'] = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'encodebracketurl', $item[$lang]['href']);
@@ -101,12 +101,12 @@ class MenutreeTree extends \Zikula_Tree
             } else {
                 $path   = $map[$a[$reflang]['parent']];
                 $path[] = $a[$reflang]['parent'];
-                $handle =& $this->tree;
+                $handle = &$this->tree;
                 while (list($key, $value) = each($path)) {
                     if ($value === 0) {
                         continue;
                     }
-                    $handle =& $handle[$value]['nodes'];
+                    $handle = &$handle[$value]['nodes'];
                 }
                 $handle[$a[$reflang]['id']] = $_node;
             }
@@ -175,7 +175,7 @@ class MenutreeTree extends \Zikula_Tree
         $isDynamic = false;
 
         $item   = $tab['item'];
-        $indent = str_repeat(' ', ($indentLevel+1)*4);
+        $indent = str_repeat(' ', ($indentLevel + 1) * 4);
 
         $toggle = $indent.'<img class="'.$this->config['toggler'].'" alt="" src="'.$this->config['imagesDir'].$this->config['minus'].'" />';
 
@@ -208,7 +208,7 @@ class MenutreeTree extends \Zikula_Tree
         $liClass = trim(implode(' ', array_filter($liClass)));
         $liClass = ' class="'.$liClass.'"';
 
-        $indent = str_repeat(' ', $indentLevel*4);
+        $indent = str_repeat(' ', $indentLevel * 4);
 
         return "{$indent}<li{$liId}{$liClass}>\n{$toggle}\n{$icon}\n{$itemid}\n{$links}\n{$nodeSub}{$indent}</li>";
     }

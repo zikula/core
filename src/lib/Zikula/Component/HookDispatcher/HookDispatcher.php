@@ -317,7 +317,6 @@ class HookDispatcher
             }
         }
 
-
         return $this;
     }
 

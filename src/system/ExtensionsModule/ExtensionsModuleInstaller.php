@@ -13,12 +13,7 @@
 
 namespace Zikula\ExtensionsModule;
 
-use Doctrine_Core;
-use EventUtil;
-use System;
-use Zikula_Event;
-use Zikula\ExtensionsModule\ExtensionsModuleVersion;
-use ModUtil;
+
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**

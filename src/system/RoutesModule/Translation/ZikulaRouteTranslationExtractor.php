@@ -15,9 +15,7 @@
 namespace Zikula\RoutesModule\Translation;
 
 use JMS\I18nRoutingBundle\Router\I18nRouter;
-
 use JMS\I18nRoutingBundle\Router\RouteExclusionStrategyInterface;
-
 use Symfony\Component\Routing\RouterInterface;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;

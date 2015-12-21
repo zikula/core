@@ -19,7 +19,6 @@ use UserUtil;
 use Zikula_View;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use DataUtil;
-use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,9 +97,7 @@ class UserController extends \Zikula_AbstractController
         $statelabel = $groupsCommon->stateLabels();
 
         foreach ($groups as $group) {
-
             if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_OVERVIEW)) {
-
                 $group['typelbl']  = $typelabel[$group['gtype']];
                 $group['statelbl'] = $statelabel[$group['state']];
 
@@ -169,14 +166,14 @@ class UserController extends \Zikula_AbstractController
         // that is he applying to an open group and that the group is open
         // $isopen = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getginfo', array('gid' => $gid));
         if ($action == 'subscribe') {
-            if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
+            if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid))) {
                 $request->getSession()->getFlashBag()->add('error', $this->__('Error! You are already a member of this group.'));
 
                 return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
             }
 
             if ($group['gtype'] == CommonHelper::GTYPE_CORE) {
-               $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! You cannot apply for membership of that group.'));
+                $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! You cannot apply for membership of that group.'));
 
                 return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_user_view', array(), RouterInterface::ABSOLUTE_URL));
             }
@@ -196,12 +193,12 @@ class UserController extends \Zikula_AbstractController
             }
         }
 
-        $this->view->assign('mainpage',     false)
-                   ->assign('gid',          $gid)
-                   ->assign('gname',        $group['name'])
-                   ->assign('gtype',        $group['gtype']) // Can't use type as it is a reserved word.
-                   ->assign('action',       $action)
-                   ->assign('description',  $group['description']);
+        $this->view->assign('mainpage', false)
+                   ->assign('gid', $gid)
+                   ->assign('gname', $group['name'])
+                   ->assign('gtype', $group['gtype']) // Can't use type as it is a reserved word.
+                   ->assign('action', $action)
+                   ->assign('description', $group['description']);
 
         return new Response($this->view->fetch('User/membership.tpl'));
     }
@@ -289,7 +286,6 @@ class UserController extends \Zikula_AbstractController
                 'startnum' => $startnum));
 
         if (!$group) {
-
             return DataUtil::formatForDisplay($this->__('Error! Could not load data.'));
         }
 
@@ -328,7 +324,7 @@ class UserController extends \Zikula_AbstractController
             // test of sorting data
             if (!empty($members)) {
                 $sortAarr = array();
-                foreach($members as $res) {
+                foreach ($members as $res) {
                     $sortAarr[] = strtolower($res['uname']);
                 }
                 array_multisort($sortAarr, SORT_ASC, $members);

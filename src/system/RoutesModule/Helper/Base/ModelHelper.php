@@ -12,7 +12,6 @@
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use ModUtil;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -58,15 +57,15 @@ class ModelHelper
         if (!in_array($objectType, $controllerHelper->getObjectTypes('util', array('util' => 'model', 'action' => 'canBeCreated')))) {
             throw new \Exception('Error! Invalid object type received.');
         }
-    
+
         $result = false;
-    
+
         switch ($objectType) {
             case 'route':
                 $result = true;
                 break;
         }
-    
+
         return $result;
     }
 
@@ -83,9 +82,9 @@ class ModelHelper
         if (!in_array($objectType, $controllerHelper->getObjectTypes('util', array('util' => 'model', 'action' => 'hasExistingInstances')))) {
             throw new \Exception('Error! Invalid object type received.');
         }
-    
+
         $repository = $this->container->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
-    
-        return ($repository->selectCount() > 0);
+
+        return $repository->selectCount() > 0;
     }
 }

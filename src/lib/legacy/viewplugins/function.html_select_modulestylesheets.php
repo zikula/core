@@ -50,8 +50,8 @@ function smarty_function_html_select_modulestylesheets($params, Zikula_View $vie
 
     $assign = isset($params['assign']) ? $params['assign'] : null;
     unset($params['assign']);
-    
-    require_once $view->_get_plugin_filepath('function','html_options');
+
+    require_once $view->_get_plugin_filepath('function', 'html_options');
     $output = smarty_function_html_options($params, $view);
 
     if (!empty($assign)) {

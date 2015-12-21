@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Controller;
 
 use Zikula\RoutesModule\Controller\Base\AjaxController as BaseAjaxController;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +42,6 @@ class AjaxController extends BaseAjaxController
     {
         return parent::indexAction($request);
     }
-    
+
     // feel free to add your own controller methods here
 }

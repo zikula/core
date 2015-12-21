@@ -74,7 +74,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     private function getLockInfo(Request $request)
     {
-
         $lockName = $request->request->get('lockname');
 
         $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',

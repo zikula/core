@@ -14,20 +14,12 @@ namespace Zikula\RoutesModule\Controller\Base;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use JCSSUtil;
-use ModUtil;
 use SecurityUtil;
 use System;
-use UserUtil;
 use Zikula_AbstractController;
 use Zikula_View;
-use ZLanguage;
-use Zikula\Core\Hook\ProcessHook;
-use Zikula\Core\Hook\ValidationHook;
-use Zikula\Core\Hook\ValidationProviders;
-use Zikula\Core\RouteUrl;
 use Zikula\Core\Response\PlainResponse;
 
 /**
@@ -62,18 +54,17 @@ class AdminController extends Zikula_AbstractController
     {
         // parameter specifying which type of objects we are treating
         $objectType = $request->query->filter('ot', 'route', false, FILTER_SANITIZE_STRING);
-        
+
         $permLevel = ACCESS_ADMIN;
         if (!SecurityUtil::checkPermission($this->name . '::', '::', $permLevel)) {
             throw new AccessDeniedException();
         }
-        
+
         // redirect to view action
         $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($objectType) . '_view', array('lct' => 'admin'));
-        
+
         return new RedirectResponse(System::normalizeUrl($redirectUrl));
     }
-    
 
     /**
      * This method cares for a redirect within an inline frame.
@@ -92,12 +83,12 @@ class AdminController extends Zikula_AbstractController
         if (empty($idPrefix)) {
             return false;
         }
-        
+
         $this->view->assign('itemId', $id)
                    ->assign('idPrefix', $idPrefix)
                    ->assign('commandName', $commandName)
                    ->assign('jcssConfig', JCSSUtil::getJSConfig());
-        
+
         return new PlainResponse($this->view->fetch('Admin/inlineRedirectHandler.tpl'));
     }
 }

@@ -1,6 +1,6 @@
 <?php
+
 use Doctrine\DBAL\Connection;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
 
 /**
  * Class Zikula_Session_LegacyHandler

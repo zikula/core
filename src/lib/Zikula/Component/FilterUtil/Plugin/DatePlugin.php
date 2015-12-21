@@ -12,6 +12,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\Component\FilterUtil\Plugin;
 
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
@@ -154,7 +155,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
                     $datearray['mday'],
                     $datearray['year']
                 );
-                $to = $from+3600;
+                $to = $from + 3600;
                 break;
 
             case 'min':
@@ -167,7 +168,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
                     $datearray['mday'],
                     $datearray['year']
                 );
-                $to = $from+60;
+                $to = $from + 60;
                 break;
         }
 
@@ -209,7 +210,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
         switch ($op) {
             case 'eq':
                 if ($type != 'point') {
-                    list ($from, $to) = $this->makePeriod($time, $type);
+                    list($from, $to) = $this->makePeriod($time, $type);
 
                     return $expr->andX(
                         $expr->gte($column, $config->toParam($from, 'date', $field)),
@@ -220,7 +221,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
                 }
             case 'ne':
                 if ($type != 'point') {
-                    list ($from, $to) = $this->makePeriod($time, $type);
+                    list($from, $to) = $this->makePeriod($time, $type);
 
                     return $expr->orX(
                         $expr->lt($column, $config->toParam($from, 'date', $field)),
@@ -232,7 +233,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
 
             case 'gt':
                 if ($type != 'point') {
-                    list ($from, $time) = $this->makePeriod($time, $type);
+                    list($from, $time) = $this->makePeriod($time, $type);
                 }
 
                 return $expr->gt($column, $config->toParam($time, 'date', $field));
@@ -245,7 +246,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
 
             case 'le':
                 if ($type != 'point') {
-                    list ($from, $time) = $this->makePeriod($time, $type);
+                    list($from, $time) = $this->makePeriod($time, $type);
                 }
 
                 return $expr->lte($column, $config->toParam($time, 'date', $field));

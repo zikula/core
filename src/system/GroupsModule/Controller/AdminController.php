@@ -19,7 +19,6 @@ use SecurityUtil;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use UserUtil;
 use Users_Constant;
-use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
@@ -118,28 +117,26 @@ class AdminController extends \Zikula_AbstractController
         $groups = array();
 
         foreach ($items as $item) {
-
             if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_READ)) {
 
                 // Options for the item.
                 $options = array();
                 if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_EDIT)) {
+                    $editurl = $this->get('router')->generate('zikulagroupsmodule_admin_modify', array('gid' => $item['gid']));
+                    $membersurl = $this->get('router')->generate('zikulagroupsmodule_admin_groupmembership', array('gid' => $item['gid']));
 
-                    $editurl = $this->get('router')->generate('zikulagroupsmodule_admin_modify', array('gid'=> $item['gid']));
-                    $membersurl = $this->get('router')->generate('zikulagroupsmodule_admin_groupmembership', array('gid'=> $item['gid']));
-
-                    $options[] = array('url' => $this->get('router')->generate('zikulagroupsmodule_admin_modify', array('gid'=> $item['gid'])),
+                    $options[] = array('url' => $this->get('router')->generate('zikulagroupsmodule_admin_modify', array('gid' => $item['gid'])),
                             'title'   => $this->__('Edit'),
                             'imgfile' => 'xedit.png');
 
                     if ((SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_DELETE))
                             && ($item['gid'] != $defaultgroup) && ($item['gid'] != $primaryadmingroup)) {
-                        $options[] = array('url' => $this->get('router')->generate('zikulagroupsmodule_admin_delete', array('gid'=> $item['gid'])),
+                        $options[] = array('url' => $this->get('router')->generate('zikulagroupsmodule_admin_delete', array('gid' => $item['gid'])),
                                 'title'   => $this->__('Delete'),
                                 'imgfile' => '14_layer_deletelayer.png');
                     }
 
-                    $options[] = array('url' => $this->get('router')->generate('zikulagroupsmodule_admin_groupmembership', array('gid'=> $item['gid'])),
+                    $options[] = array('url' => $this->get('router')->generate('zikulagroupsmodule_admin_groupmembership', array('gid' => $item['gid'])),
                             'title'   => $this->__('Group membership'),
                             'imgfile' => 'agt_family.png');
 
@@ -150,11 +147,11 @@ class AdminController extends \Zikula_AbstractController
                         'gid'         => $item['gid'],
                         'gtype'       => $item['gtype'],
                         'gtypelbl'    => $typelabel[$item['gtype']],
-                        'description' => ((empty($item['description'])== false) ? $item['description'] : ''),
+                        'description' => ((empty($item['description']) == false) ? $item['description'] : ''),
                         'prefix'      => $item['prefix'],
                         'state'       => $item['state'],
                         'statelbl'    => $statelabel[$item['state']],
-                        'nbuser'      => (($nbuser <> false) ? $nbuser : 0),
+                        'nbuser'      => (($nbuser != false) ? $nbuser : 0),
                         'nbumax'      => $item['nbumax'],
                         'link'        => $item['link'],
                         'uidmaster'   => $item['uidmaster'],
@@ -176,10 +173,10 @@ class AdminController extends \Zikula_AbstractController
                 array('startnum' => $startnum,
                       'numitems' => $itemsperpage));
 
-        $this->view->assign('groups',       $groups)
-                   ->assign('grouptypes',   $typelabel)
-                   ->assign('states',       $statelabel)
-                   ->assign('useritems',    $users)
+        $this->view->assign('groups', $groups)
+                   ->assign('grouptypes', $typelabel)
+                   ->assign('states', $statelabel)
+                   ->assign('useritems', $users)
                    ->assign('defaultgroup', $defaultgroup)
                    ->assign('primaryadmingroup', $primaryadmingroup);
 
@@ -212,7 +209,7 @@ class AdminController extends \Zikula_AbstractController
         $grouptype = $groupsCommon->gtypeLabels();
         $groupstate = $groupsCommon->stateLabels();
 
-        $this->view->assign('grouptype',  $grouptype)
+        $this->view->assign('grouptype', $grouptype)
                    ->assign('groupstate', $groupstate);
 
         return new Response($this->view->fetch('Admin/new.tpl'));
@@ -307,7 +304,7 @@ class AdminController extends \Zikula_AbstractController
         $grouptype = $groupsCommon->gtypeLabels();
         $groupstate = $groupsCommon->stateLabels();
 
-        $this->view->assign('grouptype',  $grouptype)
+        $this->view->assign('grouptype', $grouptype)
                    ->assign('groupstate', $groupstate);
 
         return new Response($this->view->fetch('Admin/modify.tpl'));
@@ -555,7 +552,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Assign the values for the smarty plugin to produce a pager
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', array('gid' => $gid)),
-                                           'itemsperpage' => $this->getVar( 'itemsperpage')));
+                                           'itemsperpage' => $this->getVar('itemsperpage')));
 
         return new Response($this->view->fetch('Admin/groupmembership.tpl'));
     }
@@ -592,7 +589,7 @@ class AdminController extends \Zikula_AbstractController
             $total_users_added = 0;
             $total_users_notadded = 0;
 
-            foreach($uid as $id) {
+            foreach ($uid as $id) {
                 if (!ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'adduser', array('gid' => $gid, 'uid' => $id))) {
                     $total_users_notadded++;
                 } else {
@@ -614,7 +611,6 @@ class AdminController extends \Zikula_AbstractController
 
                 return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_admin_groupmembership', array('gid' => $gid), RouterInterface::ABSOLUTE_URL));
             } else {
-
                 $request->getSession()->getFlashBag()->add('status', $this->__('Done! The user was added to the group.'));
             }
         }
@@ -674,6 +670,7 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! The user was removed from the group.'));
         } else {
             $request->getSession()->getFlashBag()->add('error', $this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
+
             return new RedirectResponse($this->get('router')->generate('zikulagroupsmodule_admin_groupmembership', array('gid' => $gid), RouterInterface::ABSOLUTE_URL));
         }
 

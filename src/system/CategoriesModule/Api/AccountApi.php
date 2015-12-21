@@ -15,7 +15,6 @@ namespace Zikula\CategoriesModule\Api;
 
 use System;
 use SessionUtil;
-use ModUtil;
 use SecurityUtil;
 
 /**

@@ -52,15 +52,15 @@ class ListEntriesHelper
         if ((empty($value) && $value != '0') || empty($objectType) || empty($fieldName)) {
             return $value;
         }
-    
+
         $isMulti = $this->hasMultipleSelection($objectType, $fieldName);
         if ($isMulti === true) {
             $value = $this->extractMultiList($value);
         }
-    
+
         $options = $this->getEntries($objectType, $fieldName);
         $result = '';
-    
+
         if ($isMulti === true) {
             foreach ($options as $option) {
                 if (!in_array($option['value'], $value)) {
@@ -80,10 +80,9 @@ class ListEntriesHelper
                 break;
             }
         }
-    
+
         return $result;
     }
-    
 
     /**
      * Extract concatenated multi selection.
@@ -104,10 +103,9 @@ class ListEntriesHelper
             // keys must start with 0, otherwise the dropdownlist form plugin gets confused
             array_shift($listValues);
         }
-    
+
         return $listValues;
     }
-    
 
     /**
      * Determine whether a certain dropdown field has a multi selection or not.
@@ -122,7 +120,7 @@ class ListEntriesHelper
         if (empty($objectType) || empty($fieldName)) {
             return false;
         }
-    
+
         $result = false;
         switch ($objectType) {
             case 'route':
@@ -142,10 +140,9 @@ class ListEntriesHelper
                 }
                 break;
         }
-    
+
         return $result;
     }
-    
 
     /**
      * Get entries for a certain dropdown field.
@@ -160,7 +157,7 @@ class ListEntriesHelper
         if (empty($objectType) || empty($fieldName)) {
             return array();
         }
-    
+
         $entries = array();
         switch ($objectType) {
             case 'route':
@@ -180,11 +177,10 @@ class ListEntriesHelper
                 }
                 break;
         }
-    
+
         return $entries;
     }
 
-    
     /**
      * Get 'workflow state' list entries.
      *
@@ -203,10 +199,10 @@ class ListEntriesHelper
                           'title'   => $this->translator->__('Shows all items except these which are approved'),
                           'image'   => '',
                           'default' => false);
-    
+
         return $states;
     }
-    
+
     /**
      * Get 'route type' list entries.
      *
@@ -235,10 +231,10 @@ class ListEntriesHelper
                           'title'   => '',
                           'image'   => '',
                           'default' => false);
-    
+
         return $states;
     }
-    
+
     /**
      * Get 'schemes' list entries.
      *
@@ -257,10 +253,10 @@ class ListEntriesHelper
                           'title'   => '',
                           'image'   => '',
                           'default' => true);
-    
+
         return $states;
     }
-    
+
     /**
      * Get 'methods' list entries.
      *
@@ -299,7 +295,7 @@ class ListEntriesHelper
                           'title'   => '',
                           'image'   => '',
                           'default' => false);
-    
+
         return $states;
     }
 }

@@ -94,7 +94,7 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
         }
 
         $this->formFields[$field->fieldName] = $field;
-        $this->fieldIds[$field->fieldId] =& $this->formFields[$field->fieldName];
+        $this->fieldIds[$field->fieldId] = &$this->formFields[$field->fieldName];
 
         return $this->formFields[$field->fieldName];
     }

@@ -16,4 +16,3 @@
  * This is only called once, and only if the core has reason to initialise this module,
  * usually to dispatch a controller request or API.
  */
-

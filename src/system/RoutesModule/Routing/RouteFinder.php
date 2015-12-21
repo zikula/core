@@ -7,4 +7,4 @@ namespace Zikula\RoutesModule\Routing;
  */
 class RouteFinder
 {
-} 
+}

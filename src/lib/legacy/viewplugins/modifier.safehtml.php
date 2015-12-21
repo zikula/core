@@ -40,7 +40,7 @@
  *
  * @return string The modified output.
  */
-function smarty_modifier_safehtml ($string)
+function smarty_modifier_safehtml($string)
 {
     return DataUtil::formatForDisplayHTML($string);
 }

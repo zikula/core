@@ -66,6 +66,7 @@ function smarty_function_thumb($params, Zikula_View $view)
 {
     if (!isset($params['image']) || empty($params['image'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_thumb', 'image')));
+
         return false;
     }
 

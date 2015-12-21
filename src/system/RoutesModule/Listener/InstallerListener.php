@@ -12,14 +12,10 @@
 
 namespace Zikula\RoutesModule\Listener;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\RouteCollection;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;
 use Zikula\RoutesModule\Listener\Base\InstallerListener as BaseInstallerListener;
 use Zikula\RoutesModule\Routing\RouteFinder;
-use Zikula\Core\AbstractModule;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;

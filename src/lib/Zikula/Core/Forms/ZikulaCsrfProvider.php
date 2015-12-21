@@ -16,7 +16,7 @@ class ZikulaCsrfProvider implements CsrfProviderInterface
     {
         return \SecurityUtil::generateCsrfToken();
     }
-    
+
     /**
      * {@inheritdoc}
      */

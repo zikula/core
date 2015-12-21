@@ -66,16 +66,19 @@ class StartCommand extends AbstractCoreInstallerCommand
 
         if ($this->getContainer()->getParameter('installed') == true) {
             $output->writeln("<error>" . __('Zikula already appears to be installed.') . "</error>");
+
             return;
         }
         $warnings = $this->getContainer()->get('core_installer.controller.util')->initPhp();
         if (!empty($warnings)) {
             $this->printWarnings($output, $warnings);
+
             return;
         }
         $checks = $this->getContainer()->get('core_installer.controller.util')->requirementsMet($this->getContainer());
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
+
             return;
         }
 

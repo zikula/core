@@ -14,17 +14,17 @@ class CategoriesType extends AbstractType
     {
         $builder->prependClientTransformer(new CategoriesCollectionTransformer($options['entityCategoryClass']))
                 ->addEventSubscriber(new CategoriesMergeCollectionListener());
-        
+
         $registries = \CategoryRegistryUtil::getRegisteredModuleCategories($options['module'], $options['entity'], 'id');
-        
-        foreach($registries as $registryId => $categoryId) {
+
+        foreach ($registries as $registryId => $categoryId) {
             $builder->add(
-                    'registry_' . $registryId, 
-                    'entity', 
+                    'registry_' . $registryId,
+                    'entity',
                     array(
                         'class' => 'ZikulaCategoriesModule:CategoryEntity',
                         'property' => 'name',
-                        'query_builder' => function(EntityRepository $repo) use($categoryId) {
+                        'query_builder' => function (EntityRepository $repo) use ($categoryId) {
                             //TODO: (move to)/use own entity repository after CategoryUtil migration
                             return $repo->createQueryBuilder('e')
                                         ->where('e.parent = :parentId')
@@ -38,8 +38,9 @@ class CategoriesType extends AbstractType
     {
         return 'categories';
     }
-    
-    public function getDefaultOptions(array $options) {
+
+    public function getDefaultOptions(array $options)
+    {
         return array('module' => $options['module'],
                      'entity' => $options['entity'],
                      'entityCategoryClass' => $options['entityCategoryClass']);

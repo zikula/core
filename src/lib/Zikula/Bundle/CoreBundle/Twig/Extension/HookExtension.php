@@ -2,7 +2,6 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
-use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Core\Hook\DisplayHook;
 use Zikula\Core\Hook\FilterHook;
 

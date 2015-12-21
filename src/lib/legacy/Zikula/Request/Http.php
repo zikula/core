@@ -45,7 +45,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
         $this->files = new Zikula_Bag_FileBag($files);
     }
 
-     /**
+    /**
      * Return the request method.
      *
      * @return string
@@ -255,4 +255,3 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
         return $this->isMethod('OPTIONS');
     }
 }
-

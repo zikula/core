@@ -18,7 +18,7 @@
  *
  * @deprecated for Symfony2 Forms
  */
-class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_DropdownList
+class Zikula_Form_Plugin_DropdownRelationList extends Zikula_Form_Plugin_DropdownList
 {
     /**
      * The class name of a doctrine record.
@@ -187,7 +187,6 @@ class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_Dropdow
             }
         }
 
-
         if (!isset($params['displayField']) || empty($params['displayField'])) {
             $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
                                      array('formdropdownrelationlist', 'displayField')));
@@ -299,7 +298,6 @@ class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_Dropdow
                 }
                 $this->addItem($itemLabel, $obj[$this->idField]);
             }
-
         }
 
         parent::load($view, $params);

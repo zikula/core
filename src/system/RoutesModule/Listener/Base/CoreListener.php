@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -21,7 +20,6 @@ use Zikula\Core\Event\GenericEvent;
  */
 class CoreListener implements EventSubscriberInterface
 {
-    
     /**
      * Makes our handlers known to the event system.
      */
@@ -35,7 +33,7 @@ class CoreListener implements EventSubscriberInterface
             'controller.method_not_found' => array('controllerMethodNotFound', 5)
         );
     }
-    
+
     /**
      * Listener for the `api.method_not_found` event.
      *
@@ -52,7 +50,7 @@ class CoreListener implements EventSubscriberInterface
     public function apiMethodNotFound(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `core.preinit` event.
      *
@@ -63,7 +61,7 @@ class CoreListener implements EventSubscriberInterface
     public function preInit(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `core.init` event.
      *
@@ -75,7 +73,7 @@ class CoreListener implements EventSubscriberInterface
     public function init(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `core.postinit` event.
      *
@@ -86,7 +84,7 @@ class CoreListener implements EventSubscriberInterface
     public function postInit(GenericEvent $event)
     {
     }
-    
+
     /**
      * Listener for the `controller.method_not_found` event.
      *

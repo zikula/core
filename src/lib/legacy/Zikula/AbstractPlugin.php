@@ -290,7 +290,6 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
         return $this->modinfo;
     }
 
-
     /**
      * Return basedir.
      *

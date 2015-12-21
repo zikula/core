@@ -27,7 +27,7 @@ class RouteUrl extends ModUrl implements UrlInterface
     private $args;
     private $fragment;
 
-    public function __construct($route, array $args=array(), $fragment=null)
+    public function __construct($route, array $args = array(), $fragment = null)
     {
         $this->route = $route;
         $this->args = $args;

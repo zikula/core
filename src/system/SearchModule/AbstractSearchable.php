@@ -82,7 +82,7 @@ abstract class AbstractSearchable extends Translator
      * @param array|null $modVars module form vars passed though
      * @return array
      */
-    abstract function getResults(array $words, $searchType = 'AND', $modVars = null);
+    abstract public function getResults(array $words, $searchType = 'AND', $modVars = null);
 
     /**
      * Construct a QueryBuilder Where orX|andX Expr instance

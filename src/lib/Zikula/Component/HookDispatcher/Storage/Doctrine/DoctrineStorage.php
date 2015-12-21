@@ -42,7 +42,6 @@ class DoctrineStorage implements StorageInterface
         $this->em = $em;
     }
 
-
     public function registerSubscriber($owner, $subOwner, $areaName, $areaType, $category, $eventName)
     {
         $areaId = $this->registerArea($areaName, self::SUBSCRIBER, $owner, $subOwner, $category);
@@ -115,7 +114,7 @@ class DoctrineStorage implements StorageInterface
         $this->generateRuntimeHandlers();
     }
 
-    public function registerProvider($owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId=null)
+    public function registerProvider($owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId = null)
     {
         $pareaId = $this->registerArea($areaName, self::PROVIDER, $owner, $subOwner, $category);
 
@@ -544,6 +543,7 @@ class DoctrineStorage implements StorageInterface
         if (!$hookArea) {
             return false;
         }
+
         return $hookArea->getId();
     }
 }

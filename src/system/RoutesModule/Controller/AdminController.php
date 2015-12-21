@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Controller;
 
 use Zikula\RoutesModule\Controller\Base\AdminController as BaseAdminController;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -40,7 +39,6 @@ class AdminController extends BaseAdminController
     {
         return parent::indexAction($request);
     }
-    
 
     /**
      * This method cares for a redirect within an inline frame.
@@ -55,5 +53,6 @@ class AdminController extends BaseAdminController
     {
         return parent::handleInlineRedirectAction($idPrefix, $commandName, $id);
     }
+
     // feel free to add your own controller methods here
 }

@@ -45,17 +45,16 @@ function smarty_modifier_profilelinkbyuid($uid, $class = '', $image = '', $maxLe
     }
 
     $uid        = (float)$uid;
-    
+
     $profileModule = System::getVar('profilemodule', '');
 
     if ($uid && ($uid > 1) && !empty($profileModule) && ModUtil::available($profileModule)) {
         $userDisplayName = ModUtil::apiFunc($profileModule, 'user', 'getUserDisplayName', array('uid' => $uid));
-        
+
         if (empty($userDisplayName)) {
             $userDisplayName = UserUtil::getVar('uname', $uid);
         }
 
-        
         if (!empty($class)) {
             $class = ' class="' . DataUtil::formatForDisplay($class) . '"';
         }
@@ -82,7 +81,7 @@ function smarty_modifier_profilelinkbyuid($uid, $class = '', $image = '', $maxLe
         $profileLink = ''; // image for anonymous user should be "empty"
     } else {
         $uname    = UserUtil::getVar('uname', $uid);
-        $profileLink = DataUtil::formatForDisplay($uname);;
+        $profileLink = DataUtil::formatForDisplay($uname);
     }
 
     return $profileLink;

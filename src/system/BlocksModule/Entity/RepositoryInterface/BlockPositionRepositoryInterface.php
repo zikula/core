@@ -17,5 +17,6 @@ namespace Zikula\BlocksModule\Entity\RepositoryInterface;
 interface BlockPositionRepositoryInterface
 {
     public function findByName($name);
+
     public function getPositionChoiceArray();
 }

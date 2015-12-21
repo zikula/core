@@ -28,7 +28,6 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
      */
     protected $methods;
 
-
     /**
      * Construct a definition.
      *

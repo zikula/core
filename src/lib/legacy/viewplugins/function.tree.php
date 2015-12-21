@@ -32,7 +32,7 @@ function smarty_function_tree($params, Zikula_View $view)
     $config     = isset($params['config'])     ? $params['config']     : array();
 
     if (!isset($menuString) && !isset($menuArray) && !isset($treeArray)) {
-        $view->trigger_error(__f('Error! in %1$s: %2$s, %3$s or %4$s parameter must be specified.', array('smarty_function_tree', 'menustring', 'menuarray','treearray')));
+        $view->trigger_error(__f('Error! in %1$s: %2$s, %3$s or %4$s parameter must be specified.', array('smarty_function_tree', 'menustring', 'menuarray', 'treearray')));
 
         return false;
     }
@@ -40,7 +40,7 @@ function smarty_function_tree($params, Zikula_View $view)
     unset($params['menuarray']);
     unset($params['treearray']);
     unset($params['config']);
-    $config = array_merge($config,(array)$params);
+    $config = array_merge($config, (array)$params);
 
     $tree = new Zikula_Tree($config);
     if (isset($treeArray)) {
@@ -51,9 +51,8 @@ function smarty_function_tree($params, Zikula_View $view)
         $tree->loadStringData($menuString);
     }
     if (isset($params['assign'])) {
-        $view->assign($params['assign'],$tree->getHTML());
+        $view->assign($params['assign'], $tree->getHTML());
     } else {
         return $tree->getHTML();
     }
 }
-

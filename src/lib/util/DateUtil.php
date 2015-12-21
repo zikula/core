@@ -31,7 +31,7 @@ class DateUtil
      *
      * @return string The datetime formatted according to the specified format.
      */
-    public static function getDatetime($time=null, $format=null, $translateFormat = true)
+    public static function getDatetime($time = null, $format = null, $translateFormat = true)
     {
         if (is_null($format)) {
             $format = DATEFORMAT_FIXED;
@@ -121,7 +121,7 @@ class DateUtil
      *
      * @return string The datetime formatted according to the specified format.
      */
-    public static function formatDatetime($datetime=null, $format=DATEFORMAT_FIXED, $TZadjust=null)
+    public static function formatDatetime($datetime = null, $format = DATEFORMAT_FIXED, $TZadjust = null)
     {
         if ($datetime === null) {
             return '';
@@ -140,7 +140,7 @@ class DateUtil
 
         // adjust with the user timezone diff
         if (is_null($TZadjust)) {
-             $TZadjust = System::getVar('tzadjust', true); 
+            $TZadjust = System::getVar('tzadjust', true);
         }
         if ($TZadjust) {
             $time -= self::getTimezoneUserDiff();
@@ -170,7 +170,7 @@ class DateUtil
      *
      * @return string The datetime formatted according to the specified format.
      */
-    public static function buildDatetime($year, $month, $day, $hour=0, $minute=0, $second=0, $format=DATEFORMAT_FIXED)
+    public static function buildDatetime($year, $month, $day, $hour = 0, $minute = 0, $second = 0, $format = DATEFORMAT_FIXED)
     {
         $dTime = mktime($hour, $minute, $second, $month, $day, $year);
 
@@ -191,7 +191,7 @@ class DateUtil
      *
      * @return string The datetime formatted according to the specified format.
      */
-    public static function getDatetime_NextDay($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
+    public static function getDatetime_NextDay($num = 1, $format = DATEFORMAT_FIXED, $year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null)
     {
         $next = mktime($hour != null ? (int)$hour : date('H'),
                         $minute != null ? (int)$minute : date('i'),
@@ -217,7 +217,7 @@ class DateUtil
      *
      * @return string The datetime formatted according to the specified format.
      */
-    public static function getDatetime_NextWeek($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
+    public static function getDatetime_NextWeek($num = 1, $format = DATEFORMAT_FIXED, $year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null)
     {
         $num *= 7;
         $next = mktime($hour != null ? (int)$hour : date('H'),
@@ -244,7 +244,7 @@ class DateUtil
      *
      * @return string The datetime formatted according to the specified format.
      */
-    public static function getDatetime_NextMonth($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
+    public static function getDatetime_NextMonth($num = 1, $format = DATEFORMAT_FIXED, $year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null)
     {
         $next = mktime($hour != null ? (int)$hour : date('H'),
                         $minute != null ? (int)$minute : date('i'),
@@ -270,7 +270,7 @@ class DateUtil
      *
      * @return string The datetime formatted according to the specified format.
      */
-    public static function getDatetime_NextYear($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
+    public static function getDatetime_NextYear($num = 1, $format = DATEFORMAT_FIXED, $year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null)
     {
         $next = mktime($hour != null ? (int)$hour : date('H'),
                         $minute != null ? (int)$minute : date('i'),
@@ -290,7 +290,7 @@ class DateUtil
      *
      * @return string The Date portion of the specified datetime.
      */
-    public static function getDatetime_Date($datetime='', $format=DATEFORMAT_FIXED)
+    public static function getDatetime_Date($datetime = '', $format = DATEFORMAT_FIXED)
     {
         if (!$datetime) {
             $datetime = self::getDatetime();
@@ -316,7 +316,7 @@ class DateUtil
      *
      * @return string The Time portion of the specified datetime.
      */
-    public static function getDatetime_Time($datetime='', $format=DATEFORMAT_FIXED)
+    public static function getDatetime_Time($datetime = '', $format = DATEFORMAT_FIXED)
     {
         if (!$datetime) {
             $datetime = self::getDatetime();
@@ -431,7 +431,7 @@ class DateUtil
      *
      * @return float The difference in units of the specified field.
      */
-    public static function getDatetimeDiff_AsField($date1, $date2, $field=5)
+    public static function getDatetimeDiff_AsField($date1, $date2, $field = 5)
     {
         if (!is_numeric($date1)) {
             $date1 = strtotime($date1);
@@ -471,7 +471,7 @@ class DateUtil
      *
      * @return unixtimestamp or sqlDate.
      */
-    public static function getDateofKW($day, $kw, $year, $flag='s')
+    public static function getDateofKW($day, $kw, $year, $flag = 's')
     {
         $wday = date('w', mktime(0, 0, 0, 1, 1, $year)); // 1=Monday,...,7 = Sunday
 
@@ -580,7 +580,7 @@ class DateUtil
      *
      * @return string The timestamp or null in case of errors.
      */
-    public static function parseUIDate($text, $format=null)
+    public static function parseUIDate($text, $format = null)
     {
         return self::parseUIDateTime($text, $format);
     }
@@ -593,7 +593,7 @@ class DateUtil
      *
      * @return string The timestamp or null in case of errors.
      */
-    public static function parseUIDateTime($text, $dateformat=null)
+    public static function parseUIDateTime($text, $dateformat = null)
     {
         $format = self::getDateFormatData($dateformat);
         $yearPos = $format['matches']['year'];
@@ -647,7 +647,7 @@ class DateUtil
      *
      * @return integer A unix timestamp.
      */
-    public static function makeTimestamp($string='')
+    public static function makeTimestamp($string = '')
     {
         if (empty($string)) {
             // use 'now'
@@ -699,7 +699,7 @@ class DateUtil
      *
      * @return string Timezone translation (hour value).
      */
-    public static function getTimezoneText($tz=null)
+    public static function getTimezoneText($tz = null)
     {
         if (!is_numeric($tz)) {
             return false;
@@ -796,7 +796,7 @@ class DateUtil
      *
      * @return string The formatted time.
      */
-    public static function strftime($format, $timestamp=null)
+    public static function strftime($format, $timestamp = null)
     {
         if (empty($format)) {
             return null;
@@ -852,7 +852,7 @@ class DateUtil
      *
      * @return array Array of the meaning of each match.
      */
-    public static function getDateFormatData($dateformat=null)
+    public static function getDateFormatData($dateformat = null)
     {
         if (is_null($dateformat)) {
             $dateformat = __('%Y-%m-%d');
@@ -951,5 +951,4 @@ class DateUtil
         // TODO A throw exception here in 1.3.0 - drak
         throw new \Exception(__f('Dateformat did not match known format in %s', $dateformat));
     }
-
 }

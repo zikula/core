@@ -135,7 +135,7 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('currenttheme', System::getVar('Default_Theme'));
 
         // assign the values for the pager plugin
-        $this->view->assign('pager', array('numitems' => sizeof($allthemes),
+        $this->view->assign('pager', array('numitems' => count($allthemes),
             'itemsperpage' => $itemsperpage));
 
         return new Response($this->view->fetch('Admin/view.tpl'));
@@ -533,6 +533,7 @@ class AdminController extends \Zikula_AbstractController
                 'sepcolor' => $sepcolor, 'link' => $link, 'vlink' => $vlink, 'hover' => $hover);
         } else {
             $request->getSession()->getFlashBag()->add('error', $this->__('Notice: Please make sure you type an entry in every field. Your palette cannot be saved if you do not.'));
+
             return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_palettes', array('themename' => $themename), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -1343,7 +1344,9 @@ class AdminController extends \Zikula_AbstractController
         $this->setVar('cache_lifetime', $cache_lifetime);
 
         $cache_lifetime_mods = (int)$request->request->get('cache_lifetime_mods', 3600);
-        if ($cache_lifetime_mods < -1) $cache_lifetime_mods = 3600;
+        if ($cache_lifetime_mods < -1) {
+            $cache_lifetime_mods = 3600;
+        }
         $this->setVar('cache_lifetime_mods', $cache_lifetime_mods);
 
         $force_compile = (bool)$request->request->get('force_compile', false);
@@ -1387,7 +1390,6 @@ class AdminController extends \Zikula_AbstractController
             $cssjscombine_lifetime = 3600;
         }
         $this->setVar('cssjscombine_lifetime', $cssjscombine_lifetime);
-
 
         // render
         $render_compile_check = (bool)$request->request->get('render_compile_check', false);
@@ -1539,6 +1541,7 @@ class AdminController extends \Zikula_AbstractController
         $theme->clear_cssjscombinecache();
 
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted CSS/JS combination cached files.'));
+
         return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
     }
 
@@ -1676,6 +1679,7 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
 
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Cleared all cache and compile directories.'));
+
         return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
     }
 
@@ -1694,5 +1698,4 @@ class AdminController extends \Zikula_AbstractController
             throw new \InvalidArgumentException($this->__('Main theme file not found!'));
         }
     }
-
 }

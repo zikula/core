@@ -19,7 +19,6 @@ use Zikula\UsersModule\Helper\AuthenticationMethodHelper;
 use ModUtil;
 use UserUtil;
 use LogUtil;
-use Zikula_Session;
 use Zikula_Api_AbstractAuthentication;
 
 /**
@@ -712,6 +711,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
     public function redirectToRegistrationOnLoginError(array $args)
     {
         unset($args);
+
         return false;
     }
 }

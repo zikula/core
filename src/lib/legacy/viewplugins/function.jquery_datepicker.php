@@ -123,9 +123,9 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * mixed (php DateTime object or string formatted in same manner as display object
      * (optional) minimum date allowed to be selected in datepicker (default: null - choose any date)
      */
-    $minDate = (isset($params['mindate']) && ($params['mindate'] instanceof DateTime)) ? $params['mindate'] : null;   
+    $minDate = (isset($params['mindate']) && ($params['mindate'] instanceof DateTime)) ? $params['mindate'] : null;
     $minDateString = (isset($params['mindate']) && !($params['mindate'] instanceof DateTime)) ? $params['mindate'] : null;
-    unset($params['mindate']);      
+    unset($params['mindate']);
     /**$minDate = (isset($params['mindate'])) ? $params['mindate'] : null;
     unset($params['mindate']);*/
     /**
@@ -133,9 +133,9 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * mixed (php DateTime object or string formatted in same manner as display object
      * (optional) maximum date allowed to be selected in datepicker (default: null - choose any date)
      */
-    $maxDate = (isset($params['maxdate']) && ($params['maxdate'] instanceof DateTime)) ? $params['maxdate'] : null;   
+    $maxDate = (isset($params['maxdate']) && ($params['maxdate'] instanceof DateTime)) ? $params['maxdate'] : null;
     $maxDateString = (isset($params['maxdate']) && !($params['maxdate'] instanceof DateTime)) ? $params['maxdate'] : null;
-    unset($params['maxdate']);  
+    unset($params['maxdate']);
     /**
      * theme
      * string
@@ -160,7 +160,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
 
     // load required javascripts
     PageUtil::addVar("javascript", "jquery-ui");
-    if (!empty($lang) && ($lang <> 'en')) {
+    if (!empty($lang) && ($lang != 'en')) {
         PageUtil::addVar("javascript", "web/jquery-ui/ui/i18n/datepicker-$lang.js");
     }
     $jQueryTheme = is_dir("web/jquery-ui/themes/$jQueryTheme") ? $jQueryTheme : 'smoothness';
@@ -176,7 +176,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     if (isset($maxDate)) {
         $javascript .= "
         var {$displayElement}maxDate = new Date(\"{$maxDate->format($displayFormat_dateTime)}\");";
-    }    
+    }
     $javascript .= "    
         jQuery(document).ready(function() {
             jQuery('#$displayElement').datepicker({";
@@ -187,7 +187,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     }
     // add configured/computed parameters from plugin
     if (isset($valueStorageElement)) {
-        $javascript .="
+        $javascript .= "
                 altField: '#$valueStorageElement',
                 altFormat: '$valueStorageFormat_javascript',";
     }
@@ -196,14 +196,14 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
                 minDate: {$displayElement}minDate,";
     } elseif (!empty($minDateString)) {
         $javascript .= "
-                minDate: '$minDateString',";        
+                minDate: '$minDateString',";
     }
     if (!empty($maxDate)) {
         $javascript .= "
                 maxDate: {$displayElement}maxDate,";
     } elseif (!empty($maxDateString)) {
         $javascript .= "
-                maxDate: '$maxDateString',";        
+                maxDate: '$maxDateString',";
     }
     if (isset($onSelectCallback)) {
         $javascript .= "
@@ -223,14 +223,14 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     $readOnlyHtml = ($readOnly) ? " readonly='readonly'" : "";
 
     $name = isset($object) ? "{$object}[{$displayElement}]" : $displayElement;
-    
+
     // translate month name since DateTime::format() only returns English
     $english = explode(" ", 'January February March April May June July August September October November December');
     $translated = explode(" ", __('January February March April May June July August September October November December'));
     $displayDateString = ($defaultDate) ? str_replace($english, $translated, $defaultDate->format($displayFormat_dateTime)) : '';
 
     $class = isset($displayElement_class) ? " class='$displayElement_class'" : '';
-    
+
     $html = "<input type=\"text\"{$readOnlyHtml} id=\"{$displayElement}\"{$class} name=\"{$name}\" value=\"{$displayDateString}\" />\n";
     if (isset($valueStorageElement)) {
         $name = isset($object) ? "{$object}[{$valueStorageElement}]" : $valueStorageElement;

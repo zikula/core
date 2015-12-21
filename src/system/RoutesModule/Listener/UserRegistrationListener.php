@@ -27,7 +27,7 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     {
         return parent::getSubscribedEvents();
     }
-    
+
     /**
      * Listener for the `module.users.ui.registration.started` event.
      *
@@ -38,12 +38,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function started(GenericEvent $event)
     {
         parent::started($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -51,14 +51,14 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `module.users.ui.registration.succeeded` event.
      *
@@ -130,12 +130,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function succeeded(GenericEvent $event)
     {
         parent::succeeded($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -143,14 +143,14 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `module.users.ui.registration.failed` event.
      *
@@ -179,12 +179,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function failed(GenericEvent $event)
     {
         parent::failed($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -192,14 +192,14 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `user.registration.create` event.
      *
@@ -214,12 +214,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function create(GenericEvent $event)
     {
         parent::create($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -227,14 +227,14 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `user.registration.update` event.
      *
@@ -247,12 +247,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function update(GenericEvent $event)
     {
         parent::update($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -260,14 +260,14 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `user.registration.delete` event.
      *
@@ -281,12 +281,12 @@ class UserRegistrationListener extends BaseUserRegistrationListener
     public function delete(GenericEvent $event)
     {
         parent::delete($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -294,10 +294,10 @@ class UserRegistrationListener extends BaseUserRegistrationListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }

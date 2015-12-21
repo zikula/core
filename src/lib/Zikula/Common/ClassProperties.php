@@ -34,7 +34,6 @@ namespace Zikula\Common;
  */
 class ClassProperties
 {
-
     /**
      * Load all keys from properties to resepective properties using set{$key}.
      *

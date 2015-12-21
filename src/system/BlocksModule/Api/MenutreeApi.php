@@ -17,7 +17,6 @@ use ModUtil;
 use SecurityUtil;
 use Zikula\BlocksModule\MenutreeUtil;
 use ZLanguage;
-use Loader;
 use CategoryRegistryUtil;
 use CategoryUtil;
 use System;
@@ -60,11 +59,11 @@ class MenutreeApi extends \Zikula_AbstractApi
         // Convert extrainfo into flags
         $extrainfo = ($extrainfo) ? preg_split("/[\s]*,[\s]*/", trim($extrainfo)) : array();
         $flag = array();
-        $flag['flat']     = in_array("flat",     $extrainfo);  //now true or false
+        $flag['flat']     = in_array("flat", $extrainfo);  //now true or false
         $flag['category'] = in_array("category", $extrainfo);  //now true or false
 
         // Make sure admin API is loaded
-        if (!ModUtil::loadApi('ZikulaAdminModule','admin',true)) {
+        if (!ModUtil::loadApi('ZikulaAdminModule', 'admin', true)) {
             return false;
         }
 
@@ -110,7 +109,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             foreach ($categories as $item) {
                 if (SecurityUtil::checkPermission('ZikulaAdminModule::', "$item[catname]::$item[cid]", ACCESS_EDIT)) {
                     // Set up the menu information for this category
-                    $catinfo[$item['cid']] = array (
+                    $catinfo[$item['cid']] = array(
                             'id' => $idoffset, // will need this to be a parent
                             'no' => 0          // start with 0 sub menu items
                     );
@@ -118,7 +117,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                             $lang => array(
                                     'id'        => $idoffset++,
                                     'name'      => $item['catname'],
-                                    'href'      => ModUtil::url('ZikulaAdminModule','admin','adminpanel', array('acid' => $item['cid'])),
+                                    'href'      => ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel', array('acid' => $item['cid'])),
                                     'title'     => $item['description'],
                                     'className' => '',
                                     'state'     => 1,
@@ -168,8 +167,8 @@ class MenutreeApi extends \Zikula_AbstractApi
                                 'className' => '',
                                 'state'     => 1,
                                 'lang'      => $lang,
-                                'lineno'    => ($flag['category']) ? $catinfo[$cid]['no']++ :$lineno++,
-                                'parent'    => ($flag['category']) ? $catinfo[$cid]['id']   :$parentNode
+                                'lineno'    => ($flag['category']) ? $catinfo[$cid]['no']++ : $lineno++,
+                                'parent'    => ($flag['category']) ? $catinfo[$cid]['id']   : $parentNode
                         )
                 );
             }
@@ -249,7 +248,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         );
 
         // build second link - this one will be child of the first element
-        $secondLink = isset($extrainfo['foo']) ? ModUtil::url('News','user','display',array('sid' => $extrainfo['foo'])) : ModUtil::url('News');
+        $secondLink = isset($extrainfo['foo']) ? ModUtil::url('News', 'user', 'display', array('sid' => $extrainfo['foo'])) : ModUtil::url('News');
         $links['second'] = array(
                 $lang => array(
                         'id' => $idoffset++, // using this syntax you're always will have proper ids
@@ -265,7 +264,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         );
 
         // build third link - this one will be on the same level as first link
-        $thirdLink = isset($extrainfo['bar']) ? ModUtil::url('News','user','display',array('sid' => $extrainfo['bar'])) : ModUtil::url('News');
+        $thirdLink = isset($extrainfo['bar']) ? ModUtil::url('News', 'user', 'display', array('sid' => $extrainfo['bar'])) : ModUtil::url('News');
         $links['third'] = array(
                 $lang => array(
                         'id' => $idoffset++,
@@ -275,7 +274,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                         'className' => '',
                         'state' => $item['state'], // always use replaced item state for element at first level
                         'lang' => $lang,
-                        'lineno' => $item['lineno']+1,
+                        'lineno' => $item['lineno'] + 1,
                         'parent' => $item['parent'] // always use replaced item parent for element at first level
                 )
         );
@@ -308,11 +307,11 @@ class MenutreeApi extends \Zikula_AbstractApi
         $extrainfo  = isset($args['extrainfo']) && !empty($args['extrainfo']) ? $args['extrainfo'] : null;
 
         // $item and lang params are required
-        if(!$item || !$lang) {
+        if (!$item || !$lang) {
             return false;
         }
         // is there is extrainfo - convert it into array, parse_str is quite handy
-        if($extrainfo) {
+        if ($extrainfo) {
             parse_str($extrainfo, $extrainfo);
         }
         $extrainfo['tid'] = (is_numeric($extrainfo['tid'])) ? (int)$extrainfo['tid'] : -1;
@@ -329,7 +328,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         $lineno = 0;
         $links = array();
 
-        if(!$extrainfo['flat']) {
+        if (!$extrainfo['flat']) {
             $links['clip'] = array(
                 $lang => array(
                     'id' => $idoffset++, // always use id returned by api func for first element
@@ -348,7 +347,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         // need to set parent node id - if links are grouped - use item id
         // otherwise parent id of replaced menu node
         $parentNode = (!$extrainfo['flat']) ? $links['clip'][$lang]['id'] : $item['parent'];
-    
+
         // Uses the API to get the list of publications
         // More parameters can be added here if needed, Clip_User_getall has a lot of options
         $result = ModUtil::apiFunc('Clip', 'user', 'getall',
@@ -359,7 +358,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                                      'array'        => true));
         $publist = $result['publist'];
 
-        foreach((array)$publist as $pub) {
+        foreach ((array)$publist as $pub) {
             // skip publications not online
             if ($pub['core_online'] != 1) {
                 continue;
@@ -367,7 +366,7 @@ class MenutreeApi extends \Zikula_AbstractApi
 
             $links[$pub['id']] = array(
                 $lang => array(
-                    'id' => $idoffset+$pub['id'],
+                    'id' => $idoffset + $pub['id'],
                     'name' => $pub[$extrainfo['fieldname']],
                     'href' => ModUtil::url('Clip', 'user', 'display', array('tid' => $extrainfo['tid'], 'pid' => $pub['core_pid'])),
                     'title' => $pub[$extrainfo['fieldname']],
@@ -415,7 +414,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             parse_str($extrainfo, $extrainfo);
         }
         $extrainfo['parent'] = isset($extrainfo['parent']) ? (int)$extrainfo['parent'] : 0;
-        $extrainfo['groupby'] = isset($extrainfo['groupby'])? $extrainfo['groupby'] : 'menuitem';
+        $extrainfo['groupby'] = isset($extrainfo['groupby']) ? $extrainfo['groupby'] : 'menuitem';
 
         // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = MenutreeUtil::getIdOffset($item['id']);
@@ -470,7 +469,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             }
             $links[$page['id']] = array(
                     $lang => array(
-                            'id' => $idoffset+$page['id'],
+                            'id' => $idoffset + $page['id'],
                             'name' => isset($page['translatedTitle']) && !empty($page['translatedTitle']) ? $page['translatedTitle'] : $page['title'],
                             'href' => ModUtil::url('Content', 'user', 'view', array('pid' => $page['id'])),
                             'title' => isset($page['translatedTitle']) && !empty($page['translatedTitle']) ? $page['translatedTitle'] : $page['title'],
@@ -600,8 +599,8 @@ class MenutreeApi extends \Zikula_AbstractApi
         if ($extrainfo) {
             parse_str($extrainfo, $extrainfo);
         }
-        $extrainfo['flat'] = isset($extrainfo['flat'])? (bool)$extrainfo['flat'] : false;
-        $extrainfo['links'] = isset($extrainfo['links'])? explode(',',$extrainfo['links']) : array('all');
+        $extrainfo['flat'] = isset($extrainfo['flat']) ? (bool)$extrainfo['flat'] : false;
+        $extrainfo['links'] = isset($extrainfo['links']) ? explode(',', $extrainfo['links']) : array('all');
 
         // get id for first element, use api func to avoid id conflicts inside menu
         $idoffset = MenutreeUtil::getIdOffset($item['id']);
@@ -630,7 +629,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         }
         $parentNode = !$extrainfo['flat'] ? $links['news'][$lang]['id'] : $item['parent'];
 
-        if (in_array('all',$extrainfo['links']) || in_array('view',$extrainfo['links'])) {
+        if (in_array('all', $extrainfo['links']) || in_array('view', $extrainfo['links'])) {
             $links['view'] = array(
                     $lang => array(
                             'id' => $idoffset++,
@@ -645,12 +644,12 @@ class MenutreeApi extends \Zikula_AbstractApi
                     )
             );
         }
-        if (in_array('all',$extrainfo['links']) || in_array('arch',$extrainfo['links'])) {
+        if (in_array('all', $extrainfo['links']) || in_array('arch', $extrainfo['links'])) {
             $links['arch'] = array(
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Archive', $dom),
-                            'href' => ModUtil::url('News','user','archives'),
+                            'href' => ModUtil::url('News', 'user', 'archives'),
                             'title' => __('Archive', $dom),
                             'className' => '',
                             'state' => 1,
@@ -660,12 +659,12 @@ class MenutreeApi extends \Zikula_AbstractApi
                     )
             );
         }
-        if (in_array('all',$extrainfo['links']) || in_array('add',$extrainfo['links'])) {
+        if (in_array('all', $extrainfo['links']) || in_array('add', $extrainfo['links'])) {
             $links['add'] = array(
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Submit news', $dom),
-                            'href' => ModUtil::url('News','user','new'),
+                            'href' => ModUtil::url('News', 'user', 'new'),
                             'title' => __('Submit news', $dom),
                             'className' => '',
                             'state' => 1,
@@ -675,7 +674,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                     )
             );
         }
-        if (in_array('all',$extrainfo['links']) || in_array('cat',$extrainfo['links'])) {
+        if (in_array('all', $extrainfo['links']) || in_array('cat', $extrainfo['links'])) {
             if (!$extrainfo['flat']) {
                 $links['cat'] = array(
                         $lang => array(
@@ -693,13 +692,13 @@ class MenutreeApi extends \Zikula_AbstractApi
             }
             $catParentNode = !$extrainfo['flat'] ? $links['cat'][$lang]['id'] : $item['parent'];
 
-            $catregistry  = CategoryRegistryUtil::getRegisteredModuleCategories ('News', 'stories');
+            $catregistry  = CategoryRegistryUtil::getRegisteredModuleCategories('News', 'stories');
             if (!empty($catregistry)) {
                 $multicategory = count($catregistry) > 1;
                 $catLinks = array();
                 foreach ($catregistry as $prop => $catid) {
                     if ($multicategory && !$extrainfo['flat']) {
-                        $parentCategory = CategoryUtil::getCategoryByID ($catid);
+                        $parentCategory = CategoryUtil::getCategoryByID($catid);
                         $catLinks[$catid] =  array(
                                 $lang => array(
                                         'id' => $idoffset++,
@@ -720,7 +719,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                                 $lang => array(
                                         'id' => $idoffset++,
                                         'name' => isset($cat['display_name'][$lang]) && !empty($cat['display_name'][$lang]) ? $cat['display_name'][$lang] : $cat['name'],
-                                        'href' => ModUtil::url('News','user','view',array('prop' => $prop, 'cat' => $cat['name'])),
+                                        'href' => ModUtil::url('News', 'user', 'view', array('prop' => $prop, 'cat' => $cat['name'])),
                                         'title' => isset($cat['display_name'][$lang]) && !empty($cat['display_name'][$lang]) ? $cat['display_name'][$lang] : $cat['name'],
                                         'className' => '',
                                         'state' => 1,
@@ -737,7 +736,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         }
 
         // sort links in order provided in menutree
-        if (!in_array('all',$extrainfo['links'])) {
+        if (!in_array('all', $extrainfo['links'])) {
             $sortedLinks = array();
             if (!$extrainfo['flat']) {
                 $sortedLinks[] = $links['news'];
@@ -862,7 +861,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Logout', $dom),
-                            'href' => ModUtil::url('ZikulaUsersModule','user','logout'),
+                            'href' => ModUtil::url('ZikulaUsersModule', 'user', 'logout'),
                             'title' => __('Logout', $dom),
                             'className' => '',
                             'state' => 1,
@@ -884,7 +883,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                             'id' => $idoffset++,
                             'name' => __('Login', $dom),
                             'href' => ModUtil::url('ZikulaUsersModule', 'user', 'login', $loginArgs),
-                            'title' =>__('Login', $dom),
+                            'title' => __('Login', $dom),
                             'className' => '',
                             'state' => 1,
                             'lang' => $lang,
@@ -896,7 +895,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Register', $dom),
-                            'href' => ModUtil::url('ZikulaUsersModule','user','register'),
+                            'href' => ModUtil::url('ZikulaUsersModule', 'user', 'register'),
                             'title' => __('Register', $dom),
                             'className' => '',
                             'state' => 1,
@@ -909,7 +908,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Lost password', $dom),
-                            'href' => ModUtil::url('ZikulaUsersModule','user','lostpassword'),
+                            'href' => ModUtil::url('ZikulaUsersModule', 'user', 'lostpassword'),
                             'title' => __('Lost password', $dom),
                             'className' => '',
                             'state' => 1,

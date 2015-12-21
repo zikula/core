@@ -21,7 +21,6 @@ use Zikula_View;
 use ModUtil;
 use SecurityUtil;
 use UserUtil;
-use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -90,7 +89,7 @@ class AdminController extends \Zikula_AbstractController
         if (!empty($testuser) && !empty($testcomponent) && !empty($testinstance)) {
             // we have everything we need for an effective permission check
             $testuid = UserUtil::getIdFromName($testuser);
-            if ($testuid <> false) {
+            if ($testuid != false) {
                 if (SecurityUtil::checkPermission($testcomponent, $testinstance, $testlevel, $testuid)) {
                     $testresult = '<span id="permissiontestinfogreen">' . $this->__('permission granted.') . '</span>';
                 } else {
@@ -118,7 +117,7 @@ class AdminController extends \Zikula_AbstractController
         $enableFilter = $this->getVar('filter', 1);
         if ($enableFilter == 1) {
             if ($filterGroup != -1) {
-                    $qb->where('(p.gid = :gid)')
+                $qb->where('(p.gid = :gid)')
                        ->setParameter('gid', $filterGroup);
             }
             if ($filterComponent != -1) {
@@ -214,7 +213,8 @@ class AdminController extends \Zikula_AbstractController
                     'permid' => $obj['pid'],
                     'inserturl' => $inserturl,
                     'editurl' => $editurl,
-                    'deleteurl' => $deleteurl);            }
+                    'deleteurl' => $deleteurl);
+            }
         }
 
         $components = array(-1 => $this->__('All components'));        // read all perms to extract components
@@ -576,8 +576,8 @@ class AdminController extends \Zikula_AbstractController
         }
 
         return new RedirectResponse($this->get('router')->generate(
-                'zikulapermissionsmodule_admin_view', 
-                array('filter-group' => $permgrp), 
+                'zikulapermissionsmodule_admin_view',
+                array('filter-group' => $permgrp),
                 RouterInterface::ABSOLUTE_URL
         ));
     }
@@ -685,7 +685,7 @@ class AdminController extends \Zikula_AbstractController
         $this->setVar('lockadmin', $lockadmin);
 
         $adminid = (int)$request->request->get('adminid', 1);
-        if ($adminid <> 0) {
+        if ($adminid != 0) {
             $perm = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $adminid);
             if (!$perm) {
                 $adminid = 0;

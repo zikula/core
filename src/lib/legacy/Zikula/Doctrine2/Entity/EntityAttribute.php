@@ -82,10 +82,7 @@ abstract class Zikula_Doctrine2_Entity_EntityAttribute extends Zikula_EntityAcce
         $this->value = $value;
     }
 
-
     abstract public function getEntity();
 
     abstract public function setEntity($entity);
 }
-
-

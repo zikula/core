@@ -60,5 +60,4 @@ interface Zikula_TranslatableInterface
      * @return string
      */
     public function _fn($m1, $m2, $n, $param);
-
 }

@@ -20,7 +20,6 @@ use Zikula\Core\Event\GenericEvent;
  */
 class UserLoginListener extends BaseUserLoginListener
 {
-    
     /**
      * Makes our handlers known to the event system.
      */
@@ -28,7 +27,7 @@ class UserLoginListener extends BaseUserLoginListener
     {
         return parent::getSubscribedEvents();
     }
-    
+
     /**
      * Listener for the `module.users.ui.login.started` event.
      *
@@ -51,12 +50,12 @@ class UserLoginListener extends BaseUserLoginListener
     public function started(GenericEvent $event)
     {
         parent::started($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -64,14 +63,14 @@ class UserLoginListener extends BaseUserLoginListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `module.users.ui.login.veto` event.
      *
@@ -192,12 +191,12 @@ class UserLoginListener extends BaseUserLoginListener
     public function veto(GenericEvent $event)
     {
         parent::veto($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -205,14 +204,14 @@ class UserLoginListener extends BaseUserLoginListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `module.users.ui.login.succeeded` event.
      *
@@ -249,12 +248,12 @@ class UserLoginListener extends BaseUserLoginListener
     public function succeeded(GenericEvent $event)
     {
         parent::succeeded($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -262,14 +261,14 @@ class UserLoginListener extends BaseUserLoginListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `module.users.ui.login.failed` event.
      *
@@ -298,12 +297,12 @@ class UserLoginListener extends BaseUserLoginListener
     public function failed(GenericEvent $event)
     {
         parent::failed($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -311,10 +310,10 @@ class UserLoginListener extends BaseUserLoginListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }

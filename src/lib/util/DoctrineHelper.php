@@ -48,7 +48,7 @@ class DoctrineHelper
         }
     }
 
-    public static function updateSchema(EntityManager $em, array $classes, $saveMode=true)
+    public static function updateSchema(EntityManager $em, array $classes, $saveMode = true)
     {
         $tool = new SchemaTool($em);
         $metaClasses = array();

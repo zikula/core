@@ -15,7 +15,6 @@
 namespace Zikula\BlocksModule\Tests\Collector;
 
 use Zikula\BlocksModule\Collector\BlockCollector;
-use Zikula\Core\BlockControllerInterface;
 
 class BlockCollectorTest extends \PHPUnit_Framework_TestCase
 {

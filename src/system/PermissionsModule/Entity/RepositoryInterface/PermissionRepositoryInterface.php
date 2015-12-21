@@ -14,8 +14,6 @@
 
 namespace Zikula\PermissionsModule\Entity\RepositoryInterface;
 
-use Zikula\PermissionsModule\Entity\PermissionEntity;
-
 interface PermissionRepositoryInterface
 {
     public function getPermissionsByGroups(array $groups);

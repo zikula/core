@@ -48,7 +48,7 @@ class Zikula_Doctrine_Query extends Doctrine_Query
      *
      * @return Zikula_Doctrine_Query
      */
-    public function addWhereCategories($categories, $joinWithAnd=false)
+    public function addWhereCategories($categories, $joinWithAnd = false)
     {
         // getRootAlias() triggers from parsing => getRoot() works now
         $rootAlias = $this->getRootAlias();

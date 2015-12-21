@@ -12,8 +12,6 @@
 
 namespace Zikula\RoutesModule\Api;
 
-use SecurityUtil;
-
 /**
  * This is the Admin api helper class.
  */

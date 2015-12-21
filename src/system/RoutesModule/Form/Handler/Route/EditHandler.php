@@ -16,7 +16,6 @@ use ModUtil;
 use Symfony\Component\Routing\RouteCollection;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Form\Handler\Route\Base\EditHandler as BaseEditHandler;
-use Zikula\RoutesModule\Routing\Util as RoutingUtil;
 use Zikula_Form_View;
 
 /**
@@ -64,8 +63,8 @@ class EditHandler extends BaseEditHandler
 
     private function sanitizeInput($entityData)
     {
-        list($controller, ) = $this->sanitizeController($entityData['controller']);
-        list($action, ) = $this->sanitizeAction($entityData['action']);
+        list($controller) = $this->sanitizeController($entityData['controller']);
+        list($action) = $this->sanitizeAction($entityData['action']);
 
         $entityData['controller'] = $controller;
         $entityData['action'] = $action;

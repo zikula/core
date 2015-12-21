@@ -50,7 +50,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function generateI18nPatterns($routeName, Route $route)
     {
@@ -112,7 +112,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function addResources(RouteCollection $i18nCollection)
     {

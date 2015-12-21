@@ -40,6 +40,7 @@ class CategoryModelTransformer implements DataTransformerInterface
         if (!empty($array) && isset($array[$this->registryId])) {
             /** @var ArrayCollection $arrayCollection */
             $arrayCollection = $array[$this->registryId];
+
             return $arrayCollection->getValues();
         }
 

@@ -15,7 +15,6 @@
 namespace Zikula\UsersModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class UserRepository extends EntityRepository implements UserRepositoryInterface

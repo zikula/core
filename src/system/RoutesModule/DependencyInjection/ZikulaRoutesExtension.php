@@ -14,7 +14,6 @@ namespace Zikula\RoutesModule\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Zikula\RoutesModule\DependencyInjection\Base\ZikulaRoutesExtension as BaseZikulaRoutesExtension;
 
@@ -32,7 +31,7 @@ class ZikulaRoutesExtension extends BaseZikulaRoutesExtension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        parent::load($configs,$container);
+        parent::load($configs, $container);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 

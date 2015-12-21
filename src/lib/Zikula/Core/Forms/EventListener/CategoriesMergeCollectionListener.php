@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormEvents;
 
 class CategoriesMergeCollectionListener implements EventSubscriberInterface
 {
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
         return array(FormEvents::BIND => 'onBindNormData');
     }
@@ -21,7 +21,7 @@ class CategoriesMergeCollectionListener implements EventSubscriberInterface
 
         if (!$collection) {
             $collection = $data;
-            
+
             foreach ($data as $key => $value) {
                 $value->setEntity($rootEntity);
             }

@@ -20,7 +20,6 @@ use Zikula\Core\Event\GenericEvent;
  */
 class CoreListener extends BaseCoreListener
 {
-    
     /**
      * Makes our handlers known to the event system.
      */
@@ -28,7 +27,7 @@ class CoreListener extends BaseCoreListener
     {
         return parent::getSubscribedEvents();
     }
-    
+
     /**
      * Listener for the `api.method_not_found` event.
      *
@@ -45,12 +44,12 @@ class CoreListener extends BaseCoreListener
     public function apiMethodNotFound(GenericEvent $event)
     {
         parent::apiMethodNotFound($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -58,14 +57,14 @@ class CoreListener extends BaseCoreListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `core.preinit` event.
      *
@@ -76,12 +75,12 @@ class CoreListener extends BaseCoreListener
     public function preInit(GenericEvent $event)
     {
         parent::preInit($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -89,14 +88,14 @@ class CoreListener extends BaseCoreListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `core.init` event.
      *
@@ -108,12 +107,12 @@ class CoreListener extends BaseCoreListener
     public function init(GenericEvent $event)
     {
         parent::init($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -121,14 +120,14 @@ class CoreListener extends BaseCoreListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `core.postinit` event.
      *
@@ -139,12 +138,12 @@ class CoreListener extends BaseCoreListener
     public function postInit(GenericEvent $event)
     {
         parent::postInit($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -152,14 +151,14 @@ class CoreListener extends BaseCoreListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }
-    
+
     /**
      * Listener for the `controller.method_not_found` event.
      *
@@ -176,12 +175,12 @@ class CoreListener extends BaseCoreListener
     public function controllerMethodNotFound(GenericEvent $event)
     {
         parent::controllerMethodNotFound($event);
-    
+
         // you can access general data available in the event
-        
+
         // the event name
         // echo 'Event: ' . $event->getName();
-        
+
         // type of current request: MASTER_REQUEST or SUB_REQUEST
         // if a listener should only be active for the master request,
         // be sure to check that at the beginning of your method
@@ -189,10 +188,10 @@ class CoreListener extends BaseCoreListener
         //     // don't do anything if it's not the master request
         //     return;
         // }
-        
+
         // kernel instance handling the current request
         // $kernel = $event->getKernel();
-        
+
         // the currently handled request
         // $request = $event->getRequest();
     }

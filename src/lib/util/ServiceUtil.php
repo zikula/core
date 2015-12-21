@@ -106,7 +106,7 @@ class ServiceUtil
      *
      * @return void
      */
-    public static function registerPersistentService($id, Zikula_ServiceManager_Definition $definition, $shared=true)
+    public static function registerPersistentService($id, Zikula_ServiceManager_Definition $definition, $shared = true)
     {
         $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', array());
         $handlers[$id] = array('definition' => $definition, 'shared' => $shared);

@@ -77,7 +77,6 @@ class UserVerificationEntity extends EntityAccess
      */
     private $created_dt;
 
-
     /**
      * constructor
      */

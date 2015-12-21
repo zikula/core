@@ -13,7 +13,6 @@
 
 namespace Zikula\ThemeModule\Api;
 
-use ModUtil;
 use System;
 
 /**

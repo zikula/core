@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -30,7 +29,7 @@ class UsersListener implements EventSubscriberInterface
             'module.users.config.updated' => array('configUpdated', 5)
         );
     }
-    
+
     /**
      * Listener for the `module.users.config.updated` event.
      *

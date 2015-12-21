@@ -84,7 +84,6 @@ class PermissionEntity extends EntityAccess
      */
     private $bond;
 
-
     /**
      * constructor
      */

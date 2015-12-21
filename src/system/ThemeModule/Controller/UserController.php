@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+// used in annotations - do not remove
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -50,6 +50,7 @@ class UserController extends \Zikula_AbstractController
         // check if theme switching is allowed
         if (!System::getVar('theme_change')) {
             $request->getSession()->getFlashBag()->add('warning', $this->__('Notice: Theme switching is currently disabled.'));
+
             return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
         }
 
@@ -88,7 +89,7 @@ class UserController extends \Zikula_AbstractController
             }
         }
 
-        $previewthemes = array_slice($previewthemes, $startnum-1, $itemsperpage);
+        $previewthemes = array_slice($previewthemes, $startnum - 1, $itemsperpage);
 
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
@@ -98,7 +99,7 @@ class UserController extends \Zikula_AbstractController
                    ->assign('defaulttheme', ThemeUtil::getInfo(ThemeUtil::getIDFromName(System::getVar('Default_Theme'))));
 
         // assign the values for the pager plugin
-        $this->view->assign('pager', array('numitems' => sizeof($allthemes),
+        $this->view->assign('pager', array('numitems' => count($allthemes),
                                            'itemsperpage' => $itemsperpage));
 
         return new Response($this->view->fetch('User/main.tpl'));

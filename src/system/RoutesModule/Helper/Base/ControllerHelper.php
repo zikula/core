@@ -68,10 +68,10 @@ class ControllerHelper
         if (!in_array($context, array('controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'))) {
             $context = 'controllerAction';
         }
-    
+
         $allowedObjectTypes = array();
         $allowedObjectTypes[] = 'route';
-    
+
         return $allowedObjectTypes;
     }
 
@@ -88,9 +88,9 @@ class ControllerHelper
         if (!in_array($context, array('controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'))) {
             $context = 'controllerAction';
         }
-    
+
         $defaultObjectType = 'route';
-    
+
         return $defaultObjectType;
     }
 
@@ -146,7 +146,7 @@ class ControllerHelper
                     $id = $defaultValue;
                 }
             }
-    
+
             // fallback if id has not been found yet
             if (!$id && $idField != 'id' && count($idFields) == 1) {
                 $defaultValue = isset($args['id']) && is_numeric($args['id']) ? $args['id'] : 0;
@@ -160,7 +160,7 @@ class ControllerHelper
             }
             $idValues[$idField] = $id;
         }
-    
+
         return $idValues;
     }
 
@@ -176,13 +176,13 @@ class ControllerHelper
         if (!count($idValues)) {
             return false;
         }
-    
+
         foreach ($idValues as $idField => $idValue) {
             if (!$idValue) {
                 return false;
             }
         }
-    
+
         return true;
     }
 
@@ -200,7 +200,7 @@ class ControllerHelper
                             array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'),
                             $name);
         $name = DataUtil::formatPermalink($name);
-    
+
         return strtolower($name);
     }
 }

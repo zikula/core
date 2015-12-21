@@ -12,7 +12,6 @@
 
 namespace Zikula\RoutesModule\Api\Base;
 
-use ModUtil;
 use Zikula_AbstractBase;
 
 /**
@@ -31,19 +30,19 @@ class SelectionApi extends Zikula_AbstractBase
     {
         $objectType = $this->determineObjectType($args, 'getIdFields');
         $entityClass = 'ZikulaRoutesModule:' . ucfirst($objectType) . 'Entity';
-    
+
         $em = $this->get('doctrine.entitymanager');
         $meta = $em->getClassMetadata($entityClass);
-    
+
         if ($this->hasCompositeKeys($objectType)) {
             $idFields = $meta->getIdentifierFieldNames();
         } else {
             $idFields = array($meta->getSingleIdentifierFieldName());
         }
-    
+
         return $idFields;
     }
-    
+
     /**
      * Checks whether a certain entity type uses composite keys or not.
      *
@@ -54,10 +53,10 @@ class SelectionApi extends Zikula_AbstractBase
     protected function hasCompositeKeys($objectType)
     {
         $controllerHelper = $this->get('zikularoutesmodule.controller_helper');
-    
+
         return $controllerHelper->hasCompositeKeys($objectType);
     }
-    
+
     /**
      * Selects a single entity.
      *
@@ -75,16 +74,16 @@ class SelectionApi extends Zikula_AbstractBase
         }
         $objectType = $this->determineObjectType($args, 'getEntity');
         $repository = $this->getRepository($objectType);
-    
+
         $idValues = $args['id'];
         $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
         $slimMode = isset($args['slimMode']) ? ((bool) $args['slimMode']) : false;
-    
+
         $entity = $repository->selectById($idValues, $useJoins, $slimMode);
-    
+
         return $entity;
     }
-    
+
     /**
      * Selects a list of entities by different criteria.
      *
@@ -95,26 +94,26 @@ class SelectionApi extends Zikula_AbstractBase
      * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true).
      * @param boolean $args['slimMode'] If activated only some basic fields are selected without using any joins (optional) (default=false).
      *
-     * @return Array with retrieved collection.
+     * @return array with retrieved collection.
      */
     public function getEntities(array $args = array())
     {
         $objectType = $this->determineObjectType($args, 'getEntities');
         $repository = $this->getRepository($objectType);
-    
+
         $idList = isset($args['idList']) && is_array($args['idList']) ? $args['idList'] : array();
         $where = isset($args['where']) ? $args['where'] : '';
         $orderBy = isset($args['orderBy']) ? $args['orderBy'] : '';
         $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
         $slimMode = isset($args['slimMode']) ? ((bool) $args['slimMode']) : false;
-    
+
         if (!empty($idList)) {
-           return $repository->selectByIdList($idList, $useJoins, $slimMode);
+            return $repository->selectByIdList($idList, $useJoins, $slimMode);
         }
-    
+
         return $repository->selectWhere($where, $orderBy, $useJoins, $slimMode);
     }
-    
+
     /**
      * Selects a list of entities by different criteria.
      *
@@ -126,23 +125,23 @@ class SelectionApi extends Zikula_AbstractBase
      * @param boolean $args['useJoins']       Whether to include joining related objects (optional) (default=true).
      * @param boolean $args['slimMode']       If activated only some basic fields are selected without using any joins (optional) (default=false).
      *
-     * @return Array with retrieved collection and amount of total records affected by this query.
+     * @return array with retrieved collection and amount of total records affected by this query.
      */
     public function getEntitiesPaginated(array $args = array())
     {
         $objectType = $this->determineObjectType($args, 'getEntitiesPaginated');
         $repository = $this->getRepository($objectType);
-    
+
         $where = isset($args['where']) ? $args['where'] : '';
         $orderBy = isset($args['orderBy']) ? $args['orderBy'] : '';
         $currentPage = isset($args['currentPage']) ? $args['currentPage'] : 1;
         $resultsPerPage = isset($args['resultsPerPage']) ? $args['resultsPerPage'] : 25;
         $useJoins = isset($args['useJoins']) ? ((bool) $args['useJoins']) : true;
         $slimMode = isset($args['slimMode']) ? ((bool) $args['slimMode']) : false;
-    
+
         return $repository->selectWherePaginated($where, $orderBy, $currentPage, $resultsPerPage, $useJoins, $slimMode);
     }
-    
+
     /**
      * Determines object type using controller util methods.
      *
@@ -159,10 +158,10 @@ class SelectionApi extends Zikula_AbstractBase
         if (!in_array($objectType, $controllerHelper->getObjectTypes('api', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('api', $utilArgs);
         }
-    
+
         return $objectType;
     }
-    
+
     /**
      * Returns repository instance for a certain object type.
      *
@@ -175,9 +174,9 @@ class SelectionApi extends Zikula_AbstractBase
         if (empty($objectType)) {
             throw new \InvalidArgumentException(__('Invalid object type received.'));
         }
-    
+
         $repository = $this->get('zikularoutesmodule.' . $objectType . '_factory')->getRepository();
-    
+
         return $repository;
     }
 }

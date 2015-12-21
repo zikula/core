@@ -33,7 +33,6 @@ class BlockFilterType extends AbstractType
         $this->blockFilterApi = $blockFilterApi;
     }
 
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

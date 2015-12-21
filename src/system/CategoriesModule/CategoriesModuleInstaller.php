@@ -13,11 +13,8 @@
 
 namespace Zikula\CategoriesModule;
 
-use DBUtil;
-use Doctrine_Manager;
 use DoctrineUtil;
 use DoctrineHelper;
-use DataUtil;
 use ZLanguage;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 
@@ -67,7 +64,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
         $this->insertData_10($adminUserObj);
 
         // Set autonumber to 10000 (for DB's that support autonumber fields)
-        $cat = new CategoryEntity;
+        $cat = new CategoryEntity();
         $cat->setId(9999);
         $cat->setLu_uid($adminUserObj);
         $cat->setCr_uid($adminUserObj);

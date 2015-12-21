@@ -105,7 +105,6 @@ class CategoriesMapobj
      */
     private $luUid;
 
-
     /**
      * Get id
      *
@@ -125,7 +124,7 @@ class CategoriesMapobj
     public function setModname($modname)
     {
         $this->modname = $modname;
-    
+
         return $this;
     }
 
@@ -148,7 +147,7 @@ class CategoriesMapobj
     public function setTablename($tablename)
     {
         $this->tablename = $tablename;
-    
+
         return $this;
     }
 
@@ -171,7 +170,7 @@ class CategoriesMapobj
     public function setObjId($objId)
     {
         $this->objId = $objId;
-    
+
         return $this;
     }
 
@@ -194,7 +193,7 @@ class CategoriesMapobj
     public function setObjIdcolumn($objIdcolumn)
     {
         $this->objIdcolumn = $objIdcolumn;
-    
+
         return $this;
     }
 
@@ -217,7 +216,7 @@ class CategoriesMapobj
     public function setRegId($regId)
     {
         $this->regId = $regId;
-    
+
         return $this;
     }
 
@@ -240,7 +239,7 @@ class CategoriesMapobj
     public function setRegProperty($regProperty)
     {
         $this->regProperty = $regProperty;
-    
+
         return $this;
     }
 
@@ -263,7 +262,7 @@ class CategoriesMapobj
     public function setCategoryId($categoryId)
     {
         $this->categoryId = $categoryId;
-    
+
         return $this;
     }
 
@@ -286,7 +285,7 @@ class CategoriesMapobj
     public function setObjStatus($objStatus)
     {
         $this->objStatus = $objStatus;
-    
+
         return $this;
     }
 
@@ -309,7 +308,7 @@ class CategoriesMapobj
     public function setCrDate($crDate)
     {
         $this->crDate = $crDate;
-    
+
         return $this;
     }
 
@@ -332,7 +331,7 @@ class CategoriesMapobj
     public function setCrUid($crUid)
     {
         $this->crUid = $crUid;
-    
+
         return $this;
     }
 
@@ -355,7 +354,7 @@ class CategoriesMapobj
     public function setLuDate($luDate)
     {
         $this->luDate = $luDate;
-    
+
         return $this;
     }
 
@@ -378,7 +377,7 @@ class CategoriesMapobj
     public function setLuUid($luUid)
     {
         $this->luUid = $luUid;
-    
+
         return $this;
     }
 

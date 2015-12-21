@@ -27,7 +27,7 @@
  *
  * @return string The modified output.
  */
-function smarty_modifier_htmlentities($string, $quote_style=ENT_NOQUOTES, $charset='UTF-8', $double_encode=false)
+function smarty_modifier_htmlentities($string, $quote_style = ENT_NOQUOTES, $charset = 'UTF-8', $double_encode = false)
 {
     return htmlentities($string, $quote_style, $charset, $double_encode);
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Zikula\Bundle\CoreBundle\Bundle\Helper;
 
 use Doctrine\DBAL\Connection;
@@ -69,7 +68,7 @@ class BootstrapHelper
         $res = $qb->execute();
         foreach ($res->fetchAll() as $row) {
             if (!in_array($row['bundlename'], array_keys($array))) {
-                    $this->removeById($row['id']);
+                $this->removeById($row['id']);
             }
         }
 

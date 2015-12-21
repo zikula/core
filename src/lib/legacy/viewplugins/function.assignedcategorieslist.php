@@ -78,7 +78,6 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
                 } elseif (isset($name) && !empty($name)) {
                     $result .= "<li>\n" . $name . "</li>\n";
                 }
-
             }
         } else {
             $result .= '<li>' . DataUtil::formatForDisplay(__('No assigned categories.')) . '</li>';
@@ -103,7 +102,6 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
                 } elseif (isset($category['name'])) {
                     $result .= "<li>\n" . $category['name'] . "</li>\n";
                 }
-
             }
         } else {
             $result .= '<li>' . DataUtil::formatForDisplay(__('No assigned categories.')) . '</li>';
