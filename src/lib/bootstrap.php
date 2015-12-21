@@ -27,6 +27,7 @@ class_alias('\Zikula\UsersModule\Entity\UserEntity', '\Zikula\Module\UsersModule
 class_alias('\Zikula\ExtensionsModule\Entity\ExtensionVarEntity', '\Zikula\Core\Doctrine\Entity\ExtensionVarEntity', true);
 class_alias('\Zikula\ExtensionsModule\Entity\ExtensionEntity', '\Zikula\Core\Doctrine\Entity\ExtensionEntity', true);
 class_alias('\Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity', '\Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity', true);
+class_alias('\Zikula\CategoriesModule\Entity\AbstractCategoryAssignment', '\Zikula\Core\Doctrine\Entity\AbstractEntityCategory', true);
 
 $kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
 if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
