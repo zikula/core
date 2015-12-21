@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Doctrine\Entity;
+namespace Zikula\CategoriesModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
@@ -23,7 +23,7 @@ use Zikula\CategoriesModule\Entity\CategoryEntity;
  *
  * @ORM\MappedSuperclass
  */
-abstract class AbstractEntityCategory extends EntityAccess
+abstract class AbstractCategoryAssignment extends EntityAccess
 {
     /**
      * @ORM\Id

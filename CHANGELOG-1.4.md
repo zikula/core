@@ -14,6 +14,9 @@ CHANGELOG - ZIKULA 1.4.x
  - Features:
     - New advanced block filtering based on a combination of any query parameter or request attributes.
  - Core-2.0 Features:
+    - Add (move) `Zikula\CategoriesModule\Entity\AbstractCategoryAssignment` and related documentation.
+        - Replaces `Zikula\Core\Doctrine\Entity\AbstractEntityCategory` (aliased for BC).
+        - Add `Zikula\CategoriesModule\Form\Type\CategoriesType` for easier category usage in Symfony Forms.
     - Implement new definition spec for Hook capabilities.
     - Implement new BlockApi and all corresponding methods.
         - BlockControllerInterface
