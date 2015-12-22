@@ -83,7 +83,7 @@ class GettextExtension extends \Twig_Extension
      */
     public function _n(\Twig_Environment $env, $singular, $plural, $count, $domain = null, $locale = null)
     {
-        return $this->translator->_n(/** @Ignore */$singular, $plural, $count, array(), $domain, $locale);
+        return $this->translator->_n(/** @Ignore */$singular, $plural, $count, $domain, $locale);
     }
 
     /**
@@ -106,6 +106,7 @@ class GettextExtension extends \Twig_Extension
      * Translator context functions 
      * 
      * @todo Define how this should work
+     * @link https://www.gnu.org/software/gettext/manual/html_node/Contexts.html
      */
 
     /**
