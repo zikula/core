@@ -158,6 +158,7 @@ class BlockApi
             $moduleEntity = $this->extensionApi->getModule($moduleName);
             $foundBlocks[$id] = $moduleEntity->getDisplayname() . '/' . $blockInstance->getType();
         }
+        asort($foundBlocks);
 
         return $foundBlocks;
     }
