@@ -13,7 +13,7 @@ use Gedmo\Mapping\Event\Adapter\ORM as BaseAdapterORM;
 final class ORM extends BaseAdapterORM implements StandardFieldsAdapter
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getUserIdValue(ClassMetadata $meta, $field)
     {

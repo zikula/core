@@ -176,6 +176,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         $query = $qb->getQuery();
+
         return (int)$query->getSingleScalarResult();
     }
 
@@ -198,6 +199,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         $group = $this->entityManager->find('ZikulaGroupsModule:GroupEntity', $args['gid']);
+
         return $group->getUsers()->count();
     }
 
@@ -357,7 +359,7 @@ class UserApi extends \Zikula_AbstractApi
                         'gtype' => $gtype,
                         'description' => $description,
                         'state' => $state,
-                        'nbuser' => (($nbuser <> false) ? $nbuser : 0),
+                        'nbuser' => (($nbuser != false) ? $nbuser : 0),
                         'nbumax' => $nbumax,
                         'ismember' => $ismember,
                         'status' => $status,
@@ -393,7 +395,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function saveapplication($args)
     {
-        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
@@ -417,7 +419,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \RuntimeException($this->__('Error! You have already applied for membership of this group.'));
         }
 
-        $application = new GroupApplicationEntity;
+        $application = new GroupApplicationEntity();
         $application['uid'] = $args['uid'];
         $application['gid'] = $args['gid'];
         $application['application'] = $args['applytext'];
@@ -443,7 +445,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function cancelapp($args)
     {
-        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
@@ -476,7 +478,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function isuserpending($args)
     {
-        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
@@ -510,7 +512,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function userupdate($args)
     {
-        if (!isset($args['gtype']) && !is_numeric($args['gtype']) || 
+        if (!isset($args['gtype']) && !is_numeric($args['gtype']) ||
             (!isset($args['gid']) && !is_numeric($args['gid'])) ||
             !isset($args['action'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -527,7 +529,6 @@ class UserApi extends \Zikula_AbstractApi
         $userid = UserUtil::getVar('uid');
 
         if ($args['action'] == 'subscribe') {
-
             if ($args['gtype'] == CommonHelper::GTYPE_PRIVATE) {
                 if (!isset($args['applytext'])) {
                     throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -562,7 +563,6 @@ class UserApi extends \Zikula_AbstractApi
                 }
             }
         } elseif ($args['action'] == 'cancel') {
-
             $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'cancelapp',
                             array('gid' => $args['gid'],
                                   'uid' => $userid));
@@ -571,7 +571,6 @@ class UserApi extends \Zikula_AbstractApi
                 throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
             }
         } else {
-
             $save = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'removeuser',
                             array('gid' => $args['gid'],
                                   'uid' => $userid));
@@ -600,7 +599,7 @@ class UserApi extends \Zikula_AbstractApi
     public function adduser($args)
     {
         // Argument check
-        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
@@ -656,7 +655,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function removeuser($args)
     {
-        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }

@@ -14,14 +14,7 @@
 namespace Zikula\UsersModule\Controller\FormData;
 
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Controller\FormData\Validator\BooleanType;
-use Zikula\UsersModule\Controller\FormData\Validator\IntegerNumericType;
-use Zikula\UsersModule\Controller\FormData\Validator\IntegerNumericMinimumValue;
-use Zikula\UsersModule\Controller\FormData\Validator\StringType;
 use Zikula\UsersModule\Helper\HashMethodListHelper;
-use Zikula\UsersModule\Controller\FormData\Validator\StringInSet;
-use Zikula\UsersModule\Controller\FormData\Validator\IntegerNumericInSet;
-use Zikula\UsersModule\Controller\FormData\Validator\StringRegularExpression;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

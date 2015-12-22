@@ -19,7 +19,7 @@
  */
 class Categories_DBObject_Registry extends DBObject
 {
-    public function __construct($init=null, $key=0)
+    public function __construct($init = null, $key = 0)
     {
         parent::__construct();
         $this->_objType = 'categories_registry';
@@ -33,10 +33,10 @@ class Categories_DBObject_Registry extends DBObject
         $this->_init($init, $key);
     }
 
-    public function insertPreProcess($data=null)
+    public function insertPreProcess($data = null)
     {
         if (!$data) {
-            $data = & $this->_objData;
+            $data = &$this->_objData;
         }
 
         if (!$data) {
@@ -51,7 +51,7 @@ class Categories_DBObject_Registry extends DBObject
         return $data;
     }
 
-    public function deletePostProcess($data=null)
+    public function deletePostProcess($data = null)
     {
         // After delete, it should delete the references to this registry
         // in the categories mapobj table
@@ -72,7 +72,7 @@ class Categories_DBObject_Registry extends DBObject
         return true;
     }
 
-    public function validatePostProcess($type='user', $data=null)
+    public function validatePostProcess($type = 'user', $data = null)
     {
         $data = $this->_objData;
         if ($data['modname'] && $data['table'] && $data['property'] && (!isset($data['id']) || !$data['id'])) {

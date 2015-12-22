@@ -76,7 +76,7 @@ class ZI18n
      *
      * @return ZI18n object instance.
      */
-    public static function getInstance($locale=null)
+    public static function getInstance($locale = null)
     {
         if (!isset($locale)) {
             $locale = ZLanguage::getLanguageCode();
@@ -131,7 +131,7 @@ class ZI18n
      *
      * @return string
      */
-    public function transformNumberDisplay($number, $decimal_points=null)
+    public function transformNumberDisplay($number, $decimal_points = null)
     {
         $this->processSign($number);
         $decimal_points = (isset($decimal_points) ? $decimal_points : $this->locale['frac_digits']);
@@ -201,7 +201,6 @@ class ZI18n
 
         return $number;
     }
-
 
     /**
      * Process the positive or negative sign for a number.

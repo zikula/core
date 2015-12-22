@@ -31,7 +31,6 @@ function ZikulaPageLockModule_tables()
           'lockedByTitle'     => 'title',
           'lockedByIPNo'      => 'ipno');
 
-
     $def =
     array('id'                => "I NOTNULL AUTO PRIMARY",
           'name'              => "C(100) NOTNULL DEFAULT ''",
@@ -45,4 +44,3 @@ function ZikulaPageLockModule_tables()
 
     return $dbtable;
 }
-

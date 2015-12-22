@@ -19,7 +19,7 @@
  */
 class Categories_DBObject_Category extends DBObject
 {
-    public function __construct($init=null, $key=0)
+    public function __construct($init = null, $key = 0)
     {
         parent::__construct();
         $this->_objType = 'categories_category';
@@ -39,10 +39,11 @@ class Categories_DBObject_Category extends DBObject
     }
 
     // checkbox has to be explicitly processed
-    public function getDataFromInputPostProcess($data=null)
+
+    public function getDataFromInputPostProcess($data = null)
     {
         if (!$data) {
-            $data = & $this->_objData;
+            $data = &$this->_objData;
         }
         if (!$data) {
             return $data;
@@ -75,10 +76,11 @@ class Categories_DBObject_Category extends DBObject
     }
 
     // the only reason we need all this stuff beflow is the because of the serialization
-    public function selectPostProcess($data=null)
+
+    public function selectPostProcess($data = null)
     {
         if (!$data) {
-            $data = & $this->_objData;
+            $data = &$this->_objData;
         }
         if (!$data) {
             return $data;
@@ -92,10 +94,10 @@ class Categories_DBObject_Category extends DBObject
         return $data;
     }
 
-    public function insertPreProcess($data=null)
+    public function insertPreProcess($data = null)
     {
         if (!$data) {
-            $data = & $this->_objData;
+            $data = &$this->_objData;
         }
 
         if (!$data) {
@@ -121,10 +123,10 @@ class Categories_DBObject_Category extends DBObject
         return $data;
     }
 
-    public function insertPostProcess($data=null)
+    public function insertPostProcess($data = null)
     {
         if (!$data) {
-            $data = & $this->_objData;
+            $data = &$this->_objData;
         }
 
         if (!$data) {
@@ -144,10 +146,10 @@ class Categories_DBObject_Category extends DBObject
         return $data;
     }
 
-    public function updatePreProcess($data=null)
+    public function updatePreProcess($data = null)
     {
         if (!$data) {
-            $data = & $this->_objData;
+            $data = &$this->_objData;
         }
 
         if (!$data) {
@@ -170,10 +172,10 @@ class Categories_DBObject_Category extends DBObject
         return $data;
     }
 
-    public function updatePostProcess($data=null)
+    public function updatePostProcess($data = null)
     {
         if (!$data) {
-            $data = & $this->_objData;
+            $data = &$this->_objData;
         }
 
         if (!$data) {
@@ -193,7 +195,7 @@ class Categories_DBObject_Category extends DBObject
         return $data;
     }
 
-    public function validatePostProcess($type='user', $data=null)
+    public function validatePostProcess($type = 'user', $data = null)
     {
         if (!$data) {
             $data = $this->_objData;
@@ -222,7 +224,7 @@ class Categories_DBObject_Category extends DBObject
         return $this->delete(false, $newParentID);
     }
 
-    public function delete($deleteSubcats=false, $newParentID=0)
+    public function delete($deleteSubcats = false, $newParentID = 0)
     {
         $data = $this->_objData;
 
@@ -261,5 +263,4 @@ class Categories_DBObject_Category extends DBObject
 
         CategoryUtil::copyCategoriesByPath($data['ipath'], $newParentID);
     }
-
 }

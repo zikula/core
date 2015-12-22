@@ -188,8 +188,7 @@ class BlockUtil
         if (is_callable($displayfunc)) {
             $content =  call_user_func($displayfunc, $instanceArgs);
         }
-        if ($blockInstance instanceof AbstractBlockController)
-        {
+        if ($blockInstance instanceof AbstractBlockController) {
             // FC blocks require wrapping the content in the theme
             $blockinfo['content'] = $content;
             $content = Zikula_View_Theme::getInstance()->themesidebox($blockinfo);
@@ -446,7 +445,7 @@ class BlockUtil
             $entityManager = $sm->get('doctrine.entitymanager');
             $item = $entityManager->getRepository('ZikulaBlocksModule:UserBlockEntity')->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
             if (!$item) {
-                $item = new \Zikula\BlocksModule\Entity\UserBlockEntity;
+                $item = new \Zikula\BlocksModule\Entity\UserBlockEntity();
                 $item['uid'] = (int) $uid;
                 $item['bid'] = $blockinfo['bid'];
                 $item['active'] = $blockinfo['defaultstate'];

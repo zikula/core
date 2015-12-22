@@ -76,7 +76,7 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
         $params['modname'] = ModUtil::getName();
     }
 
-    if (isset($params['modonly']) && ($params['modname'] <> ModUtil::getName())) {
+    if (isset($params['modonly']) && ($params['modname'] != ModUtil::getName())) {
         // current module is not $modname - do nothing and return silently
         return;
     }

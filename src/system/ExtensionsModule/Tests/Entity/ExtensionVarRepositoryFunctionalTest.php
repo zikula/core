@@ -24,7 +24,7 @@ class ExtensionVarRepositoryFunctionalTest extends KernelTestCase
     private $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -56,7 +56,7 @@ class ExtensionVarRepositoryFunctionalTest extends KernelTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {

@@ -36,7 +36,7 @@ class FormUtil
      *
      * @return mixed The requested input key or the specified default.
      */
-    public static function getPassedValue($key, $default = null, $source = null, $filter = null, array $args = array(), $objectType=null)
+    public static function getPassedValue($key, $default = null, $source = null, $filter = null, array $args = array(), $objectType = null)
     {
         if (!$key) {
             throw new \Exception(__f('Empty %1$s passed to %2$s.', array('key', 'FormUtil::getPassedValue')));
@@ -51,7 +51,7 @@ class FormUtil
         $failed = null;
 
         switch (true) {
-            case (isset($_REQUEST[$key]) && !isset($_FILES[$key]) && (!$source || $source == 'R' || $source == 'REQUEST')):
+            case isset($_REQUEST[$key]) && !isset($_FILES[$key]) && (!$source || $source == 'R' || $source == 'REQUEST'):
                 if (is_array($_REQUEST[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
@@ -176,7 +176,7 @@ class FormUtil
     public static function clearValidationErrors($objectType = null)
     {
         if ($objectType) {
-           if (isset($_SESSION['validationErrors'][$objectType])) {
+            if (isset($_SESSION['validationErrors'][$objectType])) {
                 unset($_SESSION['validationErrors'][$objectType]);
             }
         } else {
@@ -351,7 +351,7 @@ class FormUtil
      *
      * @return Zikula_Form_View The newly created Form_View instance.
      */
-    public static function newForm($name, Zikula_AbstractController $controller = null, $className=null)
+    public static function newForm($name, Zikula_AbstractController $controller = null, $className = null)
     {
         $serviceManager = $controller->getContainer();
         if ($className && !class_exists($className)) {

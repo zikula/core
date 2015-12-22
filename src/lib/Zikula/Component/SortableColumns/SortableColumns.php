@@ -28,7 +28,6 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class SortableColumns
 {
-
     /**
      * @var RouterInterface
      */
@@ -74,7 +73,7 @@ class SortableColumns
      */
     private $additionalUrlParameters = array();
 
-    function __construct(RouterInterface $router, $routeName, $sortFieldName = 'sort-field', $directionFieldName = 'sort-direction')
+    public function __construct(RouterInterface $router, $routeName, $sortFieldName = 'sort-field', $directionFieldName = 'sort-direction')
     {
         $this->router = $router;
         $this->routeName = $routeName;
@@ -227,5 +226,4 @@ class SortableColumns
     {
         $this->additionalUrlParameters = $additionalUrlParameters;
     }
-
 }

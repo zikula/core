@@ -62,7 +62,7 @@ abstract class ZikulaKernel extends Kernel
             return;
         }
         self::$included = true;
-        
+
         // this is all to be deprecated (todo drak)
         $paths = array(
             $this->rootDir .'/../config/config.php',
@@ -440,8 +440,10 @@ abstract class ZikulaKernel extends Kernel
         if ($themeBundle && (false === strpos($name, $themeBundle->getName()))) {
             // do not add theme override path to theme files
             $customThemePath = $themeBundle->getPath() . '/Resources';
+
             return parent::locateResource($name, $customThemePath, true);
         }
+
         return $locations[0];
     }
 }

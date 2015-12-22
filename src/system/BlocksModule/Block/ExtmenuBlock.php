@@ -103,7 +103,6 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
             }
         }
 
-
         // create default block variables
         if (!isset($vars['blocktitles'])) {
             $vars['blocktitles'] = array();
@@ -229,7 +228,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
     {
         if (!empty($url)) {
             $uri = System::getCurrentUri();
-            if (is_integer(strpos($uri, $url))) {
+            if (is_int(strpos($uri, $url))) {
                 return true;
             }
         }

@@ -16,8 +16,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Core\Exception\FatalErrorException;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ConfigUtil
@@ -25,7 +23,7 @@ class ConfigUtil
     private $kernel;
     private $params;
 
-    function __construct(ZikulaKernel $kernel)
+    public function __construct(ZikulaKernel $kernel)
     {
         $this->kernel = $kernel;
         // fetch contents of app/config/parameters.yml or custom_parameters.yml
@@ -77,7 +75,7 @@ class ConfigUtil
     {
         $search = array("#\['$searchKey'\]\s*=\s*('|\")(.*)('|\")\s*;#", "#\['$searchKey'\]\s*=\s*(\d)\s*;#");
         $replace = array("['$searchKey'] = '$replaceWith';", "['$searchKey'] = $replaceWith;");
+
         return preg_replace($search, $replace, $string);
     }
-
 }

@@ -292,15 +292,14 @@ class Engine
      * @param $name
      * @return bool
      */
-    public function positionIsAvailableInTheme($name) {
+    public function positionIsAvailableInTheme($name)
+    {
         $config = $this->activeThemeBundle->getConfig();
         if (empty($config)) {
-
             return true;
         }
         foreach ($config as $realm => $definition) {
             if (isset($definition['block']['positions'][$name])) {
-
                 return true;
             }
         }
@@ -328,16 +327,19 @@ class Engine
         // defining an admin realm overrides all other options for 'admin' annotated methods
         if ($this->annotationValue == 'admin' && isset($themeConfig['admin'])) {
             $this->realm = 'admin';
+
             return;
         }
         // @todo BC remove at Core-2.0
         if ((isset($this->requestAttributes['_zkType']) && $this->requestAttributes['_zkType'] == 'admin') || (isset($this->requestAttributes['lct']))) {
             $this->realm = 'admin';
+
             return;
         }
         // match `/` for home realm
         if (preg_match(';^\\/$;', $this->requestAttributes['pathInfo']) && isset($themeConfig['home'])) {
             $this->realm = 'home';
+
             return;
         }
         unset($themeConfig['admin'], $themeConfig['home'], $themeConfig['master']); // remove to avoid scanning/matching in loop
@@ -359,6 +361,7 @@ class Engine
                     $match = preg_match($pattern, $value);
                     if ($match === 1) {
                         $this->realm = $realm;
+
                         return; // use first match and do not continue to attempt to match patterns
                     }
                 }
@@ -420,7 +423,6 @@ class Engine
             // Add legacy ajax scripts (like prototype/scriptaculous) at the lightest weight (0) and in order from there.
             // Add others after core default assets (like jQuery) but before pageAddAsset default weight (100) and in order from there.
             $jsAssets[$javascript] = (false !== strpos($javascript, 'javascript/ajax/')) ? $legacyAjaxScripts++ : $i++;
-
         }
         $cssAssets = [];
         $stylesheets = \PageUtil::getVar('stylesheet');
@@ -433,6 +435,7 @@ class Engine
 
         $filteredContent = $this->filterService->filter($response->getContent(), $jsAssets, $cssAssets);
         $response->setContent($filteredContent);
+
         return $response;
     }
 }

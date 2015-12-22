@@ -14,7 +14,6 @@
 namespace Zikula\BlocksModule\Controller;
 
 use UserUtil;
-use SecurityUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

@@ -106,7 +106,7 @@ class UserUtil
      *
      * @return array An array mapping gid to groupname.
      */
-    public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey='gid')
+    public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey = 'gid')
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
         $groups = $em->getRepository('ZikulaGroupsModule:GroupEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
@@ -270,7 +270,7 @@ class UserUtil
      */
     public static function getGidCacheString($uid = null)
     {
-        $str = UserUtil::getGroupListForUser($uid, '_');
+        $str = self::getGroupListForUser($uid, '_');
 
         return $str == '-1' ? 'guest' : 'groups_'.$str;
     }
@@ -426,7 +426,7 @@ class UserUtil
 
         $authenticationModules = ModUtil::getModulesCapableOf(UsersConstant::CAPABILITY_AUTHENTICATION);
         if ($authenticationModules) {
-            $accountRecoveryArgs = array (
+            $accountRecoveryArgs = array(
                 'uid' => $uid,
             );
             foreach ($authenticationModules as $authenticationModule) {
@@ -562,7 +562,6 @@ class UserUtil
             );
 
             return ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'checkPassword', $checkPasswordArgs, 'Zikula_Api_AbstractAuthentication');
-
         } else {
             return false;
         }
@@ -1073,7 +1072,7 @@ class UserUtil
 
         $vcount = (int)$query->getSingleScalarResult();
 
-        return ($ucount + $vcount);
+        return $ucount + $vcount;
     }
 
     /**
@@ -1161,7 +1160,6 @@ class UserUtil
         // caching
         $user = null;
         if ($force == false) {
-
             if ($idfield == 'uname' && isset($unames[$id])) {
                 if ($unames[$id] !== false) {
                     $user = $cache[$unames[$id]];
@@ -1239,7 +1237,6 @@ class UserUtil
             }
         } elseif (($getRegistration && ($user['activated'] != UsersConstant::ACTIVATED_PENDING_REG))
                 || (!$getRegistration && ($user['activated'] == UsersConstant::ACTIVATED_PENDING_REG))) {
-
             return false;
         }
 
@@ -1531,7 +1528,6 @@ class UserUtil
 
         if (!isset($hashAlgorithmName) || !is_string($hashAlgorithmName) || empty($hashAlgorithmName) || !isset($hashMethodCodesByName[$hashAlgorithmName])
                 || empty($hashMethodCodesByName[$hashAlgorithmName]) || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
-
             throw new \InvalidArgumentException(__f('Invalid argument %s', 'hashAlgorithmName'));
         }
 
@@ -1555,7 +1551,6 @@ class UserUtil
 
         if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
                 || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
-
             throw new \InvalidArgumentException(__f('Invalid argument %s', 'hashAlgorithmCode'));
         }
 
@@ -1610,7 +1605,6 @@ class UserUtil
             if (!$hashAlgorithmName) {
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
-
         } else {
             $hashAlgorithmName = ModUtil::getVar('ZikulaUsersModule', 'hash_method', '');
             $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
@@ -1729,7 +1723,6 @@ class UserUtil
         // Prevent deletion of core fields (duh)
         if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass') || ($name == 'uname')
                 || ($name == 'activated')) {
-
             return false;
         }
 
@@ -1815,7 +1808,6 @@ class UserUtil
                     $updateEvent = new GenericEvent($updatedUserObj, $eventArgs, $eventData);
                     EventUtil::dispatch('user.account.update', $updateEvent);
                 }
-
             }
         }
 
@@ -1906,6 +1898,7 @@ class UserUtil
                 $newAdminTheme = ServiceUtil::get('zikula_core.common.theme_engine')->changeThemeByAnnotation($controllerName, $controllerMethod);
                 if (false !== $newAdminTheme) {
                     $pagetheme = $newAdminTheme;
+
                     return $newAdminTheme;
                 }
             }
@@ -2001,6 +1994,7 @@ class UserUtil
     private static function _getThemeFilterEvent($themeName, $type)
     {
         $event = new GenericEvent(null, array('type' => $type), $themeName);
+
         return EventUtil::dispatch('user.gettheme', $event)->getData();
     }
 
@@ -2020,7 +2014,7 @@ class UserUtil
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = null, $offset = null, $activated = '', $field = '', $expression = '', $where = '')
     {
-        $user = new \Zikula\UsersModule\Entity\UserEntity;
+        $user = new \Zikula\UsersModule\Entity\UserEntity();
 
         if (empty($where)) {
             $whereFragments = array();
@@ -2086,7 +2080,7 @@ class UserUtil
     {
         $result = self::getVars($uname, false, 'uname', $forRegistration);
 
-        return ($result && isset($result['uid']) ? $result['uid'] : false);
+        return $result && isset($result['uid']) ? $result['uid'] : false;
     }
 
     /**
@@ -2101,7 +2095,7 @@ class UserUtil
     {
         $result = self::getVars($email, false, 'email', $forRegistration);
 
-        return ($result && isset($result['uid']) ? $result['uid'] : false);
+        return $result && isset($result['uid']) ? $result['uid'] : false;
     }
 
     /**
@@ -2119,7 +2113,7 @@ class UserUtil
 
         // no change in uid or uname allowed, empty label is not an alias
         if (($label != 'uid') && ($label != 'uname') && !empty($label)) {
-            $userObj = new \Zikula\UsersModule\Entity\UserEntity;
+            $userObj = new \Zikula\UsersModule\Entity\UserEntity();
             $isFieldAlias = property_exists($userObj, $label);
         }
 

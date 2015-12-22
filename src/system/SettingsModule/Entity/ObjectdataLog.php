@@ -84,7 +84,6 @@ class ObjectdataLog
      */
     private $luUid;
 
-
     /**
      * Get id
      *
@@ -104,7 +103,7 @@ class ObjectdataLog
     public function setObjectType($objectType)
     {
         $this->objectType = $objectType;
-    
+
         return $this;
     }
 
@@ -127,7 +126,7 @@ class ObjectdataLog
     public function setObjectId($objectId)
     {
         $this->objectId = $objectId;
-    
+
         return $this;
     }
 
@@ -150,7 +149,7 @@ class ObjectdataLog
     public function setOp($op)
     {
         $this->op = $op;
-    
+
         return $this;
     }
 
@@ -173,7 +172,7 @@ class ObjectdataLog
     public function setDiff($diff)
     {
         $this->diff = $diff;
-    
+
         return $this;
     }
 
@@ -196,7 +195,7 @@ class ObjectdataLog
     public function setObjStatus($objStatus)
     {
         $this->objStatus = $objStatus;
-    
+
         return $this;
     }
 
@@ -219,7 +218,7 @@ class ObjectdataLog
     public function setCrDate($crDate)
     {
         $this->crDate = $crDate;
-    
+
         return $this;
     }
 
@@ -242,7 +241,7 @@ class ObjectdataLog
     public function setCrUid($crUid)
     {
         $this->crUid = $crUid;
-    
+
         return $this;
     }
 
@@ -265,7 +264,7 @@ class ObjectdataLog
     public function setLuDate($luDate)
     {
         $this->luDate = $luDate;
-    
+
         return $this;
     }
 
@@ -288,7 +287,7 @@ class ObjectdataLog
     public function setLuUid($luUid)
     {
         $this->luUid = $luUid;
-    
+
         return $this;
     }
 

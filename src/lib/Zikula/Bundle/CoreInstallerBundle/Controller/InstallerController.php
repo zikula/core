@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\Wizard;
@@ -62,6 +61,7 @@ class InstallerController extends AbstractController
         $templateParams['headertemplate'] = '@ZikulaCoreInstaller/installheader.html.twig';
         if ($wizard->isHalted()) {
             $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());
+
             return $this->templatingService->renderResponse('ZikulaCoreInstallerBundle::error.html.twig', $templateParams);
         }
 

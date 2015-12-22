@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class FilterVar extends AbstractValidator
 {
-    
     /**
      * The ID of the filter to apply.
      *
@@ -53,7 +52,6 @@ class FilterVar extends AbstractValidator
      */
     public function __construct(ContainerInterface $serviceManager, $filter = FILTER_DEFAULT, $options = null, $allow_empty_value = false, $errorMessage = null)
     {
-
         parent::__construct($serviceManager, $errorMessage);
 
         if ((!isset($filter)) || (!is_int($filter)) || (empty($filter))) {
@@ -63,7 +61,6 @@ class FilterVar extends AbstractValidator
         $this->filter = $filter;
         $this->options = $options;
         $this->allow_empty_value = (bool)$allow_empty_value;
-
     }
 
     /**
@@ -74,10 +71,9 @@ class FilterVar extends AbstractValidator
      */
     public function isValid($data)
     {
-        
         if (($this->allow_empty_value) && (empty($data))) {
-            $valid = true; 
-        } else { 
+            $valid = true;
+        } else {
             $valid = false;
 
             if (isset($data)) {
@@ -96,6 +92,5 @@ class FilterVar extends AbstractValidator
         }
 
         return $valid;
-
     }
 }

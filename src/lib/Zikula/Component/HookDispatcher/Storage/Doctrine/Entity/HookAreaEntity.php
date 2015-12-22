@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class HookAreaEntity
 {
     /**
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,40 +22,39 @@ class HookAreaEntity
     private $id;
 
     /**
-     * @var string $owner
+     * @var string
      *
      * @ORM\Column(name="owner", type="string", length=40, nullable=false)
      */
     private $owner;
 
     /**
-     * @var string $subowner
+     * @var string
      *
      * @ORM\Column(name="subowner", type="string", length=40, nullable=true)
      */
     private $subowner;
 
     /**
-     * @var string $areatype
+     * @var string
      *
      * @ORM\Column(name="areatype", type="string", length=1, nullable=false)
      */
     private $areatype;
 
     /**
-     * @var string $category
+     * @var string
      *
      * @ORM\Column(name="category", type="string", length=20, nullable=false)
      */
     private $category;
 
     /**
-     * @var string $areaname
+     * @var string
      *
      * @ORM\Column(name="areaname", type="string", length=100, nullable=false)
      */
     private $areaname;
-
 
     /**
      * Get id
@@ -76,6 +75,7 @@ class HookAreaEntity
     public function setOwner($owner)
     {
         $this->owner = $owner;
+
         return $this;
     }
 
@@ -98,6 +98,7 @@ class HookAreaEntity
     public function setSubowner($subowner)
     {
         $this->subowner = $subowner;
+
         return $this;
     }
 
@@ -120,6 +121,7 @@ class HookAreaEntity
     public function setAreatype($areatype)
     {
         $this->areatype = $areatype;
+
         return $this;
     }
 
@@ -142,6 +144,7 @@ class HookAreaEntity
     public function setCategory($category)
     {
         $this->category = $category;
+
         return $this;
     }
 
@@ -164,6 +167,7 @@ class HookAreaEntity
     public function setAreaname($areaname)
     {
         $this->areaname = $areaname;
+
         return $this;
     }
 

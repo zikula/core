@@ -440,7 +440,6 @@ class HtmlUtil
             return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
         }
 
-
         // Doctrine 1 models (Core 1.3.0 - 1.3.5)
         DoctrineUtil::loadModels($modname);
         $records = Doctrine::getLoadedModels();
@@ -483,6 +482,7 @@ class HtmlUtil
                     $data[$entityName] = $entityName;
                 }
                 $selectedValue = (count($data) == 1) ? $entityName : $defaultValue;
+
                 return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
             }
         }
@@ -805,7 +805,7 @@ class HtmlUtil
      *
      * @return The string for the user group selector.
      */
-    public static function getSelector_Module($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
+    public static function getSelector_Module($name = 'moduleName', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $disabled = false, $multipleSize = 1, $field = 'name')
     {
         $data = array();
         $modules = ModUtil::getModulesByState(3, 'displayname');
@@ -908,7 +908,7 @@ class HtmlUtil
      *
      * @return The generated HTML for the selector.
      */
-    public static function getSelector_DatetimeMonth($selected=0, $name='month', $submit=false, $disabled=false, $multipleSize=1, $text=0)
+    public static function getSelector_DatetimeMonth($selected = 0, $name = 'month', $submit = false, $disabled = false, $multipleSize = 1, $text = 0)
     {
         if (!$name) {
             $name = 'month';
@@ -1045,5 +1045,4 @@ class HtmlUtil
 
         return $output;
     }
-
 }

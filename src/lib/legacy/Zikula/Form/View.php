@@ -159,7 +159,7 @@ class Zikula_Form_View extends Zikula_View
      * @param string                $module         Module name.
      * @param integer               $caching        Caching flag (not used - just for e_strict).
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, $module, $caching=null)
+    public function __construct(Zikula_ServiceManager $serviceManager, $module, $caching = null)
     {
         // override behaviour of anonymous sessions
         SessionUtil::requireSession();
@@ -381,7 +381,6 @@ class Zikula_Form_View extends Zikula_View
             // Remember which file this plugin came from in order to be able to restore it.
             $pluginPath = str_replace(realpath(dirname(__FILE__) . '/..') . DIRECTORY_SEPARATOR, '', $plugin->getFilename());
             $this->includes[$pluginPath] = 1;
-
         } else {
             // Fetch plugin instance by ID
             // It has already got it's initialize and decode event at this point
@@ -576,7 +575,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function formDie($msg)
     {
-        echo ($msg);
+        echo $msg;
         System::shutdown(0);
     }
 
@@ -771,7 +770,7 @@ class Zikula_Form_View extends Zikula_View
     public function getErrorMsg()
     {
         if ($this->errorMsgSet) {
-            include_once ('lib/legacy/viewplugins/insert.getstatusmsg.php');
+            include_once 'lib/legacy/viewplugins/insert.getstatusmsg.php';
             $args = array();
 
             return smarty_insert_getstatusmsg($args, $this);
@@ -900,7 +899,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function raiseEvent($eventHandlerName, $args)
     {
-        $handlerClass = & $this->eventHandler;
+        $handlerClass = &$this->eventHandler;
 
         if (method_exists($handlerClass, $eventHandlerName)) {
             if ($handlerClass->$eventHandlerName($this, $args) === false) {
@@ -1104,7 +1103,7 @@ class Zikula_Form_View extends Zikula_View
 
         $lim = count($plugins);
         for ($i = 0; $i < $lim; ++$i) {
-            $plugin = & $plugins[$i];
+            $plugin = &$plugins[$i];
 
             // Handle sub-plugins special and clear stuff not to be serialized
             $plugin->parentPlugin = null;
@@ -1120,7 +1119,7 @@ class Zikula_Form_View extends Zikula_View
 
             $state[] = array(get_class($plugin), $pluginState, $this->getPluginState_rec($subPlugins));
 
-            $plugin->plugins = & $subPlugins;
+            $plugin->plugins = &$subPlugins;
         }
 
         return $state;
@@ -1154,7 +1153,7 @@ class Zikula_Form_View extends Zikula_View
 
         // I don't know why, but the formid array doesnt GC unless this is here - drak
         unset($_SESSION['__forms'][$this->formId]);
-        $this->plugins = & $this->decodePluginState();
+        $this->plugins = &$this->decodePluginState();
 
         //$this->dumpPlugins("Decoded state", $this->plugins);
     }

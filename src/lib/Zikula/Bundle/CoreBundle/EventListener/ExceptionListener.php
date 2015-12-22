@@ -130,7 +130,6 @@ class ExceptionListener implements EventSubscriberInterface
                 $link = "<a href='$url'>". __('re-loading the routes') . "</a>";
                 $event->getRequest()->getSession()->getFlashBag()->add('error', __f('You might try %s for the extension in question.', $link));
             } catch (RouteNotFoundException $e) {
-
             }
 //            if (!array_key_exists('zikularoutesmodule_route_reload', $originalRouteCollection)) {
 //                // reload routes for the Routes module first

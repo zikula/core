@@ -35,7 +35,7 @@ function ZikulaCategoriesModule_tables()
                      'path'            => 'path',
                      'ipath'           => 'ipath',
                      'status'          => 'status');
-    ObjectUtil::addStandardFieldsToTableDefinition ($columns);
+    ObjectUtil::addStandardFieldsToTableDefinition($columns);
     $dbtable['categories_category_column'] = $columns;
 
     // Enable attribution services
@@ -61,7 +61,7 @@ function ZikulaCategoriesModule_tables()
                       'path'            => "$pathType NOTNULL DEFAULT ''",
                       'ipath'           => "C(255) NOTNULL DEFAULT ''",
                       'status'          => "C(1) NOTNULL DEFAULT 'A'");
-    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
+    ObjectUtil::addStandardFieldsToTableDataDefinition($tabledef);
     $dbtable['categories_category_column_def'] = $tabledef;
 
     $table = 'categories_mapmeta';
@@ -69,13 +69,13 @@ function ZikulaCategoriesModule_tables()
     $columns = array('id'          => 'id',
                      'meta_id'     => 'meta_id',
                      'category_id' => 'category_id');
-    ObjectUtil::addStandardFieldsToTableDefinition ($columns);
+    ObjectUtil::addStandardFieldsToTableDefinition($columns);
     $dbtable['categories_mapmeta_column'] = $columns;
 
     $tabledef = array('id'          => 'I4 PRIMARY AUTO',
                       'meta_id'     => 'I4 NOTNULL DEFAULT 0',
                       'category_id' => 'I4  NOTNULL DEFAULT 0');
-    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
+    ObjectUtil::addStandardFieldsToTableDataDefinition($tabledef);
     $dbtable['categories_mapmeta_column_def'] = $tabledef;
 
     $table = 'categories_mapobj';
@@ -88,7 +88,7 @@ function ZikulaCategoriesModule_tables()
                      'reg_id'       => 'reg_id',
                      'reg_property' => 'reg_property',
                      'category_id'  => 'category_id');
-    ObjectUtil::addStandardFieldsToTableDefinition ($columns);
+    ObjectUtil::addStandardFieldsToTableDefinition($columns);
     $dbtable['categories_mapobj_column'] = $columns;
 
     $tabledef = array('id'           => 'I4 PRIMARY AUTO',
@@ -99,7 +99,7 @@ function ZikulaCategoriesModule_tables()
                       'reg_id'       => 'I4 NOTNULL DEFAULT 0',
                       'reg_property' => "C(60) NOTNULL DEFAULT ''",
                       'category_id'  => 'I4 NOTNULL DEFAULT 0');
-    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
+    ObjectUtil::addStandardFieldsToTableDataDefinition($tabledef);
     $dbtable['categories_mapobj_column_def'] = $tabledef;
 
     $table = 'categories_registry';
@@ -109,7 +109,7 @@ function ZikulaCategoriesModule_tables()
                      'table'        => 'entityname',
                      'property'     => 'property',
                      'category_id'  => 'category_id');
-    ObjectUtil::addStandardFieldsToTableDefinition ($columns);
+    ObjectUtil::addStandardFieldsToTableDefinition($columns);
     $dbtable['categories_registry_column'] = $columns;
 
     $tabledef = array('id' => 'I4 PRIMARY AUTO',
@@ -117,7 +117,7 @@ function ZikulaCategoriesModule_tables()
                       'table' => "C(60) NOTNULL DEFAULT ''",
                       'property' => "C(60) NOTNULL DEFAULT ''",
                       'category_id' => 'I4 NOTNULL DEFAULT 0');
-    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
+    ObjectUtil::addStandardFieldsToTableDataDefinition($tabledef);
     $dbtable['categories_registry_column_def'] = $tabledef;
 
     return $dbtable;

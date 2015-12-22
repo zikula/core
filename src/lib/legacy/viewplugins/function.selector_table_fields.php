@@ -29,7 +29,7 @@
  *
  * @return string
  */
-function smarty_function_selector_table_fields ($params, Zikula_View $view)
+function smarty_function_selector_table_fields($params, Zikula_View $view)
 {
     $modname        = (isset($params['modname'])        ? $params['modname']        : '');
     $tablename      = (isset($params['tablename'])      ? $params['tablename']      : '');
@@ -39,5 +39,5 @@ function smarty_function_selector_table_fields ($params, Zikula_View $view)
     $defaultText    = (isset($params['defaultText'])    ? $params['defaultText']    : '');
     $submit         = (isset($params['submit'])         ? $params['submit']         : false);
 
-    return HtmlUtil::getSelector_TableFields ($modname, $tablename, $name, $selectedValue, $defaultValue, $defaultText, $submit);
+    return HtmlUtil::getSelector_TableFields($modname, $tablename, $name, $selectedValue, $defaultValue, $defaultText, $submit);
 }

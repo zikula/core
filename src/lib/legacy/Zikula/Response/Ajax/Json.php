@@ -46,5 +46,4 @@ class Zikula_Response_Ajax_Json extends AbstractBaseResponse
             $this->headers."\r\n".
             $this->getContent();
     }
-
 }

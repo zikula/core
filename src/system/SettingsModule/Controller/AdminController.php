@@ -72,7 +72,6 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-
         // localise page title
         $pagetitle = System::getVar('pagetitle', '%pagetitle%');
         $pagetitle = str_replace('%pagetitle%', $this->__('%pagetitle%'), $pagetitle);
@@ -137,6 +136,7 @@ class AdminController extends \Zikula_AbstractController
 
         if (in_array($settings['entrypoint'], $falseEntryPoints) || !file_exists($settings['entrypoint']) || strtolower($entryPointExt) != 'php') {
             $request->getSession()->getFlashBag()->add('error', $this->__('Error! Either you entered an invalid entry point, or else the file specified as being the entry point was not found in the Zikula root directory.'));
+
             return new RedirectResponse($this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -145,6 +145,7 @@ class AdminController extends \Zikula_AbstractController
         $settings['permareplace'] = mb_ereg_replace(' ', '', $settings['permareplace']);
         if (mb_ereg(',$', $settings['permasearch'])) {
             $request->getSession()->getFlashBag()->add('error', $this->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
+
             return new RedirectResponse($this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -162,12 +163,14 @@ class AdminController extends \Zikula_AbstractController
 
         if ($permareplaceCount !== $permasearchCount) {
             $request->getSession()->getFlashBag()->add('error', $this->__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
+
             return new RedirectResponse($this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         if ($settings['startpage']) {
             if (empty($settings['starttype']) || empty($settings['startfunc'])) {
                 $request->getSession()->getFlashBag()->add('error', $this->__('Error! When setting a startpage, starttype and startfunc are required fields.'));
+
                 return new RedirectResponse($this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
             }
         }
@@ -316,7 +319,7 @@ class AdminController extends \Zikula_AbstractController
         phpinfo();
         $phpinfo = ob_get_contents();
         ob_end_clean();
-        $phpinfo = str_replace("module_Zend Optimizer", "module_Zend_Optimizer", preg_replace ('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo));
+        $phpinfo = str_replace("module_Zend Optimizer", "module_Zend_Optimizer", preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo));
 
         $this->view->assign('phpinfo', $phpinfo);
 

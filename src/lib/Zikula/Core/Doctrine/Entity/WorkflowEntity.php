@@ -14,7 +14,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 class WorkflowEntity extends EntityAccess
 {
     /**
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -23,70 +23,70 @@ class WorkflowEntity extends EntityAccess
     private $id;
 
     /**
-     * @var integer $metaid
+     * @var integer
      *
      * @ORM\Column(name="metaid", type="integer", nullable=false)
      */
     private $metaid;
 
     /**
-     * @var string $module
+     * @var string
      *
      * @ORM\Column(name="module", type="string", length=255, nullable=false)
      */
     private $module;
 
     /**
-     * @var string $schemaname
+     * @var string
      *
      * @ORM\Column(name="schemaname", type="string", length=255, nullable=false)
      */
     private $schemaname;
 
     /**
-     * @var string $state
+     * @var string
      *
      * @ORM\Column(name="state", type="string", length=255, nullable=false)
      */
     private $state;
 
     /**
-     * @var smallint $type
+     * @var smallint
      *
      * @ORM\Column(name="type", type="smallint", nullable=false)
      */
     private $type;
 
     /**
-     * @var string $objTable
+     * @var string
      *
      * @ORM\Column(name="obj_table", type="string", length=40, nullable=false)
      */
     private $objTable;
 
     /**
-     * @var string $objIdcolumn
+     * @var string
      *
      * @ORM\Column(name="obj_idcolumn", type="string", length=40, nullable=false)
      */
     private $objIdcolumn;
 
     /**
-     * @var integer $objId
+     * @var integer
      *
      * @ORM\Column(name="obj_id", type="integer", nullable=false)
      */
     private $objId;
 
     /**
-     * @var integer $busy
+     * @var integer
      *
      * @ORM\Column(name="busy", type="integer", nullable=false)
      */
     private $busy;
 
     /**
-     * @var text $debug
+     * @var text
      *
      * @ORM\Column(name="debug", type="text", nullable=true)
      */
@@ -118,6 +118,7 @@ class WorkflowEntity extends EntityAccess
     public function setMetaid($metaid)
     {
         $this->metaid = $metaid;
+
         return $this;
     }
 
@@ -140,6 +141,7 @@ class WorkflowEntity extends EntityAccess
     public function setModule($module)
     {
         $this->module = $module;
+
         return $this;
     }
 
@@ -162,6 +164,7 @@ class WorkflowEntity extends EntityAccess
     public function setSchemaname($schemaname)
     {
         $this->schemaname = $schemaname;
+
         return $this;
     }
 
@@ -184,6 +187,7 @@ class WorkflowEntity extends EntityAccess
     public function setState($state)
     {
         $this->state = $state;
+
         return $this;
     }
 
@@ -206,6 +210,7 @@ class WorkflowEntity extends EntityAccess
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -228,6 +233,7 @@ class WorkflowEntity extends EntityAccess
     public function setObjTable($objTable)
     {
         $this->objTable = $objTable;
+
         return $this;
     }
 
@@ -250,6 +256,7 @@ class WorkflowEntity extends EntityAccess
     public function setObjIdcolumn($objIdcolumn)
     {
         $this->objIdcolumn = $objIdcolumn;
+
         return $this;
     }
 
@@ -272,6 +279,7 @@ class WorkflowEntity extends EntityAccess
     public function setObjId($objId)
     {
         $this->objId = $objId;
+
         return $this;
     }
 
@@ -294,6 +302,7 @@ class WorkflowEntity extends EntityAccess
     public function setBusy($busy)
     {
         $this->busy = $busy;
+
         return $this;
     }
 
@@ -316,6 +325,7 @@ class WorkflowEntity extends EntityAccess
     public function setDebug($debug)
     {
         $this->debug = $debug;
+
         return $this;
     }
 

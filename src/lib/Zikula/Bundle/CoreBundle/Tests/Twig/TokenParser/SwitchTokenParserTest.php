@@ -1,4 +1,5 @@
 <?php
+
 namespace Zikula\Bundle\CoreBundle\Tests\Twig\TokenParser;
 
 use Zikula\Bundle\CoreBundle\Twig\TokenParser\SwitchTokenParser;

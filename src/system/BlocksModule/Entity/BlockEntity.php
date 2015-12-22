@@ -16,7 +16,6 @@ namespace Zikula\BlocksModule\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
@@ -379,7 +378,7 @@ class BlockEntity extends EntityAccess
     public function getPositions()
     {
         $positions = new ArrayCollection();
-        foreach($this->getPlacements() as $placement) {
+        foreach ($this->getPlacements() as $placement) {
             $positions->add($placement->getPosition());
         }
 

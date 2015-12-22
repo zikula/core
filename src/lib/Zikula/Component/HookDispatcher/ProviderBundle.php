@@ -61,7 +61,6 @@ class ProviderBundle
      */
     private $category;
 
-
     /**
      * Constructor.
      *

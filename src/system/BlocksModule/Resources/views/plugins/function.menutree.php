@@ -68,9 +68,9 @@ function smarty_function_menutree($params, $smarty)
         $ext['childless']   = !empty($ext_tmp[4]) ? $ext_tmp[4] : 'childless';
         $ext['level']       = !empty($ext_tmp[5]) ? $ext_tmp[5] : 'level';
         $depth = 1;
-        $html = _htmlListExt($treeArray,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId,$treeClass,$bootstrap);
+        $html = _htmlListExt($treeArray, $treeNodePrefix, $treeClassPrefix, $ext, $depth, $treeId, $treeClass, $bootstrap);
     } else {
-        $html = _htmlList($treeArray,$treeNodePrefix,$treeClassPrefix,$treeId,$treeClass,$bootstrap);
+        $html = _htmlList($treeArray, $treeNodePrefix, $treeClassPrefix, $treeId, $treeClass, $bootstrap);
     }
 
     if (isset($params['assign'])) {
@@ -178,7 +178,7 @@ function _htmlListExt($tree, $treeNodePrefix, $treeClassPrefix, $ext, $depth, $t
         } else {
             $html .= '<span'.$attr.'>'.$tab['item']['name'].'</span>';
         }
-        $html .= !empty($tab['nodes']) ? _htmlListExt($tab['nodes'],$treeNodePrefix,$treeClassPrefix,$ext,$depth+1,'','',$bootstrap) : '';
+        $html .= !empty($tab['nodes']) ? _htmlListExt($tab['nodes'], $treeNodePrefix, $treeClassPrefix, $ext, $depth + 1, '', '', $bootstrap) : '';
         $html .= '</li>';
     }
 

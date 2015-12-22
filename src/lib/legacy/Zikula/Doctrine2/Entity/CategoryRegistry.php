@@ -98,6 +98,4 @@ class Zikula_Doctrine2_Entity_CategoryRegistry
     {
         $this->tablename = $tablename;
     }
-
-
 }

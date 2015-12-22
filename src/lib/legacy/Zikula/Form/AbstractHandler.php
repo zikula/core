@@ -286,7 +286,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      *
      * @return object This.
      */
-    public function setVar($key, $value='')
+    public function setVar($key, $value = '')
     {
         ModUtil::setVar($this->name, $key, $value);
 
@@ -315,7 +315,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      *
      * @return mixed
      */
-    public function getVar($key, $default=false)
+    public function getVar($key, $default = false)
     {
         return ModUtil::getVar($this->name, $key, $default);
     }

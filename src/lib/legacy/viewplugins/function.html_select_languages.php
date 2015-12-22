@@ -41,13 +41,13 @@ function smarty_function_html_select_languages($params, Zikula_View $view)
         return false;
     }
 
-    require_once $view->_get_plugin_filepath('function','html_options');
+    require_once $view->_get_plugin_filepath('function', 'html_options');
 
     $params['output'] = array();
     $params['values'] = array();
     if (isset($params['all']) && $params['all']) {
         $params['values'][] = '';
-        $params['output'][]= DataUtil::formatForDisplay(__('All'));
+        $params['output'][] = DataUtil::formatForDisplay(__('All'));
         unset($params['all']);
     }
 
@@ -63,7 +63,7 @@ function smarty_function_html_select_languages($params, Zikula_View $view)
 
     $assign = isset($params['assign']) ? $params['assign'] : null;
     unset($params['assign']);
-    
+
     $html_result = smarty_function_html_options($params, $view);
 
     if (!empty($assign)) {

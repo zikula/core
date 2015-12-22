@@ -248,7 +248,8 @@ class VariableApi
      * @param $extensionName
      * @return bool
      */
-    public function delAll($extensionName) {
+    public function delAll($extensionName)
+    {
         if (empty($extensionName) || !is_string($extensionName)) {
             throw new \InvalidArgumentException();
         }

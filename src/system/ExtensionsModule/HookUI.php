@@ -18,5 +18,4 @@
  */
 class Extensions_HookUI extends Zikula\ExtensionsModule\Listener\HookUiListener
 {
-
 }

@@ -13,7 +13,6 @@
 
 namespace Zikula\BlocksModule\Helper;
 
-
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 
@@ -88,5 +87,4 @@ class InstallerHelper
 
         return "$moduleName:$blockClassName";
     }
-
 }

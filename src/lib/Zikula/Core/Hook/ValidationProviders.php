@@ -22,13 +22,13 @@ use Zikula\Common\Collection\Container;
  */
 class ValidationProviders extends Container
 {
-   /**
+    /**
      * Constructor.
      *
      * @param string       $name       The name of the collection.
      * @param \ArrayObject $collection The collection (optional).
      */
-    public function __construct($name='validation', \ArrayObject $collection = null)
+    public function __construct($name = 'validation', \ArrayObject $collection = null)
     {
         parent::__construct($name, $collection);
     }

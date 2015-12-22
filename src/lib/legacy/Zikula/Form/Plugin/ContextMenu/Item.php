@@ -133,11 +133,9 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
 
         if (!empty($this->commandName)) {
             $click = 'javascript:' . $this->renderConfirm($view, $view->getPostBackEventReference($this, $this->commandName));
-
         } elseif (!empty($this->commandScript)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
             $click = 'javascript:' . $this->renderConfirm($view, "FormContextMenu.commandScript('{$hiddenName}', function(commandArgument){{$this->commandScript}})");
-
         } elseif (!empty($this->commandRedirect)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
             $url = urlencode($this->commandRedirect);

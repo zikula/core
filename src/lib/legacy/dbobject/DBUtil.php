@@ -31,7 +31,6 @@ class DBUtil
      */
     private function __construct()
     {
-
     }
 
     /**
@@ -47,7 +46,7 @@ class DBUtil
             self::$cache_enabled = ServiceUtil::getManager()->getParameter('dbcache.enable');
         }
 
-        return ($tablename != 'session_info' && !System::isInstalling() && self::$cache_enabled);
+        return $tablename != 'session_info' && !System::isInstalling() && self::$cache_enabled;
     }
 
     /**
@@ -269,7 +268,7 @@ class DBUtil
         try {
             if ($limitNumRows > 0) {
                 $tStr = strtoupper(substr(trim($sql), 0, 7)); // Grab first 7 chars to allow syntax like "(SELECT" which may happen with UNION statements
-                if (strpos ($tStr, 'SELECT') === false) {
+                if (strpos($tStr, 'SELECT') === false) {
                     // TODO D [use normal Select instead of showing an error message if paging is desired for something different than SELECTs] (Guite)
                     throw new Exception(__('Paging parameters can only be used for SELECT statements'));
                 }
@@ -290,12 +289,12 @@ class DBUtil
             if ($result) {
                 // catch manual SQL which requires cache flushes
                 $tab = null;
-                $sql = strtolower(trim(preg_replace( "/\s+/", " ", $sql)));
-                if (strpos ($sql, 'update') === 0) {
-                    list(, $tab, ) = explode(' ', $sql);
+                $sql = strtolower(trim(preg_replace("/\s+/", " ", $sql)));
+                if (strpos($sql, 'update') === 0) {
+                    list(, $tab) = explode(' ', $sql);
                 }
-                if (strpos ($sql, 'delete') === 0) {
-                    list(, , $tab, ) = explode(' ', $sql);
+                if (strpos($sql, 'delete') === 0) {
+                    list(, , $tab) = explode(' ', $sql);
                 }
                 if ($tab && strpos($tab, 'session_info') === false) {
                     self::flushCache($tab);
@@ -316,7 +315,6 @@ class DBUtil
         return false;
     }
 
-
     /**
      * Transform a value for DB-storage-safe formatting, taking into account the columnt type. 
      * Numeric values are not enclosed in single-quotes, anything else is. 
@@ -328,18 +326,18 @@ class DBUtil
      * @return string    The generated sql string.
      * @throws Exception If invalid table key retreived or empty query generated.
      */
-    public static function _typesafeQuotedValue ($table, $field, $value)
+    public static function _typesafeQuotedValue($table, $field, $value)
     {
         $tables     = self::getTables();
         $columns    = $tables["{$table}_column"];
         $columnsDef = $tables["{$table}_column_def"];
         $fieldType  = $columnsDef[$field];
-        $fieldTypes = explode (' ', $fieldType);
+        $fieldTypes = explode(' ', $fieldType);
         $fieldType  = $fieldTypes[0];
 
         static $numericFields = null;
         if (!$numericFields) {
-            $numericFields = array ('I'=>'I', 'I1'=>'I1', 'I2'=>'I2', 'I4'=>'I4', 'I8'=>'I8', 'F'=>'F', 'L'=>'L', 'N'=>'N');
+            $numericFields = array('I' => 'I', 'I1' => 'I1', 'I2' => 'I2', 'I4' => 'I4', 'I8' => 'I8', 'F' => 'F', 'L' => 'L', 'N' => 'N');
         }
 
         if (isset($numericFields[$fieldType])) {
@@ -348,12 +346,12 @@ class DBUtil
             } else {
                 $value = (float)$value;
             }
+
             return DataUtil::formatForStore($value);
         }
 
         return "'" . DataUtil::formatForStore($value) . "'";
     }
-
 
     /**
      * Same as Api function but without AS aliasing.
@@ -490,7 +488,7 @@ class DBUtil
         // add fields of all joins
         $alias = 'a';
         foreach ($joinInfo as &$join) {
-            $jc = & $tables[$join['join_table'] . '_column'];
+            $jc = &$tables[$join['join_table'] . '_column'];
             foreach ($join['join_field'] as $k => $f) {
                 $a = $join['object_field_name'][$k];
                 if (isset($columns[$a])) {
@@ -731,7 +729,7 @@ class DBUtil
                 $colType = substr($columnDefinition, 0, 1);
                 // ensure that international float numbers are stored with '.' rather than ',' for decimal separator
                 if ($colType == 'F' || $colType == 'N') {
-                    if (is_float($object[$key]) || is_double($object[$key])) {
+                    if (is_float($object[$key]) || is_float($object[$key])) {
                         $object[$key] = number_format($object[$key], 8, '.', '');
                     }
                 }
@@ -742,7 +740,7 @@ class DBUtil
                     $value    = is_bool($object[$key]) ? (int)$object[$key] : $object[$key];
                     if (($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') &&
                         (strtoupper($columnDefFields[0]) != 'XL' || strtoupper($columnDefFields[0]) != 'B') && strlen($object[$key]) > 32000) {
-                        $chunks = str_split ($object[$key], 32000);
+                        $chunks = str_split($object[$key], 32000);
                         $str    = '';
                         foreach ($chunks as $chunk) {
                             if ($str) {
@@ -752,7 +750,7 @@ class DBUtil
                         }
                         $vArray[] = self::_formatForStore($str);
                     } else {
-                        $vArray[] =  self::_typesafeQuotedValue ($table, $key, $object[$key]);
+                        $vArray[] =  self::_typesafeQuotedValue($table, $key, $object[$key]);
                     }
                 }
             } else {
@@ -862,7 +860,7 @@ class DBUtil
                     $colType = substr($columnDefinition, 0, 1);
                     // ensure that international float numbers are stored with '.' rather than ',' for decimal separator
                     if ($colType == 'F' || $colType == 'N') {
-                        if (is_float($object[$key]) || is_double($object[$key])) {
+                        if (is_float($object[$key]) || is_float($object[$key])) {
                             $object[$key] = number_format($object[$key], 8, '.', '');
                         }
                     }
@@ -873,7 +871,7 @@ class DBUtil
                         if (isset($object[$key]) &&
                             ($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') &&
                             (strtoupper($columnDefFields[0]) != 'XL' || strtoupper($columnDefFields[0]) != 'B') && strlen($object[$key]) > 32000) {
-                            $chunks = str_split ($object[$key], 32000);
+                            $chunks = str_split($object[$key], 32000);
                             $str    = '';
                             foreach ($chunks as $chunk) {
                                 if ($str) {
@@ -883,7 +881,7 @@ class DBUtil
                             }
                             $tArray[] = "$val=$str";
                         } else {
-                            $tArray[] = "$val=" . (isset($object[$key]) ? self::_typesafeQuotedValue ($table, $key, $object[$key]) : 'NULL');
+                            $tArray[] = "$val=" . (isset($object[$key]) ? self::_typesafeQuotedValue($table, $key, $object[$key]) : 'NULL');
                         }
                     }
                 }
@@ -892,7 +890,7 @@ class DBUtil
 
         if ($tArray) {
             if (!$where) {
-                $_where = " WHERE $columnList[$idfield] = " . self::_typesafeQuotedValue ($table, $idfield, $object[$idfield]); 
+                $_where = " WHERE $columnList[$idfield] = " . self::_typesafeQuotedValue($table, $idfield, $object[$idfield]);
             } else {
                 $_where = self::_checkWhereClause($where);
             }
@@ -990,7 +988,7 @@ class DBUtil
         }
 
         if (($enableAllServices ||
-                (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"]) ) &&
+                (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) &&
                 System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
                 strcmp($table, 'categories_') !== 0 &&
                 strcmp($table, 'objectdata_attributes') !== 0 &&
@@ -1000,7 +998,7 @@ class DBUtil
         }
 
         if (($enableAllServices ||
-                (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
+                (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"]) ||
                 System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
                 strcmp($table, 'objectdata_attributes') !== 0 &&
                 strcmp($table, 'objectdata_log') !== 0) {
@@ -1008,7 +1006,7 @@ class DBUtil
         }
 
         if (($enableAllServices ||
-                (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"] ) ||
+                (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"]) ||
                 System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
                 $table != 'objectdata_attributes' &&
                 $table != 'objectdata_meta' &&
@@ -1017,7 +1015,7 @@ class DBUtil
         }
 
         if (($enableAllServices ||
-                (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"]) ) &&
+                (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])) &&
                 System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
                 strcmp($table, 'objectdata_log') !== 0) {
             $oldObj = self::selectObjectByID($table, $object[$idfield], $idfield);
@@ -1060,7 +1058,7 @@ class DBUtil
         $column = $tables["{$table}_column"];
 
         $sql  = 'UPDATE ' . $tableName . " SET $incFieldName = $column[$incfield] + $inccount";
-        $sql .= " WHERE $idFieldName = " . self::_typesafeQuotedValue ($table, $idfield, $id);
+        $sql .= " WHERE $idFieldName = " . self::_typesafeQuotedValue($table, $idfield, $id);
 
         $res = self::executeSQL($sql);
         if ($res === false) {
@@ -1121,7 +1119,7 @@ class DBUtil
             if (!$object[$idfield]) {
                 throw new Exception(__('Object does not have an ID'));
             }
-            $sql .= "WHERE $fieldName = " . self::_typesafeQuotedValue ($table, $idfield, $object[$idfield]);
+            $sql .= "WHERE $fieldName = " . self::_typesafeQuotedValue($table, $idfield, $object[$idfield]);
         } else {
             $sql .= self::_checkWhereClause($where);
             $object['__fake_field__'] = 'Fake entry to mark deleteWhere() return as valid object';
@@ -1237,7 +1235,7 @@ class DBUtil
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
         if (($enableAllServices ||
-                (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"]) ) &&
+                (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) &&
                 System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
                 $table != 'categories_' &&
                 $table != 'objectdata_attributes' &&
@@ -1247,7 +1245,7 @@ class DBUtil
         }
 
         if (((isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]) ||
-                (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
+                (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"]) ||
                 System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
                 $table != 'objectdata_attributes' &&
                 $table != 'objectdata_log') {
@@ -1255,7 +1253,7 @@ class DBUtil
         }
 
         if (($enableAllServices ||
-                (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"] ) ||
+                (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"]) ||
                 System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
                 $table != 'objectdata_attributes' &&
                 $table != 'objectdata_meta' &&
@@ -1264,7 +1262,7 @@ class DBUtil
         }
 
         if (($enableAllServices ||
-                (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"]) ) &&
+                (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])) &&
                 System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
                 strcmp($table, 'objectdata_log') !== 0) {
             $log = new ObjectData_Log();
@@ -1312,7 +1310,7 @@ class DBUtil
         if (!strlen($orderby)) {
             return $orderby;
         }
-        
+
         if (strpos($orderby, 'GROUP BY') === 0) {
             return $orderby;
         }
@@ -1369,16 +1367,14 @@ class DBUtil
                     $tokens[$k] = implode(' ', $ttok);
                 }
             }
-
         } else {
+            $search  = array('+', '-', '*', '/', '%');
+            $replace = array('');
 
-            $search  = array( '+', '-', '*', '/', '%');
-            $replace = array( '');
-
-            foreach ($tokens as $k=>$v) {
+            foreach ($tokens as $k => $v) {
                 $hasMath  = (bool)(strcmp($v, str_replace($search, $replace, $v)));
                 $hasFunc  = (bool)(strpos($v, '('));
-                $hasPlus0 = (bool)(strpos ($v, '+0'));
+                $hasPlus0 = (bool)(strpos($v, '+0'));
 
                 if ($hasMath) {
                     if ($hasPlus0) {
@@ -1387,11 +1383,11 @@ class DBUtil
                 }
 
                 if (!$hasFunc && !$hasMath) {
-                    $fields = explode (' ', trim($v));
+                    $fields = explode(' ', trim($v));
                     if ($fields) {
                         $left = $fields[0];
                         if ($hasPlus0) {
-                            $left = substr ($left, 0, -2);
+                            $left = substr($left, 0, -2);
                         }
 
                         $hasTablePrefix = (bool)strpos($left, '.');
@@ -1416,7 +1412,7 @@ class DBUtil
                         }
 
                         $tokens[$k] = $fullColumnName;
-                        if (count($fields)>1) {
+                        if (count($fields) > 1) {
                             $tokens[$k] .= " $fields[1]";
                         }
                     }
@@ -1424,7 +1420,7 @@ class DBUtil
             }
         }
 
-        return ' ORDER BY ' . implode (',', $tokens);
+        return ' ORDER BY ' . implode(',', $tokens);
     }
 
     /**
@@ -1762,7 +1758,7 @@ class DBUtil
         $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
 
-        $where = $idFieldName . " = " . self::_typesafeQuotedValue ($tableName, $idfield, $id);
+        $where = $idFieldName . " = " . self::_typesafeQuotedValue($tableName, $idfield, $id);
 
         return self::selectField($tableName, $field, $where);
     }
@@ -1792,7 +1788,7 @@ class DBUtil
         $exitOnError = true;
         $tables = self::getTables();
         if (!isset($tables["{$table}_column"])) {
-            // For field arrays we construct a temporary literal table entry which allows us to 
+            // For field arrays we construct a temporary literal table entry which allows us to
             // do ad-hoc queries on dynamic reference tables which do not have tables.php entry.
             $tables[$table]                    = $table;
             $tables["{$table}_column"]         = array();
@@ -1853,7 +1849,7 @@ class DBUtil
         $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
 
-        $where = $idFieldName . " = " . self::_typesafeQuotedValue ($tableName, $idfield, $id);
+        $where = $idFieldName . " = " . self::_typesafeQuotedValue($tableName, $idfield, $id);
 
         return self::selectFieldArray($tableName, $field, $where, $orderby, $distinct, $assocKey, $limitOffset, $limitNumRows);
     }
@@ -2008,7 +2004,7 @@ class DBUtil
         $where = "tablename='" . DataUtil::formatForStore($tablename) . "' AND (" . implode(" $op ", $where) . ')';
 
         // perform the query
-        $objIds = DBUtil::selectFieldArray('categories_mapobj', 'obj_id', $where);
+        $objIds = self::selectFieldArray('categories_mapobj', 'obj_id', $where);
 
         // this ensures that we return an empty set if no objects are mapped to the requested categories
         if (!$objIds) {
@@ -2151,7 +2147,7 @@ class DBUtil
         $cols = $tables["{$table}_column"];
         $fieldName = $cols[$field];
 
-        $where = (($transformFunc) ? "$transformFunc($fieldName)" : $fieldName) . ' = ' . self::_typesafeQuotedValue ($table, $field, $id);
+        $where = (($transformFunc) ? "$transformFunc($fieldName)" : $fieldName) . ' = ' . self::_typesafeQuotedValue($table, $field, $id);
 
         $obj = self::selectObject($table, $where, $columnArray, $permissionFilter, $categoryFilter, $cacheObject);
         // _selectPostProcess is already called in selectObject()
@@ -2283,7 +2279,7 @@ class DBUtil
             $fetchedObjectCount = self::_getFetchedObjectCount();
 
             for ($i = 0, $cou = count($objArr); $i < $cou; ++$i) {
-                $obj = & $objArr[$i];
+                $obj = &$objArr[$i];
                 if ($filterCallback->checkResult($obj)) {
                     $objects[] = $obj;
                 }
@@ -2433,14 +2429,13 @@ class DBUtil
         $fieldName = $columns[$field];
 
         if ($transformFunc) {
-            $where = "$transformFunc($fieldName) = " . self::_typesafeQuotedValue ($table, $field, $id);
+            $where = "$transformFunc($fieldName) = " . self::_typesafeQuotedValue($table, $field, $id);
         } else {
-            $where = $fieldName . " = " . self::_typesafeQuotedValue ($table, $field, $id);
+            $where = $fieldName . " = " . self::_typesafeQuotedValue($table, $field, $id);
         }
 
         return self::selectObjectCount($table, $where, $field);
     }
-
 
     /**
      * Construct and execute a select statement from a nested set of expressions
@@ -2453,7 +2448,7 @@ class DBUtil
      *
      * @return integer The resulting object
      */
-    public static function selectNestedExpressionsObject ($table, $sqlExpressionArray, $columns, $id=1, $field='id')
+    public static function selectNestedExpressionsObject($table, $sqlExpressionArray, $columns, $id = 1, $field = 'id')
     {
         if (!is_array($sqlExpressionArray)) {
             throw new Exception(__f('The parameter %s must be an array', 'sqlExpressionArray'));
@@ -2475,19 +2470,18 @@ class DBUtil
         $tableName = $tables[$table];
         $tableCols = $tables["{$table}_column"];
         $fieldName = $tableCols['id'];
-        $where     = $fieldName . " = " . self::_typesafeQuotedValue ($table, $field, $id);
+        $where     = $fieldName . " = " . self::_typesafeQuotedValue($table, $field, $id);
         $sql       = 'SELECT ' . implode(',', $sqlExpressionArray) . " FROM $tableName WHERE $where";
-        $res       = self::executeSQL ($sql, 0, 1);
+        $res       = self::executeSQL($sql, 0, 1);
 
         if ($res === false) {
             return $res;
         }
 
-        $res = self::marshallObjects ($res, $columns);
+        $res = self::marshallObjects($res, $columns);
 
         return $res[0];
     }
-
 
     /**
      * Select & return an expanded field array.
@@ -2589,9 +2583,9 @@ class DBUtil
         $fieldName = $columns[$field];
 
         if ($transformFunc) {
-            $where = "tbl.$transformFunc($fieldName) = " . self::_typesafeQuotedValue ($table, $field, $id);
+            $where = "tbl.$transformFunc($fieldName) = " . self::_typesafeQuotedValue($table, $field, $id);
         } else {
-            $where = "tbl.$fieldName = " . self::_typesafeQuotedValue ($table, $field, $id);
+            $where = "tbl.$fieldName = " . self::_typesafeQuotedValue($table, $field, $id);
         }
 
         $object = self::selectExpandedObject($table, $joinInfo, $where, $columnArray, $permissionFilter, $categoryFilter);
@@ -2650,7 +2644,7 @@ class DBUtil
         if ($useJoins && !$disableJoins) {
             $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $orderby";
         } else {
-           $sql = "$sqlStart $sqlFrom $where $orderby";
+            $sql = "$sqlStart $sqlFrom $where $orderby";
         }
 
         do {
@@ -2710,26 +2704,26 @@ class DBUtil
                 }
 
                 $fieldType  = $colDefs[$joinTableIdField];
-                $fieldTypes = explode (' ', $fieldType);
+                $fieldTypes = explode(' ', $fieldType);
                 $fieldType  = $fieldTypes[0];
 
                 static $numericFields = null;
                 if (!$numericFields) {
-                    $numericFields = array ('I', 'I1', 'I2', 'I4', 'I8', 'F', 'N', 'L');
+                    $numericFields = array('I', 'I1', 'I2', 'I4', 'I8', 'F', 'N', 'L');
                 }
 
-                if (!in_array ($fieldType, $numericFields)) {
-                    foreach ($ids as $k=>$v) {
+                if (!in_array($fieldType, $numericFields)) {
+                    foreach ($ids as $k => $v) {
                         $ids[$k] = "'$v'";
                     }
                 }
 
-                $idList = implode (',', $ids);
+                $idList = implode(',', $ids);
                 $where  = "$cols[$joinTableIdField] IN ($idList)";
-                $joinObjects = $ids ? self::selectObjectArray ($joinTable, $where, '', -1, -1, $joinTableIdField) : array();
+                $joinObjects = $ids ? self::selectObjectArray($joinTable, $where, '', -1, -1, $joinTableIdField) : array();
 
-                foreach ($objects as $k=>$object) {
-                    foreach ($joinFields as $kk=>$joinField) {
+                foreach ($objects as $k => $object) {
+                    foreach ($joinFields as $kk => $joinField) {
                         if (isset($object[$idField])) {
                             $objectIdValue    = $object[$idField];
                             $joinFieldName    = $joinFields[$kk];
@@ -2784,7 +2778,7 @@ class DBUtil
         if ($res === false) {
             return $res;
         }
-    
+
         $count = false;
         $res   = $res->fetchAll(Doctrine_Core::FETCH_COLUMN);
         if ($res && isset($res[0])) {
@@ -2810,7 +2804,7 @@ class DBUtil
      * @deprecated
      * @see    Doctrine_Record
      */
-    private static function _processJoinArray($table, $joinInfo, $columnArray = null, &$alias=null)
+    private static function _processJoinArray($table, $joinInfo, $columnArray = null, &$alias = null)
     {
         $tables = self::getTables();
         $columns = $tables["{$table}_column"];
@@ -3943,7 +3937,7 @@ class DBUtil
      *
      * @return string The model class.
      */
-    public static function buildDoctrineModuleClass($table, $className=null)
+    public static function buildDoctrineModuleClass($table, $className = null)
     {
         $className = (is_null($className) ? "{$table}_DBUtilRecord" : $className);
 
@@ -4000,7 +3994,7 @@ class {$className}Table extends Doctrine_Table {}
      *
      * @return void
      */
-    public static function loadDBUtilDoctrineModel($table, $className=null)
+    public static function loadDBUtilDoctrineModel($table, $className = null)
     {
         // don't double load
         $className = (is_null($className) ? "{$table}_DBUtilRecord" : $className);
@@ -4010,5 +4004,4 @@ class {$className}Table extends Doctrine_Table {}
         $code = self::buildDoctrineModuleClass($table, $className);
         eval($code);
     }
-
 }

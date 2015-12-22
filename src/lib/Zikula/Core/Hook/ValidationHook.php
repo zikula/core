@@ -35,6 +35,7 @@ class ValidationHook extends Hook
             $this->validators = new ValidationProviders();
         }
     }
+
     /**
      * Sets the validation response.
      *

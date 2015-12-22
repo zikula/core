@@ -36,7 +36,7 @@ class ZL10n implements Zikula_TranslatableInterface
      *
      * @param string $domain Gettext domain.
      */
-    private function __construct($domain=null)
+    private function __construct($domain = null)
     {
         $this->setDomain($domain);
     }
@@ -48,7 +48,7 @@ class ZL10n implements Zikula_TranslatableInterface
      *
      * @return ZL10n instance.
      */
-    public static function getInstance($domain=null)
+    public static function getInstance($domain = null)
     {
         if (!isset(self::$instances[$domain])) {
             self::$instances[$domain] = new self($domain);
@@ -64,7 +64,7 @@ class ZL10n implements Zikula_TranslatableInterface
      *
      * @return void
      */
-    protected function setDomain($domain=null)
+    protected function setDomain($domain = null)
     {
         $this->domain = $domain;
     }

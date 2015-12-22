@@ -61,20 +61,19 @@ function smarty_function_selector_category($params, Zikula_View $view)
         $lang = ZLanguage::getLanguageCode();
     }
 
-
     if (!$category && !$path && $categoryRegistryModule && $categoryRegistryTable && $categoryRegistryProperty) {
-        $category = CategoryRegistryUtil::getRegisteredModuleCategory ($categoryRegistryModule, $categoryRegistryTable, $categoryRegistryProperty);
+        $category = CategoryRegistryUtil::getRegisteredModuleCategory($categoryRegistryModule, $categoryRegistryTable, $categoryRegistryProperty);
     }
 
     // if we don't have a category-id we see if we can get a category by path
     if (!$category && $path) {
-        $category = CategoryUtil::getCategoryByPath ($path, $pathfield);
+        $category = CategoryUtil::getCategoryByPath($path, $pathfield);
     } elseif (is_numeric($category)) {
         // check if we have a numeric category
-        $category = CategoryUtil::getCategoryByID ($category);
-    } elseif (is_string($category) && strpos($category, '/')===0) {
+        $category = CategoryUtil::getCategoryByID($category);
+    } elseif (is_string($category) && strpos($category, '/') === 0) {
         // check if we have a string/path category
-        $category = CategoryUtil::getCategoryByPath ($category, $pathfield);
+        $category = CategoryUtil::getCategoryByPath($category, $pathfield);
     }
 
     static $catCache;
@@ -84,16 +83,16 @@ function smarty_function_selector_category($params, Zikula_View $view)
 
     $cacheKey = "$category[id]||$recurse|$relative|$includeRoot|$includeLeaf|$all|||$attributes|$sortField";
     if (!isset($catCache[$cacheKey])) {
-        $catCache[$cacheKey] = CategoryUtil::getSubCategoriesForCategory ($category, $recurse, $relative, $includeRoot,
+        $catCache[$cacheKey] = CategoryUtil::getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot,
                                                                           $includeLeaf, $all, '', '', $attributes, $sortField);
     }
 
-    $html = CategoryUtil::getSelector_Categories ($catCache[$cacheKey], $field, $selectedValue, $name, $defaultValue, $defaultText,
+    $html = CategoryUtil::getSelector_Categories($catCache[$cacheKey], $field, $selectedValue, $name, $defaultValue, $defaultText,
                                                   $allValue, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize, $fieldIsAttribute, $cssClass, $lang
                                                   );
 
-    if ($editLink && !empty($category) && SecurityUtil::checkPermission( 'ZikulaCategoriesModule::', "$category[id]::", ACCESS_EDIT)) {
-        $url = DataUtil::formatForDisplay(ModUtil::url ('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $category['id'])));
+    if ($editLink && !empty($category) && SecurityUtil::checkPermission('ZikulaCategoriesModule::', "$category[id]::", ACCESS_EDIT)) {
+        $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $category['id'])));
         $html .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"".System::getBaseUrl()."images/icons/extrasmall/xedit.png\" title=\"" . __('Edit sub-category') . '" alt="' . __('Edit sub-category') . '" /></a>';
     }
 

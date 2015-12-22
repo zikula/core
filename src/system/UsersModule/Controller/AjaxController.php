@@ -22,7 +22,6 @@ use ModUtil;
 use SecurityUtil;
 use Zikula;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use DataUtil;
@@ -88,7 +87,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         return new PlainResponse($output);
     }
 
-
     /**
      * @Route("/getusersastable", options={"expose"=true})
      * @Method("POST")
@@ -108,7 +106,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
 
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-
             return new PlainResponse('');
         }
 
@@ -122,7 +119,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             ->getQuery();
 
         $userList = $query->getArrayResult();
-
 
         // Get all groups
         $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
@@ -159,7 +155,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         return new PlainResponse($output);
     }
-
 
     /**
      * @Route("/getregistrationerrors", options={"expose"=true})

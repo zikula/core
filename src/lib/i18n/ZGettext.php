@@ -59,7 +59,6 @@ class ZGettext
      */
     public $textDomains = array();
 
-
     /**
      * Private construct for singleton.
      */
@@ -76,12 +75,11 @@ class ZGettext
     public static function getInstance()
     {
         if (!self::$instance) {
-            self::$instance = new ZGettext();
+            self::$instance = new self();
         }
 
         return self::$instance;
     }
-
 
     /**
      * Set locale.
@@ -91,16 +89,15 @@ class ZGettext
      *
      * @return string $locale.
      */
-    public function setLocale($category=LC_MESSAGES, $locale)
+    public function setLocale($category = LC_MESSAGES, $locale)
     {
         $this->locale = $locale;
         // The following is a hack because LC_* constants appear to have different
         // values on different systems #2952
-        $this->category = LC_MESSAGES;//$this->translateCategory($category);
+        $this->category = LC_MESSAGES; //$this->translateCategory($category);
 
         return $locale;
     }
-
 
     /**
      * getLocale.
@@ -112,7 +109,6 @@ class ZGettext
         return $this->locale;
     }
 
-
     /**
      * get LC_CATEGORY.
      *
@@ -122,7 +118,6 @@ class ZGettext
     {
         return $this->category;
     }
-
 
     /**
      * Translate LC_CONSTANTS to internal form.
@@ -135,7 +130,6 @@ class ZGettext
     {
         return $this->LC_CATEGORIES[$lc];
     }
-
 
     /**
      * Bind text domain.
@@ -167,7 +161,6 @@ class ZGettext
         $this->textDomains[$this->getLocale()][$this->getCategory()][$domain]['codeset'] = $codeset;
     }
 
-
     /**
      * Set default domain.
      *
@@ -180,7 +173,6 @@ class ZGettext
         $this->defaultDomain = $domain;
     }
 
-
     /**
      * Get reader for translation
      *
@@ -190,7 +182,7 @@ class ZGettext
      *
      * @return ZMO Reader object.
      */
-    public static function getReader($domain=null, $category = null, $cache = true)
+    public static function getReader($domain = null, $category = null, $cache = true)
     {
         // check if classes are included (which is not true for CLI commands)
         if (!class_exists('StreamReader_Abstract')) {
@@ -216,7 +208,7 @@ class ZGettext
             $codeset = (version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset');
             $_this->textDomains[$locale][$category][$domain] = array('path' => "locale/", 'codeset' => $codeset, 'reader' => null);
         }
-        $textDomain = & $_this->textDomains[$locale][$category][$domain];
+        $textDomain = &$_this->textDomains[$locale][$category][$domain];
 
         if (!$textDomain['reader']) {
             //$path = realpath($textDomain['path']."$locale/$categorypath/$domain.mo");

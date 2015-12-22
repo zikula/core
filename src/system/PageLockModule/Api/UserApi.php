@@ -30,7 +30,6 @@ class UserApi extends \Zikula_AbstractApi
 {
     /**
      * length of time to lock a page
-     *
      */
     const PAGELOCKLIFETIME = 30;
 
@@ -98,9 +97,9 @@ class UserApi extends \Zikula_AbstractApi
         $html .= "
 PageLock.LockName = '$lockName';
 PageLock.ReturnUrl = '$returnUrl';
-PageLock.PingTime = " . (self::PAGELOCKLIFETIME*2/3) . ";
+PageLock.PingTime = " . (self::PAGELOCKLIFETIME * 2 / 3) . ";
  /* ]]> */</script>";
- 
+
         PageUtil::addVar('header', $html);
         PageUtil::addVar('footer', $lockedHtml);
 
@@ -136,6 +135,7 @@ PageLock.PingTime = " . (self::PAGELOCKLIFETIME*2/3) . ";
                 }
                 $lockedBy .= $lock['title'] . " ($lock[ipno]) " . $lock['cdate']->format('Y-m-d H:m:s');
             }
+
             return array('hasLock' => false, 'lockedBy' => $lockedBy);
         }
 

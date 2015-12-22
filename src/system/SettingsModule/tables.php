@@ -23,13 +23,13 @@ function ZikulaSettingsModule_tables()
 
     $table = 'objectdata_attributes';
     $dbtables['objectdata_attributes'] = $table;
-    $columns = array ('id'             => 'id',
+    $columns = array('id'             => 'id',
                       'attribute_name' => 'attribute_name',
                       'object_id'      => 'object_id',
                       'object_type'    => 'object_type',
                       'value'          => 'value'
                       );
-    ObjectUtil::addStandardFieldsToTableDefinition ($columns);
+    ObjectUtil::addStandardFieldsToTableDefinition($columns);
     $dbtables['objectdata_attributes_column'] = $columns;
     $dbtables['objectdata_attributes_column_idx'] = array('object_type' => 'object_type', 'object_id' => 'object_id');
 
@@ -38,17 +38,17 @@ function ZikulaSettingsModule_tables()
                       'object_id'      => 'I4 NOTNULL DEFAULT 0',
                       'object_type'    => "C(80) NOTNULL DEFAULT ''",
                       'value'          => "X NOTNULL DEFAULT ''");
-    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
+    ObjectUtil::addStandardFieldsToTableDataDefinition($tabledef);
     $dbtables['objectdata_attributes_column_def'] = $tabledef;
 
     $table = 'objectdata_log';
     $dbtables['objectdata_log'] = $table;
-    $columns = array ('id'           => 'id',
+    $columns = array('id'           => 'id',
                       'object_type'  => 'object_type',
                       'object_id'    => 'object_id',
                       'op'           => 'op',
                       'diff'         => 'diff');
-    ObjectUtil::addStandardFieldsToTableDefinition ($columns);
+    ObjectUtil::addStandardFieldsToTableDefinition($columns);
     $dbtables['objectdata_log_column'] = $columns;
 
     $tabledef = array('id' => 'I4 PRIMARY AUTO',
@@ -56,12 +56,12 @@ function ZikulaSettingsModule_tables()
                       'object_id' => 'I4 NOTNULL DEFAULT 0',
                       'op' => "C(16) NOTNULL DEFAULT ''",
                       'diff' => "X NOT NULL DEFAULT ''");
-    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'obl_');
+    ObjectUtil::addStandardFieldsToTableDataDefinition($tabledef, 'obl_');
     $dbtables['objectdata_log_column_def'] = $tabledef;
 
     $table = 'objectdata_meta';
     $dbtables['objectdata_meta'] = $table;
-    $columns = array ('id'             => 'id',
+    $columns = array('id'             => 'id',
                       'module'         => 'module',
                       'table'          => 'tablename',
                       'idcolumn'       => 'idcolumn',
@@ -86,7 +86,7 @@ function ZikulaSettingsModule_tables()
                       'dc_entity'      => 'dc_entity',
                       'dc_comment'     => 'dc_comment',
                       'dc_extra'       => 'dc_extra');
-    ObjectUtil::addStandardFieldsToTableDefinition ($columns);
+    ObjectUtil::addStandardFieldsToTableDefinition($columns);
     $dbtables['objectdata_meta_column'] = $columns;
 
     $tabledef = array('id'             => 'I4 PRIMARY AUTO',
@@ -114,7 +114,7 @@ function ZikulaSettingsModule_tables()
                       'dc_entity'      => "C(64) DEFAULT ''",
                       'dc_comment'     => "C(255) DEFAULT ''",
                       'dc_extra'       => "C(255) DEFAULT ''");
-    ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
+    ObjectUtil::addStandardFieldsToTableDataDefinition($tabledef);
     $dbtables['objectdata_meta_column_def'] = $tabledef;
 
     // workflow

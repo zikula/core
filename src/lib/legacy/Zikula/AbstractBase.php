@@ -167,7 +167,6 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
                 $this->domain = ZLanguage::getModuleDomain($this->name);
             }
         }
-
     }
 
     /**
@@ -179,7 +178,6 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      */
     protected function initialize()
     {
-
     }
 
     /**
@@ -191,7 +189,6 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      */
     protected function postInitialize()
     {
-
     }
 
     /**
@@ -282,7 +279,6 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     {
         return $this->dispatcher;
     }
-
 
     /**
      * Get module info.
@@ -400,7 +396,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return void
      */
-    protected function throwNotFound($message='', $code=0, $debug=null)
+    protected function throwNotFound($message = '', $code = 0, $debug = null)
     {
         throw new Exception\NotFoundHttpException($message, null, $code);
     }
@@ -419,7 +415,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @deprecated since 1.4.0
      * @return void
      */
-    protected function throwNotFoundIf($condition, $message='', $code=0, $debug=null)
+    protected function throwNotFoundIf($condition, $message = '', $code = 0, $debug = null)
     {
         if ($condition) {
             $this->throwNotFound($message, $code, $debug);
@@ -441,7 +437,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return void
      */
-    protected function throwNotFoundUnless($condition, $message='', $code=0, $debug=null)
+    protected function throwNotFoundUnless($condition, $message = '', $code = 0, $debug = null)
     {
         if (!$condition) {
             $this->throwNotFound($message, $code, $debug);
@@ -462,7 +458,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return void
      */
-    protected function throwForbidden($message='', $code=0, $debug=null)
+    protected function throwForbidden($message = '', $code = 0, $debug = null)
     {
         throw new AccessDeniedException($message, $debug, $code);
     }
@@ -481,7 +477,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return void
      */
-    protected function throwForbiddenIf($condition, $message='', $code=0, $debug=null)
+    protected function throwForbiddenIf($condition, $message = '', $code = 0, $debug = null)
     {
         if ($condition) {
             $this->throwForbidden($message, $code, $debug);
@@ -503,7 +499,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return void
      */
-    protected function throwForbiddenUnless($condition, $message='', $code=0, $debug=null)
+    protected function throwForbiddenUnless($condition, $message = '', $code = 0, $debug = null)
     {
         if (!$condition) {
             $this->throwForbidden($message, $code, $debug);
@@ -649,7 +645,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return object This object.
      */
-    protected function registerError($message, $type=null, $debug=null)
+    protected function registerError($message, $type = null, $debug = null)
     {
         if (!isset($message) || empty($message)) {
             throw new Zikula_Exception($this->__f('Empty [%s] received.', 'message'));
@@ -674,7 +670,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return object This object.
      */
-    protected function registerErrorIf($condition, $message, $type=null, $debug=null)
+    protected function registerErrorIf($condition, $message, $type = null, $debug = null)
     {
         if ($condition) {
             return $this->registerError($message, $type, $debug);
@@ -699,7 +695,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return object This object.
      */
-    protected function registerErrorUnless($condition, $message, $type=null, $debug=null)
+    protected function registerErrorUnless($condition, $message, $type = null, $debug = null)
     {
         if (!$condition) {
             return $this->registerError($message, $type, $debug);
@@ -716,7 +712,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return object This.
      */
-    public function setVar($key, $value='')
+    public function setVar($key, $value = '')
     {
         ModUtil::setVar($this->name, $key, $value);
 
@@ -745,7 +741,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return mixed
      */
-    public function getVar($key, $default=false)
+    public function getVar($key, $default = false)
     {
         return ModUtil::getVar($this->name, $key, $default);
     }
@@ -795,7 +791,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @return void
      */
-    public function checkCsrfToken($token=null)
+    public function checkCsrfToken($token = null)
     {
         if (is_null($token)) {
             $token = $this->request->request->get('csrftoken', false);

@@ -264,5 +264,4 @@ class StringUtil
 
         return $sm->get('markdown_extra_parser');
     }
-
 }

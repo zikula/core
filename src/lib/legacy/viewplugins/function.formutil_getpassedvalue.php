@@ -29,7 +29,6 @@
  * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @return string
- *
  */
 function smarty_function_formutil_getpassedvalue($params, Zikula_View $view)
 {

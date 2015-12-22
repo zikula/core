@@ -10,6 +10,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\Bundle\CoreInstallerBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -26,7 +27,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
      */
     private $container;
 
-    function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }

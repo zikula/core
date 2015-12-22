@@ -115,6 +115,5 @@ class Zikula_Doctrine_Model_HookSubscriber extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
-
     }
 }

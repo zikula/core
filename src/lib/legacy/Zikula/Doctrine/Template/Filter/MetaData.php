@@ -46,7 +46,7 @@ class Zikula_Doctrine_Template_Filter_MetaData extends Doctrine_Record_Filter
      * Filters read access to the unknown property __META__.
      *
      * @param Doctrine_Record $record Record.
-     * @param String          $name   Name of the unkown property.
+     * @param string          $name   Name of the unkown property.
      *
      * @return mixed
      * @throws Doctrine_Record_UnknownPropertyException If $name is not __META__.
@@ -67,4 +67,3 @@ class Zikula_Doctrine_Template_Filter_MetaData extends Doctrine_Record_Filter
         }
     }
 }
-

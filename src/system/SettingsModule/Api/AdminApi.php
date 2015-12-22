@@ -13,8 +13,6 @@
 
 namespace Zikula\SettingsModule\Api;
 
-use ZLanguage;
-use ModUtil;
 use SecurityUtil;
 use System;
 use Zikula_View_Theme;

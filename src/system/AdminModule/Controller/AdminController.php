@@ -392,7 +392,7 @@ class AdminController extends \Zikula_AbstractController
                             'modname' => $adminmodule['name'],
                             'adminicon' => $adminicon,
                             'id' => $adminmodule['id'],
-                            'order'=> $order);
+                            'order' => $order);
                 }
             }
         }
@@ -486,10 +486,12 @@ class AdminController extends \Zikula_AbstractController
         $modvars['modulesperrow'] = isset($modvars['modulesperrow']) ? $modvars['modulesperrow'] : 5;
         if (!is_numeric($modvars['modulesperrow'])) {
             $request->getSession()->getFlashBag()->add('error', $this->__("Error! You must enter a number for the 'Modules per row' setting."));
+
             return new RedirectResponse($this->get('router')->generate('zikulaadminmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
         }
         if (!is_numeric($modvars['itemsperpage'])) {
             $request->getSession()->getFlashBag()->add('error', $this->__("Error! You must enter a number for the 'Modules per page' setting."));
+
             return new RedirectResponse($this->get('router')->generate('zikulaadminmodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -595,8 +597,8 @@ class AdminController extends \Zikula_AbstractController
                 // only categories containing modules where the current user has permissions will
                 // be shown, all others will be hidden
                 // admin will see all categories
-                if ( (isset($adminlinks[$category['cid']]) && count($adminlinks[$category['cid']]) )
-                        || SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN) ) {
+                if ((isset($adminlinks[$category['cid']]) && count($adminlinks[$category['cid']]))
+                        || SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                     $menuoption = array(
                         'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', array('acid' => $category['cid'])),
                         'title' => $category['name'],
@@ -611,7 +613,7 @@ class AdminController extends \Zikula_AbstractController
                     $possible_cids[] = $category['cid'];
 
                     if ($acid == $category['cid']) {
-                        $permission =true;
+                        $permission = true;
                     }
                 }
             }
@@ -619,7 +621,7 @@ class AdminController extends \Zikula_AbstractController
 
         // if permission is false we are not allowed to see this category because its
         // empty and we are not admin
-        if ($permission==false) {
+        if ($permission == false) {
             // show the first category
             $acid = !empty($possible_cids) ? (int)$possible_cids[0] : null;
         }
@@ -659,6 +661,7 @@ class AdminController extends \Zikula_AbstractController
     public function adminfooterAction()
     {
         $this->view->assign('symfonyversion', \Symfony\Component\HttpKernel\Kernel::VERSION);
+
         return new Response($this->view->fetch('Admin/footer.tpl'));
     }
 
@@ -711,7 +714,7 @@ class AdminController extends \Zikula_AbstractController
                 if (strpos($appDir, $docRoot) === false) {
                     $ldir = dirname(__FILE__);
                     $p = strpos($ldir, DIRECTORY_SEPARATOR.'system'); // we are in system/Admin
-                    $b = substr($ldir,0 , $p);
+                    $b = substr($ldir, 0, $p);
                     $filePath = $b.'/'.$appDir.'/.htaccess';
                 } else {
                     $filePath = $appDir.'/.htaccess';
@@ -852,7 +855,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string|bool false if no url handling functions are present or url string
      */
-    private function _zcurl($url, $timeout=5)
+    private function _zcurl($url, $timeout = 5)
     {
         $urlArray = parse_url($url);
         $data = '';
@@ -862,7 +865,7 @@ class AdminController extends \Zikula_AbstractController
         if (ini_get('allow_url_fopen')) {
             // handle SSL connections
             $path_query = (isset($urlArray['query']) ? $urlArray['path'] . $urlArray['query'] : $urlArray['path']);
-            $host = ($port==443 ? "ssl://$urlArray[host]" : $urlArray['host']);
+            $host = ($port == 443 ? "ssl://$urlArray[host]" : $urlArray['host']);
             $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
             if (!$fp) {
                 return false;
@@ -896,7 +899,7 @@ class AdminController extends \Zikula_AbstractController
             }
             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
             $data = curl_exec($ch);
-            if (!$data && $port=443) {
+            if (!$data && $port = 443) {
                 // retry non ssl
                 $url = str_replace('https://', 'http://', $url);
                 curl_setopt($ch, CURLOPT_URL, "$url?");
@@ -919,15 +922,15 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return int < 0 if module a should be ordered before module b > 0 otherwise
      */
-    public static function _sortAdminModsByOrder($a,$b)
+    public static function _sortAdminModsByOrder($a, $b)
     {
         if ((int)$a['order'] == (int)$b['order']) {
             return strcmp($a['modname'], $b['modname']);
         }
-        if((int)$a['order'] > (int)$b['order']) {
+        if ((int)$a['order'] > (int)$b['order']) {
             return 1;
         }
-        if((int)$a['order'] < (int)$b['order']) {
+        if ((int)$a['order'] < (int)$b['order']) {
             return -1;
         }
     }

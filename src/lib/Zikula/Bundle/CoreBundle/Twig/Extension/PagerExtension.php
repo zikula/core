@@ -112,7 +112,6 @@ class PagerExtension extends \Twig_Extension
         $pager['currentPage'] = ceil($pager['pos'] / $pager['perpage']);
         $pager['currentPage'] = $pager['currentPage'] > $pager['countPages'] ? $pager['countPages'] : $pager['currentPage'];
 
-
         $pager['args'] = array();
 
         // Include POST vars as requested, i.e. for search results
@@ -172,8 +171,10 @@ class PagerExtension extends \Twig_Extension
                         $pager['args'][$argument[0]] = $argument[1];
                     }
                 }
+
                 return \ModUtil::url(\System::getVar('startpage'), \System::getVar('starttype'), \System::getVar('startfunc'), $pager['args']);
             }
+
             return $this->container->get('router')->generate($routeName, $pager['args']);
         };
 
@@ -203,7 +204,6 @@ class PagerExtension extends \Twig_Extension
                 if ($pager['maxPages'] > 0 &&
                     //(($currItem < $leftMargin && $currItem > 1) || ($currItem > $rightMargin && $currItem <= $pager['countPages']))) {
                     (($currItem < $leftMargin) || ($currItem > $rightMargin))) {
-
                     if ($pager['optimize']) {
                         continue;
                     } else {

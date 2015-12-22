@@ -27,7 +27,7 @@ class SearchStatEntity extends EntityAccess
     /**
      * id of the previous search
      *
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -38,7 +38,7 @@ class SearchStatEntity extends EntityAccess
     /**
      * search terms of the previous search
      *     
-     * @var string $search
+     * @var string
      *
      * @ORM\Column(name="search", type="string", length=50, nullable=false)
      */
@@ -47,7 +47,7 @@ class SearchStatEntity extends EntityAccess
     /**
      * Number of times previous search has been run
      *
-     * @var integer $scount
+     * @var integer
      *
      * @ORM\Column(name="scount", type="integer", nullable=false)
      */
@@ -56,12 +56,11 @@ class SearchStatEntity extends EntityAccess
     /**
      * timestamp of last time this search was run
      *
-     * @var \Datetime $date
+     * @var \Datetime
      *
      * @ORM\Column(name="date", type="date", nullable=true)
      */
     private $date;
-
 
     /**
      * Get id
@@ -82,6 +81,7 @@ class SearchStatEntity extends EntityAccess
     public function setSearch($search)
     {
         $this->search = $search;
+
         return $this;
     }
 
@@ -104,6 +104,7 @@ class SearchStatEntity extends EntityAccess
     public function setCount($scount)
     {
         $this->scount = $scount;
+
         return $this;
     }
 
@@ -126,6 +127,7 @@ class SearchStatEntity extends EntityAccess
     public function setDate($date)
     {
         $this->date = $date;
+
         return $this;
     }
 

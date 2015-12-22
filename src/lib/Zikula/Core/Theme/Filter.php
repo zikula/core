@@ -52,7 +52,7 @@ class Filter
         // compile and replace head
         $header = $this->cssResolver->compile();
         $header .= \JCSSUtil::getJSConfig(); // must be included before other scripts because it defines `Zikula` JS namespace
-        $header .= ($this->scriptPosition == 'head') ? $this->jsResolver->compile(): '';
+        $header .= ($this->scriptPosition == 'head') ? $this->jsResolver->compile() : '';
         $header .= implode("\n", $this->headers->all()) . "\n";
         $header .= trim(implode("\n", \PageUtil::getVar('header')) . "\n"); // @todo legacy - remove at Core-2.0
         if (strripos($source, '</head>')) {
@@ -60,7 +60,7 @@ class Filter
         }
 
         // compile and replace foot
-        $footer = ($this->scriptPosition == 'foot') ? $this->jsResolver->compile(): '';
+        $footer = ($this->scriptPosition == 'foot') ? $this->jsResolver->compile() : '';
         $footer .= trim(implode("\n", $this->footers->all()) . "\n");
         $footer .= trim(implode("\n", \PageUtil::getVar('footer')) . "\n"); // @todo legacy - remove at Core-2.0
         if (false === empty($footer)) {

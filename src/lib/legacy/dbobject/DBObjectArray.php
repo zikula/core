@@ -41,7 +41,6 @@ class DBObjectArray
      */
     public $_objValidation; // object validation data
 
-
     // data + access descriptor
 
     /**
@@ -163,7 +162,6 @@ class DBObjectArray
      */
     public $_objWhere;
 
-
     // support
 
     /**
@@ -179,7 +177,6 @@ class DBObjectArray
      * @var array
      */
     public $_columns;
-
 
     // constants
     const GET_FROM_DB                = 'DB'; // get data from DB
@@ -261,8 +258,9 @@ class DBObjectArray
                 default:
                     throw new \Exception(__f("Error! An invalid initialization directive '%s' found in 'DBObjectArray::init()'.", $init));
             }
-        } else
+        } else {
             throw new \Exception(__f("Error! An unexpected parameter type initialization '%s' was encountered in 'PNObject::init()'.", $init));
+        }
     }
 
     /**
@@ -279,6 +277,7 @@ class DBObjectArray
         }
 
         $this->_objData = $data;
+
         return $this->_objData;
     }
 
@@ -291,14 +290,14 @@ class DBObjectArray
      */
     public function generateEmptyObjectArray($num = 1)
     {
-        $item = ObjectUtil::createEmptyObject ($this->_objType);
+        $item = ObjectUtil::createEmptyObject($this->_objType);
         if ($item) {
             $data = array();
             for ($i = 0; $i < $num; $i++) {
                 $data[] = $item;
             }
             $this->_objData = $data;
-        } 
+        }
 
         return $this->_objData;
     }
@@ -339,7 +338,7 @@ class DBObjectArray
      *
      * @return array The processed filter array.
      */
-    public function genFilterPreProcess ($filter = array())
+    public function genFilterPreProcess($filter = array())
     {
         return $filter;
     }
@@ -355,7 +354,8 @@ class DBObjectArray
      */
     public function genFilter($filter = array())
     {
-        $filter = $this->genFilterPreProcess ($filter);
+        $filter = $this->genFilterPreProcess($filter);
+
         return '';
     }
 
@@ -438,6 +438,7 @@ class DBObjectArray
         $this->_objDistinct = $distinct;
 
         $this->selectPostProcess();
+
         return $this->_objData;
     }
 
@@ -464,7 +465,7 @@ class DBObjectArray
      *
      * @return array The requested object/value.
      */
-    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter=null, array $args=array())
+    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter = null, array $args = array())
     {
         if (!$key) {
             $key = $this->_objPath;
@@ -475,6 +476,7 @@ class DBObjectArray
         if ($objectArray) {
             $this->_objData = $objectArray;
             $this->getDataFromInputPostProcess();
+
             return $this->_objData;
         }
 
@@ -505,6 +507,7 @@ class DBObjectArray
         if ($objectArray && is_array($objectArray)) {
             $this->_objData = $objectArray;
             $this->getDataFromSessionPostProcess();
+
             return $this->_objData;
         }
 
@@ -540,6 +543,7 @@ class DBObjectArray
 
         SessionUtil::setVar($path, $data, $path, $autocreate, $overwriteExistingVar);
         $this->_objData = $data;
+
         return $this->_objData;
     }
 
@@ -641,6 +645,7 @@ class DBObjectArray
         } else {
             $rc = $this->insert();
         }
+
         return $rc;
     }
 
@@ -662,6 +667,7 @@ class DBObjectArray
 
         if ($res) {
             $this->insertPostProcess();
+
             return $this->_objData;
         }
 
@@ -680,6 +686,7 @@ class DBObjectArray
     public function insertPreProcess($data = null)
     {
         EventUtil::dispatch('dbobjectarray.insertpreprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -695,6 +702,7 @@ class DBObjectArray
     public function insertPostProcess($data = null)
     {
         EventUtil::dispatch('dbobjectarray.insertpostprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -716,6 +724,7 @@ class DBObjectArray
 
         if ($res) {
             $this->updatePostProcess();
+
             return $this->_objData;
         }
 
@@ -734,6 +743,7 @@ class DBObjectArray
     public function updatePreProcess($data = null)
     {
         EventUtil::dispatch('dbobjectarray.updatepreprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -749,6 +759,7 @@ class DBObjectArray
     public function updatePostProcess($data = null)
     {
         EventUtil::dispatch('dbobjectarray.updatepostprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -770,6 +781,7 @@ class DBObjectArray
 
         if ($res) {
             $this->deletePostProcess();
+
             return $this->_objData;
         }
 
@@ -788,6 +800,7 @@ class DBObjectArray
     public function deletePreProcess($data = null)
     {
         EventUtil::dispatch('dbobjectarray.deletepreprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -803,6 +816,7 @@ class DBObjectArray
     public function deletePostProcess($data = null)
     {
         EventUtil::dispatch('dbobjectarray.deletepostprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -837,10 +851,11 @@ class DBObjectArray
      *
      * @return resultSet The resultSet from the update SQL statement
      */
-    public function setDBFieldAll ($column, $value)
+    public function setDBFieldAll($column, $value)
     {
         EventUtil::dispatch('dbobjectarray.setdbfieldall', new \Zikula\Core\Event\GenericEvent($this));
-         return $this->setDBField ($column, $value, null, true);
+
+        return $this->setDBField($column, $value, null, true);
     }
 
     /**
@@ -853,7 +868,7 @@ class DBObjectArray
      *
      * @return resultSet The resultSet from the update SQL statement
      */
-    public function setDBField ($column, $value, $filter=null, $fromAll=false)
+    public function setDBField($column, $value, $filter = null, $fromAll = false)
     {
         EventUtil::dispatch('dbobjectarray.setdbfield', new \Zikula\Core\Event\GenericEvent($this));
 
@@ -884,15 +899,15 @@ class DBObjectArray
 
         $where  = '';
         if ($filter) {
-            $filter = $this->cleanFilter ($filter);
-            $where  = DBUtil::_checkWhereClause ($this->genFilter ($filter));
+            $filter = $this->cleanFilter($filter);
+            $where  = DBUtil::_checkWhereClause($this->genFilter($filter));
             if (!$where) {
                 throw new \Exception(__f("Supplied filter did not result in a where-clause"));
             }
         }
-        $val = DBUtil::_typesafeQuotedID ($this->_objType, $column, $value);
+        $val = DBUtil::_typesafeQuotedID($this->_objType, $column, $value);
         $sql = "UPDATE $tab SET $col = $val $where";
-        $res = DBUtil::executeSQL ($sql);
+        $res = DBUtil::executeSQL($sql);
 
         return $res;
     }
@@ -907,12 +922,12 @@ class DBObjectArray
     public function clean($objArray = null)
     {
         if (!$objArray) {
-            $objArray = & $this->_objData;
+            $objArray = &$this->_objData;
         }
 
         $ak = array_keys($objArray);
         foreach ($ak as $k) {
-            $obj = & $objArray[$k];
+            $obj = &$objArray[$k];
             $ak2 = array_keys($obj);
             foreach ($ak2 as $f) {
                 $obj[$f] = FormUtil::getPassedValue(trim($obj[$f]));
@@ -971,6 +986,7 @@ class DBObjectArray
     public function validatePreProcess($type = 'user', $data = null)
     {
         EventUtil::dispatch('dbobjectarray.validatepreprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return true;
     }
 
@@ -988,6 +1004,7 @@ class DBObjectArray
     {
         // empty function, should be implemented by child classes.
         EventUtil::dispatch('dbobjectarray.validatepostprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return true;
     }
 
@@ -1012,12 +1029,12 @@ class DBObjectArray
                 $res = $res && ValidationUtil::validateObjectPlain($this->_objPath, $v, $this->_objValidation);
                 if (!$res) {
                     break;
-                } 
-            } 
+                }
+            }
             if ($res) {
                 $res = $res && $this->validatePostProcess();
-            } 
-        } 
+            }
+        }
 
         return $res;
     }
@@ -1081,7 +1098,6 @@ class DBObjectArray
         }
 
         return _prayer($this);
-
     }
 
     /**
@@ -1104,6 +1120,7 @@ class DBObjectArray
         if ($offset !== null) {
             return _prayer($this->_objData[$offset]);
         }
+
         return _prayer($this->_objData);
     }
 }

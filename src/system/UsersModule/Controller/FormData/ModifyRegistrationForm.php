@@ -14,7 +14,6 @@
 namespace Zikula\UsersModule\Controller\FormData;
 
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Controller\FormData\AbstractFormData;
 
 /**
  * Contains and validates the data found on the Users module's modify registration form.

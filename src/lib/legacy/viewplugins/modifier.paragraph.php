@@ -43,7 +43,9 @@ function smarty_modifier_paragraph($string, $br = false)
         $string = str_replace('</blockquote></p>', '</p></blockquote>', $string);
         $string = preg_replace('!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!', "$1", $string);
         $string = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!', "$1", $string);
-        if ($br) $string = preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $string); // optionally make line breaks
+        if ($br) {
+            $string = preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $string);
+        } // optionally make line breaks
         $string = preg_replace('!(</?(?:table|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*<br />!', "$1", $string);
         $string = preg_replace('!<br />(\s*</?(?:p|li|div|th|pre|td|ul|ol)>)!', '$1', $string);
         $string = preg_replace('/&([^#])(?![a-z]{1,8};)/', '&#038;$1', $string);

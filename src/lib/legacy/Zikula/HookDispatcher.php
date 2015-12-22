@@ -322,7 +322,6 @@ class Zikula_HookDispatcher
             }
         }
 
-
         return $this;
     }
 
@@ -390,6 +389,7 @@ class Zikula_HookDispatcher
                 } else {
                     $newUrl = null;
                 }
+
                 return new \Zikula_ProcessHook($name, $hook->getId(), $newUrl);
                 break;
             case 'Zikula\Core\Hook\FilterHook':

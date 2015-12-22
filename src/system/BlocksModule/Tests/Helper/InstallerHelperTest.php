@@ -69,6 +69,7 @@ class InstallerHelperTest extends \PHPUnit_Framework_TestCase
                 $module
                     ->method('getNamespace')
                     ->willReturn('Zikula\BlocksModule\Tests\Helper\\' . $moduleName);
+
                 return $module;
             }));
         $moduleEntity = $this
@@ -103,6 +104,7 @@ class InstallerHelperTest extends \PHPUnit_Framework_TestCase
             ['Fixture', 'Test', 'Fixture:Zikula\BlocksModule\Tests\Helper\Fixture\Block\TestBlock'],
         ];
     }
+
     /**
      * @return array
      */

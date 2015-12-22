@@ -93,7 +93,6 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
      */
     public $isValid = true;
 
-
     /**
      * CSS class to use.
      *

@@ -56,7 +56,7 @@ abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
             $versionClass = "{$this->name}\\{$this->name}Version";
             $versionClassOld = "{$this->name}_Version";
             $versionClass = class_exists($versionClass) ? $versionClass : $versionClassOld;
-            $this->version = new $versionClass;
+            $this->version = new $versionClass();
         }
 
         $this->modinfo = array(

@@ -21,7 +21,7 @@
  * @link http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.internal-encoding
  */
 if (version_compare(\PHP_VERSION, '5.6.0', '<')) {
-    ini_set('mbstring.internal_encoding', 'UTF-8'); 
+    ini_set('mbstring.internal_encoding', 'UTF-8');
 }
 
 ini_set('default_charset', 'UTF-8');
@@ -67,8 +67,7 @@ foreach ($_GET as $domain => $meta) {
     $name = $m[0]; // module name or system plugin name.
     $pluginName = isset($m[1]) ? $m[1] : '';
 
-    switch ($type)
-    {
+    switch ($type) {
         case 'module':
             $type = "modules/$name/";
             break;
@@ -91,11 +90,11 @@ foreach ($_GET as $domain => $meta) {
     if (file_exists($override)) {
         $path = 'config/locale';
     }
-    
+
     $gettext->bindTextDomain($domain, $path);
     $gettext->bindTextDomainCodeset($domain, 'utf8');
     $reader = $gettext->getReader($domain);
-    $reader->ngettext(1,2,3);
+    $reader->ngettext(1, 2, 3);
     $data = $reader->getCache_translations();
     unset($data['']);
     if ($data) {

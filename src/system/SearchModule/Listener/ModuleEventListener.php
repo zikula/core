@@ -15,8 +15,6 @@ namespace Zikula\SearchModule\Listener;
 
 use ModUtil;
 use BlockUtil;
-use System;
-use SecurityUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Core\Event\GenericEvent;
 
@@ -48,7 +46,6 @@ class ModuleEventListener implements EventSubscriberInterface
             $blocks = BlockUtil::getBlocksInfo();
 
             foreach ($blocks as $block) {
-
                 $block = $block->toArray();
 
                 if ($block['bkey'] != 'ZikulaSearchModule') {
@@ -67,5 +64,4 @@ class ModuleEventListener implements EventSubscriberInterface
             }
         }
     }
-
 }

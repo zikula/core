@@ -33,7 +33,7 @@
  *
  * @return string
  */
-function smarty_function_selector_module_tables ($params, Zikula_View $view)
+function smarty_function_selector_module_tables($params, Zikula_View $view)
 {
     $modname       = isset($params['modname'])       ? $params['modname']        : null;
     $name          = isset($params['name'])          ? $params['name']           : null;
@@ -46,6 +46,6 @@ function smarty_function_selector_module_tables ($params, Zikula_View $view)
     $disabled      = isset($params['disabled'])      ? $params['disabled']       : false;
     $multipleSize  = isset($params['multipleSize'])  ? $params['multipleSize']   : 1;
 
-    return HtmlUtil::getSelector_ModuleTables ($modname, $name, $selectedValue, $defaultValue, $defaultText,
+    return HtmlUtil::getSelector_ModuleTables($modname, $name, $selectedValue, $defaultValue, $defaultText,
                                                $submit, $remove, $disabled, $nStripChars, $multipleSize);
 }

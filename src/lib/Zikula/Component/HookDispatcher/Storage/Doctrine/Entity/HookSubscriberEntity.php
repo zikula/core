@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class HookSubscriberEntity
 {
     /**
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,47 +22,46 @@ class HookSubscriberEntity
     private $id;
 
     /**
-     * @var string $owner
+     * @var string
      *
      * @ORM\Column(name="owner", type="string", length=40, nullable=false)
      */
     private $owner;
 
     /**
-     * @var string $subowner
+     * @var string
      *
      * @ORM\Column(name="subowner", type="string", length=40, nullable=true)
      */
     private $subowner;
 
     /**
-     * @var integer $sareaid
+     * @var integer
      *
      * @ORM\Column(name="sareaid", type="integer", nullable=false)
      */
     private $sareaid;
 
     /**
-     * @var string $hooktype
+     * @var string
      *
      * @ORM\Column(name="hooktype", type="string", length=20, nullable=false)
      */
     private $hooktype;
 
     /**
-     * @var string $category
+     * @var string
      *
      * @ORM\Column(name="category", type="string", length=20, nullable=false)
      */
     private $category;
 
     /**
-     * @var string $eventname
+     * @var string
      *
      * @ORM\Column(name="eventname", type="string", length=100, nullable=false)
      */
     private $eventname;
-
 
     /**
      * Get id
@@ -83,6 +82,7 @@ class HookSubscriberEntity
     public function setOwner($owner)
     {
         $this->owner = $owner;
+
         return $this;
     }
 
@@ -105,6 +105,7 @@ class HookSubscriberEntity
     public function setSubowner($subowner)
     {
         $this->subowner = $subowner;
+
         return $this;
     }
 
@@ -127,6 +128,7 @@ class HookSubscriberEntity
     public function setSareaid($sareaid)
     {
         $this->sareaid = $sareaid;
+
         return $this;
     }
 
@@ -149,6 +151,7 @@ class HookSubscriberEntity
     public function setHooktype($hooktype)
     {
         $this->hooktype = $hooktype;
+
         return $this;
     }
 
@@ -171,6 +174,7 @@ class HookSubscriberEntity
     public function setCategory($category)
     {
         $this->category = $category;
+
         return $this;
     }
 
@@ -193,6 +197,7 @@ class HookSubscriberEntity
     public function setEventname($eventname)
     {
         $this->eventname = $eventname;
+
         return $this;
     }
 

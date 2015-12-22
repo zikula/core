@@ -21,5 +21,4 @@ class FooBlock implements BlockControllerInterface
     {
         // TODO: Implement modify() method.
     }
-
 }

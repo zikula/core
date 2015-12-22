@@ -115,4 +115,3 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
         return $html;
     }
 }
-

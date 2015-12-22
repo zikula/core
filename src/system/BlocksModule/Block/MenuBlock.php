@@ -171,7 +171,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
         $itemselected = false;
         // do a simple check .. to see if the current URL is the menu item
         if (!empty($url)) {
-            if (is_integer(strpos($uri, $url))) {
+            if (is_int(strpos($uri, $url))) {
                 $itemselected = true;
             }
         }
@@ -181,7 +181,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
             $url = System::getBaseUrl();
         } elseif (!empty($url)) {
             if ($url[0] == '{') {
-                $url = explode(':', substr($url, 1, - 1));
+                $url = explode(':', substr($url, 1, -1));
 
                 // url[0] should be the module name
                 if (isset($url[0]) && !empty($url[0])) {
@@ -343,6 +343,6 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
         // and clear the theme cache
         Zikula_View_Theme::getInstance()->clear_cache();
 
-        return($blockinfo);
+        return $blockinfo;
     }
 }

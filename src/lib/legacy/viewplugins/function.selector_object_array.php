@@ -21,7 +21,7 @@
  *
  * @return string
  */
-function smarty_function_selector_object_array ($params, Zikula_View $view)
+function smarty_function_selector_object_array($params, Zikula_View $view)
 {
     $selectedValue  = (isset($params['selectedValue'])  ? $params['selectedValue']  : 0);
     $defaultValue   = (isset($params['defaultValue'])   ? $params['defaultValue']   : 0);

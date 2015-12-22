@@ -53,7 +53,6 @@
  * @return string The block.
  *
  * @todo the attribute 'name' is not used.
- *
  */
 function smarty_function_block($params, Zikula_View $view)
 {

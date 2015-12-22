@@ -33,7 +33,6 @@ class Zikula_Doctrine_Template_Listener_Attributable extends Zikula_Doctrine_Tem
         $tableName = $this->getTableNameFromEvent($event);
         $idColumn = $this->getIdColumnFromEvent($event);
 
-
         $dataForObjectUtil = array();
         $dataForObjectUtil[$idColumn] = $data[$idColumn];
 

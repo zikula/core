@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Core\Event\GenericEvent;
 use Zikula_Request_Http as Request;
 
@@ -37,7 +36,7 @@ define('ACCESS_ADMIN', 800);
  * @link http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.internal-encoding
  */
 if (version_compare(\PHP_VERSION, '5.6.0', '<')) {
-    ini_set('mbstring.internal_encoding', 'UTF-8'); 
+    ini_set('mbstring.internal_encoding', 'UTF-8');
 }
 
 ini_set('default_charset', 'UTF-8');
@@ -171,8 +170,8 @@ class Zikula_Core
     public function getServiceManager()
     {
         return $this->container;
-
     }
+
     /**
      * Getter for servicemanager property.
      *
@@ -483,7 +482,7 @@ class Zikula_Core
         }
 
         if ($stage & self::STAGE_SESSIONS) {
-//            SessionUtil::requireSession();
+            //            SessionUtil::requireSession();
             $coreInitEvent->setArgument('stage', self::STAGE_SESSIONS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }

@@ -85,25 +85,25 @@ class AdminApi extends \Zikula_AbstractApi
 
                         case 'email':
                             $qb->andWhere($qb->expr()->like('u.email', ':value'))
-                               ->setParameter('value', $value);                            
+                               ->setParameter('value', $value);
                             break;
 
                         case 'ugroup':
                             $uidList = UserUtil::getUsersForGroup($value);
                             if (is_array($uidList) && !empty($uidList)) {
                                 $qb->andWhere($qb->expr()->in('u.uid', ':uids'))
-                                   ->setParameter('uids', $uidList);                            
+                                   ->setParameter('uids', $uidList);
                             }
                             break;
 
                         case 'regdateafter':
                             $qb->andWhere('u.user_regdate > :value')
-                               ->setParameter('value', $value);                            
+                               ->setParameter('value', $value);
                             break;
 
                         case 'regdatebefore':
                             $qb->andWhere('u.user_regdate < :value')
-                               ->setParameter('value', $value);                            
+                               ->setParameter('value', $value);
                             break;
 
                         case 'dynadata':
@@ -111,7 +111,7 @@ class AdminApi extends \Zikula_AbstractApi
                                 $uidList = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array('dynadata' => $value));
                                 if (is_array($uidList) && !empty($uidList)) {
                                     $qb->andWhere($qb->expr()->in('u.uid', ':uids'))
-                                       ->setParameter('uids', $uidList);                            
+                                       ->setParameter('uids', $uidList);
                                 }
                             }
                             break;
@@ -190,7 +190,6 @@ class AdminApi extends \Zikula_AbstractApi
 
             $userList[] = $userObj;
         }
-
 
         foreach ($userList as $userObj) {
             if ($markOnly) {
@@ -324,14 +323,14 @@ class AdminApi extends \Zikula_AbstractApi
                 }
             }
         }
-        if (count($bcclist) <> 0) {
+        if (count($bcclist) != 0) {
             $sendMessageArgs = array(
                 'fromname'      => $sendmail['from'],
                 'fromaddress'   => $sendmail['rpemail'],
                 'toname'        => UserUtil::getVar('uname'),
                 'toaddress'     => UserUtil::getVar('email'),
                 'replytoname'   => UserUtil::getVar('uname'),
-                'replytoaddress'=> $sendmail['rpemail'],
+                'replytoaddress' => $sendmail['rpemail'],
                 'subject'       => $sendmail['subject'],
                 'body'          => $sendmail['message'],
                 'html'          => $html,
@@ -366,8 +365,8 @@ class AdminApi extends \Zikula_AbstractApi
 
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
             $links[] = array(
-                'url' => $this->get('router')->generate('zikulausersmodule_admin_view'), 
-                'text' => $this->__('Users list'), 
+                'url' => $this->get('router')->generate('zikulausersmodule_admin_view'),
+                'text' => $this->__('Users list'),
                 'icon' => 'list');
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
@@ -375,7 +374,7 @@ class AdminApi extends \Zikula_AbstractApi
             if ($pending) {
                 $links[] = array(
                     'url' => $this->get('router')->generate('zikulausersmodule_admin_viewregistrations'),
-                    'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 
+                    'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')',
                     'icon' => 'plus');
             }
         }
@@ -397,32 +396,32 @@ class AdminApi extends \Zikula_AbstractApi
                 'url' => $this->get('router')->generate('zikulausersmodule_admin_import'),
                 'text' => $this->__('Import users'));
             if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADMIN)) {
-                 $submenulinks[] = array(
+                $submenulinks[] = array(
                      'url' => $this->get('router')->generate('zikulausersmodule_admin_exporter'),
                      'text' => $this->__('Export users'));
             }
             $links[] = array(
                 'url' => $this->get('router')->generate('zikulausersmodule_admin_newuser'),
-                'text' => $this->__('Create new user'), 
-                'icon' => 'plus', 
+                'text' => $this->__('Create new user'),
+                'icon' => 'plus',
                 'links' => $submenulinks);
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
             $links[] = array(
-                'url' => $this->get('router')->generate('zikulausersmodule_admin_search'), 
-                'text' => $this->__('Find users'), 
+                'url' => $this->get('router')->generate('zikulausersmodule_admin_search'),
+                'text' => $this->__('Find users'),
                 'icon' => 'search');
         }
         if (SecurityUtil::checkPermission('ZikulaUsersModule::MailUsers', '::', ACCESS_MODERATE)) {
             $links[] = array(
                 'url' => $this->get('router')->generate('zikulausersmodule_admin_mailusers'),
-                'text' => $this->__('E-mail users'), 
+                'text' => $this->__('E-mail users'),
                 'icon' => 'envelope');
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADMIN)) {
             $links[] = array(
-                'url' => $this->get('router')->generate('zikulausersmodule_admin_config'), 
-                'text' => $this->__('Settings'), 
+                'url' => $this->get('router')->generate('zikulausersmodule_admin_config'),
+                'text' => $this->__('Settings'),
                 'icon' => 'wrench');
         }
 
@@ -508,7 +507,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // create users
         foreach ($importValuesDB as $importValueDB) {
-            $user = new \Zikula\UsersModule\Entity\UserEntity;
+            $user = new \Zikula\UsersModule\Entity\UserEntity();
             $user->merge($importValueDB);
             $this->entityManager->persist($user);
         }
@@ -521,7 +520,6 @@ class AdminApi extends \Zikula_AbstractApi
         if (!$usersInDB) {
             throw new \RuntimeException($this->__(
                 'Error! The users have been created but something has failed trying to get them from the database. Now all these users do not have group.'));
-
         }
 
         // add user to groups
@@ -591,7 +589,6 @@ class AdminApi extends \Zikula_AbstractApi
      * @param array $args All parameters passed to this function.
      *
      * @return array Extended user list
-
      */
     public function extendUserList($args)
     {
@@ -608,7 +605,6 @@ class AdminApi extends \Zikula_AbstractApi
         foreach ($args['groups'] as $group) {
             $userGroupsAccess[$group['gid']] = array('gid' => $group['gid']);
         }
-
 
         // Get the current user's uid
         $currentUid = UserUtil::getVar('uid');
@@ -627,7 +623,7 @@ class AdminApi extends \Zikula_AbstractApi
             $userList[$key]['options'] = array(
                 'lostUsername' => $currentUserHasModerateAccess,
                 'lostPassword' => $hasUsersPassword && $currentUserHasModerateAccess,
-                'toggleForcedPasswordChange'=> $hasUsersPassword && $currentUserHasEditAccess,
+                'toggleForcedPasswordChange' => $hasUsersPassword && $currentUserHasEditAccess,
                 'modify' => $currentUserHasEditAccess,
                 'deleteUsers' => $currentUserHasDeleteAccess,
             );

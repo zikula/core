@@ -93,7 +93,7 @@ class GenerateVendorDocCommand extends Command
             }
             $content .= "\n";
         }
-        
+
         $output->writeln('Dumping vendors to ' . $input->getOption('write-to'));
 
         file_put_contents($input->getOption('write-to'), $content);
@@ -186,7 +186,7 @@ class FixAutoloaderCommand extends Command
         // fix paths in composer autoloader files removing src/ from paths
         $composerFiles = array(
             'autoload_classmap.php',
-            'autoload_namespaces.php', 
+            'autoload_namespaces.php',
             'autoload_real.php',
             'autoload_files.php',
             'autoload_psr4.php'
@@ -341,7 +341,6 @@ class LessCommand extends Command
             ->setName('build:generate_less')
             ->setDescription('Generates Bootstrap Less file')
             ->addOption('write-to', null, InputOption::VALUE_REQUIRED, 'Where to dump the generated file.');
-        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

@@ -21,7 +21,7 @@
  *
  * @return string
  */
-function smarty_function_selector_user ($params, Zikula_View $view)
+function smarty_function_selector_user($params, Zikula_View $view)
 {
     $field            = isset($params['field'])            ? $params['field']            : 'uid';
     $selectedValue    = isset($params['selectedValue'])    ? $params['selectedValue']    : 0;
@@ -36,7 +36,7 @@ function smarty_function_selector_user ($params, Zikula_View $view)
     $multipleSize     = isset($params['multipleSize'])     ? $params['multipleSize']     : 1;
     $disabled         = isset($params['disabled'])         ? $params['disabled']         : 0;
 
-    $html = HtmlUtil::getSelector_User ($name, $gid, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, '', $submit, $disabled, $multipleSize);
+    $html = HtmlUtil::getSelector_User($name, $gid, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, '', $submit, $disabled, $multipleSize);
 
     if ($assign) {
         $view->assign($assign, $html);

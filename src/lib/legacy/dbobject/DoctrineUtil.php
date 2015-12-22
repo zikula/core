@@ -157,7 +157,7 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function createTable($tableName, array $columns, array $options=array())
+    public static function createTable($tableName, array $columns, array $options = array())
     {
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->createTable($tableName, $columns, $options);
@@ -185,7 +185,7 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function renameTable($oldTableName, $newTableName, $check=false)
+    public static function renameTable($oldTableName, $newTableName, $check = false)
     {
         $oldTableName = self::decorateTableName($oldTableName);
         $newTableName = self::decorateTableName($newTableName);
@@ -202,7 +202,7 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function createColumn($tableName, $columnName, $options=array(), $check=false)
+    public static function createColumn($tableName, $columnName, $options = array(), $check = false)
     {
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->alterTable($tableName, array('add' => array($columnName => $options)), $check);
@@ -217,7 +217,7 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function dropColumn($tableName, $columnName, $check=false)
+    public static function dropColumn($tableName, $columnName, $check = false)
     {
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->alterTable($tableName, array('remove' => array($columnName => array())), $check);
@@ -233,7 +233,7 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function renameColumn($tableName, $oldColumnName, $newColumnName, $check=false)
+    public static function renameColumn($tableName, $oldColumnName, $newColumnName, $check = false)
     {
         $tableName = self::decorateTableName($tableName);
         $columnList = Doctrine_Manager::connection()->import->listTableColumns($tableName);
@@ -244,7 +244,6 @@ class DoctrineUtil
                 // fix detection for TEXT fields
                 $coldef['type'] = 'clob';
                 $coldef['length'] = 65532;
-
             } elseif ($coldef['type'] == 'integer' && in_array('boolean', $coldef['alltypes'])) {
                 // fix detection for BOOLEAN fields
                 $coldef['type'] = 'boolean';
@@ -266,7 +265,7 @@ class DoctrineUtil
      *
      * @return void
      */
-    public static function alterColumn($tableName, $columnName, $column=array(), $check=false)
+    public static function alterColumn($tableName, $columnName, $column = array(), $check = false)
     {
         $options = array();
         $options = $column['options'];
@@ -377,7 +376,7 @@ class DoctrineUtil
      *
      * @return boolean
      */
-    public static function changeTable($className, $dropColumns=false)
+    public static function changeTable($className, $dropColumns = false)
     {
         $connection = Doctrine_Manager::connection();
 
@@ -451,5 +450,4 @@ class DoctrineUtil
 
         return true;
     }
-
 }

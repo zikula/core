@@ -261,7 +261,7 @@ class CategoryEntity extends EntityAccess
      */
     public function getChildren()
     {
-        return !empty($this->children) ? $this-> children : array();
+        return !empty($this->children) ? $this->children : array();
     }
 
     /**
@@ -385,6 +385,7 @@ class CategoryEntity extends EntityAccess
         if (!empty($lang)) {
             return $this->display_name[$lang];
         }
+
         return $this->display_name;
     }
 
@@ -409,6 +410,7 @@ class CategoryEntity extends EntityAccess
         if (!empty($lang)) {
             return $this->display_desc[$lang];
         }
+
         return $this->display_desc;
     }
 

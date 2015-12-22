@@ -168,7 +168,6 @@ class ZLanguage
         $this->processErrors();
     }
 
-
     /**
      * Get singleton instance.
      *
@@ -295,7 +294,7 @@ class ZLanguage
         $_this->languageCodeLegacy = $_this->lookupLegacyCode($_this->languageCode);
         $_this->locale = self::transformInternal(ZGettext::getInstance()->setLocale($lc, self::transformFS($locale)));
         $_this->i18n = ZI18n::getInstance($locale);
-        if (!array_key_exists($locale,$_this->domainCache)) {
+        if (!array_key_exists($locale, $_this->domainCache)) {
             $_this->domainCache[$locale] = array();
         }
     }
@@ -319,7 +318,6 @@ class ZLanguage
     {
         ZGettext::getInstance()->textDomain('zikula');
     }
-
 
     /**
      * Get language code.
@@ -360,7 +358,6 @@ class ZLanguage
     {
         return self::getInstance()->encoding;
     }
-
 
     /**
      * Bind domain.
@@ -537,7 +534,6 @@ class ZLanguage
         $_this->setTextDomain('zikula');
     }
 
-
     /**
      * Search overrides.
      *
@@ -553,7 +549,6 @@ class ZLanguage
 
         return $override ? realpath('config/locale') : realpath($path);
     }
-
 
     /**
      * Get module domain.
@@ -631,10 +626,9 @@ class ZLanguage
             return true;
         } else {
             // append only when current language and system language are different
-            return (($_this->langSystemDefault != $_this->languageCode) ? true : false);
+            return ($_this->langSystemDefault != $_this->languageCode) ? true : false;
         }
     }
-
 
     /**
      * Discovers the browser's preferenced language.
@@ -649,7 +643,6 @@ class ZLanguage
 
         return $this->browserLanguagePref;
     }
-
 
     /**
      * Get array of installed languages by code.
@@ -772,7 +765,7 @@ class ZLanguage
     {
         $map = self::_cnvlanguagelist();
 
-        return (isset($map[$lookup]) ? $map[$lookup] : 'eng');
+        return isset($map[$lookup]) ? $map[$lookup] : 'eng';
     }
 
     /**
@@ -788,7 +781,7 @@ class ZLanguage
     {
         $map = self::legacyCodeMap();
 
-        return (isset($map[$code]) ? $map[$code] : false);
+        return isset($map[$code]) ? $map[$code] : false;
     }
 
     /**
@@ -815,7 +808,7 @@ class ZLanguage
         $lang = substr($m, 0, (strpos($m, '-') ? strpos($m, '-') : strlen($m)));
         $country = ($lang != $m ? strtoupper(str_replace("$lang-", '', $m)) : false);
 
-        return ($country ? "{$lang}_{$country}" : $lang);
+        return $country ? "{$lang}_{$country}" : $lang;
     }
 
     /**

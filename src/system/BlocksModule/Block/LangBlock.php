@@ -324,7 +324,7 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
      *
      * @return int <0 if $a < $b, >0 otherwise
      */
-    function _blocks_thelangblock_sort($a, $b)
+    public function _blocks_thelangblock_sort($a, $b)
     {
         return strcmp($a['name'], $b['name']);
     }

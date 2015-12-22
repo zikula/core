@@ -84,7 +84,6 @@ class PlacementController extends AbstractController
     public function changeBlockOrderAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-
             return new ForbiddenResponse($this->__('No permission for this action.'));
         }
 

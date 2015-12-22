@@ -139,7 +139,7 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
         PageUtil::addVar("javascript", "javascript/jquery-plugins/jQuery-Timepicker-Addon/jquery-ui-timepicker-addon.js");
         PageUtil::addVar("stylesheet", "javascript/jquery-plugins/jQuery-Timepicker-Addon/jquery-ui-timepicker-addon.css");
     }
-    if (!empty($lang) && ($lang <> 'en')) {
+    if (!empty($lang) && ($lang != 'en')) {
         PageUtil::addVar("javascript", "javascript/jquery-plugins/jQuery-Timepicker-Addon/i18n/jquery-ui-timepicker-$lang.js");
     }
     $jQueryTheme = is_dir("web/jquery-ui/themes/$jQueryTheme") ? $jQueryTheme : 'smoothness';
@@ -187,7 +187,7 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
     $html = "<input type='text'{$readOnlyHtml}{$inlineStyle} id='$displayElement'{$class} name='$name' value='{$defaultDate->format($dateTimeFormat)}' />\n";
     if (isset($valueStorageElement)) {
         $name = isset($object) ? "{$object}[{$valueStorageElement}]" : $valueStorageElement;
-        $html .="<input type='hidden' id='$valueStorageElement' name='$name' value='{$defaultDate->format('G:i')}' />\n";
+        $html .= "<input type='hidden' id='$valueStorageElement' name='$name' value='{$defaultDate->format('G:i')}' />\n";
     }
 
     return $html;

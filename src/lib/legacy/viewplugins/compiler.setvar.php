@@ -68,7 +68,6 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
 
     if ($_lval_var{0} == '$') {
         $_lval = $_lval_var;
-
     } else {
         /* take it as a variable-name */
         $_lval = '$this->_tpl_vars['.$compiler->_parse_var_props($_lval).']';
@@ -107,7 +106,6 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
 
             return $_code;
         }
-
     } else {
         $compiler->_syntax_error(__f("Missing '%s' parameter.", 'value'), E_USER_WARNING, __FILE__, __LINE__);
 

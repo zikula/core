@@ -13,10 +13,8 @@
 
 namespace Zikula\ExtensionsModule;
 
-use Zikula_AbstractErrorHandler;
 use LogUtil;
 use Zikula_AbstractVersion;
-use ServiceUtil;
 use ModUtil;
 use System;
 use Zikula\Core\AbstractModule;
@@ -73,7 +71,7 @@ class Util
             // pre 1.3 modules
             $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
             if (!file_exists($legacyVersionPath)) {
-//                if (!System::isUpgrading()) {
+                //                if (!System::isUpgrading()) {
 //                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), \Monolog\Logger::CRITICAL);
 //                    throw new \InvalidArgumentException(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
 //                }

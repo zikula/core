@@ -23,7 +23,6 @@ namespace Zikula\Component\SortableColumns;
  */
 class Column
 {
-
     const DIRECTION_ASCENDING = 'ASC';
     const DIRECTION_DESCENDING = 'DESC';
 
@@ -38,7 +37,7 @@ class Column
     private $cssClassString;
     private $isSortColumn = false;
 
-    function __construct($name, $currentSortDirection = null, $defaultSortDirection = null)
+    public function __construct($name, $currentSortDirection = null, $defaultSortDirection = null)
     {
         $this->name = $name;
         $this->currentSortDirection = !empty($currentSortDirection) ? $currentSortDirection : self::DIRECTION_ASCENDING;

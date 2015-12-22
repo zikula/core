@@ -70,5 +70,4 @@ class PendingContentListener implements EventSubscriberInterface
             }
         }
     }
-
 }

@@ -137,7 +137,6 @@ class ControllerUtil
             }
         }
         if ($requirementsMet) {
-
             return true;
         }
         $results['phpversion'] = phpversion();

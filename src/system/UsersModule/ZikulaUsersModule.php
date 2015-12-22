@@ -25,6 +25,7 @@ namespace Zikula\UsersModule {
 /**
  * BC layer - remove at Core-2.0
  */
+
 namespace {
     /**
      * constants for the users module

@@ -61,7 +61,7 @@ class Zikula_Form_Plugin_ContextMenu_Separator extends Zikula_Form_AbstractPlugi
      *
      * @return Zikula_Form_Block_ContextMenu
      */
-    function &getParentContextMenu()
+    public function &getParentContextMenu()
     {
         // Locate parent context menu
         $contextMenu = $this->parentPlugin;

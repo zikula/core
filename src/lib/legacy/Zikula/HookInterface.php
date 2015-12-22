@@ -21,8 +21,12 @@
 interface Zikula_HookInterface extends Zikula_EventInterface
 {
     public function getId();
+
     public function getCaller();
+
     public function setCaller($caller);
+
     public function getAreaId();
+
     public function setAreaId($areaId);
 }

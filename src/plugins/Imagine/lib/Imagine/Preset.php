@@ -87,12 +87,12 @@ class SystemPlugin_Imagine_Preset extends ArrayObject
      */
     private function prepare($data)
     {
-		if (!isset($data['width']) || $data['width'] == '') {
-			$data['width'] = 'auto';
-		}
-		if (!isset($data['height']) || $data['height'] == '') {
-			$data['height'] = 'auto';
-		}
+        if (!isset($data['width']) || $data['width'] == '') {
+            $data['width'] = 'auto';
+        }
+        if (!isset($data['height']) || $data['height'] == '') {
+            $data['height'] = 'auto';
+        }
         $array = array_merge($this->getEmptyPreset(), (array)$data);
 
         return $array;

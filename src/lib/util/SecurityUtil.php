@@ -349,8 +349,8 @@ class SecurityUtil
         // Get all groups that user is in
         $foundUsers = $em->getRepository('ZikulaUsersModule:UserEntity')->findBy(['uid' => $uids]);
         $fldArray = [];
-        foreach($foundUsers as $foundUser) {
-            foreach($foundUser->getGroups() as $gid => $group) {
+        foreach ($foundUsers as $foundUser) {
+            foreach ($foundUser->getGroups() as $gid => $group) {
                 $fldArray[] = $gid;
             }
         }
@@ -642,7 +642,7 @@ class SecurityUtil
 
         if (is_string($unhashedData) && is_string($saltedHash) && is_string($saltDelimeter) && (strlen($saltDelimeter) == 1)
                 && (strpos($saltedHash, $saltDelimeter) !== false)) {
-            list ($hashMethod, $saltStr, $correctHash) = explode($saltDelimeter, $saltedHash);
+            list($hashMethod, $saltStr, $correctHash) = explode($saltDelimeter, $saltedHash);
 
             if (!empty($hashMethodCodeToName)) {
                 if (is_numeric($hashMethod) && ((int)$hashMethod == $hashMethod)) {
@@ -705,5 +705,4 @@ class SecurityUtil
 
         return $accessnames;
     }
-
 }

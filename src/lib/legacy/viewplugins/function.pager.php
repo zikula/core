@@ -245,7 +245,6 @@ function smarty_function_pager($params, Zikula_View $view)
         }
     }
 
-
     unset($params['modname']);
     unset($params['type']);
     unset($params['func']);
@@ -255,6 +254,7 @@ function smarty_function_pager($params, Zikula_View $view)
         if (!$pager['route']) {
             return ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']);
         }
+
         return $view->getContainer()->get('router')->generate($pager['route'], $pager['args']);
     };
 
@@ -286,7 +286,6 @@ function smarty_function_pager($params, Zikula_View $view)
             if ($pager['maxPages'] > 0 &&
                 //(($currItem < $leftMargin && $currItem > 1) || ($currItem > $rightMargin && $currItem <= $pager['countPages']))) {
                 (($currItem < $leftMargin) || ($currItem > $rightMargin))) {
-
                 if ($pager['optimize']) {
                     continue;
                 } else {

@@ -131,7 +131,7 @@ class BlockApi
         /** @var \Zikula\ExtensionsModule\Entity\ExtensionEntity $module */
         foreach ($modules as $module) {
             $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($module->getName());
-            list ($nameSpace, $path) = $this->getModuleBlockPath($moduleInstance, $module->getName());
+            list($nameSpace, $path) = $this->getModuleBlockPath($moduleInstance, $module->getName());
             if (!isset($path)) {
                 continue;
             }
@@ -150,7 +150,7 @@ class BlockApi
         // Add service defined blocks.
         foreach ($this->blockCollector->getBlocks() as $id => $blockInstance) {
             $className = get_class($blockInstance);
-            list ($moduleName, $serviceId) = explode(':', $id);
+            list($moduleName, $serviceId) = explode(':', $id);
             if (isset($foundBlocks["$moduleName:$className"])) {
                 // remove blocks found in file search with same class name
                 unset($foundBlocks["$moduleName:$className"]);

@@ -270,6 +270,4 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
             $this->attributes[$name] = new CategoryAttributeEntity($this, $name, $value);
         }
     }
-
 }
-

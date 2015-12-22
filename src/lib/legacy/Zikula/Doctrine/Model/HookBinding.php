@@ -134,5 +134,4 @@ class Zikula_Doctrine_Model_HookBinding extends Doctrine_Record
     {
         parent::setUp();
     }
-
 }

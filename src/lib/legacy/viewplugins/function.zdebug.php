@@ -59,8 +59,8 @@ function smarty_function_zdebug($params, Zikula_View $view)
         $view->_plugins['outputfilter'] = null;
         $view->_compile_id  = null;
 
-        $width  = isset($params['width']) && is_integer($params['width']) ? $params['width'] : 580;
-        $height = isset($params['height']) && is_integer($params['height']) ? $params['height'] : 600;
+        $width  = isset($params['width']) && is_int($params['width']) ? $params['width'] : 580;
+        $height = isset($params['height']) && is_int($params['height']) ? $params['height'] : 600;
         $popup  = isset($params['popup']) ? (bool)$params['popup'] : false;
 
         // figure out the template to use

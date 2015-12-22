@@ -90,12 +90,13 @@ class Zikula_Debug_Timer
      */
     public function stop($insertNewRecord = true)
     {
-        if ($insertNewRecord)
+        if ($insertNewRecord) {
             $this->times[] = $this->get_microtime();
+        }
 
-        if (count($this->times) <= 2)
-
+        if (count($this->times) <= 2) {
             return $this->stop_single();
+        }
 
         return $this->stop_multiple();
     }

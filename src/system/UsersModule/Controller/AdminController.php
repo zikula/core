@@ -285,14 +285,12 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if ($proceedToForm) {
-
             return new Response($this->view->assign_by_ref('formData', $formData)
                     ->assign('mode', 'new')
                     ->assign('errorMessages', $errorMessages)
                     ->assign('errorFields', $errorFields)
                     ->fetch('Admin/newuser.tpl'));
         } else {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
         }
     }
@@ -347,7 +345,7 @@ class AdminController extends \Zikula_AbstractController
         );
 
         if ($callbackFunc == 'mailUsers') {
-              $processEditEvent = $this->getDispatcher()->dispatch('users.mailuserssearch.process_edit', new GenericEvent(null, array(), $findUsersArgs));
+            $processEditEvent = $this->getDispatcher()->dispatch('users.mailuserssearch.process_edit', new GenericEvent(null, array(), $findUsersArgs));
         } else {
             $processEditEvent = $this->getDispatcher()->dispatch('users.search.process_edit', new GenericEvent(null, array(), $findUsersArgs));
         }
@@ -471,7 +469,7 @@ class AdminController extends \Zikula_AbstractController
                 $userList = $this->getSearchResults($request, 'mailUsers');
 
                 if (!isset($userList) || !$userList) {
-                    Throw new NotFoundHttpException($this->__('Sorry! No matching users found.'));
+                    throw new NotFoundHttpException($this->__('Sorry! No matching users found.'));
                 }
             } elseif ($formId == 'users_mailusers') {
                 $uid = $request->request->get('userid', null);
@@ -487,15 +485,12 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if ($request->isMethod('GET') || (($formId == 'users_search') && (!isset($userList) || !$userList)) || (($formId == 'users_mailusers') && !$mailSent)) {
-
             return new Response($this->renderSearchForm('mailUsers'));
         } elseif ($formId == 'users_search') {
-
             return new Response($this->view->assign('items', $userList)
                 ->assign('mailusers', SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT))
                 ->fetch('Admin/mailusers.tpl'));
         } elseif ($formId == 'users_mailusers') {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
         } else {
             throw new FatalErrorException($this->__f('The %1$s function has entered an unknown state.', array('mailUsers')));
@@ -739,7 +734,6 @@ class AdminController extends \Zikula_AbstractController
                 ->assign('hasNoPassword', $originalUser['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION)
                 ->fetch('Admin/modify.tpl'));
         } else {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
         }
     }
@@ -973,11 +967,9 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if ($proceedToForm) {
-
             return new Response($this->view->assign('users', $users)
                 ->fetch('Admin/deleteusers.tpl'));
         } else {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
         }
     }
@@ -1127,7 +1119,6 @@ class AdminController extends \Zikula_AbstractController
                 unset($returnArgs['startnum']);
             } elseif (!isset($returnArgs['startnum']) || !is_numeric($returnArgs['startnum']) || empty($returnArgs['startnum'])
                     || ((int)$returnArgs['startnum'] != $returnArgs['startnum']) || ($returnArgs['startnum'] < 1)) {
-
                 $returnArgs['startnum'] = 1;
             } elseif ($returnArgs['startnum'] > $regCount) {
                 // Probably deleted something. Reset to last page.
@@ -1382,7 +1373,6 @@ class AdminController extends \Zikula_AbstractController
                 $request->getSession()->getFlashBag()->add('status', $this->__("Done! Saved user's account information."));
                 $proceedToForm = false;
             }
-
         } elseif ($request->getMethod() == 'GET') {
             $uid = $request->query->get('uid', null);
 
@@ -1424,10 +1414,8 @@ class AdminController extends \Zikula_AbstractController
                 ->fetch('Admin/modifyregistration.tpl'));
         } else {
             if ($restoreView == 'view') {
-
                 return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_viewregistrations', array('restoreview' => true), RouterInterface::ABSOLUTE_URL));
             } else {
-
                 return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $registration['uid']), RouterInterface::ABSOLUTE_URL));
             }
         }
@@ -1528,7 +1516,6 @@ class AdminController extends \Zikula_AbstractController
                               ->assign('force', $forceVerification)
                               ->assign('cancelurl', $cancelUrl)
                               ->fetch('Admin/verifyregistration.tpl'));
-
         } else {
             $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
                 'reginfo'   => $reginfo,
@@ -1601,7 +1588,6 @@ class AdminController extends \Zikula_AbstractController
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
             throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
-
         }
 
         if ($restoreView == 'display') {
@@ -1620,7 +1606,6 @@ class AdminController extends \Zikula_AbstractController
         } elseif ($forceVerification && (!isset($reginfo['pass']) || empty($reginfo['pass']))) {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Error! E-mail verification cannot be skipped for \'%1$s\'. The user must establish a password as part of the verification process.', $reginfo['uname']));
         }
-
 
         $confirmed = $request->get('confirmed', false);
         if (!$confirmed) {
@@ -1644,7 +1629,6 @@ class AdminController extends \Zikula_AbstractController
                               ->assign('force', $forceVerification)
                               ->assign('cancelurl', $cancelUrl)
                               ->fetch('Admin/approveregistration.tpl'));
-
         } else {
             $this->checkCsrfToken();
 
@@ -1758,7 +1742,6 @@ class AdminController extends \Zikula_AbstractController
                               ->assign('restoreview', $restoreView)
                               ->assign('cancelurl', $cancelUrl)
                               ->fetch('Admin/denyregistration.tpl'));
-
         } else {
             $denied = ModUtil::apiFunc($this->name, 'registration', 'remove', array(
                 'reginfo'   => $reginfo,
@@ -1771,7 +1754,7 @@ class AdminController extends \Zikula_AbstractController
                     $siteurl   = System::getBaseUrl();
                     $rendererArgs = array(
                         'sitename'  => System::getVar('sitename'),
-                        'siteurl'   => substr($siteurl, 0, strlen($siteurl)-1),
+                        'siteurl'   => substr($siteurl, 0, strlen($siteurl) - 1),
                         'reginfo'   => $reginfo,
                         'reason'    => $reason,
                     );
@@ -1903,7 +1886,7 @@ class AdminController extends \Zikula_AbstractController
         // shows the form
         $post_max_size = ini_get('post_max_size');
         // get default group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule','user','get', array('gid' => $defaultGroup));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $defaultGroup));
         $defaultGroup = $defaultGroup . ' (' . $group['name'] . ')';
 
         return new Response($this->view->assign('importResults', isset($importResults) ? $importResults : '')
@@ -1969,9 +1952,9 @@ class AdminController extends \Zikula_AbstractController
 
         if ($confirmed) {
             // get other import values
-            $email = (!isset($email) || $email !=='1') ? false : true;
+            $email = (!isset($email) || $email !== '1') ? false : true;
             $titles = (!isset($titles) || $titles !== '1') ? false : true;
-            $lastLogin = (!isset($lastLogin) || $lastLogin !=='1') ? false : true;
+            $lastLogin = (!isset($lastLogin) || $lastLogin !== '1') ? false : true;
             $regDate = (!isset($regDate) || $regDate !== '1') ? false : true;
             $groups = (!isset($groups) || $groups !== '1') ? false : true;
 
@@ -2077,7 +2060,6 @@ class AdminController extends \Zikula_AbstractController
 
                     $groupstring = rtrim($groupstring, chr(124));
 
-
                     array_push($result, $groupstring);
                 }
 
@@ -2121,7 +2103,7 @@ class AdminController extends \Zikula_AbstractController
      *                            default if $_POST['delimiter'] is not set. Allows this function to be called internally,
      *                            rather than as a result of a form post.
      *
-     * @return String an empty message if success or an error message otherwise
+     * @return string an empty message if success or an error message otherwise
      */
     protected function uploadImport(array $importFile, $delimiter)
     {
@@ -2137,7 +2119,7 @@ class AdminController extends \Zikula_AbstractController
             $count = count($usernames);
             $pregcondition = "/((";
             for ($i = 0; $i < $count; $i++) {
-                if ($i != $count-1) {
+                if ($i != $count - 1) {
                     $pregcondition .= $usernames[$i] . ")|(";
                 } else {
                     $pregcondition .= $usernames[$i] . "))/iAD";
@@ -2175,19 +2157,16 @@ class AdminController extends \Zikula_AbstractController
         // check that the user have selected a file
         $fileName = $importFile['name'];
         if ($fileName == '') {
-
             return $this->__("Error! You have not chosen any file.");
         }
 
         // check if user have selected a correct file
         if (FileUtil::getExtension($fileName) != 'csv') {
-
             return $this->__("Error! The file extension is incorrect. The only allowed extension is csv.");
         }
 
         // read the choosen file
         if (!$lines = file($importFile['tmp_name'])) {
-
             return $this->__("Error! It has not been possible to read the import file.");
         }
         $expectedFields = array('uname', 'pass', 'email', 'activated', 'sendmail', 'groups');
@@ -2204,7 +2183,6 @@ class AdminController extends \Zikula_AbstractController
                 $firstLineArray = explode($delimiterChar, $line);
                 foreach ($firstLineArray as $field) {
                     if (!in_array(trim(strtolower($field)), $expectedFields)) {
-
                         return $this->__f("Error! The import file does not have the expected field %s in the first row. Please check your import file.", array($field));
                     }
                 }
@@ -2217,7 +2195,6 @@ class AdminController extends \Zikula_AbstractController
 
             // check if the line have all the needed values
             if (count($lineArray) != count($firstLineArray)) {
-
                 return $this->__f('Error! The number of parameters in line %s is not correct. Please check your import file.', $counter);
             }
             $importValues[] = array_combine($firstLineArray, $lineArray);
@@ -2226,7 +2203,6 @@ class AdminController extends \Zikula_AbstractController
             // check user name
             $uname = trim($importValues[$counter - 1]['uname']);
             if ($uname == '' || strlen($uname) > 25) {
-
                 return $this->__f('Sorry! The user name is not valid in line %s. The user name is mandatory and the maximum length is 25 characters. Please check your import file.',
                     $counter);
             }
@@ -2236,20 +2212,17 @@ class AdminController extends \Zikula_AbstractController
             if (!$is_admin && $pregcondition != '') {
                 // check for illegal usernames
                 if (preg_match($pregcondition, $uname)) {
-
                     return $this->__f('Sorry! The user name %1$s is reserved and cannot be registered in line %2$s. Please check your import file.', array($uname, $counter));
                 }
             }
 
             // check if the user name is valid because spaces or invalid characters
             if (preg_match("/[[:space:]]/", $uname) || !System::varValidate($uname, 'uname')) {
-
                 return $this->__f('Sorry! The user name %1$s cannot contain spaces in line %2$s. Please check your import file.', array($uname, $counter));
             }
 
             // check if the user name is repeated
             if (in_array($uname, $usersArray)) {
-
                 return $this->__f('Sorry! The user name %1$s is repeated in line %2$s, and it cannot be used twice for creating accounts. Please check your import file.',
                     array($uname, $counter));
             }
@@ -2258,33 +2231,28 @@ class AdminController extends \Zikula_AbstractController
             // check password
             $pass = (string)trim($importValues[$counter - 1]['pass']);
             if ($pass == '') {
-
                 return $this->__f('Sorry! You did not provide a password in line %s. Please check your import file.', $counter);
             }
 
             // check password length
             if (strlen($pass) <  $minpass) {
-
                 return $this->__f('Sorry! The password must be at least %1$s characters long in line %2$s. Please check your import file.', array($minpass, $counter));
             }
 
             // check email
             $email = trim($importValues[$counter - 1]['email']);
             if ($email == '') {
-
                 return $this->__f('Sorry! You did not provide a email in line %s. Please check your import file.', $counter);
             }
 
             // check email format
             if (!System::varValidate($email, 'email')) {
-
                 return $this->__f('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons in line %s. Please check your import file.', $counter);
             }
 
             // check if email is unique only if it is necessary
             if ($reg_uniemail == 1) {
                 if (in_array($email, $emailsArray)) {
-
                     return $this->__f('Sorry! The %1$s e-mail address is repeated in line %2$s, and it cannot be used twice for creating accounts. Please check your import file.',
                         array($email, $counter));
                 }
@@ -2295,14 +2263,12 @@ class AdminController extends \Zikula_AbstractController
             $importValues[$counter - 1]['activated'] = isset($importValues[$counter - 1]['activated']) ? (int)$importValues[$counter - 1]['activated'] : UsersConstant::ACTIVATED_ACTIVE;
             $activated = $importValues[$counter - 1]['activated'];
             if (($activated != UsersConstant::ACTIVATED_INACTIVE) && ($activated != UsersConstant::ACTIVATED_ACTIVE)) {
-
                 return $this->__('Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.');
             }
 
             // validate sendmail
             $importValues[$counter - 1]['sendmail'] = isset($importValues[$counter - 1]['sendmail']) ? (int)$importValues[$counter - 1]['sendmail'] : 0;
             if ($importValues[$counter - 1]['sendmail'] < 0 || $importValues[$counter - 1]['sendmail'] > 1) {
-
                 return $this->__('Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.');
             }
 
@@ -2315,7 +2281,6 @@ class AdminController extends \Zikula_AbstractController
                 $groupsArray = explode('|', $groups);
                 foreach ($groupsArray as $group) {
                     if (!in_array($group, $allGroupsArray)) {
-
                         return $this->__f('Sorry! The identity of the group %1$s is not not valid in line %2$s. Perhaps it do not exist. Please check your import file.', array($group, $counter));
                     }
                 }
@@ -2325,7 +2290,6 @@ class AdminController extends \Zikula_AbstractController
 
         // seams that the import file is formated correctly and its values are valid
         if (empty($importValues)) {
-
             return $this->__("Error! The import file does not have values.");
         }
 
@@ -2334,11 +2298,9 @@ class AdminController extends \Zikula_AbstractController
                                       array('valuesarray' => $usersArray,
                                             'key' => 'uname'));
         if ($usersInDB === false) {
-
             return $this->__("Error! Trying to read the existing user names in database.");
         } else {
             if (count($usersInDB) > 0) {
-
                 return $this->__("Sorry! One or more user names really exist in database. The user names must be uniques.");
             }
         }
@@ -2349,11 +2311,9 @@ class AdminController extends \Zikula_AbstractController
                                           array('valuesarray' => $emailsArray,
                                                 'key' => 'email'));
             if ($emailsInDB === false) {
-
                 return $this->__("Error! Trying to read the existing users' email addressess in database.");
             } else {
                 if (count($emailsInDB) > 0) {
-
                     return $this->__("Sorry! One or more users' email addresses exist in the database. Each user's e-mail address must be unique.");
                 }
             }
@@ -2361,7 +2321,6 @@ class AdminController extends \Zikula_AbstractController
 
         // seems that the values in import file are ready. Procceed creating users
         if (!ModUtil::apiFunc($this->name, 'admin', 'createImport', array('importvalues' => $importValues))) {
-
             return $this->__("Error! The creation of users has failed.");
         }
 

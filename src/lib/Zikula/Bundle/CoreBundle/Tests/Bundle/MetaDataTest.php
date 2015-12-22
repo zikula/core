@@ -1,4 +1,5 @@
 <?php
+
 namespace Zikula\Bundle\CoreBundle\Tests\Bundle;
 
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;

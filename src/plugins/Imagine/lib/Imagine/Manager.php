@@ -61,7 +61,9 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
     /**
      * View wont be needed so override this.
      */
-    protected function configureView() {}
+    protected function configureView()
+    {
+    }
 
     /**
      * Gets Imagine plugin
@@ -181,7 +183,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
         if ($transformation instanceof \Imagine\Filter\Transformation) {
             $this->transformation = $transformation;
         } else {
-            $this->transformation = new \Imagine\Filter\Transformation;
+            $this->transformation = new \Imagine\Filter\Transformation();
         }
 
         return $this;
@@ -282,7 +284,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
             try {
                 $this->removePresetThumbs($imagePath, $objectId)
                     ->createThumbnail($image, $preset);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 //! %1$s is source image path, %2$s is error message
                 LogUtil::log($this->__f('An error occurred during thumbnail creation for image [%1$s]. Error details: %2$s', array($imagePath, $e->getMessage())), \Monolog\Logger::INFO);
 
@@ -418,16 +420,16 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
             $mode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
         }
 
-		// check for w/h autoscaling and scale to ratio
-		if ($preset['height']=='auto') {
-			$imageSize = @getimagesize($image->getRealPath());
-			$preset['height'] = round($imageSize[1]/$imageSize[0]*$preset['width']);
-		}
-		if ($preset['width']=='auto') {
-			$imageSize = @getimagesize($image->getRealPath());
-			$preset['width'] = round($imageSize[0]/$imageSize[1]*$preset['height']);
-		}
-		
+        // check for w/h autoscaling and scale to ratio
+        if ($preset['height'] == 'auto') {
+            $imageSize = @getimagesize($image->getRealPath());
+            $preset['height'] = round($imageSize[1] / $imageSize[0] * $preset['width']);
+        }
+        if ($preset['width'] == 'auto') {
+            $imageSize = @getimagesize($image->getRealPath());
+            $preset['width'] = round($imageSize[0] / $imageSize[1] * $preset['height']);
+        }
+
         $size = new \Imagine\Image\Box($preset['width'], $preset['height']);
 
         // Clone the transformation here, because we don't want the thumbnail transformations to bubble up.
@@ -499,7 +501,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
                 $files = $files->name($pattern);
             }
             $files = $files->in($source);
-            foreach($files as $file){
+            foreach ($files as $file) {
                 $unlink = true;
                 if (!$force) {
                     $sourceImage = base64_decode(basename($file->getPath()), true);
@@ -514,7 +516,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
                 ->directories()
                 ->in($source);
             $dirs = array();
-            foreach($directories as $dir){
+            foreach ($directories as $dir) {
                 $dirs[] = $dir;
             }
             foreach (array_reverse($dirs) as $dir) {

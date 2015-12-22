@@ -45,7 +45,6 @@ class RequirementsStage implements StageInterface, InjectContainerInterface
     {
         $this->requirementsMet = $this->container->get('core_installer.controller.util')->requirementsMet($this->container);
         if ($this->requirementsMet === true) {
-
             return false;
         }
 

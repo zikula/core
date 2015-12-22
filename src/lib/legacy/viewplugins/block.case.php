@@ -51,9 +51,10 @@ function smarty_block_case($params, $content, Zikula_View $view, &$repeat)
 
         // find corresponding switch block
         for ($i = count($view->_tag_stack) - 1; $i >= 0; $i--) {
-            list ($tag_name, $tag_params) = $view->_tag_stack[$i];
-            if ($tag_name == 'switch')
+            list($tag_name, $tag_params) = $view->_tag_stack[$i];
+            if ($tag_name == 'switch') {
                 break;
+            }
         }
 
         if ($i < 0) {
@@ -84,7 +85,6 @@ function smarty_block_case($params, $content, Zikula_View $view, &$repeat)
         $view->_tag_stack[$i][1]['_done'] = true;
 
         return;
-
     } else {
         // handle block close tag
         return $content;

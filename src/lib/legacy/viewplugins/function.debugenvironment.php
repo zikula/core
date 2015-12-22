@@ -29,8 +29,8 @@
  */
 function smarty_function_debugenvironment($params, Zikula_View $view)
 {
-    $view->assign('_ZSession_keys', array_keys($_SESSION) );
-    $view->assign('_ZSession_vals', array_values($_SESSION) );
+    $view->assign('_ZSession_keys', array_keys($_SESSION));
+    $view->assign('_ZSession_vals', array_values($_SESSION));
 
     $view->assign('_smartyversion', $view->_version);
     $_theme = ModUtil::getInfoFromName('ZikulaThemeModule');
@@ -45,6 +45,6 @@ function smarty_function_debugenvironment($params, Zikula_View $view)
     $plugininfo = isset($view->_plugins['function']['zdebug']) ? $view->_plugins['function']['zdebug'] : $view->_plugins['function']['zpopup'];
 
     $view->assign('_template', $plugininfo[1]);
-    $view->assign('_path',     $view->get_template_path($plugininfo[1]));
-    $view->assign('_line',     $plugininfo[2]);
+    $view->assign('_path', $view->get_template_path($plugininfo[1]));
+    $view->assign('_line', $plugininfo[2]);
 }

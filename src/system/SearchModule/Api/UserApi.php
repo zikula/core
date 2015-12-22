@@ -137,7 +137,7 @@ class UserApi extends \Zikula_AbstractApi
                                          ->select('count(s.sesid)')
                                          ->from('ZikulaSearchModule:SearchResultEntity', 's')
                                          ->where('s.sesid = :sid')
-                                         ->setParameter('sid',$sessionId)
+                                         ->setParameter('sid', $sessionId)
                                          ->getQuery();
             $resultCount = $query->getSingleScalarResult();
             SessionUtil::setVar('searchResultCount', $resultCount);
@@ -267,7 +267,7 @@ class UserApi extends \Zikula_AbstractApi
                                      ->from('ZikulaSearchModule:SearchStatEntity', 's')
                                      ->getQuery();
 
-        return (int)$query->getSingleScalarResult();;
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -396,7 +396,7 @@ class UserApi extends \Zikula_AbstractApi
             }
             $start = true;
             foreach ($searchwords as $word) {
-                $where .= ( !$start ? $connector : '') . ' (';
+                $where .= (!$start ? $connector : '') . ' (';
                 // I'm not sure if "LIKE" is the best solution in terms of DB portability (PC)
                 foreach ($fields as $field) {
                     $where .= "{$field} LIKE '$word' OR ";

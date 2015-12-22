@@ -32,7 +32,7 @@ class MenutreeUtil
     {
         $item = !is_null($id) && !empty($id) ? $id : 1;
 
-        return $item*10000;
+        return $item * 10000;
     }
 
     /**
@@ -155,8 +155,8 @@ class MenutreeUtil
         $styles['themes']['some'] = array_unique(call_user_func_array('array_merge', $themesStyles));
         $styles['themes']['some'] = array_diff($styles['themes']['some'], $styles['themes']['all'], $styles['modules'], $sysStyles);
 
-        $stylesheets = array_unique(array_merge($styles['modules'],$styles['themes']['all']));
-        $stylesheets = array_diff($stylesheets,$sysStyles);
+        $stylesheets = array_unique(array_merge($styles['modules'], $styles['themes']['all']));
+        $stylesheets = array_diff($stylesheets, $sysStyles);
         sort($stylesheets);
 
         // fill array keys using values
@@ -165,7 +165,7 @@ class MenutreeUtil
         $someThemes = __('Only in some themes');
         if (!empty($styles['themes']['some'])) {
             sort($styles['themes']['some']);
-            $stylesheets[$someThemes] = array_combine($styles['themes']['some'],$styles['themes']['some']);
+            $stylesheets[$someThemes] = array_combine($styles['themes']['some'], $styles['themes']['some']);
         }
 
         return self::normalize($stylesheets);

@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 class System
 {
     private static $installing = null;
-    
+
     /**
      * Internals cache.
      *
@@ -508,7 +508,7 @@ class System
         } else {
             $headers = array(); // change to empty array
         }
-        $from = System::getVar('adminmail');
+        $from = self::getVar('adminmail');
 
         return $mailer->send((array)$from, (array)$to, $subject, $message, 'text/plain', null, null, (array)$from, $altbody, $headers, $altBodyContentType, $failedRecipients);
     }
@@ -738,13 +738,13 @@ class System
             $modname = strtolower($parameters['_zkModule']);
             $type = strtolower($parameters['_zkType']);
             $func = strtolower($parameters['_zkFunc']);
-            
+
             if (isset($parameters['_locale'])) {
-	            $lang = strtolower($parameters['_locale']);
-	            $request->query->set('lang', $lang);            
-	            self::queryStringSetVar('lang', $lang);            
+                $lang = strtolower($parameters['_locale']);
+                $request->query->set('lang', $lang);
+                self::queryStringSetVar('lang', $lang);
             }
-            
+
             $request->attributes->set('_zkModule', $modname);
             $request->attributes->set('_zkType', $type);
             $request->attributes->set('_zkFunc', $func);
@@ -755,9 +755,8 @@ class System
             self::queryStringSetVar('module', $modname);
             self::queryStringSetVar('type', $type);
             self::queryStringSetVar('func', $func);
-            
-            return;
 
+            return;
         } catch (ResourceNotFoundException $e) {
             // This is an old style url.
         } catch (RouteNotFoundException $e) {
@@ -852,7 +851,6 @@ class System
                     }
                     self::queryStringSetVar('lang', $args[0], $request);
                     array_shift($args);
-
                 } elseif (ZLanguage::getLangUrlRule()) {
                     // if the lang is forced, redirects the passed arguments plus the lang
                     foreach ($args as $k => $v) {
@@ -977,10 +975,10 @@ class System
         if (!isset($name)) {
             return false;
         }
-        
+
         $serviceManager = ServiceUtil::getManager();
-        $request = $serviceManager->get('request');                
-        $request->query->set($name, $value);         
+        $request = $serviceManager->get('request');
+        $request->query->set($name, $value);
 
         // add the variable into the get superglobal
         $res = preg_match('/(.*)\[(.*)\]/i', $name, $match);
@@ -1071,6 +1069,7 @@ class System
     {
         $sm = ServiceUtil::getManager();
         $upgrading = $sm->hasParameter('upgrading') ? $sm->getParameter('upgrading') : false;
+
         return $upgrading || array_key_exists('_ZikulaUpgrader', $GLOBALS);
     }
 
@@ -1102,6 +1101,7 @@ class System
     public static function isDevelopmentMode()
     {
         $s = ServiceUtil::getManager();
+
         return $s->getParameter('kernel.environment') !== 'dev' ? false : true;
     }
 
@@ -1136,6 +1136,8 @@ class System
      */
     public static function dump($var, $maxDepth = 2, $stripTags = true)
     {
-        echo "<pre style='text-align:left'>"; Doctrine\Common\Util\Debug::dump($var, $maxDepth, $stripTags); echo "</pre>";
+        echo "<pre style='text-align:left'>";
+        Doctrine\Common\Util\Debug::dump($var, $maxDepth, $stripTags);
+        echo "</pre>";
     }
 }

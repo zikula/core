@@ -71,7 +71,7 @@ class HookApiTest extends \PHPUnit_Framework_TestCase
                 "homepage" =>  "http => //zikula.org/"
             ],
             "autoload" =>  [
-                "psr-4" =>  [ "Zikula\\SpecModule\\" =>  "" ]
+                "psr-4" =>  ["Zikula\\SpecModule\\" =>  ""]
             ],
             "require" =>  [
                 "php" =>  ">=5.4.1"

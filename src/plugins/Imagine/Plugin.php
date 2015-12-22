@@ -111,13 +111,13 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
             $lastCleanup = new DateTime($this->getVar('last_cleanup'));
             $thumb_auto_cleanup_period = $this->getVar('thumb_auto_cleanup_period', 'P1D');
             try {
-                $nextCleanup = $lastCleanup->setTime(0,0,0)->add(new DateInterval($thumb_auto_cleanup_period));
+                $nextCleanup = $lastCleanup->setTime(0, 0, 0)->add(new DateInterval($thumb_auto_cleanup_period));
             } catch (Exception $exception) {
                 throw $exception;
             }
             $now = new DateTime('now');
             if ($now > $nextCleanup) {
-                $this->setVar('last_cleanup', $now->setTime(0,0,0)->format('Y-m-d H:i:s'));
+                $this->setVar('last_cleanup', $now->setTime(0, 0, 0)->format('Y-m-d H:i:s'));
                 $this->getManager()->cleanupThumbs();
             }
         }
@@ -236,8 +236,9 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
         foreach ($engines as $engine) {
             try {
                 $class = "\\Imagine\\{$engine}\\Imagine";
-                $imagine = new $class;
-            } catch (RuntimeException $e) {}
+                $imagine = new $class();
+            } catch (RuntimeException $e) {
+            }
         }
 
         return $imagine;
@@ -263,6 +264,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     public function hasPreset($name)
     {
         $presets = $this->getPresets();
+
         return is_string($name) ? isset($presets[$name]) : false;
     }
 
@@ -330,9 +332,9 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
         if ($force || is_null($this->presets)) {
             $this->presets = $this->getVar('presets');
         }
+
         return $this->presets;
     }
-
 
     /**
      * Convenience Module SetVar.
@@ -342,7 +344,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      *
      * @return object This.
      */
-    public function setVar($key, $value='')
+    public function setVar($key, $value = '')
     {
         ModUtil::setVar($this->getServiceId(), $key, $value);
 
@@ -371,7 +373,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      *
      * @return mixed
      */
-    public function getVar($key, $default=false)
+    public function getVar($key, $default = false)
     {
         return ModUtil::getVar($this->getServiceId(), $key, $default);
     }

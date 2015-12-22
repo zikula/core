@@ -20,11 +20,8 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use System;
 use ModUtil;
 use ThemeUtil;
-use DateTimeZone;
-use DateTime;
 use Zikula;
 use Zikula_Session;
-use ObjectUtil;
 use DateUtil;
 use DataUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -198,7 +195,6 @@ class RegistrationApi extends \Zikula_AbstractApi
                 $emailErrors['email'] = $this->__('The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons.');
             }
 
-
             if ($tempValid && $this->getVar(UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL, false)) {
                 if ($checkMode == 'modify') {
                     $emailUsageCount = UserUtil::getEmailUsageCount($reginfo['email'], $reginfo['uid']);
@@ -272,7 +268,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $checkMode                  = isset($args['checkmode'])     ? $args['checkmode']        : 'new';
         $emailAgain                 = isset($args['emailagain'])    ? $args['emailagain']       : '';
         $passwordAgain              = isset($args['passagain'])     ? $args['passagain']        : '';
-        $spamProtectionUserAnswer   = isset($args['antispamanswer'])? $args['antispamanswer']   : '';
+        $spamProtectionUserAnswer   = isset($args['antispamanswer']) ? $args['antispamanswer']   : '';
 
         if (!isset($reginfo['uname']) || empty($reginfo['uname'])) {
             $registrationErrors['uname'] = $this->__('You must provide a user name.');
@@ -469,7 +465,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             return $obj;
         }
 
-        $user = new \Zikula\UsersModule\Entity\UserEntity;
+        $user = new \Zikula\UsersModule\Entity\UserEntity();
 
         if (!isset($obj['__ATTRIBUTES__'])) {
             $obj['__ATTRIBUTES__'] = array();
@@ -594,7 +590,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         // account record. This is so that modules that do default actions on the creation
         // of a user account do not perform those actions on a pending registration, which
         // may be deleted at any point.
-        $user = new \Zikula\UsersModule\Entity\UserEntity;
+        $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($userObj);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -639,7 +635,6 @@ class RegistrationApi extends \Zikula_AbstractApi
                 $rendererArgs['approvalorder'] = $approvalOrder;
 
                 if (!$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved'])) {
-
                     $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
                         'reginfo' => $reginfo,
                         'rendererArgs' => $rendererArgs,
@@ -823,7 +818,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             $attributes = $userObj['__ATTRIBUTES__'];
             unset($userObj['__ATTRIBUTES__']);
 
-            $user = new \Zikula\UsersModule\Entity\UserEntity;
+            $user = new \Zikula\UsersModule\Entity\UserEntity();
             $user->merge($userObj);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
@@ -1268,6 +1263,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             $dql = "SELECT COUNT(u.uid) FROM Zikula\UsersModule\Entity\UserEntity u $where";
             $query = $this->entityManager->createQuery($dql);
             $count = $query->getSingleScalarResult();
+
             return $count;
         }
     }
@@ -1463,7 +1459,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
         ));
 
-        $verifyChgObj = new \Zikula\UsersModule\Entity\UserVerificationEntity;
+        $verifyChgObj = new \Zikula\UsersModule\Entity\UserVerificationEntity();
         $verifyChgObj['changetype'] = UsersConstant::VERIFYCHGTYPE_REGEMAIL;
         $verifyChgObj['uid'] = $reginfo['uid'];
         $verifyChgObj['newemail'] = $reginfo['email'];
@@ -1471,7 +1467,6 @@ class RegistrationApi extends \Zikula_AbstractApi
         $verifyChgObj['created_dt'] = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
         $this->entityManager->persist($verifyChgObj);
         $this->entityManager->flush();
-
 
         if (empty($rendererArgs)) {
             $siteurl = System::getBaseUrl();
@@ -1528,6 +1523,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         }
 
         $verifyChg = $this->entityManager->getRepository('ZikulaUsersModule:UserVerificationEntity')->findOneby(array('uid' => $args['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL));
+
         return $verifyChg;
     }
 

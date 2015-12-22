@@ -15,7 +15,6 @@
 namespace Zikula\Bundle\CoreBundle;
 
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CacheClearer
@@ -23,7 +22,7 @@ class CacheClearer
     private $cacheDir;
 
     private $cachePrefix;
-    
+
     private $cacheTypes;
 
     private $fs;
@@ -47,7 +46,7 @@ class CacheClearer
         foreach ($routingLocales as $locale) {
             $fosJsRoutingFiles[] = $fosJsRoutesExtractor->getCachePath($locale);
         }
-        
+
         $this->cacheTypes = array(
             "symfony.annotations" => array(
                 "$cacheFolder/annotations"

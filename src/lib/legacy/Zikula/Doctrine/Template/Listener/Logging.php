@@ -62,7 +62,6 @@ class Zikula_Doctrine_Template_Listener_Logging extends Zikula_Doctrine_Template
         DBUtil::insertObject($log, 'objectdata_log');
     }
 
-
     /**
      * Creates an log for an insert.
      *

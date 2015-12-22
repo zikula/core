@@ -151,13 +151,13 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
                 $date = strtotime($this->initDate);
             }
 
-            if ($date != null) {                
+            if ($date != null) {
                 $this->text = DateUtil::getDatetime($date, $this->ifFormat, false);
             } else {
                 $this->text = __('Unknown date');
             }
         }
-        
+
         if ($view->isPostBack() && !empty($this->text)) {
             $date = strtotime($this->text);
             $this->text = DateUtil::getDatetime($date, $this->ifFormat, false);

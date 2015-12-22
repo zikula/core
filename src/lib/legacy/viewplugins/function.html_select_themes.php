@@ -66,7 +66,7 @@ function smarty_function_html_select_themes($params, Zikula_View $view)
     }
     natcasesort($themelist);
 
-    require_once $view->_get_plugin_filepath('function','html_options');
+    require_once $view->_get_plugin_filepath('function', 'html_options');
     $output = smarty_function_html_options(array('options'  => $themelist,
                                                  'selected' => isset($params['selected']) ? $params['selected'] : null,
                                                  'name'     => isset($params['name'])     ? $params['name']     : null,

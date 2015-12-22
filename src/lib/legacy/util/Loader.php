@@ -45,7 +45,7 @@ class Loader
         $file = DataUtil::formatForOS($file);
 
         if (is_file($file) && is_readable($file)) {
-            if (include_once ($file)) {
+            if (include_once($file)) {
                 if ($returnVar) {
                     return $$returnVar;
                 } else {
@@ -265,7 +265,7 @@ class Loader
             return true;
         }
 
-        return include_once ($file);
+        return include_once $file;
     }
 
     /**
@@ -282,6 +282,6 @@ class Loader
             return true;
         }
 
-        return require_once ($file);
+        return require_once $file;
     }
 }

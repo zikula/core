@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class HookRuntimeEntity
 {
     /**
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,82 +22,81 @@ class HookRuntimeEntity
     private $id;
 
     /**
-     * @var string $sowner
+     * @var string
      *
      * @ORM\Column(name="sowner", type="string", length=40, nullable=false)
      */
     private $sowner;
 
     /**
-     * @var string $subsowner
+     * @var string
      *
      * @ORM\Column(name="subsowner", type="string", length=40, nullable=true)
      */
     private $subsowner;
 
     /**
-     * @var string $powner
+     * @var string
      *
      * @ORM\Column(name="powner", type="string", length=40, nullable=false)
      */
     private $powner;
 
     /**
-     * @var string $subpowner
+     * @var string
      *
      * @ORM\Column(name="subpowner", type="string", length=40, nullable=true)
      */
     private $subpowner;
 
     /**
-     * @var integer $sareaid
+     * @var integer
      *
      * @ORM\Column(name="sareaid", type="integer", nullable=false)
      */
     private $sareaid;
 
     /**
-     * @var integer $pareaid
+     * @var integer
      *
      * @ORM\Column(name="pareaid", type="integer", nullable=false)
      */
     private $pareaid;
 
     /**
-     * @var string $eventname
+     * @var string
      *
      * @ORM\Column(name="eventname", type="string", length=100, nullable=false)
      */
     private $eventname;
 
     /**
-     * @var string $classname
+     * @var string
      *
      * @ORM\Column(name="classname", type="string", length=60, nullable=false)
      */
     private $classname;
 
     /**
-     * @var string $method
+     * @var string
      *
      * @ORM\Column(name="method", type="string", length=60, nullable=false)
      */
     private $method;
 
     /**
-     * @var string $serviceid
+     * @var string
      *
      * @ORM\Column(name="serviceid", type="string", length=60, nullable=true)
      */
     private $serviceid;
 
     /**
-     * @var integer $priority
+     * @var integer
      *
      * @ORM\Column(name="priority", type="integer", nullable=false)
      */
     private $priority;
-
 
     /**
      * Get id
@@ -118,6 +117,7 @@ class HookRuntimeEntity
     public function setSowner($sowner)
     {
         $this->sowner = $sowner;
+
         return $this;
     }
 
@@ -140,6 +140,7 @@ class HookRuntimeEntity
     public function setSubsowner($subsowner)
     {
         $this->subsowner = $subsowner;
+
         return $this;
     }
 
@@ -162,6 +163,7 @@ class HookRuntimeEntity
     public function setPowner($powner)
     {
         $this->powner = $powner;
+
         return $this;
     }
 
@@ -184,6 +186,7 @@ class HookRuntimeEntity
     public function setSubpowner($subpowner)
     {
         $this->subpowner = $subpowner;
+
         return $this;
     }
 
@@ -206,6 +209,7 @@ class HookRuntimeEntity
     public function setSareaid($sareaid)
     {
         $this->sareaid = $sareaid;
+
         return $this;
     }
 
@@ -228,6 +232,7 @@ class HookRuntimeEntity
     public function setPareaid($pareaid)
     {
         $this->pareaid = $pareaid;
+
         return $this;
     }
 
@@ -250,6 +255,7 @@ class HookRuntimeEntity
     public function setEventname($eventname)
     {
         $this->eventname = $eventname;
+
         return $this;
     }
 
@@ -272,6 +278,7 @@ class HookRuntimeEntity
     public function setClassname($classname)
     {
         $this->classname = $classname;
+
         return $this;
     }
 
@@ -294,6 +301,7 @@ class HookRuntimeEntity
     public function setMethod($method)
     {
         $this->method = $method;
+
         return $this;
     }
 
@@ -316,6 +324,7 @@ class HookRuntimeEntity
     public function setServiceid($serviceid)
     {
         $this->serviceid = $serviceid;
+
         return $this;
     }
 
@@ -338,6 +347,7 @@ class HookRuntimeEntity
     public function setPriority($priority)
     {
         $this->priority = $priority;
+
         return $this;
     }
 

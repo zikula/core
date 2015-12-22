@@ -33,7 +33,7 @@ class ValidationUtil
      *
      * @return boolean A true/false value indicating whether the field validation passed or failed.
      */
-    public static function validateField($objectType, $object, $field, $required, $cmp_op, $cmp_value, $err_msg, $callback=null)
+    public static function validateField($objectType, $object, $field, $required, $cmp_op, $cmp_value, $err_msg, $callback = null)
     {
         if (!is_array($object)) {
             throw new \Exception(__f('%1s: %2s is not an array.', array('ValidationUtil::validateField', 'object')));
@@ -98,8 +98,8 @@ class ValidationUtil
                     break;
                 case 'noop' :
                 case '' : if (!$required) {
-                        throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
-                    }
+     throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
+ }
                     $rc = true;
                     break;
                 default : throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));

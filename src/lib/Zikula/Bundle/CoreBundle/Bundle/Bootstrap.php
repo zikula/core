@@ -51,7 +51,7 @@ class Bootstrap
                     $this->addAutoloaders($kernel, $autoload);
 
                     if (class_exists($class)) {
-                        $bundle = new $class;
+                        $bundle = new $class();
                         try {
                             $bundle->setState($state);
                             $bundles[] = $bundle;
@@ -78,7 +78,8 @@ class Bootstrap
      *
      * @return bool
      */
-    private function extensionIsActive(ZikulaKernel $kernel, $conn, $class, $type) {
+    private function extensionIsActive(ZikulaKernel $kernel, $conn, $class, $type)
+    {
         $extensionNameArray = explode('\\', $class);
         $extensionName = array_pop($extensionNameArray);
         if (isset($this->extensionStateMap[$extensionName])) {
@@ -90,7 +91,7 @@ class Bootstrap
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
                 $this->extensionStateMap[$row['name']] = array(
-                    'state' =>(int)$row['state'],
+                    'state' => (int)$row['state'],
                     'id'    => (int)$row['id'],
                 );
             }
@@ -98,7 +99,7 @@ class Bootstrap
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
                 $this->extensionStateMap[$row['name']] = array(
-                    'state' =>(int)$row['state'],
+                    'state' => (int)$row['state'],
                     'id'    => (int)$row['id'],
                 );
             }
@@ -110,9 +111,9 @@ class Bootstrap
             }
         }
 
-        switch($type) {
+        switch ($type) {
             case 'T':
-                return ($state['state'] == \ThemeUtil::STATE_ACTIVE);
+                return $state['state'] == \ThemeUtil::STATE_ACTIVE;
                 break;
             default:
                 if ($state['state'] == \ModUtil::STATE_ACTIVE) {

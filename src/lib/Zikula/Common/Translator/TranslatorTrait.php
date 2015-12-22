@@ -22,6 +22,7 @@ trait TranslatorTrait
      * @var \Zikula\Common\Translator\Translator
      */
     private $translator;
+
     /**
      * singular translation for modules.
      *

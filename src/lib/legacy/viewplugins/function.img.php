@@ -139,7 +139,6 @@ function smarty_function_img($params, Zikula_View $view)
 
             // form the array of paths
             $paths = array($modpluglangpath, $modplugpath, $modpluglangpathOld, $modplugpathOld);
-
         } else {
             // theme directory
             $ostheme       = DataUtil::formatForOS(UserUtil::getTheme());
@@ -171,7 +170,7 @@ function smarty_function_img($params, Zikula_View $view)
                     // special processing for modules' admin icon
                     $paths = array($modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
                 } else {
-                    $paths = array($themelangpath, $themepath, $themelangpathOld, $themepathOld,$corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
+                    $paths = array($themelangpath, $themepath, $themelangpathOld, $themepathOld, $corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
                 }
             }
         }
@@ -258,11 +257,9 @@ function smarty_function_img($params, Zikula_View $view)
 
     if (!empty($retval) && isset($params[$retval])) {
         return $params[$retval];
-
     } elseif (!empty($assign)) {
         $params['imgtag'] = $imgtag;
         $view->assign($assign, $params);
-
     } else {
         return $imgtag;
     }

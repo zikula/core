@@ -24,7 +24,7 @@ class FilterHook extends Hook
 {
     private $data;
 
-    public function __construct($data=null)
+    public function __construct($data = null)
     {
         $this->setData($data);
     }

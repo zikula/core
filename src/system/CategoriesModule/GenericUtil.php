@@ -94,6 +94,7 @@ class GenericUtil
     public static function processCategoryParent($parent_id)
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
+
         return $em->getReference('ZikulaCategoriesModule:CategoryEntity', $parent_id);
     }
 

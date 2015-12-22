@@ -14,10 +14,8 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Zikula_Core;
@@ -95,7 +93,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
     {
         define('_ZINSTALLVER', \Zikula_Core::VERSION_NUM);
         $kernel = $this->getContainer()->get('kernel');
-        $loader = require($kernel->getRootDir() . '/autoload.php');
+        $loader = require $kernel->getRootDir() . '/autoload.php';
         \ZLoader::register($loader);
 
         if ($loadZikulaCore && !$this->getContainer()->has('zikula')) {

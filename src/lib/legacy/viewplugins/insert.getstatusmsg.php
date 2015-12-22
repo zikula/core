@@ -57,7 +57,7 @@ function smarty_insert_getstatusmsg($params, $view)
     $result = '';
 
     $total_messages = array();
-     
+
     /**
      * Get session.
      */
@@ -67,15 +67,15 @@ function smarty_insert_getstatusmsg($params, $view)
      * Get error messages.
      */
     $messages = $session->getFlashBag()->get(Zikula_Session::MESSAGE_ERROR);
-    
+
     if (count($messages) > 0) {
         /**
          * Set class for the messages.
          */
         $class = (!is_null($params['class'])) ? $params['class'] : 'alert alert-danger';
-    
+
         $total_messages = $total_messages + $messages;
-    
+
         /**
          * Build output of the messages.
          */
@@ -84,7 +84,7 @@ function smarty_insert_getstatusmsg($params, $view)
         }
 
         $result .= '<'.$params['tag'].' class="'.$class.'"';
-    
+
         if (!is_null($params['style'])) {
             $result .= ' style="'.$params['style'].'"';
         }
@@ -92,20 +92,20 @@ function smarty_insert_getstatusmsg($params, $view)
         $result .= '>';
         $result .= implode('<hr />', $messages);
         $result .= '</'.$params['tag'].'>';
-    } 
+    }
     /**
      * Get warning messages.
      */
     $messages = $session->getFlashBag()->get(Zikula_Session::MESSAGE_WARNING);
-    
+
     if (count($messages) > 0) {
         /**
          * Set class for the messages.
          */
         $class = (!is_null($params['class'])) ? $params['class'] : 'alert alert-warning';
-    
+
         $total_messages = $total_messages + $messages;
-    
+
         /**
          * Build output of the messages.
          */
@@ -114,7 +114,7 @@ function smarty_insert_getstatusmsg($params, $view)
         }
 
         $result .= '<'.$params['tag'].' class="'.$class.'"';
-    
+
         if ($params['style']) {
             $result .= ' style="'.$params['style'].'"';
         }
@@ -122,21 +122,21 @@ function smarty_insert_getstatusmsg($params, $view)
         $result .= '>';
         $result .= implode('<hr />', $messages);
         $result .= '</'.$params['tag'].'>';
-    } 
+    }
 
     /**
      * Get status messages.
      */
     $messages = $session->getFlashBag()->get(Zikula_Session::MESSAGE_STATUS);
-    
+
     if (count($messages) > 0) {
         /**
          * Set class for the messages.
          */
         $class = (!is_null($params['class'])) ? $params['class'] : 'alert alert-success';
-    
+
         $total_messages = $total_messages + $messages;
-    
+
         /**
          * Build output of the messages.
          */
@@ -145,7 +145,7 @@ function smarty_insert_getstatusmsg($params, $view)
         }
 
         $result .= '<'.$params['tag'].' class="'.$class.'"';
-    
+
         if ($params['style']) {
             $result .= ' style="'.$params['style'].'"';
         }
@@ -153,10 +153,10 @@ function smarty_insert_getstatusmsg($params, $view)
         $result .= '>';
         $result .= implode('<hr />', $messages);
         $result .= '</'.$params['tag'].'>';
-    } 
-    
+    }
+
     if (empty($total_messages)) {
-        return;  
+        return;
     }
 
     return $result;

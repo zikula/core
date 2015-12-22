@@ -41,6 +41,7 @@ class EntityAccess implements \ArrayAccess
     {
         try {
             $this->getGetterForProperty($key);
+
             return true;
         } catch (\RuntimeException $e) {
             return false;

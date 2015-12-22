@@ -118,7 +118,7 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
                           'description' => $this->__('Modules for managing the site\'s security.')));
 
         foreach ($records as $record) {
-            $item = new AdminCategoryEntity;
+            $item = new AdminCategoryEntity();
             $item->merge($record);
             $this->entityManager->persist($item);
         }

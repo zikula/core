@@ -51,8 +51,8 @@ function smarty_function_modavailable($params, Zikula_View $view)
     $result = ModUtil::available($modname);
 
     if ($assign) {
-         $view->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
-         return $result;
+        return $result;
     }
 }

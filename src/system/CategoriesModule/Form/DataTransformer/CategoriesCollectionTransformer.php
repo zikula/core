@@ -21,7 +21,7 @@ use Zikula\CategoriesModule\Entity\CategoryEntity;
  * Class CategoriesCollectionTransformer
  * @package Zikula\CategoriesModule\Form\DataTransformer
  */
-class CategoriesCollectionTransformer implements DataTransformerInterface 
+class CategoriesCollectionTransformer implements DataTransformerInterface
 {
     private $entityCategoryClass;
     private $multiple;
@@ -31,7 +31,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         $this->entityCategoryClass = $options['entityCategoryClass'];
         $this->multiple = isset($options['multiple']) ? $options['multiple'] : false;
     }
-    
+
     public function reverseTransform($value)
     {
         $collection = new ArrayCollection();
@@ -53,7 +53,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
 
         return $collection;
     }
-    
+
     public function transform($value)
     {
         $data = [];

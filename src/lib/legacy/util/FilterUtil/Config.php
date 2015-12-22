@@ -20,7 +20,6 @@
  */
 class FilterUtil_Config
 {
-
     /**
      * Table mode.
      *
@@ -254,9 +253,7 @@ class FilterUtil_Config
     {
         // check if we're using Doctrine
         if ($this->_doctrineTable instanceof Doctrine_Table) {
-
             $this->setDoctrineTable($this->_doctrineTable);
-
         } else {
             // tables.php support
             $tables = DBUtil::getTables();
@@ -345,7 +342,7 @@ class FilterUtil_Config
      */
     public function setJoin(&$join)
     {
-        $this->_join = & $join;
+        $this->_join = &$join;
         $this->updateColumns();
     }
 
@@ -491,7 +488,6 @@ class FilterUtil_Config
             }
 
             return;
-
         } else {
             if (isset($obj[0]) && is_array($obj[0])) {
                 $this->_getFilterRelations($joins, $obj[0]);
@@ -587,7 +583,6 @@ class FilterUtil_Config
     {
         if (count($tables) == count($aliasMap)) {
             return array_combine($aliasMap, $tables);
-
         } elseif (count($tables) < count($aliasMap)) {
             $aliasses = array();
             foreach ($tables as $table) {

@@ -35,7 +35,6 @@ class CategoriesType extends AbstractType
         $registries = \CategoryRegistryUtil::getRegisteredModuleCategories($options['module'], $options['entity'], 'id');
 
         foreach ($registries as $registryId => $categoryId) {
-
             $builder->add(
                 'registry_' . $registryId,
                 'entity',
@@ -44,7 +43,7 @@ class CategoriesType extends AbstractType
                     'multiple' => $options['multiple'],
                     'class' => 'ZikulaCategoriesModule:CategoryEntity',
                     'property' => 'name',
-                    'query_builder' => function(EntityRepository $repo) use($categoryId) {
+                    'query_builder' => function (EntityRepository $repo) use ($categoryId) {
                         //TODO: (move to)/use own entity repository after CategoryUtil migration
                         return $repo->createQueryBuilder('e')
                                     ->where('e.parent = :parentId')
@@ -55,7 +54,6 @@ class CategoriesType extends AbstractType
 
         $builder->addViewTransformer(new CategoriesCollectionTransformer($options), true);
         $builder->addEventSubscriber(new CategoriesMergeCollectionListener());
-
     }
 
     public function getBlockPrefix()

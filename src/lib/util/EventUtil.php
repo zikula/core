@@ -36,7 +36,6 @@ class EventUtil
      */
     private function __construct()
     {
-
     }
 
     /**
@@ -152,7 +151,7 @@ class EventUtil
      *
      * Note: If the exact same handler is already registered, this function does nothing.
      */
-    public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight=10)
+    public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight = 10)
     {
         if (!is_callable($callable)) {
             if (is_array($callable)) {
@@ -199,7 +198,7 @@ class EventUtil
      *
      * @return void
      */
-    public static function unregisterPersistentModuleHandler($moduleName, $eventName, $callable, $weight=10)
+    public static function unregisterPersistentModuleHandler($moduleName, $eventName, $callable, $weight = 10)
     {
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, false);
         if (!$handlers) {
@@ -358,5 +357,4 @@ class EventUtil
 
         return $callable;
     }
-
 }

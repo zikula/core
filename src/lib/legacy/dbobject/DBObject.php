@@ -40,7 +40,6 @@ class DBObject
      */
     public $_objValidation; // object validation data
 
-
     // data + access descriptor
     /**
      * Category filter used for select.
@@ -135,7 +134,6 @@ class DBObject
      */
     public $_columns;
 
-
     // constants
     const GET_FROM_DB                = 'DB'; // get data from DB
     const GET_FROM_GET               = 'GET'; // get data from $_GET
@@ -143,7 +141,6 @@ class DBObject
     const GET_FROM_REQUEST           = 'REQUEST'; // get data from $_REQUEST
     const GET_FROM_SESSION           = 'SESSION'; // get data from $_SESSION
     const GET_FROM_VALIDATION_FAILED = 'VALIDATION'; // get data from failed validation
-
 
     /**
      * Constructor, init everything to sane defaults and handle parameters.
@@ -220,8 +217,9 @@ class DBObject
                 default:
                     throw new \Exception(__f("Error! An invalid initialization directive '%s' found in 'DBObject::_init()'.", $init));
             }
-        } else
+        } else {
             throw new \Exception(__f("Error! An unexpected parameter type initialization '%s' was encountered in 'DBObject::_init()'.", $init));
+        }
     }
 
     /**
@@ -231,10 +229,10 @@ class DBObject
      */
     public function createEmptyObject()
     {
-        $data = ObjectUtil::createEmptyObject ($this->_objType);
+        $data = ObjectUtil::createEmptyObject($this->_objType);
         if ($data) {
             $this->_objData = $data;
-        } 
+        }
 
         return $this->_objData;
     }
@@ -254,6 +252,7 @@ class DBObject
         }
 
         $this->_objData = $data;
+
         return $this->_objData;
     }
 
@@ -328,6 +327,7 @@ class DBObject
     public function getFailedValidationData()
     {
         $this->_objData = FormUtil::getFailedValidationObjects($this->_objPath);
+
         return $this->_objData;
     }
 
@@ -338,7 +338,7 @@ class DBObject
      */
     public function hasID()
     {
-        return (isset($this->_objData[$this->_objField]) && $this->_objData[$this->_objField]);
+        return isset($this->_objData[$this->_objField]) && $this->_objData[$this->_objField];
     }
 
     /**
@@ -396,6 +396,7 @@ class DBObject
         }
 
         $this->selectPostProcess();
+
         return $this->_objData;
     }
 
@@ -422,7 +423,7 @@ class DBObject
      *
      * @return mixed The requested object/value.
      */
-    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter=null, array $args=array())
+    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter = null, array $args = array())
     {
         if (!$key) {
             $key = $this->_objPath;
@@ -433,6 +434,7 @@ class DBObject
         if ($obj) {
             $this->_objData = $obj;
             $this->getDataFromInputPostProcess();
+
             return $this->_objData;
         }
 
@@ -463,6 +465,7 @@ class DBObject
         if ($obj && is_array($obj)) {
             $this->_objData = $obj;
             $this->getDataFromSessionPostProcess();
+
             return $this->_objData;
         }
 
@@ -498,6 +501,7 @@ class DBObject
 
         SessionUtil::setVar($path, $data, $path, $autocreate, $overwriteExistingVar);
         $this->_objData = $data;
+
         return $this->_objData;
     }
 
@@ -594,7 +598,7 @@ class DBObject
      */
     public function setDataField($key, $value)
     {
-        $objData = & $this->_objData;
+        $objData = &$this->_objData;
         $objData[$key] = $value;
 
         return $value;
@@ -633,6 +637,7 @@ class DBObject
         $res = DBUtil::insertObject($this->_objData, $this->_objType, $this->_objField, $this->_objInsertPreserve, $this->_objInsertForce);
         if ($res) {
             $this->insertPostProcess();
+
             return $this->_objData;
         }
 
@@ -651,6 +656,7 @@ class DBObject
     public function insertPreProcess($data = null)
     {
         EventUtil::dispatch('dbobject.insertpreprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -666,6 +672,7 @@ class DBObject
     public function insertPostProcess($data = null)
     {
         EventUtil::dispatch('dbobject.insertpostprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -683,6 +690,7 @@ class DBObject
         $res = DBUtil::updateObject($this->_objData, $this->_objType, '', $this->_objField, $this->_objInsertPreserve);
         if ($res) {
             $this->updatePostProcess();
+
             return $this->_objData;
         }
 
@@ -701,6 +709,7 @@ class DBObject
     public function updatePreProcess($data = null)
     {
         EventUtil::dispatch('dbobject.updatepreprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -716,6 +725,7 @@ class DBObject
     public function updatePostProcess($data = null)
     {
         EventUtil::dispatch('dbobject.updatepostprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -733,6 +743,7 @@ class DBObject
             $res = DBUtil::deleteObjectById($this->_objType, $this->_objData[$this->_objField], $this->_objField);
             if ($res) {
                 $this->deletePostProcess();
+
                 return $this->_objData;
             }
         }
@@ -752,6 +763,7 @@ class DBObject
     public function deletePreProcess($data = null)
     {
         EventUtil::dispatch('dbobject.deletepreprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -767,6 +779,7 @@ class DBObject
     public function deletePostProcess($data = null)
     {
         EventUtil::dispatch('dbobject.deletepostprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return $this->_objData;
     }
 
@@ -800,8 +813,8 @@ class DBObject
             $res = $res && ValidationUtil::validateObjectPlain($this->_objPath, $this->_objData, $this->_objValidation);
             if ($res) {
                 $res = $res && $this->validatePostProcess();
-            } 
-        } 
+            }
+        }
 
         return $res;
     }
@@ -819,6 +832,7 @@ class DBObject
     public function validatePreProcess($type = 'user', $data = null)
     {
         EventUtil::dispatch('dbobject.validatepreprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return true;
     }
 
@@ -835,6 +849,7 @@ class DBObject
     public function validatePostProcess($type = 'user', $data = null)
     {
         EventUtil::dispatch('dbobject.validatepostprocess', new \Zikula\Core\Event\GenericEvent($this));
+
         return true;
     }
 

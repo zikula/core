@@ -36,4 +36,3 @@ class Zikula_Doctrine_Model_Registry extends Doctrine_Record
         $this->hasColumn('category_id as categoryId', 'integer', 4);
     }
 }
-

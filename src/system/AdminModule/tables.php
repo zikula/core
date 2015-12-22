@@ -34,8 +34,6 @@ function ZikulaAdminModule_tables()
                                                   'description' => "C(254) NOTNULL DEFAULT ''",
                                                   'order'       => "I NOTNULL DEFAULT 0");
 
-
-
     // Set the column names.  Note that the array has been formatted
     // on-screen to be very easy to read by a user.
     $admin_category = 'admin_module';
@@ -50,7 +48,7 @@ function ZikulaAdminModule_tables()
                                                 'cid'   => "I NOTNULL DEFAULT 0",
                                                 'order' => "I NOTNULL DEFAULT 0");
 
-    $dbtable['admin_module_column_idx'] = array ('mid_cid' => array('mid', 'cid'));
+    $dbtable['admin_module_column_idx'] = array('mid_cid' => array('mid', 'cid'));
 
     // Return the table information
     return $dbtable;
