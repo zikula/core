@@ -49,6 +49,12 @@ class BlockFilterApi
             return true;
         }
 
+        // filter for language/locale
+        $language = $blockEntity->getLanguage();
+        if (!empty($language) && ($language != $request->getLocale())) {
+            return false;
+        }
+
         $displayable = true;
         $filters = $blockEntity->getFilters();
         foreach ($filters as $filter) {
@@ -64,11 +70,6 @@ class BlockFilterApi
                     $name = $request->attributes->get($filter['attribute']);
             }
             $displayable = $displayable && $this->compare($name, $filter['comparator'], $filter['value']);
-        }
-        // filter for language/locale
-        $language = $blockEntity->getLanguage();
-        if (!empty($language)) {
-            $displayable = $displayable && ($language == $request->getLocale());
         }
 
         return $displayable;
