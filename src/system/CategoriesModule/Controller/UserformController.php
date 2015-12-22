@@ -16,8 +16,6 @@ namespace Zikula\CategoriesModule\Controller;
 use SecurityUtil;
 use System;
 use CategoryUtil;
-use ModUtil;
-use ObjectUtil;
 use Zikula\CategoriesModule\GenericUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,10 +68,12 @@ class UserformController extends \Zikula_AbstractController
         if ($category['is_locked']) {
             //! %1$s is the id, %2$s is the name
             $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $category['name'])), null, $url);
+
             return new RedirectResponse(System::normalizeUrl($url));
         }
 
         CategoryUtil::deleteCategoryByID($cid);
+
         return new RedirectResponse(System::normalizeUrl($url));
     }
 
@@ -136,11 +136,11 @@ class UserformController extends \Zikula_AbstractController
 
         if ($category['is_locked']) {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($data['id'], $category['name'])));
+
             return new RedirectResponse(System::normalizeUrl($url));
         }
 
         $category_old_name = $category['name'];
-
 
         // save category
         $category->merge($data);
@@ -207,15 +207,15 @@ class UserformController extends \Zikula_AbstractController
 
         $obj = $this->entityManager->find('ZikulaCategoriesModule:CategoryEntity', $cid);
 
-        for ($i=0 ; $i < count($sort_values) ; $i++) {
+        for ($i = 0; $i < count($sort_values); $i++) {
             if ($sort_values[$i]['id'] == $cid) {
                 if ($direction == 'up') {
-                    if ($sort_values[$i-1]['sort_value']) {
-                        $obj['sort_value'] = $sort_values[$i-1]['sort_value'] - 1;
+                    if ($sort_values[$i - 1]['sort_value']) {
+                        $obj['sort_value'] = $sort_values[$i - 1]['sort_value'] - 1;
                     }
                 } else {
-                    if ($sort_values[$i+1]['sort_value']) {
-                        $obj['sort_value'] = $sort_values[$i+1]['sort_value'] + 1;
+                    if ($sort_values[$i + 1]['sort_value']) {
+                        $obj['sort_value'] = $sort_values[$i + 1]['sort_value'] + 1;
                     }
                 }
             }
@@ -276,7 +276,7 @@ class UserformController extends \Zikula_AbstractController
         $data['sort_value'] = 0;
 
         // save category
-        $category = new \Zikula\CategoriesModule\Entity\CategoryEntity;
+        $category = new \Zikula\CategoriesModule\Entity\CategoryEntity();
         $category->merge($data);
         $this->entityManager->persist($category);
         $this->entityManager->flush();
@@ -294,6 +294,7 @@ class UserformController extends \Zikula_AbstractController
 
         $msg = $this->__f('Done! Inserted the %s category.', $data['name']);
         $request->getSession()->getFlashBag()->add('status', $msg);
+
         return new RedirectResponse(System::normalizeUrl($url));
     }
 

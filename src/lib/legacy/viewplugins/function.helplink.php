@@ -122,7 +122,7 @@ function smarty_function_helplink($params, Zikula_View $view)
         $paths[] = "$base/Resources/docs/$systemLang/$fileName";
         $paths[] = "$base/Resources/docs/en/$fileName";
     }
-    $base = ModUtil::getModuleBaseDir($modname) . "/$modname/docs";;
+    $base = ModUtil::getModuleBaseDir($modname) . "/$modname/docs";
     $paths[] = "$base/$userLang/$fileName";
     $paths[] = "$base/docs/$systemLang/$fileName";
     $paths[] = "$base/en/$fileName";

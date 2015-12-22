@@ -105,15 +105,15 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
      */
     public function cleanup()
     {
-		// check to see all thumbnails should be removed (force=true), or only when the source image is removed
+        // check to see all thumbnails should be removed (force=true), or only when the source image is removed
         $force = $this->request->query->filter('force', false, FILTER_VALIDATE_BOOLEAN);
         $manager = $this->getContainer()->get('systemplugin.imagine.manager');
         $manager->cleanupThumbs($force);
-		if ($force) {
-			$this->registerStatus($this->__('Done! All Imagine thumbnails are removed and will be re-generated when requested again!'));
-		} else {
-			$this->registerStatus($this->__('Done! Imagine thumbnails are cleaned up of source images that were removed!'));
-		}
+        if ($force) {
+            $this->registerStatus($this->__('Done! All Imagine thumbnails are removed and will be re-generated when requested again!'));
+        } else {
+            $this->registerStatus($this->__('Done! Imagine thumbnails are cleaned up of source images that were removed!'));
+        }
 
         $this->redirect(ModUtil::url('ZikulaExtensionsModule', 'adminplugin', 'dispatch', array(
             '_plugin' => 'Imagine',

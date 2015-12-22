@@ -256,10 +256,13 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-
         // parameter for used sort order
-        if ($sort != 'name' && $sort != 'displayname') $sort = 'name';
-        if ($sortdir != 'ASC' && $sortdir != 'DESC') $sortdir = 'ASC';
+        if ($sort != 'name' && $sort != 'displayname') {
+            $sort = 'name';
+        }
+        if ($sortdir != 'ASC' && $sortdir != 'DESC') {
+            $sortdir = 'ASC';
+        }
 
         // save the current values
         SessionUtil::setVar('state', $state);
@@ -839,7 +842,7 @@ class AdminController extends \Zikula_AbstractController
             throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
         }
 
-        if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'iscoremodule',array('modulename' => $modinfo['name']))) {
+        if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'iscoremodule', array('modulename' => $modinfo['name']))) {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Error! You cannot deactivate this module [%s]. It is a mandatory core module, and is needed by the system.', $modinfo['name']));
         } else {
             // Update state
@@ -1043,7 +1046,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Update module variables.
         $itemsperpage = (int) $request->request->get('itemsperpage', 25);
-        if (!is_integer($itemsperpage) || $itemsperpage < 1) {
+        if (!is_int($itemsperpage) || $itemsperpage < 1) {
             $itemsperpage = abs($itemsperpage);
             $request->getSession()->getFlashBag()->add('warning', $this->__("Warning! The 'Items per page' setting must be a positive integer. The value you entered was corrected."));
         }
@@ -1078,7 +1081,6 @@ class AdminController extends \Zikula_AbstractController
         $startnum = (int) $request->get('startnum');
         $letter = $request->get('letter');
         $state = (int) $request->get('state');
-
 
         // get the modules information from the data base
         $modinfo = ModUtil::getInfo($id);
@@ -1159,7 +1161,7 @@ class AdminController extends \Zikula_AbstractController
             switch ($pluginstate['state']) {
                 case PluginUtil::NOTINSTALLED:
                     $status = $this->__('Not installed');
-                    $statusclass= "danger";
+                    $statusclass = "danger";
 
                     $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_initialiseplugin',
                                                     array('plugin' => $className,
@@ -1219,7 +1221,7 @@ class AdminController extends \Zikula_AbstractController
                     break;
                 case PluginUtil::DISABLED:
                     $status = $this->__('Inactive');
-                    $statusclass= "warning";
+                    $statusclass = "warning";
 
                     $actions[] = array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_activateplugin',
                                                     array('plugin' => $className,
@@ -1251,7 +1253,6 @@ class AdminController extends \Zikula_AbstractController
             // upgrade ?
             if ($pluginstate['state'] != PluginUtil::NOTINSTALLED
                 && $pluginstate['version'] != $instance->getMetaVersion()) {
-
                 $status = $this->__('New version');
                 $statusclass = "danger";
 
@@ -1344,7 +1345,7 @@ class AdminController extends \Zikula_AbstractController
         $state = $request->get('state', -1);
         $sort = $request->get('sort', null);
         $module = $request->get('bymodule', null);
-        $systemplugins = $request->get('systemplugins', false)? true : null;
+        $systemplugins = $request->get('systemplugins', false) ? true : null;
 
         PluginUtil::loadAllPlugins();
         if (PluginUtil::install($plugin)) {
@@ -1388,7 +1389,7 @@ class AdminController extends \Zikula_AbstractController
         $state = $request->get('state', -1);
         $sort = $request->get('sort', null);
         $module = $request->get('bymodule', null);
-        $systemplugins = $request->get('systemplugins', false)? true : null;
+        $systemplugins = $request->get('systemplugins', false) ? true : null;
 
         PluginUtil::loadAllPlugins();
         if (PluginUtil::disable($plugin)) {
@@ -1432,7 +1433,7 @@ class AdminController extends \Zikula_AbstractController
         $state = $request->get('state', -1);
         $sort = $request->get('sort', null);
         $module = $request->get('bymodule', null);
-        $systemplugins = $request->get('systemplugins', false)? true : null;
+        $systemplugins = $request->get('systemplugins', false) ? true : null;
 
         PluginUtil::loadAllPlugins();
         if (PluginUtil::enable($plugin)) {
@@ -1476,11 +1477,11 @@ class AdminController extends \Zikula_AbstractController
         $state = $request->get('state', -1);
         $sort = $request->get('sort', null);
         $module = $request->get('bymodule', null);
-        $systemplugins = $request->get('systemplugins', false)? true : null;
+        $systemplugins = $request->get('systemplugins', false) ? true : null;
 
         PluginUtil::loadAllPlugins();
         if (PluginUtil::uninstall($plugin)) {
-           $request->getSession()->getFlashBag()->add('status', $this->__('Done! De-installed plugin.'));
+            $request->getSession()->getFlashBag()->add('status', $this->__('Done! De-installed plugin.'));
         }
 
         return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => $state,
@@ -1520,7 +1521,7 @@ class AdminController extends \Zikula_AbstractController
         $state = $request->get('state', -1);
         $sort = $request->get('sort', null);
         $module = $request->get('bymodule', null);
-        $systemplugins = $request->get('systemplugins', false)? true : null;
+        $systemplugins = $request->get('systemplugins', false) ? true : null;
 
         PluginUtil::loadAllPlugins();
         if (PluginUtil::upgrade($plugin)) {
@@ -1533,13 +1534,13 @@ class AdminController extends \Zikula_AbstractController
                                                                               'systemplugins' => $systemplugins), RouterInterface::ABSOLUTE_URL));
     }
 
-     /**
-      * @Route("/modules/upgradeall")
-      *
-      * Upgrade all modules
-      *
-      * @return RedirectResponse
-      */
+    /**
+     * @Route("/modules/upgradeall")
+     *
+     * Upgrade all modules
+     *
+     * @return RedirectResponse
+     */
     public function upgradeallAction()
     {
         ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgradeall');
@@ -1653,7 +1654,7 @@ class AdminController extends \Zikula_AbstractController
             $hooksubscribers = HookUtil::getHookSubscribers();
             $total_hooksubscribers = count($hooksubscribers);
             $total_available_subscriber_areas = 0;
-            for ($i=0 ; $i < $total_hooksubscribers ; $i++) {
+            for ($i = 0; $i < $total_hooksubscribers; $i++) {
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
                 if ($hooksubscribers[$i]['name'] == $moduleName) {
@@ -1696,7 +1697,7 @@ class AdminController extends \Zikula_AbstractController
             $this->view->assign('hooksubscribers', $hooksubscribers);
             $this->view->assign('total_available_subscriber_areas', $total_available_subscriber_areas);
         } else {
-            $this->view->assign('total_available_subscriber_areas',0);
+            $this->view->assign('total_available_subscriber_areas', 0);
         }
 
         // get providers that are already attached to the subscriber
@@ -1706,7 +1707,7 @@ class AdminController extends \Zikula_AbstractController
             $currentSortingTitles = array();
             $currentSorting = array();
             $total_attached_provider_areas = 0;
-            for ($i=0 ; $i < count($subscriberAreas) ; $i++) {
+            for ($i = 0; $i < count($subscriberAreas); $i++) {
                 $sortsByArea = HookUtil::getBindingsFor($subscriberAreas[$i]);
                 foreach ($sortsByArea as $sba) {
                     $areaname = $sba['areaname'];
@@ -1745,7 +1746,7 @@ class AdminController extends \Zikula_AbstractController
             $hookproviders = HookUtil::getHookProviders();
             $total_hookproviders = count($hookproviders);
             $total_available_provider_areas = 0;
-            for ($i=0 ; $i < $total_hookproviders ; $i++) {
+            for ($i = 0; $i < $total_hookproviders; $i++) {
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
                 if ($hookproviders[$i]['name'] == $moduleName && !$isSubscriberSelfCapable) {
@@ -1850,7 +1851,7 @@ class AdminController extends \Zikula_AbstractController
         }
         if ($dependency['minversion'] == "-1") {
             // dependency is "suggested"
-            list ($dependency['modname'], $dependency['minversion']) = explode(':', $dependency['modname']);
+            list($dependency['modname'], $dependency['minversion']) = explode(':', $dependency['modname']);
 
             return false;
         }

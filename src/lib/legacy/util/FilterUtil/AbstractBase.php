@@ -20,7 +20,6 @@
  */
 abstract class FilterUtil_AbstractBase
 {
-
     /**
      * Config object.
      *

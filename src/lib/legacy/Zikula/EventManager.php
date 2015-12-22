@@ -15,7 +15,6 @@
 
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Zikula_EventManager.
@@ -40,14 +39,15 @@ class Zikula_EventManager extends EventDispatcher
      *
      * @return void
      */
-    public function attach($name, $handler, $priority=10)
+    public function attach($name, $handler, $priority = 10)
     {
         // using this method will adjust the listener priority automatically for
         // Sf Event Dispatcher where higher is executed first.
-        $priority = 0-(int)$priority;
+        $priority = 0 - (int)$priority;
 
         if ($handler instanceof Zikula_ServiceHandler) {
             $callable = array($handler->getId(), $handler->getMethodName());
+
             return $this->addListenerService($name, $callable, $priority);
         }
 
@@ -111,7 +111,6 @@ class Zikula_EventManager extends EventDispatcher
         $array = $this->getListeners();
         foreach ($array as $name => $callable) {
             $this->removeListener($name, $callable);
-
         }
     }
 

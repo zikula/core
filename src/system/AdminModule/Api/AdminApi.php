@@ -217,7 +217,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function getCategory($args)
     {
         // Argument check
-        if (!isset($args['cid']) ||!is_numeric($args['cid'])) {
+        if (!isset($args['cid']) || !is_numeric($args['cid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -264,7 +264,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $item = $this->entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(array('mid' => $mid));
         if (!$item) {
-            $item = new AdminModuleEntity;
+            $item = new AdminModuleEntity();
         }
 
         $values = array();

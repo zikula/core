@@ -34,7 +34,7 @@ class Zikula_Exception extends Exception
      * @param integer $code    Code.
      * @param mixed   $debug   Debug.
      */
-    public function __construct($message='', $code=0, $debug=null)
+    public function __construct($message = '', $code = 0, $debug = null)
     {
         parent::__construct($message, $code);
         $this->debug = $debug;

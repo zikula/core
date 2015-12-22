@@ -176,16 +176,16 @@ class Zikula_Workflow_Util
         return $workflow->executeAction($actionID, $obj, $stateID);
     }
 
-    /**
-     * Delete workflows for module (used module uninstall time).
-     *
-     * @param string $module Module name.
-     *
-     * @return boolean
-     */
+     /**
+      * Delete workflows for module (used module uninstall time).
+      *
+      * @param string $module Module name.
+      *
+      * @return boolean
+      */
      public static function deleteWorkflowsForModule($module)
-    {
-        $theModule = isset($module) ? $module : ModUtil::getName();
+     {
+         $theModule = isset($module) ? $module : ModUtil::getName();
 
         //This is a static function, so we have to use ServiceUtil to get the entity manager
         $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
@@ -197,10 +197,10 @@ class Zikula_Workflow_Util
                     ->setParameter('module', $theModule)
                     ->getQuery();
 
-        $result = $query->execute();
+         $result = $query->execute();
 
-        return $result;
-    }
+         return $result;
+     }
 
     /**
      * Delete a workflow and associated data.
@@ -410,10 +410,10 @@ class Zikula_Workflow_Util
 
         // attach workflow to object
          if ($obj instanceof Doctrine_Record) {
-            $obj->mapValue('__WORKFLOW__', $workflow);
-        } else {
-            $obj['__WORKFLOW__'] = $workflow;
-        }
+             $obj->mapValue('__WORKFLOW__', $workflow);
+         } else {
+             $obj['__WORKFLOW__'] = $workflow;
+         }
 
         return true;
     }

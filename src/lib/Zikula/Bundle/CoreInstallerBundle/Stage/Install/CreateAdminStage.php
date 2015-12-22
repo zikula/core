@@ -55,7 +55,6 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
     {
         $params = $this->yamlManager->getParameters();
         if (!empty($params['username']) && !empty($params['password']) && !empty($params['email'])) {
-
             return false;
         }
 

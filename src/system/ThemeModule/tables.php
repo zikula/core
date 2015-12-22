@@ -11,7 +11,6 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
  * Populate tables array for theme module.
  *
@@ -27,7 +26,7 @@ function ZikulaThemeModule_tables()
     $dbtables = array();
 
     $dbtables['themes'] = 'themes';
-    $dbtables['themes_column'] = array ('id'             => 'id',
+    $dbtables['themes_column'] = array('id'             => 'id',
                                        'name'           => 'name',
                                        'type'           => 'type',
                                        'displayname'    => 'displayname',

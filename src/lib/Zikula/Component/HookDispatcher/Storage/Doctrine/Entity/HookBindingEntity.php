@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class HookBindingEntity
 {
     /**
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,61 +22,60 @@ class HookBindingEntity
     private $id;
 
     /**
-     * @var string $sowner
+     * @var string
      *
      * @ORM\Column(name="sowner", type="string", length=40, nullable=false)
      */
     private $sowner;
 
     /**
-     * @var string $subsowner
+     * @var string
      *
      * @ORM\Column(name="subsowner", type="string", length=40, nullable=true)
      */
     private $subsowner;
 
     /**
-     * @var string $powner
+     * @var string
      *
      * @ORM\Column(name="powner", type="string", length=40, nullable=false)
      */
     private $powner;
 
     /**
-     * @var string $subpowner
+     * @var string
      *
      * @ORM\Column(name="subpowner", type="string", length=40, nullable=true)
      */
     private $subpowner;
 
     /**
-     * @var integer $sareaid
+     * @var integer
      *
      * @ORM\Column(name="sareaid", type="integer", nullable=false)
      */
     private $sareaid;
 
     /**
-     * @var integer $pareaid
+     * @var integer
      *
      * @ORM\Column(name="pareaid", type="integer", nullable=false)
      */
     private $pareaid;
 
     /**
-     * @var string $category
+     * @var string
      *
      * @ORM\Column(name="category", type="string", length=20, nullable=false)
      */
     private $category;
 
     /**
-     * @var integer $sortorder
+     * @var integer
      *
      * @ORM\Column(name="sortorder", type="smallint", nullable=false)
      */
     private $sortorder;
-
 
     /**
      * Get id
@@ -97,6 +96,7 @@ class HookBindingEntity
     public function setSowner($sowner)
     {
         $this->sowner = $sowner;
+
         return $this;
     }
 
@@ -119,6 +119,7 @@ class HookBindingEntity
     public function setSubsowner($subsowner)
     {
         $this->subsowner = $subsowner;
+
         return $this;
     }
 
@@ -141,6 +142,7 @@ class HookBindingEntity
     public function setPowner($powner)
     {
         $this->powner = $powner;
+
         return $this;
     }
 
@@ -163,6 +165,7 @@ class HookBindingEntity
     public function setSubpowner($subpowner)
     {
         $this->subpowner = $subpowner;
+
         return $this;
     }
 
@@ -185,6 +188,7 @@ class HookBindingEntity
     public function setSareaid($sareaid)
     {
         $this->sareaid = $sareaid;
+
         return $this;
     }
 
@@ -207,6 +211,7 @@ class HookBindingEntity
     public function setPareaid($pareaid)
     {
         $this->pareaid = $pareaid;
+
         return $this;
     }
 
@@ -229,6 +234,7 @@ class HookBindingEntity
     public function setCategory($category)
     {
         $this->category = $category;
+
         return $this;
     }
 
@@ -251,6 +257,7 @@ class HookBindingEntity
     public function setSortorder($sortorder)
     {
         $this->sortorder = $sortorder;
+
         return $this;
     }
 

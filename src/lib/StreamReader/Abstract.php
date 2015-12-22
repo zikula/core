@@ -25,7 +25,9 @@ abstract class StreamReader_Abstract
     /**
      * Constructor.
      */
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     /**
      * Read.

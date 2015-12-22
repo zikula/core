@@ -23,7 +23,7 @@
  */
 class Zikula_Form_View_Plugin extends Zikula_Form_View
 {
-    public function __construct(Zikula_ServiceManager $serviceManager, $module, $pluginName, $caching=null)
+    public function __construct(Zikula_ServiceManager $serviceManager, $module, $pluginName, $caching = null)
     {
         parent::__construct($serviceManager, $module, $caching);
 
@@ -38,6 +38,7 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
 
         $this->addPluginDir($path);
     }
+
     /**
      * Plugin name getter.
      *

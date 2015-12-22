@@ -26,7 +26,9 @@
  */
 function smarty_modifier_activeinactive($string)
 {
-    if ($string != '0' && $string != '1') return $string;
+    if ($string != '0' && $string != '1') {
+        return $string;
+    }
 
     if ((bool)$string) {
         return __('Active');

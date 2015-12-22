@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\Wizard;
@@ -43,7 +42,6 @@ class UpgraderController extends AbstractController
         }
         // notinstalled?
         if (($this->container->getParameter('installed') == false)) {
-
             return new RedirectResponse($this->router->generate('install', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -65,6 +63,7 @@ class UpgraderController extends AbstractController
         $templateParams['headertemplate'] = '@ZikulaCoreInstaller/upgradeheader.html.twig';
         if ($wizard->isHalted()) {
             $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());
+
             return $this->templatingService->renderResponse('ZikulaCoreInstallerBundle::error.html.twig', $templateParams);
         }
 

@@ -27,7 +27,7 @@ class CategoryRegistryUtil
      *
      * @return boolean The DB insert operation result code cast to a boolean.
      */
-    public static function deleteEntry($modname, $entryID=null)
+    public static function deleteEntry($modname, $entryID = null)
     {
         if (!isset($modname) || !$modname) {
             throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'modname'));
@@ -95,7 +95,7 @@ class CategoryRegistryUtil
      *
      * @return boolean The DB insert operation result code cast to a boolean.
      */
-    private static function _processEntry($modname, $entityname, $property, $categoryID, $entryID=null)
+    private static function _processEntry($modname, $entityname, $property, $categoryID, $entryID = null)
     {
         if (!isset($modname) || !$modname) {
             throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'modname'));
@@ -109,7 +109,6 @@ class CategoryRegistryUtil
         if (!isset($categoryID) || !$categoryID) {
             throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'categoryID'));
         }
-
 
         $data = array();
         $data['modname'] = $modname;
@@ -188,7 +187,7 @@ class CategoryRegistryUtil
      *
      * @return array The associative field array of registered categories for the specified module.
      */
-    public static function getRegisteredModuleCategories($modname, $entityname, $arraykey='property')
+    public static function getRegisteredModuleCategories($modname, $entityname, $arraykey = 'property')
     {
         if (!$modname || !$entityname) {
             throw new \InvalidArgumentException(__f('Error! Received invalid specifications %1$s, %2$s.', array($modname, $entityname)));
@@ -240,7 +239,7 @@ class CategoryRegistryUtil
         }
 
         // if we have a path default, we get the ID
-        if ($default && !is_integer($default)) {
+        if ($default && !is_int($default)) {
             $cat = CategoryUtil::getCategoryByPath($default);
             if ($cat) {
                 $default = $cat['id'];

@@ -24,7 +24,7 @@
  *
  * @return string The modified output.
  */
-function smarty_modifier_formatNumber($string, $decimal_points=null)
+function smarty_modifier_formatNumber($string, $decimal_points = null)
 {
     return DataUtil::formatNumber($string, $decimal_points);
 }

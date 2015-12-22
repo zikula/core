@@ -15,7 +15,6 @@
 namespace Zikula\UsersModule\Helper;
 
 use ModUtil;
-
 use System;
 use Zikula\Core\Exception\FatalErrorException;
 
@@ -111,7 +110,6 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      * @param boolean $skipLoginFormFields   Whether or not to skip the login form fields page, defaults to false.
      */
     public function __construct($modname, $method, $shortDescription, $longDescription, $capableOfRegistration = false, $icon = false, $skipLoginFormFields = false)
-
     {
         $this->setModule($modname);
         $this->setMethod($method);
@@ -282,9 +280,10 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      */
     public function isFontAwesomeIcon()
     {
-        if(strpos($this->icon, '/') !== false || strpos($this->icon, 'fa-') !== 0 || empty($this->icon)) {
+        if (strpos($this->icon, '/') !== false || strpos($this->icon, 'fa-') !== 0 || empty($this->icon)) {
             return false;
         }
+
         return true;
     }
 

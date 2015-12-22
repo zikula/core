@@ -164,7 +164,6 @@ class FilterListener extends \Zikula_AbstractEventHandler
         // PHPIDS should run with PHP 5.1.2 but this is untested - set this value to force compatibilty with minor versions
         $config['General']['min_php_version'] = '5.1.6';
 
-
         // caching settings
         // @todo: add UI for those caching settings
         $config['Caching'] = array();
@@ -228,10 +227,10 @@ class FilterListener extends \Zikula_AbstractEventHandler
         }
 
         // determine our impact threshold values
-        $impactThresholdOne   = System::getVar('idsimpactthresholdone',    1) * $idsImpactFactor;
-        $impactThresholdTwo   = System::getVar('idsimpactthresholdtwo',   10) * $idsImpactFactor;
+        $impactThresholdOne   = System::getVar('idsimpactthresholdone', 1) * $idsImpactFactor;
+        $impactThresholdTwo   = System::getVar('idsimpactthresholdtwo', 10) * $idsImpactFactor;
         $impactThresholdThree = System::getVar('idsimpactthresholdthree', 25) * $idsImpactFactor;
-        $impactThresholdFour  = System::getVar('idsimpactthresholdfour',  75) * $idsImpactFactor;
+        $impactThresholdFour  = System::getVar('idsimpactthresholdfour', 75) * $idsImpactFactor;
 
         $usedImpact = ($idsImpactMode == 1) ? $requestImpact : $sessionImpact;
 
@@ -256,7 +255,6 @@ class FilterListener extends \Zikula_AbstractEventHandler
             $intrusionItems = array();
 
             foreach ($result as $event) {
-
                 $eventName = $event->getName();
                 $malVar = explode(".", $eventName, 2);
 
@@ -295,7 +293,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             foreach ($intrusionItems as $tag => $intrusionItem) {
                 $intrusionItem['name'] = implode(", ", $intrusionItem['name']);
 
-                $obj = new IntrusionEntity;
+                $obj = new IntrusionEntity();
                 $obj->merge($intrusionItem);
                 $em->persist($obj);
             }
@@ -316,7 +314,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             } else {
                 $mailBody .= __f('Session Impact: %d', $sessionImpact) . "\n";
             }
-            $mailBody .= __f('Affected tags: %s', join(' ', $result->getTags())) . "\n";
+            $mailBody .= __f('Affected tags: %s', implode(' ', $result->getTags())) . "\n";
 
             $attackedParameters = '';
             foreach ($result as $event) {

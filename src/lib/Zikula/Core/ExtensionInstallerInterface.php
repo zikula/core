@@ -14,8 +14,6 @@
 
 namespace Zikula\Core;
 
-use Zikula\Core\AbstractBundle;
-
 /**
  * Interface ExtensionInstallerInterface
  * @package Zikula\Core
@@ -23,7 +21,10 @@ use Zikula\Core\AbstractBundle;
 interface ExtensionInstallerInterface
 {
     public function setBundle(AbstractBundle $bundle);
+
     public function install();
+
     public function upgrade($oldVersion);
+
     public function uninstall();
 }

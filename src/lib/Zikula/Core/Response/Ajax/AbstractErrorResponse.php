@@ -26,7 +26,7 @@ abstract class AbstractErrorResponse extends AbstractBaseResponse
      * @param mixed $message Response status/error message, may be string or array.
      * @param mixed $payload Payload.
      */
-    public function __construct($message, $payload=null)
+    public function __construct($message, $payload = null)
     {
         $this->messages = (array)$message;
         $this->payload = $payload;

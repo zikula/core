@@ -22,7 +22,6 @@ use Zikula\Core\UrlInterface;
  * Event encapsulation class.
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
- *
  */
 class ProcessHook extends Hook
 {
@@ -33,7 +32,7 @@ class ProcessHook extends Hook
      */
     protected $url;
 
-    public function __construct($id, UrlInterface $url=null)
+    public function __construct($id, UrlInterface $url = null)
     {
         $this->id = $id;
         $this->url = $url;

@@ -102,7 +102,7 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'wrench'
             ];
         }
-        
+
         return $links;
     }
 

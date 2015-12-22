@@ -17,7 +17,6 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\AdminMenuPanelSimpleFunction;
-use Zikula\Core\AbstractModule;
 use Zikula\Core\Theme\AssetBag;
 
 class CoreExtension extends \Twig_Extension
@@ -64,7 +63,6 @@ class CoreExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-
         return array(
             new \Twig_SimpleFunction('button', [$this, 'button']),
             new \Twig_SimpleFunction('img', [$this, 'img']),
@@ -124,17 +122,14 @@ class CoreExtension extends \Twig_Extension
 
     public function button()
     {
-
     }
 
     public function img()
     {
-
     }
 
     public function icon()
     {
-
     }
 
     /**
@@ -282,6 +277,7 @@ class CoreExtension extends \Twig_Extension
         $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
         if (isset($themeBundle) && !$themeBundle->isTwigBased()) {
             \PageUtil::addVar($type, $value);
+
             return;
         }
 

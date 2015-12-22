@@ -83,7 +83,6 @@ class Zikula_View_Resource
      * @param string      &$tpl_source Template source.
      * @param Zikula_View $view Reference to Smarty instance.
      *
-     * @access private
      * @return boolean
      */
     public static function z_get_template($resource, &$tpl_source, $view)
@@ -182,12 +181,11 @@ class Zikula_View_Resource
      * @param string      &$tpl_source Template source.
      * @param Zikula_View $view Reference to Smarty instance.
      *
-     * @access private
      * @return boolean
      */
     private static function z_get_insert($insert, &$tpl_source, $view)
     {
-        $name = str_replace(strrchr($insert, '.'), '', substr($insert, strpos($insert, '.')+1));
+        $name = str_replace(strrchr($insert, '.'), '', substr($insert, strpos($insert, '.') + 1));
 
         if (!isset(self::$cache['insert'][$name])) {
             self::register($view, 'insert', $name, false);
@@ -211,7 +209,6 @@ class Zikula_View_Resource
      * @param boolean     $cacheable    Flag to register the resource as cacheable (default: false).
      * @param mixed       $cache_attrs  Array of parameters to be cached with the plugin/block call.
      *
-     * @access private
      * @return boolean
      */
     public static function register($view, $type, $name, $delayed_load = true, $cacheable = true, $cache_attrs = null)
@@ -234,7 +231,6 @@ class Zikula_View_Resource
      * @param string      $type Type of the resource.
      * @param string      $name Name of the resource.
      *
-     * @access private
      * @return boolean
      */
     public static function load($view, $type, $name)

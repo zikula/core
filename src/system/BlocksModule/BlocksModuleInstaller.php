@@ -36,6 +36,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         'Zikula\BlocksModule\Entity\BlockPlacementEntity',
         'Zikula\BlocksModule\Entity\UserBlockEntity'
     ];
+
     /**
      * initialise the blocks module
      *
@@ -79,7 +80,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 /** @var \Zikula\BlocksModule\Entity\BlockEntity $block */
                 foreach ($blocks as $block) {
                     $content = $block->getContent();
-                    if(\DataUtil::is_serialized($content)) {
+                    if (\DataUtil::is_serialized($content)) {
                         $content = unserialize($content);
                         foreach ($content as $k => $item) {
                             if (is_string($item)) {

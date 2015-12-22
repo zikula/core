@@ -64,7 +64,7 @@ class PotDumper extends ArrayStructureDumper
                     $this->writer->write("\n");
                 }
 
-                foreach($v->getSources() as $source) {
+                foreach ($v->getSources() as $source) {
                     $this->writer->writeln('#: ' . $source);
                 }
                 if ($desc) {
@@ -75,7 +75,7 @@ class PotDumper extends ArrayStructureDumper
                 }
                 $this->writer->writeln('msgid "' . $v->getId() . '"')
                     ->writeln('msgstr ""');
-            } else if (!$isFirst) {
+            } elseif (!$isFirst) {
                 $this->writer->write("\n");
             }
         }

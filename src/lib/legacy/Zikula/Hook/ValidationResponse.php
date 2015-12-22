@@ -21,7 +21,7 @@
  */
 class Zikula_Hook_ValidationResponse extends Zikula\Core\Hook\ValidationResponse
 {
-    function __construct($key, $object)
+    public function __construct($key, $object)
     {
         LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         parent::__construct($key, $object);

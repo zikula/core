@@ -40,7 +40,7 @@ function smarty_block_form($params, $content, $view)
         // if enctype is not set directly, check whenever upload plugins were used;
         // if so - set proper enctype for file upload
         if (is_null($enctype)) {
-            $uploadPlugins = array_filter($view->plugins, function($plugin) {
+            $uploadPlugins = array_filter($view->plugins, function ($plugin) {
                 return $plugin instanceof Zikula_Form_Plugin_UploadInput;
             });
             if (!empty($uploadPlugins)) {
@@ -48,7 +48,7 @@ function smarty_block_form($params, $content, $view)
             }
         }
         $encodingHtml = !is_null($enctype) ? " enctype=\"{$enctype}\"" : '';
-        
+
         $onSubmit = isset($params['onsubmit']) ? " onSubmit=\"{$params['onsubmit']}\"" : '';
 
         $view->postRender();

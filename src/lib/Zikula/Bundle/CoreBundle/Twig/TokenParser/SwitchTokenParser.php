@@ -16,7 +16,6 @@ use Zikula\Bundle\CoreBundle\Twig\Node\SwitchNode;
  *      {% default %}
  *          code for default case
  * {% endswitch %}
- *
  */
 class SwitchTokenParser extends \Twig_TokenParser
 {

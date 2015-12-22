@@ -400,7 +400,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
      */
     public function findCheckedRadioButton_rec($firstRadioButton, $plugin)
     {
-        if ($plugin instanceof Zikula_Form_Plugin_RadioButton && $plugin->groupName == $this->groupName) {
+        if ($plugin instanceof self && $plugin->groupName == $this->groupName) {
             $plugin->validationChecked = true;
             if ($firstRadioButton == null) {
                 $firstRadioButton = $plugin;

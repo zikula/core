@@ -113,7 +113,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $permorder = $request->request->get('permorder');
 
-        for($cnt = 0 ; $cnt < count($permorder) ; $cnt++) {
+        for ($cnt = 0; $cnt < count($permorder); $cnt++) {
             $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $permorder[$cnt]);
             $permission['sequence'] = $cnt;
         }
@@ -270,7 +270,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     private function determineGroupName($gid)
     {
-        switch($gid) {
+        switch ($gid) {
             case -1:
                 $name = $this->__('All groups');
                 break;

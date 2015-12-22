@@ -63,7 +63,7 @@ class Util
             $bundleClass = $themeMetaData->getClass();
 
             /** @var $bundle \Zikula\Core\AbstractTheme */
-            $bundle = new $bundleClass;
+            $bundle = new $bundleClass();
             $versionClass = $bundle->getVersionClass();
 
             if (class_exists($versionClass)) {
@@ -175,7 +175,7 @@ class Util
                 $themeinfo['state'] = ThemeUtil::STATE_ACTIVE;
 
                 // add item to db
-                $item = new ThemeEntity;
+                $item = new ThemeEntity();
                 $item->merge($themeinfo);
                 $entityManager->persist($item);
             }

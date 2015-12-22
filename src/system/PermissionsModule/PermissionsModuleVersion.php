@@ -33,6 +33,7 @@ class PermissionsModuleVersion extends \Zikula_AbstractVersion
         $meta['version'] = '1.1.1';
         $meta['core_min'] = '1.4.0';
         $meta['securityschema'] = array('ZikulaPermissionsModule::' => '::');
+
         return $meta;
     }
 }

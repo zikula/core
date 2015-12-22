@@ -16,7 +16,6 @@ namespace Zikula\BlocksModule\Twig\Extension;
 
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\Core\AbstractModule;
 use Zikula\Core\BlockControllerInterface;
 use Zikula\Core\Theme\Engine;
 use Zikula\ExtensionsModule\Api\ExtensionApi;

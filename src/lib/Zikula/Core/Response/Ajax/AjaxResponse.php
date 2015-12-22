@@ -37,8 +37,8 @@ class AjaxResponse extends AbstractBaseResponse
         }
 
         if (\System::isLegacyMode()) {
-                $this->authid = \SecurityUtil::generateAuthKey(\ModUtil::getName());
-            }
+            $this->authid = \SecurityUtil::generateAuthKey(\ModUtil::getName());
+        }
 
         parent::__construct('', $this->statusCode);
     }

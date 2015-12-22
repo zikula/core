@@ -58,5 +58,4 @@ class Zikula_Bag_FileBag extends \Symfony\Component\HttpFoundation\FileBag
 
         return $file;
     }
-
 }

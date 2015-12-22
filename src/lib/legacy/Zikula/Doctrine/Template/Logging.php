@@ -30,4 +30,3 @@ class Zikula_Doctrine_Template_Logging extends Doctrine_Template
         $this->addListener(new Zikula_Doctrine_Template_Listener_Logging());
     }
 }
-

@@ -86,7 +86,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
      */
     public function set($key, $value)
     {
-        $parameters = & $this->resolvePath($key, true);
+        $parameters = &$this->resolvePath($key, true);
         $key = $this->resolveKey($key);
         $parameters[$key] = $value;
     }
@@ -101,7 +101,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
     public function remove($key)
     {
         $retval = null;
-        $parameters = & $this->resolvePath($key);
+        $parameters = &$this->resolvePath($key);
         $key = $this->resolveKey($key);
         if (array_key_exists($key, $parameters)) {
             $retval = $parameters[$key];
@@ -179,7 +179,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
      */
     private function &resolvePath($key, $writeContext = false)
     {
-        $array = & $this->parameters;
+        $array = &$this->parameters;
         $key = (strpos($key, $this->ns) === 0) ? substr($key, 1) : $key;
 
         // Check if there is anything to do, else return
@@ -198,7 +198,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
             return $array;
         }
 
-        unset($parts[count($parts)-1]);
+        unset($parts[count($parts) - 1]);
 
         foreach ($parts as $part) {
             if (!array_key_exists($part, $array)) {
@@ -209,7 +209,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
                 $array[$part] = array();
             }
 
-            $array = & $array[$part];
+            $array = &$array[$part];
         }
 
         return $array;
@@ -227,7 +227,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
     private function resolveKey($key)
     {
         if (strpos($key, $this->ns) !== false) {
-            $key = substr($key, strrpos($key, $this->ns)+1, strlen($key));
+            $key = substr($key, strrpos($key, $this->ns) + 1, strlen($key));
         }
 
         return $key;

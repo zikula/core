@@ -46,7 +46,6 @@ class StreamReader_File extends StreamReader_Abstract
     public function __construct($filename)
     {
         if (file_exists($filename)) {
-
             $this->_length = filesize($filename);
             $this->_pos = 0;
             $this->_fd = fopen($filename, 'rb');
@@ -81,9 +80,9 @@ class StreamReader_File extends StreamReader_Abstract
             $this->_pos = ftell($this->_fd);
 
             return $data;
-        } else
-
+        } else {
             return '';
+        }
     }
 
     /**
@@ -130,5 +129,4 @@ class StreamReader_File extends StreamReader_Abstract
     {
         fclose($this->_fd);
     }
-
 }

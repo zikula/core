@@ -74,6 +74,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
         if (isset($params['assign'])) {
             $view->assign($params['assign'], $menuLinks);
         }
+
         return '';
     }
 
@@ -220,17 +221,17 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                     $menuitem['icon'] = 'rss-square';
                 }
             }
-            
+
             $active = '';
             if (!empty($menuitem['url']) && System::getBaseUrl().$menuitem['url'] === System::getCurrentUrl()) {
                 $active = 'active ';
             }
-            
+
             $dropdown = '';
             if (isset($menuitem['links'])) {
-                $dropdown = 'dropdown' ;
+                $dropdown = 'dropdown';
             }
-            
+
             $html .= '<li';
             $html .= !empty($menuitem['id']) ? ' id="'.$menuitem['id'].'"' : '';
             $html .= ' class="'.$active.$dropdown;
@@ -242,7 +243,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             if (isset($menuitem['disabled']) && $menuitem['disabled'] == true) {
                 $html .= '<a '.$attr.'>'.$menuitem['text'].'</a>';
             } elseif (!empty($menuitem['url'])) {
-                $icon = ''; 
+                $icon = '';
                 if (!empty($menuitem['icon'])) {
                     $icon = '<span class="fa fa-'.$menuitem['icon'].'"></span> ';
                 }
@@ -255,7 +256,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             }
             if (isset($menuitem['links'])) {
                 $html .= '<ul class="dropdown-menu">';
-                foreach($menuitem['links'] as $submenuitem) {
+                foreach ($menuitem['links'] as $submenuitem) {
                     $html .= '<li>';
                     if (isset($submenuitem['url'])) {
                         $html .= '<a href="'.DataUtil::formatForDisplay($submenuitem['url']).'">'.$submenuitem['text'].'</a>';

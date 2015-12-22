@@ -24,7 +24,7 @@ class ZikulaSqlLogger implements SQLLogger
 {
     private $currentQuery;
     private $start;
-    
+
     public function startQuery($sql, array $params = null, array $types = null)
     {
         $this->start = microtime(true);
@@ -35,7 +35,7 @@ class ZikulaSqlLogger implements SQLLogger
     {
         $query = $this->currentQuery;
         $query['time'] = microtime(true) - $this->start;
-        
+
         $zevent = new GenericEvent(null, $query);
         EventUtil::dispatch('log.sql', $zevent);
     }

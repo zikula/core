@@ -29,6 +29,7 @@ class CoreInstallerValidator
         if ($object['database_host'] == '' || $object['database_name'] == '' || $object['database_user'] == '') {
             $context->buildViolation(__('Error! Please enter your database credentials.'))
                     ->addViolation();
+
             return;
         }
 
@@ -87,6 +88,5 @@ class CoreInstallerValidator
                 ->addViolation()
             ;
         }
-
     }
 }

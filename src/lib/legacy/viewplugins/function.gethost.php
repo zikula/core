@@ -33,7 +33,7 @@
  *
  * @return string The base URL of the site.
  */
-function smarty_function_gethost ($params, Zikula_View $view)
+function smarty_function_gethost($params, Zikula_View $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 

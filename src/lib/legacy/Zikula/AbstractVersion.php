@@ -497,11 +497,11 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
             throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form array(capability => array(version => string, ... => ... in %s', get_class($this)));
         }
         foreach ($capabilities as $key => $capability) {
-            if (is_integer($key) || !is_array($capability) || !$capability) {
+            if (is_int($key) || !is_array($capability) || !$capability) {
                 throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form array(capability => array(version => string, ... => ... in %s', get_class($this)));
             }
             foreach ($capability as $capkey => $cap) {
-                if (is_integer($capkey)) {
+                if (is_int($capkey)) {
                     throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form array(capability => array(version => string, ... => ... in %s', get_class($this)));
                 }
             }

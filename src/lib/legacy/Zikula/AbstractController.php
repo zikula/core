@@ -47,7 +47,6 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -160,6 +159,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
         // BC for default entry point as 'index' if not present try main
         if ($method == 'index' && (false === $r->hasMethod('index') && false === $r->hasMethod('indexAction'))) {
             $method = $r->hasMethod('mainAction') ? 'mainAction' : 'main';
+
             return call_user_func_array(array($this, $method), $args);
         }
 

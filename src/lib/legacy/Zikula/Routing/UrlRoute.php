@@ -320,7 +320,6 @@ class Zikula_Routing_UrlRoute
                     $regex .= '(?:' . $sep_regex . '(?P<_star>.*))?';
                 } else {
                     if ($token[0] == 'separator' && $this->tokens[$i + 1] && $this->tokens[$i + 1][1] == '*') {
-
                     } else {
                         $regex .= $token[1];
                     }

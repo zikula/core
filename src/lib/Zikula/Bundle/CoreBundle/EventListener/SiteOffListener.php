@@ -10,6 +10,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,7 +22,6 @@ use Zikula\Core\Response\PlainResponse;
 
 class SiteOffListener implements EventSubscriberInterface
 {
-
     public function onKernelRequestSiteOff(GetResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
@@ -76,5 +76,4 @@ class SiteOffListener implements EventSubscriberInterface
             )
         );
     }
-
 }

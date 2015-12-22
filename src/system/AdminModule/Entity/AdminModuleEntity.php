@@ -26,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AdminModuleEntity extends EntityAccess
 {
-   /**
+    /**
      * The id key field
      *
      * @ORM\Id
@@ -55,7 +55,6 @@ class AdminModuleEntity extends EntityAccess
      * @ORM\Column(type="integer")
      */
     private $sortorder;
-
 
     /**
      * constructor

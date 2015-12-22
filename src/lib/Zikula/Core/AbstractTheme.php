@@ -119,7 +119,7 @@ abstract class AbstractTheme extends AbstractBundle
         if (file_exists($themeVarsPath)) {
             if ($this->getContainer()) {
                 $yamlVars = Yaml::parse(file_get_contents($themeVarsPath));
-                foreach($yamlVars as $name => $definition) {
+                foreach ($yamlVars as $name => $definition) {
                     $defaultVars[$name] = $definition['default_value'];
                 }
             }

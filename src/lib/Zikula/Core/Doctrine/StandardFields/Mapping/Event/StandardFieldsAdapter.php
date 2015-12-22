@@ -19,5 +19,5 @@ interface StandardFieldsAdapter extends AdapterInterface
      *
      * @return mixed
      */
-    function getUserIdValue(ClassMetadata $meta, $field);
+    public function getUserIdValue(ClassMetadata $meta, $field);
 }

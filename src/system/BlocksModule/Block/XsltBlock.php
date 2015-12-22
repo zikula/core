@@ -68,7 +68,7 @@ class XsltBlock extends \Zikula_Controller_AbstractBlock
 
         // Get our block vars
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
-        if ( (!isset($vars['docurl']) || !isset($vars['styleurl'])) &&
+        if ((!isset($vars['docurl']) || !isset($vars['styleurl'])) &&
                 (!isset($vars['doccontents']) || !isset($vars['stylecontents']))) {
             return;
         }
@@ -143,6 +143,6 @@ class XsltBlock extends \Zikula_Controller_AbstractBlock
 
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
-        return($blockinfo);
+        return $blockinfo;
     }
 }

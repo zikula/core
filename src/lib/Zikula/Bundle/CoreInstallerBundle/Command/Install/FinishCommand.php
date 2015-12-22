@@ -17,7 +17,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command\Install;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
-use \Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
+use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 
 class FinishCommand extends AbstractCoreInstallerCommand
 {
@@ -43,6 +43,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
 
         if ($this->getContainer()->getParameter('installed') == true) {
             $output->writeln("<error>" . __('Zikula already appears to be installed.') . "</error>");
+
             return;
         }
 

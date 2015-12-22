@@ -15,7 +15,6 @@
 
 namespace Zikula\BlocksModule\Collector;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\BlockControllerInterface;
 
 /**

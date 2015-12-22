@@ -14,7 +14,6 @@
 
 /**
  * Util class to manage stylesheets and javascript files
- *
  */
 class JCSSUtil
 {
@@ -654,7 +653,8 @@ class JCSSUtil
                     // parse line char by char
                     for ($i = 0; $i < $lineParse_length; $i++) {
                         $char = $lineParse{$i};
-                        $nextchar = $i < ($lineParse_length - 1) ? $lineParse{$i + 1} : "";
+                        $nextchar = $i < ($lineParse_length - 1) ? $lineParse{$i + 1}
+                        : "";
                         if (!$inMultilineComment && $char == '/' && $nextchar == '*') {
                             // a multiline comment starts here
                             $inMultilineComment = true;

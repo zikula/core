@@ -19,7 +19,6 @@ use ServiceUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use UserUtil;
 use Symfony\Component\HttpKernel\KernelEvents;
 

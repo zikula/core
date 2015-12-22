@@ -122,7 +122,6 @@ class Zikula_KernelClassLoader
         } else {
             throw new LogicException('Not registered on SPL autoloader stack');
         }
-
     }
 
     /**
@@ -181,5 +180,4 @@ class Zikula_KernelClassLoader
             include $file;
         }
     }
-
 }

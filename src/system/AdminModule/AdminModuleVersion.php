@@ -35,5 +35,4 @@ class AdminModuleVersion extends \Zikula_AbstractVersion
 
         return $meta;
     }
-
 }

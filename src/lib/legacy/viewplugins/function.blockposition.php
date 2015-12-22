@@ -37,9 +37,15 @@
 function smarty_function_blockposition($params, Zikula_View $view)
 {
     // fix the core positions for a better name
-    if ($params['name'] == 'l') $params['name'] = 'left';
-    if ($params['name'] == 'r') $params['name'] = 'right';
-    if ($params['name'] == 'c') $params['name'] = 'center';
+    if ($params['name'] == 'l') {
+        $params['name'] = 'left';
+    }
+    if ($params['name'] == 'r') {
+        $params['name'] = 'right';
+    }
+    if ($params['name'] == 'c') {
+        $params['name'] = 'center';
+    }
 
     if (!isset($params['name'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockposition', 'name')));

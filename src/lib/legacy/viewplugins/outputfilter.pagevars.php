@@ -42,8 +42,9 @@ function smarty_outputfilter_pagevars($source, $view)
 
     if (is_array($jcss['stylesheets']) && !empty($jcss['stylesheets'])) {
         foreach ($jcss['stylesheets'] as $stylesheet) {
-            if (empty($stylesheet))
+            if (empty($stylesheet)) {
                 continue;
+            }
                 // check if the stylesheets is in the additional_header array
             if ($themeinfo['xhtml']) {
                 $return .= '<link rel="stylesheet" href="' . DataUtil::formatForDisplay($stylesheet) . '" type="text/css" />' . "\n";

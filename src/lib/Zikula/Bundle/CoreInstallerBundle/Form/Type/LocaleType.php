@@ -45,5 +45,4 @@ class LocaleType extends AbstractType
 //                'intention'       => '_zk_bdcreds',
         ));
     }
-
 }

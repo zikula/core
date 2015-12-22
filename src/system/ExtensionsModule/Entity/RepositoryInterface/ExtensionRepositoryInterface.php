@@ -17,6 +17,8 @@ namespace Zikula\ExtensionsModule\Entity\RepositoryInterface;
 interface ExtensionRepositoryInterface
 {
     public function findAll();
+
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
+
     public function get($name);
 }

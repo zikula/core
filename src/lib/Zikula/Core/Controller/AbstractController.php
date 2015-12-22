@@ -10,6 +10,7 @@
  *             Please see the NOTICE file distributed with this source code for further
  *             information regarding copyright and licensing.
  */
+
 namespace Zikula\Core\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -77,7 +78,7 @@ abstract class AbstractController extends Controller
     public function renderView($view, array $parameters = array())
     {
         $parameters = $this->decorateTranslator($parameters);
-        
+
         return parent::renderView($view, $parameters);
     }
 
@@ -95,7 +96,7 @@ abstract class AbstractController extends Controller
     public function render($view, array $parameters = array(), Response $response = null)
     {
         $parameters = $this->decorateTranslator($parameters);
-        
+
         return parent::render($view, $parameters, $response);
     }
 
@@ -113,10 +114,10 @@ abstract class AbstractController extends Controller
     public function stream($view, array $parameters = array(), StreamedResponse $response = null)
     {
         $parameters = $this->decorateTranslator($parameters);
-        
+
         return parent::stream($view, $parameters, $response);
     }
-    
+
     /**
      * Decorate translator.
      *
@@ -127,6 +128,7 @@ abstract class AbstractController extends Controller
     protected function decorateTranslator(array $parameters)
     {
         $parameters['domain'] = $this->translator->getDomain();
+
         return $parameters;
     }
 
@@ -144,7 +146,7 @@ abstract class AbstractController extends Controller
     public function createNotFoundException($message = null, \Exception $previous = null)
     {
         $message = null === $message ? __('Page not found') : $message;
-        
+
         return new NotFoundHttpException($message, $previous);
     }
 
@@ -162,7 +164,7 @@ abstract class AbstractController extends Controller
     public function createAccessDeniedException($message = null, \Exception $previous = null)
     {
         $message = null === $message ? __('Access denied') : $message;
-        
+
         return new AccessDeniedException($message, $previous);
     }
 

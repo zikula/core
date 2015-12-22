@@ -38,7 +38,7 @@ class MetaData implements \ArrayAccess
         $this->dependencies = $this->formatDependencies($json);
         $this->shortName = $json['extra']['zikula']['short-name'];
         $this->class = $json['extra']['zikula']['class'];
-        $this->namespace = substr($this->class, 0, strrpos($this->class, '\\')+1);
+        $this->namespace = substr($this->class, 0, strrpos($this->class, '\\') + 1);
         $this->basePath = $json['extra']['zikula']['base-path'];
         $this->rootPath = $json['extra']['zikula']['root-path'];
         $this->autoload = $json['autoload'];
@@ -110,6 +110,7 @@ class MetaData implements \ArrayAccess
     public function getDescription()
     {
         $this->confirmTranslator();
+
         return $this->__(/** @Ignore */$this->description);
     }
 
@@ -121,12 +122,14 @@ class MetaData implements \ArrayAccess
     public function getDisplayName()
     {
         $this->confirmTranslator();
+
         return $this->__(/** @Ignore */$this->displayName);
     }
 
     public function getUrl($translated = true)
     {
         $this->confirmTranslator();
+
         return $translated ? $this->__(/** @Ignore */$this->url) : $this->url;
     }
 
@@ -186,6 +189,7 @@ class MetaData implements \ArrayAccess
                 ];
             }
         }
+
         return $dependencies;
     }
 
@@ -221,6 +225,7 @@ class MetaData implements \ArrayAccess
     public function getThemeFilteredVersionInfoArray()
     {
         $capabilities = $this->getCapabilities();
+
         return array(
             'name' => $this->getShortName(),
             'type' => $this->getExtensionType(),
@@ -269,6 +274,7 @@ class MetaData implements \ArrayAccess
     public function offsetGet($offset)
     {
         $method = "get" . ucwords($offset);
+
         return $this->$method();
     }
 

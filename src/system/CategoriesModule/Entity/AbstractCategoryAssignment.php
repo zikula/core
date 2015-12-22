@@ -16,7 +16,6 @@ namespace Zikula\CategoriesModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
-use Zikula\CategoriesModule\Entity\CategoryEntity;
 
 /**
  * Base class of many-to-many association between any entity and Category.
@@ -87,4 +86,3 @@ abstract class AbstractCategoryAssignment extends EntityAccess
         $this->category = $category;
     }
 }
-

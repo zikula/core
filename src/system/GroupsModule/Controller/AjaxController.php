@@ -23,7 +23,6 @@ use LogUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/ajax")
@@ -61,12 +60,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $description = $request->request->get('description');
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
-
             return new ForbiddenResponse($this->__('You do not have permission for this action.'));
         }
 
         if (empty($name)) {
-
             return new AjaxResponse(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $this->__('Error! The group name is missing.')));
         }
 
@@ -90,7 +87,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             // check for sessionvar
             $msgs = LogUtil::getStatusMessagesText();
             if (!empty($msgs)) {
-
                 return new AjaxResponse(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $msgs));
             }
         }
@@ -125,7 +121,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
-
             return new ForbiddenResponse($this->__('You do not have permission for this action.'));
         }
 
@@ -145,7 +140,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $group_id = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'create', $obj);
 
         if ($group_id == false) {
-
             return new FatalResponse($this->__('Error! Could not create the new group.'));
         }
 
@@ -184,7 +178,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)) {
-
             return new ForbiddenResponse($this->__('You do not have permission for this action.'));
         }
 
@@ -192,12 +185,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $defaultgroup = $this->getVar('defaultgroup');
 
         if ($group['gid'] == $defaultgroup) {
-
             return new FatalResponse($this->__('Error! You cannot delete the default user group.'));
         }
 
         if (ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'delete', array('gid' => $gid)) == true) {
-
             return new AjaxResponse(array('gid' => $gid));
         }
 
@@ -225,12 +216,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $uid = (int)$request->request->get('uid');
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
-
             return new ForbiddenResponse($this->__('You do not have permission for this action.'));
         }
 
         if (!ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
-
             return new FatalResponse($this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
         }
 

@@ -79,6 +79,7 @@ class UserApi extends \Zikula_AbstractApi
             }
             $output .= '</p>';
             LogUtil::registerStatus($output);
+
             return true;
         }
 
@@ -149,7 +150,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add any custom headers
         if (isset($args['headers']) && is_string($args['headers'])) {
-            $args['headers'] = explode ("\n", $args['headers']);
+            $args['headers'] = explode("\n", $args['headers']);
         }
         if (isset($args['headers']) && is_array($args['headers'])) {
             $headers = $message->getHeaders();
@@ -169,7 +170,7 @@ class UserApi extends \Zikula_AbstractApi
         if ((!empty($args['altbody']))
             || ((isset($args['html']) && is_bool($args['html']) && $args['html'])
             || $this->getVar('html'))) {
-                $bodyFormat = 'text/html';
+            $bodyFormat = 'text/html';
         } else {
             $bodyFormat = 'text/plain';
         }

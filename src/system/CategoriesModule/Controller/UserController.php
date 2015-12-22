@@ -64,6 +64,7 @@ class UserController extends \Zikula_AbstractController
             return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_user_edituser', array(), RouterInterface::ABSOLUTE_URL));
         } else {
             $request->getSession()->getFlashBag()->add('error', $this->__("Sorry! User-owned category editing has not been enabled. This feature can be enabled by the site administrator."));
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
     }
@@ -113,10 +114,12 @@ class UserController extends \Zikula_AbstractController
 
         if (!$docroot) {
             $request->getSession()->getFlashBag()->add('error', $this->__("Error! The URL contains an invalid 'document root' parameter."));
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
         if ($docroot == 1) {
             $request->getSession()->getFlashBag()->add('error', $this->__("Error! The root directory cannot be modified in 'user' mode"));
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
@@ -143,6 +146,7 @@ class UserController extends \Zikula_AbstractController
                         if (strpos($rootCatPath, $userRootCatPath) === false) {
                             //! %s represents the root path (id), passed in the url
                             $request->getSession()->getFlashBag()->add('error', $this->__f("Error! It looks like you are trying to edit another user's categories. Only site administrators can do that (%s).", $docroot));
+
                             return $this->response($this->view->fetch('User/editcategories.tpl'));
                         }
                     }
@@ -155,20 +159,24 @@ class UserController extends \Zikula_AbstractController
             if ($editCat['is_locked']) {
                 //! %1$s is the id, %2$s is the name
                 $request->getSession()->getFlashBag()->add('error', $this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $editCat['name'])), null, $url);
+
                 return $this->response($this->view->fetch('User/editcategories.tpl'));
             }
         }
 
         if (!$rootCat) {
             $request->getSession()->getFlashBag()->add('error', $this->__f("Error! Cannot access root directory (%s).", $docroot), null, $url);
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
         if ($editCat && !$editCat['is_leaf']) {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Error! The specified category is not a leaf-level category (%s).', $cid), null, $url);
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
         if ($editCat && !CategoryUtil::isDirectSubCategory($rootCat, $editCat)) {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Error! The specified category is not a child of the document root (%1$s; %2$s).', array($docroot, $cid)), null, $url);
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
@@ -216,29 +224,34 @@ class UserController extends \Zikula_AbstractController
         $allowUserEdit = $this->getVar('allowusercatedit', 0);
         if (!$allowUserEdit) {
             $request->getSession()->getFlashBag()->add('error', $this->__('Error! User-owned category editing has not been enabled. This feature can be enabled by the site administrator.'));
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
         $userRoot = $this->getVar('userrootcat', 0);
         if (!$userRoot) {
             $request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not determine the user root node.'));
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
         $userRootCat = CategoryUtil::getCategoryByPath($userRoot);
         if (!$userRoot) {
             $request->getSession()->getFlashBag()->add('error', $this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
         if ($userRootCat == 1) {
             $request->getSession()->getFlashBag()->add('error', $this->__("Error! The root directory cannot be modified in 'user' mode"));
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
         $userCatName = $this->getusercategorynameAction();
         if (!$userCatName) {
             $request->getSession()->getFlashBag()->add('error', $this->__('Error! Cannot determine user category root node name.'));
+
             return $this->response($this->view->fetch('User/editcategories.tpl'));
         }
 
@@ -250,6 +263,7 @@ class UserController extends \Zikula_AbstractController
             $autoCreate = $this->getVar('autocreateusercat', 0);
             if (!$autoCreate) {
                 $request->getSession()->getFlashBag()->add('error', $this->__("Error! The user root category node for this user does not exist, and the automatic creation flag (autocreate) has not been set."));
+
                 return $this->response($this->view->fetch('User/editcategories.tpl'));
             }
 
@@ -263,7 +277,7 @@ class UserController extends \Zikula_AbstractController
                 'status' => 'A'
             );
 
-            $obj = new \Zikula\CategoriesModule\Entity\CategoryEntity;
+            $obj = new \Zikula\CategoriesModule\Entity\CategoryEntity();
             $obj->merge($cat);
             $this->entityManager->persist($obj);
             $this->entityManager->flush();
@@ -290,7 +304,7 @@ class UserController extends \Zikula_AbstractController
                     'status' => 'A'
                 );
 
-                $obj2 = new \Zikula\CategoriesModule\Entity\CategoryEntity;
+                $obj2 = new \Zikula\CategoriesModule\Entity\CategoryEntity();
                 $obj2->merge($cat);
                 $this->entityManager->persist($obj2);
                 $this->entityManager->flush();

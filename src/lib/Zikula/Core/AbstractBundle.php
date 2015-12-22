@@ -44,7 +44,7 @@ abstract class AbstractBundle extends Bundle
     public function getInstallerClass()
     {
         $ns = $this->getNamespace();
-        $class = $ns.'\\'.substr($ns, strrpos($ns, '\\')+1, strlen($ns)).'Installer';
+        $class = $ns.'\\'.substr($ns, strrpos($ns, '\\') + 1, strlen($ns)).'Installer';
 
         return $class;
     }
@@ -56,7 +56,7 @@ abstract class AbstractBundle extends Bundle
     public function getVersionClass()
     {
         $ns = $this->getNamespace();
-        $class = $ns.'\\'.substr($ns, strrpos($ns, '\\')+1, strlen($ns)).'Version';
+        $class = $ns.'\\'.substr($ns, strrpos($ns, '\\') + 1, strlen($ns)).'Version';
 
         return $class;
     }
@@ -125,7 +125,7 @@ abstract class AbstractBundle extends Bundle
         if (null === $this->basePath) {
             $ns = str_replace('\\', '/', $this->getNamespace());
             $path = str_replace('\\', '/', $this->getPath());
-            $this->basePath = substr($path, 0, strrpos($path, $ns)-1);
+            $this->basePath = substr($path, 0, strrpos($path, $ns) - 1);
         }
 
         return $this->basePath;

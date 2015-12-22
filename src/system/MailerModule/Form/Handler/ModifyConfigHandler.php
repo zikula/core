@@ -18,7 +18,6 @@ use SecurityUtil;
 use LogUtil;
 use DataUtil;
 use ZLanguage;
-use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -97,7 +96,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
-        switch($args['commandName']) {
+        switch ($args['commandName']) {
             case 'cancel':
                 break;
             case 'save':

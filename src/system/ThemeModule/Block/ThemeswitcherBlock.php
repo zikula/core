@@ -86,7 +86,7 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // security check
-        if (!SecurityUtil::checkPermission( "Themeswitcherblock::", "$blockinfo[title]::", ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission("Themeswitcherblock::", "$blockinfo[title]::", ACCESS_READ)) {
             return;
         }
 
@@ -116,7 +116,7 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
             $themename = $themeinfo['name'];
             if (file_exists($themepic = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/images/preview_small.png')) {
                 $themeinfo['previewImage'] = $themepic;
-            } else if (file_exists($themepic = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/Resources/public/images/preview_small.png')) {
+            } elseif (file_exists($themepic = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/Resources/public/images/preview_small.png')) {
                 $themeinfo['previewImage'] = $themepic;
             } else {
                 $themeinfo['previewImage'] = 'system/ThemeModule/Resources/public/images/preview_small.png';

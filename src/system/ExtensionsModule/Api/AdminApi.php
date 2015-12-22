@@ -49,6 +49,7 @@ use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 class AdminApi extends \Zikula_AbstractApi
 {
     const EXTENSION_ENTITY = 'Zikula\ExtensionsModule\Entity\ExtensionEntity';
+
     /**
      * Update module information
      *
@@ -241,7 +242,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function setState($args)
     {
         // Argument check
-        if (!isset($args['id']) || !is_numeric($args['id']) || 
+        if (!isset($args['id']) || !is_numeric($args['id']) ||
             !isset($args['state']) || !is_numeric($args['state'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
@@ -505,7 +506,7 @@ class AdminApi extends \Zikula_AbstractApi
             $bundleClass = $moduleMetaData->getClass();
 
             /** @var $bundle \Zikula\Core\AbstractModule */
-            $bundle = new $bundleClass;
+            $bundle = new $bundleClass();
             $versionClass = $bundle->getVersionClass();
 
             if (class_exists($versionClass)) {
@@ -541,7 +542,7 @@ class AdminApi extends \Zikula_AbstractApi
             }
 
             // loads the gettext domain for 3rd party modules
-            if(!strpos($bundle->getPath(), 'modules') === false) {
+            if (!strpos($bundle->getPath(), 'modules') === false) {
                 ZLanguage::bindModuleDomain($bundle->getName());
             }
 
@@ -575,7 +576,7 @@ class AdminApi extends \Zikula_AbstractApi
                     }
 
                     // loads the gettext domain for 3rd party modules
-                    if (is_dir("modules/$dir/locale"))  {
+                    if (is_dir("modules/$dir/locale")) {
                         ZLanguage::bindModuleDomain($dir);
                     }
 
@@ -1152,7 +1153,7 @@ class AdminApi extends \Zikula_AbstractApi
         $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED));
         if (isset($newmods) && is_array($newmods) && !empty($newmods)) {
             // Sort upgrade order according to this list.
-            $priorities = array('ZikulaExtensionsModule', 'ZikulaUsersModule' , 'ZikulaGroupsModule', 'ZikulaPermissionsModule', 'ZikulaAdminModule', 'ZikulaBlocksModule', 'ZikulaThemeModule', 'ZikulaSettingsModule', 'ZikulaCategoriesModule', 'ZikulaSecurityCenterModule', 'ZikulaRoutesModule');
+            $priorities = array('ZikulaExtensionsModule', 'ZikulaUsersModule', 'ZikulaGroupsModule', 'ZikulaPermissionsModule', 'ZikulaAdminModule', 'ZikulaBlocksModule', 'ZikulaThemeModule', 'ZikulaSettingsModule', 'ZikulaCategoriesModule', 'ZikulaSecurityCenterModule', 'ZikulaRoutesModule');
             $sortedList = array();
             foreach ($priorities as $priority) {
                 foreach ($newmods as $key => $modinfo) {
@@ -1301,7 +1302,6 @@ class AdminApi extends \Zikula_AbstractApi
                     array('url' => $this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true, 'state' => PluginUtil::ENABLED)),
                         'text' => $this->__('Active'))
                 ));
-
 
             $links[] = array(
                 'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_modifyconfig'),

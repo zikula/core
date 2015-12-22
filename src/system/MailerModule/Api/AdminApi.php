@@ -14,7 +14,6 @@
 
 namespace Zikula\MailerModule\Api;
 
-use ModUtil;
 use SecurityUtil;
 
 /**

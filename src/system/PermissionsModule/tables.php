@@ -32,7 +32,7 @@ function ZikulaPermissionsModule_tables()
     $dbtable['group_perms'] = $group_perms;
 
     // Set the column names.
-    $dbtable['group_perms_column'] = array ('pid'       => 'pid',
+    $dbtable['group_perms_column'] = array('pid'       => 'pid',
                                             'gid'       => 'gid',
                                             'sequence'  => 'sequence',
                                             'realm'     => 'realm',

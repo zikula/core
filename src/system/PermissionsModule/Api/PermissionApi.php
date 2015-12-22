@@ -167,7 +167,7 @@ class PermissionApi
      *
      * @return integer Matching security level.
      */
-    private function  getSecurityLevel($perms, $component, $instance)
+    private function getSecurityLevel($perms, $component, $instance)
     {
         $level = ACCESS_INVALID;
 

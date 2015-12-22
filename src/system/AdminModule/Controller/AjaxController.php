@@ -227,10 +227,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         foreach ($cats as $cat) {
-           if ($name == $cat['name']) {
+            if ($name == $cat['name']) {
                 //check to see if the category with same name is the same category.
                 if ($cat['cid'] == $cid) {
                     $output['response'] = $name;
+
                     return new AjaxResponse($output);
                 }
 
@@ -253,6 +254,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $update = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'update', array('cid' => $cid, 'name' => $name, 'description' => $item['description']));
         if ($update) {
             $output['response'] = $name;
+
             return new AjaxResponse($output);
         }
 
@@ -295,6 +297,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if ($makedefault) {
             // Success
             $output['response'] = $this->__f('Category "%s" was successfully made default.', $item['name']);
+
             return new AjaxResponse($output);
         }
 

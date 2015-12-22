@@ -48,6 +48,7 @@ class InitStage implements StageInterface, InjectContainerInterface
         }
         $this->init();
         $this->upgradeUsersModule();
+
         return false;
     }
 

@@ -139,7 +139,6 @@ abstract class Zikula_Doctrine2_Entity_EntityMetadata extends Zikula_EntityAcces
      */
     private $extra;
 
-
     public function __construct($entity)
     {
         $this->setEntity($entity);

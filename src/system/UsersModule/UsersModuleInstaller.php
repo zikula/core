@@ -14,14 +14,6 @@
 namespace Zikula\UsersModule;
 
 use DoctrineHelper;
-use DataUtil;
-use ModUtil;
-use System;
-use DateTime;
-use DateTimeZone;
-use ServiceUtil;
-use DBUtil;
-use EventUtil;
 use HookUtil;
 use Zikula\UsersModule\Constant as UsersConstant;
 
@@ -77,7 +69,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function upgrade($oldVersion)
     {
-    
+
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '2.2.0': // version shipped with Core 1.3.5 -> current 1.3.x
@@ -111,18 +103,17 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
                 // Nothing to do.
             case '2.2.4':
                 $connection = $this->entityManager->getConnection();
-                $sql ="UPDATE users_attributes SET value='gravatar.jpg' WHERE value='gravatar.gif'";
+                $sql = "UPDATE users_attributes SET value='gravatar.jpg' WHERE value='gravatar.gif'";
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
             case '2.2.5':
                 // current version
         }
-        
+
         /**
          * Update successful.
          */
         return true;
-
     }
 
     /**
@@ -218,7 +209,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             'ublockon'      => 0,
             'ublock'        => '',
         );
-        $user = new \Zikula\UsersModule\Entity\UserEntity;
+        $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($record);
         $this->entityManager->persist($user);
 
@@ -238,7 +229,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
             'ublockon'      => 0,
             'ublock'        => '',
         );
-        $user = new \Zikula\UsersModule\Entity\UserEntity;
+        $user = new \Zikula\UsersModule\Entity\UserEntity();
         $user->merge($record);
         $this->entityManager->persist($user);
 

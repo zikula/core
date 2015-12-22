@@ -167,7 +167,6 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
 
             return $this->response($view->fetch($templateName));
         } else {
-
             return $this->response('');
         }
     }

@@ -73,7 +73,6 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
 
                 return false;
             } else {
-
                 return true;
             }
         }

@@ -13,7 +13,6 @@
 
 namespace Zikula\CategoriesModule\Api;
 
-use LogUtil;
 use CategoryUtil;
 use UserUtil;
 
@@ -45,14 +44,14 @@ class UserApi extends \Zikula_AbstractApi
             throw new \RuntimeException($this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
         }
 
-        $userRootCat = CategoryUtil::getCategoryByPath ($userRoot);
+        $userRootCat = CategoryUtil::getCategoryByPath($userRoot);
         if ($userRootCat == 1) {
             throw new \RuntimeException($this->__("Error! The root directory cannot be modified in 'user' mode"));
         }
 
         $userCatName = $this->getusercategoryname(array());
         $thisUserRootCatPath = $userRoot . '/' . $userCatName;
-        $thisUserRootCat = CategoryUtil::getCategoryByPath ($thisUserRootCatPath);
+        $thisUserRootCat = CategoryUtil::getCategoryByPath($thisUserRootCatPath);
 
         if (!$thisUserRootCat) {
             return false;
@@ -87,7 +86,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $relative = (isset($args['relative']) ? $args['relative'] : false);
 
-        return CategoryUtil::getCategoriesByParentID ($userRootCat['id'], '', $relative);
+        return CategoryUtil::getCategoriesByParentID($userRootCat['id'], '', $relative);
     }
 
     /**

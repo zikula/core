@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreBundle;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
  * Class ConfigDumper.
@@ -246,4 +245,4 @@ class YamlDumper
             }
         }
     }
-} 
+}

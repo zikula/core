@@ -27,7 +27,7 @@ class RandomUtil
     public static function getSeed()
     {
         $factor = 95717; // prime
-        list ($usec, $sec) = explode(" ", microtime());
+        list($usec, $sec) = explode(" ", microtime());
 
         return (double)strrev(($usec) * $factor / M_PI);
     }
@@ -178,7 +178,7 @@ class RandomUtil
         if (!$dictArray) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('dictArray', 'RandomUtil::getSentence')));
         }
-        
+
         if (!$nWords) {
             $nWords = self::getInteger(5, 10);
         }
@@ -230,7 +230,7 @@ class RandomUtil
         if (!$dict) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('dictionary', 'RandomUtil::getParagraphs')));
         }
-        
+
         if (!$nParas) {
             $nParas = self::getInteger(3, 7);
         }

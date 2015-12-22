@@ -164,10 +164,10 @@ class FileUtil
      *
      * @return array The array of files in the given path.
      */
-    public static function getFiles($rootPath, $recurse=true, $relativePath=true, $extensions=null, $type=null, $nestedData=false, $regexpMatch=null, $regexpMatchCaseSensitive=true)
+    public static function getFiles($rootPath, $recurse = true, $relativePath = true, $extensions = null, $type = null, $nestedData = false, $regexpMatch = null, $regexpMatchCaseSensitive = true)
     {
         $files = array();
-        $type  = strtolower ($type);
+        $type  = strtolower($type);
 
         if ($type && $type != 'd' && $type != 'f') {
             throw new \Exception(__f('Error! Invalid type of object [%s] received.', $type));
@@ -212,13 +212,11 @@ class FileUtil
                     if ($nestedData) {
                         $files[$filenameToStore] = (array)self::getFiles($path, $recurse, $relativepath, $extensions, $type, $nestedData);
                     } else {
-                        $files = array_merge ((array)$files,
+                        $files = array_merge((array)$files,
                                               (array)self::getFiles($path, $recurse, $relativepath, $extensions, $type, $nestedData));
                     }
-
                 } elseif (!$extensions && !$regexpMatch) {
                     $files[] = $filenameToStore;
-
                 } elseif (is_array($extensions)) {
                     foreach ($extensions as $extension) {
                         if (substr($file, -strlen($extension)) == $extension) {
@@ -233,7 +231,6 @@ class FileUtil
                             }
                         }
                     }
-
                 } elseif (substr($file, -$el) == $extensions) {
                     if ($regexpMatch) {
                         if (preg_match("/$regexpMatch/$caseFlag", $file)) {

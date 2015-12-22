@@ -589,7 +589,7 @@ class UserEntity extends EntityAccess
     public function removeGroups()
     {
         /** @var GroupEntity $group */
-        foreach($this->groups as $group) {
+        foreach ($this->groups as $group) {
             $group->removeUser($this);
         }
         $this->groups->clear();

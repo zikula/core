@@ -17,8 +17,8 @@ namespace Zikula\Component\HookDispatcher;
 
 use Zikula\Common\Translator\TranslatorTrait;
 
-abstract class AbstractContainer {
-
+abstract class AbstractContainer
+{
     use TranslatorTrait;
 
     /**
@@ -35,7 +35,7 @@ abstract class AbstractContainer {
      */
     protected $providerBundles = array();
 
-    function __construct($translator)
+    public function __construct($translator)
     {
         $this->setTranslator($translator);
         $this->setupHookBundles();

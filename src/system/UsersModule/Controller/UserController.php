@@ -30,7 +30,6 @@ use SessionUtil;
 use Zikula_Session;
 use LogUtil;
 use ThemeUtil;
-use ZLanguage;
 use Zikula_Api_AbstractAuthentication;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Exception\FatalErrorException;
@@ -89,7 +88,7 @@ class UserController extends \Zikula_AbstractController
     public function indexAction(Request $request)
     {
         // Security check
-        if(!UserUtil::isLoggedIn()) {
+        if (!UserUtil::isLoggedIn()) {
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', array('returnpage' => urlencode($this->get('router')->generate('zikulausersmodule_user_index'))), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -425,7 +424,6 @@ class UserController extends \Zikula_AbstractController
                             $request->getSession()->getFlashBag()->add('error', $this->__('The credentials you provided are already associated with an existing user account or registration request.'));
                             $state = 'display_method_selector';
                         }
-
                     } else {
                         if (!$request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
                             $request->getSession()->getFlashBag()->add('error', $this->__('We were unable to confirm your credentials with the selected service.'));
@@ -510,6 +508,7 @@ class UserController extends \Zikula_AbstractController
                                 $request->getSession()->getFlashBag()->add('warning', $this->__('There was a problem associating your log-in information with your account. Please contact the site administrator.'));
 
                                 $response = new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
+
                                 return $response;
                             }
                         } elseif ($this->getVar(UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::LOGIN_METHOD_UNAME) == UsersConstant::LOGIN_METHOD_EMAIL) {
@@ -653,6 +652,7 @@ class UserController extends \Zikula_AbstractController
                     // At the end of the registration process with no where else to go.
                     // Show the user the current status message(s) or error message(s).
                     $state = 'stop';
+
                     return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
                     break;
 
@@ -707,7 +707,6 @@ class UserController extends \Zikula_AbstractController
     {
         // we shouldn't get here if logged in already....
         if (UserUtil::isLoggedIn()) {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -736,7 +735,6 @@ class UserController extends \Zikula_AbstractController
     {
         // we shouldn't get here if logged in already....
         if (UserUtil::isLoggedIn()) {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -774,7 +772,6 @@ class UserController extends \Zikula_AbstractController
             return new Response($this->view->assign('email', $email)
                     ->fetch('User/lostuname.tpl'));
         } else {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL));
         }
     }
@@ -809,7 +806,6 @@ class UserController extends \Zikula_AbstractController
     {
         // we shouldn't get here if logged in already....
         if (UserUtil::isLoggedIn()) {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -917,16 +913,14 @@ class UserController extends \Zikula_AbstractController
                 'uname' => $uname,
                 'email' => $email,
             );
+
             return new Response($this->view->assign($templateVariables)
                     ->fetch('User/lostpassword.tpl'));
         } elseif ($formStage == 'code') {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_lostpasswordcode', array(), RouterInterface::ABSOLUTE_URL));
         } elseif ($formStage == 'lostPwdUname') {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_lostpwduname', array(), RouterInterface::ABSOLUTE_URL));
         } else {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
         }
     }
@@ -968,7 +962,6 @@ class UserController extends \Zikula_AbstractController
     {
         // we shouldn't get here if logged in already....
         if (UserUtil::isLoggedIn()) {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -984,7 +977,7 @@ class UserController extends \Zikula_AbstractController
                 // lostpasswordcode form
                 $uname = $request->request->get('uname', '');
                 $email = $request->request->get('email', '');
-                $code  = $request->request->get('code',  '');
+                $code  = $request->request->get('code', '');
 
                 $newpass = '';
                 $newpassagain = '';
@@ -995,7 +988,7 @@ class UserController extends \Zikula_AbstractController
                 $uname          = $request->request->get('uname', '');
                 $newpass        = $request->request->get('newpass', '');
                 $newpassagain   = $request->request->get('newpassagain', '');
-                $newpassreminder= $request->request->get('newpassreminder', '');
+                $newpassreminder = $request->request->get('newpassreminder', '');
 
                 $formStage = 'setpass';
             }
@@ -1094,6 +1087,7 @@ class UserController extends \Zikula_AbstractController
                 'email' => $email,
                 'code'  => $code,
             );
+
             return new Response($this->view->assign($templateVariables)
                     ->fetch('User/lostpasswordcode.tpl'));
         } elseif ($formStage == 'setpass') {
@@ -1107,10 +1101,8 @@ class UserController extends \Zikula_AbstractController
             return new Response($this->view->assign($templateVariables)
                     ->fetch('User/passwordreminder.tpl'));
         } elseif ($formStage == 'login') {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL));
         } else {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_lostpwduname', array(), RouterInterface::ABSOLUTE_URL));
         }
     }
@@ -1176,7 +1168,6 @@ class UserController extends \Zikula_AbstractController
     {
         // we shouldn't get here if logged in already....
         if (UserUtil::isLoggedIn()) {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -1363,7 +1354,6 @@ class UserController extends \Zikula_AbstractController
 
                                     $redirectUrl = $failedEvent->hasArgument('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
                                     if (!empty($redirectUrl)) {
-
                                         return new RedirectResponse($redirectUrl);
                                     }
                                 }
@@ -1382,7 +1372,6 @@ class UserController extends \Zikula_AbstractController
 
                                 $redirectUrl = $failedEvent->hasArgument('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
                                 if (!empty($redirectUrl)) {
-
                                     return new RedirectResponse($redirectUrl);
                                 }
                             }
@@ -1418,7 +1407,6 @@ class UserController extends \Zikula_AbstractController
 
                             $redirectUrl = $failedEvent->hasArgument('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
                             if (!empty($redirectUrl)) {
-
                                 return new RedirectResponse(System::normalizeUrl($redirectUrl));
                             }
                         }
@@ -1429,7 +1417,6 @@ class UserController extends \Zikula_AbstractController
                         // to this point until the reentrant call back to login() (at which point the variable should, again, not be needed
                         // anymore).
                         $request->getSession()->remove('User_login', UsersConstant::SESSION_VAR_NAMESPACE);
-
                     } else {
                         if (!$request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
                             throw new NotFoundHttpException($this->__('The credentials you entered were not valid. Please reenter the requested information and try again.'));
@@ -1479,6 +1466,7 @@ class UserController extends \Zikula_AbstractController
                 'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
                 'user_obj'                              => isset($user) ? $user : array(),
             );
+
             return new Response($this->view->assign($templateArgs)
                     ->fetch('User/login.tpl'));
         } else {
@@ -1613,7 +1601,7 @@ class UserController extends \Zikula_AbstractController
             $verifycode     = $request->request->get('verifycode', '');
             $newpass        = $request->request->get('newpass', '');
             $newpassagain   = $request->request->get('newpassagain', '');
-            $newpassreminder= $request->request->get('newpassreminder', '');
+            $newpassreminder = $request->request->get('newpassreminder', '');
         } else {
             throw new AccessDeniedException();
         }
@@ -1641,7 +1629,7 @@ class UserController extends \Zikula_AbstractController
                         ));
 
                         if (empty($passwordErrors)) {
-                            $newpassHash = UserUtil::getHashedPassword($newpass);;
+                            $newpassHash = UserUtil::getHashedPassword($newpass);
                             $passSaved = UserUtil::setVar('pass', $newpassHash, $reginfo['uid']);
                             if (!$passSaved) {
                                 $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! There was an error while trying to save your new password and reminder.'));
@@ -1671,7 +1659,6 @@ class UserController extends \Zikula_AbstractController
                             $verified = ModUtil::apiFunc($this->name, 'registration', 'verify', array('reginfo' => $reginfo));
 
                             if ($verified) {
-
                                 if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                     $regErrorsMessage = $this->__('There were some problems detected during the verification process. Please contact the site administrator regarding the status of your verification.');
                                     $this->view->assign('regErrors', $verified['regErrors']);
@@ -1690,6 +1677,7 @@ class UserController extends \Zikula_AbstractController
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             $request->getSession()->getFlashBag()->add('status', $regErrorsMessage);
                                         }
+
                                         return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         break;
                                     case UsersConstant::ACTIVATED_ACTIVE:
@@ -1702,9 +1690,9 @@ class UserController extends \Zikula_AbstractController
                                         }
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             $request->getSession()->getFlashBag()->add('status', $regErrorsMessage);
+
                                             return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         } else {
-
                                             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', array(), RouterInterface::ABSOLUTE_URL));
                                         }
                                         break;
@@ -1714,6 +1702,7 @@ class UserController extends \Zikula_AbstractController
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             $request->getSession()->getFlashBag()->add('status', $regErrorsMessage);
                                         }
+
                                         return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         break;
                                 }
@@ -1721,7 +1710,6 @@ class UserController extends \Zikula_AbstractController
                                 if (!$request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
                                     $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! There was an error while marking your registration as verifed. Please contact an administrator.'));
                                 } else {
-
                                     return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
                                 }
                             }
@@ -1846,7 +1834,7 @@ class UserController extends \Zikula_AbstractController
         // check the url
         if (substr($url, 0, 1) == '/') {
             // Root-relative links
-            $url = 'http'.(System::serverGetVar('HTTPS')=='on' ? 's' : '').'://'.System::serverGetVar('HTTP_HOST').$url;
+            $url = 'http'.(System::serverGetVar('HTTPS') == 'on' ? 's' : '').'://'.System::serverGetVar('HTTP_HOST').$url;
         } elseif (!preg_match('!^(?:http|https):\/\/!', $url)) {
             // Removing leading slashes from redirect url
             $url = preg_replace('!^/*!', '', $url);
@@ -1891,7 +1879,6 @@ class UserController extends \Zikula_AbstractController
     {
         // do not process if the site is enabled
         if (!System::getVar('siteoff', false)) {
-
             return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
         }
 
@@ -2095,7 +2082,6 @@ class UserController extends \Zikula_AbstractController
         }
 
         if ($this->getVar('changepassword', 1) != 1) {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -2181,7 +2167,7 @@ class UserController extends \Zikula_AbstractController
         $currentPassword    = $request->request->get('oldpassword', '');
         $newPassword        = $request->request->get('newpassword', '');
         $newPasswordAgain   = $request->request->get('newpasswordconfirm', '');
-        $newPasswordReminder= $request->request->get('passreminder', '');
+        $newPasswordReminder = $request->request->get('passreminder', '');
         $passwordErrors     = array();
 
         if (empty($currentPassword) || !UserUtil::passwordsMatch($currentPassword, $userObj['pass'])) {
@@ -2245,7 +2231,6 @@ class UserController extends \Zikula_AbstractController
 
                 return $response;
             } else {
-
                 return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
             }
         } else {
@@ -2273,7 +2258,6 @@ class UserController extends \Zikula_AbstractController
         }
 
         if ($this->getVar('changeemail', 1) != 1) {
-
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -2313,8 +2297,7 @@ class UserController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         $uservars = $this->getVars();
-        if ($uservars['changeemail'] <> 1) {
-
+        if ($uservars['changeemail'] != 1) {
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
         }
 
@@ -2339,7 +2322,6 @@ class UserController extends \Zikula_AbstractController
                     // Only one error.
                     $request->getSession()->getFlashBag()->add('error', $errorList);
                 }
-
             }
 
             return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_changeemail', array(), RouterInterface::ABSOLUTE_URL));
@@ -2413,7 +2395,7 @@ class UserController extends \Zikula_AbstractController
         // the preemail record is deleted
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid'       => $preemail['uid'],
-            'changetype'=> UsersConstant::VERIFYCHGTYPE_EMAIL,
+            'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL,
         ));
 
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Changed your e-mail address.'));

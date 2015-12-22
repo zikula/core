@@ -11,6 +11,7 @@
  *          Please see the NOTICE file distributed with this source code for further
  *          information regarding copyright and licensing.
  */
+
 namespace Zikula\Component\FilterUtil;
 
 /**
@@ -59,7 +60,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } else if (!empty($fields) && array_search($fields, $this->fields) === false) {
+        } elseif (!empty($fields) && array_search($fields, $this->fields) === false) {
             $this->fields[] = $fields;
         }
     }

@@ -48,7 +48,7 @@ function __f($msgid, $params, $domain = null)
  * Format _dngettext string.
  *
  * Uses sprintf() formatting %s etc, and positional %1$s, %2$s etc.
- * {@link: http://us.php.net/manual/en/function.sprintf.php}
+ * {@link : http://us.php.net/manual/en/function.sprintf.php}
  * %1$s specifies the first occurance in the array of params, %2$s the second
  *
  * Note params must passed either as
@@ -84,7 +84,7 @@ function _fn($sin, $plu, $n, $params, $domain = null)
  */
 function __($msgid, $domain = null)
 {
-    return (isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid));
+    return isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid);
 }
 
 /**
@@ -100,7 +100,7 @@ function __($msgid, $domain = null)
  */
 function _n($singular, $plural, $count, $domain = null)
 {
-    return (isset($domain) ? _dngettext($domain, $singular, $plural, (int)$count) : _ngettext($singular, $plural, (int)$count));
+    return isset($domain) ? _dngettext($domain, $singular, $plural, (int)$count) : _ngettext($singular, $plural, (int)$count);
 }
 
 /**

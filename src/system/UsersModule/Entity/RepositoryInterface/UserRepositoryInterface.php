@@ -14,8 +14,6 @@
 
 namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
-use Zikula\UsersModule\Entity\UserEntity;
-
 interface UserRepositoryInterface
 {
     public function findByUids($uids);

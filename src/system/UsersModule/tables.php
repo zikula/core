@@ -194,7 +194,7 @@ function Users_tables_for_220()
     //                      used to expire the record.
     $dbinfo['users_verifychg'] = 'users_verifychg';
 
-    $dbinfo['users_verifychg_column'] = array (
+    $dbinfo['users_verifychg_column'] = array(
         'id'            => 'id',
         'changetype'    => 'changetype',
         'uid'           => 'uid',
@@ -231,7 +231,7 @@ function Users_tables_for_220()
     // vars             - Session Variables: Per-user/per-session variables. (Serialized)
     //
     $dbinfo['session_info'] = 'session_info';
-    $dbinfo['session_info_column'] = array (
+    $dbinfo['session_info_column'] = array(
         'sessid'    => 'sessid',
         'ipaddr'    => 'ipaddr',
         'lastused'  => 'lastused',
@@ -442,7 +442,7 @@ function Users_tables_for_113()
     // vars             - Session Variables: Per-user/per-session variables. (Serialized)
     //
     $dbinfo['session_info'] = 'session_info';
-    $dbinfo['session_info_column'] = array (
+    $dbinfo['session_info_column'] = array(
         'sessid'    => 'sessid',
         'ipaddr'    => 'ipaddr',
         'lastused'  => 'lastused',

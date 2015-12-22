@@ -44,7 +44,7 @@ class StubRepository implements ExtensionVarRepositoryInterface
                 'value' => 'xyz',
             ],
         ];
-        foreach($datas as $data) {
+        foreach ($datas as $data) {
             $entity = new ExtensionVarEntity();
             $entity->merge($data);
             $this->entities[] = $entity;
@@ -87,5 +87,4 @@ class StubRepository implements ExtensionVarRepositoryInterface
     {
         return isset($this->entities[$criteria['modname']][$criteria['name']]) ? $this->entities[$criteria['modname']][$criteria['name']] : [];
     }
-
 }

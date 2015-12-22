@@ -24,19 +24,19 @@ function ZikulaGroupsModule_tables()
 
     $group_membership = 'group_membership';
     $dbtable['group_membership'] = $group_membership;
-    $dbtable['group_membership_column'] = array ('gid' => 'gid',
+    $dbtable['group_membership_column'] = array('gid' => 'gid',
                                                  'uid' => 'uid');
 
     // column definitions
-    $dbtable['group_membership_column_def'] = array ('gid' => 'I NOTNULL DEFAULT 0',
+    $dbtable['group_membership_column_def'] = array('gid' => 'I NOTNULL DEFAULT 0',
                                                      'uid' => 'I NOTNULL DEFAULT 0');
 
     // additional indexes
-    $dbtable['group_membership_column_idx'] = array ('gid_uid' => array('uid', 'gid'));
+    $dbtable['group_membership_column_idx'] = array('gid_uid' => array('uid', 'gid'));
 
     $groups = 'groups';
     $dbtable['groups'] = $groups;
-    $dbtable['groups_column'] = array ('gid'          => 'gid',
+    $dbtable['groups_column'] = array('gid'          => 'gid',
                                        'name'         => 'name',
                                        'gtype'        => 'gtype',
                                        'description'  => 'description',
@@ -61,14 +61,14 @@ function ZikulaGroupsModule_tables()
 
     $group_applications = 'group_applications';
     $dbtable['group_applications'] = $group_applications;
-    $dbtable['group_applications_column'] = array ('app_id'      => 'app_id',
+    $dbtable['group_applications_column'] = array('app_id'      => 'app_id',
                                                    'uid'         => 'uid',
                                                    'gid'         => 'gid',
                                                    'application' => 'application',
                                                    'status'      => 'status');
 
     // column definition
-    $dbtable['group_applications_column_def'] = array ('app_id'      => 'I4 NOTNULL AUTO PRIMARY',
+    $dbtable['group_applications_column_def'] = array('app_id'      => 'I4 NOTNULL AUTO PRIMARY',
                                                        'uid'         => 'I4 NOTNULL DEFAULT 0',
                                                        'gid'         => 'I4 NOTNULL DEFAULT 0',
                                                        'application' => 'XL NOTNULL',

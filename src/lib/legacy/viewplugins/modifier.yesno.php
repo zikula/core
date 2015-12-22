@@ -27,11 +27,13 @@
  */
 function smarty_modifier_yesno($string, $images = false)
 {
-    if ($string != '0' && $string != '1') return $string;
+    if ($string != '0' && $string != '1') {
+        return $string;
+    }
 
     if ($images) {
         $view = Zikula_View::getInstance();
-        require_once $view->_get_plugin_filepath('function','img');
+        require_once $view->_get_plugin_filepath('function', 'img');
         $params = array('modname' => 'core', 'set' => 'icons/extrasmall');
     }
 

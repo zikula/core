@@ -14,7 +14,6 @@
 namespace Zikula\SecurityCenterModule\Api;
 
 use SecurityUtil;
-use ModUtil;
 use System;
 
 /**

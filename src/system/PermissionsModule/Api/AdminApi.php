@@ -308,7 +308,7 @@ class AdminApi extends \Zikula_AbstractApi
             $newseq = $args['insseq'];
         }
 
-        $obj = new PermissionEntity;
+        $obj = new PermissionEntity();
         $obj['gid'] = (int)$args['id'];
         $obj['sequence'] = $newseq;
         $obj['realm'] = (int)$args['realm'];
@@ -378,7 +378,7 @@ class AdminApi extends \Zikula_AbstractApi
                     ->from('ZikulaPermissionsModule:PermissionEntity', 'p')
                     ->getQuery();
 
-        return (int)$query->getSingleScalarResult();;
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -586,7 +586,6 @@ class AdminApi extends \Zikula_AbstractApi
                 'id' => 'permissions_modifyconfig',
                 'icon' => 'wrench');
         }
-
 
         return $links;
     }

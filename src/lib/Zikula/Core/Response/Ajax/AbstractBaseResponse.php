@@ -54,7 +54,7 @@ abstract class AbstractBaseResponse extends PlainResponse
     /**
      * The ajax payload (raw)
      *
-     * @var mixed $payload
+     * @var mixed
      */
     protected $payload;
 

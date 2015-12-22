@@ -52,7 +52,6 @@ class BlockPlacementEntity extends EntityAccess
      */
     private $sortorder;
 
-
     /**
      * constructor
      */

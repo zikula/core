@@ -46,4 +46,3 @@ class Zikula_Doctrine_Template_Attributable extends Doctrine_Template
         $this->getInvoker()->__ATTRIBUTES__ = $value;
     }
 }
-

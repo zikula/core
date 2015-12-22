@@ -8,7 +8,6 @@
  * @subpackage   Zikula_Admin
  */
 
-
 /**
  * Smarty function build module header in user content page.
  *

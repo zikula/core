@@ -56,11 +56,11 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
         $this->setVar('cssjscombine_lifetime', 3600);
 
         // View
-        $this->setVar('render_compile_check',  true);
-        $this->setVar('render_force_compile',  false);
-        $this->setVar('render_cache',          false);
-        $this->setVar('render_expose_template',false);
-        $this->setVar('render_lifetime',       3600);
+        $this->setVar('render_compile_check', true);
+        $this->setVar('render_force_compile', false);
+        $this->setVar('render_cache', false);
+        $this->setVar('render_expose_template', false);
+        $this->setVar('render_lifetime', 3600);
 
         // Initialisation successful
         return true;

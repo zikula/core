@@ -77,21 +77,21 @@ class GettextExtension extends \Twig_Extension
     {
         return $this->translator->__f(/** @Ignore */$message, $params, $domain, $locale);
     }
-    
+
     /**
      * @see _n()
      */
     public function _n(\Twig_Environment $env, $singular, $plural, $count, $domain = null, $locale = null)
     {
-    	return $this->translator->_n(/** @Ignore */$singular, $plural, $count, array(), $domain, $locale);
-    }    
+        return $this->translator->_n(/** @Ignore */$singular, $plural, $count, array(), $domain, $locale);
+    }
 
     /**
      * @see _fn()
      */
     public function _fn(\Twig_Environment $env, $singular, $plural, $count, $params, $domain = null, $locale = null)
     {
-    	return $this->translator->_fn(/** @Ignore */$singular, $plural, $count, $params, $domain, $locale);
+        return $this->translator->_fn(/** @Ignore */$singular, $plural, $count, $params, $domain, $locale);
     }
 
     /**
@@ -99,24 +99,23 @@ class GettextExtension extends \Twig_Extension
      */
     public function no__($msgid)
     {
-    	return $msgid;
+        return $msgid;
     }
-       
+
     /**
      * Translator context functions 
      * 
      * @todo Define how this should work
-     * 
      */
-    
+
     /**
      * @see __p()
      */
     public function __p(\Twig_Environment $env, $context, $message, $domain = null)
     {
-    	return \__p($context, $message, $domain);
-    } 
-       
+        return \__p($context, $message, $domain);
+    }
+
     /**
      * @see __fp()
      */

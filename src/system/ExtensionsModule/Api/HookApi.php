@@ -61,7 +61,6 @@ class HookApi
                 $hookContainerClassName = $metaData->getCapabilities()[$type]['class'];
                 $reflection = new \ReflectionClass($hookContainerClassName);
                 if ($reflection->isSubclassOf('Zikula\Component\HookDispatcher\AbstractContainer')) {
-
                     return new $hookContainerClassName($this->translator);
                 }
             }
@@ -69,6 +68,4 @@ class HookApi
 
         return null;
     }
-
-
 }

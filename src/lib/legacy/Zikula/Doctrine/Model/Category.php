@@ -43,4 +43,3 @@ class Zikula_Doctrine_Model_Category extends Doctrine_Record
         $this->hasColumn('status as status', 'integer', 1);
     }
 }
-

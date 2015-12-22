@@ -81,7 +81,6 @@ class DisplayHookResponse
         $this->area = $area;
     }
 
-
     /**
      * Get Zikula_View.
      *

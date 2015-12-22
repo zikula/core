@@ -141,7 +141,6 @@ class SessionUtil
     /**
      * Define the name of our session cookie.
      *
-     * @access private
      * @return string
      */
     public static function getCookieName()

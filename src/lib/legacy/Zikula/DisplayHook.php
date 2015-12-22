@@ -23,7 +23,7 @@ use Zikula\Core\UrlInterface;
  */
 class Zikula_DisplayHook extends Zikula\Core\Hook\DisplayHook
 {
-    function __construct($name, $id, UrlInterface $url = null)
+    public function __construct($name, $id, UrlInterface $url = null)
     {
         LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         $this->setName($name);

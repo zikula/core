@@ -53,9 +53,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $hookManager = $this->serviceManager->get('hook_dispatcher');
 
         $this->checkAjaxToken();
-        
+
         // get subscriberarea from POST
-        $subscriberArea = $request->request->get('subscriberarea','');
+        $subscriberArea = $request->request->get('subscriberarea', '');
         if (empty($subscriberArea)) {
             throw new \InvalidArgumentException($this->__('No subscriber area passed.'));
         }
@@ -73,7 +73,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // get providerarea from POST
-        $providerArea = $request->request->get('providerarea','');
+        $providerArea = $request->request->get('providerarea', '');
         if (empty($providerArea)) {
             throw new \InvalidArgumentException($this->__('No provider area passed.'));
         }
@@ -89,7 +89,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if (!SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-
 
         // check if binding between areas exists
         $binding = $hookManager->getBindingBetweenAreas($subscriberArea, $providerArea);
@@ -136,7 +135,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
 
         // get subscriberarea from POST
-        $subscriberarea = $request->request->get('subscriberarea','');
+        $subscriberarea = $request->request->get('subscriberarea', '');
         if (empty($subscriberarea)) {
             throw new \InvalidArgumentException($this->__('No subscriber area passed.'));
         }
@@ -154,7 +153,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // get providers' areas from POST
-        $providerarea = $request->request->get('providerarea','');
+        $providerarea = $request->request->get('providerarea', '');
         if (!(is_array($providerarea) && count($providerarea) > 0)) {
             throw new \InvalidArgumentException($this->__('Providers\' areas order is not an array.'));
         }
@@ -162,7 +161,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // set sorting
         HookUtil::setBindOrder($subscriberarea, $providerarea);
 
-        $ol_id = $request->request->get('ol_id','');
+        $ol_id = $request->request->get('ol_id', '');
 
         return new AjaxResponse(array('result' => true, 'ol_id' => $ol_id));
     }

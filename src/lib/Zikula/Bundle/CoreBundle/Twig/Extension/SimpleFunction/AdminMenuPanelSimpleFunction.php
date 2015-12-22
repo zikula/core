@@ -138,5 +138,4 @@ class AdminMenuPanelSimpleFunction
         // display the control link
         return '<a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars"></i></a>';
     }
-
 }

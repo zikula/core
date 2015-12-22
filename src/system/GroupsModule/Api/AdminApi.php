@@ -20,7 +20,6 @@ use SecurityUtil;
 use Zikula;
 use ModUtil;
 use UserUtil;
-use System;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -61,7 +60,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Add item
-        $obj = new GroupEntity;
+        $obj = new GroupEntity();
         $obj['name'] = $args['name'];
         $obj['gtype'] = $args['gtype'];
         $obj['state'] = $args['state'];
@@ -415,7 +414,7 @@ class AdminApi extends \Zikula_AbstractApi
                 continue;
             }
 
-            if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
+            if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group != false) {
                 $items[] = array(
                     'app_id' => $obj['app_id'],
                     'userid' => $obj['uid'],

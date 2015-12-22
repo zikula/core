@@ -40,7 +40,6 @@ class HookUtil
      */
     private function __construct()
     {
-
     }
 
     /**

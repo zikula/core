@@ -15,7 +15,6 @@
 namespace Zikula\ExtensionsModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 class ExtensionRepository extends EntityRepository implements ExtensionRepositoryInterface

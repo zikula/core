@@ -13,7 +13,6 @@
 
 namespace Zikula\CategoriesModule\Api;
 
-use ModUtil;
 use SecurityUtil;
 
 /**

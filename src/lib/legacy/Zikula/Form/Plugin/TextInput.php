@@ -175,7 +175,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      * @var integer
      */
     public $size;
-    
+
     /**
      * Minimum number of characters allowed in the text input.
      *
@@ -318,10 +318,10 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
             $this->attributes['readonly'] = 'readonly';
             $this->attributes['tabindex'] = '-1';
         }
-        if ($this->size > 0 ) {
+        if ($this->size > 0) {
             $this->attributes['size'] = $this->size;
         }
-        if ($this->maxLength > 0 ) {
+        if ($this->maxLength > 0) {
             $this->attributes['maxlength'] = $this->maxLength;
         }
 

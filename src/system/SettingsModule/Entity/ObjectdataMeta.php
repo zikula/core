@@ -224,7 +224,6 @@ class ObjectdataMeta
      */
     private $luUid;
 
-
     /**
      * Get id
      *
@@ -244,7 +243,7 @@ class ObjectdataMeta
     public function setModule($module)
     {
         $this->module = $module;
-    
+
         return $this;
     }
 
@@ -267,7 +266,7 @@ class ObjectdataMeta
     public function setTablename($tablename)
     {
         $this->tablename = $tablename;
-    
+
         return $this;
     }
 
@@ -290,7 +289,7 @@ class ObjectdataMeta
     public function setIdcolumn($idcolumn)
     {
         $this->idcolumn = $idcolumn;
-    
+
         return $this;
     }
 
@@ -313,7 +312,7 @@ class ObjectdataMeta
     public function setObjId($objId)
     {
         $this->objId = $objId;
-    
+
         return $this;
     }
 
@@ -336,7 +335,7 @@ class ObjectdataMeta
     public function setPermissions($permissions)
     {
         $this->permissions = $permissions;
-    
+
         return $this;
     }
 
@@ -359,7 +358,7 @@ class ObjectdataMeta
     public function setDcTitle($dcTitle)
     {
         $this->dcTitle = $dcTitle;
-    
+
         return $this;
     }
 
@@ -382,7 +381,7 @@ class ObjectdataMeta
     public function setDcAuthor($dcAuthor)
     {
         $this->dcAuthor = $dcAuthor;
-    
+
         return $this;
     }
 
@@ -405,7 +404,7 @@ class ObjectdataMeta
     public function setDcSubject($dcSubject)
     {
         $this->dcSubject = $dcSubject;
-    
+
         return $this;
     }
 
@@ -428,7 +427,7 @@ class ObjectdataMeta
     public function setDcKeywords($dcKeywords)
     {
         $this->dcKeywords = $dcKeywords;
-    
+
         return $this;
     }
 
@@ -451,7 +450,7 @@ class ObjectdataMeta
     public function setDcDescription($dcDescription)
     {
         $this->dcDescription = $dcDescription;
-    
+
         return $this;
     }
 
@@ -474,7 +473,7 @@ class ObjectdataMeta
     public function setDcPublisher($dcPublisher)
     {
         $this->dcPublisher = $dcPublisher;
-    
+
         return $this;
     }
 
@@ -497,7 +496,7 @@ class ObjectdataMeta
     public function setDcContributor($dcContributor)
     {
         $this->dcContributor = $dcContributor;
-    
+
         return $this;
     }
 
@@ -520,7 +519,7 @@ class ObjectdataMeta
     public function setDcStartdate($dcStartdate)
     {
         $this->dcStartdate = $dcStartdate;
-    
+
         return $this;
     }
 
@@ -543,7 +542,7 @@ class ObjectdataMeta
     public function setDcEnddate($dcEnddate)
     {
         $this->dcEnddate = $dcEnddate;
-    
+
         return $this;
     }
 
@@ -566,7 +565,7 @@ class ObjectdataMeta
     public function setDcType($dcType)
     {
         $this->dcType = $dcType;
-    
+
         return $this;
     }
 
@@ -589,7 +588,7 @@ class ObjectdataMeta
     public function setDcFormat($dcFormat)
     {
         $this->dcFormat = $dcFormat;
-    
+
         return $this;
     }
 
@@ -612,7 +611,7 @@ class ObjectdataMeta
     public function setDcUri($dcUri)
     {
         $this->dcUri = $dcUri;
-    
+
         return $this;
     }
 
@@ -635,7 +634,7 @@ class ObjectdataMeta
     public function setDcSource($dcSource)
     {
         $this->dcSource = $dcSource;
-    
+
         return $this;
     }
 
@@ -658,7 +657,7 @@ class ObjectdataMeta
     public function setDcLanguage($dcLanguage)
     {
         $this->dcLanguage = $dcLanguage;
-    
+
         return $this;
     }
 
@@ -681,7 +680,7 @@ class ObjectdataMeta
     public function setDcRelation($dcRelation)
     {
         $this->dcRelation = $dcRelation;
-    
+
         return $this;
     }
 
@@ -704,7 +703,7 @@ class ObjectdataMeta
     public function setDcCoverage($dcCoverage)
     {
         $this->dcCoverage = $dcCoverage;
-    
+
         return $this;
     }
 
@@ -727,7 +726,7 @@ class ObjectdataMeta
     public function setDcEntity($dcEntity)
     {
         $this->dcEntity = $dcEntity;
-    
+
         return $this;
     }
 
@@ -750,7 +749,7 @@ class ObjectdataMeta
     public function setDcComment($dcComment)
     {
         $this->dcComment = $dcComment;
-    
+
         return $this;
     }
 
@@ -773,7 +772,7 @@ class ObjectdataMeta
     public function setDcExtra($dcExtra)
     {
         $this->dcExtra = $dcExtra;
-    
+
         return $this;
     }
 
@@ -796,7 +795,7 @@ class ObjectdataMeta
     public function setObjStatus($objStatus)
     {
         $this->objStatus = $objStatus;
-    
+
         return $this;
     }
 
@@ -819,7 +818,7 @@ class ObjectdataMeta
     public function setCrDate($crDate)
     {
         $this->crDate = $crDate;
-    
+
         return $this;
     }
 
@@ -842,7 +841,7 @@ class ObjectdataMeta
     public function setCrUid($crUid)
     {
         $this->crUid = $crUid;
-    
+
         return $this;
     }
 
@@ -865,7 +864,7 @@ class ObjectdataMeta
     public function setLuDate($luDate)
     {
         $this->luDate = $luDate;
-    
+
         return $this;
     }
 
@@ -888,7 +887,7 @@ class ObjectdataMeta
     public function setLuUid($luUid)
     {
         $this->luUid = $luUid;
-    
+
         return $this;
     }
 

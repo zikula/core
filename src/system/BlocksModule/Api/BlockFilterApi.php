@@ -98,10 +98,12 @@ class BlockFilterApi
             case "<":
                 return $var1 < $var2;
             case "in_array":
-                $var2 = array_map('trim', explode(',',$var2));
+                $var2 = array_map('trim', explode(',', $var2));
+
                 return in_array($var1, $var2);
             case "!in_array":
-                $var2 = array_map('trim', explode(',',$var2));
+                $var2 = array_map('trim', explode(',', $var2));
+
                 return !in_array($var1, $var2);
             default:
                 return true;

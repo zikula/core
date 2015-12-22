@@ -16,9 +16,7 @@ namespace Zikula\UsersModule\Helper;
 
 use Zikula_Api_AbstractAuthentication;
 use ModUtil;
-
 use LogUtil;
-use Zikula\UsersModule\Helper\AuthenticationMethodHelper;
 use Zikula\Core\Exception\FatalErrorException;
 
 /**

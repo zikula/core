@@ -56,7 +56,6 @@ class AdminCategoryEntity extends EntityAccess
      */
     private $sortorder;
 
-
     /**
      * constructor
      */

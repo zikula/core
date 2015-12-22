@@ -27,7 +27,7 @@ class ObjectUtil
      *
      * @return void
      */
-    public static function addStandardFieldsToTableDefinition(&$columns, $col_prefix='')
+    public static function addStandardFieldsToTableDefinition(&$columns, $col_prefix = '')
     {
         // ensure correct handling of prefix with and without underscore
         if ($col_prefix) {
@@ -188,23 +188,23 @@ class ObjectUtil
      *
      * @return The create object (success) or false (failure)
      */
-    public static function createEmptyObject ($tablename)
+    public static function createEmptyObject($tablename)
     {
         if (!$tablename) {
-            return LogUtil::registerError ('Invalid [tablename] received');
+            return LogUtil::registerError('Invalid [tablename] received');
         }
 
         $dbtables = DBUtil::getTables();
         if (!isset($dbtables[$tablename])) {
-            return LogUtil::registerError ("Tablename [$tablename] not set in pntables array");
+            return LogUtil::registerError("Tablename [$tablename] not set in pntables array");
         }
         if (!isset($dbtables["${tablename}_column"])) {
-            return LogUtil::registerError ("Columns [${tablename}_column] not set in pntables array");
+            return LogUtil::registerError("Columns [${tablename}_column] not set in pntables array");
         }
 
         $cols = $dbtables["${tablename}_column"];
         $data = array();
-        foreach ($cols as $k=>$v) {
+        foreach ($cols as $k => $v) {
             $data[$k] = null;
         }
 
@@ -386,7 +386,7 @@ class ObjectUtil
             return false;
         }
 
-        list ($altid, $altseq) = $res->fields;
+        list($altid, $altseq) = $res->fields;
 
         // Swap sequence numbers
         $sql = "UPDATE $table SET $column[$field]='" . DataUtil::formatForStore($seq) . "' WHERE $column[$idcolumn]='" . DataUtil::formatForStore($altid) . "'";
@@ -422,7 +422,6 @@ class ObjectUtil
         if (!$obj[$idcolumn]) {
             return false;
         }
-
 
         $dbtables = DBUtil::getTables();
         $table = $dbtables['objectdata_attributes'];
@@ -544,7 +543,7 @@ class ObjectUtil
      *
      * @return boolean true/false on success/failure.
      */
-    public static function updateObjectAttributes($obj, $type, $idcolumn = 'id', $force=false)
+    public static function updateObjectAttributes($obj, $type, $idcolumn = 'id', $force = false)
     {
         if (!$obj) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
@@ -799,7 +798,7 @@ class ObjectUtil
             $obj['__META__'] = array();
         }
 
-        $meta = & $obj['__META__'];
+        $meta = &$obj['__META__'];
         $meta['table'] = $tablename;
         $meta['idcolumn'] = $idcolumn;
 
@@ -1196,7 +1195,9 @@ class ObjectUtil
                     $catlist[] = $catid;
                 }
 
-                if ($last && $last != $map['obj_id']) break;
+                if ($last && $last != $map['obj_id']) {
+                    break;
+                }
             }
         }
 
@@ -1335,7 +1336,5 @@ class ObjectUtil
             $prop['cr_uid'] = isset($prop['cr_uid']) && ($prop['cr_uid'] instanceof \Zikula\UsersModule\Entity\UserEntity) ? $prop['cr_uid']->getUid() : $prop['cr_uid'];
             $prop['lu_uid'] = isset($prop['lu_uid']) && ($prop['lu_uid'] instanceof \Zikula\UsersModule\Entity\UserEntity) ? $prop['lu_uid']->getUid() : $prop['lu_uid'];
         }
-
     }
-
 }

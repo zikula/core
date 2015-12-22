@@ -68,7 +68,6 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
 
     public $registryId;
 
-
     /**
      * Get filename of this file.
      *
@@ -118,13 +117,12 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
         $result = parent::render($view);
 
         if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('ZikulaCategoriesModule::', "{$this->category['id']}::", ACCESS_EDIT)) {
-            $url = DataUtil::formatForDisplay(ModUtil::url ('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $this->category['id'])));
+            $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $this->category['id'])));
             $result .= "<a class=\"help-block\" href=\"{$url}\">" . __('Edit') . '</a>';
         }
 
         return $result;
     }
-
 
     /**
      * Saves value in data object.
@@ -141,7 +139,6 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
     {
         Zikula_Form_Plugin_CategorySelector::saveValue($view, $data);
     }
-
 
     /**
      * Load values.
@@ -184,7 +181,6 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
             }
 
             $this->setSelectedValue($value);
-
         } elseif ($this->enableDoctrine && $this->dataBased) {
             $items = null;
             $value = null;
@@ -213,9 +209,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
             }
 
             $this->setSelectedValue($value);
-
         } elseif ($this->doctrine2) {
-
             if (isset($values[$this->group])) {
                 $entity = $values[$this->group];
                 if (isset($entity[$this->dataField])) {

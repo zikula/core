@@ -27,10 +27,10 @@ class HashMethodListHelper
     {
         return array(
             'sha1'  => 'sha1',
-            'sha256'=> 'sha256',
+            'sha256' => 'sha256',
         );
     }
-    
+
     /**
      * Retreive a PCRE regular expression that can be used to match a string against the valid hashing methods.
      *
@@ -40,5 +40,4 @@ class HashMethodListHelper
     {
         return '/(?:sha1|sha256)/';
     }
-
 }

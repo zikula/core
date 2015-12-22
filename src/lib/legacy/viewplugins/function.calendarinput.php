@@ -99,8 +99,12 @@ function smarty_function_calendarinput($params, Zikula_View $view)
     $firstTime = false;
     // end of old pncalendarinit
 
-    if (!isset($params['defaultstring'])) $params['defaultstring'] = null;
-    if (!isset($params['defaultdate']))   $params['defaultdate'] = null;
+    if (!isset($params['defaultstring'])) {
+        $params['defaultstring'] = null;
+    }
+    if (!isset($params['defaultdate'])) {
+        $params['defaultdate'] = null;
+    }
 
     $html = '';
 
@@ -147,8 +151,8 @@ function smarty_function_calendarinput($params, Zikula_View $view)
     $html .= 'align       : "Tl",';
 
     if (isset($params['defaultdate']) && $params['defaultdate']) {
-        $d = strtotime ($params['defaultdate']);
-        $d = date ('Y/m/d', $d);
+        $d = strtotime($params['defaultdate']);
+        $d = date('Y/m/d', $d);
         $html .= 'date : "'.$d.'",';
     }
 

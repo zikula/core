@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class HookProviderEntity
 {
     /**
-     * @var integer $id
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,61 +22,60 @@ class HookProviderEntity
     private $id;
 
     /**
-     * @var string $owner
+     * @var string
      *
      * @ORM\Column(name="owner", type="string", length=40, nullable=false)
      */
     private $owner;
 
     /**
-     * @var string $subowner
+     * @var string
      *
      * @ORM\Column(name="subowner", type="string", length=40, nullable=true)
      */
     private $subowner;
 
     /**
-     * @var integer $pareaid
+     * @var integer
      *
      * @ORM\Column(name="pareaid", type="integer", nullable=false)
      */
     private $pareaid;
 
     /**
-     * @var string $hooktype
+     * @var string
      *
      * @ORM\Column(name="hooktype", type="string", length=20, nullable=false)
      */
     private $hooktype;
 
     /**
-     * @var string $category
+     * @var string
      *
      * @ORM\Column(name="category", type="string", length=20, nullable=false)
      */
     private $category;
 
     /**
-     * @var string $classname
+     * @var string
      *
      * @ORM\Column(name="classname", type="string", length=60, nullable=false)
      */
     private $classname;
 
     /**
-     * @var string $method
+     * @var string
      *
      * @ORM\Column(name="method", type="string", length=60, nullable=false)
      */
     private $method;
 
     /**
-     * @var string $serviceid
+     * @var string
      *
      * @ORM\Column(name="serviceid", type="string", length=60, nullable=true)
      */
     private $serviceid;
-
 
     /**
      * Get id
@@ -97,6 +96,7 @@ class HookProviderEntity
     public function setOwner($owner)
     {
         $this->owner = $owner;
+
         return $this;
     }
 
@@ -119,6 +119,7 @@ class HookProviderEntity
     public function setSubowner($subowner)
     {
         $this->subowner = $subowner;
+
         return $this;
     }
 
@@ -141,6 +142,7 @@ class HookProviderEntity
     public function setPareaid($pareaid)
     {
         $this->pareaid = $pareaid;
+
         return $this;
     }
 
@@ -163,6 +165,7 @@ class HookProviderEntity
     public function setHooktype($hooktype)
     {
         $this->hooktype = $hooktype;
+
         return $this;
     }
 
@@ -185,6 +188,7 @@ class HookProviderEntity
     public function setCategory($category)
     {
         $this->category = $category;
+
         return $this;
     }
 
@@ -207,6 +211,7 @@ class HookProviderEntity
     public function setClassname($classname)
     {
         $this->classname = $classname;
+
         return $this;
     }
 
@@ -229,6 +234,7 @@ class HookProviderEntity
     public function setMethod($method)
     {
         $this->method = $method;
+
         return $this;
     }
 
@@ -251,6 +257,7 @@ class HookProviderEntity
     public function setServiceid($serviceid)
     {
         $this->serviceid = $serviceid;
+
         return $this;
     }
 
