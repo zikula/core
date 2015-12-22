@@ -54,7 +54,7 @@ class BlockFilterType extends AbstractType
                 ],
                 'choices_as_values' => true,
             ])
-            ->add('value', 'Symfony\Component\Form\Extension\Core\Type\TextType')
+            ->add('value', 'Symfony\Component\Form\Extension\Core\Type\TextType', ['required' => false])
         ;
     }
 
