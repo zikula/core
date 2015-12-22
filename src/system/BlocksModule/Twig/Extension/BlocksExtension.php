@@ -105,7 +105,10 @@ class BlocksExtension extends \Twig_Extension
         $legacy = false;
         $content = '';
         if ($blockInstance instanceof BlockControllerInterface) {
-            $content = $blockInstance->display($block->getContent());
+            $blockContent = $block->getContent();
+            $blockContent['bid'] = $block->getBid();
+            $blockContent['title'] = $block->getTitle();
+            $content = $blockInstance->display($blockContent);
         } elseif ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove at Core-2.0
             $legacy = true;
             $args = \BlockUtil::getBlockInfo($block->getBid());
