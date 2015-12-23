@@ -9,37 +9,11 @@
           <a class="navbar-brand" href="{{ pagevars.homepath }}">{{ getModVar('ZConfig', 'sitename') }}</a>
         </div>
         <div class="navbar-collapse collapse">
-        {% if pagetype == 'admin' %}
           <ul class="nav navbar-nav">
             <li>{{ adminPanelMenu() }}</li>
-            <li><a href="{{ pagevars.homepath }}">{{ __('Home') }}</a></li>
-            {% if hasPermission('ZikulaSettingsModule::', '::', 'ACCESS_ADMIN') %}
-            <li><a href="{{ path('zikulasettingsmodule_admin_index') }}">{{ __('Settings') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaExtensionsModule::', '::', 'ACCESS_ADMIN') %}
-            <li><a href="{{ path('zikulaextensionsmodule_admin_index') }}">{{ __('Extensions') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaBlocksModule::', '::', 'ACCESS_EDIT') %}
-            <li><a href="{{ path('zikulablocksmodule_admin_view') }}">{{ __('Blocks') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaUsersModule::', '::', 'ACCESS_MODERATE') %}
-            <li><a href="{{ path('zikulausersmodule_admin_index') }}">{{ __('Users') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaGroupsModule::', '::', 'ACCESS_EDIT') %}
-            <li><a href="{{ path('zikulagroupsmodule_admin_index') }}">{{ __('Groups') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaPermissionsModule::', '::', 'ACCESS_ADMIN') %}
-            <li><a href="{{ path('zikulapermissionsmodule_admin_index') }}">{{ __('Permission rules') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaThemeModule::', '::', 'ACCESS_EDIT') %}
-            <li><a href="{{ path('zikulathememodule_admin_index') }}">{{ __('Themes') }}</a></li>
-            {% endif %}
-          </ul>
-        {% else %}
-          <ul class="nav navbar-nav">
             <li class="active"><a href="{{ pagevars.homepath }}" title="{{ __('Go to the sites home page') }}">{{ __('Home') }}</a></li>
             <li><a href="{{ path('zikulausersmodule_user_index') }}" title="{{ __('Go to your account panel') }}">{{ __('My Account') }}</a></li>
-            <li><a href="{{ path('zikulasearchmodule_user_main') }}" title="{{ __('Search this site') }}">{{ __('Site search') }}</a></li>
+            <li><a href="{{ path('zikulasearchmodule_user_form') }}" title="{{ __('Search this site') }}">{{ __('Site search') }}</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -62,7 +36,6 @@
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
           </form>
-        {% endif %}
         </div><!--/.navbar-collapse -->
       </div>
     </div>
