@@ -37,10 +37,6 @@ class BlockApi
      */
     private $blockPositionRepository;
     /**
-     * @var BlockFilterApi
-     */
-    private $blockFilter;
-    /**
      * @var BlockFactoryApi
      */
     private $blockFactory;
@@ -61,16 +57,14 @@ class BlockApi
     /**
      * BlockApi constructor.
      * @param BlockPositionRepositoryInterface $blockPositionRepository
-     * @param BlockFilterApi $blockFilterApi
      * @param BlockFactoryApi $blockFactoryApi
      * @param ExtensionApi $extensionApi
      * @param BlockCollector $blockCollector
      * @param string $kernelRootDir
      */
-    public function __construct(BlockPositionRepositoryInterface $blockPositionRepository, BlockFilterApi $blockFilterApi, BlockFactoryApi $blockFactoryApi, ExtensionApi $extensionApi, BlockCollector $blockCollector, $kernelRootDir)
+    public function __construct(BlockPositionRepositoryInterface $blockPositionRepository, BlockFactoryApi $blockFactoryApi, ExtensionApi $extensionApi, BlockCollector $blockCollector, $kernelRootDir)
     {
         $this->blockPositionRepository = $blockPositionRepository;
-        $this->blockFilter = $blockFilterApi;
         $this->blockFactory = $blockFactoryApi;
         $this->extensionApi = $extensionApi;
         $this->blockCollector = $blockCollector;
@@ -78,7 +72,7 @@ class BlockApi
     }
 
     /**
-     * Get a filtered array of block entities that have been assigned to a block position.
+     * Get an unfiltered array of block entities that have been assigned to a block position.
      * @param $positionName
      * @return array
      */
@@ -95,9 +89,7 @@ class BlockApi
             return $blocks;
         }
         foreach ($position->getPlacements() as $placement) {
-            if ($placement->getBlock()->getActive() && $this->blockFilter->isDisplayable($placement->getBlock())) {
-                $blocks[$placement->getBlock()->getBid()] = $placement->getBlock();
-            }
+            $blocks[$placement->getBlock()->getBid()] = $placement->getBlock();
         }
 
         return $blocks;
@@ -118,16 +110,16 @@ class BlockApi
     }
 
     /**
-     * Get an array of Blocks that are available by scanning the filesystem.
+     * Get an array of BlockTypes that are available by scanning the filesystem.
      * Optionally only retrieve the blocks of one module.
      *
-     * @param ExtensionEntity|null $module
+     * @param ExtensionEntity $moduleEntity
      * @return array [[ModuleName:FqBlockClassName => ModuleDisplayName/BlockDisplayName]]
      */
-    public function getAvailableBlockTypes(ExtensionEntity $module = null)
+    public function getAvailableBlockTypes(ExtensionEntity $moduleEntity = null)
     {
         $foundBlocks = [];
-        $modules = isset($module) ? [$module] : $this->extensionApi->getModulesBy(['state' => ExtensionApi::STATE_ACTIVE]);
+        $modules = isset($moduleEntity) ? [$moduleEntity] : $this->extensionApi->getModulesBy(['state' => ExtensionApi::STATE_ACTIVE]);
         /** @var \Zikula\ExtensionsModule\Entity\ExtensionEntity $module */
         foreach ($modules as $module) {
             $moduleInstance = $this->extensionApi->getModuleInstanceOrNull($module->getName());
@@ -151,6 +143,9 @@ class BlockApi
         foreach ($this->blockCollector->getBlocks() as $id => $blockInstance) {
             $className = get_class($blockInstance);
             list($moduleName, $serviceId) = explode(':', $id);
+            if (isset($moduleEntity) && $moduleEntity->getName() != $moduleName) {
+                continue;
+            }
             if (isset($foundBlocks["$moduleName:$className"])) {
                 // remove blocks found in file search with same class name
                 unset($foundBlocks["$moduleName:$className"]);

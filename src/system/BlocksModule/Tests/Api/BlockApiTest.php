@@ -56,19 +56,6 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
         $blockPosRepo
             ->method('findByName')
             ->willReturn($position);
-        $blockFilterApi = $this
-            ->getMockBuilder('Zikula\BlocksModule\Api\BlockFilterApi')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $blockFilterApi
-            ->method('isDisplayable')
-            ->willReturnCallback(function ($block) {
-                if ($block->getBid() == 2) {
-                    return false;
-                }
-
-                return true;
-            });
         $blockFactory = $this
             ->getMockBuilder('Zikula\BlocksModule\Api\BlockFactoryApi')
             ->disableOriginalConstructor()
@@ -85,7 +72,7 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
             ->willReturn([]);
         $blockCollector = new BlockCollector();
 
-        $this->api = new BlockApi($blockPosRepo, $blockFilterApi, $blockFactory, $extensionApi, $blockCollector, '/');
+        $this->api = new BlockApi($blockPosRepo, $blockFactory, $extensionApi, $blockCollector, '/');
     }
 
     /**
@@ -93,10 +80,7 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBlocksByPosition()
     {
-        $this->assertEquals([
-            1 => $this->blockPlacements->get(1)->getBlock(),
-            5 => $this->blockPlacements->get(5)->getBlock()
-        ], $this->api->getBlocksByPosition('left'));
+        $this->assertCount(3, $this->api->getBlocksByPosition('left'));
     }
 
     /**

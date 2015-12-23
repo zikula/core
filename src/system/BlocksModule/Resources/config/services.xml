@@ -35,7 +35,6 @@
 
         <service id="zikula_blocks_module.api.block" class="%zikula_blocks_module.api.block.class%">
             <argument type="service" id="zikula_blocks_module.block_position_repository" />
-            <argument type="service" id="zikula_blocks_module.api.block_filter" />
             <argument type="service" id="zikula_blocks_module.api.block_factory" />
             <argument type="service" id="zikula_extensions_module.api.extension" />
             <argument type="service" id="zikula_blocks_module.internal.block_collector" />
@@ -64,6 +63,7 @@
 
         <service id="twig.extension.zikula_blocks_module" class="%twig.extension.zikula_blocks_module.class%" public="false">
             <argument type="service" id="zikula_blocks_module.api.block" />
+            <argument type="service" id="zikula_blocks_module.api.block_filter" />
             <argument type="service" id="zikula_core.common.theme_engine" />
             <argument type="service" id="zikula_extensions_module.api.extension" />
             <tag name="twig.extension" />

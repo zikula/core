@@ -15,6 +15,7 @@
 namespace Zikula\BlocksModule\Twig\Extension;
 
 use Zikula\BlocksModule\Api\BlockApi;
+use Zikula\BlocksModule\Api\BlockFilterApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\Core\BlockControllerInterface;
 use Zikula\Core\Theme\Engine;
@@ -27,6 +28,10 @@ class BlocksExtension extends \Twig_Extension
      */
     private $blockApi;
     /**
+     * @var BlockFilterApi
+     */
+    private $blockFilter;
+    /**
      * @var Engine
      */
     private $themeEngine;
@@ -35,9 +40,17 @@ class BlocksExtension extends \Twig_Extension
      */
     private $extensionApi;
 
-    public function __construct(BlockApi $blockApi, Engine $themeEngine, ExtensionApi $extensionApi)
+    /**
+     * BlocksExtension constructor.
+     * @param BlockApi $blockApi
+     * @param BlockFilterApi $blockFilterApi
+     * @param Engine $themeEngine
+     * @param ExtensionApi $extensionApi
+     */
+    public function __construct(BlockApi $blockApi, BlockFilterApi $blockFilterApi, Engine $themeEngine, ExtensionApi $extensionApi)
     {
         $this->blockApi = $blockApi;
+        $this->blockFilter = $blockFilterApi;
         $this->themeEngine = $themeEngine;
         $this->extensionApi = $extensionApi;
     }
@@ -81,7 +94,6 @@ class BlocksExtension extends \Twig_Extension
     public function showBlockPosition($positionName, $implode = true)
     {
         if (!\ModUtil::available('ZikulaBlocksModule')) { // @TODO refactor to Core-2.0
-
             return "Blocks not currently available.";
         }
         $blocks = $this->blockApi->getBlocksByPosition($positionName);
@@ -101,6 +113,16 @@ class BlocksExtension extends \Twig_Extension
      */
     public function showBlock(BlockEntity $block, $positionName = '')
     {
+        if (!\ModUtil::available('ZikulaBlocksModule')) { // @TODO refactor to Core-2.0
+            return "Blocks not currently available.";
+        }
+        // Check if providing module not available, if block is inactive, if block filter prevents display.
+        if (!\ModUtil::available($block->getModule()->getName()) // @todo replace ModUtil in Core-2.0
+            || (!$block->getActive())
+            || (!$this->blockFilter->isDisplayable($block))) {
+                return '';
+        }
+
         $blockInstance = $this->blockApi->createInstanceFromBKey($block->getBkey());
         $legacy = false;
         $content = '';
