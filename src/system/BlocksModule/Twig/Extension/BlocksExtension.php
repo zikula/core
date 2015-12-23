@@ -120,7 +120,7 @@ class BlocksExtension extends \Twig_Extension
         if (!\ModUtil::available($block->getModule()->getName()) // @todo replace ModUtil in Core-2.0
             || (!$block->getActive())
             || (!$this->blockFilter->isDisplayable($block))) {
-                return '';
+            return '';
         }
 
         $blockInstance = $this->blockApi->createInstanceFromBKey($block->getBkey());
