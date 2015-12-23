@@ -1,5 +1,5 @@
-
-# FILTERUTIL - USERS MANUAL #
+FilterUtil User Manual
+======================
 
 FilterUtil brings a filter system to a module's list view. It's using an extended
 pagesetter­-like filter syntax providing a maximum of flexibility.
