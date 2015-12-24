@@ -12,6 +12,9 @@
 
         <div id="theme_page_container" class="{{ themevars.layout|default('container') }}">
             <div id="theme_header">
+                {% if currentUser.loggedIn %}
+                <a href="{{ path('zikulausersmodule_user_index') }}" class="pull-right btn btn-primary btn-sm" style="margin: 1em;">{{ __('Signed in as') }} {{ currentUser.uname }}</a>
+                {% endif %}
                 <h1 class="title">{{ adminPanelMenu() }} <a href="{{ pagevars.homepath }}">{{ getModVar('ZConfig', 'sitename') }}</a></h1>
                 <h2 class="slogan">{{ getModVar('ZConfig', 'slogan') }}</h2>
             </div>
