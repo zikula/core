@@ -11,6 +11,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix module stylesheet not being loaded automatically for Core-2.0 modules.
     - Fix SearchModule not working for older modules required tables.php (#2643)
     - Fix core pager tag urls were encoded, now raw.
+    - Fix error in BootstrapTheme where `pagetype` variable was required (#2681)
  - Features:
     - New advanced block filtering based on a combination of any query parameter or request attributes.
  - Core-2.0 Features:
@@ -19,8 +20,8 @@ CHANGELOG - ZIKULA 1.4.x
         - Add `Zikula\CategoriesModule\Form\Type\CategoriesType` for easier category usage in Symfony Forms.
     - Implement new definition spec for Hook capabilities.
     - Implement new BlockApi and all corresponding methods.
-        - BlockControllerInterface
-        - AbstractBlockController
+        - BlockHandlerInterface
+        - AbstractBlockHandler
         - Updated BlocksModule Admin UI.
         - BlocksModule updated to Core-2.0 Spec.
     - Added AbstractExtensionInstaller for use by third-party developers.
