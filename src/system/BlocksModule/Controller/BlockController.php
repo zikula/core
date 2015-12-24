@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\Core\BlockControllerInterface;
+use Zikula\Core\BlockHandlerInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\FatalResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
@@ -98,14 +98,14 @@ class BlockController extends AbstractController
         $form->handleRequest($request);
 
         list($moduleName, $blockFqCn) = explode(':', $blockEntity->getBkey());
-        $renderedOutput = $this->getBlockModifyOutput($blockInstance, $blockEntity, $request);
+        $renderedProperties = $this->getBlockModifyOutput($blockInstance, $blockEntity, $request);
         if (($blockInstance instanceof \Zikula_Controller_AbstractBlock) && $blockInstance->info()['form_content']) { // @todo @deprecated remove at Core-2.0
-            $renderedOutput = $this->formContentModify($request, $blockEntity);
+            $renderedProperties = $this->formContentModify($request, $blockEntity);
         }
 
         if ($form->isSubmitted() and $form->get('save')->isClicked() and $form->isValid()) {
             $content = [];
-            if ($blockInstance instanceof BlockControllerInterface) {
+            if ($blockInstance instanceof BlockHandlerInterface) {
                 $content = $blockInstance->modify($request, $blockEntity->getContent());
             } elseif ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove this BC at Core-2.0
                 if ($blockInstance->info()['form_content']) {
@@ -138,7 +138,7 @@ class BlockController extends AbstractController
 
         return $this->render('ZikulaBlocksModule:Admin:edit.html.twig', [
             'moduleName' => $moduleName,
-            'renderedOutput' => $renderedOutput,
+            'renderedProperties' => $renderedProperties,
             'form' => $form->createView(),
         ]);
     }
@@ -226,7 +226,7 @@ class BlockController extends AbstractController
     private function getBlockModifyOutput($blockClassInstance, BlockEntity $blockEntity, Request $request)
     {
         $output = '';
-        if ($blockClassInstance instanceof BlockControllerInterface) {
+        if ($blockClassInstance instanceof BlockHandlerInterface) {
             $output = $blockClassInstance->modify($request, $blockEntity->getContent());
         } elseif ($blockClassInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove this BC at Core-2.0
             $blockInfo = \BlockUtil::getBlockInfo($blockEntity->getBid());

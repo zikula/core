@@ -14,7 +14,7 @@
         {{ form_start(form) }}
         {{ form_errors(form) }}
         <fieldset>
-            <legend>{{ __('Properties') }}</legend>
+            <legend>{{ __('Meta') }}</legend>
             <div class="form-group">
                 <label class="col-lg-3 control-label">{{ __('Block Type') }}</label>
                 <div class="col-lg-9">
@@ -26,8 +26,8 @@
             {{ form_row(form.description) }}
         </fieldset>
         <fieldset>
-            <legend>{{ __('Content') }}</legend>
-            {{ renderedOutput|default('')|raw }}
+            <legend>{{ __('Properties') }}</legend>
+            {{ renderedProperties|default('')|raw }}
         </fieldset>
         <fieldset>
             <legend>{{ __('Filters') }}</legend>

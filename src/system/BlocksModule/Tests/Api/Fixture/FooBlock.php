@@ -3,21 +3,21 @@
 namespace Zikula\BlocksModule\Tests\Api\Fixture;
 
 use Symfony\Component\HttpFoundation\Request;
-use Zikula\Core\BlockControllerInterface;
+use Zikula\Core\BlockHandlerInterface;
 
-class FooBlock implements BlockControllerInterface
+class FooBlock implements BlockHandlerInterface
 {
     public function getType()
     {
         return "FooType";
     }
 
-    public function display($content)
+    public function display(array $properties)
     {
         // TODO: Implement display() method.
     }
 
-    public function modify(Request $request, $content)
+    public function modify(Request $request, array $properties)
     {
         // TODO: Implement modify() method.
     }

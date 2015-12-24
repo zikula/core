@@ -17,7 +17,7 @@ namespace Zikula\BlocksModule\Twig\Extension;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Api\BlockFilterApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\Core\BlockControllerInterface;
+use Zikula\Core\BlockHandlerInterface;
 use Zikula\Core\Theme\Engine;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 
@@ -126,11 +126,11 @@ class BlocksExtension extends \Twig_Extension
         $blockInstance = $this->blockApi->createInstanceFromBKey($block->getBkey());
         $legacy = false;
         $content = '';
-        if ($blockInstance instanceof BlockControllerInterface) {
-            $blockContent = $block->getContent();
-            $blockContent['bid'] = $block->getBid();
-            $blockContent['title'] = $block->getTitle();
-            $content = $blockInstance->display($blockContent);
+        if ($blockInstance instanceof BlockHandlerInterface) {
+            $blockProperties = $block->getContent();
+            $blockProperties['bid'] = $block->getBid();
+            $blockProperties['title'] = $block->getTitle();
+            $content = $blockInstance->display($blockProperties);
         } elseif ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove at Core-2.0
             $legacy = true;
             $args = \BlockUtil::getBlockInfo($block->getBid());

@@ -15,7 +15,7 @@
 
 namespace Zikula\BlocksModule\Collector;
 
-use Zikula\Core\BlockControllerInterface;
+use Zikula\Core\BlockHandlerInterface;
 
 /**
  * Class BlockCollector
@@ -36,9 +36,9 @@ class BlockCollector
     /**
      * Add a block to the collection.
      * @param $id
-     * @param BlockControllerInterface $block
+     * @param BlockHandlerInterface $block
      */
-    public function add($id, BlockControllerInterface $block)
+    public function add($id, BlockHandlerInterface $block)
     {
         $this->blocks[$id] = $block;
     }

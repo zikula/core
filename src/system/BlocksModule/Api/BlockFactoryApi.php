@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\BlocksModule\Helper\ServiceNameHelper;
 use Zikula\Core\AbstractModule;
-use Zikula\Core\BlockControllerInterface;
+use Zikula\Core\BlockHandlerInterface;
 
 /**
  * Class BlockFactoryApi
@@ -43,14 +43,14 @@ class BlockFactoryApi
 
     /**
      * Factory method to create an instance of a block given its name and the providing module instance.
-     *  Supports either Zikula\Core\BlockControllerInterface or
+     *  Supports either Zikula\Core\BlockHandlerInterface or
      *  Zikula_Controller_AbstractBlock (to be removed).
      *
      * @todo at Core-2.0 remove BC support for Zikula_Controller_AbstractBlock
      * @todo remove `null` default value for $moduleBundle at Core-2.0 and check for null below
      * @param $blockClassName
      * @param AbstractModule|null $moduleBundle
-     * @return \Zikula_Controller_AbstractBlock|BlockControllerInterface
+     * @return \Zikula_Controller_AbstractBlock|BlockHandlerInterface
      */
     public function getInstance($blockClassName, AbstractModule $moduleBundle = null)
     {
@@ -58,7 +58,7 @@ class BlockFactoryApi
             // probably a service name
             if ($this->container->has($blockClassName)) {
                 $service = $this->container->get($blockClassName);
-                if ($service instanceof BlockControllerInterface) {
+                if ($service instanceof BlockHandlerInterface) {
                     return $service;
                 }
             }
@@ -67,8 +67,8 @@ class BlockFactoryApi
         if (!class_exists($blockClassName)) {
             throw new \RuntimeException(sprintf('Classname %s does not exist.', $blockClassName));
         }
-        if (!is_subclass_of($blockClassName, 'Zikula\Core\BlockControllerInterface') && !is_subclass_of($blockClassName, 'Zikula_Controller_AbstractBlock')) {
-            throw new \RuntimeException(sprintf('Block class %s must implement Zikula\Core\BlockControllerInterface or be a subclass of Zikula_Controller_AbstractBlock.', $blockClassName));
+        if (!is_subclass_of($blockClassName, 'Zikula\Core\BlockHandlerInterface') && !is_subclass_of($blockClassName, 'Zikula_Controller_AbstractBlock')) {
+            throw new \RuntimeException(sprintf('Block class %s must implement Zikula\Core\BlockHandlerInterface or be a subclass of Zikula_Controller_AbstractBlock.', $blockClassName));
         }
 
         $serviceNameHelper = new ServiceNameHelper();
@@ -79,7 +79,7 @@ class BlockFactoryApi
         if (is_subclass_of($blockClassName, 'Zikula_Controller_AbstractBlock')) {
             $blockInstance = new $blockClassName($this->container, $moduleBundle);
             $blockInstance->init();
-        } elseif (is_subclass_of($blockClassName, 'Zikula\Core\Controller\AbstractBlockController')) {
+        } elseif (is_subclass_of($blockClassName, 'Zikula\Core\AbstractBlockHandler')) {
             if ((null === $moduleBundle) || (!($moduleBundle instanceof AbstractModule))) {
                 throw new \LogicException('$moduleBundle must be instance of AbstractModule and not null.');
             }

@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Controller;
+namespace Zikula\Core;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -58,7 +58,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
         }
         // load any plugins
         // @todo adjust this when Namespaced plugins are implemented
-        \PluginUtil::loadPlugins($bundle->getPath() . "/plugins", "ModulePlugin_{$this->name}");
+        \PluginUtil::loadPlugins($bundle->getPath() . "/plugins", "ModulePlugin_{$bundle->getName()}");
     }
 
     /**

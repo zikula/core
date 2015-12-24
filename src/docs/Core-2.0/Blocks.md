@@ -2,8 +2,8 @@ Blocks
 ======
 
  - Block classnames should be suffixed by `Block` and located in the `ModuleRoot/Block/` directory.
- - Block classes must implement Zikula\Core\BlockControllerInterface.
- - Zikula\Core\Controller\AbstractBlockController is available if desired.
+ - Block classes must implement Zikula\Core\BlockHandlerInterface.
+ - Zikula\Core\AbstractBlockHandler is available if desired.
  - Blocks must register their PermissionSchema as part of the owning module's array (in composer.json)
  - The old "info" array of the block has been eliminated.
     - `module` is inferred from providing module.
@@ -23,8 +23,8 @@ Block as a Service
 ------------------
 
 Registering your block class as a service is optional, but can provide greater flexibility with dependencies. If a class
-simply extends `AbstractBlockController`, it is not required to register the class as a service. Additionally, if a
-class implements `BlockControllerInterface` and requires no construction arguments, registering as a service is
+simply extends `AbstractBlockHandler`, it is not required to register the class as a service. Additionally, if a
+class implements `BlockHandlerInterface` and requires no construction arguments, registering as a service is
 not required.
 
 If you choose to register your block as a service, you must tag your block service with the following tag:
