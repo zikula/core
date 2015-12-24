@@ -20,8 +20,6 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\Core\AbstractBundle;
-use Zikula\Core\BlockHandlerInterface;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 
 abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerAwareInterface
