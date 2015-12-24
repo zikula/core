@@ -35,6 +35,7 @@ twig:
     globals:
         pagevars:     "@zikula_core.common.theme.pagevars"
         themevars:    "@zikula_core.common.theme.themevars"
+        currentUser:  "@zikula_users_module.current_user"
 
 ## Assetic Configuration
 assetic:
