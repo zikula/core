@@ -205,17 +205,17 @@
                         } else {
                             if (mode == 'edit') {
                                 // delete the existing node and replace with edited version
-                                var editedNode = treeElem.jstree("get_node", 'node_' + data.cid);
+                                var editedNode = treeElem.jstree('get_node', 'node_' + data.cid);
                                 treeElem.jstree('delete_node', editedNode);
                             }
                             var parentLi = $('#node_' + data.parent),
                                 parentUl = parentLi.children('ul');
                             if (!parentUl) {
-                                parentUl = $('<ul>').attr({ class: 'tree' });
+                                parentUl = $('<ul>').attr({ 'class': 'tree' });
                                 parentLi.append(parentUl);
                             }
                             var newNode = treeElem.jstree(true).create_node(parentUl, data.node[0]);
-                            var node = $('#'+newNode);
+                            var node = $('#' + newNode);
                             reinitTreeNode(node, data);
                             closeCategoryEditForm();
                         }
