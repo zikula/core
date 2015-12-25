@@ -58,6 +58,7 @@
 
 
         "doctrine/orm": "2.5.*",
+        "doctrine/common": "2.5.*",
         "doctrine/doctrine-bundle": "1.5.*",
         "stof/doctrine-extensions-bundle": "~1.2.1",
         "gedmo/doctrine-extensions": "2.4.*",
