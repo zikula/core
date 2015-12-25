@@ -84,10 +84,10 @@ Modernizr 2.6.2
     Location in Zikula: javascript/modernizr
     Patch details: none
 
-ColorBox v1.3.20.2
+ColorBox v1.6.3
 
     Vendor website: http://www.jacklmoore.com/colorbox/
-    Downloaded from: http://www.jacklmoore.com/colorbox/
+    Downloaded from: https://github.com/jackmoore/colorbox/releases
     License: MIT
     Location in Zikula: javascript/plugins/colorbox
     Patch details: none
