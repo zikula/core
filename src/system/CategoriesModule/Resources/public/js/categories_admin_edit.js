@@ -46,23 +46,22 @@ var ZikulaCategories = {};
 
         var newTd1 = $('<td>')
             .append($('<input>')
-                .attr({ name: 'attribute_name[]', class: 'form-control input-sm', value: newAttrName.val() })
+                .attr({ 'name': 'attribute_name[]', 'class': 'form-control input-sm', 'value': newAttrName.val() })
             );
         newAttrName.val('');
         newRow.append(newTd1);
 
         var newTd2 = $('<td>')
             .append($('<input>')
-                .attr({ name: 'attribute_value[]', class: 'form-control input-sm', value: newAttrValue.val(), size: 50 })
+                .attr({ 'name': 'attribute_value[]', 'class': 'form-control input-sm', 'value': newAttrValue.val(), size: 50 })
             );
         newAttrValue.val('');
         newRow.append(newTd2);
 
         var newTd3 = $('<td>')
             .append($('<a>')
-                .attr({ href: '#', class: 'category_attributes_remove', title: /*Zikula.__(*/'Delete'/*)*/ })
-                .html('<i class="fa fa-minus-square fa-lg text-danger"></i>')
-            );
+                .attr({ 'href': '#', 'class': 'category_attributes_remove', 'title': /*Zikula.__(*/'Delete'/*)*/ })
+                .html('<i class="fa fa-minus-square fa-lg text-danger"></i>');
         newRow.append(newTd3);
 
         // add new row to after the row containing the button that was clicked
