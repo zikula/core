@@ -11,6 +11,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix module stylesheet not being loaded automatically for Core-2.0 modules.
     - Fix SearchModule not working for older modules required tables.php (#2643)
     - Fix core pager tag urls were encoded, now raw.
+    - Fix corrupted javascript files (`categories_admin_edit.js`, `categories_admin_view.js`, `contextmenu.js`) caused by
+      CI build/Yaml compressor. (#2702, #2707)
  - Features:
     - New advanced block filtering based on a combination of any query parameter or request attributes.
  - Core-2.0 Features:
