@@ -39,9 +39,6 @@ var ContextMenu = Class.create({
             items:          {} // menu items - object or function
         }, arguments[0] || { });
 
-        //http://www.thefutureoftheweb.com/blog/detect-ie6-in-javascript 
-        this.ie6 = false /*@cc_on || @_jscript_version < 5.7 @*/;
-
         this.showMenuBind = this.showMenu.bindAsEventListener(this);
         this.hideMenuBind = this.hideMenu.bindAsEventListener(this);
         this.toggleNodeBind = this.toggleNode.bindAsEventListener(this);
@@ -77,15 +74,7 @@ var ContextMenu = Class.create({
             this.menu.remove();
         }
         this.menu = new Element('div', { id: this.config.menuId, className: this.config.menuClassName }).hide();
-        if (this.ie6) {
-            this.iframe = new Element('iframe', {
-                style: 'position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);',
-                src: 'javascript:false;',
-                frameborder: 0
-            });
-            this.menu.insert(this.iframe);
-        }
-        var menuItems = this.config.items.constructor === Function 
+        var menuItems = this.config.items.constructor === Function
             ? this.config.items(evt) 
             : this.config.items;
         var list = new Element('ul');
@@ -107,9 +96,6 @@ var ContextMenu = Class.create({
                     .setStyle(item.img ? { backgroundImage: 'url("' + this.config.imagesDir + item.img + '")' } : {}))
                 .observe('click', this.clickNodeBind);
             var ul = new Element('ul');
-            if (this.ie6) {
-                ul.insert($(this.iframe.cloneNode()));
-            }
             for (var subitem in item.action) {
                 ul.insert(this.buildItem(item.action[subitem]));
             }
@@ -169,9 +155,6 @@ var ContextMenu = Class.create({
                             : -(evtpos.y - this.config.menuOffset))
                         : this.config.menuTopAlign ) + 'px'
                 };
-            if (this.ie6) {
-                evt.ul.down('iframe').setStyle(menuSize);
-            }
             evt.ul.setStyle(pos).addClassName(this.config.showMenuClassName);
         }
     },
@@ -194,9 +177,6 @@ var ContextMenu = Class.create({
                 left: (((evt.pageX + menuSize.width + this.config.menuOffset) > viewportSize.width) ? (viewportSize.width - menuSize.width - this.config.menuOffset) : evt.pageX) + 'px',
                 top: (((evt.pageY - viewportOffset.top + menuSize.height) > viewportSize.height && (evt.pageY - viewportOffset.top) > menuSize.height) ? (evt.pageY - menuSize.height) : evt.pageY) + 'px'
             };
-        if (this.ie6) {
-            this.menu.down('iframe').setStyle(menuSize);
-        }
         $(this.menu).setStyle(pos).show();
         this.event = evt;
         // mark the item for which you accessed the menu as an active
