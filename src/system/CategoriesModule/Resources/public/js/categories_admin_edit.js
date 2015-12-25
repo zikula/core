@@ -61,7 +61,8 @@ var ZikulaCategories = {};
         var newTd3 = $('<td>')
             .append($('<a>')
                 .attr({ 'href': '#', 'class': 'category_attributes_remove', 'title': /*Zikula.__(*/'Delete'/*)*/ })
-                .html('<i class="fa fa-minus-square fa-lg text-danger"></i>');
+                .html('<i class="fa fa-minus-square fa-lg text-danger"></i>')
+            );
         newRow.append(newTd3);
 
         // add new row to after the row containing the button that was clicked
