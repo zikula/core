@@ -15,10 +15,10 @@ namespace Zikula\Core;
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface BlockControllerInterface
+interface BlockHandlerInterface
 {
     /**
-     * Get the type of the block (e.g. the 'name').
+     * Get the type of the block handler (e.g. the 'name').
      * This is displayed to the admin during creation, not to site users.
      * @return string
      */
@@ -26,21 +26,21 @@ interface BlockControllerInterface
 
     /**
      * Display the block content.
-     * @param array|string $content
+     * @param array $properties
      * @return string
      */
-    public function display($content);
+    public function display(array $properties);
 
     /**
      * Modify the block content.
      * Do one of the following:
      * 1. Display a form to modify the block's behavior or display.
-     *   Return should be the html for the form used to modify the block.
+     *   Return must be the html for the form used to modify the block.
      * 2. Process the form and return data to be stored in block's `content` property.
-     *   Return should be an array but can be anything that is serializable.
+     *   Return must be an array.
      * @param Request $request
-     * @param array|string $content
-     * @return mixed
+     * @param array $properties
+     * @return string|array
      */
-    public function modify(Request $request, $content);
+    public function modify(Request $request, array $properties);
 }

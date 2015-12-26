@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\Core\BlockControllerInterface;
+use Zikula\Core\BlockHandlerInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\FatalResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
@@ -98,24 +98,26 @@ class BlockController extends AbstractController
         $form->handleRequest($request);
 
         list($moduleName, $blockFqCn) = explode(':', $blockEntity->getBkey());
-        $renderedOutput = $this->getBlockModifyOutput($blockInstance, $blockEntity, $request);
+        $renderedPropertiesForm = $this->getBlockModifyOutput($blockInstance, $blockEntity, $request);
         if (($blockInstance instanceof \Zikula_Controller_AbstractBlock) && $blockInstance->info()['form_content']) { // @todo @deprecated remove at Core-2.0
-            $renderedOutput = $this->formContentModify($request, $blockEntity);
+            $renderedPropertiesForm = $this->formContentModify($request, $blockEntity);
         }
 
         if ($form->isSubmitted() and $form->get('save')->isClicked() and $form->isValid()) {
-            $content = [];
-            if ($blockInstance instanceof BlockControllerInterface) {
-                $content = $blockInstance->modify($request, $blockEntity->getContent());
+            if ($blockInstance instanceof BlockHandlerInterface) {
+                $properties = $blockInstance->modify($request, $blockEntity->getProperties());
+                $blockEntity->setProperties($properties);
             } elseif ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove this BC at Core-2.0
                 if ($blockInstance->info()['form_content']) {
                     $content = $this->formContentModify($request);
+                    $blockEntity->setContent($content);
                 } else {
-                    $blockInfo = call_user_func([$blockInstance, 'update'], ['content' => $blockEntity->getContent()]);
-                    $content = $blockInfo['content'];
+                    $blockInfo = call_user_func([$blockInstance, 'update'], ['content' => $blockEntity->getProperties()]);
+                    $properties = $blockInfo['content'];
+                    $blockEntity->setProperties($properties);
                 }
             }
-            $blockEntity->setContent($content);
+
             // sort Filter array so keys are always sequential.
             $filters = $blockEntity->getFilters();
             sort($filters);
@@ -138,7 +140,7 @@ class BlockController extends AbstractController
 
         return $this->render('ZikulaBlocksModule:Admin:edit.html.twig', [
             'moduleName' => $moduleName,
-            'renderedOutput' => $renderedOutput,
+            'renderedPropertiesForm' => $renderedPropertiesForm,
             'form' => $form->createView(),
         ]);
     }
@@ -217,7 +219,7 @@ class BlockController extends AbstractController
      * Get the html output from the block's `modify` method.
      *
      * @deprecated This method is not required in Core-2.0. Simply use
-     *   `$output = $blockClassInstance->modify($request, $blockEntity->getContent());`
+     *   `$output = $blockClassInstance->modify($request, $blockEntity->getProperties());`
      * @param $blockClassInstance
      * @param BlockEntity $blockEntity
      * @param Request $request
@@ -226,8 +228,8 @@ class BlockController extends AbstractController
     private function getBlockModifyOutput($blockClassInstance, BlockEntity $blockEntity, Request $request)
     {
         $output = '';
-        if ($blockClassInstance instanceof BlockControllerInterface) {
-            $output = $blockClassInstance->modify($request, $blockEntity->getContent());
+        if ($blockClassInstance instanceof BlockHandlerInterface) {
+            $output = $blockClassInstance->modify($request, $blockEntity->getProperties());
         } elseif ($blockClassInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove this BC at Core-2.0
             $blockInfo = \BlockUtil::getBlockInfo($blockEntity->getBid());
             $blockInfo = $blockInfo ? $blockInfo : ['content' => ''];
@@ -240,18 +242,21 @@ class BlockController extends AbstractController
     /**
      * Handle modification of blocks with form_content = true
      *
-     * @deprecated This option is no longer allowed in Core-2.0. Blocks must provide their own content handling.
+     * @deprecated This option is no longer allowed in Core-2.0. Blocks must provide their own properties handling.
      * @param Request $request
+     * @param BlockEntity $blockEntity
      * @return mixed|string
      */
-    private function formContentModify(Request $request, $blockEntity = null)
+    private function formContentModify(Request $request, BlockEntity $blockEntity = null)
     {
         if (isset($blockEntity)) {
             $options = ['data' => $blockEntity->getContent() == [] ? '' : $blockEntity->getContent()];
         } else {
             $options = [];
         }
-        $form = $this->createFormBuilder()->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', $options)->getForm();
+        $form = $this->createFormBuilder()
+            ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', $options)
+            ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
             return $form->getData()['content'];

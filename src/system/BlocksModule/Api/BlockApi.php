@@ -17,7 +17,7 @@ use Symfony\Component\Finder\Finder;
 use Zikula\BlocksModule\Collector\BlockCollector;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\Core\AbstractModule;
-use Zikula\Core\BlockControllerInterface;
+use Zikula\Core\BlockHandlerInterface;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
@@ -99,7 +99,7 @@ class BlockApi
      * Create an instance of a the block Object given a 'bKey' string like AcmeFooModule:Acme\FooModule\Block\FooBlock
      *   which is the Common ModuleName and the FullyQualifiedClassName of the block.
      * @param string $bKey
-     * @return \Zikula_Controller_AbstractBlock|BlockControllerInterface
+     * @return \Zikula_Controller_AbstractBlock|BlockHandlerInterface
      */
     public function createInstanceFromBKey($bKey)
     {
