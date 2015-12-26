@@ -26,6 +26,7 @@ framework:
         name: %zikula.session.name%
         handler_id: session.handler.legacy
         storage_id: session.storage.legacy
+        cookie_httponly: false
     fragments:       ~
 
 # Twig Configuration
