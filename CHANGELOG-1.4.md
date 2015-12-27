@@ -30,10 +30,11 @@ CHANGELOG - ZIKULA 1.4.x
     - Added AbstractExtensionInstaller for use by third-party developers.
     - Added ExtensionVariablesTrait for developers to insert into classes where Extension Variable management is needed.
  - Vendor updates:
-    - Symfony updated to 2.8.0
+    - Symfony updated to 2.8.1
     - Font-Awesome updated to 4.5.0
     - Bootstrap updated to 3.3.6
     - Colorbox (jQuery lightbox plugin) updated from 1.3.20.2 to 1.6.3 (`src/javascript/plugins/colorbox`)
+    - Doctrine/Common updated to 2.5.3 and limited to 2.5.x for php compatibility
 
 * 1.4.1 (2015-11-23)
 
