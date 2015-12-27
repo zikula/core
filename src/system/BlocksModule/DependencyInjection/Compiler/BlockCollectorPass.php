@@ -27,10 +27,10 @@ class BlockCollectorPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('zikula_blocks_module.internal.block_collector');
 
-        foreach ($container->findTaggedServiceIds('zikula.block') as $id => $tagParameters) {
+        foreach ($container->findTaggedServiceIds('zikula.block_handler') as $id => $tagParameters) {
             foreach ($tagParameters as $tagParameter) {
                 if (!isset($tagParameter['module'])) {
-                    throw new \InvalidArgumentException(sprintf('Service "%s" must define the "module" attribute on "zikula.block" tags.', $id));
+                    throw new \InvalidArgumentException(sprintf('Service "%s" must define the "module" attribute on "zikula.block_handler" tags.', $id));
                 }
                 $module = $tagParameter['module'];
             }

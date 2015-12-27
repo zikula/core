@@ -65,13 +65,11 @@ class BlockEntity extends EntityAccess
     private $description;
 
     /**
-     * The block content 
-     *
-     * A seralized array of block content variables
+     * A serialized array of block properties
      *
      * @ORM\Column(type="array")
      */
-    private $content;
+    private $properties;
 
     /**
      * The id of the module owning the block
@@ -127,7 +125,7 @@ class BlockEntity extends EntityAccess
         $this->title = '';
         $this->description = '';
         $this->blocktype = '';
-        $this->content = [];
+        $this->properties = [];
         $this->module = 0;
         $this->filters = array();
         $this->active = 1;
@@ -234,22 +232,38 @@ class BlockEntity extends EntityAccess
 
     /**
      * get the content of the block
-     *
-     * @return string the block's content
+     * @deprecated remove at Core-2.0
+     * @return string|array
      */
     public function getContent()
     {
-        return $this->content;
+        return $this->properties;
     }
 
     /**
      * set the content for the block
-     *
-     * @param string $content the block's content
+     * @deprecated remove at Core-2.0
+     * @param string|array
      */
     public function setContent($content)
     {
-        $this->content = $content;
+        $this->properties = $content;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProperties()
+    {
+        return $this->properties;
+    }
+
+    /**
+     * @param array $properties
+     */
+    public function setProperties(array $properties)
+    {
+        $this->properties = $properties;
     }
 
     /**
@@ -411,5 +425,18 @@ class BlockEntity extends EntityAccess
             // sortorder is irrelevant at this stage.
             $placement->setBlock($this); // auto-adds placement
         }
+    }
+
+    /**
+     * This BC method adds 'content' key to `toArray()` which is used in BlockUtil.
+     * @deprecated remove at Core-2.0
+     * @return array
+     */
+    public function toArray()
+    {
+        $array = parent::toArray();
+        $array['content'] = $this->getProperties();
+
+        return $array;
     }
 }
