@@ -8,6 +8,7 @@
         <parameter key="zikulausersmodule.user_listener.class">Zikula\UsersModule\Listener\UserEventListener</parameter>
         <parameter key="zikulausersmodule.pending_content_listener.class">Zikula\UsersModule\Listener\PendingContentListener</parameter>
         <parameter key="zikula_users_module.user_repository.class">Zikula\UsersModule\Entity\Repository\UserRepository</parameter>
+        <parameter key="zikula_users_module.current_user.class">Zikula\UsersModule\Api\CurrentUserApi</parameter>
     </parameters>
 
     <services>
@@ -22,6 +23,11 @@
         <service id="zikula_users_module.user_repository" class="%zikula_users_module.user_repository.class%">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
             <argument type="string">Zikula\UsersModule\Entity\UserEntity</argument>
+        </service>
+
+        <service id="zikula_users_module.current_user" class="%zikula_users_module.current_user.class%">
+            <argument type="service" id="session"/>
+            <argument type="service" id="zikula_users_module.user_repository"/>
         </service>
     </services>
 </container>
