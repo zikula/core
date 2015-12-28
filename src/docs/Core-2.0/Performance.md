@@ -15,7 +15,7 @@ This document collects some developer hints for improving performance of your co
 Use DQL Joins
 -------------
 Doctrine fetches related items lazily by default. While this saves performance in cases you do not need them,
-this behavious becomes worse if you access a few relationships though. The reason is that several single queries
+this behaviour becomes worse if you access a few relationships though. The reason is that several single queries
 are slower than one combined query.
 So if you know that you need access to some relationships add corresponding DQL joins to your query builder.
 Read more about this [here](http://doctrine-orm.readthedocs.org/en/latest/reference/dql-doctrine-query-language.html#joins).
