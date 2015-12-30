@@ -1,0 +1,12 @@
+{% if setpagetitle and title %}
+    {{ pageSetVar('title', title) }}
+{% endif %}
+{%  if insertflashes %}
+    {{ showflashes() }}
+{% endif %}
+{%  if menufirst %}{{ moduleLinks(type) }}{% endif %}
+<div class="{% if type == 'user' %}z-modtitle clearfix{% else %}z-admin-content-modtitle{%  endif %}">
+    {% if image %}<img src="/{{ image }}" alt="{{ title }}" class="z-floatleft" />{% endif %}
+    {% if title %}<h2>{{ title }}</h2>{% endif %}
+</div>
+{% if not menufirst %} {{ moduleLinks(type) }}{% endif %}

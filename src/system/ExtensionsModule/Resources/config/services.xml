@@ -10,6 +10,7 @@
         <parameter key="zikula_extensions_module.api.hook.class">Zikula\ExtensionsModule\Api\HookApi</parameter>
         <parameter key="zikula_extensions_module.api.capability.class">Zikula\ExtensionsModule\Api\CapabilityApi</parameter>
         <parameter key="zikula_extensions_module.extension_var_repository.class">Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository</parameter>
+        <parameter key="twig.extension.zikula_extensions_module.class">Zikula\ExtensionsModule\Twig\Extension\ExtensionsExtension</parameter>
         <parameter key="zikula_extensions_module.extension_repository.class">Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository</parameter>
     </parameters>
 
@@ -28,6 +29,11 @@
             <argument type="service" id="zikula_extensions_module.extension_var_repository" />
             <argument type="service" id="kernel" />
         </service>
+        
+        <service id="twig.extension.zikula_extensions_module" class="%twig.extension.zikula_extensions_module.class%" public="true">
+            <argument type="service" id="fragment.handler" />
+            <tag name="twig.extension" />
+        </service>          
 
         <service id="zikula_extensions_module.api.extension" class="%zikula_extensions_module.api.extension.class%">
             <argument type="service" id="zikula_extensions_module.extension_repository"/>
