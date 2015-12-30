@@ -112,7 +112,7 @@ class BlockController extends AbstractController
                     $content = $this->formContentModify($request);
                     $blockEntity->setContent($content);
                 } else {
-                    $blockInfo = call_user_func([$blockInstance, 'update'], ['content' => $blockEntity->getProperties()]);
+                    $blockInfo = call_user_func([$blockInstance, 'update'], $blockEntity->toArray());
                     $properties = $blockInfo['content'];
                     $blockEntity->setProperties($properties);
                 }
