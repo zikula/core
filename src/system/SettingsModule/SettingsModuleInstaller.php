@@ -180,6 +180,8 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 $this->entityManager->flush();
 
             case '2.9.10':
+                System::setVar('startController', '');
+            case '2.9.11': // ship with Core-1.4.2
                 // current version
         }
 

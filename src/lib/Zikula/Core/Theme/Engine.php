@@ -14,12 +14,12 @@
 
 namespace Zikula\Core\Theme;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Annotations\Reader;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Class Engine
@@ -61,10 +61,10 @@ class Engine
      */
     private $annotationValue = null;
     /**
-     * All the request attributes plus a few additional values.
-     * @var array
+     * The requestStack.
+     * @var RequestStack
      */
-    private $requestAttributes;
+    private $requestStack;
     /**
      * The doctrine annotation reader service.
      * @var Reader
@@ -79,11 +79,14 @@ class Engine
      * @var Filter
      */
     private $filterService;
-
     /**
      * @var BlockApi
      */
     private $blockApi;
+    /**
+     * @var VariableApi
+     */
+    private $variableApi;
 
     /**
      * Engine constructor.
@@ -92,55 +95,42 @@ class Engine
      * @param ZikulaKernel $kernel
      * @param Filter $filter
      * @param BlockApi $blockApi
+     * @param VariableApi $variableApi
      */
-    public function __construct(RequestStack $requestStack, Reader $annotationReader, ZikulaKernel $kernel, $filter, BlockApi $blockApi)
+    public function __construct(RequestStack $requestStack, Reader $annotationReader, ZikulaKernel $kernel, $filter, BlockApi $blockApi, VariableApi $variableApi)
     {
+        $this->requestStack = $requestStack;
         $this->annotationReader = $annotationReader;
         $this->kernel = $kernel;
         $this->filterService = $filter;
-        if (null !== $requestStack->getCurrentRequest()) {
-            $this->setRequestAttributes($requestStack->getCurrentRequest());
-        }
         $this->blockApi = $blockApi;
-    }
-
-    /**
-     * Initialize the theme engine based on the Request.
-     * @api Core-2.0
-     * @param Request $request
-     */
-    public function setRequestAttributes(Request $request)
-    {
-        if ($this->kernel->getContainer()->getParameter('installed')) {
-            $this->setActiveTheme(null, $request);
-        }
-        $this->requestAttributes = $request->attributes->all();
-        $this->requestAttributes['pathInfo'] = $request->getPathInfo();
-        $this->requestAttributes['lct'] = $request->query->get('lct', null); // @todo BC remove at Core-2.0
+        $this->variableApi = $variableApi;
     }
 
     /**
      * Wrap the response in the theme.
      * @api Core-2.0
-     * @param Response $response @todo change typecast to ThemedResponse in 2.0
+     * @param Response $response
      * @return Response|bool (false if theme is not twigBased)
      */
     public function wrapResponseInTheme(Response $response)
     {
+        $activeTheme = $this->getTheme();
         // @todo remove twigBased check in 2.0
-        if (!isset($this->activeThemeBundle) || !$this->activeThemeBundle->isTwigBased()) {
+        if (!isset($activeTheme) || !$activeTheme->isTwigBased()) {
             return false;
         }
         // wrap page in unique div
         $realm = $this->getRealm();
+        $attributes = $this->requestStack->getMasterRequest()->attributes->all();
         $content = '<div id="z-maincontent" class="'
-            . ($realm == 'home' ? 'z-homepage ' : '')
-            . 'z-module-' . strtolower($this->requestAttributes['_zkModule']) . '">'
+            . ($realm == 'home' ? 'z-homepage' : '')
+            . (isset($attributes['_zkModule']) ? ' z-module-' . strtolower($attributes['_zkModule'])  : '') . '">'
             . $response->getContent()
             . '</div>';
         $response->setContent($content);
 
-        $themedResponse = $this->activeThemeBundle->generateThemedResponse($realm, $response);
+        $themedResponse = $activeTheme->generateThemedResponse($realm, $response);
         $filteredResponse = $this->filter($themedResponse);
 
         return $filteredResponse;
@@ -154,12 +144,13 @@ class Engine
      */
     public function wrapBcBlockInTheme(array $blockInfo)
     {
+        $activeTheme = $this->getTheme();
         // @todo remove twigBased check in 2.0
-        if (!isset($this->activeThemeBundle) || !$this->activeThemeBundle->isTwigBased()) {
+        if (!isset($activeTheme) || !$activeTheme->isTwigBased()) {
             return false;
         }
         $position = !empty($blockInfo['position']) ? $blockInfo['position'] : 'none';
-        $content = $this->activeThemeBundle->generateThemedBlockContent($this->getRealm(), $position, $blockInfo['content'], $blockInfo['title']);
+        $content = $activeTheme->generateThemedBlockContent($this->getRealm(), $position, $blockInfo['content'], $blockInfo['title']);
 
         return $content;
     }
@@ -179,7 +170,7 @@ class Engine
     {
         if (!$legacy) {
             // legacy blocks are already themed at this point. @todo at Core-2.0 remove $legacy param and this check.
-            $content = $this->activeThemeBundle->generateThemedBlockContent($this->getRealm(), $positionName, $content, $title);
+            $content = $this->getTheme()->generateThemedBlockContent($this->getRealm(), $positionName, $content, $title);
         }
 
         // always wrap the block (in the previous versions this was configurable, but no longer) @todo remove comment
@@ -212,7 +203,7 @@ class Engine
      */
     public function getThemeName()
     {
-        return $this->activeThemeBundle->getName();
+        return $this->getTheme()->getName();
     }
 
     /**
@@ -221,6 +212,10 @@ class Engine
      */
     public function getTheme()
     {
+        if (!isset($this->activeThemeBundle) && $this->kernel->getContainer()->getParameter('installed')) {
+            $this->setActiveTheme();
+        }
+
         return $this->activeThemeBundle;
     }
 
@@ -264,7 +259,7 @@ class Engine
             $this->annotationValue = $themeAnnotation->value;
             switch ($themeAnnotation->value) {
                 case 'admin':
-                    $newThemeName = \ModUtil::getVar('ZikulaAdminModule', 'admintheme', '');
+                    $newThemeName = $this->variableApi->get('ZikulaAdminModule', 'admintheme', '');
                     break;
                 case 'print':
                     $newThemeName = 'ZikulaPrinterTheme';
@@ -294,7 +289,7 @@ class Engine
      */
     public function positionIsAvailableInTheme($name)
     {
-        $config = $this->activeThemeBundle->getConfig();
+        $config = $this->getTheme()->getConfig();
         if (empty($config)) {
             return true;
         }
@@ -323,39 +318,46 @@ class Engine
      */
     private function setMatchingRealm()
     {
-        $themeConfig = $this->activeThemeBundle->getConfig();
+        $themeConfig = $this->getTheme()->getConfig();
         // defining an admin realm overrides all other options for 'admin' annotated methods
         if ($this->annotationValue == 'admin' && isset($themeConfig['admin'])) {
             $this->realm = 'admin';
 
             return;
         }
+        $request = $this->requestStack->getMasterRequest();
+        $requestAttributes = $request->attributes->all();
         // @todo BC remove at Core-2.0
-        if ((isset($this->requestAttributes['_zkType']) && $this->requestAttributes['_zkType'] == 'admin') || (isset($this->requestAttributes['lct']))) {
+        $lct = $request->query->get('lct', null);
+        if ((isset($requestAttributes['_zkType']) && $requestAttributes['_zkType'] == 'admin')
+            || ((isset($requestAttributes['_route']) && $requestAttributes['_route'] == 'legacy') && ($request->query->get('type') == 'admin'))
+            || isset($lct)) {
             $this->realm = 'admin';
 
             return;
         }
         // match `/` for home realm
-        if (preg_match(';^\\/$;', $this->requestAttributes['pathInfo']) && isset($themeConfig['home'])) {
+        if (isset($requestAttributes['_route']) && $requestAttributes['_route'] == 'home') {
             $this->realm = 'home';
 
             return;
         }
+
         unset($themeConfig['admin'], $themeConfig['home'], $themeConfig['master']); // remove to avoid scanning/matching in loop
+        $pathInfo = $request->getPathInfo();
         foreach ($themeConfig as $realm => $config) {
             // @todo is there a faster way to do this?
             if (!empty($config['pattern'])) {
                 $pattern = ';' . str_replace('/', '\\/', $config['pattern']) . ';i'; // delimiters are ; and i means case-insensitive
                 $valuesToMatch = [];
-                if (isset($this->requestAttributes['pathInfo'])) {
-                    $valuesToMatch[] = $this->requestAttributes['pathInfo']; // e.g. /pages/display/welcome-to-pages-content-manager
+                if (isset($pathInfo)) {
+                    $valuesToMatch[] = $pathInfo; // e.g. /pages/display/welcome-to-pages-content-manager
                 }
-                if (isset($this->requestAttributes['_route'])) {
-                    $valuesToMatch[] = $this->requestAttributes['_route']; // e.g. zikulapagesmodule_user_display
+                if (isset($requestAttributes['_route'])) {
+                    $valuesToMatch[] = $requestAttributes['_route']; // e.g. zikulapagesmodule_user_display
                 }
-                if (isset($this->requestAttributes['_zkModule'])) {
-                    $valuesToMatch[] = $this->requestAttributes['_zkModule']; // e.g. zikulapagesmodule
+                if (isset($requestAttributes['_zkModule'])) {
+                    $valuesToMatch[] = $requestAttributes['_zkModule']; // e.g. zikulapagesmodule
                 }
                 foreach ($valuesToMatch as $value) {
                     $match = preg_match($pattern, $value);
@@ -378,13 +380,13 @@ class Engine
      *  3) the request attributes (e.g. `_theme`)
      *  4) the default system theme
      * @param string|null $newThemeName
-     * @param Request|null $request
      * @return mixed
      * kernel::getTheme() @throws \InvalidArgumentException if theme is invalid.
      */
-    private function setActiveTheme($newThemeName = null, Request $request = null)
+    private function setActiveTheme($newThemeName = null)
     {
-        $activeTheme = !empty($newThemeName) ? $newThemeName : \System::getVar('Default_Theme');
+        $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->get(VariableApi::CONFIG, 'Default_Theme');
+        $request = $this->requestStack->getMasterRequest();
         if (isset($request)) {
             // @todo do we want to allow changing the theme by the request?
             $themeByRequest = $request->get('theme', null);
@@ -411,7 +413,7 @@ class Engine
      */
     private function filter(Response $response)
     {
-        // @todo START legacy block - remove at Core-2.0
+        // @todo START legacy block - remove at Core-2.0 (leave legacy method calls)
         $baseUri = \System::getBaseUri();
         $jsAssets = [];
         $javascripts = \JCSSUtil::prepareJavascripts(\PageUtil::getVar('javascript'));

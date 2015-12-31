@@ -47,10 +47,12 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         }
 
         $response = $event->getResponse();
+        $format = $event->getRequest()->getRequestFormat();
         $route = $event->getRequest()->attributes->has('_route') ? $event->getRequest()->attributes->get('_route') : '0'; // default must not be '_'
         if (!($response instanceof Response)
             || is_subclass_of($response, '\Symfony\Component\HttpFoundation\Response')
             || $event->getRequest()->isXmlHttpRequest()
+            || $format != 'html'
             || false === strpos($response->headers->get('Content-Type'), 'text/html')
             || $route[0] === '_' // the profiler and other symfony routes begin with '_' @todo this is still too permissive
         ) {
@@ -68,24 +70,9 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * The ThemeEngine::requestAttributes MUST be updated based on EACH Request and not only the initial Request.
-     * @param GetResponseEvent $event
-     */
-    public function setThemeEngineRequestAttributes(GetResponseEvent $event)
-    {
-        if (!$event->isMasterRequest()) {
-            return;
-        }
-        $this->themeEngine->setRequestAttributes($event->getRequest());
-    }
-
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST => array(
-                array('setThemeEngineRequestAttributes', 32),
-            ),
             KernelEvents::RESPONSE => array(
                 array('createThemedResponse')
             ),
