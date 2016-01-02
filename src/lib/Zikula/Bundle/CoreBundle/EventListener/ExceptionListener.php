@@ -35,15 +35,13 @@ class ExceptionListener implements EventSubscriberInterface
     private $logger;
     private $router;
     private $dispatcher;
-//    private $routesControllerUtil;
     private $cacheClearer;
 
-    public function __construct(LoggerInterface $logger = null, RouterInterface $router = null, EventDispatcherInterface $dispatcher = null, /*ControllerUtil $util,*/ CacheClearer $cacheClearer)
+    public function __construct(LoggerInterface $logger = null, RouterInterface $router = null, EventDispatcherInterface $dispatcher = null, CacheClearer $cacheClearer)
     {
         $this->logger = $logger;
         $this->router = $router;
         $this->dispatcher = $dispatcher;
-//        $this->routesControllerUtil = $util;
         $this->cacheClearer = $cacheClearer;
     }
 
@@ -131,19 +129,6 @@ class ExceptionListener implements EventSubscriberInterface
                 $event->getRequest()->getSession()->getFlashBag()->add('error', __f('You might try %s for the extension in question.', $link));
             } catch (RouteNotFoundException $e) {
             }
-//            if (!array_key_exists('zikularoutesmodule_route_reload', $originalRouteCollection)) {
-//                // reload routes for the Routes module first
-//                $this->routesControllerUtil->reloadRoutesByModule('ZikulaRoutesModule');
-//                $this->cacheClearer->clear("symfony.routing");
-//            }
-//            $url = $this->router->generate('zikularoutesmodule_route_reload', array('lct' => 'admin'), RouterInterface::ABSOLUTE_URL);
-//            $frontController = \System::getVar('entrypoint', 'index.php');
-//            if (strpos($url, "$frontController/") !== false) {
-//                $url = str_ireplace("$frontController/", "", $url);
-//            }
-//            $event->getRequest()->getSession()->getFlashBag()->add('error', __('You might try re-loading the routes for the extension in question.'));
-//            $event->setResponse(new RedirectResponse($url));
-//            $event->stopPropagation();
         }
     }
 

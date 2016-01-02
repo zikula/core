@@ -757,168 +757,355 @@ class System
             self::queryStringSetVar('func', $func);
 
             return;
-        } catch (ResourceNotFoundException $e) {
+//        } catch (ResourceNotFoundException $e) {
             // This is an old style url.
-        } catch (RouteNotFoundException $e) {
+//        } catch (RouteNotFoundException $e) {
             // This is an old style url.
         } catch (MethodNotAllowedException $e) {
             // this is an old style url.
         }
 
-        // get our base parameters to work out if we need to decode the url
-        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $func = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
-        $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
+//        // get our base parameters to work out if we need to decode the url
+//        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+//        $func = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
+//        $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
+//
+//        // check if we need to decode the url
+//        $shorturls = self::getVar('shorturls');
+//        if ($shorturls && empty($module) && empty($type) && empty($func)) {
+//            // user language is not set at this stage
+//            $lang = self::getVar('language_i18n', '');
+//            $customentrypoint = self::getVar('entrypoint');
+//            $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
+//            $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
+//
+//            // check if we hit baseurl, e.g. domain.com/ and if we require the language URL
+//            // then we should redirect to the language URL.
+//            if (ZLanguage::isRequiredLangParam() && self::getCurrentUrl() == self::getBaseUrl()) {
+//                $uri = $expectEntrypoint ? "$root/$lang" : $lang;
+//                self::redirect(self::getBaseUrl() . $uri);
+//                self::shutDown();
+//            }
+//
+//            // check if entry point is part of the URL expectation.  If so throw error if it's not present
+//            // since this URL is technically invalid.
+//            if ($expectEntrypoint && self::getCurrentUrl() != self::getBaseUrl() && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
+//                $protocol = self::serverGetVar('SERVER_PROTOCOL');
+//                header("{$protocol} 404 Not Found");
+//                echo __('The requested URL cannot be found');
+//                self::shutDown();
+//            }
+//
+//            if (!$expectEntrypoint && self::getCurrentUrl() == self::getBaseUrl() . $root) {
+//                self::redirect(self::getHomepageUrl(), array(), 302, true);
+//                self::shutDown();
+//            }
+//
+//            if (!$expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) === 0) {
+//                $protocol = self::serverGetVar('SERVER_PROTOCOL');
+//                header("{$protocol} 404 Not Found");
+//                echo __('The requested URL cannot be found');
+//                self::shutDown();
+//            }
+//
+//            // get base path to work out our current url
+//            $parsedURL = parse_url(self::getCurrentUri());
+//
+//            // strip any unwanted content from the provided URL
+//            $tobestripped = array(self::getBaseUri(), "$root");
+//            $path = str_replace($tobestripped, '', $parsedURL['path']);
+//            $path = trim($path, '/');
+//
+//            // split the path into a set of argument strings
+//            $args = explode('/', rtrim($path, '/'));
+//
+//            // ensure that each argument is properly decoded
+//            foreach ($args as $k => $v) {
+//                $args[$k] = urldecode($v);
+//            }
+//
+//            $modinfo = null;
+//            $frontController = $expectEntrypoint ? "$root/" : '';
+//
+//            // if no arguments present
+//            if (!$args[0] && !isset($_GET['lang']) && !isset($_GET['theme'])) {
+//                // we are in the homepage, checks if language code is forced
+//                if (ZLanguage::getLangUrlRule() && $lang) {
+//                    // and redirect then
+//                    self::redirect(self::getCurrentUrl()."/$lang", array(), 302, true);
+//                    self::shutDown();
+//                }
+//            } else {
+//                // check the existing shortURL parameters
+//                // validation of the first parameter as language code
+//                if (ZLanguage::isLangParam($args[0]) && in_array($args[0], ZLanguage::getInstalledLanguages())) {
+//                    // checks if the language is not enforced and this url is passing the default lang
+//                    if (!ZLanguage::getLangUrlRule() && $lang == $args[0]) {
+//                        // redirects the passed arguments without the default site language
+//                        array_shift($args);
+//                        foreach ($args as $k => $v) {
+//                            $args[$k] = urlencode($v);
+//                        }
+//                        self::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''), array(), 302, true);
+//                        self::shutDown();
+//                    }
+//                    self::queryStringSetVar('lang', $args[0], $request);
+//                    array_shift($args);
+//                } elseif (ZLanguage::getLangUrlRule()) {
+//                    // if the lang is forced, redirects the passed arguments plus the lang
+//                    foreach ($args as $k => $v) {
+//                        $args[$k] = urlencode($v);
+//                    }
+//                    $langTheme = isset($_GET['theme']) ? "$lang/$_GET[theme]" : $lang;
+//                    self::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args), array(), 302, true);
+//                    self::shutDown();
+//                }
+//
+//                // check if there are remaining arguments
+//                if ($args) {
+//                    // try the first argument as a module
+//                    $modinfo = ModUtil::getInfoFromName($args[0]);
+//                    if ($modinfo) {
+//                        array_shift($args);
+//                    }
+//                }
+//
+//                // if that fails maybe it's a theme
+//                if ($args && !$modinfo) {
+//                    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args[0]));
+//
+//                    if ($themeinfo) {
+//                        self::queryStringSetVar('theme', $themeinfo['name'], $request);
+//                        $request->attributes->set('_theme', $themeinfo['name']);
+//                        // now shift the vars and continue as before
+//                        array_shift($args);
+//                        if ($args) {
+//                            $modinfo = ModUtil::getInfoFromName($args[0]);
+//                            if ($modinfo) {
+//                                array_shift($args);
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                // if there are parameters (not homepage)
+//                // try to see if there's a default shortURLs module
+//                if ($args && !$modinfo) {
+//                    // add the default module handler into the code
+//                    $modinfo = ModUtil::getInfoFromName(self::getVar('shorturlsdefaultmodule'));
+//                }
+//            }
+//
+//            // check if there is a module and a custom url handler for it
+//            // if not decode the url using the default handler
+//            if ($modinfo && $modinfo['type'] != 0) {
+//                // prepare the arguments to the module handler
+//                array_unshift($args, ''); // support for 1.2- empty parameter due the initial explode
+//                array_unshift($args, $modinfo['url']);
+//                // set the REQUEST parameters
+//                self::queryStringSetVar('module', $modinfo['name'], $request);
+//                // the user.function name can be the second argument string, set a default
+//                // later the custom module handler (if exists) must setup a new one if needed
+//                self::queryStringSetVar('type', 'user', $request);
+//                if (isset($args[2])) {
+//                    self::queryStringSetVar('func', $args[2], $request);
+//                } else {
+//                    self::queryStringSetVar('func', 'main', $request);
+//                }
+//                if (!ModUtil::apiFunc($modinfo['name'], 'user', 'decodeurl', array('vars' => $args))) {
+//                    // any remaining arguments are specific to the module
+//                    $argscount = count($args);
+//                    for ($i = 3; $i < $argscount; $i = $i + 2) {
+//                        if (isset($args[$i]) && isset($args[$i + 1])) {
+//                            self::queryStringSetVar($args[$i], urldecode($args[$i + 1]), $request);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        $module = ucfirst(FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING));
+//        $func = ucfirst(FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING));
+//        $type = ucfirst(FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING));
+//
+//        $arguments = array();
+//
+//        if (!$module) {
+//            // set the start parameters
+//            $module = self::getVar('startpage');
+//            $type = self::getVar('starttype');
+//            $func = self::getVar('startfunc');
+//            $args = explode(',', self::getVar('startargs'));
+//            foreach ($args as $arg) {
+//                if (!empty($arg)) {
+//                    $argument = explode('=', $arg);
+//                    $arguments[$argument[0]] = $argument[1];
+//                }
+//            }
+//        } else {
+//            $arguments = $_GET;
+//            unset($arguments['module']);
+//            unset($arguments['type']);
+//            unset($arguments['func']);
+//        }
+//
+//        if ($shorturls) {
+//            $request->query->replace($_GET);
+//        }
+//
+//        $request->attributes->set('_zkModule', strtolower($module)); // legacy - this is how they are received originally
+//        $request->attributes->set('_zkType', strtolower($type)); // legacy - this is how they are received originally
+//        $request->attributes->set('_zkFunc', strtolower($func)); // legacy - this is how they are received originally
+//        $request->attributes->set('_zkArgs', $arguments);
+    }
 
-        // check if we need to decode the url
-        $shorturls = self::getVar('shorturls');
-        if ($shorturls && empty($module) && empty($type) && empty($func)) {
-            // user language is not set at this stage
-            $lang = self::getVar('language_i18n', '');
-            $customentrypoint = self::getVar('entrypoint');
-            $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
-            $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
+    public static function resolveLegacyShortUrl(Request $request)
+    {
+        // user language is not set at this stage
+        $lang = self::getVar('language_i18n', '');
+        $customentrypoint = self::getVar('entrypoint');
+        $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
+        $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
 
-            // check if we hit baseurl, e.g. domain.com/ and if we require the language URL
-            // then we should redirect to the language URL.
-            if (ZLanguage::isRequiredLangParam() && self::getCurrentUrl() == self::getBaseUrl()) {
-                $uri = $expectEntrypoint ? "$root/$lang" : $lang;
-                self::redirect(self::getBaseUrl() . $uri);
+        // check if we hit baseurl, e.g. domain.com/ and if we require the language URL
+        // then we should redirect to the language URL.
+        if (ZLanguage::isRequiredLangParam() && self::getCurrentUrl() == self::getBaseUrl()) {
+            $uri = $expectEntrypoint ? "$root/$lang" : $lang;
+            self::redirect(self::getBaseUrl() . $uri);
+            self::shutDown();
+        }
+
+        // check if entry point is part of the URL expectation.  If so throw error if it's not present
+        // since this URL is technically invalid.
+        if ($expectEntrypoint && self::getCurrentUrl() != self::getBaseUrl() && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
+            $protocol = self::serverGetVar('SERVER_PROTOCOL');
+            header("{$protocol} 404 Not Found");
+            echo __('The requested URL cannot be found');
+            self::shutDown();
+        }
+
+        if (!$expectEntrypoint && self::getCurrentUrl() == self::getBaseUrl() . $root) {
+            self::redirect(self::getHomepageUrl(), array(), 302, true);
+            self::shutDown();
+        }
+
+        if (!$expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) === 0) {
+            $protocol = self::serverGetVar('SERVER_PROTOCOL');
+            header("{$protocol} 404 Not Found");
+            echo __('The requested URL cannot be found');
+            self::shutDown();
+        }
+
+        // get base path to work out our current url
+        $parsedURL = parse_url(self::getCurrentUri());
+
+        // strip any unwanted content from the provided URL
+        $tobestripped = array(self::getBaseUri(), "$root");
+        $path = str_replace($tobestripped, '', $parsedURL['path']);
+        $path = trim($path, '/');
+
+        // split the path into a set of argument strings
+        $args = explode('/', rtrim($path, '/'));
+
+        // ensure that each argument is properly decoded
+        foreach ($args as $k => $v) {
+            $args[$k] = urldecode($v);
+        }
+
+        $modinfo = null;
+        $frontController = $expectEntrypoint ? "$root/" : '';
+
+        // if no arguments present
+        if (!$args[0] && !isset($_GET['lang']) && !isset($_GET['theme'])) {
+            // we are in the homepage, checks if language code is forced
+            if (ZLanguage::getLangUrlRule() && $lang) {
+                // and redirect then
+                self::redirect(self::getCurrentUrl()."/$lang", array(), 302, true);
                 self::shutDown();
             }
-
-            // check if entry point is part of the URL expectation.  If so throw error if it's not present
-            // since this URL is technically invalid.
-            if ($expectEntrypoint && self::getCurrentUrl() != self::getBaseUrl() && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
-                $protocol = self::serverGetVar('SERVER_PROTOCOL');
-                header("{$protocol} 404 Not Found");
-                echo __('The requested URL cannot be found');
-                self::shutDown();
-            }
-
-            if (!$expectEntrypoint && self::getCurrentUrl() == self::getBaseUrl() . $root) {
-                self::redirect(self::getHomepageUrl(), array(), 302, true);
-                self::shutDown();
-            }
-
-            if (!$expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) === 0) {
-                $protocol = self::serverGetVar('SERVER_PROTOCOL');
-                header("{$protocol} 404 Not Found");
-                echo __('The requested URL cannot be found');
-                self::shutDown();
-            }
-
-            // get base path to work out our current url
-            $parsedURL = parse_url(self::getCurrentUri());
-
-            // strip any unwanted content from the provided URL
-            $tobestripped = array(self::getBaseUri(), "$root");
-            $path = str_replace($tobestripped, '', $parsedURL['path']);
-            $path = trim($path, '/');
-
-            // split the path into a set of argument strings
-            $args = explode('/', rtrim($path, '/'));
-
-            // ensure that each argument is properly decoded
-            foreach ($args as $k => $v) {
-                $args[$k] = urldecode($v);
-            }
-
-            $modinfo = null;
-            $frontController = $expectEntrypoint ? "$root/" : '';
-
-            // if no arguments present
-            if (!$args[0] && !isset($_GET['lang']) && !isset($_GET['theme'])) {
-                // we are in the homepage, checks if language code is forced
-                if (ZLanguage::getLangUrlRule() && $lang) {
-                    // and redirect then
-                    self::redirect(self::getCurrentUrl()."/$lang", array(), 302, true);
-                    self::shutDown();
-                }
-            } else {
-                // check the existing shortURL parameters
-                // validation of the first parameter as language code
-                if (ZLanguage::isLangParam($args[0]) && in_array($args[0], ZLanguage::getInstalledLanguages())) {
-                    // checks if the language is not enforced and this url is passing the default lang
-                    if (!ZLanguage::getLangUrlRule() && $lang == $args[0]) {
-                        // redirects the passed arguments without the default site language
-                        array_shift($args);
-                        foreach ($args as $k => $v) {
-                            $args[$k] = urlencode($v);
-                        }
-                        self::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''), array(), 302, true);
-                        self::shutDown();
-                    }
-                    self::queryStringSetVar('lang', $args[0], $request);
+        } else {
+            // check the existing shortURL parameters
+            // validation of the first parameter as language code
+            if (ZLanguage::isLangParam($args[0]) && in_array($args[0], ZLanguage::getInstalledLanguages())) {
+                // checks if the language is not enforced and this url is passing the default lang
+                if (!ZLanguage::getLangUrlRule() && $lang == $args[0]) {
+                    // redirects the passed arguments without the default site language
                     array_shift($args);
-                } elseif (ZLanguage::getLangUrlRule()) {
-                    // if the lang is forced, redirects the passed arguments plus the lang
                     foreach ($args as $k => $v) {
                         $args[$k] = urlencode($v);
                     }
-                    $langTheme = isset($_GET['theme']) ? "$lang/$_GET[theme]" : $lang;
-                    self::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args), array(), 302, true);
+                    self::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''), array(), 302, true);
                     self::shutDown();
                 }
-
-                // check if there are remaining arguments
-                if ($args) {
-                    // try the first argument as a module
-                    $modinfo = ModUtil::getInfoFromName($args[0]);
-                    if ($modinfo) {
-                        array_shift($args);
-                    }
+                self::queryStringSetVar('lang', $args[0], $request);
+                array_shift($args);
+            } elseif (ZLanguage::getLangUrlRule()) {
+                // if the lang is forced, redirects the passed arguments plus the lang
+                foreach ($args as $k => $v) {
+                    $args[$k] = urlencode($v);
                 }
+                $langTheme = isset($_GET['theme']) ? "$lang/$_GET[theme]" : $lang;
+                self::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args), array(), 302, true);
+                self::shutDown();
+            }
 
-                // if that fails maybe it's a theme
-                if ($args && !$modinfo) {
-                    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args[0]));
-
-                    if ($themeinfo) {
-                        self::queryStringSetVar('theme', $themeinfo['name'], $request);
-                        $request->attributes->set('_theme', $themeinfo['name']);
-                        // now shift the vars and continue as before
-                        array_shift($args);
-                        if ($args) {
-                            $modinfo = ModUtil::getInfoFromName($args[0]);
-                            if ($modinfo) {
-                                array_shift($args);
-                            }
-                        }
-                    }
-                }
-
-                // if there are parameters (not homepage)
-                // try to see if there's a default shortURLs module
-                if ($args && !$modinfo) {
-                    // add the default module handler into the code
-                    $modinfo = ModUtil::getInfoFromName(self::getVar('shorturlsdefaultmodule'));
+            // check if there are remaining arguments
+            if ($args) {
+                // try the first argument as a module
+                $modinfo = ModUtil::getInfoFromName($args[0]);
+                if ($modinfo) {
+                    array_shift($args);
                 }
             }
 
-            // check if there is a module and a custom url handler for it
-            // if not decode the url using the default handler
-            if ($modinfo && $modinfo['type'] != 0) {
-                // prepare the arguments to the module handler
-                array_unshift($args, ''); // support for 1.2- empty parameter due the initial explode
-                array_unshift($args, $modinfo['url']);
-                // set the REQUEST parameters
-                self::queryStringSetVar('module', $modinfo['name'], $request);
-                // the user.function name can be the second argument string, set a default
-                // later the custom module handler (if exists) must setup a new one if needed
-                self::queryStringSetVar('type', 'user', $request);
-                if (isset($args[2])) {
-                    self::queryStringSetVar('func', $args[2], $request);
-                } else {
-                    self::queryStringSetVar('func', 'main', $request);
-                }
-                if (!ModUtil::apiFunc($modinfo['name'], 'user', 'decodeurl', array('vars' => $args))) {
-                    // any remaining arguments are specific to the module
-                    $argscount = count($args);
-                    for ($i = 3; $i < $argscount; $i = $i + 2) {
-                        if (isset($args[$i]) && isset($args[$i + 1])) {
-                            self::queryStringSetVar($args[$i], urldecode($args[$i + 1]), $request);
+            // if that fails maybe it's a theme
+            if ($args && !$modinfo) {
+                $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args[0]));
+
+                if ($themeinfo) {
+                    self::queryStringSetVar('theme', $themeinfo['name'], $request);
+                    $request->attributes->set('_theme', $themeinfo['name']);
+                    // now shift the vars and continue as before
+                    array_shift($args);
+                    if ($args) {
+                        $modinfo = ModUtil::getInfoFromName($args[0]);
+                        if ($modinfo) {
+                            array_shift($args);
                         }
+                    }
+                }
+            }
+
+            // if there are parameters (not homepage)
+            // try to see if there's a default shortURLs module
+            if ($args && !$modinfo) {
+                // add the default module handler into the code
+                $modinfo = ModUtil::getInfoFromName(self::getVar('shorturlsdefaultmodule'));
+            }
+        }
+
+        // check if there is a module and a custom url handler for it
+        // if not decode the url using the default handler
+        if ($modinfo && $modinfo['type'] != 0) {
+            // prepare the arguments to the module handler
+            array_unshift($args, ''); // support for 1.2- empty parameter due the initial explode
+            array_unshift($args, $modinfo['url']);
+            // set the REQUEST parameters
+            self::queryStringSetVar('module', $modinfo['name'], $request);
+            // the user.function name can be the second argument string, set a default
+            // later the custom module handler (if exists) must setup a new one if needed
+            self::queryStringSetVar('type', 'user', $request);
+            if (isset($args[2])) {
+                self::queryStringSetVar('func', $args[2], $request);
+            } else {
+                self::queryStringSetVar('func', 'main', $request);
+            }
+            if (!ModUtil::apiFunc($modinfo['name'], 'user', 'decodeurl', array('vars' => $args))) {
+                // any remaining arguments are specific to the module
+                $argscount = count($args);
+                for ($i = 3; $i < $argscount; $i = $i + 2) {
+                    if (isset($args[$i]) && isset($args[$i + 1])) {
+                        self::queryStringSetVar($args[$i], urldecode($args[$i + 1]), $request);
                     }
                 }
             }
@@ -928,37 +1115,18 @@ class System
         $func = ucfirst(FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING));
         $type = ucfirst(FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING));
 
-        $arguments = array();
+        $arguments = $_GET;
+        unset($arguments['module']);
+        unset($arguments['type']);
+        unset($arguments['func']);
 
-        if (!$module) {
-            // set the start parameters
-            $module = self::getVar('startpage');
-            $type = self::getVar('starttype');
-            $func = self::getVar('startfunc');
-            $args = explode(',', self::getVar('startargs'));
-            foreach ($args as $arg) {
-                if (!empty($arg)) {
-                    $argument = explode('=', $arg);
-                    $arguments[$argument[0]] = $argument[1];
-                }
-            }
-        } else {
-            $arguments = $_GET;
-            unset($arguments['module']);
-            unset($arguments['type']);
-            unset($arguments['func']);
-        }
-
-        if ($shorturls) {
-            $request->query->replace($_GET);
-        }
+        $request->query->replace($_GET);
 
         $request->attributes->set('_zkModule', strtolower($module)); // legacy - this is how they are received originally
         $request->attributes->set('_zkType', strtolower($type)); // legacy - this is how they are received originally
         $request->attributes->set('_zkFunc', strtolower($func)); // legacy - this is how they are received originally
         $request->attributes->set('_zkArgs', $arguments);
     }
-
     /**
      * Add a variable/value pair into the query string.
      *
