@@ -90,22 +90,14 @@ class ResourceNotFoundExceptionShortUrlLegacyListener implements EventSubscriber
 
             $return = \ModUtil::func($modinfo['name'], $type, $func, $arguments);
 
-            /**
-             * @todo maybe the boolean handling can be removed here. I don't think the old shorturls handled ajax stuff.
-             */
             if (false === $return) {
                 // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
-                throw new NotFoundHttpException(__('Page not found.'));
+                $event->setException(new NotFoundHttpException(__('Page not found.')));
             } else {
-                if (true === $return) {
-                    // controllers should not return boolean anymore, this is BC for the time being.
-                    $response = new PlainResponse();
+                if (false === $return instanceof Response) {
+                    $response = new Response($return);
                 } else {
-                    if (false === $return instanceof Response) {
-                        $response = new Response($return);
-                    } else {
-                        $response = $return;
-                    }
+                    $response = $return;
                 }
                 $response->legacy = true;
                 $event->setResponse($response);
