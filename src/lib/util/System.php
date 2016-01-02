@@ -709,6 +709,8 @@ class System
         if (self::isInstalling()) {
             return;
         }
+        // don't use this function.
+        return;
 
         // Try to match a route first.
         // Make sure we have the correct request context.
