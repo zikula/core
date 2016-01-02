@@ -1,12 +1,12 @@
+core:
+    resource: "@CoreBundle/Resources/config/routing.xml"
+
 Routing:
     resource: .
     type: zikularoutesmodule
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-
-core:
-    resource: "@CoreBundle/Resources/config/routing.xml"
 
 installer:
     resource: "@ZikulaCoreInstallerBundle/Resources/config/routing/routing.xml"
