@@ -9,6 +9,7 @@
         <!-- Make controller resolving working with Zikula base classes. -->
         <parameter key="controller_resolver.class">Zikula\Bundle\CoreBundle\Controller\ControllerResolver</parameter>
         <parameter key="zikula_core.controller.main_controller.class">Zikula\Bundle\CoreBundle\Controller\MainController</parameter>
+        <parameter key="zikula_core.controller.legacy_short_url_controller.class">Zikula\Bundle\CoreBundle\Controller\LegacyShortUrlController</parameter>
         <parameter key="zikula.cache_clearer.class">Zikula\Bundle\CoreBundle\CacheClearer</parameter>
         <parameter key="zikula.link_container_collector.class">Zikula\Core\LinkContainer\LinkContainerCollector</parameter>
     </parameters>
@@ -18,6 +19,9 @@
             <argument type="service" id="kernel" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_permissions_module.api.permission" /><!-- this arg won't be needed in Core-2.0-->
+        </service>
+        <service id="zikula_core.controller.legacy_short_url_controller" class="%zikula_core.controller.legacy_short_url_controller.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
         </service>
         <service id="data_collector.zikula_version" class="Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector" public="false">
             <argument type="service" id="zikula_core.common.theme_engine" />

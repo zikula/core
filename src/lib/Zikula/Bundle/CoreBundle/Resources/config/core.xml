@@ -30,7 +30,6 @@
         <parameter key="zikula.site_off_listener.class">Zikula\Bundle\CoreBundle\EventListener\SiteOffListener</parameter>
         <parameter key="zikula.session_expire_listener.class">Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener</parameter>
         <!--<parameter key="zikula.legacy_route_listener.class">Zikula\Bundle\CoreBundle\EventListener\LegacyRouteListener</parameter>-->
-        <parameter key="zikula_core.event_listener.resource_not_found_exception_short_url_legacy_listener.class">Zikula\Bundle\CoreBundle\EventListener\ResourceNotFoundExceptionShortUrlLegacyListener</parameter>
         <parameter key="router_listener.class">Zikula\Bundle\CoreBundle\EventListener\RouterListener</parameter>
         <parameter key="zikula.exception_listener.class">Zikula\Bundle\CoreBundle\EventListener\ExceptionListener</parameter>
         <parameter key="zikula.output_compression_listener.class">Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener</parameter>
@@ -107,11 +106,6 @@
             <!--<tag name="monolog.logger" channel="request" />-->
             <!--<argument type="service" id="logger" on-invalid="ignore" />-->
         <!--</service>-->
-
-        <service id="zikula_core.event_listener.resource_not_found_exception_short_url_legacy_listener" class="%zikula_core.event_listener.resource_not_found_exception_short_url_legacy_listener.class%">
-            <argument id="zikula_extensions_module.api.variable" type="service"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
 
         <service id="zikula.site_off_listener" class="%zikula.site_off_listener.class%">
             <tag name="kernel.event_subscriber" />
