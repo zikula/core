@@ -194,7 +194,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // Initialize the module property with the name of
         // the topmost module. For Hooks, Blocks, API Functions and others
         // you need to set this property to the name of the respective module!
-        $this->toplevelmodule = ModUtil::getName();
+        $masterRequest = \ServiceUtil::get('request_stack')->getMasterRequest();
+        $masterRequestModule = $masterRequest->attributes->has('_zkModule') ? $masterRequest->attributes->get('_zkModule') : null;
+        $this->toplevelmodule = isset($masterRequestModule) ? $masterRequestModule : ModUtil::getName();
 
         if (!$moduleName) {
             $moduleName = $this->toplevelmodule;
