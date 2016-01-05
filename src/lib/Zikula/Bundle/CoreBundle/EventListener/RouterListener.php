@@ -170,6 +170,7 @@ class RouterListener implements EventSubscriberInterface
             unset($parameters['_zkModule']);
             unset($parameters['_zkType']);
             unset($parameters['_zkFunc']);
+            // _zkBundle?
             $request->attributes->set('_route_params', $parameters);
 //        } catch (ResourceNotFoundException $e) {
 //            $message = sprintf('No route found for "%s %s"', $request->getMethod(), $request->getPathInfo());

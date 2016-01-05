@@ -27,7 +27,11 @@ function smarty_function_admincategorymenu($params, \Zikula_View $view)
 {
     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('ZikulaAdminModule'));
 
-    $modinfo = ModUtil::getInfoFromName($view->getTplVar('toplevelmodule'));
+    $requestedModule = $view->getRequest()->attributes->get('_zkModule');
+    // reassign the 'toplevelmodule' based on the the requested module since the module is no longer correctly set
+    // in the Zikula_View::__construct() method. This is required in the adminheader and adminfooter plugins.
+    $view->assign('toplevelmodule', $requestedModule);
+    $modinfo = ModUtil::getInfoFromName($requestedModule);
 
     $acid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', array('mid' => $modinfo['id']));
 
