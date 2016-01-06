@@ -28,7 +28,6 @@ function smarty_function_admincategorymenu($params, \Zikula_View $view)
     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('ZikulaAdminModule'));
 
     $modinfo = ModUtil::getInfoFromName($view->getTplVar('toplevelmodule'));
-
     $acid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', array('mid' => $modinfo['id']));
 
     $path = array('_controller' => 'ZikulaAdminModule:Admin:categorymenu', 'acid' => $acid);

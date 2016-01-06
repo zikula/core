@@ -483,7 +483,6 @@ class Zikula_Core
         }
 
         if ($stage & self::STAGE_DECODEURLS) {
-            System::queryStringDecode($request);
             $coreInitEvent->setArgument('stage', self::STAGE_DECODEURLS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }

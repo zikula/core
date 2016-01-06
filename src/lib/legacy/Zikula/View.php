@@ -194,7 +194,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // Initialize the module property with the name of
         // the topmost module. For Hooks, Blocks, API Functions and others
         // you need to set this property to the name of the respective module!
-        $this->toplevelmodule = ModUtil::getName();
+        $masterRequest = \ServiceUtil::get('request_stack')->getMasterRequest();
+        $masterRequestModule = $masterRequest->attributes->has('_zkModule') ? $masterRequest->attributes->get('_zkModule') : null;
+        $this->toplevelmodule = isset($masterRequestModule) ? $masterRequestModule : ModUtil::getName();
 
         if (!$moduleName) {
             $moduleName = $this->toplevelmodule;
@@ -237,15 +239,12 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->addPluginDir($mpluginPathNew); // Plugins for current module
         $this->addPluginDir($mpluginPath); // Plugins for current module
 
-        // check if the 'type' parameter in the URL is admin or adminplugin
-        $legacyControllerType = FormUtil::getPassedValue('lct', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
-        if ($type === 'admin' || $type === 'adminplugin' || $legacyControllerType === 'admin') {
-            // include plugins of the Admin module to the plugins_dir array
-            if (!$this instanceof Zikula_View_Theme) {
-                $this->addPluginDir('system/AdminModule/Resources/views/plugins');
-            } else {
-                $this->load_filter('output', 'admintitle');
-            }
+        // include plugins of the Admin module to the plugins_dir array
+        // restricting this to only load when `type=admin` (or similar) fails now since type is not automatically any longer.
+        if (!$this instanceof Zikula_View_Theme) {
+            $this->addPluginDir('system/AdminModule/Resources/views/plugins');
+        } else {
+            $this->load_filter('output', 'admintitle');
         }
 
         // theme plugins module overrides

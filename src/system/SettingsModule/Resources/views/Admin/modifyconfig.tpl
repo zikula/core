@@ -152,6 +152,17 @@
         <fieldset>
             <legend>{gt text='Start page settings'}</legend>
             <div class="form-group">
+                <label class="col-sm-3 control-label" for="settings_startController">{gt text='Start Controller'}</label>
+                <div class="col-sm-9">
+                    <input id="settings_startController" type="text" class="form-control" name="settings[startController]" value="{$modvars.ZConfig.startController|default:''|safetext}" size="10" maxlength="300" />
+                    <em class="help-block">{gt text="MyModuleName:Controller:method"}</em>
+                    <em class="help-block alert alert-warning">{gt text="Start Controller will take precedence over module/type/function settings below."}<br />
+                        {gt text="This setting only works with Core-1.4.x/2.0 compatible modules (with routes)."}<br />
+                        {gt text="The module/type/func method of setting the start page is deprecated and will be removed at Core-2.0."}<br />
+                        {gt text="Start function arguments (below) can also be combined with this setting."}</em>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-3 control-label" for="settings_startpage">{gt text='Start module'}</label>
                 <div class="col-sm-9">
                     <select class="form-control" id="settings_startpage" name="settings[startpage]">
@@ -178,7 +189,7 @@
                     <label class="col-sm-3 control-label" for="settings_startargs">{gt text='Start function arguments'}</label>
                     <div class="col-sm-9">
                         <input id="settings_startargs" type="text" class="form-control" name="settings[startargs]" value="{$modvars.ZConfig.startargs|safetext}" size="20" maxlength="300" />
-                        <em class="help-block">{gt text='(Comma-separated)'}</em>
+                        <em class="help-block">({gt text='Separate with & for example:' } <code>foo=2&bar=5</code>)</em>
                     </div>
                 </div>
             </div>

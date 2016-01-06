@@ -37,6 +37,7 @@
             <argument type="service" id="kernel" strict="false" />
             <argument type="service" id="zikula_core.internal.theme_filter" />
             <argument type="service" id="zikula_blocks_module.api.block" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
         </service>
 
         <service id="zikula_core.internal.theme.create_themed_response_listener" class="%zikula_core.internal.theme.create_themed_response_listener.class%">

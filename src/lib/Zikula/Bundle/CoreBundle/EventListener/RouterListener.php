@@ -22,7 +22,6 @@ use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
@@ -170,15 +169,8 @@ class RouterListener implements EventSubscriberInterface
             unset($parameters['_zkModule']);
             unset($parameters['_zkType']);
             unset($parameters['_zkFunc']);
+            // _zkBundle?
             $request->attributes->set('_route_params', $parameters);
-        } catch (ResourceNotFoundException $e) {
-            $message = sprintf('No route found for "%s %s"', $request->getMethod(), $request->getPathInfo());
-
-            if ($referer = $request->headers->get('referer')) {
-                $message .= sprintf(' (from "%s")', $referer);
-            }
-
-            //throw new NotFoundHttpException($message, $e);
         } catch (MethodNotAllowedException $e) {
             $message = sprintf('No route found for "%s %s": Method Not Allowed (Allow: %s)', $request->getMethod(), $request->getPathInfo(), implode(', ', $e->getAllowedMethods()));
 
