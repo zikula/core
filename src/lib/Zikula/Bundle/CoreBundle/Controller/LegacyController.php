@@ -25,7 +25,16 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 /**
  * Class LegacyController
  * This controller is a service defined in `CoreBundle/Resources/config/services.xml`
- * @deprecated immediately
+ *
+ * This class handles all legacy routes. For example:
+ *     index.php?module=News&type=user&func=view
+ *     or
+ *     /news/view
+ * It also handles home page if the admin has set the values via the old module, type, func settings
+ * All route definitions are set in `CoreBundle/Resources/config/legacy_routing.xml`
+ * THESE ROUTES MUST BE LOADED LAST! (see app/config/routing.yml)
+ *
+ * @deprecated immediately @todo remove at Core-2.0
  * @package Zikula\Bundle\CoreBundle\Controller
  */
 class LegacyController
@@ -50,10 +59,28 @@ class LegacyController
     }
 
     /**
-     * Controller action to handle modules utilizing legacy shorturls.
+     * Controller action to handle legacy modules. Does not handle legacy shorturls.
+     * Route is defined as "/" with module, type and func guaranteed to not be empty.
+     * @param Request $request
+     * @return mixed|Response|PlainResponse
+     */
+    public function legacyAction(Request $request)
+    {
+        $module = $request->query->get('module');
+        $type = $request->query->get('type');
+        $func = $request->query->get('func');
+        $arguments = $request->query->all();
+        unset($arguments['module']);
+        unset($arguments['type']);
+        unset($arguments['func']);
+        $modInfo = \ModUtil::getInfoFromName($module);
+
+        return $this->getLegacyResponse($modInfo['name'], $type, $func, $arguments, $request->isXmlHttpRequest());
+    }
+
+    /**
+     * Controller action to handle modules using legacy shorturls.
      * Route is defined as "/{path}" and therefore collects ALL undefined paths.
-     * This route MUST BE LOADED LAST.
-     * The route definition is set in `CoreBundle/Resources/config/legacy_routing.xml`
      * @param Request $request
      * @return mixed|Response|PlainResponse
      */
@@ -91,28 +118,8 @@ class LegacyController
     }
 
     /**
-     * Controller action to handle legacy modules. Does not handle legacy shorturls.
-     * Route is defined as "/" with module, type and func guaranteed to not be empty.
-     * The route definition is set in `CoreBundle/Resources/config/routing.xml`
-     * @param Request $request
-     * @return mixed|Response|PlainResponse
-     */
-    public function legacyAction(Request $request)
-    {
-        $module = $request->query->get('module');
-        $type = $request->query->get('type');
-        $func = $request->query->get('func');
-        $arguments = $request->query->all();
-        unset($arguments['module']);
-        unset($arguments['type']);
-        unset($arguments['func']);
-        $modInfo = \ModUtil::getInfoFromName($module);
-
-        return $this->getLegacyResponse($modInfo['name'], $type, $func, $arguments, $request->isXmlHttpRequest());
-    }
-
-    /**
      * Handle homepage legacy response.
+     * Called only from \Zikula\Bundle\CoreBundle\Controller\MainController::homeAction
      * @return bool|mixed|Response|PlainResponse
      */
     public function getLegacyStartPageResponse()
