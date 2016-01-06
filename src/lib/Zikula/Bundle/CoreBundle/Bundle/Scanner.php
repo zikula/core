@@ -113,8 +113,7 @@ class Scanner
             case 'zikula-theme':
             case 'zikula-plugin':
                 break;
-            default;
-
+            default:
                 return false;
         }
 
