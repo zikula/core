@@ -23,7 +23,6 @@ class ZikulaVersionDataCollector extends DataCollector
         $this->themeEngine = $themeEngine;
     }
 
-
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(

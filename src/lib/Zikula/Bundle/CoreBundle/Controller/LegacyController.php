@@ -87,7 +87,6 @@ class LegacyController
     public function shortUrlAction(Request $request)
     {
         if ($this->variableApi->get(VariableApi::CONFIG, 'shorturls')) {
-
             \System::resolveLegacyShortUrl($request);
 
             $module = $request->attributes->get('_zkModule');
@@ -155,7 +154,6 @@ class LegacyController
             && $this->variableApi->get(VariableApi::CONFIG, 'siteoff')
             && !$this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN)
             && !($modName == 'ZikulaUsersModule' && $func == 'siteofflogin')) {
-
             return new UnavailableResponse(__('The site is currently off-line.'));
         }
 

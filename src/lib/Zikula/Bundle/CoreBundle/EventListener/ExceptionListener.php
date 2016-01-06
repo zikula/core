@@ -24,7 +24,6 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use UserUtil;
-use Zikula\RoutesModule\Util\ControllerUtil;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 
 /**
