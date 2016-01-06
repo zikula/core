@@ -34,8 +34,9 @@ class Zikula_View_Plugin extends Zikula_View
      * @param string                $pluginName     Plugin name.
      * @param integer|null          $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, $module = 'zikula', $pluginName, $caching = null)
+    public function __construct(Zikula_ServiceManager $serviceManager, $module, $pluginName, $caching = null)
     {
+        $module = isset($module) ? $module : 'zikula';
         parent::__construct($serviceManager, $module, $caching);
 
         $this->pluginName = $pluginName;

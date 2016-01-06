@@ -401,8 +401,9 @@ class Zikula_Core
      *
      * @return boolean True initialisation successful false otherwise.
      */
-    public function init($stage = self::STAGE_ALL, Request $request)
+    public function init($stage, Request $request)
     {
+        $stage = isset($stage) ? $stage : self::STAGE_ALL;
         $GLOBALS['__request'] = $request; // hack for pre 1.5.0 - drak
 
         $coreInitEvent = new GenericEvent($this);

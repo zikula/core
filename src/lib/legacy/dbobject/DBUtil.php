@@ -2251,10 +2251,16 @@ class DBUtil
      * @param array    $categoryFilter The category list to use for filtering.
      * @param array    $columnArray    The columns to marshall into the resulting object (optional) (default=null).
      *
-     * @return The resulting object array
+     * @return array The resulting object array
      */
-    public static function selectObjectArrayFilter($table, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $filterCallback, $categoryFilter = null, $columnArray = null)
+    public static function selectObjectArrayFilter($table, $where, $orderby, $limitOffset, $limitNumRows, $assocKey, $filterCallback, $categoryFilter = null, $columnArray = null)
     {
+        // set default values
+        $where = isset($where) ? $where : '';
+        $orderby = isset($orderby) ? $orderby : '';
+        $limitOffset = isset($limitOffset) ? $limitOffset : -1;
+        $limitNumRows = isset($limitNumRows) ? $limitNumRows : -1;
+        $assocKey = isset($assocKey) ? $assocKey : '';
         self::_setFetchedObjectCount(0);
 
         $where = self::generateCategoryFilterWhere($table, $where, $categoryFilter);

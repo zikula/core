@@ -89,8 +89,9 @@ class ZGettext
      *
      * @return string $locale.
      */
-    public function setLocale($category = LC_MESSAGES, $locale)
+    public function setLocale($category, $locale)
     {
+        $category = isset($category) ? $category : LC_MESSAGES;
         $this->locale = $locale;
         // The following is a hack because LC_* constants appear to have different
         // values on different systems #2952
