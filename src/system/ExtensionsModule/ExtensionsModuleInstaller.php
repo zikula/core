@@ -13,7 +13,6 @@
 
 namespace Zikula\ExtensionsModule;
 
-
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
