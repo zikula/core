@@ -4,9 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <!-- legacy shorturl route is deprecated -->
+    <!-- all these routes deprecated -->
+
+    <route id="legacy" path="/">
+        <default key="_controller">zikula_core.controller.legacy_controller:legacyAction</default>
+        <condition>request.query.get('module') != '' and request.query.get('type') != '' and request.query.get('func') != ''</condition>
+    </route>
+
     <route id="legacy_short_url" path="/{path}">
-        <default key="_controller">zikula_core.controller.legacy_short_url_controller:shortUrlAction</default>
+        <default key="_controller">zikula_core.controller.legacy_controller:shortUrlAction</default>
         <default key="path" />
         <requirement key="path">.*</requirement>
     </route>

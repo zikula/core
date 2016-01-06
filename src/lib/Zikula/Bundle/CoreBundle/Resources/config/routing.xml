@@ -8,9 +8,4 @@
         <default key="_controller">zikula_core.controller.main_controller:homeAction</default>
         <condition>request.query.get('module') == ''</condition>
     </route>
-    <!-- legacy route is deprecated -->
-    <route id="legacy" path="/">
-        <default key="_controller">zikula_core.controller.main_controller:legacyAction</default>
-        <condition>request.query.get('module') != '' and request.query.get('type') != '' and request.query.get('func') != ''</condition>
-    </route>
 </routes>

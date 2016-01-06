@@ -188,7 +188,7 @@
                     <label class="col-sm-3 control-label" for="settings_startargs">{gt text='Start function arguments'}</label>
                     <div class="col-sm-9">
                         <input id="settings_startargs" type="text" class="form-control" name="settings[startargs]" value="{$modvars.ZConfig.startargs|safetext}" size="20" maxlength="300" />
-                        <em class="help-block">{gt text='(Comma-separated)'}</em>
+                        <em class="help-block">({gt text='Separate with & for example:' } <code>foo=2&bar=5</code>)</em>
                     </div>
                 </div>
             </div>
