@@ -215,11 +215,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         //---- Plugins handling -----------------------------------------------
         // add plugin paths
         switch ($this->modinfo['type']) {
-            case ModUtil::TYPE_MODULE :
+            case ModUtil::TYPE_MODULE:
                 $mpluginPathNew = "modules/" . $this->modinfo['directory'] . "/Resources/views/plugins";
                 $mpluginPath = "modules/" . $this->modinfo['directory'] . "/templates/plugins";
                 break;
-            case ModUtil::TYPE_SYSTEM :
+            case ModUtil::TYPE_SYSTEM:
                 $mpluginPathNew = "system/" . $this->modinfo['directory'] . "/Resources/views/plugins";
                 $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
                 break;

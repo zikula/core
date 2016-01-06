@@ -74,35 +74,35 @@ class ValidationUtil
             }
 
             switch ($cmp_op) {
-                case 'eq ' : $rc = ($postval === $testval);
+                case 'eq ': $rc = ($postval === $testval);
                     break;
-                case 'neq' : $rc = ($postval != $testval);
+                case 'neq': $rc = ($postval != $testval);
                     break;
-                case 'gt' : $rc = ($postval !== '' && is_numeric($postval) && $postval > $testval);
+                case 'gt': $rc = ($postval !== '' && is_numeric($postval) && $postval > $testval);
                     break;
-                case 'gte' : $rc = ($postval !== '' && is_numeric($postval) && $postval >= $testval);
+                case 'gte': $rc = ($postval !== '' && is_numeric($postval) && $postval >= $testval);
                     break;
-                case 'lt' : $rc = ($postval !== '' && is_numeric($postval) && $postval < $testval);
+                case 'lt': $rc = ($postval !== '' && is_numeric($postval) && $postval < $testval);
                     break;
-                case 'lte' : $rc = ($postval !== '' && is_numeric($postval) && $postval <= $testval);
+                case 'lte': $rc = ($postval !== '' && is_numeric($postval) && $postval <= $testval);
                     break;
-                case 'in' : $rc = ($postval !== '' && is_array($testval) && in_array($postval, $testval));
+                case 'in': $rc = ($postval !== '' && is_array($testval) && in_array($postval, $testval));
                     break;
-                case 'notin' : $rc = ($postval !== '' && is_array($testval) && !in_array($postval, $testval));
+                case 'notin': $rc = ($postval !== '' && is_array($testval) && !in_array($postval, $testval));
                     break;
                 case 'regexp': $rc = ($postval !== '' && preg_match($testval, $postval));
                     break;
-                case 'url' : $rc = System::varValidate($postval, 'url');
+                case 'url': $rc = System::varValidate($postval, 'url');
                     break;
-                case 'email' : $rc = System::varValidate($postval, 'email');
+                case 'email': $rc = System::varValidate($postval, 'email');
                     break;
-                case 'noop' :
-                case '' : if (!$required) {
+                case 'noop':
+                case '': if (!$required) {
      throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
  }
                     $rc = true;
                     break;
-                default : throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
+                default: throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
             }
         }
 
