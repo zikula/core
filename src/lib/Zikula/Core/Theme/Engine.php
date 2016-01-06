@@ -330,7 +330,7 @@ class Engine
         // @todo BC remove at Core-2.0
         $lct = $request->query->get('lct', null);
         if ((isset($requestAttributes['_zkType']) && $requestAttributes['_zkType'] == 'admin')
-            || ((isset($requestAttributes['_route']) && $requestAttributes['_route'] == 'legacy') && ($request->query->get('type') == 'admin'))
+            || ((isset($requestAttributes['_route']) && in_array($requestAttributes['_route'], ['legacy', 'legacy_short_url'])) && ($request->query->get('type') == 'admin'))
             || isset($lct)) {
             $this->realm = 'admin';
 

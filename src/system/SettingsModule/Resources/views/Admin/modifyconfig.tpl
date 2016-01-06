@@ -158,6 +158,7 @@
                     <em class="help-block">{gt text="MyModuleName:Controller:method"}</em>
                     <em class="help-block alert alert-warning">{gt text="Start Controller will take precedence over module/type/function settings below."}<br />
                         {gt text="This setting only works with Core-1.4.x/2.0 compatible modules (with routes)."}<br />
+                        {gt text="The module/type/func method of setting the start page is deprecated and will be removed at Core-2.0."}<br />
                         {gt text="Start function arguments (below) can also be combined with this setting."}</em>
                 </div>
             </div>
