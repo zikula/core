@@ -24,9 +24,11 @@ use Zikula\Core\AbstractModule;
 class ModuleStateEvent extends Event
 {
     /**
-     * @var null|array LEGACY. This will only hold if $module is not set, because it is a non-Symfony styled
-     * module. Your code MUST always use $module and only use $modinfo if $module is not set. This property can be
-     * removed at any time.
+     * This will only hold if $module is not set, because it is a non-Symfony
+     * styled module. Your code MUST always use $module and only use $modinfo
+     * if $module is not set. This property can be removed at any time.
+     * 
+     * @var null|array
      *
      * @deprecated
      */
