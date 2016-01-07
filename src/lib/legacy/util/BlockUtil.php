@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\AbstractBlockHandler;
+use Zikula\Core\BlockHandlerInterface;
 
 /**
  * Block util.
@@ -184,11 +184,11 @@ class BlockUtil
         $blockInstance = self::load($modname, $blockname);
         $displayfunc = array($blockInstance, 'display');
         $blockEntity = isset($blockEntity) ? $blockEntity : ServiceUtil::get('doctrine.entitymanager')->find('Zikula\BlocksModule\Entity\BlockEntity', $blockinfo['bid']);
-        $instanceArgs = ($blockInstance instanceof AbstractBlockHandler) ? $blockEntity->getContent() : $blockinfo;
+        $instanceArgs = ($blockInstance instanceof BlockHandlerInterface) ? $blockEntity->getContent() : $blockinfo;
         if (is_callable($displayfunc)) {
             $content =  call_user_func($displayfunc, $instanceArgs);
         }
-        if ($blockInstance instanceof AbstractBlockHandler) {
+        if ($blockInstance instanceof BlockHandlerInterface) {
             // FC blocks require wrapping the content in the theme
             $blockinfo['content'] = $content;
             $content = Zikula_View_Theme::getInstance()->themesidebox($blockinfo);
@@ -329,13 +329,13 @@ class BlockUtil
         $instanceArgs = array();
         if (is_subclass_of($className, 'Zikula_Controller_AbstractBlock')) {
             $instanceArgs = array($sm, $module);
-        } elseif (is_subclass_of($className, 'Zikula\Core\AbstractBlockHandler')) {
+        } else {
             $instanceArgs = array($module);
         }
         $blockInstance = $r->newInstanceArgs($instanceArgs);
-        if ((!$blockInstance instanceof Zikula_Controller_AbstractBlock) && (!$blockInstance instanceof AbstractBlockHandler)) {
+        if ((!$blockInstance instanceof Zikula_Controller_AbstractBlock) && (!$blockInstance instanceof BlockHandlerInterface)) {
             throw new LogicException(sprintf(
-                'Block %s must inherit from Zikula_Controller_AbstractBlock or Zikula\Core\AbstractBlockHandler',
+                'Block %s must inherit from Zikula_Controller_AbstractBlock or Zikula\Core\BlockHandlerInterface',
                 $className
             ));
         }
