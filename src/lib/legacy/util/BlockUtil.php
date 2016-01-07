@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\AbstractBlockHandler;
 use Zikula\Core\BlockHandlerInterface;
 
 /**
