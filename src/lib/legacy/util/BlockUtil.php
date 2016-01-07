@@ -13,6 +13,7 @@
  */
 
 use Zikula\Core\AbstractBlockHandler;
+use Zikula\Core\BlockHandlerInterface;
 
 /**
  * Block util.
@@ -333,9 +334,9 @@ class BlockUtil
             $instanceArgs = array($module);
         }
         $blockInstance = $r->newInstanceArgs($instanceArgs);
-        if ((!$blockInstance instanceof Zikula_Controller_AbstractBlock) && (!$blockInstance instanceof AbstractBlockHandler)) {
+        if ((!$blockInstance instanceof Zikula_Controller_AbstractBlock) && (!$blockInstance instanceof BlockHandlerInterface)) {
             throw new LogicException(sprintf(
-                'Block %s must inherit from Zikula_Controller_AbstractBlock or Zikula\Core\AbstractBlockHandler',
+                'Block %s must inherit from Zikula_Controller_AbstractBlock or Zikula\Core\BlockHandlerInterface',
                 $className
             ));
         }
