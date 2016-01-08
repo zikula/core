@@ -536,8 +536,8 @@ class AdminApi extends \Zikula_AbstractApi
             throw new AccessDeniedException();
         }
 
-        $schemas = SecurityUtil::getSchemas();
         BlockUtil::loadAll();
+        $schemas = SecurityUtil::getSchemas();
         $modinfos = ModUtil::getAllMods();
         foreach ($modinfos as $modinfo) {
             if (!empty($modinfo['securityschema'])) {

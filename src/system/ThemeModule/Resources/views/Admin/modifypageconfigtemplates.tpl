@@ -143,27 +143,25 @@
         </div>
 
         <div id="blocktypestab">
-            {foreach from=$allblocks item='moduleblocks'}
-				{foreach from=$moduleblocks item='block' name='modblocks'}
-					{if $smarty.foreach.modblocks.first}
-						<fieldset>
-							<legend>{$block.module|safetext}</legend>
-							{/if}
-							<div class="form-group">
-								<label class="col-sm-3 control-label" for="theme_blocktypetemplate_{$block.module|safetext}_{$block.bkey|safetext}" title="{$block.text_type_long|safetext}">{$block.text_type|safetext}</label>
-								<div class="col-sm-9">
-								{assign var=bkey value=$block.bkey}
-									<select class="form-control" id="theme_blocktypetemplate_{$block.module|safetext}_{$block.bkey|safetext}" name="blocktypetemplates[{$block.bkey|safetext}]">
-										<option value="">{gt text="Default template"}</option>
-										{html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blocktypes.$bkey}
-									</select>
-								</div>
+            {foreach from=$allblocks item='block' name='modblocks'}
+				{if $smarty.foreach.modblocks.first}
+					<fieldset>
+						<legend>{$block.module|safetext}</legend>
+				{/if}
+						<div class="form-group">
+							<label class="col-sm-3 control-label" for="theme_blocktypetemplate_{$block.module|safetext}_{$block.bkey|safetext}" title="{$block.text_type_long|safetext}">{$block.text_type|safetext}</label>
+							<div class="col-sm-9">
+							{assign var=bkey value=$block.bkey}
+								<select class="form-control" id="theme_blocktypetemplate_{$block.module|safetext}_{$block.bkey|safetext}" name="blocktypetemplates[{$block.bkey|safetext}]">
+									<option value="">{gt text="Default template"}</option>
+									{html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blocktypes.$bkey}
+								</select>
 							</div>
-							{if $smarty.foreach.modblocks.last}
-						</fieldset>
-					{/if}
-				{/foreach}
-            {/foreach}
+						</div>
+				{if $smarty.foreach.modblocks.last}
+					</fieldset>
+				{/if}
+			{/foreach}
         </div>
 
         <div id="blockinstancestab">
