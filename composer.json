@@ -79,7 +79,7 @@
         "zikula/jquery-minicolors-bundle": "dev-master",
         "bootstrap-plus/bootstrap-media-lightbox": "dev-master",
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
-        "bassjobsen/bootstrap-3-typeahead": "3.1.*",
+        "twitter/typeahead.js": "~0.11.1",
         "vakata/jstree": "3.*",
         "afarkas/html5shiv": "3.7.*",
 
