@@ -49,6 +49,14 @@
                 </div>
             </div>
         </fieldset>
+        {if $currentTheme->isTwigBased()}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-triangle fa-3x pull-left"></i>
+                <div style="margin-left:5em">
+                    {gt text="NOTICE: The theme currently selected (%s) is a <strong>Twig-based theme</strong> and therefore the compilation and caching functions below will do <strong>nothing at all</strong> (and will display errors if used)." tag1=$currentTheme->getName()}
+                    {gt text="To force template reloading from cache on each pageload, change to %s in %s" tag1='<code>debug:true</code>' tag2='<code>app/config/custom_parameters.yml</code>'}
+                </div>
+            </div>
+        {/if}
         <fieldset>
             <legend>{gt text="Compilation"}</legend>
             <div class="form-group">

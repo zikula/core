@@ -1261,6 +1261,8 @@ class AdminController extends \Zikula_AbstractController
             $this->view->assign('htaccess', 0);
         }
 
+        $this->view->assign('currentTheme', $this->get('zikula_core.common.theme_engine')->getTheme());
+
         // assign the output variables and fetch the template
         return new Response($this->view->assign('mods', $mods)
                 // assign all module vars
