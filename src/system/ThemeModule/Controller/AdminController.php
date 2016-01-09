@@ -669,14 +669,18 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // call the block API to get a list of all available blocks
-        $allblocks = BlockUtil::loadAll();
-        foreach ($allblocks as $key => $blocks) {
-            foreach ($blocks as $k => $block) {
-                $allblocks[$key][$k]['bkey'] = $bkey = strtolower($block['bkey']);
-                // check the page configuration
-                if (!isset($pageconfiguration['blocktypes'][$bkey])) {
-                    $pageconfiguration['blocktypes'][$bkey] = '';
-                }
+        $blockTypes = BlockUtil::loadAll();
+        // returns [[ModuleName:FqBlockClassName => ModuleDisplayName/BlockDisplayName]]
+        $allblocks = [];
+        foreach ($blockTypes as $bKey => $block) {
+            list($moduleDisplayName, $blockDisplayName) = explode('/', $block);
+            $allblocks[$bKey] = [];
+            $allblocks[$bKey]['module'] = $moduleDisplayName;
+            $allblocks[$bKey]['bkey'] = $bKey;
+            $allblocks[$bKey]['text_type_long'] = $block;
+            $allblocks[$bKey]['text_type'] = $blockDisplayName;
+            if (!isset($pageconfiguration['blocktypes'][$bKey])) {
+                $pageconfiguration['blocktypes'][$bKey] = '';
             }
         }
 

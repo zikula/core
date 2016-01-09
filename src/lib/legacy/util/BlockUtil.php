@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\AbstractBlockHandler;
+use Zikula\Core\BlockHandlerInterface;
 
 /**
  * Block util.
@@ -184,11 +184,11 @@ class BlockUtil
         $blockInstance = self::load($modname, $blockname);
         $displayfunc = array($blockInstance, 'display');
         $blockEntity = isset($blockEntity) ? $blockEntity : ServiceUtil::get('doctrine.entitymanager')->find('Zikula\BlocksModule\Entity\BlockEntity', $blockinfo['bid']);
-        $instanceArgs = ($blockInstance instanceof AbstractBlockHandler) ? $blockEntity->getContent() : $blockinfo;
+        $instanceArgs = ($blockInstance instanceof BlockHandlerInterface) ? $blockEntity->getContent() : $blockinfo;
         if (is_callable($displayfunc)) {
             $content =  call_user_func($displayfunc, $instanceArgs);
         }
-        if ($blockInstance instanceof AbstractBlockHandler) {
+        if ($blockInstance instanceof BlockHandlerInterface) {
             // FC blocks require wrapping the content in the theme
             $blockinfo['content'] = $content;
             $content = Zikula_View_Theme::getInstance()->themesidebox($blockinfo);
@@ -325,27 +325,16 @@ class BlockUtil
             $classNameOld = ucwords($modinfo['name']).'_'.'Block_'.ucwords($block);
             $className = class_exists($className) ? $className : $classNameOld;
         }
-        $r = new ReflectionClass($className);
-        $instanceArgs = array();
-        if (is_subclass_of($className, 'Zikula_Controller_AbstractBlock')) {
-            $instanceArgs = array($sm, $module);
-        } elseif (is_subclass_of($className, 'Zikula\Core\AbstractBlockHandler')) {
-            $instanceArgs = array($module);
-        }
-        $blockInstance = $r->newInstanceArgs($instanceArgs);
-        if ((!$blockInstance instanceof Zikula_Controller_AbstractBlock) && (!$blockInstance instanceof AbstractBlockHandler)) {
-            throw new LogicException(sprintf(
-                'Block %s must inherit from Zikula_Controller_AbstractBlock or Zikula\Core\AbstractBlockHandler',
-                $className
-            ));
-        }
+        $blockInstance = \ServiceUtil::get('zikula_blocks_module.api.block_factory')->getInstance($className, $module);
 
         $sm->set($serviceId, $blockInstance);
         if ($blockInstance instanceof \Symfony\Component\DependencyInjection\ContainerAwareInterface) {
             $blockInstance->setContainer($sm);
         }
         $result = $blockInstance;
-        $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
+        if ($blockInstance instanceof Zikula_Controller_AbstractBlock) {
+            $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
+        }
         // set the module and keys for the new block
         $blocks_modules[$block]['bkey'] = $block;
         $blocks_modules[$block]['module'] = $modname;
@@ -356,7 +345,9 @@ class BlockUtil
         }
         $GLOBALS['blocks_modules'][$blocks_modules[$block]['mid']][$block] = $blocks_modules[$block];
         // Initialise block if required (new-style)
-        call_user_func(array($blockInstance, 'init'));
+        if ($blockInstance instanceof Zikula_Controller_AbstractBlock) {
+            call_user_func(array($blockInstance, 'init'));
+        }
         // add stylesheet to the page vars, this makes manual loading obsolete
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
 
@@ -370,35 +361,9 @@ class BlockUtil
      */
     public static function loadAll()
     {
-        static $blockdirs = array();
-        // Load new-style blocks from system and modules tree
-        $mods = ModUtil::getAllMods();
-        foreach ($mods as $mod) {
-            $modname = $mod['name'];
-            $moddir = DataUtil::formatForOS($mod['directory']);
-            if (!isset($blockdirs[$modname])) {
-                $blockdirs[$modname] = array();
-                $blockdirs[$modname][] = "system/$moddir/Block";
-                $blockdirs[$modname][] = "modules/$moddir/Block";
-                $blockdirs[$modname][] = "system/$moddir/lib/$moddir/Block";
-                $blockdirs[$modname][] = "modules/$moddir/lib/$moddir/Block";
-                foreach ($blockdirs[$modname] as $dir) {
-                    if (is_dir($dir) && is_readable($dir)) {
-                        $dh = opendir($dir);
-                        while (($f = readdir($dh)) !== false) {
-                            if (substr($f, -4) == '.php') {
-                                $block = substr($f, 0, -4);
-                                self::load($modname, $block);
-                            }
-                        }
-                        closedir($dh);
-                    }
-                }
-            }
-        }
-
-        // Return information gathered
-        return $GLOBALS['blocks_modules'];
+        return \ServiceUtil::get('zikula_blocks_module.api.block')->getAvailableBlockTypes();
+        // returns [[ModuleName:FqBlockClassName => ModuleDisplayName/BlockDisplayName]]
+        // [[serviceId => ModuleDisplayName/BlockDisplayName]]
     }
 
     /**
