@@ -22,6 +22,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Added core routing for all legacy urls (both normal and 'shorturls').
     - Added option to set a controller (e.g. `ZikulaPagesModule:User:categories`) as start page settings instead of legacy method. (#2454)
     - Add theme information to Symfony developer toolbar.
+    - Add functional login block to Bootstrap theme (#2730)
  - Core-2.0 Features:
     - Add `currentUser` global variable to twig templates.
     - Add (move) `Zikula\CategoriesModule\Entity\AbstractCategoryAssignment` and related documentation.

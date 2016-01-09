@@ -30,15 +30,7 @@
           {% if currentUser.loggedIn %}
             <a href="{{ path('zikulausersmodule_user_index') }}" class="navbar-right btn btn-default navbar-btn">{{ __('Signed in as') }} {{ currentUser.uname }}</a>
           {% else %}
-          <form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
+            {{ showblockposition('topnav') }}
           {% endif %}
         </div><!--/.navbar-collapse -->
       </div>

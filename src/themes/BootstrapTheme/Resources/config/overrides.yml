@@ -2,4 +2,5 @@
 ## original/file.tpl: override/file.tpl
 ---
 system/UsersModule/Resources/views/User/main.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaUsersModule/User/main.tpl
+system/UsersModule/Resources/views/Block/login_topnav.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaUsersModule/Block/login_topnav.tpl
 system/ThemeModule/Resources/views/moduleheader.tpl: themes/BootstrapTheme/Resources/views/modules/ZikulaThemeModule/moduleheader.tpl
