@@ -96,7 +96,7 @@
         <mkdir dir="${builddir}/jsdoc"/>
         <exec command="curl -s https://getcomposer.org/installer | php;mv composer.phar ${workspace}/source"/>
         <!-- Make sure to ignore platform requirements, because CURL is not installed at the CI server. -->
-        <exec command="${workspace}/source/composer.phar install --prefer-dist --no-dev --ignore-platform-reqs" checkreturn="true" passthru="true" /><!-- no-scripts removed -->
+        <exec command="${workspace}/source/composer.phar install --prefer-dist --no-dev" checkreturn="true" passthru="true" /><!-- no-scripts removed -->
     </target>
 
     <!-- Build archives -->
