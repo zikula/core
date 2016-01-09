@@ -126,7 +126,7 @@ class Bootstrapify
      */  
     function formCallback1($matches)
     {
-        return '<div class="form-group">'.$matches[1].'<label class="col-lg-3 control-label"'.$matches[2].'</label>'.$matches[1].'<div class="col-lg-9">';
+        return '<div class="form-group">'.$matches[1].'<label class="col-sm-3 control-label"'.$matches[2].'</label>'.$matches[1].'<div class="col-sm-9">';
 
     }
     
@@ -199,7 +199,7 @@ class Bootstrapify
         $content = str_replace('<a', '    <a class="btn btn-default"', $content);
         $content = str_replace('{button', '    {button', $content);   
         
-        return '<div class="form-group">'."\n".'            <div class="col-lg-offset-3 col-lg-9">'.$content.'    </div>'."\n".'        </div>';
+        return '<div class="form-group">'."\n".'            <div class="col-sm-offset-3 col-sm-9">'.$content.'    </div>'."\n".'        </div>';
     }
 }
 
