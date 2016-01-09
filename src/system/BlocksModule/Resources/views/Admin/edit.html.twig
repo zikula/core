@@ -16,8 +16,8 @@
         <fieldset>
             <legend>{{ __('Meta') }}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{{ __('Block Type') }}</label>
-                <div class="col-lg-9">
+                <label class="col-sm-3 control-label">{{ __('Block Type') }}</label>
+                <div class="col-sm-9">
                     <p class="form-control-static label label-info" style="font-size: 130%">{{ moduleName }}/{{ form.vars.value.blocktype }}</p>
                 </div>
             </div>
@@ -36,7 +36,7 @@
             <script>var filterCount = '{{ form.filters|length }}';</script>
             <div class="form-group">
                 {{ form_label(form.filters) }}
-                <div class="col-lg-9">
+                <div class="col-sm-9">
                     <ul id="filters" data-prototype="&lt;li class=&quot;form-inline&quot;&gt;{{ form_widget(form.filters.vars.prototype.attribute, { 'attr': {'class': 'attribute-selector'} })|e }} {{ form_widget(form.filters.vars.prototype.queryParameter, { 'attr': {'disabled': true, 'class': 'queryParameter'} })|e }} {{ form_widget(form.filters.vars.prototype.comparator)|e }} {{ form_widget(form.filters.vars.prototype.value)|e }}&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;delete-filter fa fa-trash fa-lg text-danger&quot;&gt;&lt;/a&gt;&lt;/li&gt;">
                         {% for filter in form.filters %}
                         {% form_theme form _self %}
@@ -56,7 +56,7 @@
         {#{/if}#}
         {#{{ notifyDisplayHooks('pages.ui_hooks.pages.form_edit', form.vars.value.pageid|default(null)) }}#}
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
+            <div class="col-sm-offset-3 col-sm-9">
                 {{ form_widget(form.save, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
                 {{ form_widget(form.cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
             </div>
