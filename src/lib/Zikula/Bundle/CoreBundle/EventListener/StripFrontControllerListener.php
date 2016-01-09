@@ -46,13 +46,18 @@ class StripFrontControllerListener implements EventSubscriberInterface
         if (\System::isInstalling()) {
             return;
         }
+        if (!$event->getRequest()->isMethod('GET')) {
+            // because this issue is purely 'cosmetic', only fix GET requests.
+            return;
+        }
         $requestUri = $event->getRequest()->getRequestUri();
         $frontController = \System::getVar('entrypoint', 'index.php');
         $stripEntryPoint = (bool) \System::getVar('shorturlsstripentrypoint', false);
-        $containsFrontController = (strpos($requestUri, "$frontController/") !== false);
+        $containsFrontController = (strpos($requestUri, "$frontController") !== false);
 
         if ($containsFrontController && $stripEntryPoint) {
-            $url = str_ireplace("$frontController/", "", $requestUri);
+            $replacedString = (strpos($requestUri, "$frontController/") !== false) ? "$frontController/" : $frontController;
+            $url = str_ireplace($replacedString, "", $requestUri);
             $response = new RedirectResponse($url, 301);
             $event->setResponse($response);
             $event->stopPropagation();

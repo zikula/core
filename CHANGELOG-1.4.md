@@ -16,6 +16,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix error in BootstrapTheme where `pagetype` variable was required (#2681)
     - Fix legacy modules always using 'home' realm in Theme engine (#2691)
     - Correct minor display issues for new Symfony 2.8-style developer toolbar.
+    - Fix Login block not functional (#2729)
  - Features:
     - New advanced block filtering based on a combination of any query parameter or request attributes.
     - Added core routing for all legacy urls (both normal and 'shorturls').

@@ -193,12 +193,27 @@
                     </div>
                 </div>
             </div>
+        </fieldset>
+        <fieldset>
+            <legend>{gt text='Front Controller settings'}</legend>
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="settings_entrypoint">{gt text='Site entry point'}</label>
+                <label class="col-sm-3 control-label" for="settings_entrypoint">{gt text='Site entry point (front controller)'}</label>
                 <div class="col-sm-9">
                     <input id="settings_entrypoint" type="text" class="form-control" name="settings[entrypoint]" value="{$modvars.ZConfig.entrypoint|safetext}" size="20" maxlength="60" />
                     <em class="help-block">{gt text='(Default: index.php)'}</em>
                     <p class="help-block alert alert-info">{gt text="Notice: The entry point file must be present in the Zikula root directory before you set it here as your site's start page."}</p>
+                    <p class="help-block alert alert-danger">{gt text="Warning: This feature is deprecated and it is not recommended to change from index.php."}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">{gt text='Strip entry point (front controller) from URLs'}</label>
+                <div id="settings_shorturlsstripentrypoint" class="col-sm-9">
+                    <input id="shorturlsstripentrypoint1" type="radio" name="settings[shorturlsstripentrypoint]" value="1"{if $modvars.ZConfig.shorturlsstripentrypoint eq 1} checked="checked"{/if} />
+                    <label for="shorturlsstripentrypoint1">{gt text='Yes (recommended)'}</label>
+                    <input id="shorturlsstripentrypoint0" type="radio" name="settings[shorturlsstripentrypoint]" value="0"{if $modvars.ZConfig.shorturlsstripentrypoint eq 0} checked="checked"{/if} />
+                    <label for="shorturlsstripentrypoint0">{gt text='No'}</label>
+                    <em class="help-block alert alert-warning">{gt text="This setting was part of the 'shorturl configuration in the past (below)."}<br />
+                        {gt text="It is now moved here because it is also used with core-1.4.x routing. This feature is deprecated."}</em>
                 </div>
             </div>
         </fieldset>
@@ -279,15 +294,6 @@
                 </div>
             </div>
             <div data-switch="settings[shorturls]" data-switch-value="1">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">{gt text='Strip entry point from directory-based URLs'}</label>
-                    <div id="settings_shorturlsstripentrypoint" class="col-sm-9">
-                        <input id="shorturlsstripentrypoint1" type="radio" name="settings[shorturlsstripentrypoint]" value="1"{if $modvars.ZConfig.shorturlsstripentrypoint eq 1} checked="checked"{/if} />
-                        <label for="shorturlsstripentrypoint1">{gt text='Yes (recommended)'}</label>
-                        <input id="shorturlsstripentrypoint0" type="radio" name="settings[shorturlsstripentrypoint]" value="0"{if $modvars.ZConfig.shorturlsstripentrypoint eq 0} checked="checked"{/if} />
-                        <label for="shorturlsstripentrypoint0">{gt text='No'}</label>
-                    </div>
-                </div>
                 <div id="settings_shorturlsseparator_container" class="form-group">
                     <label class="col-sm-3 control-label" for="settings_shorturlsseparator">{gt text='Separator for permalink titles'}</label>
                     <div class="col-sm-9">

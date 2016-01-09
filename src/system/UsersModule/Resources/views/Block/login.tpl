@@ -5,7 +5,9 @@
         {ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.LoginBlock.js'}
     {/if}
 {/foreach}
-{/strip}<div class="users_loginblock_box">{strip}
+{/strip}
+<div class="users_loginblock_box">
+    {strip}
     {assign var='show_login_form' value=false}
     {if (isset($selected_authentication_method) && $selected_authentication_method)}
         {login_form_fields form_type='loginblock' authentication_method=$selected_authentication_method assign='login_form_fields'}
