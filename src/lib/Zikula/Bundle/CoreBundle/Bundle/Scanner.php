@@ -1,4 +1,16 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPv3 (or at your option any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
@@ -11,13 +23,13 @@ class Scanner
     /**
      * Scans and loads composer.json files.
      *
-     * @param array  $paths
-     * @param int    $depth
+     * @param array $paths
+     * @param int $depth
      * @param Finder $finder
      */
     public function scan(array $paths, $depth = 3, Finder $finder = null)
     {
-        $paths = (array) $paths;
+        $paths = (array)$paths;
         $finder = null === $finder ? new Finder() : $finder;
         $finder->files()
             ->in($paths)
@@ -26,7 +38,7 @@ class Scanner
             ->notPath('Resources')
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
-            ->depth('<'.$depth)
+            ->depth('<' . $depth)
             ->name('composer.json');
 
         /** @var $f \SplFileInfo */

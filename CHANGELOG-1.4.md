@@ -14,8 +14,13 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix corrupted javascript files (`categories_admin_edit.js`, `categories_admin_view.js`, `contextmenu.js`) caused by
       CI build/Yaml compressor. (#2702, #2707)
     - Fix error in BootstrapTheme where `pagetype` variable was required (#2681)
+    - Fix legacy modules always using 'home' realm in Theme engine (#2691)
+    - Correct minor display issues for new Symfony 2.8-style developer toolbar.
  - Features:
     - New advanced block filtering based on a combination of any query parameter or request attributes.
+    - Added core routing for all legacy urls (both normal and 'shorturls').
+    - Added option to set a controller (e.g. `ZikulaPagesModule:User:categories`) as start page settings instead of legacy method. (#2454)
+    - Add theme information to Symfony developer toolbar.
  - Core-2.0 Features:
     - Add `currentUser` global variable to twig templates.
     - Add (move) `Zikula\CategoriesModule\Entity\AbstractCategoryAssignment` and related documentation.
