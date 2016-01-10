@@ -59,7 +59,7 @@ class DocController
     public function displayAction(Request $request, $name = "INSTALL-1.4.0.md")
     {
         // @TODO this is temporary method of restricting the user input
-        if (!in_array($name, array("INSTALL-1.4.0.md", "UPGRADE-1.4.0.md", "CHANGELOG.md", "README.md"))) {
+        if (!in_array($name, array("INSTALL-1.4.0.md", "UPGRADE-1.4.md", "CHANGELOG.md", "README.md"))) {
             $name = "INSTALL-1.4.0.md";
         }
         $this->setBasePath();

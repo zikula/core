@@ -13,7 +13,10 @@ Upgrading Zikula
 Introduction
 ------------
 
-Zikula Core 1.4.0 introduces a lot of forward compatibility for new features that will come in Zikula 2.0.0.
+Zikula 1.4 can only upgrade from Zikula 1.3.6 or higher. Please upgrade your core installation to this version
+before proceeding with this upgrade proces.
+
+Zikula Core 1.4 introduces a lot of forward compatibility for new features that will come in Zikula 2.0.0.
 
 For more information visit http://zikula.org/ and read our
 [user manual](https://github.com/zikula/zikula-docs/tree/master/Users%20Manual).
@@ -57,7 +60,7 @@ Before upgrading
 
 ***Prior to any upgrade ensure that a reliable backup of all files and the database is taken.***
 
-###If you obtained Zikula 1.4.0 from cloning the repo at Github
+###If you obtained Zikula 1.4 from cloning the repo at Github
 
 *note: This method is not recommended for non-developers*
 
@@ -67,7 +70,7 @@ Composer must be run prior to installing a site using Zikula. Run `composer self
 If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to
 `composer` to avoid your IDE reading the package contents.
 
-###If you obtained Zikula 1.4.0 from the CI server or zikula.org
+###If you obtained Zikula 1.4 from the CI server or zikula.org
 
 All the dependencies and requirements are included in this package, so there is no need to use composer at all.
 

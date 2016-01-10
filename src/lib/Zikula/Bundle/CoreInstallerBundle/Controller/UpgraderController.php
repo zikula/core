@@ -28,7 +28,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class UpgraderController extends AbstractController
 {
-    const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.3.5';
+    const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.3.6';
 
     /**
      * @param Request $request
