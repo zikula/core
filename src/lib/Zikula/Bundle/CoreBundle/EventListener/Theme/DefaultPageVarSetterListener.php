@@ -16,7 +16,9 @@ namespace Zikula\Bundle\CoreBundle\EventListener\Theme;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Theme\ParameterBag;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Class DefaultPageVarSetterListener
@@ -28,10 +30,14 @@ use Zikula\Core\Theme\ParameterBag;
 class DefaultPageVarSetterListener implements EventSubscriberInterface
 {
     private $pageVars;
+    private $router;
+    private $variableApi;
 
-    public function __construct(ParameterBag $pageVars)
+    public function __construct(ParameterBag $pageVars, RouterInterface $routerInterface, VariableApi $variableApi)
     {
         $this->pageVars = $pageVars;
+        $this->router = $routerInterface;
+        $this->variableApi = $variableApi;
     }
 
     /**
@@ -46,14 +52,11 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         // set some defaults
         $this->pageVars->set('lang', \ZLanguage::getLanguageCode());
         $this->pageVars->set('langdirection', \ZLanguage::getDirection());
-        $this->pageVars->set('title', \System::getVar('defaultpagetitle'));
+        $this->pageVars->set('title', $this->variableApi->get(VariableApi::CONFIG, 'defaultpagetitle'));
         $this->pageVars->set('meta.charset', \ZLanguage::getDBCharset());
-        $this->pageVars->set('meta.description', \System::getVar('defaultmetadescription'));
-        $this->pageVars->set('meta.keywords', \System::getVar('metakeywords'));
-
-        $schemeAndHost = $event->getRequest()->getSchemeAndHttpHost();
-        $baseUrl = $event->getRequest()->getBaseUrl();
-        $this->pageVars->set('homepath', $schemeAndHost . $baseUrl);
+        $this->pageVars->set('meta.description', $this->variableApi->get(VariableApi::CONFIG, 'defaultmetadescription'));
+        $this->pageVars->set('meta.keywords', $this->variableApi->get(VariableApi::CONFIG, 'metakeywords'));
+        $this->pageVars->set('homepath', $this->router->generate('home'));
     }
 
     public static function getSubscribedEvents()

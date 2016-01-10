@@ -59,9 +59,10 @@
 
         <service id="zikula_core.internal.theme.default_page_var_setter_listener" class="%zikula_core.internal.theme.default_page_var_setter_listener.class%">
             <tag name="kernel.event_subscriber" />
-            <tag name="monolog.logger" channel="request" />
+            <!--<tag name="monolog.logger" channel="request" />-->
             <argument type="service" id="zikula_core.common.theme.pagevars" />
-            <argument>%env%</argument>
+            <argument type="service" id="router" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
         </service>
 
         <service id="zikula_core.internal.theme.controller_annotation_reader_listener" class="%zikula_core.internal.theme.controller_annotation_reader_listener.class%">
