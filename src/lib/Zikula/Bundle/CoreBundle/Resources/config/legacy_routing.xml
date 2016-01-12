@@ -9,6 +9,7 @@
     <route id="legacy" path="/">
         <default key="_controller">zikula_core.controller.legacy_controller:legacyAction</default>
         <condition>request.query.get('module') != '' and request.query.get('type') != '' and request.query.get('func') != ''</condition>
+        <option key="i18n">false</option>
     </route>
 
     <route id="legacy_short_url" path="/{path}">
