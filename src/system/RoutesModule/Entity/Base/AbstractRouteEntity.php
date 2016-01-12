@@ -157,7 +157,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\True(message="This option is mandatory.")
+     * @Assert\IsTrue(message="This option is mandatory.")
      * @Assert\Type(type="bool")
      * @var boolean $prependBundlePrefix.
      */
@@ -165,7 +165,7 @@ abstract class AbstractRouteEntity extends Zikula_EntityAccess
     
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\True(message="This option is mandatory.")
+     * @Assert\IsTrue(message="This option is mandatory.")
      * @Assert\Type(type="bool")
      * @var boolean $translatable.
      */

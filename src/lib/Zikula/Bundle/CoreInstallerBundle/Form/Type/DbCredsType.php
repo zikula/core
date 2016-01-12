@@ -78,7 +78,7 @@ class DbCredsType extends AbstractType
     private function getDbTypes()
     {
         $types = array();
-        if (function_exists('mysql_connect')) {
+        if (function_exists('mysql_connect') || function_exists('mysqli_connect')) {
             $types['mysql'] = __('MySQL');
         }
         if (function_exists('mssql_connect')) {
