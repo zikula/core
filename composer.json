@@ -42,7 +42,7 @@
 
         "symfony/symfony": "2.8.*",
         "symfony/assetic-bundle": "2.6.*",
-        "symfony/swiftmailer-bundle": "2.3.*",
+        "symfony/swiftmailer-bundle": "2.3.9",
         "symfony/monolog-bundle": "2.7.*",
         "sensio/distribution-bundle": "4.0.*",
         "sensio/framework-extra-bundle": "3.0.*",
