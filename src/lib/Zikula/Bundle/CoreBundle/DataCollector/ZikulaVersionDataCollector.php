@@ -25,17 +25,19 @@ class ZikulaVersionDataCollector extends DataCollector
 
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $this->data = array(
+        $this->data = [
             'version' => \Zikula_Core::VERSION_NUM,
             'ghZikulaCoreUrl' => 'https://www.github.com/zikula/core',
             'ghZikulaDocsUrl' => 'https://www.github.com/zikula/zikula-docs',
-            'ghZikulaBootstrapDocsUrl' => 'http://zikula.github.io/bootstrap-docs',
-            'themeEngine' => [
+            'ghZikulaBootstrapDocsUrl' => 'http://zikula.github.io/bootstrap-docs'
+            ];
+        if (null !== $this->themeEngine->getTheme()) {
+            $this->data['themeEngine'] = [
                 'theme' => $this->themeEngine->getTheme()->getName(),
                 'realm' => $this->themeEngine->getRealm(),
                 'annotation' => $this->themeEngine->getAnnotationValue(),
-            ]
-        );
+            ];
+        }
     }
 
     public function getVersion()

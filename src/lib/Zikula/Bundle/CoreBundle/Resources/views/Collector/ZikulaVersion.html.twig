@@ -11,13 +11,13 @@
         {#<span>{{ collector.version }}</span>#}
     </div>
         <div class="sf-toolbar-info-piece">
-            <b>Theme name</b>{{ collector.themeEngine.theme }}
+            <b>Theme name</b>{{ collector.themeEngine.theme|default('') }}
         </div>
         <div class="sf-toolbar-info-piece">
-            <b>Theme realm</b>{{ collector.themeEngine.realm }}
+            <b>Theme realm</b>{{ collector.themeEngine.realm|default('') }}
         </div>
         <div class="sf-toolbar-info-piece">
-            <b>Theme annotation</b>{{ collector.themeEngine.annotation }}
+            <b>Theme annotation</b>{{ collector.themeEngine.annotation|default('') }}
         </div>
     <div class="sf-toolbar-info-piece">
         <a href="{{ collector.ghZikulaCoreUrl }}">GitHub Core Repository</a>
