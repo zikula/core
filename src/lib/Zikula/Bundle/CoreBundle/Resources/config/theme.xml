@@ -63,6 +63,7 @@
             <argument type="service" id="zikula_core.common.theme.pagevars" />
             <argument type="service" id="router" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument>%installed%</argument>
         </service>
 
         <service id="zikula_core.internal.theme.controller_annotation_reader_listener" class="%zikula_core.internal.theme.controller_annotation_reader_listener.class%">

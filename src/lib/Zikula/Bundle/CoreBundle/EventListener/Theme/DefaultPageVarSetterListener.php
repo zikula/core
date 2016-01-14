@@ -32,12 +32,14 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
     private $pageVars;
     private $router;
     private $variableApi;
+    private $isInstalled;
 
-    public function __construct(ParameterBag $pageVars, RouterInterface $routerInterface, VariableApi $variableApi)
+    public function __construct(ParameterBag $pageVars, RouterInterface $routerInterface, VariableApi $variableApi, $isInstalled)
     {
         $this->pageVars = $pageVars;
         $this->router = $routerInterface;
         $this->variableApi = $variableApi;
+        $this->isInstalled = $isInstalled;
     }
 
     /**
@@ -49,6 +51,10 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
+        if (!$this->isInstalled) {
+            return;
+        }
+
         // set some defaults
         $this->pageVars->set('lang', \ZLanguage::getLanguageCode());
         $this->pageVars->set('langdirection', \ZLanguage::getDirection());
