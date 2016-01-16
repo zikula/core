@@ -718,6 +718,7 @@ class AdminController extends \Zikula_AbstractController
                 // Success
                 $event = new GenericEvent(null, $moduleinfo);
                 $this->getDispatcher()->dispatch('installer.module.activated', $event);
+                $this->get('zikula.cache_clearer')->clear('symfony.routing');
                 $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Activated %s module.', $moduleinfo['name']));
             }
         }
@@ -796,6 +797,7 @@ class AdminController extends \Zikula_AbstractController
 
             $this->view->clear_compiled();
             $this->view->clear_all_cache();
+            $this->get('zikula.cache_clearer')->clear('symfony.routing');
 
             return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_view', array(
                     'startnum' => $startnum,
@@ -851,6 +853,7 @@ class AdminController extends \Zikula_AbstractController
                 // Success
                 $event = new GenericEvent(null, $modinfo);
                 $this->getDispatcher()->dispatch('installer.module.deactivated', $event);
+                $this->get('zikula.cache_clearer')->clear('symfony.routing');
                 $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deactivated module.'));
             }
         }
