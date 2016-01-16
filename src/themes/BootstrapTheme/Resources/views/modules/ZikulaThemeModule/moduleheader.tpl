@@ -10,6 +10,11 @@
     {if $title}<h2>{$title|safetext}</h2>{/if}
 
 {elseif $type != 'admin'}
+    <div class="{if $type == 'user'}z-modtitle{else}z-admin-content-modtitle{/if}">
+        {if $image}<img src="{$image|safetext}" alt="{$title|safetext}" class="z-floatleft" />{/if}
+        {if $title}<h2>{$title|safetext}</h2>{/if}
+    </div>
+
     <div class="navbar navbar-inverse navbar-noborder">
         <div class="navbar-inner navbar-bgimages">
             <div class="container-fluid">
@@ -23,10 +28,8 @@
                     {if isset($image) && $image}
                         <a class="navbar-brand" href="{if $titlelink}{$titlelink}{else}#{/if}" title="{$title}"><img class="img-responsive" alt="" src="{$image}" /></a>
                     {/if}
-                    <a href="{if $titlelink}{$titlelink}{else}#{/if}" class="navbar-brand" title="{$title}">{if $truncated}{$titletruncated}{else}{$title}{/if}</a>
                 </div>
                 <div class="collapse navbar-collapse" id="userheader-div">
-                    {if $truncated}<h4>{$title}</h4>{/if}
                     {modulelinks modname=$modname type=$type menuclass='nav navbar-nav'}
                 </div>
             </div>
