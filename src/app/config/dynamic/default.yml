@@ -14,7 +14,7 @@ swiftmailer:
     port: 25
     encryption: null
     auth_mode: null
-    delivery_address: null
+    delivery_addresses: []
     disable_delivery: false
 parameters:
     zikula.session.name: _zsid
