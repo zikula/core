@@ -33,7 +33,7 @@ class MailerModuleVersion extends \Zikula_AbstractVersion
         $meta['description']    = $this->__('Mailer module, provides mail API and mail setting administration.');
         //! module name that appears in URL
         $meta['url']            = $this->__('mailer');
-        $meta['version']        = '1.4.2';
+        $meta['version']        = '1.4.3';
         $meta['core_min']       = '1.4.0';
         $meta['capabilities']   = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
         $meta['securityschema'] = array('ZikulaMailerModule::' => '::');

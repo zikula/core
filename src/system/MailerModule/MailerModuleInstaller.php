@@ -82,7 +82,7 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                     'encryption' => (isset($modVars['smtpsecuremethod']) && in_array($modVars['smtpsecuremethod'], array('ssl', 'tls')) ? $modVars['smtpsecuremethod'] : 'ssl'),
                     'auth_mode' => (!empty($modVars['auth'])) ? 'login' : null,
                     'spool' => array('type' => 'memory'),
-                    'delivery_address' => null,
+                    'delivery_addresses' => [],
                     'disable_delivery' => $modVars['mailertype'] == 5,
                 );
                 $configDumper = $this->getContainer()->get('zikula.dynamic_config_dumper');
@@ -97,6 +97,13 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
             case '1.4.1':
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
             case '1.4.2':
+                $configDumper = $this->getContainer()->get('zikula.dynamic_config_dumper');
+                $config = $configDumper->getConfiguration('swiftmailer');
+                // delivery_address has changed to an array named delivery_addresses
+                $config['delivery_addresses'] = !empty($config['delivery_address']) ? [$config['delivery_address']] : [];
+                unset($config['delivery_address']);
+                $configDumper->setConfiguration('swiftmailer', $config);
+            case '1.4.3':
             // future upgrade routines
         }
 
