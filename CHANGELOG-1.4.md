@@ -17,7 +17,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix legacy modules always using 'home' realm in Theme engine (#2691)
     - Correct minor display issues for new Symfony 2.8-style developer toolbar.
     - Fix Login block not functional (#2729)
-    - Fix display problem with navbar in Bootstrap theme (2662)
+    - Fix display problem with navbar in Bootstrap theme (#2662)
+    - Streamlined log size by removing event channel (#2741)
  - Features:
     - New advanced block filtering based on a combination of any query parameter or request attributes.
     - Added core routing for all legacy urls (both normal and 'shorturls').
