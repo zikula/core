@@ -29,6 +29,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
 
     /**
      * The container is intentionally hidden from the child class.
+     * Use the get() method to access services from a child class.
      * @var ContainerInterface
      */
     private $container;
@@ -184,5 +185,15 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
     public function hasPermission($component = null, $instance = null, $level = null, $user = null)
     {
         return $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, $level, $user);
+    }
+
+    /**
+     * Shortcut method to fetch services from the the container.
+     * @param $serviceName
+     * @return object
+     */
+    public function get($serviceName)
+    {
+        return $this->container->get($serviceName);
     }
 }
