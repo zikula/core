@@ -96,7 +96,7 @@
         <mkdir dir="${builddir}/jsdoc"/>
         <exec command="curl -s https://getcomposer.org/installer | php;mv composer.phar ${workspace}/source"/>
         <!-- Make sure to ignore platform requirements, because CURL is not installed at the CI server. -->
-        <exec command="${workspace}/source/composer.phar install --prefer-dist --no-dev" checkreturn="true" passthru="true" /><!-- no-scripts removed -->
+        <exec command="${workspace}/source/composer.phar install --prefer-dist --no-dev --optimize-autoloader" checkreturn="true" passthru="true" /><!-- no-scripts removed -->
     </target>
 
     <!-- Build archives -->
@@ -132,18 +132,19 @@
         <exec command="php ${packagepath}/app/console translation:extract --enable-extractor=jms_i18n_routing --dir=${packagepath}/app/logs --output-dir=${packagepath}/app/Resources/translations template" checkreturn="true" passthru="true" />
 
         <!-- Clear cache and log directories filled by the console command above -->
-        <!--<delete includeEmptyDirs="true">-->
-            <!--<fileset dir="${packagepath}/app/cache" defaultexcludes="false">-->
-                <!--<exclude name=".htaccess" />-->
-                <!--<include name="**/*" />-->
-            <!--</fileset>-->
-        <!--</delete>-->
-        <!--<delete includeEmptyDirs="true">-->
-            <!--<fileset dir="${packagepath}/app/logs" defaultexcludes="false">-->
-                <!--<exclude name=".htaccess" />-->
-                <!--<include name="**/*" />-->
-            <!--</fileset>-->
-        <!--</delete>-->
+        <delete includeEmptyDirs="true">
+            <fileset dir="${packagepath}/app/cache" defaultexcludes="false">
+                <exclude name=".htaccess" />
+                <include name="**/*" />
+            </fileset>
+        </delete>
+        <delete includeEmptyDirs="true">
+            <fileset dir="${packagepath}/app/logs" defaultexcludes="false">
+                <exclude name=".htaccess" />
+                <include name="**/*" />
+            </fileset>
+        </delete>
+        <exec command="php ${packagepath}/app/console cache:clear --env=prod --no-debug" checkreturn="true" passthru="true" />
 
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs"/>
