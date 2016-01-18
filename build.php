@@ -38,7 +38,8 @@ class GenerateVendorDocCommand extends Command
             'symfony-bundle' => 'Symfony Bundles',
             'component' => 'Web Components',
             'library' => 'Other PHP libraries',
-            'composer-installer' => 'Composer Installers'
+            'composer-installer' => 'Composer Installers',
+            'composer-plugin' => 'Composer Plugins'
         );
         $types = array_keys($typeOrder);
         usort($packages, function ($a, $b) use ($types) {
