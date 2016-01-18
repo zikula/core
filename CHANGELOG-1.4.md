@@ -44,6 +44,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Bootstrap updated to 3.3.6
     - Colorbox (jQuery lightbox plugin) updated from 1.3.20.2 to 1.6.3 (`src/javascript/plugins/colorbox`)
     - Doctrine/Common updated to 2.5.3 and limited to 2.5.x for php compatibility
+    - Sensio/Distribution-Bundle updated to 5.0.*
 
 * 1.4.1 (2015-11-23)
 
