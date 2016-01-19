@@ -91,9 +91,6 @@
 
         "oyejorge/less.php": "dev-master"
     },
-    "require-dev": {
-        "craigh/breakit-module": "dev-master"
-    },
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
@@ -132,10 +129,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/zikula-modules/Profile"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/craigh/BreakIt"
         }
     ]
 }
