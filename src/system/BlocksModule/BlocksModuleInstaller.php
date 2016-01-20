@@ -131,6 +131,16 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->setVar('collapseable', (boolean) $collapseable);
 
             case '3.9.2':
+                // convert Text and Html block types so properties is proper array
+                $blocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['blocktype' => ['Html', 'Text']]);
+                foreach ($blocks as $block) {
+                    $properties = $block->getProperties();
+                    if (!is_array($properties)) {
+                        $block->setProperties(['content' => $properties]);
+                    }
+                }
+                $this->entityManager->flush();
+            case '3.9.3':
                 // future upgrade routines
         }
 

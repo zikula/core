@@ -13,55 +13,45 @@
 
 namespace Zikula\BlocksModule\Block;
 
-use SecurityUtil;
-use BlockUtil;
+use Symfony\Component\HttpFoundation\Request;
+use Zikula\Core\AbstractBlockHandler;
 
 /**
  * Block to display html 
  */
-class HtmlBlock extends \Zikula_Controller_AbstractBlock
+class HtmlBlock extends AbstractBlockHandler
 {
-    /**
-     * initialise block
-     */
-    public function init()
-    {
-        SecurityUtil::registerPermissionSchema('HTMLblock::', 'Block title::');
-    }
-
-    /**
-     * get information on block
-     *
-     * @return array The block information
-     */
-    public function info()
-    {
-        return array('module'         => 'ZikulaBlocksModule',
-                     'text_type'      => $this->__('HTML'),
-                     'text_type_long' => $this->__('HTML'),
-                     'allow_multiple' => true,
-                     'form_content'   => true,
-                     'form_refresh'   => false,
-                     'show_preview'   => true);
-    }
-
     /**
      * display block
      *
-     * @param mixed[] $blockinfo {
-     *      @type string $title   the title of the block
-     *      @type int    $bid     the id of the block
-     *      @type string $content the seralized block content array
-     *                            }
-     *
+     * @param array $properties
      * @return string the rendered bock
      */
-    public function display($blockinfo)
+    public function display(array $properties)
     {
-        if (!SecurityUtil::checkPermission('HTMLblock::', "$blockinfo[title]::", ACCESS_OVERVIEW)) {
-            return;
+        if (!$this->hasPermission('HTMLblock::', "$properties[title]::", ACCESS_OVERVIEW)) {
+            return '';
         }
 
-        return BlockUtil::themeBlock($blockinfo);
+        return $properties['content'];
+    }
+
+    public function modify(Request $request, array $properties)
+    {
+        $defaults = [
+            'content' => ''
+        ];
+        $vars = array_merge($defaults, $properties);
+        $form = $this->createFormBuilder($vars)
+            ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType')
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            return $form->getData();
+        }
+
+        return $this->renderView('ZikulaBlocksModule:Block:html_modify.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

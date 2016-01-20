@@ -50,11 +50,6 @@
                 </div>
             </div>
         </fieldset>
-        {# @TODO neither of the methods below will be needed when html block is refactored to supply its own template #}
-        {#{if $bkey eq 'HtmlBlock'}{* notify hooks here strictly for html block *}#}
-            {#{notifydisplayhooks eventname='blocks.ui_hooks.htmlblock.content.form_edit' id=$bid}#}
-        {#{/if}#}
-        {#{{ notifyDisplayHooks('pages.ui_hooks.pages.form_edit', form.vars.value.pageid|default(null)) }}#}
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
                 {{ form_widget(form.save, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
