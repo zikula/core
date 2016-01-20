@@ -23,7 +23,7 @@
  */
 class Zikula_Response_DisplayHook extends Zikula\Core\Hook\DisplayHookResponse
 {
-    public function __construct($area, Zikula_View $view, $template)
+    public function __construct($area, $view, $template)
     {
         LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         parent::__construct($area, $view, $template);

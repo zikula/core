@@ -32,9 +32,9 @@ class DisplayHookResponse
     protected $area;
 
     /**
-     * Zikula_View
+     * The rendering engine.
      *
-     * @var Zikula_View
+     * @var Zikula_View|Twig_Environment
      */
     protected $view;
 
@@ -48,11 +48,11 @@ class DisplayHookResponse
     /**
      * Constructor.
      *
-     * @param string      $area     Name of this response.
-     * @param Zikula_View $view     Zikula View instance.
-     * @param string      $template Template, in the context of the Zikula_View.
+     * @param string                       $area     Name of this response.
+     * @param Zikula_View|Twig_Environment $view     Zikula View instance.
+     * @param string                       $template Template, in the context of the rendering engine.
      */
-    public function __construct($area, Zikula_View $view, $template)
+    public function __construct($area, $view, $template)
     {
         $this->area = $area;
         $this->view = $view;
@@ -134,6 +134,15 @@ class DisplayHookResponse
      */
     public function __toString()
     {
-        return $this->view->fetch($this->template);
+        if ($this->view instanceof \Twig_Environment) {
+            return $this->view->render($this->template);
+        }
+
+        // remove in 2.0
+        if ($this->view instanceof Zikula_View) {
+            return $this->view->fetch($this->template);
+        }
+
+        return '';
     }
 }
