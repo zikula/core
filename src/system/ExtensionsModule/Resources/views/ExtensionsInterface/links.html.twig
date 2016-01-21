@@ -12,7 +12,7 @@
             </li>                
         {% else %}
             <li class="{{ menu_css.menuItemClass }} {% if current_path == link.url %} active{% endif %}">
-                <a href="{{ link.url }}" title="{{ link.title }}"><i class="{{ link.icon }}"> </i> {{ link.text }}</a>          
+                <a href="{{ link.url }}" title="{{ link.title|default(link.text)  }}"><i class="{{ link.icon }}"> </i> {{ link.text }}</a>          
             </li> 
         {% endif %}    
     {% endfor %}
