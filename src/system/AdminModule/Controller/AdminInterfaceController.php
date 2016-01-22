@@ -160,6 +160,7 @@ class AdminInterfaceController extends AbstractController {
         }
 
         $data = [];
+        $data['updatecheck'] = $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatecheck');
         $data['scactive'] = (bool) \ModUtil::available('ZikulaSecurityCenterModule');
         // check for outputfilter
         $data['useids'] = (bool) (\ModUtil::available('ZikulaSecurityCenterModule') && $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'useids') == 1);
@@ -178,64 +179,66 @@ class AdminInterfaceController extends AbstractController {
      * @return Response symfony response object
      */
     public function updatecheckAction() {
-        
-        
-        if (!$this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatecheck')) {
-            return [
-                'update_show' => false
-            ];
+        if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
         }
-
-        $force = false;
-
         $now = time();
+        $updateStatus = ['tag_name' => '', 'checked' => false];
+        $updateStatus['force'] = (bool) $this->get('request_stack')->getMasterRequest()->query->get('forceupdatecheck');
+        $updateStatus['enabled'] =(bool) $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatecheck');        
+        $updateStatus['currentVersion'] = $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'Version_Num');
+        $updateStatus['lastChecked'] = (int) $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatelastchecked');
+        $updateStatus['checkInterval'] = (int) $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatefrequency') * 86400;
+        $updateStatus['updateversion'] = $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updateversion');
+        $updateStatus['show'] = false;
 
-        $lastChecked = (int) $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatelastchecked');
-        $checkInterval = (int) $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatefrequency') * 86400;
-        $updateversion = $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updateversion');
-        $update_show = false;
-        $onlineVersion = ['tag_name' => '', 'checked' => false];
-
-        if ($force == false && (($now - $lastChecked) < $checkInterval)) {
+        if ($updateStatus['force'] == false && (($now - $updateStatus['lastChecked']) < $updateStatus['checkInterval'])) {
             // dont get an update because TTL not expired yet
-            $onlineVersion['tag_name'] = $updateversion;
+            $updateStatus['tag_name'] = $updateStatus['updateversion'];
         } else {
             $newVersionInfo = json_decode(trim($this->zcurl('https://api.github.com/repos/zikula/core/releases')), true);
+           
+            
             if (!is_array($newVersionInfo) || isset($newVersionInfo['message']) /* Will be set if rate limits encountered */) {
-                $update_show = false;
+                $updateStatus['show'] = false;
             }
-
+            
+            
+            dump($newVersionInfo);
+            
+            
             foreach ($newVersionInfo as $version) {
                 if (!is_array($version)) {
                     // Invalid response, probably api limits encountered.
-                    $update_show = false;
+                    $updateStatus['show'] = false;
                 }
                 if (!array_key_exists('prerelease', $version) || $version['prerelease']) {
                     continue;
                 }
-                if (array_key_exists('tag_name', $version) && version_compare($version['tag_name'], $onlineVersion['tag_name']) == 1) {
-                    $onlineVersion = $version;
-                    $onlineVersion['checked'] = true;
+                if (array_key_exists('tag_name', $version) && version_compare($version['tag_name'], $updateStatus['tag_name']) == 1) {
+                    $updateStatus = array_merge($updateStatus, $version);
+                    $updateStatus['checked'] = true;
                 }
             }
+            
+            
+            
+            
         }
 
-        if ($onlineVersion['checked'] === true && $onlineVersion['tag_name'] !== '') {
+        
+        
+        if ($updateStatus['checked'] === true && $updateStatus['tag_name'] !== '') {
             $this->get('zikula_extensions_module.api.variable')->set('ZConfig', 'updatelastchecked', (int) time());
-            $this->get('zikula_extensions_module.api.variable')->set('ZConfig', 'updateversion', $onlineVersion['tag_name']);
+            $this->get('zikula_extensions_module.api.variable')->set('ZConfig', 'updateversion', $updateStatus['tag_name']);
         }
 
         // compare with db Version_Num
         // if 1 then there is a later version available
-        if (version_compare($onlineVersion['tag_name'], $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'Version_Num') == 1)) {
-            $update_show = true;
-        } else {
-            $update_show = false;
-        }
+        $updateStatus['versionCompare'] = version_compare($updateStatus['tag_name'], $updateStatus['currentVersion']);
 
         return $this->render("@ZikulaAdminModule/AdminInterface/updatecheck.html.twig", [
-                    'update_show' => $update_show && $onlineVersion['checked'] ? true : false ,
-                    'update_version' => $onlineVersion
+                    'updateStatus' => $updateStatus
         ]);
     }
 
