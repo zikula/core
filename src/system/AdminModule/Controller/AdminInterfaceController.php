@@ -203,6 +203,7 @@ class AdminInterfaceController extends AbstractController {
             } else {
                 $updateStatus['releases'] = $newVersionInfo;
                 $updateStatus['checked'] = true;
+                $updateStatus['updateversion'] = $updateStatus['releases'][0]['tag_name'];
                 //updateversion - get latest version from releases - move all git releases/updatechecker management to separate class
             }
         }

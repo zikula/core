@@ -9,7 +9,7 @@
                         <i class="fa fa-info fa-stack-1x"></i>
                     </span>                    
                     <strong> {{ __('Update checker') }}: </strong>  
-                        {# you use not realesed version #}
+                    {# you use not realesed version #}
                     {% if updateStatus.versionCompare == -1 %}
                         {{  __('You are currently using not yet realesed version of Zikula Core.') }}
                         {# you use latest version #}                    
@@ -33,10 +33,10 @@
                         <div class="col-md-12">
                             <ul class="list-group">
                                 {% if updateStatus.versionCompare == -1 %}
-                                        <li class="list-group-item active clearfix">
-                                            <span class="col-md-3"> {{ __('Zikula Core') }} {{ updateStatus.currentVersion }} </span>
-                                            <span class="col-md-3"> {{ __('Currently used version') }}  </span>                                            
-                                        </li>                                  
+                                    <li class="list-group-item active clearfix">
+                                        <span class="col-md-3"> {{ __('Zikula Core') }} {{ updateStatus.currentVersion }} </span>
+                                        <span class="col-md-3"> {{ __('Currently used version') }}  </span>                                            
+                                    </li>                                  
                                 {% endif %}    
                                 {% for release in updateStatus.releases %}
                                     {% if release.prerelease %} 
@@ -46,10 +46,10 @@
                                                 {{ release.name }}
                                             </a> 
                                             {% if loop.first %}
-                                            <span class="col-md-3">
-                                            {{ __('Latest stable relese') }} 
-                                            </span>    
-                                             {% endif %} 
+                                                <span class="col-md-3">
+                                                    {{ __('Latest stable relese') }} 
+                                                </span>    
+                                            {% endif %} 
                                             <a class="pull-right" role="button" data-toggle="collapse" href="#release_{{ loop.index }}" aria-expanded="false" aria-controls="release_{{ loop.index }}">
                                                 <i class="fa fa-info"> </i>
                                             </a>                                              
@@ -75,9 +75,13 @@
                     </div>  
                 {% else %}    
                     <div class="col-md-12 text-center">                    
-                        <p>{{  __('Found new stable Zikula Core') }}: {{ updateStatus.updateversion }} </p>                    
-                        <a class="btn btn-info"  href="{{ path(updateStatus._route, updateStatus._route_params|merge({'forceupdatecheck':1})) }}" >            
-                            {{  __('Check now') }} <i class="fa fa-refresh"></i>             
+                        <p>{{  __('Stable Zikula Core available') }}: {{ updateStatus.updateversion }} </p>                    
+                        <a class="btn btn-sm btn-primary"  href="{{ path(updateStatus._route, updateStatus._route_params|merge({'forceupdatecheck':1})) }}" >            
+                            {{  __('Check now') }}
+                            <span class="fa-stack">
+                                <i class="fa fa-refresh fa-stack-2x"></i>
+                                <i class="fa fa-info fa-stack-1x"></i>
+                            </span>              
                         </a>              
                     </div>           
                 {% endif %}       
