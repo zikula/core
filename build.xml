@@ -143,7 +143,6 @@
                 <include name="**/*" />
             </fileset>
         </delete>
-        <exec command="php ${packagepath}/app/console cache:clear --env=prod --no-debug" checkreturn="true" passthru="true" />
 
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs"/>
