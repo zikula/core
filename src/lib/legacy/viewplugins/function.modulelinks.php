@@ -45,7 +45,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
     $menuItemClass      = isset($params['itemclass'])   ? $params['itemclass'] : '';
     $menuItemFirst      = isset($params['first'])       ? $params['first'] : '';
     $menuItemLast       = isset($params['last'])        ? $params['last'] : '';
-    $returnAsArray      = isset($params['returnAsArray']) ? (boolean) $params['returnAsArray'] : false;
+    $returnAsArray      = isset($params['returnAsArray']) ? (bool) $params['returnAsArray'] : false;
 
     if (empty($menuLinks)) {
         if (!isset($params['modname']) || !ModUtil::available($params['modname'])) {

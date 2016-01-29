@@ -1139,7 +1139,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // get our input
         $themename = $request->query->get('themename', null);
-        $confirmation = (boolean)$request->request->get('confirmation', false);
+        $confirmation = (bool)$request->request->get('confirmation', false);
         $resetuserselected = $request->request->get('resetuserselected', null);
 
         // check our input

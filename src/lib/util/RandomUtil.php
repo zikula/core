@@ -29,7 +29,7 @@ class RandomUtil
         $factor = 95717; // prime
         list($usec, $sec) = explode(" ", microtime());
 
-        return (double)strrev(($usec) * $factor / M_PI);
+        return (float)strrev(($usec) * $factor / M_PI);
     }
 
     /**

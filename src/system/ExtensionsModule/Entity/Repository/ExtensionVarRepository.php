@@ -42,7 +42,7 @@ class ExtensionVarRepository extends EntityRepository implements ExtensionVarRep
         $query = $qb->getQuery();
         $result = $query->execute();
 
-        return (boolean)$result;
+        return (bool)$result;
     }
 
     public function deleteByExtension($extensionName)
@@ -54,7 +54,7 @@ class ExtensionVarRepository extends EntityRepository implements ExtensionVarRep
         $query = $qb->getQuery();
         $result = $query->execute();
 
-        return (boolean)$result;
+        return (bool)$result;
     }
 
     public function findAll()

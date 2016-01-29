@@ -418,7 +418,7 @@ class BlockUtil
                 $entityManager->flush();
             }
 
-            return (boolean) $item['active'];
+            return (bool) $item['active'];
         }
 
         return false;

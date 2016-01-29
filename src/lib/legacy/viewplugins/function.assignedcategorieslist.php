@@ -40,7 +40,7 @@
  */
 function smarty_function_assignedcategorieslist($params, Zikula_View $view)
 {
-    if (isset($params['doctrine2']) && (boolean)$params['doctrine2'] == true) {
+    if (isset($params['doctrine2']) && (bool)$params['doctrine2'] == true) {
         if (!isset($params['categories'])) {
             $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'categories')));
 
@@ -56,7 +56,7 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
 
     $result = "<ul>\n";
 
-    if (isset($params['doctrine2']) && (boolean)$params['doctrine2'] == true) {
+    if (isset($params['doctrine2']) && (bool)$params['doctrine2'] == true) {
         if (count($params['categories']) > 0) {
             foreach ($params['categories'] as $category) {
                 if (!is_object($category)) {

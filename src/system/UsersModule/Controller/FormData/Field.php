@@ -150,11 +150,11 @@ class Field extends \Zikula_AbstractBase
         if (!isset($name) || empty($name)) {
             throw new \OutOfBoundsException($this->__f('Invalid field name: \'%1$s\'', array($name)));
         } else {
-            $methodName = 'get' . ucFirst($name);
+            $methodName = 'get' . ucfirst($name);
             if (method_exists($this, $methodName)) {
                 $returnValue = $this->$methodName();
             } else {
-                $methodName = 'is' . ucFirst($name);
+                $methodName = 'is' . ucfirst($name);
                 if (method_exists($this, $methodName)) {
                     $returnValue = $this->$methodName();
                 } else {
@@ -182,7 +182,7 @@ class Field extends \Zikula_AbstractBase
         if (!isset($name) || empty($name) || ($name[0] == '_')) {
             throw new \OutOfBoundsException($this->__f('Invalid field name: \'%1$s\'', array($name)));
         } else {
-            $methodName = 'get' . ucFirst($name);
+            $methodName = 'get' . ucfirst($name);
             if (method_exists($this, $methodName)) {
                 $returnValue = isset($this->$name);
             } else {

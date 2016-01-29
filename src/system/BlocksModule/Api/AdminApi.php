@@ -213,7 +213,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function deactivate($args)
     {
         $args['active'] = 0;
-        $res = (boolean)$this->setActiveState($args);
+        $res = (bool)$this->setActiveState($args);
 
         if (!$res) {
             throw new \RuntimeException($this->__('Error! Could not deactivate the block.'));
@@ -236,7 +236,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function activate($args)
     {
         $args['active'] = 1;
-        $res = (boolean)$this->setActiveState($args);
+        $res = (bool)$this->setActiveState($args);
 
         if (!$res) {
             throw new \RuntimeException($this->__('Error! Could not activate the block.'));

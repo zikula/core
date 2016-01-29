@@ -901,7 +901,7 @@ class ObjectUtil
             DBUtil::flushCache($tablename);
         }
 
-        return (boolean)$rc;
+        return (bool)$rc;
     }
 
     /**
@@ -1038,7 +1038,7 @@ class ObjectUtil
             DBUtil::flushCache($tablename);
         }
 
-        return (boolean)$res;
+        return (bool)$res;
     }
 
     /**
@@ -1057,7 +1057,7 @@ class ObjectUtil
         }
 
         $where = "tablename='" . DataUtil::formatForStore($tablename) . "' AND obj_id='" . DataUtil::formatForStore($obj[$idcolumn]) . "' AND obj_idcolumn='" . DataUtil::formatForStore($idcolumn) . "'";
-        $categoriesDeleted = (boolean)DBUtil::deleteWhere('categories_mapobj', $where);
+        $categoriesDeleted = (bool)DBUtil::deleteWhere('categories_mapobj', $where);
 
         $dbtables = DBUtil::getTables();
         if (isset($dbtables[$tablename])) {
