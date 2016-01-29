@@ -39,6 +39,7 @@
         <td>{{ block.blocktype }}</td>
         <td>
             {% for position in block.positions %}
+                {% if not positionavailable(position.name) %} <i class="fa fa-exclamation-triangle text-danger tooltips" title="{{ __('Position not available in current default theme.') }}"></i>{% endif %}
                 <a href="{{ path('zikulablocksmodule_placement_edit', {pid:position.pid}) }}">{{ position.name }}</a>{% if not loop.last %}, {% endif %}
             {% endfor %}
             {% if block.filters|length > 0 %} <i class="fa fa-filter fa-lg text-success pull-right"></i>{% endif %}
