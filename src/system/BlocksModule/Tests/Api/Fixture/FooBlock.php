@@ -2,7 +2,6 @@
 
 namespace Zikula\BlocksModule\Tests\Api\Fixture;
 
-use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\BlockHandlerInterface;
 
 class FooBlock implements BlockHandlerInterface
@@ -17,8 +16,18 @@ class FooBlock implements BlockHandlerInterface
         // TODO: Implement display() method.
     }
 
-    public function modify(Request $request, array $properties)
+    public function getFormClassName()
     {
-        // TODO: Implement modify() method.
+        // TODO: Implement getFormClassName() method.
+    }
+
+    public function getFormOptions()
+    {
+        // TODO: Implement getFormOptions() method.
+    }
+
+    public function getFormTemplate()
+    {
+        // TODO: Implement getFormTemplate() method.
     }
 }
