@@ -40,8 +40,7 @@ class UserController extends AbstractController
     {
         $uid = UserUtil::getVar('uid');
 
-        $entity = 'ZikulaBlocksModule:UserBlockEntity';
-        $item = $this->getDoctrine()->getManager()->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $bid));
+        $item = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:UserBlockEntity')->findOneBy(array('uid' => $uid, 'bid' => $bid));
         $item->setActive($item->getActive() == 1 ? 0 : 1);
         $this->getDoctrine()->getManager()->flush();
 

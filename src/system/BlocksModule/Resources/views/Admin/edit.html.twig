@@ -25,10 +25,13 @@
             {{ form_row(form.title) }}
             {{ form_row(form.description) }}
         </fieldset>
+        {% if form.properties is defined or renderedPropertiesForm is not empty %}
         <fieldset>
             <legend>{{ __('Properties') }}</legend>
-            {{ renderedPropertiesForm|default('')|raw }}
+            {{ include(propertiesFormTemplate, {form: form.properties|default()}, with_context = false, ignore_missing = true) }}
+            {{ renderedPropertiesForm|default('')|raw }}{# @todo remove at Core-2.0 #}
         </fieldset>
+        {% endif %}
         <fieldset>
             <legend>{{ __('Filters') }}</legend>
             {{ form_row(form.positions) }}

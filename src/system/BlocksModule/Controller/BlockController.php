@@ -95,19 +95,20 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createForm('Zikula\BlocksModule\Form\Type\BlockType', $blockEntity);
+        if (null !== $blockInstance->getFormClassName()) {
+            $form->add('properties', $blockInstance->getFormClassName(), $blockInstance->getFormOptions());
+        }
         $form->handleRequest($request);
 
         list($moduleName, $blockFqCn) = explode(':', $blockEntity->getBkey());
-        $renderedPropertiesForm = $this->getBlockModifyOutput($blockInstance, $blockEntity, $request);
-        if (($blockInstance instanceof \Zikula_Controller_AbstractBlock) && $blockInstance->info()['form_content']) { // @todo @deprecated remove at Core-2.0
+        // @todo @deprecated remove this code block (re: $renderedPropertiesForm) at Core-2.0
+        $renderedPropertiesForm = $this->getBlockModifyOutput($blockInstance, $blockEntity);
+        if (($blockInstance instanceof \Zikula_Controller_AbstractBlock) && $blockInstance->info()['form_content']) {
             $renderedPropertiesForm = $this->formContentModify($request, $blockEntity);
         }
 
         if ($form->isSubmitted() and $form->get('save')->isClicked() and $form->isValid()) {
-            if ($blockInstance instanceof BlockHandlerInterface) {
-                $properties = $blockInstance->modify($request, $blockEntity->getProperties());
-                $blockEntity->setProperties($properties);
-            } elseif ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove this BC at Core-2.0
+            if ($blockInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove this BC at Core-2.0
                 if ($blockInstance->info()['form_content']) {
                     $content = $this->formContentModify($request);
                     $blockEntity->setContent($content);
@@ -140,7 +141,8 @@ class BlockController extends AbstractController
 
         return $this->render('ZikulaBlocksModule:Admin:edit.html.twig', [
             'moduleName' => $moduleName,
-            'renderedPropertiesForm' => $renderedPropertiesForm,
+            'renderedPropertiesForm' => $renderedPropertiesForm, // @remove at Core-2.0
+            'propertiesFormTemplate' => $blockInstance->getFormTemplate(),
             'form' => $form->createView(),
         ]);
     }
@@ -218,19 +220,15 @@ class BlockController extends AbstractController
     /**
      * Get the html output from the block's `modify` method.
      *
-     * @deprecated This method is not required in Core-2.0. Simply use
-     *   `$output = $blockClassInstance->modify($request, $blockEntity->getProperties());`
+     * @deprecated Remove at Core-2.0.
      * @param $blockClassInstance
      * @param BlockEntity $blockEntity
-     * @param Request $request
      * @return mixed|string
      */
-    private function getBlockModifyOutput($blockClassInstance, BlockEntity $blockEntity, Request $request)
+    private function getBlockModifyOutput($blockClassInstance, BlockEntity $blockEntity)
     {
         $output = '';
-        if ($blockClassInstance instanceof BlockHandlerInterface) {
-            $output = $blockClassInstance->modify($request, $blockEntity->getProperties());
-        } elseif ($blockClassInstance instanceof \Zikula_Controller_AbstractBlock) { // @todo remove this BC at Core-2.0
+        if ($blockClassInstance instanceof \Zikula_Controller_AbstractBlock) {
             $blockInfo = \BlockUtil::getBlockInfo($blockEntity->getBid());
             $blockInfo = $blockInfo ? $blockInfo : ['content' => ''];
             $output = call_user_func([$blockClassInstance, 'modify'], $blockInfo);

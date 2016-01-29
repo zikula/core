@@ -13,7 +13,6 @@
 
 namespace Zikula\BlocksModule\Block;
 
-use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\AbstractBlockHandler;
 
 /**
@@ -36,22 +35,13 @@ class HtmlBlock extends AbstractBlockHandler
         return $properties['content'];
     }
 
-    public function modify(Request $request, array $properties)
+    public function getFormClassName()
     {
-        $defaults = [
-            'content' => ''
-        ];
-        $vars = array_merge($defaults, $properties);
-        $form = $this->createFormBuilder($vars)
-            ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType')
-            ->getForm();
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            return $form->getData();
-        }
+        return 'Zikula\BlocksModule\Block\Form\Type\HtmlBlockType';
+    }
 
-        return $this->renderView('ZikulaBlocksModule:Block:html_modify.html.twig', [
-            'form' => $form->createView(),
-        ]);
+    public function getFormTemplate()
+    {
+        return 'ZikulaBlocksModule:Block:html_modify.html.twig';
     }
 }

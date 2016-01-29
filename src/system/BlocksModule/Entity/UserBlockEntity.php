@@ -19,8 +19,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * UserBlock entity class.
  *
- * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
- *
  * @ORM\Entity
  * @ORM\Table(name="userblocks",indexes={@ORM\Index(name="uid_bid_idx",columns={"uid","bid"})})
  */

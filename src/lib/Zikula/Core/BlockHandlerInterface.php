@@ -13,8 +13,6 @@
 
 namespace Zikula\Core;
 
-use Symfony\Component\HttpFoundation\Request;
-
 interface BlockHandlerInterface
 {
     /**
@@ -32,15 +30,21 @@ interface BlockHandlerInterface
     public function display(array $properties);
 
     /**
-     * Modify the block content.
-     * Do one of the following:
-     * 1. Display a form to modify the block's behavior or display.
-     *   Return must be the html for the form used to modify the block.
-     * 2. Process the form and return data to be stored in block's `content` property.
-     *   Return must be an array.
-     * @param Request $request
-     * @param array $properties
-     * @return string|array
+     * Get the Fully Qualified Class Name of the block's form class.
+     * @return string
      */
-    public function modify(Request $request, array $properties);
+    public function getFormClassName();
+
+    /**
+     * Get an array of form options.
+     * @return array
+     */
+    public function getFormOptions();
+
+    /**
+     * Get the full name of the form's template in 'double colon' name-style.
+     *   e.g. `AcmeMyBundle:Block:foo_modify.html.twig`
+     * @return string
+     */
+    public function getFormTemplate();
 }

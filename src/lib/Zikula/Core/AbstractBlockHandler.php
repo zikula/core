@@ -60,15 +60,19 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
         \PluginUtil::loadPlugins($bundle->getPath() . "/plugins", "ModulePlugin_{$bundle->getName()}");
     }
 
-    /**
-     * Modify the block content.
-     * @param Request $request
-     * @param array $properties
-     * @return string|array
-     */
-    public function modify(Request $request, array $properties)
+    public function getFormClassName()
     {
-        return $request->request->get('properties', []);
+        return null;
+    }
+
+    public function getFormOptions()
+    {
+        return [];
+    }
+
+    public function getFormTemplate()
+    {
+        return 'ZikulaBlocksModule:Block:default_modify.html.twig';
     }
 
     /**
