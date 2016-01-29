@@ -15,9 +15,6 @@ namespace Zikula\Core;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilder;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 
