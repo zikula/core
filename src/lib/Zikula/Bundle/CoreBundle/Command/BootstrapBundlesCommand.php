@@ -15,7 +15,7 @@ class BootstrapBundlesCommand extends ContainerAwareCommand
     {
         $this
             ->setDescription('Loads bundles into persistences')
-            ->setHelp(<<<EOT
+            ->setHelp(<<<'EOT'
 The <info>scan:bundles</info> command loads bundle table.
 EOT
             )

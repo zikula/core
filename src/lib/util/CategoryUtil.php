@@ -881,7 +881,7 @@ class CategoryUtil
         $cats = self::getCategoriesByParentID($cid, '', false, $all);
 
         if ($countOnly) {
-            return (boolean)count($cats);
+            return (bool)count($cats);
         }
 
         foreach ($cats as $cat) {

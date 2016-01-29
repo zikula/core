@@ -388,7 +388,7 @@ class ModUtil
         $query = $qb->getQuery();
         $result = $query->execute();
 
-        return (boolean)$result;
+        return (bool)$result;
     }
 
     /**

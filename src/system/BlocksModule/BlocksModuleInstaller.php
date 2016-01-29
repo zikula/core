@@ -128,7 +128,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->flush();
 
                 $collapseable = $this->getVar('collapseable');
-                $this->setVar('collapseable', (boolean) $collapseable);
+                $this->setVar('collapseable', (bool) $collapseable);
 
             case '3.9.2':
                 // convert Text and Html block types so properties is proper array

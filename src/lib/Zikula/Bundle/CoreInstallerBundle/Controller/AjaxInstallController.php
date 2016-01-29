@@ -292,7 +292,7 @@ class AjaxInstallController extends AbstractController
         );
         $loggedIn = \UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
 
-        return (boolean) $loggedIn;
+        return (bool) $loggedIn;
     }
 
     private function finalizeParameters()

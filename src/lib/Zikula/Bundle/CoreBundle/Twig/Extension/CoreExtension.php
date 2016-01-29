@@ -271,7 +271,7 @@ class CoreExtension extends \Twig_Extension
         // ensure proper variable types
         $value = (string) $value;
         $type = (string) $type;
-        $weight = (integer) $weight;
+        $weight = (int) $weight;
 
         // @todo remove this code block at Core-2.0 because all themes are twig based
         $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
@@ -350,6 +350,6 @@ class CoreExtension extends \Twig_Extension
 
         $result = \SecurityUtil::checkPermission($component, $instance, constant($level));
 
-        return (boolean) $result;
+        return (bool) $result;
     }
 }

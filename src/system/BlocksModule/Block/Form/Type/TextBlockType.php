@@ -44,7 +44,6 @@ class TextBlockType extends AbstractType
                 }
             ))
         ;
-
     }
 
     public function getName()
