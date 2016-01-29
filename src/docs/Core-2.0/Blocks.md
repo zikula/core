@@ -24,7 +24,7 @@ Requirements
  - BlockHandlers must register their PermissionSchema as part of the owning module's array (in composer.json).
  - BlockHandler must define a Symfony FormType class to allow editing of the block properties if this is needed.
    Otherwise the `getFormClassName` method must return `null`.
-    - A simple Twig template is available as a default `ZikulaBlocksModule:Block:default_modify.html.twig`.
+    - A simple Twig template is available as a default `@ZikulaBlocksModule/Block/default_modify.html.twig`.
         - if you implement your own modify template, **do not** render the `form_start(form)` or `form_end(form)`
           tags within your template.
  - The `$properties` parameter in the `display` method is an array from BlockEntity.

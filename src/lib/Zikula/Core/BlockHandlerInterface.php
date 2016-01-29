@@ -42,8 +42,8 @@ interface BlockHandlerInterface
     public function getFormOptions();
 
     /**
-     * Get the full name of the form's template in 'double colon' name-style.
-     *   e.g. `AcmeMyBundle:Block:foo_modify.html.twig`
+     * Get the full name of the form's template in 'namespaced' name-style.
+     *   e.g. `return '@AcmeMyBundle/Block/foo_modify.html.twig';`
      * @return string
      */
     public function getFormTemplate();

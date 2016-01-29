@@ -42,6 +42,6 @@ class HtmlBlock extends AbstractBlockHandler
 
     public function getFormTemplate()
     {
-        return 'ZikulaBlocksModule:Block:html_modify.html.twig';
+        return '@ZikulaBlocksModule/Block/html_modify.html.twig';
     }
 }

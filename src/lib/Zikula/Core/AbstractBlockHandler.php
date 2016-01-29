@@ -71,7 +71,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
 
     public function getFormTemplate()
     {
-        return 'ZikulaBlocksModule:Block:default_modify.html.twig';
+        return '@ZikulaBlocksModule/Block/default_modify.html.twig';
     }
 
     /**

@@ -39,9 +39,4 @@ class TextBlock extends AbstractBlockHandler
     {
         return 'Zikula\BlocksModule\Block\Form\Type\TextBlockType';
     }
-
-    public function getFormTemplate()
-    {
-        return 'ZikulaBlocksModule:Block:text_modify.html.twig';
-    }
 }
