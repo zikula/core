@@ -57,7 +57,7 @@ class BlockController extends AbstractController
             return $this->redirect($this->generateUrl('zikulablocksmodule_block_edit', ['bkey' => $bkey]));
         }
 
-        return $this->render('ZikulaBlocksModule:Admin:new.html.twig', [
+        return $this->render('@ZikulaBlocksModule/Admin/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -139,7 +139,7 @@ class BlockController extends AbstractController
             return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
         }
 
-        return $this->render('ZikulaBlocksModule:Admin:edit.html.twig', [
+        return $this->render('@ZikulaBlocksModule/Admin/edit.html.twig', [
             'moduleName' => $moduleName,
             'renderedPropertiesForm' => $renderedPropertiesForm, // @remove at Core-2.0
             'propertiesFormTemplate' => ($blockInstance instanceof BlockHandlerInterface) ? $blockInstance->getFormTemplate() : null,
@@ -184,7 +184,7 @@ class BlockController extends AbstractController
             return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
         }
 
-        return $this->render('ZikulaBlocksModule:Admin:delete.html.twig', [
+        return $this->render('@ZikulaBlocksModule/Admin/delete.html.twig', [
             'form' => $form->createView(),
             'block' => $blockEntity
         ]);
@@ -276,7 +276,7 @@ class BlockController extends AbstractController
      */
     public function viewAction(BlockEntity $blockEntity = null)
     {
-        return $this->render('ZikulaBlocksModule:Admin:blockview.html.twig', [
+        return $this->render('@ZikulaBlocksModule/Admin/blockview.html.twig', [
                 'block' => $blockEntity,
             ]);
     }
