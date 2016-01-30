@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\Core\BlockHandlerInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\FatalResponse;
 use Zikula\Core\Response\Ajax\ForbiddenResponse;
@@ -94,7 +95,7 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createForm('Zikula\BlocksModule\Form\Type\BlockType', $blockEntity);
-        if (null !== $blockInstance->getFormClassName()) {
+        if (($blockInstance instanceof BlockHandlerInterface) && (null !== $blockInstance->getFormClassName())) {
             $form->add('properties', $blockInstance->getFormClassName(), $blockInstance->getFormOptions());
         }
         $form->handleRequest($request);
@@ -141,7 +142,7 @@ class BlockController extends AbstractController
         return $this->render('ZikulaBlocksModule:Admin:edit.html.twig', [
             'moduleName' => $moduleName,
             'renderedPropertiesForm' => $renderedPropertiesForm, // @remove at Core-2.0
-            'propertiesFormTemplate' => $blockInstance->getFormTemplate(),
+            'propertiesFormTemplate' => ($blockInstance instanceof BlockHandlerInterface) ? $blockInstance->getFormTemplate() : null,
             'form' => $form->createView(),
         ]);
     }
