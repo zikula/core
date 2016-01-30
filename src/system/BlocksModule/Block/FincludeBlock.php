@@ -36,6 +36,7 @@ class FincludeBlock extends AbstractBlockHandler
             case 2: // PHP
                 ob_start();
                 include \DataUtil::formatForOS($properties['filo']);
+
                 return ob_get_clean();
                 break;
             default:
