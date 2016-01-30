@@ -38,6 +38,7 @@ CHANGELOG - ZIKULA 1.4.x
         - BlocksModule updated to Core-2.0 Spec.
     - Added AbstractExtensionInstaller for use by third-party developers.
     - Added ExtensionVariablesTrait for developers to insert into classes where Extension Variable management is needed.
+    - Update Pending Content logic and definitions.
  - Vendor updates:
     - Symfony updated to 2.8.2
     - Font-Awesome updated to 4.5.0

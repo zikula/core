@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2016 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -13,86 +13,54 @@
 
 namespace Zikula\BlocksModule\Block;
 
-use SecurityUtil;
-use Zikula_Collection_Container;
-use Zikula;
-use EventUtil;
-use ModUtil;
-use BlockUtil;
+use Zikula\Common\Collection\Collectible\PendingContentCollectible;
+use Zikula\Common\Collection\Container;
+use Zikula\Core\AbstractBlockHandler;
+use Zikula\Core\Event\GenericEvent;
 
 /**
- * Pending Content block
+ * Class PendingContentBlock
+ * @package Zikula\BlocksModule\Block
  */
-class PendingContentBlock extends \Zikula_Controller_AbstractBlock
+class PendingContentBlock extends AbstractBlockHandler
 {
-    /**
-     * Initialise block.
-     *
-     * @return void
-     */
-    public function init()
+    public function display(array $properties)
     {
-        SecurityUtil::registerPermissionSchema('PendingContent::', 'Block title::');
-    }
-
-    /**
-     * Get information on block
-     *
-     * @return array The block information.
-     */
-    public function info()
-    {
-        return array('module'         => 'ZikulaBlocksModule',
-                     'text_type'      => $this->__('Pending Content'),
-                     'text_type_long' => $this->__('Pending Content'),
-                     'allow_multiple' => true,
-                     'form_content'   => true,
-                     'form_refresh'   => false,
-                     'show_preview'   => true);
-    }
-
-    /**
-     * Display block.
-     *
-     * @param mixed[] $blockinfo {
-     *      @type string $title   the title of the block
-     *      @type int    $bid     the id of the block
-     *      @type string $content the seralized block content array
-     *                            }
-     *
-     * @return string Rendered block.
-     */
-    public function display($blockinfo)
-    {
-        if (!SecurityUtil::checkPermission('PendingContent::', "$blockinfo[title]::", ACCESS_OVERVIEW)) {
-            return;
+        if (!$this->hasPermission('PendingContent::', "$properties[title]::", ACCESS_OVERVIEW)) {
+            return '';
         }
 
         // trigger event
-        $event = new \Zikula\Core\Event\GenericEvent(new Zikula_Collection_Container('pending_content'));
-        $pendingCollection = EventUtil::getManager()->dispatch('get.pending_content', $event)->getSubject();
+        $event = new GenericEvent(new Container('pending_content'));
+        $pendingCollection = $this->get('event_dispatcher')->dispatch('get.pending_content', $event)->getSubject();
 
-        $content = array();
-        // process results
+        $content = [];
         foreach ($pendingCollection as $collection) {
+            /** @var \Zikula\Common\Collection\Container $collection */
             $module = $collection->getName();
             foreach ($collection as $item) {
-                $link = ModUtil::url($module, $item->getController(), $item->getMethod(), $item->getArgs());
-                $content[] = array(
+                if ($item instanceof \Zikula_Provider_AggregateItem) { // @todo remove at Core-2.0
+                    $link = \ModUtil::url($module, $item->getController(), $item->getMethod(), $item->getArgs());
+                } elseif ($item instanceof PendingContentCollectible) {
+                    $link = $this->get('router')->generate($item->getRoute(), $item->getArgs());
+                } else {
+                    $link = '';
+                }
+                $content[] = [
                     'description' => $item->getDescription(),
                     'link' => $link,
                     'number' => $item->getNumber(),
-                );
+                ];
             }
         }
 
-        if (!empty($content)) {
-            $this->view->assign('content', $content);
-            $blockinfo['content'] = $this->view->fetch('Block/pendingcontent.tpl');
-        } else {
-            $blockinfo['content'] = '';
-        }
+        return $this->renderView('@ZikulaBlocksModule/Block/pendingcontent.html.twig', [
+            'content' => $content
+        ]);
+    }
 
-        return BlockUtil::themeBlock($blockinfo);
+    public function getType()
+    {
+        return $this->__("Pending Content");
     }
 }
