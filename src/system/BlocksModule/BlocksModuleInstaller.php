@@ -259,7 +259,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'module' => $blocksModuleEntity,
             'title' => $this->__("This site is powered by Zikula!"),
             'description' => $this->__('HTML block'),
-            'content' => $hellomessage,
+            'properties' => ['content' => $hellomessage],
             'position' => $positions['center']
             ];
         $blocks[] = [
