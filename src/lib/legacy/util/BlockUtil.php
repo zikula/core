@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\BlockHandlerInterface;
+use Zikula\BlocksModule\BlockHandlerInterface;
 
 /**
  * Block util.

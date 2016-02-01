@@ -32,12 +32,13 @@ CHANGELOG - ZIKULA 1.4.x
         - Add `Zikula\CategoriesModule\Form\Type\CategoriesType` for easier category usage in Symfony Forms.
     - Implement new definition spec for Hook capabilities.
     - Implement new BlockApi and all corresponding methods.
-        - BlockHandlerInterface
-        - AbstractBlockHandler
+        - Zikula\BlocksModule\BlockHandlerInterface
+        - Zikula\BlocksModule\AbstractBlockHandler
         - Updated BlocksModule Admin UI.
         - BlocksModule updated to Core-2.0 Spec.
     - Added AbstractExtensionInstaller for use by third-party developers.
     - Added ExtensionVariablesTrait for developers to insert into classes where Extension Variable management is needed.
+    - Update Pending Content logic and definitions.
  - Vendor updates:
     - Symfony updated to 2.8.2
     - Font-Awesome updated to 4.5.0

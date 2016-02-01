@@ -15,7 +15,7 @@
 
 namespace Zikula\BlocksModule\Collector;
 
-use Zikula\Core\BlockHandlerInterface;
+use Zikula\BlocksModule\BlockHandlerInterface;
 
 /**
  * Class BlockCollector

@@ -2,7 +2,7 @@
 
 namespace Zikula\BlocksModule\Tests\Api\Fixture;
 
-use Zikula\Core\BlockHandlerInterface;
+use Zikula\BlocksModule\BlockHandlerInterface;
 
 class FooBlock implements BlockHandlerInterface
 {

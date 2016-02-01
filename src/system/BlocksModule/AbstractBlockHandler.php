@@ -11,11 +11,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core;
+namespace Zikula\BlocksModule;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Core\AbstractBundle;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 
 abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerAwareInterface

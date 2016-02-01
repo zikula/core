@@ -17,7 +17,7 @@ use Symfony\Component\Finder\Finder;
 use Zikula\BlocksModule\Collector\BlockCollector;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\Core\AbstractModule;
-use Zikula\Core\BlockHandlerInterface;
+use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 

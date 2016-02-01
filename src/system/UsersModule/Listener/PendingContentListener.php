@@ -13,16 +13,36 @@
 
 namespace Zikula\UsersModule\Listener;
 
-use ModUtil;
-use SecurityUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\Common\Collection\Collectible\PendingContentCollectible;
+use Zikula\Common\Collection\Container;
 use Zikula\Core\Event\GenericEvent;
-use Zikula_Collection_Container;
-use Zikula_Provider_AggregateItem;
+use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 class PendingContentListener implements EventSubscriberInterface
 {
+    /**
+     * @var VariableApi
+     */
+    private $variableApi;
+    /**
+     * @var PermissionApi
+     */
+    private $permissionApi;
+
+    /**
+     * PendingContentListener constructor.
+     * @param $variableApi
+     * @param $permissionApi
+     */
+    public function __construct(VariableApi $variableApi, PermissionApi $permissionApi)
+    {
+        $this->variableApi = $variableApi;
+        $this->permissionApi = $permissionApi;
+    }
+
     public static function getSubscribedEvents()
     {
         return array(
@@ -46,26 +66,26 @@ class PendingContentListener implements EventSubscriberInterface
      * If moderation of registrations is not enabled, then the value will always be 0.
      * In accordance with the 'get_pending_content' conventions, the count of pending
      * registrations, along with information necessary to access the detailed list, is
-     * assemped as a {@link Zikula_Provider_AggregateItem} and added to the event
+     * assumed as a {@link PendingContentCollectible} and added to the event
      * subject's collection.
      *
      * @param GenericEvent $event The event that was fired, a 'get_pending_content' event.
      *
      * @return void
      */
-    public static function pendingContent(GenericEvent $event)
+    public function pendingContent(GenericEvent $event)
     {
-        if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            $approvalOrder = ModUtil::getVar(UsersConstant::MODNAME, 'moderation_order', UsersConstant::APPROVAL_ANY);
+        if ($this->permissionApi->hasPermission(UsersConstant::MODNAME . '::', '::', ACCESS_MODERATE)) {
+            $approvalOrder = $this->variableApi->get(UsersConstant::MODNAME, 'moderation_order', UsersConstant::APPROVAL_ANY);
             if ($approvalOrder == UsersConstant::APPROVAL_AFTER) {
-                $numPendingApproval = ModUtil::apiFunc(UsersConstant::MODNAME, 'registration', 'countAll', array('filter' => array('approved_by' => 0, 'isverified' => true)));
+                $numPendingApproval = \ModUtil::apiFunc(UsersConstant::MODNAME, 'registration', 'countAll', ['filter' => ['approved_by' => 0, 'isverified' => true]]);
             } else {
-                $numPendingApproval = ModUtil::apiFunc(UsersConstant::MODNAME, 'registration', 'countAll', array('filter' => array('approved_by' => 0)));
+                $numPendingApproval = \ModUtil::apiFunc(UsersConstant::MODNAME, 'registration', 'countAll', ['filter' => ['approved_by' => 0]]);
             }
 
             if (!empty($numPendingApproval)) {
-                $collection = new Zikula_Collection_Container(UsersConstant::MODNAME);
-                $collection->add(new Zikula_Provider_AggregateItem('registrations', __('Registrations pending approval'), $numPendingApproval, 'admin', 'viewRegistrations'));
+                $collection = new Container(UsersConstant::MODNAME);
+                $collection->add(new PendingContentCollectible('user_registrations', __('Registrations pending approval'), $numPendingApproval, 'zikulausersmodule_admin_viewregistrations'));
                 $event->getSubject()->add($collection);
             }
         }
