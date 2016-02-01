@@ -17,7 +17,7 @@ namespace Zikula\BlocksModule\Twig\Extension;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Api\BlockFilterApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\Core\BlockHandlerInterface;
+use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\Core\Theme\Engine;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 

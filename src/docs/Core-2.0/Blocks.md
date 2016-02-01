@@ -19,8 +19,8 @@ Requirements
 ------------
 
  - BlockHandler class names should be suffixed by `Block` and located in the `ModuleRoot/Block/` directory.
- - BlockHandler classes must implement Zikula\Core\BlockHandlerInterface.
- - Zikula\Core\AbstractBlockHandler is available if desired.
+ - BlockHandler classes must implement Zikula\BlocksModule\BlockHandlerInterface.
+ - Zikula\BlocksModule\AbstractBlockHandler is available if desired.
  - BlockHandlers must register their PermissionSchema as part of the owning module's array (in composer.json).
  - BlockHandler must define a Symfony FormType class to allow editing of the block properties if this is needed.
    Otherwise the `getFormClassName` method must return `null`.

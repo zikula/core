@@ -13,7 +13,7 @@
 
 namespace Zikula\BlocksModule\Block;
 
-use Zikula\Core\AbstractBlockHandler;
+use Zikula\BlocksModule\AbstractBlockHandler;
 
 /**
  * Block to display simple rendered text

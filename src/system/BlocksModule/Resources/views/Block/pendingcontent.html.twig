@@ -1,0 +1,7 @@
+<ul>
+    {% for line in content %}
+    <li><a href="{{ line.link }}">{{ line.description }} <span class="badge">{{ line.number }}</span></a></li>
+    {% else %}
+    <li><em>{{ __('There is currently no pending content.') }}</em></li>
+    {% endfor %}
+</ul>

@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core;
+namespace Zikula\BlocksModule;
 
 interface BlockHandlerInterface
 {

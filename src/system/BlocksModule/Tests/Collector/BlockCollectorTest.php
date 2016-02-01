@@ -34,14 +34,14 @@ class BlockCollectorTest extends \PHPUnit_Framework_TestCase
     public function testAdd()
     {
         $this->assertEquals(0, count($this->collector->getBlocks()));
-        $block = $this->getMockBuilder('Zikula\Core\BlockHandlerInterface')
+        $block = $this->getMockBuilder('Zikula\BlocksModule\BlockHandlerInterface')
             ->getMock();
         $block
             ->method('getType')
             ->willReturn('A');
         $this->collector->add('a', $block);
         $this->assertEquals(1, count($this->collector->getBlocks()));
-        $block = $this->getMockBuilder('Zikula\Core\BlockHandlerInterface')
+        $block = $this->getMockBuilder('Zikula\BlocksModule\BlockHandlerInterface')
             ->getMock();
         $block
             ->method('getType')
@@ -55,7 +55,7 @@ class BlockCollectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $block = $this->getMockBuilder('Zikula\Core\BlockHandlerInterface')
+        $block = $this->getMockBuilder('Zikula\BlocksModule\BlockHandlerInterface')
             ->getMock();
         $block
             ->method('getType')
@@ -71,14 +71,14 @@ class BlockCollectorTest extends \PHPUnit_Framework_TestCase
     public function testGetBlocks()
     {
         $expected = [];
-        $block = $this->getMockBuilder('Zikula\Core\BlockHandlerInterface')
+        $block = $this->getMockBuilder('Zikula\BlocksModule\BlockHandlerInterface')
             ->getMock();
         $block
             ->method('getType')
             ->willReturn('A');
         $expected['a'] = $block;
         $this->collector->add('a', $block);
-        $block = $this->getMockBuilder('Zikula\Core\BlockHandlerInterface')
+        $block = $this->getMockBuilder('Zikula\BlocksModule\BlockHandlerInterface')
             ->getMock();
         $block
             ->method('getType')
