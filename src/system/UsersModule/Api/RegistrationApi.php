@@ -1357,13 +1357,9 @@ class RegistrationApi extends \Zikula_AbstractApi
                     $registration = UserUtil::getVars($verifyChg['uid'], true, 'uid', true);
 
                     // delete user record
-                    $query = $this->entityManager->createQueryBuilder()
-                        ->delete()
-                        ->from('ZikulaUsersModule:UserEntity', 'u')
-                        ->where('u.uid = :uid')
-                        ->setParameter('uid', $verifyChg['uid'])
-                        ->getQuery();
-                    $query->getResult();
+                    $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $verifyChg['uid']);
+                    $this->entityManager->remove($user);
+                    $this->entityManager->flush();
 
                     // delete verification record
                     ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $verifyChg['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL));
