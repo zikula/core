@@ -56,6 +56,22 @@ class FooLinkContainer implements LinkContainerInterface
     }
 
     /**
+     * get the Account Links for this extension
+     *
+     * @return array
+     */
+    private function getAccount()
+    {
+        $links = array();
+        $links[] = array(
+            'url' => '/foo/account',
+            'text' => 'Foo Account',
+            'icon' => 'wrench');
+
+        return $links;
+    }
+
+    /**
      * set the BundleName as required buy the interface
      *
      * @return string

@@ -60,6 +60,22 @@ class BarLinkContainer implements LinkContainerInterface
     }
 
     /**
+     * get the Account links for this extension
+     *
+     * @return array
+     */
+    private function getAccount()
+    {
+        $links = [];
+        $links[] = [
+            'url' => '/bar/account',
+            'text' => 'Bar Account',
+            'icon' => 'check'];
+
+        return $links;
+    }
+
+    /**
      * set the BundleName as required buy the interface
      *
      * @return string

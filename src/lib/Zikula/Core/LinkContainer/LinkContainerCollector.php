@@ -47,6 +47,19 @@ class LinkContainerCollector
         return $links;
     }
 
+    public function getAllLinksByType($type = LinkContainerInterface::TYPE_ACCOUNT)
+    {
+        $links = [];
+        foreach ($this->linkContainers as $name => $container) {
+            $linkArray = $container->getLinks($type);
+            if (!empty($linkArray)) {
+                $links[$name] = $linkArray;
+            }
+        }
+
+        return $links;
+    }
+
     public function hasContainer($containerName)
     {
         return isset($this->linkContainers[$containerName]);
