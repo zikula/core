@@ -18,4 +18,8 @@ provided in `services.xml`. The class must implement `\Zikula\Core\LinkContainer
     </services>
 ```
 
-See the LinkContainerInterface for more information.
+Currently, LinkContainerCollector directly supports three types of links: `admin`, `user`, `account`. However, *any*
+type of link can be used. For example, a module could create a `bar` type of link and use the Collector service to 
+collect them and utilize them in the module.
+
+See the LinkContainerInterface and LinkContainerCollector for more information.

@@ -16,6 +16,7 @@
 namespace Zikula\Core\Tests\LinkContainer;
 
 use Zikula\Core\LinkContainer\LinkContainerCollector;
+use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\Core\Tests\LinkContainer\Fixtures\BarLinkContainer;
 use Zikula\Core\Tests\LinkContainer\Fixtures\FooLinkContainer;
 
@@ -80,6 +81,17 @@ class LinkContainerCollectorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->collector->getLinks($extension, $type));
     }
 
+    /**
+     * @covers LinkContainerCollector::getAllLinksByType
+     * @dataProvider allLinksProvider
+     * @param string $type
+     * @param array $expected
+     */
+    public function testGetAllLinksByType($type, $expected)
+    {
+        $this->assertEquals($expected, $this->collector->getAllLinksByType($type));
+    }
+
     public function linksProvider()
     {
         return [
@@ -107,6 +119,53 @@ class LinkContainerCollectorTest extends \PHPUnit_Framework_TestCase
                         'icon' => 'check'],
                 ]
             ],
+        ];
+    }
+
+    public function allLinksProvider()
+    {
+        return [
+            [LinkContainerInterface::TYPE_ACCOUNT, [
+                'ZikulaFooExtension' => [
+                    ['url' => '/foo/account',
+                        'text' => 'Foo Account',
+                        'icon' => 'wrench'
+                    ]
+                ],
+                'ZikulaBarExtension' => [
+                    ['url' => '/bar/account',
+                        'text' => 'Bar Account',
+                        'icon' => 'check'
+                    ]
+                ],
+            ]],
+            [LinkContainerInterface::TYPE_ADMIN, [
+                'ZikulaFooExtension' => [
+                    ['url' => '/foo/admin',
+                        'text' => 'Foo Admin',
+                        'icon' => 'wrench'
+                    ]
+                ],
+            ]],
+            [LinkContainerInterface::TYPE_USER, [
+                'ZikulaFooExtension' => [
+                    ['url' => '/foo',
+                        'text' => 'Foo',
+                        'icon' => 'check-square-o'
+                    ]
+                ],
+                'ZikulaBarExtension' => [
+                    ['url' => '/bar',
+                        'text' => 'Bar',
+                        'icon' => 'check'
+                    ],
+                    ['url' => '/bar2',
+                        'text' => 'Bar 2',
+                        'icon' => 'check'
+                    ]
+                ],
+            ]],
+
         ];
     }
 }

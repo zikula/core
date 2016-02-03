@@ -14,6 +14,7 @@
 namespace Zikula\UsersModule\Controller;
 
 use Zikula\Core\Event\GenericEvent;
+use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\Core\Response\PlainResponse;
 use Zikula_View;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -96,8 +97,29 @@ class UserController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-        // The API function is called.
-        $accountLinks = ModUtil::apiFunc($this->name, 'user', 'accountLinks');
+        // get the menu links for Core-2.0 modules
+        $accountLinks = $this->get('zikula.link_container_collector')->getAllLinksByType(LinkContainerInterface::TYPE_ACCOUNT);
+        // create legacy array @todo refactor template to remove need for this
+        $legacyAccountLinksFromNew = [];
+        foreach ($accountLinks as $moduleName => $links) {
+            foreach ($links as $link) {
+                $legacyAccountLinksFromNew[] = [
+                    'module' => $moduleName,
+                    'url' => $link['url'],
+                    'title' => $link['text'],
+                    'icon' => 'admin.png'
+                ];
+            }
+        }
+
+        // The API function is called for old-style modules
+        $legacyAccountLinks = ModUtil::apiFunc($this->name, 'user', 'accountLinks');
+        if (false === $legacyAccountLinks) {
+            $legacyAccountLinks = [];
+        }
+
+        // add the arrays together
+        $accountLinks = $legacyAccountLinksFromNew + $legacyAccountLinks;
 
         if ($accountLinks == false) {
             $request->getSession()->getFlashBag()->add('warning', $this->__('Error! No account links available.'));
