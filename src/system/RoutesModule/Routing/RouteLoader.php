@@ -167,6 +167,7 @@ class RouteLoader extends Loader
 //                list (, $func) = $helper->sanitizeAction($dbRoute->getAction());
 //                $defaults['_zkType'] = $type;
 //                $defaults['_zkFunc'] = $func;
+//                // @todo @cmfcmf when reimplementing loading routews from DB, see #2593 (i.e. ucfirst problems)
 //                $defaults['_controller'] = $dbRoute->getBundle() . ":" . ucfirst($type) . ":" . ucfirst($func);
 //
 //                // We have to prepend the bundle prefix if
