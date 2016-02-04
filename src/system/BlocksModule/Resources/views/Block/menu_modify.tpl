@@ -13,6 +13,7 @@
     </div>
 </div>
 <h3>{gt text='Content'}</h3>
+<p class="alert alert-info">{gt text='Module Urls should be notated like'}<code>&#123;MyModule&#125;</code> or <code>&#123;MyModule:type:func&#125;</code>.</p>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>

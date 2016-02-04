@@ -192,9 +192,9 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
                     $func = 'index';
                     $params = array();
 
-                    // url[1] can be a function or function&param=value
-                    if (isset($url[1]) && !empty($url[1])) {
-                        $urlparts = explode('&', $url[1]);
+                    // url[2] can be a function or function&param=value
+                    if (isset($url[2]) && !empty($url[2])) {
+                        $urlparts = explode('&', $url[2]);
                         $func = $urlparts[0];
                         unset($urlparts[0]);
                         if (count($urlparts) > 0) {
@@ -204,11 +204,16 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
                             }
                         }
                         // addon: url[2] can be the type parameter, default 'user'
-                        $type = (isset($url[2]) && !empty($url[2])) ? $url[2] : 'user';
+                        $type = (isset($url[1]) && !empty($url[1])) ? $url[1] : 'user';
+                    } else {
+                        $capabilities = ModUtil::getCapabilitiesOf($modname);
+                        if (!empty($capabilities) && isset($capabilities['user']['route'])) {
+                            $route = $this->get('router')->generate($capabilities['user']['route']);
+                        }
                     }
 
                     //  build the url
-                    $url = ModUtil::url($modname, $type, $func, $params);
+                    $url = isset($route) ? $route : ModUtil::url($modname, $type, $func, $params);
                 }
             }
         }

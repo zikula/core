@@ -20,6 +20,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix display problem with navbar in Bootstrap theme (#2662)
     - Streamlined log size by removing event channel (#2741)
     - Fix registration expiration error when expired user is deleted (#2696)
+    - Fix notation for Modules in Menu block (#2654)
  - Features:
     - New advanced block filtering based on a combination of any query parameter or request attributes.
     - Added core routing for all legacy urls (both normal and 'shorturls').
