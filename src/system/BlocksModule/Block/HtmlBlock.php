@@ -32,7 +32,7 @@ class HtmlBlock extends AbstractBlockHandler
             return '';
         }
 
-        return $properties['content'];
+        return "<div>" . $properties['content'] . "</div>";
     }
 
     public function getFormClassName()

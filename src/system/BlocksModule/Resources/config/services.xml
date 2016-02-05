@@ -14,6 +14,7 @@
         <parameter key="zikula_blocks_module.form.block_filter_type.class">Zikula\BlocksModule\Form\Type\BlockFilterType</parameter>
         <parameter key="zikula_blocks_module.form.block_type.class">Zikula\BlocksModule\Form\Type\BlockType</parameter>
         <parameter key="twig.extension.zikula_blocks_module.class">Zikula\BlocksModule\Twig\Extension\BlocksExtension</parameter>
+        <parameter key="zikula_blocks_module.listener.collapseable_block_listener.class">Zikula\BlocksModule\Listener\CollapseableBlockListener</parameter>
     </parameters>
 
     <services>
@@ -67,6 +68,13 @@
             <argument type="service" id="zikula_core.common.theme_engine" />
             <argument type="service" id="zikula_extensions_module.api.extension" />
             <tag name="twig.extension" />
+        </service>
+
+        <service id="zikula_blocks_module.listener.collapseable_block_listener" class="%zikula_blocks_module.listener.collapseable_block_listener.class%">
+            <argument type="service" id="zikula_core.common.theme.assets_js" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_core.common.theme.asset_helper" />
+            <tag name="kernel.event_subscriber"/>
         </service>
 
     </services>

@@ -127,7 +127,7 @@ class AdminController extends AbstractController
         }
 
         $form = $this->createFormBuilder($this->getVars())
-            ->add('collapseable', 'checkbox', ['label' => __('Enable menu collapse icons'),
+            ->add('collapseable', 'checkbox', ['label' => __('Enable block collapse icons'),
                 'required' => false
             ])
             ->add('save', 'submit', ['label' => 'Save'])

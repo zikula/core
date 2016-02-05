@@ -32,7 +32,7 @@ class TextBlock extends AbstractBlockHandler
             return '';
         }
 
-        return nl2br($properties['content']);
+        return "<div>" . nl2br($properties['content']) . "</div>";
     }
 
     public function getFormClassName()

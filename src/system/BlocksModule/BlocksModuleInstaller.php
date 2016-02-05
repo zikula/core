@@ -34,7 +34,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         'Zikula\BlocksModule\Entity\BlockEntity',
         'Zikula\BlocksModule\Entity\BlockPositionEntity',
         'Zikula\BlocksModule\Entity\BlockPlacementEntity',
-        'Zikula\BlocksModule\Entity\UserBlockEntity'
     ];
 
     /**
@@ -141,6 +140,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
                 $this->entityManager->flush();
             case '3.9.3':
+                $this->schemaTool->drop('Zikula\BlocksModule\Entity\UserBlockEntity');
+            case '3.9.4':
                 // future upgrade routines
         }
 
