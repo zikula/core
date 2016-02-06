@@ -19,6 +19,7 @@ use Zikula\Core\Event\GenericEvent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 
 /**
+ * @deprecated at Core-2.0 This feature will not be available in Core-2.0
  * @Route("/ajax")
  *
  * Ajax controllers for the theme module
