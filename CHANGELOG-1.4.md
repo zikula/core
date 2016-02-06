@@ -6,7 +6,9 @@ CHANGELOG - ZIKULA 1.4.x
  - BC Breaks:
     - n/a
  - Deprecated:
-    - n/a
+    - 'Theme switching' will not be updated to Core-2.0 and will be removed.
+    - Zikula\ThemeModule\Block\RenderBlock will not be updated to Core-2.0 and will be removed.
+    - Zikula\ThemeModule\Block\ThemeswitcherBlock will not be updated to Core-2.0 and will be removed.
  - Fixes:
     - Fix module stylesheet not being loaded automatically for Core-2.0 modules.
     - Fix SearchModule not working for older modules required tables.php (#2643)

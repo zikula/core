@@ -1,3 +1,4 @@
+{* @deprecated at Core-2.0 - do not convert to twig *}
 {if $format eq 1}
 {pageaddvar name='javascript' value='system/ThemeModule/Resources/public/js/themeswitcher.js'}
 <img src="{$currentthemepic}" id="preview" alt="{$currenttheme.displayname}" title="{$currenttheme.description|default:$currenttheme.displayname}" />
