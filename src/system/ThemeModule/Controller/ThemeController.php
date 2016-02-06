@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Yaml\Yaml;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Theme\Annotation\Theme;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -189,7 +188,6 @@ class ThemeController extends AbstractController
             'themeName' => $themeName,
             'form' => $form->createView()
         ];
-
     }
 
     /**
