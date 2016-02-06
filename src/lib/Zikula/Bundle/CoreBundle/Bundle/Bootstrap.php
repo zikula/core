@@ -7,6 +7,7 @@ use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Core\AbstractBundle;
 
 class Bootstrap
 {
@@ -53,7 +54,9 @@ class Bootstrap
                     if (class_exists($class)) {
                         $bundle = new $class();
                         try {
-                            $bundle->setState($state);
+                            if ($bundle instanceof AbstractBundle) {
+                                $bundle->setState($state);
+                            }
                             $bundles[] = $bundle;
                         } catch (\InvalidArgumentException $e) {
                             // continue
