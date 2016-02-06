@@ -52,7 +52,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             $links[] = array(
-                'url' => $this->get('router')->generate('zikulathememodule_admin_view'),
+                'url' => $this->get('router')->generate('zikulathememodule_theme_view'),
                 'text' => __('Themes list'),
                 'icon' => 'list');
         }

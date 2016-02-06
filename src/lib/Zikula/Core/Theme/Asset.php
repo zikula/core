@@ -34,6 +34,15 @@ class Asset
     }
 
     /**
+     * Get the path to the site root.
+     * @return string
+     */
+    public function getSiteRoot()
+    {
+        return realpath($this->kernel->getRootDir() . "/../");
+    }
+
+    /**
      * Returns path for asset.
      *
      * @param string $path
@@ -57,7 +66,7 @@ class Asset
         }
 
         $fullPath = $this->kernel->locateResource($parts[0] . '/Resources/public/' . $parts[1], 'app/Resources', true);
-        $root = realpath($this->kernel->getRootDir() . "/../");
+        $root = $this->getSiteRoot();
         $path = (false !== strpos($fullPath, $root)) ? substr($fullPath, strlen($root) + 1) : $fullPath;
         $path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
 
