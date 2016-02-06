@@ -28,6 +28,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Add theme information to Symfony developer toolbar.
     - Add functional login block to Bootstrap theme (#2730)
     - Add support for 'account' type links in the LinkContainerCollector (#2758)
+    - Add collapseable blocks. This feature had disappeared since Core-1.3x (#2678)
  - Core-2.0 Features:
     - Add `currentUser` global variable to twig templates.
     - Add (move) `Zikula\CategoriesModule\Entity\AbstractCategoryAssignment` and related documentation.
