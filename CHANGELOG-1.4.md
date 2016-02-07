@@ -6,12 +6,12 @@ CHANGELOG - ZIKULA 1.4.x
  - BC Breaks:
     - n/a
  - Deprecated:
-    - 'Theme switching' will not be updated to Core-2.0.
+    - 'Theme switching' by users will not be updated to Core-2.0. Only Admins will be able to change themes.
     - Zikula\ThemeModule\Block\RenderBlock will not be updated to Core-2.0.
     - Zikula\ThemeModule\Block\ThemeswitcherBlock will not be updated to Core-2.0.
     - Zikula\ThemeModule\Controller\AjaxController will not be updated to Core-2.0.
       - the `theme.ajax_request` event is deprecated.
-    - "Alternate Site View" feature (in theme settings) is deprecated. Use response design.
+    - "Alternate Site View" feature (in theme settings) is deprecated. Use responsive design.
  - Fixes:
     - Fix module stylesheet not being loaded automatically for Core-2.0 modules.
     - Fix SearchModule not working for older modules required tables.php (#2643)
