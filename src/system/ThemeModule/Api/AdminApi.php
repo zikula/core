@@ -42,31 +42,6 @@ class AdminApi extends \Zikula_AbstractApi
     }
 
     /**
-     * get available admin panel links
-     *
-     * @return array array of admin links
-     */
-    public function getLinks()
-    {
-        $links = array();
-
-        if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulathememodule_theme_view'),
-                'text' => __('Themes list'),
-                'icon' => 'list');
-        }
-        if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulathememodule_admin_modifyconfig'),
-                'text' => __('Settings'),
-                'icon' => 'wrench');
-        }
-
-        return $links;
-    }
-
-    /**
      * update theme settings
      *
      * @param array[] $args {
