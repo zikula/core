@@ -50,7 +50,7 @@ class ThemeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('getPreviewImage', [$this, 'getPreviewImage'], ['is_safe' => ['html']])
+            new \Twig_SimpleFunction('getPreviewImagePath', [$this, 'getPreviewImagePath'], ['is_safe' => ['html']])
         ];
     }
 
@@ -60,14 +60,13 @@ class ThemeExtension extends \Twig_Extension
     }
 
     /**
-     * Display a theme preview image.
+     * Get path to theme preview image.
      *
      * @param $themeName
      * @param string $size
-     * @param null $domId
      * @return string
      */
-    public function getPreviewImage($themeName, $size = 'medium', $domId = null)
+    public function getPreviewImagePath($themeName, $size = 'medium')
     {
         if (!isset($themeName)) {
             throw new \InvalidArgumentException('Invalid theme name.');
@@ -77,25 +76,23 @@ class ThemeExtension extends \Twig_Extension
             $size = 'medium';
         }
 
-        $idString = isset($domId) ? " id=\"$domId\"" : "";
-
         $themeInfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($themeName));
         $theme = \ThemeUtil::getTheme($themeInfo['name']);
-        $filesrc = null;
+        $imagePath = null;
         if (null === $theme) {
             if (file_exists($this->assetHelper->getSiteRoot() . "themes/{$themeInfo['directory']}/images/preview_{$size}.png")) {
-                $filesrc = $this->assetHelper->getSiteRoot() . "/themes/{$themeInfo['directory']}/images/preview_{$size}.png";
+                $imagePath = $this->assetHelper->getSiteRoot() . "/themes/{$themeInfo['directory']}/images/preview_{$size}.png";
             }
         } else {
             try {
-                $filesrc = $this->assetHelper->resolve('@' . $themeName . ':images/preview_' . $size . '.png');
+                $imagePath = $this->assetHelper->resolve('@' . $themeName . ':images/preview_' . $size . '.png');
             } catch (\Exception $e) {
             }
         }
-        if (!$filesrc) {
-            $filesrc = $this->assetHelper->resolve('@ZikulaThemeModule:images/preview_' . $size . '.png');
+        if (!$imagePath) {
+            $imagePath = $this->assetHelper->resolve('@ZikulaThemeModule:images/preview_' . $size . '.png');
         }
 
-        return "<img{$idString} src=\"{$filesrc}\" alt=\"\" />";
+        return $imagePath;
     }
 }

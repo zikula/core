@@ -6,7 +6,7 @@
 
 {% if themeinfo.system is defined and themeinfo.system != 1 %}
 <div class="text-center">
-    {{ getPreviewImage(themeinfo.name, 'large', 'theme_credits_preview') }}
+    <img src="{{ getPreviewImagePath(themeinfo.name, 'large') }}" id="theme_credits_preview">
 </div>
 {% endif %}
 
