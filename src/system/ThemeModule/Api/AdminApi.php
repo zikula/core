@@ -16,11 +16,8 @@ namespace Zikula\ThemeModule\Api;
 use Zikula\ThemeModule\Util;
 use ModUtil;
 use SecurityUtil;
-use LogUtil;
-use System;
 use ThemeUtil;
 use DataUtil;
-use FileUtil;
 use CacheUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
