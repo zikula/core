@@ -5,20 +5,18 @@
 {{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
 <h3>
     <span class="fa fa-trash-o"></span>
-    {{ __f('Delete theme %sub%', {"%sub%": themeName}) }}
+    {{ __f('Remove theme %sub%', {"%sub%": themeName}) }}
 </h3>
 
-<p class="alert alert-danger">{{ __f('Do you really want to delete the %name% theme?', {"%name%": themeName}) }}</p>
+<p class="alert alert-danger">{{ __f('Do you really want to remove the %name% theme?', {"%name%": themeName}) }}</p>
 {{ form_start(form) }}
     {{ form_errors(form) }}
     {{ form_row(form.deletefiles) }}
-<div class="alert alert-info">{{ __('Please delete the theme folder before pressing Accept or the theme will not be deleted.') }}</div>
-
-<div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
-        {{ form_widget(form.Accept, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
-        {{ form_widget(form.Cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            {{ form_widget(form.Accept, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
+            {{ form_widget(form.Cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+        </div>
     </div>
-</div>
 {{ form_end(form) }}
 {{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

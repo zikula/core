@@ -15,6 +15,7 @@
 use Zikula\ThemeModule\Entity\ThemeEntity;
 
 /**
+ * @deprecated remove at Core-2.0
  * ThemeUtil
  */
 class ThemeUtil

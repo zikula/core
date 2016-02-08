@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="zikula_theme_module.twig.extension.theme_extension.class">Zikula\ThemeModule\Twig\Extension\ThemeExtension</parameter>
         <parameter key="zikula_theme_module.container.link_container.class">Zikula\ThemeModule\Container\LinkContainer</parameter>
+        <parameter key="zikula_theme_module.theme_entity.repository.class">Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository</parameter>
     </parameters>
 
     <services>
@@ -22,6 +23,17 @@
             <tag name="twig.extension" />
             <argument type="service" id="theme.asset_helper" />
         </service>
+
+        <service id="zikula_theme_module.theme_entity.repository"
+                 class="%zikula_theme_module.theme_entity.repository.class%"
+                 factory-service="doctrine"
+                 factory-method="getRepository">
+            <argument>ZikulaThemeModule:ThemeEntity</argument>
+            <call method="setKernel">
+                <argument type="service" id="kernel" />
+            </call>
+        </service>
+
     </services>
 
 </container>

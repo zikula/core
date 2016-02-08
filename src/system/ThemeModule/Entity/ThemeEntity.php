@@ -19,9 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Theme entity class.
  *
- * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
- *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository")
  * @ORM\Table(name="themes")
  */
 class ThemeEntity extends EntityAccess

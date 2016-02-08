@@ -16,6 +16,8 @@ namespace Zikula\ThemeModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -23,6 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Theme\Annotation\Theme;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 use Zikula\ThemeModule\Util;
 
 /**
@@ -62,8 +65,7 @@ class ThemeController extends AbstractController
             Util::regenerate();
         }
 
-        // call the API to get a list of all themes in the themes dir
-        $themes = \ThemeUtil::getAllThemes(\ThemeUtil::FILTER_ALL, \ThemeUtil::STATE_ALL);
+        $themes = $this->get('zikula_theme_module.theme_entity.repository')->get(ThemeEntityRepository::FILTER_ALL, ThemeEntityRepository::STATE_ALL);
 
         return [
             'themes' => $themes,
@@ -93,7 +95,7 @@ class ThemeController extends AbstractController
 
         $form = $this->createFormBuilder(['themeName' => $themeName, 'resetuserselected' => true])
             ->add('themeName', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('resetuserselected', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('resetuserselected', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [ // @todo remove at Core-2.0
                 'label' => $this->__('Override users\' theme settings'),
                 'required' => false,
             ])
@@ -107,12 +109,17 @@ class ThemeController extends AbstractController
             if ($form->get('Accept')->isClicked()) {
                 $data = $form->getData();
                 // Set the default theme
-                if (\ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'setasdefault', array('themename' => $data['themeName'], 'resetuserselected' => $data['resetuserselected']))) {
-                    // Success
-                    $this->addFlash('status', $this->__('Done! Changed default theme.'));
+                $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'Default_Theme', $data['themeName']);
+                if ($data['resetuserselected']) {
+                    // @todo remove this at Core-2.0
+                    $query = $this->getDoctrine()->getManager()->createQueryBuilder()
+                        ->update('ZikulaUsersModule:UserEntity', 'u')
+                        ->set('u.theme', ':null')
+                        ->setParameter('null', '')
+                        ->getQuery();
+                    $query->getResult();
                 }
-
-                return $this->redirect($this->generateUrl('zikulathememodule_theme_view'));
+                $this->addFlash('status', $this->__('Done! Changed default theme.'));
             }
             if ($form->get('Cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
@@ -140,18 +147,13 @@ class ThemeController extends AbstractController
      *
      * @return Response symfony response object if confirmation isn't provided
      *
-     * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
+     * @throws NotFoundHttpException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the module
      */
     public function deleteAction(Request $request, $themeName)
     {
         if (!$this->hasPermission('ZikulaThemeModule::', "$themeName::", ACCESS_DELETE)) {
             throw new AccessDeniedException();
-        }
-
-        $themeinfo = \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($themeName));
-        if ($themeinfo == false) {
-            throw new NotFoundHttpException($this->__('Sorry! No such theme found.'), null, 404);
         }
 
         $form = $this->createFormBuilder(['themeName' => $themeName, 'deletefiles' => false])
@@ -169,13 +171,22 @@ class ThemeController extends AbstractController
         if ($form->isValid()) {
             if ($form->get('Accept')->isClicked()) {
                 $data = $form->getData();
-                // Delete the theme
-                if (\ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'delete', array('themename' => $data['themeName'], 'deletefiles' => $data['deletefiles']))) {
-                    // Success
-                    $this->addFlash('status', $this->__('Done! Deleted the theme.'));
+                $themeEntity = $this->getDoctrine()->getRepository('ZikulaThemeModule:ThemeEntity')->findOneBy(['name' => $themeName]);
+                if (empty($themeEntity)) {
+                    throw new NotFoundHttpException($this->__('Sorry! No such theme found.'), null, 404);
                 }
-
-                return $this->redirect($this->generateUrl('zikulathememodule_theme_view'));
+                if ($data['deletefiles']) {
+                    $fs = new Filesystem();
+                    $path = realpath($this->get('kernel')->getRootDir() . '/../themes/' . $themeEntity->getDirectory());
+                    try {
+                        $fs->remove($path);
+                    } catch (IOException $e) {
+                        $this->addFlash('danger', $this->__('Could not remove files as requested.') . ' (' . $e->getMessage() . ') ' . $this->__('The files must be removed manually.'));
+                    }
+                }
+                $this->getDoctrine()->getManager()->remove($themeEntity);
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('status', $this->__('Done! Deleted the theme.'));
             }
             if ($form->get('Cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
@@ -209,7 +220,8 @@ class ThemeController extends AbstractController
         if (!$this->hasPermission('ZikulaThemeModule::', "$themeName::credits", ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
+        $themeInfo = $this->getDoctrine()->getRepository('ZikulaThemeModule:ThemeEntity')->findOneBy(['name' => $themeName]);
 
-        return ['themeinfo' => \ThemeUtil::getInfo(\ThemeUtil::getIDFromName($themeName))];
+        return ['themeinfo' => $themeInfo->toArray()];
     }
 }

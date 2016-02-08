@@ -23,33 +23,27 @@
             <td>
                 {% if theme.isTwigBased|default(false) %}{% set themeType = 'twig' %}{% else %}{% set themeType = 'smarty' %}{% endif %}
                 <img src="{{ zasset('@ZikulaThemeModule:images/' ~ themeType ~ '-logo.jpg') }}" title="{{ __f('Theme is %sub% based', {"%sub%": themeType}) }}" class="tooltips" />
-                {% if not theme.structure %}<strike>{% endif %}
                 {% set img = '<img src="' ~ getPreviewImagePath(theme.name) ~ '">' %}
                 <a href="{{ path('home', {"theme":theme.name}) }}" title="{{ theme.displayname }}{% if theme.name|lower == currenttheme|lower %} ({{ __('Default theme') }}){% endif %}" class="marktooltip" data-trigger="hover" data-html="true" data-content='{{ img }}' target="_blank">
                    {{ theme.displayname }}
                 </a>
-                {% if not theme.structure %}</strike>{% endif %}
                 {% if theme.name|lower == currenttheme|lower %}<span class="required"></span>{% endif %}
             </td>
             <td>
-                {% if not theme.structure %}<strike>{% endif %}
                 {{ theme.description|default(theme.displayname) }}
-                {% if not theme.structure %}</strike>{% endif %}
             </td>
             <td>
                 {{ theme.version }}
             </td>
             <td class="actions">
-                {% if theme.name != currenttheme and theme.user and theme.state != 2 and theme.structure %}
+                {% if theme.name != currenttheme and theme.user and theme.state != 2 %}
                 <a href="{{ path('zikulathememodule_theme_setasdefault', {"themeName":theme.name}) }}"><span class="fa fa-check tooltips" title="{{ __f('Set %theme% as site theme', {'%theme%': theme.displayname}) }}"></span></a>
                 {% endif %}
-                {% if theme.structure %}
                 <a href="{{ path('home', {"theme":theme.name}) }}" title="{{ theme.displayname }}" target="_blank"><span class="fa fa-eye tooltips" title="{{ __('Preview') }} {{ theme.displayname }}"></span></a>
                 {% if theme.isTwigBased|default(false) %}
                     <a href="{{ path('zikulathememodule_var_var', {"themeName":theme.name}) }}"><span class="fa fa-pencil tooltips" title="{{ __('Edit') }} {{ theme.displayname }}"></span></a>
                 {% else %}
                     <a href="{{ path('zikulathememodule_admin_modify', {"themename":theme.name}) }}"><span class="fa fa-pencil tooltips" title="{{ __('Edit') }} {{ theme.displayname }}"></span></a>
-                {% endif %}
                 {% endif %}
                 {% if theme.name != currenttheme and theme.state != 2 %}
                 <a href="{{ path('zikulathememodule_theme_delete', {"themeName":theme.name}) }}"><span class="fa fa-trash-o tooltips" title="{{ __('Remove') }} {{ theme.displayname }}"></span></a>
