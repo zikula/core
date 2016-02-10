@@ -19,6 +19,7 @@ use BlockUtil;
 use ModUtil;
 
 /**
+ * @deprecated at Core-2.0 - This block will not be converted to Twig nor be available in Core-2.0
  * Block to display a custom template
  */
 class RenderBlock extends \Zikula_Controller_AbstractBlock

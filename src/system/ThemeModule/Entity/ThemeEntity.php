@@ -15,13 +15,12 @@ namespace Zikula\ThemeModule\Entity;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 /**
  * Theme entity class.
  *
- * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
- *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository")
  * @ORM\Table(name="themes")
  */
 class ThemeEntity extends EntityAccess
@@ -134,7 +133,7 @@ class ThemeEntity extends EntityAccess
         $this->admin = 0;
         $this->user = 0;
         $this->system = 0;
-        $this->state = 0;
+        $this->state = ThemeEntityRepository::STATE_INACTIVE;
         $this->xhtml = 1;
     }
 

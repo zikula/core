@@ -6,7 +6,6 @@
 
     <parameters>
         <!--<parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>-->
-        <parameter key="zikula.config_template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\ConfigTemplateOverrideYamlListener</parameter>
 
         <parameter key="zikula.doctrine1_connector.class">Zikula\Bundle\CoreBundle\EventListener\Doctrine1ConnectorListener</parameter>
         <parameter key="zikula.doctrine_connector.class">Zikula\Bundle\CoreBundle\EventListener\DoctrineListener</parameter>
@@ -95,10 +94,6 @@
             <!--<tag name="kernel.event_subscriber" />-->
             <!--<argument type="service" id="service_container" />-->
         <!--</service>-->
-
-        <service id="zikula.config_template_override_listener" class="%zikula.config_template_override_listener.class%">
-            <tag name="kernel.event_subscriber" />
-        </service>
 
         <service id="zikula.site_off_listener" class="%zikula.site_off_listener.class%">
             <tag name="kernel.event_subscriber" />

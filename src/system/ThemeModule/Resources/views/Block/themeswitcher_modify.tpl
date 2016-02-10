@@ -1,3 +1,4 @@
+{* @deprecated at Core-2.0 - do not convert to twig *}
 <div class="form-group">
     <label class="col-sm-3 control-label" for="themeswitcher_format">{gt text="Output format" domain='zikula'}</label>
     <div class="col-sm-9">

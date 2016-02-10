@@ -1,2 +1,0 @@
-Zikula Permissions Module
-=========================

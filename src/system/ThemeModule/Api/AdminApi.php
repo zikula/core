@@ -13,18 +13,15 @@
 
 namespace Zikula\ThemeModule\Api;
 
-use Zikula\ThemeModule\Util;
 use ModUtil;
 use SecurityUtil;
-use LogUtil;
-use System;
 use ThemeUtil;
 use DataUtil;
-use FileUtil;
 use CacheUtil;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
+ * @deprecated remove at Core-2.0
  * API functions used by administrative controllers
  */
 class AdminApi extends \Zikula_AbstractApi
@@ -38,32 +35,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function regenerate()
     {
-        return Util::regenerate();
-    }
-
-    /**
-     * get available admin panel links
-     *
-     * @return array array of admin links
-     */
-    public function getLinks()
-    {
-        $links = array();
-
-        if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulathememodule_admin_view'),
-                'text' => __('Themes list'),
-                'icon' => 'list');
-        }
-        if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulathememodule_admin_modifyconfig'),
-                'text' => __('Settings'),
-                'icon' => 'wrench');
-        }
-
-        return $links;
+        return $this->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
     }
 
     /**
@@ -95,52 +67,6 @@ class AdminApi extends \Zikula_AbstractApi
         $item = $this->entityManager->find('ZikulaThemeModule:ThemeEntity', $args['themeinfo']['id']);
         $item->merge($args['themeinfo']);
         $this->entityManager->flush();
-
-        return true;
-    }
-
-    /**
-     * set default site theme
-     *
-     * @param mixed[] $args {
-     *      @type string $themename         the name of the theme to set as the default for the site
-     *      @type bool   $resetuserselected if true any existing user chosen themes will be reset to the site default
-     *                      }
-     *
-     * @return bool true if successful, false otherwise
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
-     */
-    public function setasdefault($args)
-    {
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        // Check our input arguments
-        if (!isset($args['themename'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        }
-        if (!isset($args['resetuserselected'])) {
-            $args['resetuserselected'] = false;
-        }
-
-        // if chosen reset all user theme selections
-        if ($args['resetuserselected']) {
-            $query = $this->entityManager->createQueryBuilder()
-                                         ->update('ZikulaUsersModule:UserEntity', 'u')
-                                         ->set('u.theme', ':null')
-                                         ->setParameter('null', '')
-                                         ->getQuery();
-            $query->getResult();
-        }
-
-        // change default theme
-        if (!System::setVar('Default_Theme', $args['themename'])) {
-            return false;
-        }
 
         return true;
     }
@@ -199,135 +125,6 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         return true;
-    }
-
-    /**
-     * Delete a theme.
-     *
-     * @param string[] $args {
-     *      @type $themename string the name of the theme to delete
-     *                       }
-     *
-     * @return bool true if successful, false otherwise
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to delete the theme
-     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided
-     * @throws \RuntimeException Thrown if the theme cannot be deleted
-     */
-    public function delete($args)
-    {
-        // Argument check
-        if (!isset($args['themename'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        }
-
-        $themeid = (int)ThemeUtil::getIDFromName($args['themename']);
-
-        // Get the theme info
-        $themeinfo = ThemeUtil::getInfo($themeid);
-
-        if ($themeinfo == false) {
-            return false;
-        }
-
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themeinfo[name]::", ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
-
-        // reset the theme for any users utilising this theme.
-        $query = $this->entityManager->createQueryBuilder()
-                                     ->update('ZikulaUsersModule:UserEntity', 'u')
-                                     ->set('u.theme', ':null')
-                                     ->where('u.theme = :themeName')
-                                     ->setParameter('null', '')
-                                     ->setParameter('themeName', $themeinfo['name'])
-                                     ->getQuery();
-
-        $result = $query->getResult();
-        if (!$result) {
-            return false;
-        }
-
-        // delete theme
-        $query = $this->entityManager->createQueryBuilder()
-                                     ->delete()
-                                     ->from('ZikulaThemeModule:ThemeEntity', 't')
-                                     ->where('t.id = :id')
-                                     ->setParameter('id', $themeid)
-                                     ->getQuery();
-
-        $result = $query->getResult();
-        if (!$result) {
-            throw new \RuntimeException(__('Error! Could not perform the deletion.'));
-        }
-
-        // delete the running config
-        ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', array('themename' => $themeinfo['name']));
-
-        // clear the compiled and cached templates
-        // Note: This actually clears ALL compiled and cached templates but there doesn't seem to be
-        // a way to clear out only files associated with a theme without supplying all the template
-        // names used by that theme.
-        // see http://smarty.php.net/manual/en/api.clear.cache.php
-        // and http://smarty.php.net/manual/en/api.clear.compiled.tpl.php
-        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'clear_compiled');
-        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'clear_cached');
-
-        // try to delete the files
-        if ($args['deletefiles'] == 1) {
-            ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deletefiles', array('themename' => $themeinfo['name'], 'themedirectory' => $themeinfo['directory']));
-        }
-
-        // Let the calling process know that we have finished successfully
-        return true;
-    }
-
-    /**
-     * delete theme files from the file system if possible
-     *
-     * @param string[] $args {
-     *      @type $themename string the name of the theme to remove from the file system
-     *                       }
-     *
-     * @return bool true if successful, false otherwise
-     *
-     * @throws \InvalidArgumentException Thrown if either the themename or themedirectory parameters aren't provided
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @throws RuntimeException Thrown if the theme files cannot be deleted from the file system
-     */
-    public function deletefiles($args)
-    {
-        // check our input
-        if (!isset($args['themename']) || empty($args['themename'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        } else {
-            $themename = $args['themename'];
-        }
-
-        if (!isset($args['themedirectory']) || empty($args['themedirectory'])) {
-            throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        } else {
-            $osthemedirectory = DataUtil::formatForOS($args['themedirectory']);
-        }
-
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', $themename .'::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        if (is_writable('themes') && is_writable('themes/' . $osthemedirectory)) {
-            $res = FileUtil::deldir('themes/' .$osthemedirectory);
-            if ($res == true) {
-                return LogUtil::registerStatus(__('Done! Removed theme files from the file system.'));
-            }
-
-            throw new \RuntimeException(__('Error! Could not delete theme files from the file system. Please remove them by another means (FTP, SSH, ...).'));
-        }
-
-        LogUtil::registerStatus(__f('Notice: Theme files cannot be deleted because Zikula does not have write permissions for the themes folder and/or themes/%s folder.', DataUtil::formatForDisplay($args['themedirectory'])));
-
-        return false;
     }
 
     /**

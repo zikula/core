@@ -155,7 +155,8 @@ td.actions .fa-trash-o {
     color: #C30;
 }
 
-td.actions .fa-check {
+td.actions .fa-check,
+td.actions .fa-gear {
     color: #61B329;
 }
 

@@ -13,12 +13,13 @@
 
 namespace Zikula\ThemeModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Theme\Annotation\Theme; // used in annotations - do not remove
+use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 class VarController extends AbstractController
 {
@@ -27,6 +28,7 @@ class VarController extends AbstractController
      * @Route("/admin/var/{themeName}")
      * @todo change route name to /admin/variable/{themeName} when similar named is removed?
      * @Theme("admin")
+     * @Template
      *
      * @param Request $request
      * @param string $themeName
@@ -43,7 +45,7 @@ class VarController extends AbstractController
         if (!file_exists($themeVarsPath)) {
             $this->addFlash('warning', $this->__f('%theme% has no configuration.', array('%theme%' => $themeName)));
 
-            return $this->redirect($this->generateUrl('zikulathememodule_admin_view'));
+            return $this->redirect($this->generateUrl('zikulathememodule_theme_view'));
         }
         $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
         /** @var \Symfony\Component\Form\FormBuilder $formBuilder */
@@ -63,21 +65,21 @@ class VarController extends AbstractController
         if ($form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 // pseudo-hack to save theme vars in to modvars table
-                \ModUtil::setVars($themeName, $form->getData());
+                $this->get('zikula_extensions_module.api.variable')->set($themeName, $form->getData());
                 $this->addFlash('status', $this->__('Done! Theme configuration updated.'));
             } elseif ($form->get('toDefault')->isClicked()) {
-                \ModUtil::setVars($themeName, $themeBundle->getDefaultThemeVars());
+                $this->get('zikula_extensions_module.api.variable')->set($themeName, $themeBundle->getDefaultThemeVars());
                 $this->addFlash('status', $this->__('Done! Theme configuration updated to default values.'));
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulathememodule_admin_view'));
+            return $this->redirect($this->generateUrl('zikulathememodule_theme_view'));
         }
 
-        return $this->render('ZikulaThemeModule:Admin:var.html.twig', [
+        return [
             'themeName' => $themeName,
             'form' => $form->createView()
-        ]);
+        ];
     }
 }

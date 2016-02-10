@@ -1924,6 +1924,7 @@ class UserUtil
         }
 
         // set a new theme for the user
+        // @todo @deprecated this code block (allowing a user to change themes) will not be continued into Core-2.0
         $newtheme = FormUtil::getPassedValue('newtheme', null, 'GETPOST');
         if (!empty($newtheme) && System::getVar('theme_change')) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($newtheme));

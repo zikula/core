@@ -5,7 +5,7 @@ namespace Zikula\Bundle\CoreBundle\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-use Zikula\Core\Theme\Engine;
+use Zikula\ThemeModule\Engine\Engine;
 
 class ZikulaVersionDataCollector extends DataCollector
 {

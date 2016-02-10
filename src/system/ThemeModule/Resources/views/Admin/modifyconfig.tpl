@@ -36,6 +36,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="alt_theme_name">{gt text="Theme for alternative site view"}</label>
                 <div class="col-sm-9">
+                    <p class="alert alert-info">{gt text="The alternate site view feature is deprecated and will be removed in Core-2.0."}</p>
                     <select class="form-control" id="alt_theme_name" name="alt_theme_name">
                         <option value="">{gt text="Not set"}</option>
                         {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$alt_theme_name|default:''}
@@ -235,7 +236,7 @@
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
                 <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                <a class="btn btn-danger" href="{route name='zikulathememodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <a class="btn btn-danger" href="{route name='zikulathememodule_theme_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

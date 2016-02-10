@@ -2,17 +2,14 @@
 
 namespace Zikula\RoutesModule\Routing;
 
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\Loader\Loader;
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
-use Zikula\Core\AbstractTheme;
+use Zikula\ThemeModule\AbstractTheme;
 
 /**
  * Custom loader following http://symfony.com/doc/current/cookbook/routing/custom_route_loader.html

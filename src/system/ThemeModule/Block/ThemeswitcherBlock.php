@@ -24,6 +24,7 @@ use Zikula_View;
 use Zikula_View_Theme;
 
 /**
+ * @deprecated at Core-2.0 - This block will not be converted to Twig nor be available in Core-2.0
  * Block to display a theme switching interface
  */
 class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock

@@ -1,2 +1,0 @@
-Zikula SecurityCenter Module
-============================

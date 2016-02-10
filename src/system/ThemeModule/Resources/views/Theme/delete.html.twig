@@ -1,0 +1,22 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<h3>
+    <span class="fa fa-trash-o"></span>
+    {{ __f('Remove theme %sub%', {"%sub%": themeName}) }}
+</h3>
+
+<p class="alert alert-danger">{{ __f('Do you really want to remove the %name% theme?', {"%name%": themeName}) }}</p>
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.deletefiles) }}
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            {{ form_widget(form.Accept, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
+            {{ form_widget(form.Cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+        </div>
+    </div>
+{{ form_end(form) }}
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

@@ -67,6 +67,9 @@ class CacheClearer
                 "$cacheFolder{$kernelContainerClass}Compiler.log",
                 "{$cacheFolder}classes.map"
             ),
+            "twig" => [
+                "$cacheFolder/twig"
+            ]
         );
     }
 

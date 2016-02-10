@@ -30,6 +30,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 /**
  * User controllers for the theme module
+ * @deprecated at Core-2.0 This controller and feature of 'theme switching' will not be converted and will not be
+ *   available in Core-2.0
  */
 class UserController extends \Zikula_AbstractController
 {

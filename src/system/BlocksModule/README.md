@@ -1,2 +1,0 @@
-Zikula Blocks Module
-====================

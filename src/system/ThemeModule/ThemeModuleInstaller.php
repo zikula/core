@@ -13,13 +13,12 @@
 
 namespace Zikula\ThemeModule;
 
-use ModUtil;
-use DoctrineHelper;
+use Zikula\Core\AbstractExtensionInstaller;
 
 /**
  * Installation and upgrade routines for the theme module
  */
-class ThemeModuleInstaller extends \Zikula_AbstractInstaller
+class ThemeModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * Initialise the Admin module.
@@ -30,14 +29,13 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Zikula\ThemeModule\Entity\ThemeEntity'));
+            $this->schemaTool->create(['Zikula\ThemeModule\Entity\ThemeEntity']);
         } catch (\Exception $e) {
             return false;
         }
 
         // detect all themes on install
-        ModUtil::loadApi('ZikulaThemeModule', 'admin', true);
-        ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'regenerate');
+        $this->container->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
 
         // define defaults for module vars
         $this->setVar('modulesnocache', '');

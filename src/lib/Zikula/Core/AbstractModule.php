@@ -3,7 +3,7 @@
 namespace Zikula\Core;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zikula\Core\Theme\AssetBag;
+use Zikula\ThemeModule\Engine\AssetBag;
 
 abstract class AbstractModule extends AbstractBundle
 {

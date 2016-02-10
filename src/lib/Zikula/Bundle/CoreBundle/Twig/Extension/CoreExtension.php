@@ -17,7 +17,7 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\AdminMenuPanelSimpleFunction;
-use Zikula\Core\Theme\AssetBag;
+use Zikula\ThemeModule\Engine\AssetBag;
 
 class CoreExtension extends \Twig_Extension
 {
@@ -88,6 +88,7 @@ class CoreExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('languageName', [$this, 'languageName']),
             new \Twig_SimpleFilter('safeHtml', [$this, 'safeHtml'], array('is_safe' => array('html'))),
+            new \Twig_SimpleFilter('yesNo', [$this, 'yesNo']),
         );
     }
 
@@ -213,6 +214,15 @@ class CoreExtension extends \Twig_Extension
     public function safeHtml($string)
     {
         return \DataUtil::formatForDisplayHTML($string);
+    }
+
+    public function yesNo($string)
+    {
+        if ($string != '0' && $string != '1') {
+            return $string;
+        }
+
+        return (bool)$string ? __('Yes') :  __('No');
     }
 
     /**

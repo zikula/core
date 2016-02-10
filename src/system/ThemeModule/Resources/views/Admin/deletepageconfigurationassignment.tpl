@@ -5,7 +5,7 @@
 </h3>
 
 <p class="alert alert-warning">{gt text="Do you really want to delete this page configuration assignment?"}</p>
-<form class="form-horizontal" role="form" action="{route name='zikulathememodule_admin_deletepageconfigurationassignment' themename=$name|safetext pcname=$pcname|safetext}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{route name='zikulathememodule_theme_deletepageconfigurationassignment' themename=$name|safetext pcname=$pcname|safetext}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="Confirmation prompt"}</legend>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
