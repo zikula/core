@@ -17,7 +17,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Zikula\ThemeModule\Util as ThemeUtil;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 
 /**
@@ -141,7 +140,7 @@ class AjaxUpgradeController extends AbstractController
     private function regenerateThemes()
     {
         // regenerate the themes list
-        return ThemeUtil::regenerate();
+        return $this->container->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
     }
 
     private function from140to141()

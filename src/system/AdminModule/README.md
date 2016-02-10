@@ -1,3 +1,0 @@
-Zikula Admin Module
-===================
-

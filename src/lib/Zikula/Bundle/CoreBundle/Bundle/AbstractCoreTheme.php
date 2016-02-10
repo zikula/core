@@ -2,7 +2,7 @@
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
-use Zikula\Core\AbstractTheme;
+use Zikula\ThemeModule\AbstractTheme;
 
 abstract class AbstractCoreTheme extends AbstractTheme
 {

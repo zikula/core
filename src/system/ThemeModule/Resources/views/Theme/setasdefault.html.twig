@@ -1,0 +1,34 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<h3>
+    <span class="fa fa-check"></span>
+    {{ __('Theme confirmation prompt') }}
+</h3>
+
+<p class="alert alert-danger">
+    {{ __f('Do you really want to set %sub% as the active theme for all site users?', {"%sub%": '<strong>' ~ themeName ~ '</strong>'})|raw }}
+</p>
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.resetuserselected) }}
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            {% if theme_change %}
+                <em class="help-block">{{ __('Users are allowed to change their own theme.') }}</em>
+            {% else %}
+                <em class="help-block">{{ __('Users are not currently allowed to change their own theme, but may have previously changed them.') }}</em>
+            {% endif %}
+            <em class="help-block">{{ __('Note: User selection of themes is a deprecated feature.') }}</em>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            {{ form_widget(form.Accept, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
+            {{ form_widget(form.Cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+        </div>
+    </div>
+{{ form_end(form) }}
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

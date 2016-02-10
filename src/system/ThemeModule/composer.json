@@ -1,5 +1,6 @@
 {
     "name": "zikula/theme-module",
+    "version": "3.4.3",
     "description": "Theme Administration Module",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -13,12 +14,23 @@
         "psr-4": { "Zikula\\ThemeModule\\": "" }
     },
     "require": {
-        "php": ">5.4.0"
+        "php": ">5.4.1"
     },
     "extra": {
         "zikula": {
             "url": "theme",
-            "class": "Zikula\\ThemeModule\\ZikulaThemeModule"
+            "class": "Zikula\\ThemeModule\\ZikulaThemeModule",
+            "core-compatibility": ">=1.4.2",
+            "displayname": "ThemeModule",
+            "oldnames": [],
+            "capabilities": {
+                "admin": {"route": "zikulathememodule_theme_view"},
+                "user": {"route": "zikulathememodule_user_index"}
+            },
+            "securityschema": {
+                "ZikulaThemeModule::": "Theme name::",
+                "ZikulaThemeModule::ThemeChange": "::"
+            }
         }
     }
 }

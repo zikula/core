@@ -15,6 +15,7 @@
 use Zikula\ThemeModule\Entity\ThemeEntity;
 
 /**
+ * @deprecated remove at Core-2.0
  * ThemeUtil
  */
 class ThemeUtil
@@ -330,7 +331,7 @@ class ThemeUtil
     /**
      * @param $themeName
      *
-     * @return null|\Zikula\Core\AbstractTheme
+     * @return null|\Zikula\ThemeModule\AbstractTheme
      */
     public static function getTheme($themeName)
     {

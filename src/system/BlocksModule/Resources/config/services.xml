@@ -19,9 +19,9 @@
 
     <services>
         <service id="zikula_blocks_module.container.link_container" class="%zikula_blocks_module.container.link_container.class%">
-            <argument id="translator" type="service"/>
-            <argument id="jms_i18n_routing.router" type="service"/>
-            <argument id="zikula_permissions_module.api.permission" type="service"/>
+            <argument type="service" id="translator" />
+            <argument type="service" id="jms_i18n_routing.router" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
             <tag name="zikula.link_container"/>
         </service>
 
@@ -31,7 +31,7 @@
         </service>
 
         <service id="zikula_blocks_module.api.block_factory" class="%zikula_blocks_module.api.block_factory.class%">
-            <argument id="service_container" type="service" />
+            <argument type="service" id="service_container" />
         </service>
 
         <service id="zikula_blocks_module.api.block" class="%zikula_blocks_module.api.block.class%">

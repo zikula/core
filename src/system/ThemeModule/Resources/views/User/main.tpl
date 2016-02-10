@@ -1,3 +1,4 @@
+{* @deprecated at Core-2.0 - do not convert to twig *}
 {pageaddvar name="javascript" value="web/bootstrap-media-lightbox/bootstrap-media-lightbox.min.js"}
 {pageaddvar name="stylesheet" value="web/bootstrap-media-lightbox/bootstrap-media-lightbox.css"}
 {gt text="Theme switcher" assign=title}

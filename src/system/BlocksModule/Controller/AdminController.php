@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Theme\Annotation\Theme;
+use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class AdminController

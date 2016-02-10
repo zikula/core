@@ -6,7 +6,14 @@ CHANGELOG - ZIKULA 1.4.x
  - BC Breaks:
     - n/a
  - Deprecated:
-    - n/a
+    - 'Theme switching' by users will not be updated to Core-2.0. Only Admins will be able to change themes.
+    - Zikula\ThemeModule\Block\RenderBlock will not be updated to Core-2.0.
+    - Zikula\ThemeModule\Block\ThemeswitcherBlock will not be updated to Core-2.0.
+    - Zikula\ThemeModule\Controller\AjaxController will not be updated to Core-2.0.
+      - the `theme.ajax_request` event is deprecated.
+    - "Alternate Site View" feature (in theme settings) is deprecated. Use responsive design.
+    - Zikula\Core\AbstractTheme is deprecated and aliased to Zikula\ThemeModule\AbstractTheme. Use the latter.
+    - Zikula\Core\Theme\Annotation\Theme is deprecated and aliased to Zikula\ThemeModule\Engine\Annotation\Theme. Use the latter.
  - Fixes:
     - Fix module stylesheet not being loaded automatically for Core-2.0 modules.
     - Fix SearchModule not working for older modules required tables.php (#2643)
@@ -43,6 +50,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Added AbstractExtensionInstaller for use by third-party developers.
     - Added ExtensionVariablesTrait for developers to insert into classes where Extension Variable management is needed.
     - Update Pending Content logic and definitions.
+    - Classes from Zikula\Core\Theme have been moved to Zikula\ThemeModule\Engine.
+    - Listener classes from Zikula\Bundle\CoreBundle\EventListener\Theme have been moved to Zikula\ThemeModule\EventListener.
  - Vendor updates:
     - Symfony updated to 2.8.2
     - Font-Awesome updated to 4.5.0

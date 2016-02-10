@@ -19,7 +19,7 @@
             <td>{$filesection.important|default:0|yesno}</td>
             <td class="actions">
                 <a class="fa fa-pencil" href="{route name='zikulathememodule_admin_modifypageconfigurationassignment' themename=$themename pcname=$name|urlencode}" title="{gt text='Edit'}"></a>
-                <a class="fa fa-trash-o" href="{route name='zikulathememodule_admin_deletepageconfigurationassignment' themename=$themename pcname=$name|urlencode}" title="{gt text='Delete'}"></a>
+                <a class="fa fa-trash-o" href="{route name='zikulathememodule_theme_deletepageconfigurationassignment' themename=$themename pcname=$name|urlencode}" title="{gt text='Delete'}"></a>
             </td>
         </tr>
         {/foreach}
@@ -107,7 +107,7 @@
             <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
                     <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-                    <a class="btn btn-danger" href="{route name='zikulathememodule_admin_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                    <a class="btn btn-danger" href="{route name='zikulathememodule_theme_view'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
                 </div>
         </div>
         </div>

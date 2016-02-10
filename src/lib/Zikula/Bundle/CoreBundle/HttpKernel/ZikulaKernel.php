@@ -14,7 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 use Zikula\Bridge\DependencyInjection\PhpDumper;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
-use Zikula\Core\AbstractTheme;
+use Zikula\ThemeModule\AbstractTheme;
 
 abstract class ZikulaKernel extends Kernel
 {

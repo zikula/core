@@ -3,7 +3,7 @@
 namespace Zikula\Bundle\FormExtensionBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Core\Theme\AssetBag;
+use Zikula\ThemeModule\Engine\AssetBag;
 
 class FormExtension extends \Twig_Extension
 {

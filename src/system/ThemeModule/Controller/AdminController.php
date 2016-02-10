@@ -23,9 +23,7 @@ use DataUtil;
 use ZLanguage;
 use BlockUtil;
 use Zikula_View_Theme;
-use Zikula\ThemeModule\Util;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,6 +32,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotati
 use Symfony\Component\Routing\RouterInterface;
 
 /**
+ * @deprecated remove at Core-2.0
  * @Route("/admin")
  *
  * administrative controllers for the theme module
@@ -67,7 +66,7 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in view()
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulathememodule_theme_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -82,86 +81,7 @@ class AdminController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check will be done in view()
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
-    }
-
-    /**
-     * @Route("/view/{startnum}/{startlet}", requirements={"startnum" = "\d+", "startlet" = "[a-zA-Z]|\*"})
-     * @Method("GET")
-     *
-     * view all themes
-     *
-     * @param Request $request
-     * @param integer $startnum item number to start the pager from
-     * @param string $startlet starting letter for the alpha pager
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
-     */
-    public function viewAction(Request $request, $startnum = 1, $startlet = null)
-    {
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
-        if (isset($this->container['multisites.enabled']) && $this->container['multisites.enabled'] == 1) {
-            // only the main site can regenerate the themes list
-            if ($this->container['multisites.mainsiteurl'] == $request->query->get('sitedns', null)) {
-                //return true but any action has been made
-                Util::regenerate();
-            }
-        } else {
-            Util::regenerate();
-        }
-
-        // we need this value multiple times, so we keep it
-        $itemsperpage = $this->getVar('itemsperpage');
-
-        // call the API to get a list of all themes in the themes dir
-        $allthemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ALL, ThemeUtil::STATE_ALL);
-
-        // filter by letter if required
-        if (isset($startlet) && !empty($startlet)) {
-            $allthemes = $this->_filterbyletter($allthemes, $startlet);
-        }
-
-        $themes = array_slice($allthemes, $startnum - 1, $itemsperpage);
-
-        $this->view->assign('themes', $themes);
-
-        // assign default theme
-        $this->view->assign('currenttheme', System::getVar('Default_Theme'));
-
-        // assign the values for the pager plugin
-        $this->view->assign('pager', array('numitems' => count($allthemes),
-            'itemsperpage' => $itemsperpage));
-
-        return new Response($this->view->fetch('Admin/view.tpl'));
-    }
-
-    /**
-     * filter theme array by letter
-     *
-     * @param array $allthemes the list of themes to filter
-     * @param string $startlet the starting letter for the filter
-     *
-     * @return array filtered themes array
-     */
-    private function _filterbyletter($allthemes, $startlet)
-    {
-        $themes = array();
-
-        $startlet = strtolower($startlet);
-
-        foreach ($allthemes as $key => $theme) {
-            if (strtolower($theme['displayname'][0]) == $startlet) {
-                $themes[$key] = $theme;
-            }
-        }
-
-        return $themes;
+        return new RedirectResponse($this->get('router')->generate('zikulathememodule_theme_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -282,7 +202,7 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Updated theme settings.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulathememodule_theme_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -1094,141 +1014,6 @@ class AdminController extends \Zikula_AbstractController
         }
 
         return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_pageconfigurations', array('themename' => $themename), RouterInterface::ABSOLUTE_URL));
-    }
-
-    /**
-     * @Route("/credits/{themename}")
-     * @Method("GET")
-     *
-     * display the theme credits
-     *
-     * @param Request $request
-     * @param string $themename name of the theme
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
-     */
-    public function creditsAction(Request $request, $themename)
-    {
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::credits", ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
-        return new Response($this->view->assign('themeinfo', ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename)))
-                ->fetch('Admin/credits.tpl'));
-    }
-
-    /**
-     * @Route("/makedefault")
-     *
-     * set theme as default for site
-     *
-     * @param Request $request
-     *      string $themename         name of the theme
-     *      string $confirmation      confirmation to set theme as default
-     *      bool   $resetuserselected reset any user chosen themes back to site default
-     *
-     * @return Response symfony response object if confirmation isn't provided
-     *
-     * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
-     */
-    public function setasdefaultAction(Request $request)
-    {
-        // get our input
-        $themename = $request->query->get('themename', null);
-        $confirmation = (bool)$request->request->get('confirmation', false);
-        $resetuserselected = $request->request->get('resetuserselected', null);
-
-        // check our input
-        if (!isset($themename) || empty($themename)) {
-            throw new \InvalidArgumentException();
-        }
-
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        // Check for confirmation.
-        if (empty($confirmation)) {
-            // No confirmation yet
-            // Add a hidden field for the item ID to the output
-            $this->view->assign('themename', $themename);
-
-            // assign the var defining if users can change themes
-            $this->view->assign('theme_change', System::getVar('theme_change'));
-
-            return new Response($this->view->fetch('Admin/setasdefault.tpl'));
-        }
-
-        // If we get here it means that the user has confirmed the action
-        $this->checkCsrfToken();
-
-        // Set the default theme
-        if (ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'setasdefault', array('themename' => $themename, 'resetuserselected' => $resetuserselected))) {
-            // Success
-            $request->getSession()->getFlashBag()->add('status', $this->__('Done! Changed default theme.'));
-        }
-
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
-    }
-
-    /**
-     * @Route("/delete")
-     *
-     * delete a theme
-     *
-     * @param Request $request
-     *      string $themename         name of the theme
-     *      string $confirmation      confirmation to set theme as default
-     *
-     * @return Response symfony response object if confirmation isn't provided
-     *
-     * @throws \InvalidArgumentException Thrown if themename isn't provided or doesn't exist
-     * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the module
-     */
-    public function deleteAction(Request $request)
-    {
-        $themename = $request->query->get('themename', null);
-        $confirmation = $request->request->get('confirmation', null);
-
-        // Get the theme info
-        $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-
-        if ($themeinfo == false) {
-            throw new NotFoundHttpException($this->__('Sorry! No such theme found.'), null, 404);
-        }
-
-        // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
-
-        // Check for confirmation.
-        if (empty($confirmation)) {
-            // No confirmation yet
-            // Add the message id
-            $this->view->assign($themeinfo);
-
-            return new Response($this->view->fetch('Admin/delete.tpl'));
-        }
-
-        // If we get here it means that the user has confirmed the action
-        $this->checkCsrfToken();
-
-        $deletefiles = $request->request->get('deletefiles', 0);
-
-        // Delete the admin message
-        // The return value of the function is checked
-        if (ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'delete', array('themename' => $themename, 'deletefiles' => $deletefiles))) {
-            // Success
-            $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted it.'));
-        }
-
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
     }
 
     /**

@@ -1,9 +1,9 @@
+{* @deprecated at Core-2.0 - do not convert to twig *}
 <div class='alert alert-warning help-block'>
     {gt text="Notice: The template file will be sought on all the template paths of the specified module." domain='zikula'}
     {foreach from=$warnings item='warning'}
         <hr />{$warning}
     {/foreach}
-</div>
 </div>
 <div class="form-group">
     <label class="col-sm-3 control-label" for="rmodule">{gt text="Module" domain='zikula'}</label>
