@@ -15,6 +15,7 @@
 namespace Zikula\Component\SortableColumns;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -111,11 +112,27 @@ class SortableColumns
     }
 
     /**
+     * Add one column.
      * @param Column $column
      */
     public function addColumn(Column $column)
     {
         $this->columnCollection->set($column->getName(), $column);
+    }
+
+    /**
+     * Shortcut to add an array of columns.
+     * @param array $columns
+     */
+    public function addColumns(array $columns)
+    {
+        foreach ($columns as $column) {
+            if ($column instanceof Column) {
+                $this->addColumn($column);
+            } else {
+                throw new \InvalidArgumentException('Columns must be an instance of \Zikula\Component\SortableColumns\Column.');
+            }
+        }
     }
 
     /**
@@ -147,6 +164,17 @@ class SortableColumns
         $sortColumn = !empty($sortColumn) ? $sortColumn : $this->getDefaultColumn();
         $this->setSortDirection($sortDirection);
         $this->setSortColumn($sortColumn);
+    }
+
+    /**
+     * Shortcut to set OrderBy using the Request object.
+     * @param Request $request
+     */
+    public function setOrderByFromRequest(Request $request)
+    {
+        $sortColumnName = $request->get($this->sortFieldName, $this->getDefaultColumn()->getName());
+        $sortDirection = $request->get($this->directionFieldName, Column::DIRECTION_ASCENDING);
+        $this->setOrderBy($this->getColumn($sortColumnName), $sortDirection);
     }
 
     /**

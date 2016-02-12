@@ -33,3 +33,22 @@ SortableColumns is a zikula component to help manage data table column headings 
         <th><a class='{{ sort.cr_date.class }}' href='{{ sort.cr_date.url }}'>{{ __('Created') }}</a></th>
     </tr>
 ```
+
+
+Added in Core-1.4.2
+-------------------
+
+Additional shortcut methods `$sortableColumns->addColumns()` and `$sortableColumns->setOrderByFromRequest()` 
+were added in Core-1.4.2.
+
+```php
+    $sortableColumns->addColumns([new Column('pageid'), new Column('title'), new Column('cr_date')]);
+    $sortableColumns->setOrderByFromRequest($request);
+```
+
+If needed, you can obtain the values of the orderByFields (e.g. for a DB query) using:
+
+```
+$sortableColumns->getSortColumn()->getName()
+$sortableColumns->getSortDirection()
+```

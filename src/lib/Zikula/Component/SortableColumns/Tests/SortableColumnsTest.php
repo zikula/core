@@ -14,6 +14,7 @@
 
 namespace Zikula\Component\SortableColumns\Tests;
 
+use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 
@@ -64,6 +65,20 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers SortableColumns::addColumns
+     */
+    public function testAddColumns()
+    {
+        $e = new Column('e');
+        $f = new Column('f');
+        $g = new Column('g');
+        $this->sortableColumns->addColumns([$e, $f, $g]);
+        $this->assertEquals($e, $this->sortableColumns->getColumn('e'));
+        $this->assertEquals($f, $this->sortableColumns->getColumn('f'));
+        $this->assertEquals($g, $this->sortableColumns->getColumn('g'));
+    }
+
+    /**
      * @covers SortableColumns::getDefaultColumn
      */
     public function testGetDefaultColumn()
@@ -109,6 +124,21 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
         $this->sortableColumns->setOrderBy($c, Column::DIRECTION_DESCENDING);
         $this->assertEquals(Column::DIRECTION_DESCENDING, $this->sortableColumns->getSortDirection());
         $this->assertEquals($c, $this->sortableColumns->getSortColumn());
+    }
+
+    /**
+     * @covers SortableColumns::setOrderByFromRequest
+     */
+    public function testSetOrderByFromRequest()
+    {
+        $request = new Request([
+            'sort-field' => 'b',
+            'sort-direction' => 'DESC'
+        ]);
+        $this->sortableColumns->setOrderByFromRequest($request);
+        $b = $this->sortableColumns->getColumn('b');
+        $this->assertEquals($b, $this->sortableColumns->getSortColumn());
+        $this->assertEquals(Column::DIRECTION_DESCENDING, $this->sortableColumns->getSortDirection());
     }
 
     /**
