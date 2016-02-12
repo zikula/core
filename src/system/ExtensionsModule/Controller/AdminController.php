@@ -21,7 +21,6 @@ use ModUtil;
 use SecurityUtil;
 use ZLanguage;
 use Zikula\ExtensionsModule\Util as ExtensionsUtil;
-use System;
 use SessionUtil;
 use PluginUtil;
 use Zikula_View_Theme;
@@ -268,11 +267,6 @@ class AdminController extends \Zikula_AbstractController
         SessionUtil::setVar('state', $state);
         SessionUtil::setVar('sort', $sort);
         SessionUtil::setVar('sortdir', $sortdir);
-
-        // do some clean up
-        SessionUtil::delVar('interactive_init');
-        SessionUtil::delVar('interactive_remove');
-        SessionUtil::delVar('interactive_upgrade');
 
         if ($this->serviceManager['multisites.enabled'] != 1
             || ($this->serviceManager['multisites.mainsiteurl'] == $request->query->get('sitedns', null)
@@ -535,8 +529,6 @@ class AdminController extends \Zikula_AbstractController
         $state = (int)$request->get('state');
 
         // assign any dependencies - filtering out non-active module dependents
-        // when getting here without a valid id we are in interactive init mode and then
-        // the dependencies checks have been done before already
         $fataldependency = false;
         if ($id != 0) {
             $dependencies = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'getdependencies', array('modid' => $id));
@@ -604,22 +596,6 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        $interactive_init = SessionUtil::getVar('interactive_init');
-        $interactive_init = (empty($interactive_init)) ? false : true;
-        if ($interactive_init == false) {
-            SessionUtil::setVar('modules_id', $id);
-            SessionUtil::setVar('modules_startnum', $startnum);
-            SessionUtil::setVar('modules_letter', $letter);
-            SessionUtil::setVar('modules_state', $state);
-            $activate = false;
-        } else {
-            $id = SessionUtil::getVar('modules_id');
-            $startnum = SessionUtil::getVar('modules_startnum');
-            $letter = SessionUtil::getVar('modules_letter');
-            $state = SessionUtil::getVar('modules_state');
-            $activate = (bool) $request->get('activate');
-        }
-
         if (empty($id) || !is_numeric($id)) {
             throw new \InvalidArgumentException($this->__('Error! No module ID provided.'));
         }
@@ -649,27 +625,18 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Now we've initialised the dependencies initialise the main module
-        $res = (bool)ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'initialise',
-                                array('id' => $id,
-                                      'interactive_init' => $interactive_init));
+        $res = (bool)ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'initialise', array('id' => $id));
         $modinfo = ModUtil::getInfo($id);
 
         if ($res) {
             // Success
-            SessionUtil::delVar('modules_id');
-            SessionUtil::delVar('modules_startnum');
-            SessionUtil::delVar('modules_letter');
-            SessionUtil::delVar('modules_state');
-            SessionUtil::delVar('interactive_init');
             $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Installed %s.', $modinfo['name']));
 
-            if ($activate == true) {
-                if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
-                                     array('id' => $id,
-                                           'state' => ModUtil::STATE_ACTIVE))) {
-                    // Success
-                    $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Activated %s.', $modinfo['name']));
-                }
+            if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
+                                 array('id' => $id,
+                                       'state' => ModUtil::STATE_ACTIVE))) {
+                // Success
+                $request->getSession()->getFlashBag()->add('status', $this->__f('Done! Activated %s.', $modinfo['name']));
             }
             $modulesInstalled[] = $id;
 
@@ -752,45 +719,21 @@ class AdminController extends \Zikula_AbstractController
         $csrftoken = $request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
-        $interactive_upgrade = SessionUtil::getVar('interactive_upgrade');
-        $interactive_upgrade = (empty($interactive_upgrade)) ? false : true;
-        if ($interactive_upgrade == false) {
-            $startnum = (int) $request->query->get('startnum', null);
-            $letter = $request->query->get('letter', null);
-            $state = $request->query->get('state', null);
-            SessionUtil::setVar('modules_id', $id);
-            SessionUtil::setVar('modules_startnum', $startnum);
-            SessionUtil::setVar('modules_letter', $letter);
-            SessionUtil::setVar('modules_state', $state);
-            $activate = false;
-        } else {
-            $id = SessionUtil::getVar('modules_id');
-            $startnum = SessionUtil::getVar('modules_startnum');
-            $letter = SessionUtil::getVar('modules_letter');
-            $state = SessionUtil::getVar('modules_state');
-            $activate = (bool) $request->request->get('activate', null);
-        }
+        $startnum = (int) $request->query->get('startnum', null);
+        $letter = $request->query->get('letter', null);
+        $state = $request->query->get('state', null);
 
         // Upgrade module
-        $res = (bool) ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgrade',
-                                array('id' => $id,
-                                      'interactive_upgrade' => $interactive_upgrade));
+        $res = (bool) ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgrade', array('id' => $id));
 
         if ($res) {
             // Success
-            SessionUtil::delVar('modules_id');
-            SessionUtil::delVar('modules_startnum');
-            SessionUtil::delVar('modules_letter');
-            SessionUtil::delVar('modules_state');
-            SessionUtil::setVar('interactive_upgrade', false);
             $request->getSession()->getFlashBag()->add('status', $this->__('New version'));
-            if ($activate == true) {
-                if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
-                                     array('id' => $id,
-                                           'state' => ModUtil::STATE_ACTIVE))) {
-                    // Success
-                    $request->getSession()->getFlashBag()->add('status', $this->__('Activated'));
-                }
+            if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
+                                 array('id' => $id,
+                                       'state' => ModUtil::STATE_ACTIVE))) {
+                // Success
+                $request->getSession()->getFlashBag()->add('status', $this->__('Activated'));
             }
 
             // Clear the Zikula_View cached/compiled files and Themes cached/compiled/cssjs combination files
@@ -896,22 +839,6 @@ class AdminController extends \Zikula_AbstractController
         $letter = $request->get('letter');
         $state = $request->get('state');
 
-        $interactive_remove = SessionUtil::getVar('interactive_remove');
-        $interactive_remove = (empty($interactive_remove)) ? false : true;
-
-        if ($interactive_remove == false) {
-            SessionUtil::setVar('modules_id', $id);
-            SessionUtil::setVar('modules_startnum', $startnum);
-            SessionUtil::setVar('modules_letter', $letter);
-            SessionUtil::setVar('modules_state', $state);
-        } else {
-            $id = SessionUtil::getVar('modules_id');
-            $startnum = SessionUtil::getVar('modules_startnum');
-            $letter = SessionUtil::getVar('modules_letter');
-            $state = SessionUtil::getVar('modules_state');
-            $confirmation = 1;
-        }
-
         if (empty($id) || !is_numeric($id) || !ModUtil::getInfo($id)) {
             throw new \InvalidArgumentException($this->__('Error! No module ID provided.'));
         }
@@ -981,16 +908,9 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Now we've removed dependents and associated blocks remove the main module
-        $res = (bool) ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'remove', array(
-                'id' => $id,
-                'interactive_remove' => $interactive_remove));
+        $res = (bool) ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'remove', array('id' => $id));
         if ($res) {
             // Success
-            SessionUtil::delVar('modules_id');
-            SessionUtil::delVar('modules_startnum');
-            SessionUtil::delVar('modules_letter');
-            SessionUtil::delVar('modules_state');
-            SessionUtil::delVar('interactive_remove');
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Uninstalled module.'));
 
             return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_view', array(

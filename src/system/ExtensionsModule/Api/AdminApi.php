@@ -322,7 +322,6 @@ class AdminApi extends \Zikula_AbstractApi
      * @param mixed[] $args {
      *      @type int     $id                 The id of the module
      *      @type boolean $removedependents   Remove any modules dependent on this module (default: false) (not used!)
-     *      @type boolean $interactive_remove Whether to operat in interactive mode or not
      *                       }
      *
      * @return boolean True on success, false on failure
@@ -1039,7 +1038,6 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @param mixed[] $args {
      *      @type int     $id                  The module ID
-     *      @type boolean $interactive_upgrade Whether or not to upgrade in interactive mode
      *                       }
      *
      * @return boolean True on success, false on failure
@@ -1259,6 +1257,11 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
+            $links[] = [
+                'url' => $this->get('router')->generate('zikulaextensionsmodule_module_viewmodulelist'),
+                'text' => 'New List',
+                'icon' => 'list'
+            ];
             $links[] = array(
                 'url' => $this->get('router')->generate('zikulaextensionsmodule_admin_view'),
                 'text' => $this->__('Modules list'),
