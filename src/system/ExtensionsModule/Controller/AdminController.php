@@ -274,7 +274,11 @@ class AdminController extends \Zikula_AbstractController
         SessionUtil::delVar('interactive_remove');
         SessionUtil::delVar('interactive_upgrade');
 
-        if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == $request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+        if ($this->serviceManager['multisites.enabled'] != 1
+            || ($this->serviceManager['multisites.mainsiteurl'] == $request->query->get('sitedns', null)
+                && $this->serviceManager['multisites.based_on_domains'] == 0)
+            || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST']
+                && $this->serviceManager['multisites.based_on_domains'] == 1)) {
             // always regenerate modules list
             $filemodules = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'getfilemodules');
             $inconsistencies = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'checkconsistency', array('filemodules' => $filemodules));
