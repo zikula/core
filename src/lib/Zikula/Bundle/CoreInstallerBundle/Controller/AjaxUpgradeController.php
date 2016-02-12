@@ -76,6 +76,8 @@ class AjaxUpgradeController extends AbstractController
                 return $this->regenerateThemes();
             case "from140to141":
                 return $this->from140to141();
+            case "from141to142":
+                return $this->from141to142();
             case "finalizeparameters":
                 return $this->finalizeParameters();
             case "clearcaches":
@@ -161,6 +163,14 @@ class AjaxUpgradeController extends AbstractController
 
         // take whatever additional actions necessary to upgrade from 140 to 141
         return true;
+    }
+
+    private function from141to142()
+    {
+        // do some clean up
+        \SessionUtil::delVar('interactive_init');
+        \SessionUtil::delVar('interactive_remove');
+        \SessionUtil::delVar('interactive_upgrade');
     }
 
     private function finalizeParameters()
