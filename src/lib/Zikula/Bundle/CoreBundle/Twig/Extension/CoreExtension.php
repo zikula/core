@@ -80,6 +80,7 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
             new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
             new \Twig_SimpleFunction('adminPanelMenu', [new AdminMenuPanelSimpleFunction($this), 'display'], ['is_safe' => array('html')]),
+            new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable'])
         );
     }
 
@@ -361,5 +362,17 @@ class CoreExtension extends \Twig_Extension
         $result = \SecurityUtil::checkPermission($component, $instance, constant($level));
 
         return (bool) $result;
+    }
+
+    /**
+     * @param string $modname
+     * @param bool $force
+     * @return bool
+     */
+    public function modAvailable($modname, $force = false)
+    {
+        $result = \ModUtil::available($modname, $force);
+
+        return (bool)$result;
     }
 }
