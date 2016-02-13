@@ -138,7 +138,7 @@ class BundleSyncHelper
                     'admin' => (isset($themeversion['admin']) ? (int)$themeversion['admin'] : '0'),
                     'user' => (isset($themeversion['user']) ? (int)$themeversion['user'] : '1'),
                     'system' => (isset($themeversion['system']) ? (int)$themeversion['system'] : '0'),
-                    'state' => (isset($themeversion['state']) ? $themeversion['state'] : ThemeEntityRepository::STATE_ACTIVE),
+                    'state' => (isset($themeversion['state']) ? $themeversion['state'] : ThemeEntityRepository::STATE_INACTIVE),
                     'contact' => (isset($themeversion['contact']) ? $themeversion['contact'] : ''),
                     'xhtml' => (isset($themeversion['xhtml']) ? (int)$themeversion['xhtml'] : 1));
 
