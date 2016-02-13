@@ -14,6 +14,7 @@
 namespace Zikula\ThemeModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 /**
  * Installation and upgrade routines for the theme module
@@ -36,6 +37,14 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
 
         // detect all themes on install
         $this->container->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
+
+        // activate all current themes
+        $themes = $this->container->get('zikula_theme_module.theme_entity.repository')->findAll();
+        /** @var \Zikula\ThemeModule\Entity\ThemeEntity $theme */
+        foreach ($themes as $theme) {
+            $theme->setState(ThemeEntityRepository::STATE_ACTIVE);
+        }
+        $this->entityManager->flush();
 
         // define defaults for module vars
         $this->setVar('modulesnocache', '');
