@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Translator
  */
-class Translator extends BaseTranslator implements WarmableInterface
+class Translator extends BaseTranslator implements WarmableInterface, TranslatorInterface
 {
     /**
      * @var ContainerInterface
