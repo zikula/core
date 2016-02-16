@@ -186,7 +186,7 @@ class PageUtil
     {
         global $_pageVars;
 
-        if (System::isLegacyMode()) {
+        if (System::isLegacyMode() && in_array($varname, array('description', 'keywords', 'rawtext'))) {
             $sm = ServiceUtil::getManager();
             $metaTags = $sm->getParameter('zikula_view.metatags');
             switch ($varname) {
