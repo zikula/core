@@ -47,7 +47,7 @@ class ExtensionRepository extends EntityRepository implements ExtensionRepositor
             $i++;
         }
         if (isset($orderBy)) {
-            foreach($orderBy as $field => $direction) {
+            foreach ($orderBy as $field => $direction) {
                 $qb->orderBy("e.$field", $direction);
             }
         }

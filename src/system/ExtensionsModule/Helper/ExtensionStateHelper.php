@@ -122,5 +122,4 @@ class ExtensionStateHelper
 
         return true;
     }
-
 }
