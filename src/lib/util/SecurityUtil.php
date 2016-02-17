@@ -62,6 +62,7 @@ class SecurityUtil
 
     /**
      * Generate a security token.
+     * @deprecated remove at Core-2.0
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager (default = null).
      * @param boolean               $forceUnique    Force a unique token regardless of system settings.
@@ -74,30 +75,12 @@ class SecurityUtil
             $serviceManager = ServiceUtil::getManager();
         }
 
-        $tokenGenerator = $serviceManager->get('token.generator');
-        if (!$forceUnique && System::getVar('sessioncsrftokenonetime')) {
-            $storage = $tokenGenerator->getStorage();
-            $tokenId = SessionUtil::getVar('sessioncsrftokenid');
-            $data = $storage->get($tokenId);
-            if (!$data) {
-                $tokenGenerator->generate($tokenGenerator->uniqueId(), time());
-                $tokenGenerator->save();
-                SessionUtil::setVar('sessioncsrftokenid', $tokenGenerator->getId());
-
-                return $tokenGenerator->getToken();
-            }
-
-            return $data['token'];
-        }
-
-        $tokenGenerator->generate($tokenGenerator->uniqueId(), time());
-        $tokenGenerator->save();
-
-        return $tokenGenerator->getToken();
+        return $serviceManager->get('zikula_core.common.csrf_token_handler')->generate($forceUnique);
     }
 
     /**
      * Validate a given security token.
+     * @deprecated remove at Core-2.0
      *
      * @param string                $token          Token to be validated.
      * @param Zikula_ServiceManager $serviceManager ServiceManager default = null.
@@ -110,16 +93,7 @@ class SecurityUtil
             $serviceManager = ServiceUtil::getManager();
         }
 
-        $tokenValidator = $serviceManager->get('token.validator');
-        if (System::getVar('sessioncsrftokenonetime')) {
-            $result = $tokenValidator->validate($token, false, false);
-            if ($result) {
-                return true;
-            }
-            SessionUtil::expire(); // something went wrong so expire the session.
-        }
-
-        return $tokenValidator->validate($token);
+        return $serviceManager->get('zikula_core.common.csrf_token_handler')->validate($token);
     }
 
     /**
