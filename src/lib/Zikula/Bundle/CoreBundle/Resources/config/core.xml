@@ -18,6 +18,7 @@
         <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
         <parameter key="token.generator.class">Zikula\Core\Token\Generator</parameter>
         <parameter key="token.validator.class">Zikula\Core\Token\Validator</parameter>
+        <parameter key="zikula_core.common.csrf_token_handler.class">Zikula\Core\Token\CsrfTokenHandler</parameter>
         <parameter key="token.max_life">3600</parameter>
 
         <parameter key="markdown.class">Michelf\Markdown</parameter>
@@ -71,6 +72,14 @@
 
         <service id="token.validator" class="%token.validator.class%">
             <argument type="service" id="token.generator" />
+        </service>
+
+        <service id="zikula_core.common.csrf_token_handler" class="%zikula_core.common.csrf_token_handler.class%" >
+            <argument type="service" id="token.generator" />
+            <argument type="service" id="token.validator" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="session" />
         </service>
 
         <service id="hook_dispatcher.storage" class="%hook_dispatcher.storage.class%">

@@ -793,21 +793,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      */
     public function checkCsrfToken($token = null)
     {
-        if (is_null($token)) {
-            $token = $this->request->request->get('csrftoken', false);
-        }
-
-        $tokenValidator = $this->container->get('token.validator');
-
-        if (System::getVar('sessioncsrftokenonetime') && $tokenValidator->validate($token, false, false)) {
-            return;
-        }
-
-        if ($tokenValidator->validate($token)) {
-            return;
-        }
-
-        $this->throwForbidden(__f('Oops, something went wrong: security token validation failed. You might want to go to the <a href="%s">startpage</a>.', $this->request->getBaseUrl()));
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
     }
 
     /**
