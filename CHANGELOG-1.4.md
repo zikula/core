@@ -22,21 +22,22 @@ CHANGELOG - ZIKULA 1.4.x
       CI build/Yaml compressor. (#2702, #2707)
     - Fix error in BootstrapTheme where `pagetype` variable was required (#2681)
     - Fix legacy modules always using 'home' realm in Theme engine (#2691)
-    - Correct minor display issues for new Symfony 2.8-style developer toolbar.
+    - Fix minor display issues for new Symfony 2.8-style developer toolbar.
     - Fix Login block not functional (#2729)
     - Fix display problem with navbar in Bootstrap theme (#2662)
     - Streamlined log size by removing event channel (#2741)
     - Fix registration expiration error when expired user is deleted (#2696)
     - Fix notation for Modules in Menu block (#2654)
  - Features:
-    - New advanced block filtering based on a combination of any query parameter or request attributes.
-    - Added core routing for all legacy urls (both normal and 'shorturls').
-    - Added option to set a controller (e.g. `ZikulaPagesModule:User:categories`) as start page settings instead of legacy method. (#2454)
+    - Add new advanced block filtering based on a combination of any query parameter or request attributes.
+    - Add core routing for all legacy urls (both normal and 'shorturls').
+    - Add option to set a controller (e.g. `ZikulaPagesModule:User:categories`) as start page settings instead of legacy method. (#2454)
     - Add theme information to Symfony developer toolbar.
     - Add functional login block to Bootstrap theme (#2730)
     - Add support for 'account' type links in the LinkContainerCollector (#2758)
     - Add collapseable blocks. This feature had disappeared since Core-1.3x (#2678)
     - Add Twig tag `modAvailable($moduleName)` (#2769)
+    - Add CsrfTokenHandler service (`\Zikula\Core\Token\CsrfTokenHandler`)
  - Core-2.0 Features:
     - Add `currentUser` global variable to twig templates.
     - Add (move) `Zikula\CategoriesModule\Entity\AbstractCategoryAssignment` and related documentation.
@@ -48,12 +49,12 @@ CHANGELOG - ZIKULA 1.4.x
         - Zikula\BlocksModule\AbstractBlockHandler
         - Updated BlocksModule Admin UI.
         - BlocksModule updated to Core-2.0 Spec.
-    - Added AbstractExtensionInstaller for use by third-party developers.
-    - Added ExtensionVariablesTrait for developers to insert into classes where Extension Variable management is needed.
+    - Add AbstractExtensionInstaller for use by third-party developers.
+    - Add ExtensionVariablesTrait for developers to insert into classes where Extension Variable management is needed.
     - Update Pending Content logic and definitions.
     - Classes from Zikula\Core\Theme have been moved to Zikula\ThemeModule\Engine.
     - Listener classes from Zikula\Bundle\CoreBundle\EventListener\Theme have been moved to Zikula\ThemeModule\EventListener.
-    - Added Zikula\Common\Translator\TranslatorInterface to use as typehint when using `translator.default` service.
+    - Add Zikula\Common\Translator\TranslatorInterface to use as typehint when using `translator.default` service.
  - Vendor updates:
     - Symfony updated to 2.8.2
     - Font-Awesome updated to 4.5.0
