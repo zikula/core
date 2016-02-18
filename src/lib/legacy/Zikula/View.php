@@ -174,7 +174,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->get('event_dispatcher');
-        $this->request = \ServiceUtil::get('request');
+        $this->request = \ServiceUtil::get('request_stack')->getCurrentRequest();
 
         // set the error reporting level
         $this->error_reporting = isset($GLOBALS['ZConfig']['Debug']['error_reporting']) ? $GLOBALS['ZConfig']['Debug']['error_reporting'] : E_ALL;
@@ -187,9 +187,20 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $func   = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
 
         // set vars based on the module structures
-        $this->homepage = PageUtil::isHomepage();
-        $this->type = strtolower(!$this->homepage ? $type : System::getVar('starttype'));
-        $this->func = strtolower(!$this->homepage ? $func : System::getVar('startfunc'));
+        $pathInfo = $this->request->getPathInfo();
+        $routeParams = isset($pathInfo) && $pathInfo != '/' ? $this->serviceManager->get('router')->match($pathInfo) : null;
+        if (!isset($routeParams) && $pathInfo == '/') {
+            $this->homepage = true;
+            $this->type = System::getVar('starttype');
+            $this->func = System::getVar('startfunc');
+        } elseif (isset($routeParams) && isset($routeParams['_zkType']) && isset($routeParams['_zkFunc'])) {
+            $this->type = $routeParams['_zkType'];
+            $this->func = $routeParams['_zkFunc'];
+        } else {
+            $this->homepage = PageUtil::isHomepage();
+            $this->type = strtolower(!$this->homepage ? $type : System::getVar('starttype'));
+            $this->func = strtolower(!$this->homepage ? $func : System::getVar('startfunc'));
+        }
 
         // Initialize the module property with the name of
         // the topmost module. For Hooks, Blocks, API Functions and others
