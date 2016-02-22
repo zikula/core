@@ -179,12 +179,18 @@ class MetaData implements \ArrayAccess
             ];
         }
         if (!empty($json['suggest'])) {
-            foreach ($json['suggest'] as $package => $version) {
+            foreach ($json['suggest'] as $package => $reason) {
+                if (strpos($package, ':')) {
+                    list($name, $version) = explode(':', $package, 2);
+                } else {
+                    $name = $package;
+                    $version = '-1';
+                }
                 $dependencies[] = [
-                    'modname' => $package,
-                    'minversion' => '-1',
-                    'maxversion' => '100',
-                    'reason' => $version,
+                    'modname' => $name,
+                    'minversion' => $version,
+                    'maxversion' => $version,
+                    'reason' => $reason,
                     'status' => \ModUtil::DEPENDENCY_RECOMMENDED
                 ];
             }

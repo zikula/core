@@ -1776,12 +1776,6 @@ class AdminController extends \Zikula_AbstractController
             // @todo this specifically is for `composer/installers` but will catch all with `composer/`
             return true;
         }
-        if ($dependency['minversion'] == "-1") {
-            // dependency is "suggested"
-            list($dependency['modname'], $dependency['minversion']) = explode(':', $dependency['modname']);
-
-            return false;
-        }
         if (strpos($dependency['modname'], '/') !== false) {
             if ($this->get('kernel')->isBundle($dependency['modname'])) {
                 if (empty($this->installedPackages)) {
