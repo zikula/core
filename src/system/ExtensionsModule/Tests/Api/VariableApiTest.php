@@ -15,7 +15,7 @@
 namespace Zikula\ExtensionsModule\Tests\Api;
 
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\ExtensionsModule\Tests\Api\Fixtures\StubRepository;
+use Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionVarStubRepository;
 use Zikula\ExtensionsModule\Tests\Fixtures\BaseBundle\BaseBundle;
 
 class VariableApiTest extends \PHPUnit_Framework_TestCase
@@ -42,7 +42,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array('BaseBundle' => new BaseBundle())))
         ;
 
-        $repo = new StubRepository();
+        $repo = new ExtensionVarStubRepository();
         $this->api = new VariableApi($repo, $kernel);
     }
 

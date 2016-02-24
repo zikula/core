@@ -545,6 +545,9 @@ class ModUtil
 
     /**
      * The getTypeMods method gets a list of modules by module type.
+     * @deprecated at Core-2.0
+     * @see \Zikula\ExtensionsModule\Api\CapabilityApi::getExtensionsCapableOf()
+     * @see service zikula_extensions_module.api.capability
      *
      * @param string $capability The module type to get (either 'user' or 'admin') (optional) (default='user').
      *
@@ -585,6 +588,9 @@ class ModUtil
 
     /**
      * Indicates whether the specified module has the specified capability.
+     * @deprecated at Core-2.0
+     * @see \Zikula\ExtensionsModule\Api\CapabilityApi::isCapable()
+     * @see service zikula_extensions_module.api.capability
      *
      * @param string $module     The name of the module.
      * @param string $capability The name of the advertised capability.
@@ -603,6 +609,9 @@ class ModUtil
 
     /**
      * Retrieves the capabilities of the specified module.
+     * @deprecated at Core-2.0
+     * @see \Zikula\ExtensionsModule\Api\CapabilityApi::getCapabilitiesOf()
+     * @see service zikula_extensions_module.api.capability
      *
      * @param string $module The module name.
      *
