@@ -23,7 +23,7 @@
         "zikula": {
             "class": "Zikula\\BlocksModule\\ZikulaBlocksModule",
             "core-compatibility": ">=1.4.1",
-            "displayname": "BlocksModule",
+            "displayname": "Blocks Module",
             "url": "blocks",
             "oldnames": [],
             "capabilities": {

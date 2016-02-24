@@ -33,6 +33,7 @@ class ZikulaKernel extends Kernel
             new Zikula\Bundle\CoreBundle\CoreBundle(),
             new Zikula\Bundle\CoreInstallerBundle\ZikulaCoreInstallerBundle(),
             new Zikula\Bundle\FormExtensionBundle\ZikulaFormExtensionBundle(),
+            new Zikula\Bundle\HookBundle\ZikulaHookBundle(),
             new Zikula\Bundle\JQueryBundle\ZikulaJQueryBundle(),
             new Zikula\Bundle\JQueryUIBundle\ZikulaJQueryUIBundle(),
             new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
@@ -48,7 +49,8 @@ class ZikulaKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Elao\WebProfilerExtraBundle\WebProfilerExtraBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Zikula\Bundle\GeneratorBundle\ZikulaGeneratorBundle();
+            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+//            $bundles[] = new Zikula\Bundle\GeneratorBundle\ZikulaGeneratorBundle();
         }
 
         return $bundles;

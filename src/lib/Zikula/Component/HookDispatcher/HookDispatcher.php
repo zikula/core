@@ -21,7 +21,7 @@ use Zikula\Component\HookDispatcher\Exception\LogicException;
 /**
  * HookDispatcher class.
  */
-class HookDispatcher
+class HookDispatcher implements HookDispatcherInterface
 {
     /**
      * Storage.

@@ -33,7 +33,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('installer.module.uninstalled', 'deleteGeneratedCategoryModelsOnModuleRemove');
         $this->addHandlerDefinition('pageutil.addvar_filter', 'coreStylesheetOverride');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
-        $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
         $this->addHandlerDefinition('core.preinit', 'initDB');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
@@ -244,37 +243,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
     }
 
     /**
-     * Dynamically add menu links to administration for system services.
-     *
-     * Listens for 'module_dispatch.postexecute' events.
-     *
-     * @param Zikula_Event $event The event handler.
-     *
-     * @return void
-     */
-    public function addServiceLink(Zikula_Event $event)
-    {
-        // check if this is for this handler
-        if (!($event['modfunc'][1] == 'getLinks' && $event['type'] == 'admin' && $event['api'] == true)) {
-            return;
-        }
-
-        // notify EVENT here to gather any system service links
-        $args = array('modname' => $event->getArgument('modname'));
-        $localevent = new \Zikula\Core\Event\GenericEvent($event->getSubject(), $args);
-        $this->eventManager->dispatch('module_dispatch.service_links', $localevent);
-        $sublinks = $localevent->getData();
-
-        if (!empty($sublinks)) {
-            $event->data[] = array(
-                'url' => $this->getContainer()->get('router')->generate('zikulaextensionsmodule_admin_moduleservices', array('moduleName' => $event['modname'])),
-                'text' => __('Services'),
-                'icon' => 'cogs',
-                'links' => $sublinks);
-        }
-    }
-
-    /**
      * Respond to theme.init events.
      *
      * Issues anti-clickjack headers.
@@ -308,6 +276,5 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $event->setArgument('modfunc', array(1 => 'getLinks'));
         $event->setArgument('api', true);
         $this->addHooksLink($event);
-        $this->addServiceLink($event);
     }
 }

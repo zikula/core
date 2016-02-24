@@ -26,7 +26,7 @@ class Util
 {
     /**
      * Get version metadata for a module.
-     * @todo refactor at Core-2.0 to eliminate legacy
+     * @deprecated remove at Core-2.0 (simply use `$bundle->getMetaData()`)
      *
      * @param string $moduleName Module Name.
      * @param string $rootdir    Root directory of the module (default: modules).

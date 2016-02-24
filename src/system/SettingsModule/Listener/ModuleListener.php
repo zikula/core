@@ -17,7 +17,7 @@ use LogUtil;
 use ModUtil;
 use System;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class ModuleListener implements EventSubscriberInterface
 {

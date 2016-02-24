@@ -36,6 +36,9 @@ class HookApiTest extends \PHPUnit_Framework_TestCase
         $this->api = new HookApi($translator);
     }
 
+    /**
+     * @covers HookApi::getHookContainerInterface
+     */
     public function testGetHookContainerInstance()
     {
         $meta = new MetaData($this->getJson());
