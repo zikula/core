@@ -476,7 +476,9 @@ class HtmlUtil
             $capabilities = $module->getMetaData()->getCapabilities();
             if (isset($capabilities['categorizable'])) {
                 $data = array();
-                foreach ($capabilities['categorizable'] as $fullyQualifiedEntityName) {
+                $keys = array_keys($capabilities['categorizable']);
+                $entityList = is_int($keys[0]) ? $capabilities['categorizable'] : $capabilities['categorizable'][$keys[0]];
+                foreach ($entityList as $fullyQualifiedEntityName) {
                     $nameParts = explode('\\', $fullyQualifiedEntityName);
                     $entityName = array_pop($nameParts);
                     $data[$entityName] = $entityName;

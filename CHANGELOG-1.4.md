@@ -28,6 +28,9 @@ CHANGELOG - ZIKULA 1.4.x
     - Streamlined log size by removing event channel (#2741)
     - Fix registration expiration error when expired user is deleted (#2696)
     - Fix notation for Modules in Menu block (#2654)
+    - Fix structure of `categorizable` key in version spec.
+        - use `"categorizable": {"entities": ["Acme\FooModule\Entity\FooEntity", "Acme\FooModule\Entity\BarEntity"]}`
+        - BC with previous method maintained but deprecated, e.g. `"categorizable": ["Acme\FooModule\Entity\FooEntity", "Acme\FooModule\Entity\BarEntity"]`
  - Features:
     - Add new advanced block filtering based on a combination of any query parameter or request attributes.
     - Add core routing for all legacy urls (both normal and 'shorturls').
