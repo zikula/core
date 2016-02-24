@@ -82,7 +82,6 @@ class ExtensionsExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFunction('stateLabel', [$this, 'stateLabel'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('extensionActions', [$this, 'extensionActions']),
-            new \Twig_SimpleFunction('callFunc', [$this, 'callFunc'])
         ];
     }
 
@@ -239,20 +238,5 @@ class ExtensionsExtension extends \Twig_Extension
         }
 
         return $actions;
-    }
-
-    /**
-     * Call a php callable with parameters.
-     * @param array $callable
-     * @param array $params
-     * @return mixed
-     */
-    public function callFunc(array $callable, array $params = [])
-    {
-        if (function_exists($callable) && is_callable($callable)) {
-            return call_user_func_array($callable, $params);
-        }
-
-        throw new \InvalidArgumentException('Function does not exist or is not callable.');
     }
 }
