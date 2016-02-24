@@ -114,17 +114,13 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
 
     public function updateName($oldName, $newName)
     {
-
     }
 
     public function persistAndFlush($entity)
     {
-
     }
 
     public function removeAndFlush($entity)
     {
-
     }
-
 }
