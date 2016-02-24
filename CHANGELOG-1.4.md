@@ -58,6 +58,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Classes from Zikula\Core\Theme have been moved to Zikula\ThemeModule\Engine.
     - Listener classes from Zikula\Bundle\CoreBundle\EventListener\Theme have been moved to Zikula\ThemeModule\EventListener.
     - Add Zikula\Common\Translator\TranslatorInterface to use as typehint when using `translator.default` service.
+    - Add CapabilityApi to manage and define Extension Capabilities for Core-2.0 applications.
  - Vendor updates:
     - Symfony updated to 2.8.2
     - Font-Awesome updated to 4.5.0

@@ -8,6 +8,7 @@
         <parameter key="zikula_extensions_module.api.variable.class">Zikula\ExtensionsModule\Api\VariableApi</parameter>
         <parameter key="zikula_extensions_module.api.extension.class">Zikula\ExtensionsModule\Api\ExtensionApi</parameter>
         <parameter key="zikula_extensions_module.api.hook.class">Zikula\ExtensionsModule\Api\HookApi</parameter>
+        <parameter key="zikula_extensions_module.api.capability.class">Zikula\ExtensionsModule\Api\CapabilityApi</parameter>
         <parameter key="zikula_extensions_module.extension_var_repository.class">Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository</parameter>
         <parameter key="zikula_extensions_module.extension_repository.class">Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository</parameter>
     </parameters>
@@ -36,6 +37,11 @@
         <service id="zikula_extensions_module.api.hook" class="%zikula_extensions_module.api.hook.class%" lazy="true">
             <argument id="translator" type="service"/>
         </service>
+
+        <service id="zikula_extensions_module.api.capability" class="%zikula_extensions_module.api.capability.class%" >
+            <argument type="service" id="zikula_extensions_module.extension_repository" />
+        </service>
+
     </services>
 
 </container>
