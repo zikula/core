@@ -80,7 +80,8 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
             new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
             new \Twig_SimpleFunction('adminPanelMenu', [new AdminMenuPanelSimpleFunction($this), 'display'], ['is_safe' => array('html')]),
-            new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable'])
+            new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable']),
+            new \Twig_SimpleFunction('callFunc', [$this, 'callFunc'])
         );
     }
 
@@ -375,5 +376,20 @@ class CoreExtension extends \Twig_Extension
         $result = \ModUtil::available($modname, $force);
 
         return (bool)$result;
+    }
+
+    /**
+     * Call a php callable with parameters.
+     * @param array $callable
+     * @param array $params
+     * @return mixed
+     */
+    public function callFunc(array $callable, array $params = [])
+    {
+        if (function_exists($callable) && is_callable($callable)) {
+            return call_user_func_array($callable, $params);
+        }
+
+        throw new \InvalidArgumentException('Function does not exist or is not callable.');
     }
 }
