@@ -1,0 +1,58 @@
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th><a class='{{ sort.displayname.class }}' href='{{ sort.displayname.url }}'>{{ __('Name') }}</a></th>
+        <th>Description</th>
+        <th>Version</th>
+        <th><a class='{{ sort.state.class }}' href='{{ sort.state.url }}'>{{ __('State') }}</a></th>
+        <th class="text-right">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for module in modules %}
+        <tr>
+            <td>
+                {% if module.capabilities.admin is defined and module.state == 3 %}
+                    {% if module.capabilities.admin.route is defined %}
+                        <a title="{{  __("Go to the module's administration panel") }}" href="{{ path(module.capabilities.admin.route) }}"><i class="fa fa-link"></i></a>
+                    {% elseif module.capabilities.admin.url is defined %}
+                        <a title="{{  __("Go to the module's administration panel") }}" href="{{ module.capabilities.admin.url }}"><i class="fa fa-link"></i></a>
+                    {% endif %}
+                {% endif %}
+                <strong>{{ module.displayname }}</strong>
+                <a data-toggle="collapse" href="#collapse-{{ module.name }}"><i class="fa fa-caret-down"></i></a>
+                <ul class="collapse" id="collapse-{{ module.name }}" style="margin-bottom:0">
+                    <li>Internal name: <em>{{ module.name }}</em></li>
+                    <li>Url root: <code>/{{ module.url }}</code></li>
+                </ul>
+            </td>
+            <td style="width:50%">
+                {% if module.name|isCoreModule %}<span class="label label-info tooltips" title="{{ __('Core Extension') }}">C</span>{% endif %}
+                {{ module.description }}
+            </td>
+            <td>{{ module.version }}</td>
+            <td class="nowrap">
+                {{ stateLabel(module, upgradedExtensions) }}
+            </td>
+            <td class="actions">
+                {% for action in extensionActions(module) %}
+                    <a href="{{ action.url|default('#') }}" class="fa fa-{{ action.icon }} tooltips" style="color:{{ action.color }}" title="{{ action.title }}"></a>&nbsp;
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{{ pager({rowcount:pager.count, limit:pager.limit, route:'zikulaextensionsmodule_module_viewmodulelist'}) }}
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+<!-- @todo move to own file -->
+<script>
+    ( function($) {
+        $(document).ready(function() {
+            $('i[class*=fa-caret-]').on('click', function() {
+                $(this).toggleClass("fa-caret-down fa-caret-up");
+            });
+        });
+    })(jQuery);
+</script>

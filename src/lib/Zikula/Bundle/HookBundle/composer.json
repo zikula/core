@@ -1,0 +1,21 @@
+{
+    "name": "zikula/hook-bundle",
+    "type": "symfony-bundle",
+    "description": "An bundle consolidating Extension Hook features.",
+    "keywords": [ "zikula" ],
+    "homepage": "http://www.zikula.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zikula Team",
+            "homepage": "http://www.zikula.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.1",
+        "symfony/framework-bundle": "~2.0"
+    },
+    "autoload": {
+        "psr-4": { "Zikula\\Bundle\\HookBundle\\": "" }
+    }
+}

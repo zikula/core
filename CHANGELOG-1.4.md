@@ -41,6 +41,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Add collapseable blocks. This feature had disappeared since Core-1.3x (#2678)
     - Add Twig tag `modAvailable($moduleName)` (#2769)
     - Add CsrfTokenHandler service (`\Zikula\Core\Token\CsrfTokenHandler`)
+    - Add 'info' type flash messages.
  - Core-2.0 Features:
     - Add `currentUser` global variable to twig templates.
     - Add (move) `Zikula\CategoriesModule\Entity\AbstractCategoryAssignment` and related documentation.

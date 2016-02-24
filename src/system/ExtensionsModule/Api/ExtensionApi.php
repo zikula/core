@@ -88,4 +88,24 @@ class ExtensionApi
 
         return $moduleInstance;
     }
+
+    public function isCoreModule($moduleName)
+    {
+        return in_array($moduleName, [
+            'ZikulaAdminModule',
+            'ZikulaBlocksModule',
+            'ZikulaCategoriesModule',
+            'ZikulaExtensionsModule',
+            'ZikulaGroupsModule',
+            'ZikulaMailerModule',
+            'ZikulaPageLockModule',
+            'ZikulaPermissionsModule',
+            'ZikulaRoutesModule',
+            'ZikulaSearchModule',
+            'ZikulaSecurityCenterModule',
+            'ZikulaSettingsModule',
+            'ZikulaThemeModule',
+            'ZikulaUsersModule',
+        ]);
+    }
 }

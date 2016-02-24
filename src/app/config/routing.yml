@@ -1,6 +1,9 @@
 core:
     resource: "@CoreBundle/Resources/config/routing.xml"
 
+hook:
+    resource: "@ZikulaHookBundle/Resources/config/routing.yml"
+
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 

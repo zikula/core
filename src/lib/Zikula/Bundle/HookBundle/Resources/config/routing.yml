@@ -1,0 +1,3 @@
+#hook_homepage:
+#    path:     /
+#    defaults: { _controller: HookBundle:Default:index }

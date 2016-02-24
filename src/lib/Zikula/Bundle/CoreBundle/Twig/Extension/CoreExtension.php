@@ -155,6 +155,7 @@ class CoreExtension extends \Twig_Extension
             \Zikula_Session::MESSAGE_STATUS => 'success',
             'danger' => 'danger',
             'success' => 'success',
+            'info' => 'info'
         );
 
         foreach ($messageTypeMap as $messageType => $bootstrapClass) {

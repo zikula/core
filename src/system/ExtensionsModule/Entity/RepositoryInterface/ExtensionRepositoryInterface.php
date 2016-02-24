@@ -21,4 +21,14 @@ interface ExtensionRepositoryInterface
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
 
     public function get($name);
+
+    public function getPagedCollectionBy(array $criteria, array $orderBy = null, $limit = 0, $offset = 1);
+
+    public function getIndexedArrayCollection($indexBy);
+
+    public function updateName($oldName, $newName);
+
+    public function persistAndFlush($entity);
+
+    public function removeAndFlush($entity);
 }
