@@ -14,26 +14,27 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
+use Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension;
 
 class DefaultPathSimpleFunction
 {
-    private $container;
+    private $coreExtension;
 
     /**
      * DefaultPathSimpleFunction constructor.
-     * @param ContainerInterface $container
+     * @param CoreExtension $coreExtension
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(CoreExtension $coreExtension)
     {
-        $this->container = $container;
+        $this->coreExtension = $coreExtension;
     }
 
     public function getDefaultPath($extensionName, $type = CapabilityApiInterface::USER)
     {
-        $capability = $this->container->get('zikula_extensions_module.api.capability')->isCapable($extensionName, $type);
+        $container = $this->coreExtension->getContainer();
+        $capability = $container->get('zikula_extensions_module.api.capability')->isCapable($extensionName, $type);
 
-        return ($capability) ? $this->container->get('router')->generate($capability['route']) : '';
+        return ($capability) ? $container->get('router')->generate($capability['route']) : '';
     }
 }
