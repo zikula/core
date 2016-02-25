@@ -80,6 +80,9 @@ class HookUtil
 
     /**
      * Is a module is allowed to subscribe to own provider to itself capable.
+     * @deprecated at Core-2.0
+     * @see \Zikula\ExtensionsModule\Api\CapabilityApi::isCapable(CapabilityApiInterface::HOOK_SUBSCRIBE_OWN)
+     * @see service zikula_extensions_module.api.capability
      *
      * @param string $module Module name.
      *

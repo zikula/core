@@ -157,7 +157,7 @@ var cloneDraggedItem = true;
         };
 
         $.ajax({
-            url: Routing.generate('zikulaextensionsmodule_ajax_togglesubscriberareastatus'),
+            url: Routing.generate('zikula_hook_hook_togglesubscribeareastatus'),
             data: pars
         }).success(function(result) {
             var data = result.data;
@@ -304,7 +304,7 @@ var cloneDraggedItem = true;
                 providersAreas;
 
         $.ajax({
-            url: Routing.generate('zikulaextensionsmodule_ajax_changeproviderareaorder'),
+            url: Routing.generate('zikula_hook_hook_changeproviderareaorder'),
             data: pars
         }).success(function(result) {
             var data = result.data;
