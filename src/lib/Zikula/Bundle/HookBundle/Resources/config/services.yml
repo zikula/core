@@ -1,4 +1,7 @@
 services:
-#    hook.example:
-#        class: HookBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+
+  zikula_hook_bundle.listener.hooks_listener:
+    class: Zikula\Bundle\HookBundle\Listener\HooksListener
+    arguments: [ "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.capability", "@router" ]
+    tags:
+      - { name: kernel.event_subscriber }
