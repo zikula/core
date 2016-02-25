@@ -1,15 +1,19 @@
 <?php
 
-namespace Zikula\Bundle\CoreBundle\Twig\Extension;
+namespace Zikula\Bundle\HookBundle\Twig\Extension;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Core\Hook\DisplayHook;
 use Zikula\Core\Hook\FilterHook;
 
 class HookExtension extends \Twig_Extension
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
-    public function __construct($container = null)
+    public function __construct(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
