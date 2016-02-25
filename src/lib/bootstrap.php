@@ -30,6 +30,7 @@ class_alias('\Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity', '\Zikul
 class_alias('\Zikula\CategoriesModule\Entity\AbstractCategoryAssignment', '\Zikula\Core\Doctrine\Entity\AbstractEntityCategory', true);
 class_alias('\Zikula\ThemeModule\Engine\Annotation\Theme', '\Zikula\Core\Theme\Annotation\Theme', true);
 class_alias('\Zikula\ThemeModule\AbstractTheme', '\Zikula\Core\AbstractTheme', true);
+class_alias('\Zikula\Bundle\HookBundle\Api\HookApi', '\Zikula\ExtensionsModule\Api\HookApi');
 
 $kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
 if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {

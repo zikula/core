@@ -12,25 +12,32 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\ExtensionsModule\Api;
+namespace Zikula\Bundle\HookBundle\Api;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
 class HookApi
 {
     /**
      * Provider capability key.
+     * @deprecated
+     * @see CapabilityApiInterface::HOOK_PROVIDER
      */
     const PROVIDER_TYPE = 'hook_provider';
 
     /**
      * Subscriber capability key.
+     * @deprecated
+     * @see CapabilityApiInterface::HOOK_SUBSCRIBER
      */
     const SUBSCRIBER_TYPE = 'hook_subscriber';
 
     /**
      * Allow to provide to self.
+     * @deprecated
+     * @see CapabilityApiInterface::HOOK_SUBSCRIBER_OWN
      */
     const SELF_TYPE = 'subscribe_own';
     /**
