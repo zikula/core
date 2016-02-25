@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\ExtensionsModule\Tests\Api\Fixtures;
+namespace Zikula\Bundle\HookBundle\Tests\Api\Fixtures;
 
 use Zikula\Component\HookDispatcher\AbstractContainer;
 use Zikula\Component\HookDispatcher\SubscriberBundle;

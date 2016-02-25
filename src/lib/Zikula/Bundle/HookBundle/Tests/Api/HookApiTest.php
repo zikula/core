@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\ExtensionsModule\Tests\Api;
+namespace Zikula\Bundle\HookBundle\Tests\Api;
 
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
-use Zikula\ExtensionsModule\Api\HookApi;
+use Zikula\Bundle\HookBundle\Api\HookApi;
 
 class HookApiTest extends \PHPUnit_Framework_TestCase
 {
@@ -87,7 +87,7 @@ class HookApiTest extends \PHPUnit_Framework_TestCase
                     "url" =>  "spec",
                     "oldnames" =>  [],
                     "capabilities" =>  [
-                        "hook_subscriber" =>  ["class" =>  "Zikula\\ExtensionsModule\\Tests\\Api\\Fixtures\\HookContainer"]
+                        "hook_subscriber" =>  ["class" =>  "Zikula\\Bundle\\HookBundle\\Tests\\Api\\Fixtures\\HookContainer"]
                     ],
                     "securityschema" =>  [
                         "ZikulaSpecModule::" => "::"
