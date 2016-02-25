@@ -14,7 +14,6 @@
 
 namespace Zikula\Bundle\HookBundle\Listener;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
