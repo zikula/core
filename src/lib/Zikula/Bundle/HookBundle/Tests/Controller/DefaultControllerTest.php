@@ -1,6 +1,6 @@
 <?php
 
-namespace HookBundle\Tests\Controller;
+namespace Zikula\Bundle\HookBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

@@ -236,7 +236,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         $event->data[] = array(
-            'url' => $this->getContainer()->get('router')->generate('zikulaextensionsmodule_admin_hooks', array('moduleName' => $event['modname'])),
+            'url' => $this->getContainer()->get('router')->generate('zikula_hook_hook_edit', array('moduleName' => $event['modname'])),
             'text' => __('Hooks'),
             'icon' => 'paperclip'
         );
