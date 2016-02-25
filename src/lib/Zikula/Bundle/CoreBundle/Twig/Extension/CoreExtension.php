@@ -81,7 +81,7 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
             new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
             new \Twig_SimpleFunction('adminPanelMenu', [new AdminMenuPanelSimpleFunction($this), 'display'], ['is_safe' => array('html')]),
-            new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this->getContainer()), 'getDefaultPath']),
+            new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this), 'getDefaultPath']),
             new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable']),
             new \Twig_SimpleFunction('callFunc', [$this, 'callFunc'])
         );
