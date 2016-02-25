@@ -26,6 +26,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Util as ExtensionsUtil;
+use Zikula\Module\ExtensionLibraryModule\Entity\ExtensionEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -85,13 +86,13 @@ class HookController extends AbstractController
         }
 
         // find out the capabilities of the module
-        $isProvider = (\ModUtil::isCapable($moduleName, \HookUtil::PROVIDER_CAPABLE)) ? true : false;
+        $isProvider = ($this->get('zikula_extensions_module.api.capability')->isCapable($moduleName, CapabilityApiInterface::HOOK_PROVIDER)) ? true : false;
         $templateParameters['isProvider'] = $isProvider;
 
-        $isSubscriber = (\ModUtil::isCapable($moduleName, \HookUtil::SUBSCRIBER_CAPABLE)) ? true : false;
+        $isSubscriber = ($this->get('zikula_extensions_module.api.capability')->isCapable($moduleName, CapabilityApiInterface::HOOK_SUBSCRIBER)) ? true : false;
         $templateParameters['isSubscriber'] = $isSubscriber;
 
-        $isSubscriberSelfCapable = (\HookUtil::isSubscriberSelfCapable($moduleName)) ? true : false;
+        $isSubscriberSelfCapable = ($this->get('zikula_extensions_module.api.capability')->isCapable($moduleName, CapabilityApiInterface::HOOK_SUBSCRIBE_OWN)) ? true : false;
         $templateParameters['isSubscriberSelfCapable'] = $isSubscriberSelfCapable;
         $templateParameters['providerAreas'] = [];
 
@@ -136,10 +137,12 @@ class HookController extends AbstractController
 
         // get available subscribers that can attach to provider
         if ($isProvider && !empty($providerAreas)) {
-            $hooksubscribers = \ModUtil::getModulesCapableOf(\HookUtil::SUBSCRIBER_CAPABLE);
+            /** @var ExtensionEntity[] $hooksubscribers */
+            $hooksubscribers = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApiInterface::HOOK_SUBSCRIBER);
             $total_hooksubscribers = count($hooksubscribers);
             $total_available_subscriber_areas = 0;
             for ($i = 0; $i < $total_hooksubscribers; $i++) {
+                $hooksubscribers[$i] = $hooksubscribers[$i]->toArray();
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
                 if ($hooksubscribers[$i]['name'] == $moduleName) {
@@ -228,10 +231,12 @@ class HookController extends AbstractController
             $templateParameters['total_attached_provider_areas'] = $total_attached_provider_areas;
 
             // get available providers
-            $hookproviders = \ModUtil::getModulesCapableOf(\HookUtil::PROVIDER_CAPABLE);
+            /** @var ExtensionEntity[] $hookproviders */
+            $hookproviders = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApiInterface::HOOK_PROVIDER);
             $total_hookproviders = count($hookproviders);
             $total_available_provider_areas = 0;
             for ($i = 0; $i < $total_hookproviders; $i++) {
+                $hookproviders[$i] = $hookproviders[$i]->toArray();
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
                 if ($hookproviders[$i]['name'] == $moduleName && !$isSubscriberSelfCapable) {
@@ -444,5 +449,4 @@ class HookController extends AbstractController
         }
         $this->get('zikula_core.common.csrf_token_handler')->validate($token);
     }
-
 }

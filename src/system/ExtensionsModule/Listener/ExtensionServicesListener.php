@@ -11,6 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\ExtensionsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -39,7 +40,6 @@ class ExtensionServicesListener implements EventSubscriberInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->router = $router;
     }
-
 
     public static function getSubscribedEvents()
     {
