@@ -85,7 +85,7 @@ class ExtensionEntity extends EntityAccess
      * @ORM\Column(type="array")
      * @var array
      */
-    private $capabilities;
+    private $capabilities = [];
 
     /**
      * @ORM\Column(type="integer", length=2)
@@ -97,7 +97,7 @@ class ExtensionEntity extends EntityAccess
      * @ORM\Column(type="array")
      * @var array
      */
-    private $securityschema;
+    private $securityschema = [];
 
     /**
      * @ORM\Column(type="string", length=10)

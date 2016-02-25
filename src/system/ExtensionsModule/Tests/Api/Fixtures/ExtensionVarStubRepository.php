@@ -17,7 +17,7 @@ namespace Zikula\ExtensionsModule\Tests\Api\Fixtures;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 
-class StubRepository implements ExtensionVarRepositoryInterface
+class ExtensionVarStubRepository implements ExtensionVarRepositoryInterface
 {
     private $entities;
 
