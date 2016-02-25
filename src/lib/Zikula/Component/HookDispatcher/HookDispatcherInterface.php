@@ -15,7 +15,6 @@
 
 namespace Zikula\Component\HookDispatcher;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Component\HookDispatcher\Exception\LogicException;
 
 /**
