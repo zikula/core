@@ -67,7 +67,7 @@
 
         {% if isSubscriber and subscriberAreas is not empty %}
         {% for sarea in subscriberAreas %}
-        {% set sarea_md5 = sarea %}
+        {% set sarea_md5 = sarea|php('md5') %}
         subscriberAreas.push('sarea_{{ sarea_md5 }}');
         {% endfor %}
         {% endif %}

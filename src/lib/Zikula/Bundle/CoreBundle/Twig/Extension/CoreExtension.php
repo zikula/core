@@ -91,6 +91,7 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFilter('languageName', [$this, 'languageName']),
             new \Twig_SimpleFilter('safeHtml', [$this, 'safeHtml'], array('is_safe' => array('html'))),
             new \Twig_SimpleFilter('yesNo', [$this, 'yesNo']),
+            new \Twig_SimpleFilter('php', [$this, 'applyPhp']),
         );
     }
 
@@ -226,6 +227,21 @@ class CoreExtension extends \Twig_Extension
         }
 
         return (bool)$string ? __('Yes') :  __('No');
+    }
+
+    /**
+     * Apply an existing function (e.g. php's `md5`) to a string.
+     * @param $string
+     * @param $func
+     * @return mixed
+     */
+    public function applyPhp($string, $func)
+    {
+        if (function_exists($func)) {
+            return $func($string);
+        }
+
+        return $string;
     }
 
     /**
