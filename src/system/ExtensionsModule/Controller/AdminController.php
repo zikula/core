@@ -34,10 +34,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
 use Symfony\Component\Routing\RouterInterface;
-use HookUtil;
 use vierbergenlars\SemVer\expression;
 use vierbergenlars\SemVer\version;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 
 /**
  * No need for a route prefix, as there isn't a user controller.
