@@ -2,8 +2,8 @@
 
 namespace Zikula\Bundle\HookBundle;
 
-use Zikula\Core\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ZikulaHookBundle extends AbstractBundle
+class ZikulaHookBundle extends Bundle
 {
 }
