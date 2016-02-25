@@ -16,12 +16,15 @@ namespace Zikula\Bundle\HookBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Component\HookDispatcher\HookDispatcherInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Response\Ajax\AjaxResponse;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Util as ExtensionsUtil;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -284,4 +287,162 @@ class HookController extends AbstractController
 
         return $templateParameters;
     }
+
+    /**
+     * @Route("/togglestatus", options={"expose"=true})
+     * @Method("POST")
+     *
+     * Attach/detach a subscriber area to a provider area
+     *
+     * @param Request $request
+     *
+     *  subscriberarea string area to be attached/detached
+     *  providerarea   string area to attach/detach
+     *
+     * @return AjaxResponse
+     *
+     * @throws \InvalidArgumentException Thrown if either the subscriber, provider or subscriberArea parameters are empty
+     * @throws \RuntimeException Thrown if either the subscriber or provider module isn't available
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to either the subscriber or provider modules
+     */
+    public function toggleSubscribeAreaStatusAction(Request $request)
+    {
+        $this->checkAjaxToken();
+
+        // get subscriberarea from POST
+        $subscriberArea = $request->request->get('subscriberarea', '');
+        if (empty($subscriberArea)) {
+            throw new \InvalidArgumentException($this->__('No subscriber area passed.'));
+        }
+
+        // get subscriber module based on area and do some checks
+        $subscriber = $this->hookDispatcher->getOwnerByArea($subscriberArea);
+        if (empty($subscriber)) {
+            throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', $subscriber));
+        }
+        if (!\ModUtil::available($subscriber)) {
+            throw new \RuntimeException($this->__f('Subscriber module "%s" is not available.', $subscriber));
+        }
+        if (!$this->hasPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+
+        // get providerarea from POST
+        $providerArea = $request->request->get('providerarea', '');
+        if (empty($providerArea)) {
+            throw new \InvalidArgumentException($this->__('No provider area passed.'));
+        }
+
+        // get provider module based on area and do some checks
+        $provider = $this->hookDispatcher->getOwnerByArea($providerArea);
+        if (empty($provider)) {
+            throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid provider.', $provider));
+        }
+        if (!\ModUtil::available($provider)) {
+            throw new \RuntimeException($this->__f('Provider module "%s" is not available.', $provider));
+        }
+        if (!$this->hasPermission($provider.'::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+
+        // check if binding between areas exists
+        $binding = $this->hookDispatcher->getBindingBetweenAreas($subscriberArea, $providerArea);
+        if (!$binding) {
+            $this->hookDispatcher->bindSubscriber($subscriberArea, $providerArea);
+        } else {
+            $this->hookDispatcher->unbindSubscriber($subscriberArea, $providerArea);
+        }
+
+        // ajax response
+        $response = array(
+            'result' => true,
+            'action' => $binding ? 'unbind' : 'bind',
+            'subscriberarea' => $subscriberArea,
+            'subscriberarea_id' => md5($subscriberArea),
+            'providerarea' => $providerArea,
+            'providerarea_id' => md5($providerArea),
+            'isSubscriberSelfCapable' => ($this->get('zikula_extensions_module.api.capability')->isCapable($subscriber, CapabilityApiInterface::HOOK_SUBSCRIBE_OWN) ? true : false)
+        );
+
+        return new AjaxResponse($response);
+    }
+
+    /**
+     * @Route("/changeorder", options={"expose"=true})
+     * @Method("POST")
+     *
+     * changeproviderareaorder
+     * This function changes the order of the providers' areas that are attached to a subscriber
+     *
+     * @param Request $request
+     *
+     *  subscriber    string     name of the subscriber
+     *  providerorder array      array of sorted provider ids
+     *
+     * @return AjaxResponse
+     *
+     * @throws \InvalidArgumentException Thrown if the subscriber or subscriberarea parameters aren't valid
+     * @throws \RuntimeException Thrown if the subscriber module isn't available
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the subscriber module
+     */
+    public function changeProviderAreaOrderAction(Request $request)
+    {
+        $this->checkAjaxToken();
+
+        // get subscriberarea from POST
+        $subscriberarea = $request->request->get('subscriberarea', '');
+        if (empty($subscriberarea)) {
+            throw new \InvalidArgumentException($this->__('No subscriber area passed.'));
+        }
+
+        // get subscriber module based on area and do some checks
+        $subscriber = $this->hookDispatcher->getOwnerByArea($subscriberarea);
+        if (empty($subscriber)) {
+            throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', $subscriber));
+        }
+        if (!\ModUtil::available($subscriber)) {
+            throw new \RuntimeException($this->__f('Subscriber module "%s" is not available.', $subscriber));
+        }
+        if (!$this->hasPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+
+        // get providers' areas from POST
+        $providerarea = $request->request->get('providerarea', '');
+        if (!(is_array($providerarea) && count($providerarea) > 0)) {
+            throw new \InvalidArgumentException($this->__('Providers\' areas order is not an array.'));
+        }
+
+        // set sorting
+        $this->hookDispatcher->setBindOrder($subscriberarea, $providerarea);
+
+        $ol_id = $request->request->get('ol_id', '');
+
+        return new AjaxResponse(array('result' => true, 'ol_id' => $ol_id));
+    }
+
+    /**
+     * @todo move this to AbstractController
+     * Check the CSRF token.
+     * Checks will fall back to $token check if automatic checking fails.
+     *
+     * @param string $token Token, default null.
+     * @throws AccessDeniedException If the CSFR token fails.
+     * @throws \Exception if request is not an XmlHttpRequest
+     * @return void
+     */
+    public function checkAjaxToken($token = null)
+    {
+        $currentRequest = $this->get('request_stack')->getCurrentRequest();
+        if (!$currentRequest->isXmlHttpRequest()) {
+            throw new \Exception();
+        }
+        // @todo how to SET the $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] ?
+        $headerToken = ($currentRequest->server->has('HTTP_X_ZIKULA_AJAX_TOKEN')) ? $currentRequest->server->get('HTTP_X_ZIKULA_AJAX_TOKEN') : null;
+        if ($headerToken == $currentRequest->getSession()->getId()) {
+            return;
+        }
+        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
+    }
+
 }
