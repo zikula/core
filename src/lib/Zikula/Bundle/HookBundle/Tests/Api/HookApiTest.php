@@ -33,7 +33,15 @@ class HookApiTest extends \PHPUnit_Framework_TestCase
         $translator
             ->method('__')
             ->willReturnArgument(0);
-        $this->api = new HookApi($translator);
+        $hookDispatcher = $this
+            ->getMockBuilder('\Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $eventDispatcher = $this
+            ->getMockBuilder('\Zikula_EventManager') // @TODO change to Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->api = new HookApi($translator, $hookDispatcher, $eventDispatcher);
     }
 
     /**
