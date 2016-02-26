@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\HookDispatcher\Hook;
+use Zikula\Bundle\HookBundle\Dispatcher\Hook;
 
 /**
  * AbstractHook class.

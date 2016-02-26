@@ -13,11 +13,11 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookDispatcher\Exception;
+namespace Zikula\Bundle\HookBundle\Dispatcher\Exception;
 
 /**
- * RuntimeException.
+ * InvalidArgumentException.
  */
-class RuntimeException extends \RuntimeException
+class InvalidArgumentException extends \InvalidArgumentException
 {
 }

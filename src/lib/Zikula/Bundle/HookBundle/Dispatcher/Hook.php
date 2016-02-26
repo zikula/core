@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookDispatcher;
+namespace Zikula\Bundle\HookBundle\Dispatcher;
 
 use Symfony\Component\EventDispatcher\Event;
 
@@ -57,7 +57,7 @@ class Hook extends Event
      *
      * @param string $caller Caller name.
      *
-     * @return AbstractHook
+     * @return Hook
      */
     public function setCaller($caller)
     {

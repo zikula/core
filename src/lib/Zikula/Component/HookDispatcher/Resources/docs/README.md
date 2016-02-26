@@ -1,6 +1,0 @@
-Hook Dispatcher
-===============
-
-Installation
-------------
-

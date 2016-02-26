@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Component\HookDispatcher\Storage\Doctrine\Entity;
+namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

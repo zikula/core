@@ -58,7 +58,7 @@ class HookApi
      * Factory class to create instance of HookContainer class defined in MetaData::capabilities.
      * @param MetaData $metaData
      * @param null $requestedHookType
-     * @return null|\Zikula\Component\HookDispatcher\AbstractContainer
+     * @return null|\Zikula\Bundle\HookBundle\AbstractHookContainer
      */
     public function getHookContainerInstance(MetaData $metaData, $requestedHookType = null)
     {
@@ -67,7 +67,7 @@ class HookApi
                 && (!isset($requestedHookType) || $type == $requestedHookType)) {
                 $hookContainerClassName = $metaData->getCapabilities()[$type]['class'];
                 $reflection = new \ReflectionClass($hookContainerClassName);
-                if ($reflection->isSubclassOf('Zikula\Component\HookDispatcher\AbstractContainer')) {
+                if ($reflection->isSubclassOf('Zikula\Bundle\HookBundle\AbstractHookContainer')) {
                     return new $hookContainerClassName($this->translator);
                 }
             }

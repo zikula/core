@@ -1,8 +1,8 @@
 <?php
 
-namespace Zikula\Component\HookDispatcher\Tests;
+namespace Zikula\Bundle\HookBundle\Tests\Dispatcher;
 
-use Zikula\Component\HookDispatcher\Hook;
+use Zikula\Bundle\HookBundle\Dispatcher\Hook;
 
 /**
  * Test class for Hook.

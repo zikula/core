@@ -14,17 +14,17 @@
  */
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\Component\HookDispatcher\Exception\LogicException;
-use Zikula\Component\HookDispatcher\Hook;
-use Zikula\Component\HookDispatcher\HookDispatcherInterface;
-use Zikula\Component\HookDispatcher\ProviderBundle;
-use Zikula\Component\HookDispatcher\ServiceFactory;
-use Zikula\Component\HookDispatcher\StorageInterface;
-use Zikula\Component\HookDispatcher\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
+use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
+use Zikula\Bundle\HookBundle\Dispatcher\Hook;
+use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
+use Zikula\Bundle\HookBundle\Dispatcher\ServiceFactory;
+use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 
 /**
  * HookDispatcher class.
- * @deprecated since 1.4.0 @see \Zikula\Component\HookDispatcher\HookDispatcher
+ * @deprecated since 1.4.0 @see \Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
  */
 class Zikula_HookDispatcher implements HookDispatcherInterface
 {
@@ -317,7 +317,7 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
                     try {
                         $this->dispatcher->addListener($handler['eventname'], $callable);
                     } catch (\InvalidArgumentException $e) {
-                        throw new \Zikula\Component\HookDispatcher\Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                        throw new \Zikula\Bundle\HookBundle\Dispatcher\Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
                     }
                 }
             }

@@ -13,17 +13,17 @@ services:
         - { name: twig.extension }
 
   hook_dispatcher.storage:
-    class: Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage
+    class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\DoctrineStorage
     arguments: ["@doctrine.orm.default_entity_manager"]
 
   hook_dispatcher.servicefactory:
-    class: Zikula\Component\HookDispatcher\ServiceFactory
+    class: Zikula\Bundle\HookBundle\Dispatcher\ServiceFactory
     arguments: ["@service_container", "event_dispatcher"]
     # note: the second args is intentionally a string.
 
   hook_dispatcher:
     class: Zikula_HookDispatcher
-    # at Core-2.0 use Zikula\Component\HookDispatcher\HookDispatcher
+    # at Core-2.0 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
     arguments: ["@hook_dispatcher.storage", "@event_dispatcher", "@hook_dispatcher.servicefactory"]
 
   zikula.hookmanager:
