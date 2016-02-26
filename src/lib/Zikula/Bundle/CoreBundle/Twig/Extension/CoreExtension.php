@@ -398,11 +398,11 @@ class CoreExtension extends \Twig_Extension
 
     /**
      * Call a php callable with parameters.
-     * @param array $callable
+     * @param array|string $callable
      * @param array $params
      * @return mixed
      */
-    public function callFunc(array $callable, array $params = [])
+    public function callFunc($callable, array $params = [])
     {
         if (function_exists($callable) && is_callable($callable)) {
             return call_user_func_array($callable, $params);
