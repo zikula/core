@@ -1,6 +1,6 @@
-{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}{# @todo is this the best way? #}
-{{ pageAddAsset('javascript', zasset('@ZikulaHookBundle:js/hookui.js')) }}
-{{ pageAddAsset('stylesheet', zasset('@ZikulaHookBundle:css/hooks.css')) }}
+{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
+{{ pageAddAsset('javascript', asset('bundles/zikulahook/js/hookui.js')) }}
+{{ pageAddAsset('stylesheet', asset('bundles/zikulahook/css/hooks.css')) }}
 {% set showBothPanels = false %}
 {% if isSubscriber and isProvider and providerAreas is not empty and total_available_subscriber_areas > 0 %}
     {% set showBothPanels = true %}
