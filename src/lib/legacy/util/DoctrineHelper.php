@@ -16,7 +16,7 @@ use Doctrine\ORM\Tools\SchemaTool as SchemaTool;
 
 /**
  * Class DoctrineHelper
- * @deprecated to be removed at Core 2.0.0
+ * @deprecated remove at Core-2.0
  */
 class DoctrineHelper
 {

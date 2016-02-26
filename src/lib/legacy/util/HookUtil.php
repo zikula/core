@@ -14,6 +14,7 @@
 
 /**
  * HookUtil.
+ * @deprecated remove at Core-2.0
  *
  * In the context of Zikula, unfortunately we need to maintain the HookDispatcher
  * since it's not convenient to pass around using dependency injection.
@@ -80,7 +81,6 @@ class HookUtil
 
     /**
      * Is a module is allowed to subscribe to own provider to itself capable.
-     * @deprecated at Core-2.0
      * @see \Zikula\ExtensionsModule\Api\CapabilityApi::isCapable(CapabilityApiInterface::HOOK_SUBSCRIBE_OWN)
      * @see service zikula_extensions_module.api.capability
      *
@@ -113,6 +113,8 @@ class HookUtil
 
     /**
      * Register Provider Hook handlers with persistence layer.
+     * @see \Zikula\Bundle\HookBundle\Api\HookApi::registerProviderBundles
+     * @see service zikula_hook_bundle.api.hook
      *
      * @param array $bundles Module's bundles object.
      *
@@ -128,6 +130,8 @@ class HookUtil
 
     /**
      * Unregister providers by bundle.
+     * @see \Zikula\Bundle\HookBundle\Api\HookApi::unregisterProviderBundles
+     * @see service zikula_hook_bundle.api.hook
      *
      * This cascades to remove all bindings by any subscribers to the providers in these bundles.
      *
@@ -145,6 +149,8 @@ class HookUtil
 
     /**
      * Register Subscribers with persistence layer.
+     * @see \Zikula\Bundle\HookBundle\Api\HookApi::registerSubscriberBundles
+     * @see service zikula_hook_bundle.api.hook
      *
      * @param array $bundles Module's bundles object.
      *
@@ -160,6 +166,8 @@ class HookUtil
 
     /**
      * Unregister all subscribers from the system.
+     * @see \Zikula\Bundle\HookBundle\Api\HookApi::unregisterSubscriberBundles
+     * @see service zikula_hook_bundle.api.hook
      *
      * This cascades to remove all event handlers, sorting data and update bindings table.
      *
