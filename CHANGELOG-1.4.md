@@ -14,6 +14,8 @@ CHANGELOG - ZIKULA 1.4.x
     - "Alternate Site View" feature (in theme settings) is deprecated. Use responsive design.
     - Zikula\Core\AbstractTheme is deprecated and aliased to Zikula\ThemeModule\AbstractTheme. Use the latter.
     - Zikula\Core\Theme\Annotation\Theme is deprecated and aliased to Zikula\ThemeModule\Engine\Annotation\Theme. Use the latter.
+    - All Hooks-related classes and files have been moved to HookBundle and former namespaces deprecated (aliases provided for BC).
+    - `DisplayHookResponse` has deprecated the third argument and now expects a rendered string instead of objects. (#2600)
  - Fixes:
     - Fix module stylesheet not being loaded automatically for Core-2.0 modules.
     - Fix SearchModule not working for older modules required tables.php (#2643)
@@ -60,6 +62,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Listener classes from Zikula\Bundle\CoreBundle\EventListener\Theme have been moved to Zikula\ThemeModule\EventListener.
     - Add Zikula\Common\Translator\TranslatorInterface to use as typehint when using `translator.default` service.
     - Add CapabilityApi to manage and define Extension Capabilities for Core-2.0 applications.
+    - Update `\Zikula\Bundle\HookBundle\Hook\DisplayHookResponse` to allow response from non-Smarty sources. (#2600)
  - Vendor updates:
     - Symfony updated to 2.8.3
     - Font-Awesome updated to 4.5.0

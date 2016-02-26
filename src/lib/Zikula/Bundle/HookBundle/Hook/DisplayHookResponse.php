@@ -25,38 +25,33 @@ use Zikula_View;
 class DisplayHookResponse
 {
     /**
-     * Name.
-     *
-     * @var string
+     * @var string the area name
      */
     protected $area;
 
     /**
-     * Zikula_View
-     *
-     * @var Zikula_View
+     * @var string The rendered response
      */
     protected $view;
 
     /**
-     * Template.
-     *
-     * @var string
-     */
-    protected $template;
-
-    /**
      * Constructor.
      *
-     * @param string      $area     Name of this response.
-     * @param Zikula_View $view     Zikula View instance.
-     * @param string      $template Template, in the context of the Zikula_View.
+     * @param string $area Name of this response.
+     * @param string|Zikula_View $view string or Zikula View instance.
+     * @param string $template Template, in the context of the Zikula_View. @deprecated argument
+     *   The third argument in the method will be removed in Core-2.0.
      */
-    public function __construct($area, Zikula_View $view, $template)
+    public function __construct($area, $view, $template = null)
     {
         $this->area = $area;
-        $this->view = $view;
-        $this->template = $template;
+        if (is_object($view) && ($view instanceof Zikula_View) && !empty($template)) {
+            // This is a BC layer to allow old construction methods to work.
+            // remove this check in Core-2.0 and simply set the view
+            $this->view = $view->fetch($template);
+        } else {
+            $this->view = $view;
+        }
     }
 
     /**
@@ -70,70 +65,12 @@ class DisplayHookResponse
     }
 
     /**
-     * Set name property.
-     *
-     * @param string $area Name.
-     *
-     * @return void
-     */
-    public function setArea($area)
-    {
-        $this->area = $area;
-    }
-
-    /**
-     * Get Zikula_View.
-     *
-     * @return Zikula_View
-     */
-    public function getView()
-    {
-        return $this->view;
-    }
-
-    /**
-     * Set view property.
-     *
-     * @param Zikula_View $view Zikula_View.
-     *
-     * @return void
-     */
-    public function setView($view)
-    {
-        $this->view = $view;
-    }
-
-    /**
-     * Get template property.
-     *
-     * Template name.
-     *
-     * @return string
-     */
-    public function getTemplate()
-    {
-        return $this->template;
-    }
-
-    /**
-     * Set template property.
-     *
-     * @param string $template Template name.
-     *
-     * @return void
-     */
-    public function setTemplate($template)
-    {
-        $this->template = $template;
-    }
-
-    /**
      * Render the hook's output.
      *
      * @return string
      */
     public function __toString()
     {
-        return $this->view->fetch($this->template);
+        return $this->view;
     }
 }
