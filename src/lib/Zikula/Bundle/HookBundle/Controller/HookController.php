@@ -62,7 +62,7 @@ class HookController extends Controller
         $moduleVersionObj = ExtensionsUtil::getVersionMeta($moduleName);
         if ($moduleVersionObj instanceof MetaData) {
             // Core-2.0 Spec module
-            $moduleVersionObj = $this->get('zikula_extensions_module.api.hook')->getHookContainerInstance($moduleVersionObj);
+            $moduleVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($moduleVersionObj);
         }
 
         // find out the capabilities of the module
@@ -139,7 +139,7 @@ class HookController extends Controller
                 $hooksubscriberVersionObj = ExtensionsUtil::getVersionMeta($hooksubscribers[$i]['name']);
                 if ($hooksubscriberVersionObj instanceof MetaData) {
                     // Core-2.0 Spec module
-                    $hooksubscriberVersionObj = $this->get('zikula_extensions_module.api.hook')->getHookContainerInstance($hooksubscriberVersionObj);
+                    $hooksubscriberVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($hooksubscriberVersionObj);
                 }
 
                 // get the areas of the subscriber
@@ -199,7 +199,7 @@ class HookController extends Controller
                     $sbaProviderModuleVersionObj = ExtensionsUtil::getVersionMeta($sbaProviderModule);
                     if ($sbaProviderModuleVersionObj instanceof MetaData) {
                         // Core-2.0 Spec module
-                        $sbaProviderModuleVersionObj = $this->get('zikula_extensions_module.api.hook')->getHookContainerInstance($sbaProviderModuleVersionObj);
+                        $sbaProviderModuleVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($sbaProviderModuleVersionObj);
                     }
 
                     // get the bundle title
@@ -234,7 +234,7 @@ class HookController extends Controller
                 $hookproviderVersionObj = ExtensionsUtil::getVersionMeta($hookproviders[$i]['name']);
                 if ($hookproviderVersionObj instanceof MetaData) {
                     // Core-2.0 Spec module
-                    $hookproviderVersionObj = $this->get('zikula_extensions_module.api.hook')->getHookContainerInstance($hookproviderVersionObj);
+                    $hookproviderVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($hookproviderVersionObj);
                 }
 
                 // get the areas of the provider
@@ -269,6 +269,7 @@ class HookController extends Controller
         } else {
             $templateParameters['hookproviders'] = [];
         }
+        $templateParameters['hookDispatcher'] = $this->get('hook_dispatcher');
 
         return $templateParameters;
     }

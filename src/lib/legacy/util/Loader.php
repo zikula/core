@@ -15,7 +15,7 @@
 /**
  * Loader class
  *
- * @deprecated since 1.4.0
+ * @deprecated remove at Core-2.0
  */
 class Loader
 {

@@ -20,7 +20,6 @@ use Zikula\BlocksModule\Container\HookContainer;
 use Zikula\BlocksModule\Helper\InstallerHelper;
 use Zikula\Core\AbstractExtensionInstaller;
 use ZLanguage;
-use HookUtil;
 
 /**
  * Installation and upgrade routines for the blocks module
@@ -53,7 +52,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('collapseable', false);
 
         $hookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData());
-        HookUtil::registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
+        $this->hookApi->registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
 
         // Initialisation successful
         return true;
@@ -72,7 +71,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         switch ($oldversion) {
             case '3.8.1':
                 $HookContainer = new HookContainer($this->getTranslator());
-                HookUtil::registerSubscriberBundles($HookContainer->getHookSubscriberBundles());
+                $this->hookApi->registerSubscriberBundles($HookContainer->getHookSubscriberBundles());
             case '3.8.2':
             case '3.9.0':
                 $blocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findAll();

@@ -14,9 +14,12 @@
 
 namespace Zikula\Bundle\HookBundle\Api;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
+use Zikula\Core\Event\GenericEvent;
 
 class HookApi
 {
@@ -44,14 +47,26 @@ class HookApi
      * @var \Zikula\Common\Translator\Translator
      */
     private $translator;
+    /**
+     * @var HookDispatcherInterface
+     */
+    private $hookDispatcher;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * HookApi constructor.
-     * @param $translator
+     * @param TranslatorInterface $translator
+     * @param HookDispatcherInterface $hookDispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, HookDispatcherInterface $hookDispatcher, EventDispatcherInterface $eventDispatcher)
     {
         $this->translator = $translator;
+        $this->hookDispatcher = $hookDispatcher;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -75,4 +90,67 @@ class HookApi
 
         return null;
     }
+
+    /**
+     * Register Provider Hook handlers with persistence layer.
+     *
+     * @param array $bundles Module's bundles object.
+     *
+     * @return void
+     */
+    public function registerProviderBundles(array $bundles)
+    {
+        foreach ($bundles as $bundle) {
+            $this->hookDispatcher->registerProviderBundle($bundle);
+        }
+    }
+
+    /**
+     * Unregister providers by bundle.
+     *
+     * This cascades to remove all bindings by any subscribers to the providers in these bundles.
+     *
+     * @param array $bundles Module's bundles object.
+     *
+     * @return void
+     */
+    public function unregisterProviderBundles(array $bundles)
+    {
+        foreach ($bundles as $bundle) {
+            $this->hookDispatcher->unregisterProviderBundle($bundle);
+        }
+    }
+
+    /**
+     * Register Subscribers with persistence layer.
+     *
+     * @param array $bundles Module's bundles object.
+     *
+     * @return void
+     */
+    public function registerSubscriberBundles(array $bundles)
+    {
+        foreach ($bundles as $bundle) {
+            $this->hookDispatcher->registerSubscriberBundle($bundle);
+        }
+    }
+
+    /**
+     * Unregister all subscribers from the system.
+     *
+     * This cascades to remove all event handlers, sorting data and update bindings table.
+     *
+     * @param array $bundles Module's bundles object.
+     *
+     * @return void
+     */
+    public function unregisterSubscriberBundles(array $bundles)
+    {
+        foreach ($bundles as $bundle) {
+            $this->hookDispatcher->unregisterSubscriberBundle($bundle);
+            $event = new GenericEvent($bundle, array('areaid' => $this->hookDispatcher->getAreaId($bundle->getArea())));
+            $this->eventDispatcher->dispatch('installer.subscriberbundle.uninstalled', $event);
+        }
+    }
+
 }

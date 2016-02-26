@@ -29,7 +29,7 @@ services:
   zikula.hookmanager:
     alias: hook_dispatcher
 
-  zikula_extensions_module.api.hook:
+  zikula_hook_bundle.api.hook:
     class: Zikula\Bundle\HookBundle\Api\HookApi
     lazy: true
-    arguments: ["@translator.default"]
+    arguments: ["@translator.default", "@hook_dispatcher", "@event_dispatcher"]

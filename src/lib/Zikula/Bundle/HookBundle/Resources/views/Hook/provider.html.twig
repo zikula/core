@@ -39,9 +39,9 @@
                                 {# preliminary check to see if binding is allowed, if no bindings are allowed we don't show this row. Better usability. #}
                                 {% set total_bindings = 0 %}
                                 {% for parea in providerAreas %}
-                                    {% set allow_binding = callFunc(['HookUtil', 'isAllowedBindingBetweenAreas'], [sarea, parea]) %}
+                                    {% set allow_binding = hookDispatcher.isAllowedBindingBetweenAreas(sarea, parea) %}
                                     {% if allow_binding %}
-                                        {% set total_bindings = total_bindings %}
+                                        {% set total_bindings = total_bindings + 1 %}
                                         {% set connection_exists = true %}
                                         {break}
                                     {% endif %}
@@ -65,9 +65,9 @@
                                         <div class="pull-left z-w45">
                                             {% for parea in providerAreas %}
                                                 {% set parea_md5 = parea|php('md5') %}
-                                                {% set allow_binding = callFunc(['HookUtil', 'isAllowedBindingBetweenAreas'], [sarea, parea]) %}
+                                                {% set allow_binding = hookDispatcher.isAllowedBindingBetweenAreas(sarea, parea) %}
                                                 {% if not allow_binding %}{continue}{% endif %}
-                                                {% set binding = callFunc(['HookUtil', 'getBindingBetweenAreas'], [sarea, parea]) %}
+                                                {% set binding = hookDispatcher.getBindingBetweenAreas(sarea, parea) %}
                                                 <input type="checkbox" id="chk_{{ sarea_md5 }}_{{ parea_md5 }}" name="chk[{{ sarea_md5 }}][{{ parea_md5 }}]" onclick="subscriberAreaToggle('{{ sarea }}', '{{ parea }}', true);" {% if binding %}checked="checked"{% endif %} /> {{ providerAreasToTitles[parea] }} <span class="sub">({{ parea }})</span><br />
                                             {% endfor %}
                                         </div>

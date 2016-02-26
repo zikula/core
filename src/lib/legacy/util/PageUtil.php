@@ -14,6 +14,7 @@
 
 /**
  * Zikula page variables functions.
+ * @deprecated remove at Core-2.0
  *
  * A <em>page variable</em> is an entity identified by a name that stores a value for the currently
  * rendered page. They are used to set for example the title of the page, the stylesheets used etc.
