@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookDispatcher;
+namespace Zikula\Bundle\HookBundle\Dispatcher;
 
 /**
  * StorageInterface interface.

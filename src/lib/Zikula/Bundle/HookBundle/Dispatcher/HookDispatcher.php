@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookDispatcher;
+namespace Zikula\Bundle\HookBundle\Dispatcher;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\Component\HookDispatcher\Exception\LogicException;
+use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
+use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
 
 /**
  * HookDispatcher class.

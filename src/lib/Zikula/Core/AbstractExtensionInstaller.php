@@ -47,7 +47,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
      */
     protected $schemaTool;
     /**
-     * @var \Zikula\ExtensionsModule\Api\HookApi
+     * @var \Zikula\Bundle\HookBundle\Api\HookApi
      */
     protected $hookApi;
 

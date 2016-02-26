@@ -13,11 +13,13 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookDispatcher;
+namespace Zikula\Bundle\HookBundle;
 
+use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
 use Zikula\Common\Translator\TranslatorTrait;
 
-abstract class AbstractContainer
+abstract class AbstractHookContainer
 {
     use TranslatorTrait;
 
@@ -55,7 +57,7 @@ abstract class AbstractContainer
      *
      * @param SubscriberBundle $bundle HookBundle.
      *
-     * @return AbstractContainer
+     * @return AbstractHookContainer
      */
     public function registerHookSubscriberBundle(SubscriberBundle $bundle)
     {
@@ -73,7 +75,7 @@ abstract class AbstractContainer
      *
      * @param ProviderBundle $bundle HookProviderBundle.
      *
-     * @return AbstractContainer
+     * @return AbstractHookContainer
      */
     public function registerHookProviderBundle(ProviderBundle $bundle)
     {

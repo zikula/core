@@ -43,10 +43,10 @@ class HookApiTest extends \PHPUnit_Framework_TestCase
     {
         $meta = new MetaData($this->getJson());
         $hookContainerInstance = $this->api->getHookContainerInstance($meta);
-        $this->assertInstanceOf('\Zikula\Component\HookDispatcher\AbstractContainer', $hookContainerInstance);
+        $this->assertInstanceOf('\Zikula\Bundle\HookBundle\AbstractHookContainer', $hookContainerInstance);
         $subscriberBundle = $hookContainerInstance->getHookSubscriberBundle('foo.area');
 
-        $this->assertInstanceOf('\Zikula\Component\HookDispatcher\SubscriberBundle', $subscriberBundle);
+        $this->assertInstanceOf('\Zikula\Bundle\HookBundle\Bundle\SubscriberBundle', $subscriberBundle);
         $this->assertEquals('Translatable title', $subscriberBundle->getTitle());
         $this->assertEquals('ui_hooks', $subscriberBundle->getCategory());
         $this->assertEquals('foo.area', $subscriberBundle->getArea());

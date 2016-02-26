@@ -2,7 +2,7 @@ HookContainer
 =============
 
 Extensions that wish to utilize Hooks must define a HookContainer class that extends 
-`\Zikula\Component\HookDispatcher\AbstractContainer`. The class must implement one method `setupHookBundles()` which
+`\Zikula\Bundle\HookBundle\AbstractHookContainer`. The class must implement one method `setupHookBundles()` which
 instantiates and registers hook bundles.
 
 ````php

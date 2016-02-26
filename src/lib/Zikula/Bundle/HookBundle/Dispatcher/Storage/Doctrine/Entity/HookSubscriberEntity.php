@@ -1,16 +1,16 @@
 <?php
 
-namespace Zikula\Component\HookDispatcher\Storage\Doctrine\Entity;
+namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * HookProvider
+ * HookSubscriber
  *
- * @ORM\Table(name="hook_provider")
+ * @ORM\Table(name="hook_subscriber")
  * @ORM\Entity
  */
-class HookProviderEntity
+class HookSubscriberEntity
 {
     /**
      * @var integer
@@ -38,9 +38,9 @@ class HookProviderEntity
     /**
      * @var integer
      *
-     * @ORM\Column(name="pareaid", type="integer", nullable=false)
+     * @ORM\Column(name="sareaid", type="integer", nullable=false)
      */
-    private $pareaid;
+    private $sareaid;
 
     /**
      * @var string
@@ -59,23 +59,9 @@ class HookProviderEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="classname", type="string", length=60, nullable=false)
+     * @ORM\Column(name="eventname", type="string", length=100, nullable=false)
      */
-    private $classname;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="method", type="string", length=60, nullable=false)
-     */
-    private $method;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="serviceid", type="string", length=60, nullable=true)
-     */
-    private $serviceid;
+    private $eventname;
 
     /**
      * Get id
@@ -91,7 +77,7 @@ class HookProviderEntity
      * Set owner
      *
      * @param string $owner
-     * @return HookProviderEntity
+     * @return HookSubscriberEntity
      */
     public function setOwner($owner)
     {
@@ -114,7 +100,7 @@ class HookProviderEntity
      * Set subowner
      *
      * @param string $subowner
-     * @return HookProviderEntity
+     * @return HookSubscriberEntity
      */
     public function setSubowner($subowner)
     {
@@ -134,33 +120,33 @@ class HookProviderEntity
     }
 
     /**
-     * Set pareaid
+     * Set sareaid
      *
-     * @param integer $pareaid
-     * @return HookProviderEntity
+     * @param integer $sareaid
+     * @return HookSubscriberEntity
      */
-    public function setPareaid($pareaid)
+    public function setSareaid($sareaid)
     {
-        $this->pareaid = $pareaid;
+        $this->sareaid = $sareaid;
 
         return $this;
     }
 
     /**
-     * Get pareaid
+     * Get sareaid
      *
      * @return integer
      */
-    public function getPareaid()
+    public function getSareaid()
     {
-        return $this->pareaid;
+        return $this->sareaid;
     }
 
     /**
      * Set hooktype
      *
      * @param string $hooktype
-     * @return HookProviderEntity
+     * @return HookSubscriberEntity
      */
     public function setHooktype($hooktype)
     {
@@ -183,7 +169,7 @@ class HookProviderEntity
      * Set category
      *
      * @param string $category
-     * @return HookProviderEntity
+     * @return HookSubscriberEntity
      */
     public function setCategory($category)
     {
@@ -203,71 +189,25 @@ class HookProviderEntity
     }
 
     /**
-     * Set classname
+     * Set eventname
      *
-     * @param string $classname
-     * @return HookProviderEntity
+     * @param string $eventname
+     * @return HookSubscriberEntity
      */
-    public function setClassname($classname)
+    public function setEventname($eventname)
     {
-        $this->classname = $classname;
+        $this->eventname = $eventname;
 
         return $this;
     }
 
     /**
-     * Get classname
+     * Get eventname
      *
      * @return string
      */
-    public function getClassname()
+    public function getEventname()
     {
-        return $this->classname;
-    }
-
-    /**
-     * Set method
-     *
-     * @param string $method
-     * @return HookProviderEntity
-     */
-    public function setMethod($method)
-    {
-        $this->method = $method;
-
-        return $this;
-    }
-
-    /**
-     * Get method
-     *
-     * @return string
-     */
-    public function getMethod()
-    {
-        return $this->method;
-    }
-
-    /**
-     * Set serviceid
-     *
-     * @param string $serviceid
-     * @return HookProviderEntity
-     */
-    public function setServiceid($serviceid)
-    {
-        $this->serviceid = $serviceid;
-
-        return $this;
-    }
-
-    /**
-     * Get serviceid
-     *
-     * @return string
-     */
-    public function getServiceid()
-    {
-        return $this->serviceid;
+        return $this->eventname;
     }
 }

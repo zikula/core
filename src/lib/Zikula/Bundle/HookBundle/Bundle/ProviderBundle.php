@@ -12,12 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookDispatcher;
+namespace Zikula\Bundle\HookBundle\Bundle;
 
 /**
- * Bundle for Hook Subscribers
+ * Provider Bundle for Hook Providers
  */
-class SubscriberBundle
+class ProviderBundle
 {
     /**
      * Owner.
@@ -27,18 +27,18 @@ class SubscriberBundle
     private $owner;
 
     /**
-     * Sub owner.
+     * Sub Owner.
      *
      * @var string
      */
     private $subOwner;
 
     /**
-     * Hook events.
+     * Hook handlers.
      *
      * @var array
      */
-    private $events = array();
+    private $hooks = array();
 
     /**
      * Title.
@@ -66,7 +66,7 @@ class SubscriberBundle
      *
      * @param string $owner    Owner.
      * @param string $area     Area ID, this should be a unique string.
-     * @param string $category Category.
+     * @param string $category Area category.
      * @param string $title    Title.
      */
     public function __construct($owner, $area, $category, $title)
@@ -78,13 +78,13 @@ class SubscriberBundle
     }
 
     /**
-     * Get events.
+     * Get hookhandlers property.
      *
      * @return array
      */
-    public function getEvents()
+    public function getHooks()
     {
-        return $this->events;
+        return $this->hooks;
     }
 
     /**
@@ -142,7 +142,7 @@ class SubscriberBundle
      *
      * @param string $subOwner
      *
-     * @return SubscriberBundle
+     * @return ProviderBundle
      */
     public function setSubOwner($subOwner)
     {
@@ -152,16 +152,52 @@ class SubscriberBundle
     }
 
     /**
-     * Add a subscriber hook type event to this bundle.
+     * Add a static class::method() handler to this hundle.
      *
-     * @param string $type      Hook type.
-     * @param string $eventName Event name.
+     * @param string $hookType  Hook type.
+     * @param string $className Class Name.
+     * @param string $method    Static method name.
      *
-     * @return SubscriberBundle
+     * @return ProviderBundle
      */
-    public function addEvent($type, $eventName)
+    public function addStaticHandler($hookType, $className, $method)
     {
-        $this->events[$type] = $eventName;
+        return $this->addHandler($hookType, $className, $method);
+    }
+
+    /**
+     * Add servicehandler as hook handler to this bundle.
+     *
+     * @param string $hookType  Hook type.
+     * @param string $className Class name.
+     * @param string $method    Method name.
+     * @param string $serviceId Service Id.
+     *
+     * @return ProviderBundle
+     */
+    public function addServiceHandler($hookType, $className, $method, $serviceId)
+    {
+        return $this->addHandler($hookType, $className, $method, $serviceId);
+    }
+
+    /**
+     * Add a hook handler with this bundle.
+     *
+     * @param string $hookType  Hook type.
+     * @param string $className Class.
+     * @param string $method    Method name.
+     * @param string $serviceId Service ID if this is NOT a static class method.
+     *
+     * @return ProviderBundle
+     */
+    private function addHandler($hookType, $className, $method, $serviceId = null)
+    {
+        $this->hooks[$hookType] = array(
+            'hooktype' => $hookType,
+            'classname' => $className,
+            'method' => $method,
+            'serviceid' => $serviceId,
+        );
 
         return $this;
     }

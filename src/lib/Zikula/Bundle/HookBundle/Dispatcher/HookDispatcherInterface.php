@@ -13,13 +13,15 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookDispatcher;
+namespace Zikula\Bundle\HookBundle\Dispatcher;
 
-use Zikula\Component\HookDispatcher\Exception\LogicException;
+use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
+use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
 
 /**
  * Interface HookDispatcherInterface
- * @package Zikula\Component\HookDispatcher
+ * @package Zikula\Bundle\HookBundle\Dispatcher
  */
 interface HookDispatcherInterface
 {

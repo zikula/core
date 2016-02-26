@@ -13,14 +13,14 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookDispatcher\Storage\Doctrine;
+namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine;
 
 use DataUtil;
 use Doctrine\ORM\EntityManager;
 use LogUtil;
 use System;
-use Zikula\Component\HookDispatcher\Exception\InvalidArgumentException;
-use Zikula\Component\HookDispatcher\StorageInterface;
+use Zikula\Bundle\HookBundle\Dispatcher\Exception\InvalidArgumentException;
+use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 
 /**
  * Doctrine class.
@@ -76,7 +76,7 @@ class DoctrineStorage implements StorageInterface
     public function getSubscriberByEventName($eventName)
     {
         return $this->em->createQueryBuilder()->select('t')
-                 ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
+                 ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
                  ->where('t.eventname = ?1')
                  ->getQuery()->setParameter(1, $eventName)
                  ->getArrayResult();
@@ -92,21 +92,21 @@ class DoctrineStorage implements StorageInterface
 
         // delete subscriber entry
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
+                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
                  ->where('t.sareaid = ?1')
                  ->getQuery()->setParameter(1, $areaId)
                  ->execute();
 
         // remove bindings
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
+                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
                  ->where('t.sareaid = ?1')
                  ->getQuery()->setParameter(1, $areaId)
                  ->execute();
 
         // clean areas
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity', 't')
+                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity', 't')
                  ->where('t.id = ?1')
                  ->getQuery()->setParameter(1, $areaId)
                  ->execute();
@@ -149,7 +149,7 @@ class DoctrineStorage implements StorageInterface
     public function getProviderByAreaAndType($areaId, $type)
     {
         return $this->em->createQueryBuilder()->select('t')
-            ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
+            ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
             ->where('t.pareaid = ?1')
             ->andWhere('t.hooktype = ?2')
             ->getQuery()
@@ -168,21 +168,21 @@ class DoctrineStorage implements StorageInterface
 
         // delete provider entry
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
+                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
                  ->where('t.pareaid = ?1')
                  ->getQuery()->setParameter(1, $areaId)
                  ->execute();
 
         // remove bindings
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
+                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
                  ->where('t.pareaid = ?1')
                  ->getQuery()->setParameter(1, $areaId)
                  ->execute();
 
         // clean area
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity', 't')
+                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity', 't')
                  ->where('t.id = ?1')
                  ->getQuery()->setParameter(1, $areaId)
                  ->execute();
@@ -193,7 +193,7 @@ class DoctrineStorage implements StorageInterface
     public function getSubscribersByOwner($owner)
     {
         return $this->em->createQueryBuilder()->select('t')
-                    ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
+                    ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
                     ->where('t.owner = ?1')
                     ->getQuery()->setParameter(1, $owner)
                     ->getArrayResult();
@@ -212,7 +212,7 @@ class DoctrineStorage implements StorageInterface
     private function getAreasByOwner($owner, $type)
     {
         $dql = "SELECT t.areaname
-            FROM Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity t
+            FROM Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity t
             WHERE t.owner = :owner
             AND t.areatype = :type";
         $query = $this->em->createQuery($dql);
@@ -231,7 +231,7 @@ class DoctrineStorage implements StorageInterface
     public function getOwnerByArea($areaName)
     {
         $hookarea = $this->em->createQueryBuilder()->select('t')
-                    ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity', 't')
+                    ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity', 't')
                     ->where('t.areaname = ?1')
                     ->getQuery()->setParameter(1, $areaName)
                     ->getSingleResult();
@@ -243,7 +243,7 @@ class DoctrineStorage implements StorageInterface
     {
         // truncate runtime
         $this->em->createQueryBuilder()
-             ->delete('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookRuntimeEntity')
+             ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity')
              ->getQuery()
              ->execute();
 
@@ -254,13 +254,13 @@ class DoctrineStorage implements StorageInterface
 
     private function addRuntimeHandlers($subscriberAreaId, $providerAreaId)
     {
-        $sa = $this->em->find('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
+        $sa = $this->em->find('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity',
                               $subscriberAreaId);
-        $pa = $this->em->find('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
+        $pa = $this->em->find('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity',
                               $providerAreaId);
 
         $subscribers = $this->em->createQueryBuilder()->select('t')
-                            ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
+                            ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
                             ->where('t.sareaid = ?1')
                             ->getQuery()->setParameter(1, $subscriberAreaId)
                             ->getArrayResult();
@@ -271,7 +271,7 @@ class DoctrineStorage implements StorageInterface
 
         foreach ($subscribers as $subscriber) {
             $provider = $this->em->createQueryBuilder()->select('t')
-                             ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
+                             ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
                              ->where('t.pareaid = ?1 AND t.hooktype = ?2')
                              ->getQuery()->setParameters(array(1 => $providerAreaId, 2 => $subscriber['hooktype']))
                              ->getArrayResult();
@@ -302,7 +302,7 @@ class DoctrineStorage implements StorageInterface
     {
         $this->runtimeHandlers =
             $this->em->createQueryBuilder()->select('t')
-                 ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookRuntimeEntity', 't')
+                 ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity', 't')
                  ->getQuery()
                  ->getArrayResult();
 
@@ -311,9 +311,9 @@ class DoctrineStorage implements StorageInterface
 
     public function bindSubscriber($subscriberArea, $providerArea)
     {
-        $sa = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        $sa = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                    ->findOneBy(array('areaname' => $subscriberArea));
-        $pa = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        $pa = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                    ->findOneBy(array('areaname' => $providerArea));
 
         if ($sa->getCategory() != $pa->getCategory()) {
@@ -337,16 +337,16 @@ class DoctrineStorage implements StorageInterface
 
     public function unbindSubscriber($subscriberArea, $providerArea)
     {
-        $sa = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        $sa = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                    ->findOneBy(array('areaname' => $subscriberArea));
-        $pa = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        $pa = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                    ->findOneBy(array('areaname' => $providerArea));
 
         $subscriberAreaId = $sa->getId();
         $providerAreaId = $pa->getId();
 
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
+                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
                  ->where('t.pareaid = ?1 AND t.sareaid = ?2')
                  ->getQuery()->setParameters(array(1 => $providerAreaId, 2 => $subscriberAreaId))
                  ->execute();
@@ -361,7 +361,7 @@ class DoctrineStorage implements StorageInterface
         $order->add('t.sortorder', 'ASC');
 
         return $this->em->createQueryBuilder()->select('t')
-                 ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
+                 ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
                  ->orderBy($order)
                  ->getQuery()
                  ->getArrayResult();
@@ -369,7 +369,7 @@ class DoctrineStorage implements StorageInterface
 
     public function getBindingsFor($areaName)
     {
-        $area = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        $area = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                      ->findOneBy(array('areaname' => $areaName));
 
         if (!$area) {
@@ -386,7 +386,7 @@ class DoctrineStorage implements StorageInterface
         $order->add('t.sortorder', 'ASC');
         $order->add('t.sareaid', 'ASC');
         $results = $this->em->createQueryBuilder()->select('t')
-                         ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
+                         ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
                          ->where("t.$areaIdField = ?1")
                          ->orderBy($order)
                          ->getQuery()->setParameter(1, $area->getId())
@@ -395,7 +395,7 @@ class DoctrineStorage implements StorageInterface
         // this could be an area where related entities would help CAH - 23 Oct 2013
         $areas = array();
         foreach ($results as $result) {
-            $area = $this->em->find('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
+            $area = $this->em->find('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity',
                                     $result['pareaid']);
             $areas[] = array('areaname' => $area->getAreaname(), 'category' => $area->getCategory());
         }
@@ -405,7 +405,7 @@ class DoctrineStorage implements StorageInterface
 
     public function setBindOrder($subscriberAreaName, array $providerAreaNames)
     {
-        $sareaId = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        $sareaId = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                         ->findOneBy(array('areaname' => $subscriberAreaName))
                         ->getId();
 
@@ -413,7 +413,7 @@ class DoctrineStorage implements StorageInterface
         $providerAreaIds = array();
         foreach ($providerAreaNames as $name) {
             $providerAreaIds[] =
-                $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+                $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                      ->findOneBy(array('areaname' => $name))
                      ->getId();
         }
@@ -422,7 +422,7 @@ class DoctrineStorage implements StorageInterface
         $counter = 1;
         foreach ($providerAreaIds as $id) {
             $this->em->createQueryBuilder()
-                 ->update('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
+                 ->update('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
                  ->set('t.sortorder', $counter)
                  ->where('t.sareaid = ?1 AND t.pareaid = ?2')
                  ->getQuery()->setParameters(array(1 => $sareaId, 2 => $id))
@@ -446,16 +446,16 @@ class DoctrineStorage implements StorageInterface
 
     public function getBindingBetweenAreas($subscriberArea, $providerArea)
     {
-        $sareaId = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        $sareaId = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                         ->findOneBy(array('areaname' => $subscriberArea))
                         ->getId();
 
-        $pareaId = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        $pareaId = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                         ->findOneBy(array('areaname' => $providerArea))
                         ->getId();
 
         return $this->em->createQueryBuilder()->select('t')
-                    ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
+                    ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
                     ->where('t.sareaid = ?1 AND t.pareaid = ?2')
                     ->getQuery()->setParameters(array(1 => $sareaId, 2 => $pareaId))
                     ->getOneOrNullResult();
@@ -463,12 +463,12 @@ class DoctrineStorage implements StorageInterface
 
     public function isAllowedBindingBetweenAreas($subscriberArea, $providerArea)
     {
-        $sareaId = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        $sareaId = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                         ->findOneBy(array('areaname' => $subscriberArea))
                         ->getId();
 
         $subscribers =
-            $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity')
+            $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity')
                  ->findBy(array('sareaid' => $sareaId));
 
         if (!$subscribers) {
@@ -476,16 +476,16 @@ class DoctrineStorage implements StorageInterface
         }
 
         $allow = false;
-        /** @var $subscriber \Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity */
+        /** @var $subscriber \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity */
         foreach ($subscribers as $subscriber) {
             $pareaId =
-                $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+                $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                      ->findOneBy(array('areaname' => $providerArea))
                      ->getId();
 
             $hookprovider =
                 $this->em->createQueryBuilder()->select('t')
-                     ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
+                     ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
                      ->where('t.pareaid = ?1 AND t.hooktype = ?2 AND t.category = ?3')
                      ->getQuery()->setParameters(array(1 => $pareaId,
                                                        2 => $subscriber->getHooktype(),
@@ -504,7 +504,7 @@ class DoctrineStorage implements StorageInterface
     public function getBindingsBetweenOwners($subscriberOwner, $providerOwner)
     {
         return $this->em->createQueryBuilder()->select('t')
-                    ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
+                    ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
                     ->where('t.sowner = ?1 AND t.powner = ?2')
                     ->getQuery()->setParameters(array(1 => $subscriberOwner, 2 => $providerOwner))
                     ->getArrayResult();
@@ -537,7 +537,7 @@ class DoctrineStorage implements StorageInterface
 
     public function getAreaId($areaName)
     {
-        $hookArea = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        $hookArea = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
                    ->findOneBy(array('areaname' => $areaName));
 
         if (!$hookArea) {

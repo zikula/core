@@ -749,6 +749,11 @@ New class list:
   - `Zikula\Component\HookDispatcher\SubscriberBundle` (was `Zikula_HookManager_SubscriberBundle`).
   - `Zikula\Component\HookDispatcher\ProviderBundle` (was `Zikula_HookManager_ProviderBundle`).
 
+Notice: in Core-1.4.2 these classes changed again (class aliases are provided for BC):
+
+  - `Zikula\Component\HookDispatcher\SubscriberBundle` becomes `Zikula\Bundle\HookBundle\Bundle\SubscriberBundle`.
+  - `Zikula\Component\HookDispatcher\ProviderBundle` becomes `Zikula\Bundle\HookBundle\Bundle\ProviderBundle`.
+
 
 <a name="modurl" />
 ModUrl Deprecated
