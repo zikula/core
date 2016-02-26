@@ -152,5 +152,4 @@ class HookApi
             $this->eventDispatcher->dispatch('installer.subscriberbundle.uninstalled', $event);
         }
     }
-
 }
