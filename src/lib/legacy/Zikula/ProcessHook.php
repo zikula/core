@@ -19,9 +19,9 @@ use Zikula\Core\UrlInterface;
  * Process Hook.
  *
  * @deprecated since 1.4.0
- * @see Zikula\Core\Hook\DisplayHook
+ * @see Zikula\Bundle\HookBundle\Hook\DisplayHook
  */
-class Zikula_ProcessHook extends Zikula\Core\Hook\ProcessHook
+class Zikula_ProcessHook extends Zikula\Bundle\HookBundle\Hook\ProcessHook
 {
     public function __construct($name, $id, UrlInterface $url = null)
     {

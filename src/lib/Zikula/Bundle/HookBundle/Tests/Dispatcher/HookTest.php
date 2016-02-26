@@ -2,7 +2,7 @@
 
 namespace Zikula\Bundle\HookBundle\Tests\Dispatcher;
 
-use Zikula\Bundle\HookBundle\Dispatcher\Hook;
+use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**
  * Test class for Hook.

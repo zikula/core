@@ -17,9 +17,9 @@
  * Hook validation collection
  *
  * @deprecated since 1.4.0
- * @see Zikula\Core\Hook\ValidationProviders
+ * @see Zikula\Bundle\HookBundle\Hook\ValidationProviders
  */
-class Zikula_Hook_ValidationProviders extends Zikula\Core\Hook\ValidationProviders
+class Zikula_Hook_ValidationProviders extends Zikula\Bundle\HookBundle\Hook\ValidationProviders
 {
     public function __construct($name = 'validation', ArrayObject $collection = null)
     {

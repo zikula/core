@@ -72,7 +72,8 @@ class BlockFactoryApi
         }
 
         $serviceNameHelper = new ServiceNameHelper();
-        if ($this->container->has($blockServiceName = $serviceNameHelper->generateServiceNameFromClassName($blockClassName))) {
+        $blockServiceName = $serviceNameHelper->generateServiceNameFromClassName($blockClassName);
+        if ($this->container->has($blockServiceName)) {
             return $this->container->get($blockServiceName);
         }
 

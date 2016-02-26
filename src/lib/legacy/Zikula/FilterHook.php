@@ -17,9 +17,9 @@
  * Content filter hook.
  *
  * @deprecated since 1.4.0
- * @see Zikula\Core\Hook\DisplayHook
+ * @see Zikula\Bundle\HookBundle\Hook\DisplayHook
  */
-class Zikula_FilterHook extends Zikula\Core\Hook\FilterHook
+class Zikula_FilterHook extends Zikula\Bundle\HookBundle\Hook\FilterHook
 {
     public function __construct($name, $data = null)
     {

@@ -24,9 +24,9 @@ use UserUtil;
 use Zikula_AbstractController;
 use Zikula_View;
 use ZLanguage;
-use Zikula\Core\Hook\ProcessHook;
-use Zikula\Core\Hook\ValidationHook;
-use Zikula\Core\Hook\ValidationProviders;
+use Zikula\Bundle\HookBundle\Hook\ProcessHook;
+use Zikula\Bundle\HookBundle\Hook\ValidationHook;
+use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Core\RouteUrl;
 use Zikula\Core\Response\PlainResponse;
 

@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Hook;
+namespace Zikula\Bundle\HookBundle\Hook;
 
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -41,14 +41,14 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     /**
      * Display hook response object.
      *
-     * @var \Zikula\Core\Hook\DisplayHookResponse
+     * @var \Zikula\Bundle\HookBundle\Hook\DisplayHookResponse
      */
     protected $display;
 
     /**
      * Validation object.
      *
-     * @var \Zikula\Core\Hook\ValidationResponse
+     * @var \Zikula\Bundle\HookBundle\Hook\ValidationResponse
      */
     protected $validation;
 

@@ -18,6 +18,7 @@ namespace Zikula\Bundle\HookBundle\Dispatcher;
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
+use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**
  * Interface HookDispatcherInterface

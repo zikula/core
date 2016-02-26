@@ -13,9 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Hook;
-
-use Zikula\Bundle\HookBundle\Dispatcher\Hook;
+namespace Zikula\Bundle\HookBundle\Hook;
 
 /**
  * Content validation hook.
