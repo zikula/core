@@ -16,7 +16,6 @@ namespace Zikula\BlocksModule;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
-use Zikula\BlocksModule\Container\HookContainer;
 use Zikula\BlocksModule\Helper\InstallerHelper;
 use Zikula\Core\AbstractExtensionInstaller;
 use ZLanguage;
