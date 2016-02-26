@@ -51,8 +51,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         // Set a default value for a module variable
         $this->setVar('collapseable', false);
 
-        $hookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData());
-        $this->hookApi->registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
+        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
 
         // Initialisation successful
         return true;
@@ -70,8 +69,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '3.8.1':
-                $HookContainer = new HookContainer($this->getTranslator());
-                $this->hookApi->registerSubscriberBundles($HookContainer->getHookSubscriberBundles());
+                $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
             case '3.8.2':
             case '3.9.0':
                 $blocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findAll();

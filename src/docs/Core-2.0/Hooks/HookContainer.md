@@ -20,32 +20,18 @@ See `src/docs/en/dev/Hooks` for more information on Hooks.
 Installation of Hooks
 ---------------------
 
-In the extension's `install` method, the extension must obtain an instance of its own hook container and register 
-the bundles:
+In the extension's `install` method, the extension must utilize the HookApi like so:
 
 ```php
-    $hookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData());
-    \HookUtil::registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
+    $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
+    // and|or
+    $this->hookApi->installProviderHooks($this->bundle->getMetaData());
 ```
 
-In the `uninstall` method, the extension must do the same (except use `unregister...`):
+In the `uninstall` method, the extension must implement:
 
 ```php
-    $hookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData());
-    \HookUtil::unregisterSubscriberBundles($hookContainer->getHookSubscriberBundles());
+    $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+    // and|or
+    $this->hookApi->uninstallProviderHooks($this->bundle->getMetaData());
 ```
-
-All the extensions hooks can be stored in the same container and simply defined as either Provider or Subscriber bundles.
-If you wish, you may separate the definition bundles by defining different classes in the composer file. If the
-HookContainers are separate for each type, then you must specify the type in the instantiation:
-
-```php
-    $subscriberHookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData(), HookApi::SUBSCRIBER_TYPE);
-    \HookUtil::registerSubscriberBundles($subscriberHookContainer->getHookSubscriberBundles());
-
-    $providerHookContainer = $this->hookApi->getHookContainerInstance($this->bundle->getMetaData(), HookApi::PROVIDER_TYPE);
-    \HookUtil::registerProviderBundles($providerHookContainer->getHookProviderBundles());
-```
-
-Please note that install/remove is not 100% finalized for the Core-2.0.0 spec. It is possible that this may eventually
-simply be removed altogether and the core will handle installation and removal of an extension's hooks.

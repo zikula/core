@@ -70,6 +70,46 @@ class HookApi
     }
 
     /**
+     * Shortcut method to register all provider hooks from extension MetaData.
+     * @param MetaData $metaData
+     */
+    public function installProviderHooks(MetaData $metaData)
+    {
+        $hookContainer = $this->getHookContainerInstance($metaData, self::PROVIDER_TYPE);
+        $this->registerProviderBundles($hookContainer->getHookProviderBundles());
+    }
+
+    /**
+     * Shortcut method to register all subscriber hooks from extension MetaData.
+     * @param MetaData $metaData
+     */
+    public function installSubscriberHooks(MetaData $metaData)
+    {
+        $hookContainer = $this->getHookContainerInstance($metaData, self::SUBSCRIBER_TYPE);
+        $this->registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
+    }
+
+    /**
+     * Shortcut method to unregister all provider hooks from extension MetaData.
+     * @param MetaData $metaData
+     */
+    public function uninstallProviderHooks(MetaData $metaData)
+    {
+        $hookContainer = $this->getHookContainerInstance($metaData, self::PROVIDER_TYPE);
+        $this->unregisterProviderBundles($hookContainer->getHookProviderBundles());
+    }
+
+    /**
+     * Shortcut method to unregister all subscriber hooks from extension MetaData.
+     * @param MetaData $metaData
+     */
+    public function uninstallSubscriberHooks(MetaData $metaData)
+    {
+        $hookContainer = $this->getHookContainerInstance($metaData, self::SUBSCRIBER_TYPE);
+        $this->unregisterSubscriberBundles($hookContainer->getHookSubscriberBundles());
+    }
+
+    /**
      * Factory class to create instance of HookContainer class defined in MetaData::capabilities.
      * @param MetaData $metaData
      * @param null $requestedHookType
