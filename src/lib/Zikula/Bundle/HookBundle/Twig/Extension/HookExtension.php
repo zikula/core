@@ -3,8 +3,8 @@
 namespace Zikula\Bundle\HookBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Core\Hook\DisplayHook;
-use Zikula\Core\Hook\FilterHook;
+use Zikula\Bundle\HookBundle\Hook\DisplayHook;
+use Zikula\Bundle\HookBundle\Hook\FilterHook;
 
 class HookExtension extends \Twig_Extension
 {

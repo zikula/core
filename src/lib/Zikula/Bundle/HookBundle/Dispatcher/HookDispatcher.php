@@ -19,6 +19,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
+use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**
  * HookDispatcher class.

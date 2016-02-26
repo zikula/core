@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Hook;
+namespace Zikula\Bundle\HookBundle\Hook;
 
 use Zikula\Common\Collection\Container;
 

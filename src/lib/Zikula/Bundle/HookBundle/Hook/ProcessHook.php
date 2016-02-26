@@ -13,9 +13,8 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Hook;
+namespace Zikula\Bundle\HookBundle\Hook;
 
-use Zikula\Bundle\HookBundle\Dispatcher\Hook;
 use Zikula\Core\UrlInterface;
 
 /**

@@ -228,7 +228,7 @@ In the module controllers, you will need to implement the process and or validat
 hook types.  This can be done as follows (example of a process hook).
 
     $url = new Zikula_ModUrl(....); // describes how to retrieve this object by URL metadata
-    $hook = new \Zikula\Core\Hook\ProcessHook($id, $url);
+    $hook = new \Zikula\Bundle\HookBundle\Hook\ProcessHook($id, $url);
     $this->notifyHooks()->dispatch('blog.ui_hooks.articles.process_edit', $hook);
 
 
@@ -302,7 +302,7 @@ When displaying a new empty form, we simply trigger a `form_edit` in the templat
 When we come to validate a new create form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a `validate_edit` hook with
 
-    $hook = new \Zikula\Core\Hook\ValidationHook(new Zikula_Hook_ValidationProviders());
+    $hook = new \Zikula\Bundle\HookBundle\Hook\ValidationHook(new Zikula_Hook_ValidationProviders());
     $this->dispatchHooks('...validate_edit', $hook);
     $validators = $hook->getValidators();
 
@@ -313,7 +313,7 @@ validation errors.
 
 If it's ok simply commit the form data, then trigger a `process_edit` Zikula_ProcessHook with
 
-    new \Zikula\Core\Hook\ProcessHook($name, $id, $url);
+    new \Zikula\Bundle\HookBundle\Hook\ProcessHook($name, $id, $url);
 
 The URL should be an instance of Zikula_ModUrl which describes how to get the newly created object.
 For this reason you must determine the ID of the object before you issue a Zikula_ProcessHook.
@@ -344,7 +344,7 @@ When displaying an edit form, we simply trigger a `form_edit` hook with with
 When we come to validate an edit form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a `validate_edit` event with
 
-    $hook = new \Zikula\Core\Hook\ValidationHook(new Zikula_Hook_ValidationProviders());
+    $hook = new \Zikula\Bundle\HookBundle\Hook\ValidationHook(new Zikula_Hook_ValidationProviders());
     $this->DispatchHooks('...validate_edit', $hook);
     $validators = $hook->getValidators();
 
@@ -355,7 +355,7 @@ validation errors.
 
 If it's ok simply commit the form data, then trigger a `process_edit` event with
 
-    new \Zikula\Core\Hook\ProcessHook($name, $id, $url);
+    new \Zikula\Bundle\HookBundle\Hook\ProcessHook($name, $id, $url);
 
 If the data is not ok, then simply redisplay the template.  The triggered event will pick up
 the validation problems automatically as the validation of each handler will persist in
@@ -377,7 +377,7 @@ action.  Ultimately when a controller (that makes use of hooks) deletes an item,
 must notify the attached modules to prevent orphaned records.  This is done simply by
 triggering a hookable event with
 
-    new \Zikula\Core\Hook\ProcessHook($name, $id, $url);
+    new \Zikula\Bundle\HookBundle\Hook\ProcessHook($name, $id, $url);
 
 `form_delete` hooks are displayed in the template with
 

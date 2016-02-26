@@ -34,7 +34,16 @@ class DefaultPathSimpleFunction
     {
         $container = $this->coreExtension->getContainer();
         $capability = $container->get('zikula_extensions_module.api.capability')->isCapable($extensionName, $type);
+        if (!$capability) {
+            return '';
+        }
+        if (isset($capability['route'])) {
+            return $container->get('router')->generate($capability['route']);
+        } elseif (isset($capability['url'])) {
+            // BC - remove at Core-2.0
+            return $capability['url'];
+        }
 
-        return ($capability) ? $container->get('router')->generate($capability['route']) : '';
+        return '';
     }
 }
