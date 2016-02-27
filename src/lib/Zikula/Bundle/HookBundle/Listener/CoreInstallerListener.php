@@ -38,7 +38,7 @@ class CoreInstallerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::CORE_INSTALL_POST_MODULE => 'installHookBundle',
+            CoreEvents::CORE_INSTALL_PRE_MODULE => 'installHookBundle',
         ];
     }
 

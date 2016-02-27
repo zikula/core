@@ -78,6 +78,8 @@ class AjaxInstallController extends AbstractController
         switch ($stageName) {
             case "bundles":
                 return $this->createBundles();
+            case "install_event":
+                return $this->fireEvent(CoreEvents::CORE_INSTALL_PRE_MODULE);
             case "extensions":
                 return $this->installModule('ZikulaExtensionsModule');
             case "settings":
@@ -112,8 +114,6 @@ class AjaxInstallController extends AbstractController
                 return $this->activateModules();
             case "categorize":
                 return $this->categorizeModules();
-            case "install_event":
-                return $this->fireEvent(CoreEvents::CORE_INSTALL_POST_MODULE);
             case "createblocks":
                 return $this->createBlocks();
             case "finalizeparameters":
