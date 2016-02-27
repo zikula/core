@@ -1,5 +1,6 @@
 {
     "name": "zikula/hook-bundle",
+    "version": "1.0.0",
     "type": "symfony-bundle",
     "description": "An bundle consolidating Extension Hook features.",
     "keywords": [ "zikula" ],

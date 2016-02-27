@@ -155,55 +155,62 @@ class AjaxInstallerStage implements StageInterface
                 self::FAIL => __('There was an error moving modules to their default categories')
             ),
             17 => array(
+                self::NAME => "install_event",
+                self::PRE => __('Fire install event'),
+                self::DURING => __('Firing install event'),
+                self::SUCCESS => __('Fired install event'),
+                self::FAIL => __('There was an error firing the install event')
+            ),
+            18 => array(
                 self::NAME => "createblocks",
                 self::PRE => __('Create blocks'),
                 self::DURING => __('Creating default blocks'),
                 self::SUCCESS => __('Default blocks created'),
                 self::FAIL => __('There was an error creating default blocks')
             ),
-            18 => array(
+            19 => array(
                 self::NAME => "updateadmin",
                 self::PRE => __('Create admin account'),
                 self::DURING => __('Creating admin account'),
                 self::SUCCESS => __('Admin account created'),
                 self::FAIL => __('There was an error creating admin account')
             ),
-            19 => array(
+            20 => array(
                 self::NAME => "loginadmin",
                 self::PRE => __('Login'),
                 self::DURING => __('Logging in as admin'),
                 self::SUCCESS => __('Logged in as admin'),
                 self::FAIL => __('There was an error logging in as admin')
             ),
-            20 => array(
+            21 => array(
                 self::NAME => "finalizeparameters",
                 self::PRE => __('Finalize parameters'),
                 self::DURING => __('Finalizing parameters'),
                 self::SUCCESS => __('Parameters finalized'),
                 self::FAIL => __('There was an error finalizing the parameters')
             ),
-            21 => array(
+            22 => array(
                 self::NAME => "reloadroutes",
                 self::PRE => __('Reload routes'),
                 self::DURING => __('Reloading routes (takes longer...)'),
                 self::SUCCESS => __('Routes reloaded'),
                 self::FAIL => __('There was an error reloading the routes')
             ),
-            22 => array(
+            23 => array(
                 self::NAME => "plugins",
                 self::PRE => __('System Plugins'),
                 self::DURING => __('Installing System Plugins'),
                 self::SUCCESS => __('System Plugins installed'),
                 self::FAIL => __('There was an error installing System Plugins')
             ),
-            23 => array(
+            24 => array(
                 self::NAME => "protect",
                 self::PRE => __('Protect configuration files'),
                 self::DURING => __('Protecting configuration files'),
                 self::SUCCESS => __('Configuration files protected'),
                 self::FAIL => __('There was an error protecting configuration files')
             ),
-            24 => array(
+            25 => array(
                 self::NAME => "finish",
                 self::PRE => __('Finish'),
                 self::DURING => __('Finish'),

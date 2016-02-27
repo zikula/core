@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2016 Zikula Foundation
+ * Copyright 2014 Zikula Foundation
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -15,9 +15,13 @@
 namespace Zikula\Core;
 
 /**
- * Interface ExtensionInstallerInterface
+ * Interface InstallerInterface
  */
-interface ExtensionInstallerInterface extends InstallerInterface
+interface InstallerInterface
 {
-    public function setBundle(AbstractBundle $bundle);
+    public function install();
+
+    public function upgrade($oldVersion);
+
+    public function uninstall();
 }

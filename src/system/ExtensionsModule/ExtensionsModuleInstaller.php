@@ -36,11 +36,6 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
             'Zikula\ExtensionsModule\Entity\ExtensionEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionVarEntity',
-            'Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity',
-            'Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity',
-            'Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity',
-            'Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity',
-            'Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
         );
 
         try {
