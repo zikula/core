@@ -35,7 +35,7 @@
 }
 
 #hookSubscriber .sarea_wrapper h4 {
-    background: #ddd url("../../../../../../../images/global/arrow_right_black.png") no-repeat scroll 3px 0.65em;
+    background: #ddd url("../../../../images/global/arrow_right_black.png") no-repeat scroll 3px 0.65em;
     color: inherit;
     font-size: 1.1em;
     margin: 2px;
@@ -43,16 +43,16 @@
 }
 
 #hookSubscriber .sarea_wrapper h4:hover {
-    background: #ccc url("../../../../../../../images/global/arrow_right_grey.png") no-repeat scroll 3px 0.65em;
+    background: #ccc url("../../../../images/global/arrow_right_grey.png") no-repeat scroll 3px 0.65em;
 }
 
 #hookSubscriber .sarea_wrapper h4.active {
-    background: #ddd url("../../../../../../../images/global/arrow_down_black.png") no-repeat scroll 3px 0.65em;
+    background: #ddd url("../../../../images/global/arrow_down_black.png") no-repeat scroll 3px 0.65em;
     border-bottom: 1px solid #ccc;
 }
 
 #hookSubscriber .sarea_wrapper h4.active:hover {
-    background: #ccc url("../../../../../../../images/global/arrow_down_grey.png") no-repeat scroll 3px 0.65em;
+    background: #ccc url("../../../../images/global/arrow_down_grey.png") no-repeat scroll 3px 0.65em;
 }
 
 #hookSubscriber .sarea_wrapper ol.z-itemlist li {
@@ -91,7 +91,7 @@
 
 /* provider areas */
 #hookProviderAreas h4 {
-    background: #ddd url("../../../../../../../images/global/arrow_right_black.png") no-repeat scroll 3px 0.65em;
+    background: #ddd url("../../../../images/global/arrow_right_black.png") no-repeat scroll 3px 0.65em;
     color: inherit;
     border: none;
     font-size: 1.1em;
@@ -100,15 +100,15 @@
 }
 
 #hookProviderAreas h4:hover {
-    background: #ccc url("../../../../../../../images/global/arrow_right_grey.png") no-repeat scroll 3px 0.65em;
+    background: #ccc url("../../../../images/global/arrow_right_grey.png") no-repeat scroll 3px 0.65em;
 }
 
 #hookProviderAreas h4.z-panel-active {
-    background: #ddd url("../../../../../../../images/global/arrow_down_black.png") no-repeat scroll 3px 0.65em;
+    background: #ddd url("../../../../images/global/arrow_down_black.png") no-repeat scroll 3px 0.65em;
 }
 
 #hookProviderAreas h4.z-panel-active:hover {
-    background: #ccc url("../../../../../../../images/global/arrow_down_grey.png") no-repeat scroll 3px 0.65em;
+    background: #ccc url("../../../../images/global/arrow_down_grey.png") no-repeat scroll 3px 0.65em;
 }
 
 #hookProviderAreas .panel-content {
