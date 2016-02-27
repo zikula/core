@@ -94,7 +94,7 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return [];
+        return $this->entities;
     }
 
     public function get($name)

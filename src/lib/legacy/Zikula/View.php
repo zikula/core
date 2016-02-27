@@ -207,6 +207,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // you need to set this property to the name of the respective module!
         $masterRequest = \ServiceUtil::get('request_stack')->getMasterRequest();
         $masterRequestModule = $masterRequest->attributes->has('_zkModule') ? $masterRequest->attributes->get('_zkModule') : null;
+        if (!isset($masterRequestModule) && $masterRequest->attributes->get('_route') == 'zikula_hook_hook_edit' && $masterRequest->attributes->has('moduleName')) {
+            // accommodates HookBundle
+            $masterRequestModule = $masterRequest->attributes->get('moduleName');
+        }
         $this->toplevelmodule = isset($masterRequestModule) ? $masterRequestModule : ModUtil::getName();
 
         if (!$moduleName) {

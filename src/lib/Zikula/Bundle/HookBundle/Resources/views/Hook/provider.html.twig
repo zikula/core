@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                 {% for subscriber in hooksubscribers %}
-                {% if subscriber.areas is empty %}{continue}{% endif %}
+                    {% if subscriber.areas is not empty %}
                     <tr>
                         <td>{{ subscriber.id }}</td>
                         <td>{{ subscriber.displayname|default(subscriber.name) }}</td>
@@ -66,9 +66,10 @@
                                             {% for parea in providerAreas %}
                                                 {% set parea_md5 = parea|php('md5') %}
                                                 {% set allow_binding = hookDispatcher.isAllowedBindingBetweenAreas(sarea, parea) %}
-                                                {% if not allow_binding %}{continue}{% endif %}
-                                                {% set binding = hookDispatcher.getBindingBetweenAreas(sarea, parea) %}
-                                                <input type="checkbox" id="chk_{{ sarea_md5 }}_{{ parea_md5 }}" name="chk[{{ sarea_md5 }}][{{ parea_md5 }}]" onclick="subscriberAreaToggle('{{ sarea }}', '{{ parea }}', true);" {% if binding %}checked="checked"{% endif %} /> {{ providerAreasToTitles[parea] }} <span class="sub">({{ parea }})</span><br />
+                                                {% if allow_binding %}
+                                                    {% set binding = hookDispatcher.getBindingBetweenAreas(sarea, parea) %}
+                                                    <input type="checkbox" id="chk_{{ sarea_md5 }}_{{ parea_md5 }}" name="chk[{{ sarea_md5 }}][{{ parea_md5 }}]" onclick="subscriberAreaToggle('{{ sarea }}', '{{ parea }}', true);" {% if binding %}checked="checked"{% endif %} /> {{ providerAreasToTitles[parea] }} <span class="sub">({{ parea }})</span><br />
+                                                {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -78,6 +79,7 @@
                             {% endfor %}
                         </td>
                     </tr>
+                    {% endif %}{# if subscriber.areas is not empty #}
                 {% endfor %}
                 </tbody>
             </table>

@@ -6,8 +6,7 @@
     {% set showBothPanels = true %}
 {% endif %}
 
-{#{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}#}{# @todo wrong header! see below #}
-<a href="{{ defaultPath(currentmodule, 'admin') }}">Return to {{ currentmodule }}</a> {# @todo temp until admin header corrected #}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
 
 {#{admincategorymenu}#}
 {#<div class="z-admin-content clearfix">#}
