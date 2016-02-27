@@ -76,7 +76,9 @@ class HookApi
     public function installProviderHooks(MetaData $metaData)
     {
         $hookContainer = $this->getHookContainerInstance($metaData, self::PROVIDER_TYPE);
-        $this->registerProviderBundles($hookContainer->getHookProviderBundles());
+        if (!is_null($hookContainer)) {
+            $this->registerProviderBundles($hookContainer->getHookProviderBundles());
+        }
     }
 
     /**
@@ -86,7 +88,9 @@ class HookApi
     public function installSubscriberHooks(MetaData $metaData)
     {
         $hookContainer = $this->getHookContainerInstance($metaData, self::SUBSCRIBER_TYPE);
-        $this->registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
+        if (!is_null($hookContainer)) {
+            $this->registerSubscriberBundles($hookContainer->getHookSubscriberBundles());
+        }
     }
 
     /**
@@ -96,7 +100,9 @@ class HookApi
     public function uninstallProviderHooks(MetaData $metaData)
     {
         $hookContainer = $this->getHookContainerInstance($metaData, self::PROVIDER_TYPE);
-        $this->unregisterProviderBundles($hookContainer->getHookProviderBundles());
+        if (!is_null($hookContainer)) {
+            $this->unregisterProviderBundles($hookContainer->getHookProviderBundles());
+        }
     }
 
     /**
@@ -106,7 +112,9 @@ class HookApi
     public function uninstallSubscriberHooks(MetaData $metaData)
     {
         $hookContainer = $this->getHookContainerInstance($metaData, self::SUBSCRIBER_TYPE);
-        $this->unregisterSubscriberBundles($hookContainer->getHookSubscriberBundles());
+        if (!is_null($hookContainer)) {
+            $this->unregisterSubscriberBundles($hookContainer->getHookSubscriberBundles());
+        }
     }
 
     /**

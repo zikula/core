@@ -14,11 +14,30 @@
 
 namespace Zikula\ExtensionsModule\Entity\RepositoryInterface;
 
+use Zikula\Module\ExtensionLibraryModule\Entity\ExtensionEntity;
+
 interface ExtensionRepositoryInterface
 {
+    /**
+     * @return ExtensionEntity[]
+     */
     public function findAll();
 
+    /**
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return ExtensionEntity[]
+     */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
+
+    /**
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @return ExtensionEntity
+     */
+    public function findOneBy(array $criteria, array $orderBy = null);
 
     public function get($name);
 

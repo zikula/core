@@ -179,7 +179,7 @@ class ExtensionsExtension extends \Twig_Extension
                     'title' => $this->translator->__f('Activate %s', ['%s' => $extension->getDisplayname()])
                 ];
                 $actions[] = [
-                    'url' => $this->router->generate('zikulaextensionsmodule_admin_remove', ['id' => $extension->getId(), 'csrftoken' => $csrfToken]),
+                    'url' => $this->router->generate('zikulaextensionsmodule_module_uninstall', ['id' => $extension->getId()]),
                     'icon' => 'trash-o',
                     'color' => '#c00',
                     'title' => $this->translator->__f('Uninstall %s', ['%s' => $extension->getDisplayname()])
@@ -202,7 +202,7 @@ class ExtensionsExtension extends \Twig_Extension
                 break;
             case ExtensionApi::STATE_NOTALLOWED:
                 $actions[] = [
-                    'url' => $this->router->generate('zikulaextensionsmodule_admin_remove', ['id' => $extension->getId(), 'csrftoken' => $csrfToken]),
+                    'url' => $this->router->generate('zikulaextensionsmodule_module_uninstall', ['id' => $extension->getId()]),
                     'icon' => 'trash-o',
                     'color' => '#c00',
                     'title' => $this->translator->__f('Remove %s', ['%s' => $extension->getDisplayname()])

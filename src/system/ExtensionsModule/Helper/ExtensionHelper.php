@@ -19,10 +19,12 @@ use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\CoreEvents;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\ExtensionInstallerInterface;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ExtensionsModule\Helper\Legacy\ExtensionHelper as LegacyExtensionHelper;
 
 class ExtensionHelper
@@ -55,6 +57,11 @@ class ExtensionHelper
         $this->extensionApi = $container->get('zikula_extensions_module.api.extension');
     }
 
+    /**
+     * Upgrade an extension.
+     * @param ExtensionEntity $extension
+     * @return bool
+     */
     public function upgrade(ExtensionEntity $extension)
     {
         switch ($extension->getState()) {
@@ -83,7 +90,7 @@ class ExtensionHelper
             if ($result != $extension->getVersion()) {
                 // persist the last successful updated version
                 $extension->setVersion($result);
-                $this->container->get('doctrine.entitymanager')->flush();
+                $this->container->get('doctrine')->getManager()->flush();
             }
 
             return false;
@@ -93,7 +100,7 @@ class ExtensionHelper
         // persist the updated version
         $newVersion = $bundle->getMetaData()->getVersion();
         $extension->setVersion($newVersion);
-        $this->container->get('doctrine.entitymanager')->flush();
+        $this->container->get('doctrine')->getManager()->flush();
 
         $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), ExtensionApi::STATE_ACTIVE);
 
@@ -109,7 +116,82 @@ class ExtensionHelper
     }
 
     /**
+     * Uninstall an extension.
+     * @param ExtensionEntity $extension
+     * @return bool
+     */
+    public function uninstall(ExtensionEntity $extension)
+    {
+        if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED
+            || ($extension->getType() == self::TYPE_SYSTEM && $extension->getName() != 'ZikulaPageLockModule')) {
+            throw new \RuntimeException($this->translator->__f('Error! No permission to upgrade %s.', ['%s' => $extension->getDisplayname()]));
+        }
+        if ($extension->getState() == ExtensionApi::STATE_UNINITIALISED) {
+            throw new \RuntimeException($this->translator->__f('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));
+        }
+
+        // allow event to prevent extension removal
+        $vetoEvent = new GenericEvent($extension);
+        $this->container->get('event_dispatcher')->dispatch(ExtensionEvents::REMOVE_VETO, $vetoEvent);
+        if ($vetoEvent->isPropagationStopped()) {
+            return false;
+        }
+
+        $bundle = $this->forceLoadExtension($extension);
+        if (null === $bundle) {
+            return LegacyExtensionHelper::uninstall($extension);
+        }
+
+        // remove hooks
+        $this->container->get('zikula_hook_bundle.api.hook')->uninstallProviderHooks($bundle->getMetaData());
+        $this->container->get('zikula_hook_bundle.api.hook')->uninstallSubscriberHooks($bundle->getMetaData());
+
+        $installer = $this->getExtensionInstallerInstance($bundle);
+        $result = $installer->uninstall();
+        if (!$result) {
+            return false;
+        }
+
+        // remove remaining extension variables
+        $this->container->get('zikula_extensions_module.api.variable')->delAll($extension->getName());
+
+        // remove the entry from the modules table
+        $this->container->get('doctrine')->getManager()->getRepository('ZikulaExtensionsModule:ExtensionEntity')->removeAndFlush($extension);
+
+        // clear the cache before calling events
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = $this->container->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
+
+        $event = new ModuleStateEvent($bundle);
+        $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_REMOVE, $event);
+
+        return true;
+    }
+
+    /**
+     * Uninstall an array of extensions.
+     * @param ExtensionEntity[] $extensions
+     * @return bool
+     */
+    public function uninstallArray(array $extensions)
+    {
+        foreach ($extensions as $extension) {
+            if (!$extension instanceof ExtensionEntity) {
+                throw new \InvalidArgumentException();
+            }
+            $result = $this->uninstall($extension);
+            if (!$result) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Get an instance of a bundle class that is not currently loaded into the kernel.
+     * Extensions that are deactivated or uninstalled are NOT loaded into the kernel.
      * Note: All System modules are always loaded into the kernel.
      *
      * @param ExtensionEntity $extension

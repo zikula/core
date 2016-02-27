@@ -16,14 +16,13 @@ namespace Zikula\ExtensionsModule\Helper\Legacy;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Util as ExtensionsUtil;
 
 /**
  * @deprecated remove at Core-2.0
  * Class ExtensionHelper
- *
- * @package Zikula\ExtensionsModule\Helper\Legacy
  */
 class ExtensionHelper
 {
@@ -41,15 +40,7 @@ class ExtensionHelper
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
-        $className = ucwords($extension->getName()) . '\\' . ucwords($extension->getName()) . 'Installer';
-        $classNameOld = ucwords($extension->getName()) . '_Installer';
-        $className = class_exists($className) ? $className : $classNameOld;
-        $reflectionInstaller = new \ReflectionClass($className);
-        if ($reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-            $installer = $reflectionInstaller->newInstanceArgs([$serviceManager]);
-        } else {
-            throw new \RuntimeException(__f("%s must be an instance of Zikula_AbstractInstaller.", $className));
-        }
+        $installer = self::getInstaller($extension->getName());
         // perform the actual upgrade of the module
         $func = array($installer, 'upgrade');
 
@@ -85,7 +76,6 @@ class ExtensionHelper
 
         if (!\System::isInstalling()) {
             // Upgrade succeeded, issue event.
-            // remove this legacy in 1.5.0
             $event = new GenericEvent(null, $extension->toArray());
             $serviceManager->get('event_dispatcher')->dispatch('installer.module.upgraded', $event);
 
@@ -94,5 +84,87 @@ class ExtensionHelper
         }
 
         return true;
+    }
+
+    public static function uninstall(ExtensionEntity $extension)
+    {
+        if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED
+            || ($extension->getType() == \ModUtil::TYPE_SYSTEM && $extension->getName() != 'ZikulaPageLockModule')) {
+            throw new \RuntimeException(__f('Error! No permission to upgrade %s.', ['%s' => $extension->getDisplayname()]));
+        }
+        if ($extension->getState() == ExtensionApi::STATE_UNINITIALISED) {
+            throw new \RuntimeException(__f('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));
+        }
+
+        $serviceManager = \ServiceUtil::getManager();
+        $osdir = \DataUtil::formatForOS($extension->getDirectory());
+        $oomod = \ModUtil::isOO($extension->getName());
+
+        // add autoloaders for 1.3-type modules
+        if ($oomod && (false === strpos($osdir, '/')) && (is_dir("modules/$osdir/lib"))) {
+            \ZLoader::addAutoloader($osdir, array('modules', "modules/$osdir/lib"));
+        }
+        $module = \ModUtil::getModule($extension->getName(), true);
+        $bootstrap = "modules/$osdir/bootstrap.php";
+        if (file_exists($bootstrap)) {
+            include_once $bootstrap;
+        }
+
+        // Get module database info
+        \ModUtil::dbInfoLoad($extension->getName(), $osdir);
+
+        // perform the actual deletion of the module
+        $installer = self::getInstaller($extension->getName());
+        $func = array($installer, 'uninstall');
+        if (is_callable($func)) {
+            if (call_user_func($func) != true) {
+                return false;
+            }
+        }
+
+        // Delete any module variables that the module cleanup function might have missed
+        $serviceManager->get('zikula_extensions_module.api.variable')->delAll($extension->getName());
+
+        $version = ExtensionsUtil::getVersionMeta($extension->getName(), 'modules', $module);
+        if (is_object($version)) {
+            \HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
+            \HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
+            \EventUtil::unregisterPersistentModuleHandlers($extension->getName());
+        }
+
+        // remove the entry from the modules table
+        $serviceManager->get('doctrine')->getManager()->getRepository('ZikulaExtensionsModule:ExtensionEntity')->removeAndFlush($extension);
+
+        // clear the cache before calling events
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = $serviceManager->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
+
+        $event = new GenericEvent(null, $extension->toArray());
+        $serviceManager->get('event_dispatcher')->dispatch('installer.module.uninstalled', $event);
+
+        $event = new ModuleStateEvent($module, ($module === null) ? $extension->toArray() : null);
+        $serviceManager->get('event_dispatcher')->dispatch(CoreEvents::MODULE_REMOVE, $event);
+
+        return true;
+    }
+
+    /**
+     * get legacy installer object
+     * @param $name
+     * @return \Zikula_AbstractInstaller
+     */
+    private static function getInstaller($name)
+    {
+        $className = ucwords($name) . '\\' . ucwords($name) . 'Installer';
+        $classNameOld = ucwords($name) . '_Installer';
+        $className = class_exists($className) ? $className : $classNameOld;
+        $reflectionInstaller = new \ReflectionClass($className);
+        if ($reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+            $serviceManager = \ServiceUtil::getManager();
+            return $reflectionInstaller->newInstanceArgs([$serviceManager]);
+        } else {
+            throw new \RuntimeException(__f("%s must be an instance of Zikula_AbstractInstaller.", $className));
+        }
     }
 }

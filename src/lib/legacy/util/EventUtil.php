@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * EventUtil
+ * @deprecated remove at Core-2.0
  */
 class EventUtil
 {
