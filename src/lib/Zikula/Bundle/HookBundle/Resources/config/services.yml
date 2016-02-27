@@ -1,8 +1,8 @@
 services:
 
   zikula_hook_bundle.installer:
-	class: Zikula\Bundle\HookBundle\HookBundleInstaller
-	arguments: [ "@zikula.doctrine.schema_tool" ]
+    class: Zikula\Bundle\HookBundle\HookBundleInstaller
+    arguments: [ "@zikula.doctrine.schema_tool" ]
 
   zikula_hook_bundle.listener.hooks_listener:
     class: Zikula\Bundle\HookBundle\Listener\HooksListener
