@@ -4,6 +4,12 @@ services:
     class: Zikula\Bundle\HookBundle\HookBundleInstaller
     arguments: [ "@zikula.doctrine.schema_tool" ]
 
+  zikula_hook_bundle.listener.core_installer_listener:
+    class: Zikula\Bundle\HookBundle\Listener\CoreInstallerListener
+    arguments: [ "@zikula_hook_bundle.installer" ]
+    tags:
+      - { name: kernel.event_subscriber }
+
   zikula_hook_bundle.listener.hooks_listener:
     class: Zikula\Bundle\HookBundle\Listener\HooksListener
     arguments: [ "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.capability", "@router" ]
