@@ -162,6 +162,7 @@ class ExtensionHelper
         $reflectionInstaller = new \ReflectionClass($className);
         if ($reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
             $serviceManager = \ServiceUtil::getManager();
+
             return $reflectionInstaller->newInstanceArgs([$serviceManager]);
         } else {
             throw new \RuntimeException(__f("%s must be an instance of Zikula_AbstractInstaller.", $className));
