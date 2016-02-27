@@ -89,6 +89,10 @@ class ModuleController extends AbstractController
      */
     public function activateAction($id, $csrftoken)
     {
+        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+
         $this->get('zikula_core.common.csrf_token_handler')->validate($csrftoken);
 
         $extension = $this->getDoctrine()->getManager()->find('ZikulaExtensionsModule:ExtensionEntity', $id);
@@ -119,6 +123,10 @@ class ModuleController extends AbstractController
      */
     public function deactivateAction($id, $csrftoken)
     {
+        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+
         $this->get('zikula_core.common.csrf_token_handler')->validate($csrftoken);
 
         $extension = $this->getDoctrine()->getManager()->find('ZikulaExtensionsModule:ExtensionEntity', $id);
@@ -238,6 +246,10 @@ class ModuleController extends AbstractController
      */
     public function upgradeAction(ExtensionEntity $extension, $csrftoken)
     {
+        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+
         $this->get('zikula_core.common.csrf_token_handler')->validate($csrftoken);
 
         $result = $this->get('zikula_extensions_module.extension_helper')->upgrade($extension);
@@ -250,12 +262,68 @@ class ModuleController extends AbstractController
         return $this->redirect($this->generateUrl('zikulaextensionsmodule_module_viewmodulelist'));
     }
 
-    public function uninstallAction()
+    /**
+     * @Route("/uninstall/{id}", requirements={"id" = "^[1-9]\d*$"})
+     * @Theme("admin")
+     * @Template
+     *
+     * Uninstall a module
+     *
+     * @param Request $request
+     * @param ExtensionEntity $extension
+     *
+     * @return Response|RedirectResponse
+     */
+    public function uninstallAction(Request $request, ExtensionEntity $extension)
     {
-    }
+        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
 
-    public function updateAllAction()
-    {
-        // unsure if this is wanted
+        if ($extension->getState() == ExtensionApi::STATE_MISSING) {
+            throw new \RuntimeException($this->__("Error! The requested extension cannot be uninstalled as it's files are missing!"));
+        }
+        $requiredDependents = $this->get('zikula_extensions_module.extension_dependency_helper')->getDependentExtensions($extension);
+        $blocks = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['module' => $extension]);
+
+        $form = $this->createFormBuilder()
+            ->add('uninstall', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Delete'])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Cancel'])
+            ->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            if ($form->get('uninstall')->isClicked()) {
+                // remove dependent extensions
+                if (!$this->get('zikula_extensions_module.extension_helper')->uninstallArray($requiredDependents)) {
+                    $this->addFlash('error', $this->__('Error: Could not uninstall dependent modules.'));
+                    $this->redirect($this->get('router')->generate('zikulaextensionsmodule_module_viewmodulelist'));
+                }
+                // remove blocks
+                foreach ($blocks as $block) {
+                    $this->getDoctrine()->getManager()->remove($block);
+                }
+                $this->getDoctrine()->getManager()->flush();
+
+                // remove the extension
+                if ($this->get('zikula_extensions_module.extension_helper')->uninstall($extension)) {
+                    $this->addFlash('status', $this->__('Done! Uninstalled module.'));
+                } else {
+                    $this->addFlash('error', $this->__('Extension removal failed! (note: blocks and dependents may have been removed)'));
+                }
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirect($this->generateUrl('zikulaextensionsmodule_module_viewmodulelist'));
+        }
+
+        return [
+            'form' => $form->createView(),
+            'extension' => $extension,
+            'blocks' => $blocks,
+            'requiredDependents' => $requiredDependents
+        ];
     }
 }

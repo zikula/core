@@ -17,6 +17,7 @@
         <parameter key="zikula_extensions_module.bundle_sync_helper.class">Zikula\ExtensionsModule\Helper\BundleSyncHelper</parameter>
         <parameter key="zikula_extensions_module.extension_state_helper.class">Zikula\ExtensionsModule\Helper\ExtensionStateHelper</parameter>
         <parameter key="zikula_extensions_module.extension_helper.class">Zikula\ExtensionsModule\Helper\ExtensionHelper</parameter>
+        <parameter key="zikula_extensions_module.extension_dependency_helper.class">Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper</parameter>
     </parameters>
 
     <services>
@@ -91,6 +92,11 @@
 
         <service id="zikula_extensions_module.extension_helper" class="%zikula_extensions_module.extension_helper.class%" >
             <argument type="service" id="service_container" />
+        </service>
+
+        <service id="zikula_extensions_module.extension_dependency_helper" class="%zikula_extensions_module.extension_dependency_helper.class%" >
+            <argument type="service" id="zikula_extensions_module.extension_dependency_repository" />
+            <argument type="service" id="zikula_extensions_module.extension_repository" />
         </service>
 
     </services>

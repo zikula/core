@@ -394,12 +394,12 @@ class BundleSyncHelper
                 $extensionFromFile['securityschema'] = unserialize($extensionFromFile['securityschema']);
 
                 // insert new module to db
-                $vetoEvent = new GenericEvent();
+                $newExtension = new ExtensionEntity();
+                $newExtension->merge($extensionFromFile);
+                $vetoEvent = new GenericEvent($newExtension);
                 $this->dispatcher->dispatch(ExtensionEvents::INSERT_VETO, $vetoEvent);
                 if (!$vetoEvent->isPropagationStopped()) {
-                    $item = new ExtensionEntity();
-                    $item->merge($extensionFromFile);
-                    $this->extensionRepository->persistAndFlush($item);
+                    $this->extensionRepository->persistAndFlush($newExtension);
                 }
             } else {
                 // extension is in the db already
