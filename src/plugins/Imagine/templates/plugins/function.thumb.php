@@ -21,9 +21,9 @@
  *  - extension     (string)        File extension for thumbnails: jpg, png, gif; null for original file type
  *                                  (optional, default value based on 'default' preset)
  *  - options       (array)         Options array given to the thumbnail Imagine method call.
- *  - options[jpeg_quality]          
+ *  - options[jpeg_quality]
  *                  (int)           Thumbnail jpeg quality in % [0-100], where 100% is best quality (optional, default value based on 'default' preset)
- *  - options[png_compression_level] 
+ *  - options[png_compression_level]
  *                  (int)           Thumbnail png compression level [0-9], where 0 is no compression (optional, default value based on 'default' preset)
  *  - objectid      (string)        Unique signature for object, which owns this thumbnail (optional)
  *  - preset        (string|object) Name of preset defined in Imagine or custom preset passed as instance of

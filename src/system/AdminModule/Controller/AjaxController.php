@@ -308,7 +308,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * @Route("/sortcategories", options={"expose"=true})
      *
-     * Sort the admin categories 
+     * Sort the admin categories
      *
      * @return ForbiddenResponse on perm check failure
      * @return AjaxResponse Ajax response containing a null array on success.

@@ -538,7 +538,7 @@ class CategoryUtil
      * @param integer $cid          The categoryID we wish to move.
      * @param integer $newparent_id The categoryID of the new parent category.
      *
-     * @return boolean 
+     * @return boolean
      */
     public static function moveCategoriesByID($cid, $newparent_id)
     {
@@ -564,7 +564,7 @@ class CategoryUtil
      * @param integer $newparent_id The categoryID of the new parent category.
      * @param string  $field        The field to use for the path reference (optional) (default='ipath').
      *
-     * @return boolean 
+     * @return boolean
      */
     public static function moveSubCategoriesByPath($apath, $newparent_id, $field = 'ipath')
     {

@@ -32,11 +32,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * @Route("/togglestatus", options={"expose"=true})
      * @Method("POST")
-     * 
+     *
      * Attach/detach a subscriber area to a provider area
      *
      * @param Request $request
-     * 
+     *
      *  subscriberarea string area to be attached/detached
      *  providerarea   string area to attach/detach
      *

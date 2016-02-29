@@ -34,7 +34,7 @@ class Util
      *
      * @throws \InvalidArgumentException Thrown if the version information cannot be obtained for the requested module or
      *                                          if the version class isn't of the correct type or
-     *                                          if the lib directory cannot be found for v1.3 style modules 
+     *                                          if the lib directory cannot be found for v1.3 style modules
      *
      * @return Zikula_AbstractVersion|\Zikula\Bundle\CoreBundle\Bundle\MetaData|array
      */

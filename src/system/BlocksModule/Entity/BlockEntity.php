@@ -81,7 +81,7 @@ class BlockEntity extends EntityAccess
 
     /**
      * The display filter to apply to the block
-     *     
+     *
      * @ORM\Column(name="filter", type="array")
      */
     private $filters;

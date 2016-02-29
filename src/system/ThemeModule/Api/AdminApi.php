@@ -81,7 +81,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true if successful
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided or 
+     * @throws \InvalidArgumentException Thrown if the themename parameter isn't provided or
      *                                          if the requested theme version file cannot be found
      */
     public function createrunningconfig($args)

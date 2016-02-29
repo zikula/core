@@ -170,7 +170,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @param int[] $block {
      *      @type int $bid the ID of the block to deactivate
-     *                      } 
+     *                      }
      *
      * @return bool true on success, false on failure.
      *
@@ -204,7 +204,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @param int[] $args {
      *      @type int $bid the ID of the block to deactivate
-     *                     } 
+     *                     }
      *
      * @return bool true on success, false on failure.
      *

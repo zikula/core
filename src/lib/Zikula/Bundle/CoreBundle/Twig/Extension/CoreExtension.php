@@ -100,7 +100,7 @@ class CoreExtension extends \Twig_Extension
 
     /**
      * Function to get the site's language.
-     * 
+     *
      * Available parameters:
      *     - fs:  safe for filesystem.
      * @return string The language
@@ -114,7 +114,7 @@ class CoreExtension extends \Twig_Extension
 
     /**
      * Function to get the language direction
-     * 
+     *
      * @return string   the language direction
      */
     public function langDirection()

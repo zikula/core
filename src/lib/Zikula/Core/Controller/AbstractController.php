@@ -3,7 +3,7 @@
  * Copyright Zikula Foundation 2015 - Zikula Application Framework
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
- * 
+ *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  * @subpackage Zikula_Translate
@@ -51,8 +51,8 @@ abstract class AbstractController extends Controller
 
     /**
      * boot the controller
-     * 
-     * @param AbstractBundle $bundle            
+     *
+     * @param AbstractBundle $bundle
      */
     public function boot(AbstractBundle $bundle)
     {
@@ -68,7 +68,7 @@ abstract class AbstractController extends Controller
 
     /**
      * Returns a rendered view.
-     * 
+     *
      * @param string $view
      *            The view name
      * @param array $parameters
@@ -84,7 +84,7 @@ abstract class AbstractController extends Controller
 
     /**
      * Renders a view.
-     * 
+     *
      * @param string $view
      *            The view name
      * @param array $parameters
@@ -102,7 +102,7 @@ abstract class AbstractController extends Controller
 
     /**
      * Streams a view.
-     * 
+     *
      * @param string $view
      *            The view name
      * @param array $parameters
@@ -136,7 +136,7 @@ abstract class AbstractController extends Controller
      * Returns a NotFoundHttpException.
      * This will result in a 404 response code. Usage example:
      * throw $this->createNotFoundException();
-     * 
+     *
      * @param string $message
      *            A message.
      * @param \Exception $previous
@@ -154,7 +154,7 @@ abstract class AbstractController extends Controller
      * Returns a AccessDeniedException.
      * This will result in a 403 response code. Usage example:
      * throw $this->createAccessDeniedException();
-     * 
+     *
      * @param string $message
      *            A message.
      * @param \Exception $previous

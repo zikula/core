@@ -150,7 +150,7 @@ class CategoryEntity extends EntityAccess
 
     /**
      * The user id of the creator of the category
-     *     
+     *
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
@@ -159,7 +159,7 @@ class CategoryEntity extends EntityAccess
 
     /**
      * The user id of the last updater of the category
-     *     
+     *
      * @Gedmo\Blameable(on="update")
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
@@ -168,7 +168,7 @@ class CategoryEntity extends EntityAccess
 
     /**
      * The creation timestamp of the category
-     *     
+     *
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
@@ -176,7 +176,7 @@ class CategoryEntity extends EntityAccess
 
     /**
      * The last updated timestamp of the category
-     *     
+     *
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */

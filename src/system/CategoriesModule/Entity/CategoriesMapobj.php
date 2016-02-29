@@ -108,7 +108,7 @@ class CategoriesMapobj
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -131,7 +131,7 @@ class CategoriesMapobj
     /**
      * Get modname
      *
-     * @return string 
+     * @return string
      */
     public function getModname()
     {
@@ -154,7 +154,7 @@ class CategoriesMapobj
     /**
      * Get tablename
      *
-     * @return string 
+     * @return string
      */
     public function getTablename()
     {
@@ -177,7 +177,7 @@ class CategoriesMapobj
     /**
      * Get objId
      *
-     * @return integer 
+     * @return integer
      */
     public function getObjId()
     {
@@ -200,7 +200,7 @@ class CategoriesMapobj
     /**
      * Get objIdcolumn
      *
-     * @return string 
+     * @return string
      */
     public function getObjIdcolumn()
     {
@@ -223,7 +223,7 @@ class CategoriesMapobj
     /**
      * Get regId
      *
-     * @return integer 
+     * @return integer
      */
     public function getRegId()
     {
@@ -246,7 +246,7 @@ class CategoriesMapobj
     /**
      * Get regProperty
      *
-     * @return string 
+     * @return string
      */
     public function getRegProperty()
     {
@@ -269,7 +269,7 @@ class CategoriesMapobj
     /**
      * Get categoryId
      *
-     * @return integer 
+     * @return integer
      */
     public function getCategoryId()
     {
@@ -292,7 +292,7 @@ class CategoriesMapobj
     /**
      * Get objStatus
      *
-     * @return string 
+     * @return string
      */
     public function getObjStatus()
     {
@@ -315,7 +315,7 @@ class CategoriesMapobj
     /**
      * Get crDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCrDate()
     {
@@ -338,7 +338,7 @@ class CategoriesMapobj
     /**
      * Get crUid
      *
-     * @return integer 
+     * @return integer
      */
     public function getCrUid()
     {
@@ -361,7 +361,7 @@ class CategoriesMapobj
     /**
      * Get luDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLuDate()
     {
@@ -384,7 +384,7 @@ class CategoriesMapobj
     /**
      * Get luUid
      *
-     * @return integer 
+     * @return integer
      */
     public function getLuUid()
     {

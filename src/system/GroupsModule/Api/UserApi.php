@@ -506,7 +506,7 @@ class UserApi extends \Zikula_AbstractApi
      * @throws \InvalidArgumentException Thrown if either gtype or gid are not set or not numeric or
      *                                          if action isn't set or one of 'subscribe', 'unsubscribe' or 'cancel'
      * @throws AccessDeniedException Thrown if the user is not logged in.
-     * @throws \RuntimeException Thrown if the user couldn't be added to the group, 
+     * @throws \RuntimeException Thrown if the user couldn't be added to the group,
      *                                  if the application to the group couldn't be cancelled, or
      *                                  if the user couldn't be removed from the group
      */

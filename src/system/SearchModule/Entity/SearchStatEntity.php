@@ -37,7 +37,7 @@ class SearchStatEntity extends EntityAccess
 
     /**
      * search terms of the previous search
-     *     
+     *
      * @var string
      *
      * @ORM\Column(name="search", type="string", length=50, nullable=false)

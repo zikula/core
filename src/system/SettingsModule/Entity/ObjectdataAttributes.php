@@ -87,7 +87,7 @@ class ObjectdataAttributes
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -110,7 +110,7 @@ class ObjectdataAttributes
     /**
      * Get attributeName
      *
-     * @return string 
+     * @return string
      */
     public function getAttributeName()
     {
@@ -133,7 +133,7 @@ class ObjectdataAttributes
     /**
      * Get objectId
      *
-     * @return integer 
+     * @return integer
      */
     public function getObjectId()
     {
@@ -156,7 +156,7 @@ class ObjectdataAttributes
     /**
      * Get objectType
      *
-     * @return string 
+     * @return string
      */
     public function getObjectType()
     {
@@ -179,7 +179,7 @@ class ObjectdataAttributes
     /**
      * Get value
      *
-     * @return string 
+     * @return string
      */
     public function getValue()
     {
@@ -202,7 +202,7 @@ class ObjectdataAttributes
     /**
      * Get objStatus
      *
-     * @return string 
+     * @return string
      */
     public function getObjStatus()
     {
@@ -225,7 +225,7 @@ class ObjectdataAttributes
     /**
      * Get crDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCrDate()
     {
@@ -248,7 +248,7 @@ class ObjectdataAttributes
     /**
      * Get crUid
      *
-     * @return integer 
+     * @return integer
      */
     public function getCrUid()
     {
@@ -271,7 +271,7 @@ class ObjectdataAttributes
     /**
      * Get luDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLuDate()
     {
@@ -294,7 +294,7 @@ class ObjectdataAttributes
     /**
      * Get luUid
      *
-     * @return integer 
+     * @return integer
      */
     public function getLuUid()
     {

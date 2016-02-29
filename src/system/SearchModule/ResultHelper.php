@@ -44,10 +44,10 @@ class ResultHelper
 
     /**
      * Validate search results
-     * 
+     *
      * The decision is delegated to the search plugin (module) that generated the result
      *
-     * @param array $datarow the input search result 
+     * @param array $datarow the input search result
      *
      * @return bool true to keep the result, false to discard
      */

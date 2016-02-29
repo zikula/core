@@ -428,7 +428,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * @Route("/mailusers")
      * @Method({"GET", "POST"})
-     * 
+     *
      * Search for users and then compose an email to them.
      *
      * @param Request $request
@@ -518,7 +518,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Response symfony response object containing the rendered template.
      *
-     * @throws AccessDeniedException Thrown if the current user does not have edit access or 
+     * @throws AccessDeniedException Thrown if the current user does not have edit access or
      *                                          if the user id matches the guest account (uid = 1)
      * @throws FatalErrorException Thrown if the method of accessing this function is improper
      * @throws \InvalidArgumentException Thrown if either uid or uname is null
@@ -741,7 +741,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * @Route("/lostusername")
      * @Method({"GET", "POST"})
-     * 
+     *
      * Allows an administrator to send a user his user name via email.
      *
      * @param Request $request
@@ -854,7 +854,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * @Route("/deleteusers")
      * @Method({"GET", "POST"})
-     * 
+     *
      * Display a form to confirm the deletion of one user, and then process the deletion.
      *
      * @param Request $request

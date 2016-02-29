@@ -87,7 +87,7 @@ class ObjectdataLog
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -110,7 +110,7 @@ class ObjectdataLog
     /**
      * Get objectType
      *
-     * @return string 
+     * @return string
      */
     public function getObjectType()
     {
@@ -133,7 +133,7 @@ class ObjectdataLog
     /**
      * Get objectId
      *
-     * @return integer 
+     * @return integer
      */
     public function getObjectId()
     {
@@ -156,7 +156,7 @@ class ObjectdataLog
     /**
      * Get op
      *
-     * @return string 
+     * @return string
      */
     public function getOp()
     {
@@ -179,7 +179,7 @@ class ObjectdataLog
     /**
      * Get diff
      *
-     * @return string 
+     * @return string
      */
     public function getDiff()
     {
@@ -202,7 +202,7 @@ class ObjectdataLog
     /**
      * Get objStatus
      *
-     * @return string 
+     * @return string
      */
     public function getObjStatus()
     {
@@ -225,7 +225,7 @@ class ObjectdataLog
     /**
      * Get crDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCrDate()
     {
@@ -248,7 +248,7 @@ class ObjectdataLog
     /**
      * Get crUid
      *
-     * @return integer 
+     * @return integer
      */
     public function getCrUid()
     {
@@ -271,7 +271,7 @@ class ObjectdataLog
     /**
      * Get luDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLuDate()
     {
@@ -294,7 +294,7 @@ class ObjectdataLog
     /**
      * Get luUid
      *
-     * @return integer 
+     * @return integer
      */
     public function getLuUid()
     {

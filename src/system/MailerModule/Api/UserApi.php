@@ -42,7 +42,7 @@ class UserApi extends \Zikula_AbstractApi
      *       @type string       $encoding optional mail encoding (default config)
      *       @type string       $body message body, if altbody is provided then
      *                                    this is the HTML version of the body
-     *       @type string       $altbody alternative plain-text message body, if specified the 
+     *       @type string       $altbody alternative plain-text message body, if specified the
      *                                    e-mail will be sent as multipart/alternative
      *       @type array        $cc addresses to add to the cc list
      *       @type array        $bcc addresses to add to the bcc list

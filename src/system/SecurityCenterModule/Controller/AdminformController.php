@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotatio
 
 /**
  * @Route("/adminform")
- * 
+ *
  * form handler controllers for the security centre module
  */
 class AdminformController extends \Zikula_AbstractController
@@ -38,9 +38,9 @@ class AdminformController extends \Zikula_AbstractController
 
     /**
      * @Route("/deleteidsentry")
-     * 
+     *
      * Delete an ids log entry
-     * 
+     *
      * @param Request $request
      *
      * @return RedirectResponse

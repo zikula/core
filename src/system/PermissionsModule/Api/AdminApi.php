@@ -40,7 +40,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
      * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
      * @throws \RuntimeException Thrown if there is no permission rule above the requested one or
-     *                                  if there is both affected permissions, in partial view, are seperated by a hidden rule 
+     *                                  if there is both affected permissions, in partial view, are seperated by a hidden rule
      */
     public function inc($args)
     {
@@ -123,7 +123,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
      * @throws \InvalidArgumentException Thrown if the pid parameter is not set or not numeric
      * @throws \RuntimeException Thrown if there is no permission rule below the requested one or
-     *                                  if there is both affected permissions, in partial view, are seperateed by a hidden rule 
+     *                                  if there is both affected permissions, in partial view, are seperateed by a hidden rule
      */
     public function dec($args)
     {
@@ -212,7 +212,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true if successful
      *
      * @throws AccessDeniedException Thrown if the user doesn't admin acces over the permission rule
-     * @throws \InvalidArgumentException Thrown if any of pid, seq, oldseq, id or level are not set or not numeric or 
+     * @throws \InvalidArgumentException Thrown if any of pid, seq, oldseq, id or level are not set or not numeric or
      *                                          if any of realm, component or instance are not set
      */
     public function update($args)
@@ -266,7 +266,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true if successful
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access over the permission rule.
-     * @throws \InvalidArgumentException Thrown if any of id, insseq or level are not set or not numeric or 
+     * @throws \InvalidArgumentException Thrown if any of id, insseq or level are not set or not numeric or
      *                                          if any of realm, component or instance are not set.
      * @throws \RuntimeException Thrown if the permission rule couldn't be saved.
      */
