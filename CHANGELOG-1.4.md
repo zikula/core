@@ -60,7 +60,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Add Zikula\Common\Translator\TranslatorInterface to use as typehint when using `translator.default` service.
     - Add CapabilityApi to manage and define Extension Capabilities for Core-2.0 applications.
  - Vendor updates:
-    - Symfony updated to 2.8.2
+    - Symfony updated to 2.8.3
     - Font-Awesome updated to 4.5.0
     - Bootstrap updated to 3.3.6
     - Colorbox (jQuery lightbox plugin) updated from 1.3.20.2 to 1.6.3 (`src/javascript/plugins/colorbox`)
