@@ -103,8 +103,8 @@ class GettextExtension extends \Twig_Extension
     }
 
     /**
-     * Translator context functions 
-     * 
+     * Translator context functions
+     *
      * @todo Define how this should work
      * @link https://www.gnu.org/software/gettext/manual/html_node/Contexts.html
      */

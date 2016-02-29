@@ -227,7 +227,7 @@ class ObjectdataMeta
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -250,7 +250,7 @@ class ObjectdataMeta
     /**
      * Get module
      *
-     * @return string 
+     * @return string
      */
     public function getModule()
     {
@@ -273,7 +273,7 @@ class ObjectdataMeta
     /**
      * Get tablename
      *
-     * @return string 
+     * @return string
      */
     public function getTablename()
     {
@@ -296,7 +296,7 @@ class ObjectdataMeta
     /**
      * Get idcolumn
      *
-     * @return string 
+     * @return string
      */
     public function getIdcolumn()
     {
@@ -319,7 +319,7 @@ class ObjectdataMeta
     /**
      * Get objId
      *
-     * @return integer 
+     * @return integer
      */
     public function getObjId()
     {
@@ -342,7 +342,7 @@ class ObjectdataMeta
     /**
      * Get permissions
      *
-     * @return string 
+     * @return string
      */
     public function getPermissions()
     {
@@ -365,7 +365,7 @@ class ObjectdataMeta
     /**
      * Get dcTitle
      *
-     * @return string 
+     * @return string
      */
     public function getDcTitle()
     {
@@ -388,7 +388,7 @@ class ObjectdataMeta
     /**
      * Get dcAuthor
      *
-     * @return string 
+     * @return string
      */
     public function getDcAuthor()
     {
@@ -411,7 +411,7 @@ class ObjectdataMeta
     /**
      * Get dcSubject
      *
-     * @return string 
+     * @return string
      */
     public function getDcSubject()
     {
@@ -434,7 +434,7 @@ class ObjectdataMeta
     /**
      * Get dcKeywords
      *
-     * @return string 
+     * @return string
      */
     public function getDcKeywords()
     {
@@ -457,7 +457,7 @@ class ObjectdataMeta
     /**
      * Get dcDescription
      *
-     * @return string 
+     * @return string
      */
     public function getDcDescription()
     {
@@ -480,7 +480,7 @@ class ObjectdataMeta
     /**
      * Get dcPublisher
      *
-     * @return string 
+     * @return string
      */
     public function getDcPublisher()
     {
@@ -503,7 +503,7 @@ class ObjectdataMeta
     /**
      * Get dcContributor
      *
-     * @return string 
+     * @return string
      */
     public function getDcContributor()
     {
@@ -526,7 +526,7 @@ class ObjectdataMeta
     /**
      * Get dcStartdate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDcStartdate()
     {
@@ -549,7 +549,7 @@ class ObjectdataMeta
     /**
      * Get dcEnddate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDcEnddate()
     {
@@ -572,7 +572,7 @@ class ObjectdataMeta
     /**
      * Get dcType
      *
-     * @return string 
+     * @return string
      */
     public function getDcType()
     {
@@ -595,7 +595,7 @@ class ObjectdataMeta
     /**
      * Get dcFormat
      *
-     * @return string 
+     * @return string
      */
     public function getDcFormat()
     {
@@ -618,7 +618,7 @@ class ObjectdataMeta
     /**
      * Get dcUri
      *
-     * @return string 
+     * @return string
      */
     public function getDcUri()
     {
@@ -641,7 +641,7 @@ class ObjectdataMeta
     /**
      * Get dcSource
      *
-     * @return string 
+     * @return string
      */
     public function getDcSource()
     {
@@ -664,7 +664,7 @@ class ObjectdataMeta
     /**
      * Get dcLanguage
      *
-     * @return string 
+     * @return string
      */
     public function getDcLanguage()
     {
@@ -687,7 +687,7 @@ class ObjectdataMeta
     /**
      * Get dcRelation
      *
-     * @return string 
+     * @return string
      */
     public function getDcRelation()
     {
@@ -710,7 +710,7 @@ class ObjectdataMeta
     /**
      * Get dcCoverage
      *
-     * @return string 
+     * @return string
      */
     public function getDcCoverage()
     {
@@ -733,7 +733,7 @@ class ObjectdataMeta
     /**
      * Get dcEntity
      *
-     * @return string 
+     * @return string
      */
     public function getDcEntity()
     {
@@ -756,7 +756,7 @@ class ObjectdataMeta
     /**
      * Get dcComment
      *
-     * @return string 
+     * @return string
      */
     public function getDcComment()
     {
@@ -779,7 +779,7 @@ class ObjectdataMeta
     /**
      * Get dcExtra
      *
-     * @return string 
+     * @return string
      */
     public function getDcExtra()
     {
@@ -802,7 +802,7 @@ class ObjectdataMeta
     /**
      * Get objStatus
      *
-     * @return string 
+     * @return string
      */
     public function getObjStatus()
     {
@@ -825,7 +825,7 @@ class ObjectdataMeta
     /**
      * Get crDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCrDate()
     {
@@ -848,7 +848,7 @@ class ObjectdataMeta
     /**
      * Get crUid
      *
-     * @return integer 
+     * @return integer
      */
     public function getCrUid()
     {
@@ -871,7 +871,7 @@ class ObjectdataMeta
     /**
      * Get luDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLuDate()
     {
@@ -894,7 +894,7 @@ class ObjectdataMeta
     /**
      * Get luUid
      *
-     * @return integer 
+     * @return integer
      */
     public function getLuUid()
     {

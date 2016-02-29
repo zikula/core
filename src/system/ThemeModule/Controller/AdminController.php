@@ -744,7 +744,7 @@ class AdminController extends \Zikula_AbstractController
      * @param array  $filters array of filters
      *
      * @return string comma seperated list of filters
-     * 
+     *
      * @throws \RuntimeException if filter has leftovers
      */
     private function _checkfilters($type, $filters)

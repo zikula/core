@@ -3,7 +3,7 @@
  * Copyright Zikula Foundation 2015 - Zikula Application Framework
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
- * 
+ *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  *          Please see the NOTICE file distributed with this source code for further
@@ -53,7 +53,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
      * * cache_dir: The cache directory (or null to disable caching)
      * * debug: Whether to enable debugging or not (false by default)
      * * resource_files: List of translation resources available grouped by locale.
-     * 
+     *
      * @param ContainerInterface $container A ContainerInterface instance
      * @param MessageSelector $selector The message selector for pluralization
      * @param array $loaderIds An array of loader Ids
@@ -119,7 +119,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
 
     /**
      * Load zikula resource files
-     * 
+     *
      * @todo better load resource
      */
     private function loadResources()
@@ -146,7 +146,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
 
     /**
      * Set the translation domain.
-     * 
+     *
      * @param string $domain
      *            Gettext domain.
      * @return void
@@ -158,7 +158,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
 
     /**
      * Get translation domain.
-     * 
+     *
      * @return string $this->domain
      */
     public function getDomain()

@@ -31,7 +31,7 @@ use Zikula\Core\Exception\ExtensionNotAvailableException;
 
 /**
  * @Route("/ajax")
- * 
+ *
  * Access to actions initiated through AJAX for the Users module.
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
@@ -53,7 +53,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * @Route("/getusers", options={"expose"=true})
      * @Method("POST")
-     * 
+     *
      * Performs a user search based on the user name fragment entered so far.
      *
      * @param Request $request

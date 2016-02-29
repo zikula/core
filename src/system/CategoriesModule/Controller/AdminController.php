@@ -242,9 +242,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * @Route("/editregistry")
      * @Method("GET")
-     * 
+     *
      * edit category registry
-     * 
+     *
      * @param Request $request
      *
      * @return Response symfony response object

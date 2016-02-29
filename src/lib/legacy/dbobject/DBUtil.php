@@ -316,8 +316,8 @@ class DBUtil
     }
 
     /**
-     * Transform a value for DB-storage-safe formatting, taking into account the columnt type. 
-     * Numeric values are not enclosed in single-quotes, anything else is. 
+     * Transform a value for DB-storage-safe formatting, taking into account the columnt type.
+     * Numeric values are not enclosed in single-quotes, anything else is.
      *
      * @param string $table   The treated table reference.
      * @param string $field   The table field the value needs to be stored in

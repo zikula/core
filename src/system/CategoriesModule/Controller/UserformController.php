@@ -31,9 +31,9 @@ class UserformController extends \Zikula_AbstractController
 {
     /**
      * @Route("/delete")
-     * 
+     *
      * delete category
-     * 
+     *
      * @param Request $request
      *
      * @return RedirectResponse

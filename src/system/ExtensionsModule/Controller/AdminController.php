@@ -1478,7 +1478,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * viewPlugins sorter: Sorting by module name
      *
-     * @param $a array first item to compare 
+     * @param $a array first item to compare
      * @param $b array second item to compare
      *
      * @return int < 0 if plugin a should be ordered before module b > 0 otherwise
@@ -1491,7 +1491,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * viewPlugins sorter: Sorting by plugin internal name
      *
-     * @param $a array first item to compare 
+     * @param $a array first item to compare
      * @param $b array second item to compare
      *
      * @return int < 0 if plugin a should be ordered before module b > 0 otherwise

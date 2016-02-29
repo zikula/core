@@ -37,9 +37,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * @Route("/resequence", options={"expose"=true})
      * @Method("POST")
-     * 
+     *
      * Resequence categories
-     * 
+     *
      * @param Request $request
      *
      * @return AjaxResponse|ForbiddenResponse

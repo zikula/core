@@ -110,7 +110,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws \RuntimeException Thrown if the category to be deleted is the default for new modules or 
+     * @throws \RuntimeException Thrown if the category to be deleted is the default for new modules or
      *                                  if the category to be deleted is the initial category to be displayed
      */
     public function delete($args)

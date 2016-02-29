@@ -15,7 +15,7 @@
 /**
  * @deprecated immediately
  * This is simply a Mock class to allow for methods of Zikula_View_Theme to be used without throwing exceptions
- * 
+ *
  * Class Zikula_View_MockTheme
  */
 class Zikula_View_MockTheme extends Zikula_View_Theme

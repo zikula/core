@@ -37,7 +37,7 @@ class UserController extends \Zikula_AbstractController
 {
     /**
      * @Route("")
-     * 
+     *
      * display theme changing user interface
      *
      * @param Request $request
@@ -109,7 +109,7 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * @Route("/reset")
-     * 
+     *
      * reset the current users theme to the site default
      *
      * @param Request $request

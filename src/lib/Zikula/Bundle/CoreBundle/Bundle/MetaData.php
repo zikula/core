@@ -225,7 +225,7 @@ class MetaData implements \ArrayAccess
 
     /**
      * Theme MetaData as array
-     * 
+     *
      * @return array
      */
     public function getThemeFilteredVersionInfoArray()
@@ -250,7 +250,7 @@ class MetaData implements \ArrayAccess
 
     /**
      * Module MetaData as array
-     * 
+     *
      * @return array
      */
     public function getFilteredVersionInfoArray()

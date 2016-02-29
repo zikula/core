@@ -917,7 +917,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * helper function to sort modules
      *
-     * @param $a array first item to compare 
+     * @param $a array first item to compare
      * @param $b array second item to compare
      *
      * @return int < 0 if module a should be ordered before module b > 0 otherwise

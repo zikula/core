@@ -109,7 +109,7 @@ PageLock.PingTime = " . (self::PAGELOCKLIFETIME * 2 / 3) . ";
     /**
      * Generate a lock on a page
      *
-     * @param string[] $args { 
+     * @param string[] $args {
      *      @type string $lockName   The name of the page to create/update a lock on
      *      @type string $sessionId  The ID of the session owning the lock (optional) (default: current session ID
      *                       }

@@ -63,7 +63,7 @@ class SearchResultEntity
     private $module;
 
     /**
-     * additional information about this search result 
+     * additional information about this search result
      *
      * @var string
      *

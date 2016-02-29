@@ -63,7 +63,7 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/view")
-     * 
+     *
      * view permissions
      *
      * @return Response symfony response object
@@ -539,7 +539,7 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/delete/{pid}/{permgrp}", requirements={"pid"="\d+", "permgrp"="\d+"})
-     * 
+     *
      * Delete a permission.
      *
      * @param int 'pid' permissions id.

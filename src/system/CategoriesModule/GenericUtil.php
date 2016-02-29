@@ -25,7 +25,7 @@ class GenericUtil
      *
      * @return boolean true/false Whether the provided data is valid.
      *
-     * @throws \InvalidArgumentException Thrown if no category name is provided or 
+     * @throws \InvalidArgumentException Thrown if no category name is provided or
      *                                          if no parent is defined for the category
      * @throws \RuntimeException Thrown if a category of the same anme already exists under the parent
      */

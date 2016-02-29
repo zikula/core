@@ -16,7 +16,7 @@ namespace Zikula\BlocksModule\Block;
 use Zikula\BlocksModule\AbstractBlockHandler;
 
 /**
- * Block to display html 
+ * Block to display html
  */
 class HtmlBlock extends AbstractBlockHandler
 {

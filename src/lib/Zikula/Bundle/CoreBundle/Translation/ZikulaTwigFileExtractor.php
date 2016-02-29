@@ -112,9 +112,9 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
 
     /**
      * If the current Twig Node has embedded templates, we want to travese these templates
-     * in the same manner as we do the main twig template to ensure all translations are 
+     * in the same manner as we do the main twig template to ensure all translations are
      * caught.
-     * 
+     *
      * @param \Twig_Node $node
      */
     private function traverseEmbeddedTemplates(\Twig_Node $node)

@@ -24,7 +24,7 @@
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding
  *               variable instead of printed out
- *   - modname:  The module to return the image path for 
+ *   - modname:  The module to return the image path for
  *               (defaults to top-level module)
  *
  * Example

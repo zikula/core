@@ -135,7 +135,7 @@ class UserController extends \Zikula_AbstractController
      * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if the group id is < 1
-     * @throws AccessDeniedException Thrown if the user isn't logged in or 
+     * @throws AccessDeniedException Thrown if the user isn't logged in or
      *                                          if the user doesn't have overview access to the module
      * @throws NotFoundHttpException Thrown if the group cannot be found
      */

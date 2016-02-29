@@ -112,7 +112,7 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
 }
 
 /**
- * Helper function to parse the menu 
+ * Helper function to parse the menu
  *
  * @param array $params the parameter array passed to the plugin
  */
