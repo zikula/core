@@ -268,6 +268,7 @@ class ModuleController extends AbstractController
                 if ($this->get('zikula_extensions_module.extension_helper')->install($extension)) {
                     $this->addFlash('status', $this->__f('Done! Installed %s.', ['%s' => $extension->getName()]));
                     $modulesInstalled[] = $extension->getId();
+
                     return $this->redirectToRoute('zikulaextensionsmodule_admin_view', [
                         'postinstall' => json_encode($modulesInstalled)
                     ]);
@@ -362,6 +363,7 @@ class ModuleController extends AbstractController
                 // remove dependent extensions
                 if (!$this->get('zikula_extensions_module.extension_helper')->uninstallArray($requiredDependents)) {
                     $this->addFlash('error', $this->__('Error: Could not uninstall dependent modules.'));
+
                     return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
                 }
                 // remove blocks
