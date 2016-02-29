@@ -66,7 +66,7 @@ class ExtensionHelper
     {
         if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED) {
             throw new \RuntimeException($this->translator->__f('Error! No permission to install %s.', ['%s' => $extension->getName()]));
-        } else if ($extension->getState() > 10) {
+        } elseif ($extension->getState() > 10) {
             throw new \RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getName()]));
         }
 
