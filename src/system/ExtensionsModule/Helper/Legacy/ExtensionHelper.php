@@ -26,6 +26,61 @@ use Zikula\ExtensionsModule\Util as ExtensionsUtil;
  */
 class ExtensionHelper
 {
+    public static function install(ExtensionEntity $extension)
+    {
+        switch ($extension->getState()) {
+            case \ModUtil::STATE_NOTALLOWED:
+                throw new \RuntimeException(__f('Error! No permission to install %s.', $extension->getName()));
+                break;
+            default:
+                if ($extension->getState() > 10) {
+                    throw new \RuntimeException(__f('Error! %s is not compatible with this version of Zikula.', $extension->getName()));
+                }
+        }
+
+        $serviceManager = \ServiceUtil::getManager();
+        $osdir = \DataUtil::formatForOS($extension->getDirectory());
+        \ModUtil::dbInfoLoad($extension->getName(), $osdir);
+
+        // add autoloaders for 1.3-type modules
+        if ((false === strpos($osdir, '/')) && (is_dir("modules/$osdir/lib"))) {
+            \ZLoader::addAutoloader($osdir, array('modules', "modules/$osdir/lib"));
+        }
+        $bootstrap = "modules/$osdir/bootstrap.php";
+        if (file_exists($bootstrap)) {
+            include_once $bootstrap;
+        }
+        // Get module database info
+        \ModUtil::dbInfoLoad($extension->getName(), $osdir);
+        $installer = self::getInstaller($extension->getName());
+        // perform the actual install of the module
+        // system or module
+        $func = array($installer, 'install');
+        if (is_callable($func)) {
+            if (call_user_func($func) != true) {
+                return false;
+            }
+        }
+
+        // Update state of module
+        $serviceManager->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), \ModUtil::STATE_ACTIVE);
+
+        // clear the cache before calling events
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = $serviceManager->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
+
+        // All went ok so issue installed event
+        // remove this legacy in 1.5.0
+        $event = new GenericEvent(null, $extension->toArray());
+        $serviceManager->get('event_dispatcher')->dispatch('installer.module.installed', $event);
+
+        $event = new ModuleStateEvent(null, $extension->toArray());
+        $serviceManager->get('event_dispatcher')->dispatch(CoreEvents::MODULE_INSTALL, $event);
+
+        return true;
+    }
+
     public static function upgrade(ExtensionEntity $extension)
     {
         $serviceManager = \ServiceUtil::getManager();
@@ -40,6 +95,8 @@ class ExtensionHelper
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
+        // Get module database info
+        \ModUtil::dbInfoLoad($extension->getName(), $osdir);
         $installer = self::getInstaller($extension->getName());
         // perform the actual upgrade of the module
         $func = array($installer, 'upgrade');
@@ -104,15 +161,12 @@ class ExtensionHelper
         if ($oomod && (false === strpos($osdir, '/')) && (is_dir("modules/$osdir/lib"))) {
             \ZLoader::addAutoloader($osdir, array('modules', "modules/$osdir/lib"));
         }
-        $module = \ModUtil::getModule($extension->getName(), true);
         $bootstrap = "modules/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
-
         // Get module database info
         \ModUtil::dbInfoLoad($extension->getName(), $osdir);
-
         // perform the actual deletion of the module
         $installer = self::getInstaller($extension->getName());
         $func = array($installer, 'uninstall');
@@ -125,7 +179,7 @@ class ExtensionHelper
         // Delete any module variables that the module cleanup function might have missed
         $serviceManager->get('zikula_extensions_module.api.variable')->delAll($extension->getName());
 
-        $version = ExtensionsUtil::getVersionMeta($extension->getName(), 'modules', $module);
+        $version = ExtensionsUtil::getVersionMeta($extension->getName());
         if (is_object($version)) {
             \HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
             \HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
@@ -143,7 +197,7 @@ class ExtensionHelper
         $event = new GenericEvent(null, $extension->toArray());
         $serviceManager->get('event_dispatcher')->dispatch('installer.module.uninstalled', $event);
 
-        $event = new ModuleStateEvent($module, ($module === null) ? $extension->toArray() : null);
+        $event = new ModuleStateEvent(null, $extension->toArray());
         $serviceManager->get('event_dispatcher')->dispatch(CoreEvents::MODULE_REMOVE, $event);
 
         return true;

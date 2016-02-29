@@ -212,7 +212,7 @@ class ExtensionsExtension extends \Twig_Extension
             default:
                 if ($extension->getState() < 10) {
                     $actions[] = [
-                        'url' => $this->router->generate('zikulaextensionsmodule_admin_initialise', ['id' => $extension->getId(), 'csrftoken' => $csrfToken]),
+                        'url' => $this->router->generate('zikulaextensionsmodule_module_install', ['id' => $extension->getId()]),
                         'icon' => 'cog text-success',
                         'color' => '#0c0',
                         'title' => $this->translator->__f('Install %s', ['%s' => $extension->getDisplayname()])

@@ -58,6 +58,42 @@ class ExtensionHelper
     }
 
     /**
+     * Install an extension.
+     * @param ExtensionEntity $extension
+     * @return bool
+     */
+    public function install(ExtensionEntity $extension)
+    {
+        if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED) {
+            throw new \RuntimeException($this->translator->__f('Error! No permission to install %s.', ['%s' => $extension->getName()]));
+        } else if ($extension->getState() > 10) {
+            throw new \RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getName()]));
+        }
+
+        $bundle = $this->forceLoadExtension($extension);
+        if (null === $bundle) {
+            return LegacyExtensionHelper::install($extension);
+        }
+
+        $installer = $this->getExtensionInstallerInstance($bundle);
+        $result = $installer->install();
+        if (!$result) {
+            return false;
+        }
+        $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), ExtensionApi::STATE_ACTIVE);
+
+        // clear the cache before calling events
+        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
+        $cacheClearer = $this->container->get('zikula.cache_clearer');
+        $cacheClearer->clear('symfony.config');
+
+        $event = new ModuleStateEvent($bundle);
+        $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_INSTALL, $event);
+
+        return true;
+    }
+
+    /**
      * Upgrade an extension.
      * @param ExtensionEntity $extension
      * @return bool

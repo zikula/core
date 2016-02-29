@@ -13,11 +13,14 @@
 
 namespace Zikula\ExtensionsModule\Helper;
 
+use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use vierbergenlars\SemVer\expression;
+use vierbergenlars\SemVer\version;
 
 class ExtensionDependencyHelper
 {
@@ -29,16 +32,28 @@ class ExtensionDependencyHelper
      * @var ExtensionRepositoryInterface
      */
     private $extensionEntityRepo;
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
+    /**
+     * @var array
+     */
+    private $installedPackages = [];
 
     /**
      * ExtensionDependencyHelper constructor.
      * @param $extensionDependencyRepo
      * @param $extensionEntityRepo
      */
-    public function __construct(ExtensionDependencyRepository $extensionDependencyRepo, ExtensionRepositoryInterface $extensionEntityRepo)
-    {
+    public function __construct(
+        ExtensionDependencyRepository $extensionDependencyRepo,
+        ExtensionRepositoryInterface $extensionEntityRepo,
+        KernelInterface $kernel
+    ) {
         $this->extensionDependencyRepo = $extensionDependencyRepo;
         $this->extensionEntityRepo = $extensionEntityRepo;
+        $this->kernel = $kernel;
     }
 
     /**
@@ -51,12 +66,12 @@ class ExtensionDependencyHelper
         $requiredDependents = [];
         /** @var ExtensionDependencyEntity[] $requiredDependencies */
         $requiredDependencies = $this->extensionDependencyRepo->findBy([
-            'id' => $extension->getId(),
+            'modname' => $extension->getName(),
             'status' => \ModUtil::DEPENDENCY_REQUIRED
         ]);
         foreach ($requiredDependencies as $dependent) {
             $foundExtension = $this->extensionEntityRepo->findOneBy([
-                'name' => $dependent->getModname(),
+                'id' => $dependent->getModid(),
                 'state' => ExtensionApi::STATE_ACTIVE
             ]);
             if (!is_null($foundExtension)) {
@@ -65,5 +80,94 @@ class ExtensionDependencyHelper
         }
 
         return $requiredDependents;
+    }
+
+    /**
+     * Get an array of dependencies that are not currently met by the system and active extensions.
+     * @param ExtensionEntity $extension
+     * @return ExtensionDependencyEntity[]
+     */
+    public function getUnsatisfiedExtensionDependencies(ExtensionEntity $extension)
+    {
+        $unsatisfiedDependencies = [];
+        $dependencies = $this->extensionDependencyRepo->findBy(['modid' => $extension->getId()]);
+        /** @var ExtensionDependencyEntity[] $dependencies */
+        foreach ($dependencies as $dependency) {
+            if ($this->bundleDependencySatisfied($dependency)) {
+                continue;
+            }
+            $foundExtension = $this->extensionEntityRepo->findOneBy([
+                'name' => $dependency->getModname(),
+                'state' => ExtensionApi::STATE_ACTIVE
+            ]);
+            if (!is_null($foundExtension) && $this->meetsVersionRequirements($extension->getCore_min(), $extension->getCore_max(), $foundExtension->getVersion())) {
+                continue;
+            }
+            $unsatisfiedDependencies[$dependency->getId()] = $dependency;
+        }
+
+        return $unsatisfiedDependencies;
+    }
+
+    /**
+     * compute if bundle requirements are met
+     *
+     * @param ExtensionDependencyEntity $dependency
+     * @return bool
+     */
+    private function bundleDependencySatisfied(ExtensionDependencyEntity &$dependency)
+    {
+        if ($dependency->getModname() == "php") {
+            $phpVersion = new version(PHP_VERSION);
+            $requiredVersionExpression = new expression($dependency->getMinversion());
+
+            if (!$requiredVersionExpression->satisfiedBy($phpVersion)) {
+                throw new \InvalidArgumentException('This module requires a higher version of PHP than you currently have installed.');
+            }
+
+            return true;
+        }
+        if (strpos($dependency->getModname(), 'composer/') !== false) {
+            // @todo this specifically is for `composer/installers` but will catch all with `composer/`
+            return true;
+        }
+        if (strpos($dependency->getModname(), '/') !== false) {
+            if ($this->kernel->isBundle($dependency->getModname())) {
+                if (empty($this->installedPackages)) {
+                    // create and cache installed packages from composer.lock file
+                    $appPath = $this->kernel->getRootDir();
+                    $composerLockPath = realpath($appPath . '/../') . 'composer.lock';
+                    $packages = json_decode(file_get_contents($composerLockPath), true);
+                    foreach ($packages as $package) {
+                        $this->installedPackages[$package['name']] = $package;
+                    }
+                }
+                $bundleVersion = new version($this->installedPackages[$dependency->getModname()]['version']);
+                $requiredVersionExpression = new expression($dependency->getMinversion());
+
+                if ($requiredVersionExpression->satisfiedBy($bundleVersion)) {
+                    return true;
+                }
+            }
+
+            throw new \InvalidArgumentException(sprintf('This dependency can only be resolved by adding %s to the core\'s composer.json file and running `composer update`.', $dependency->getModname()));
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine if a $current value is between $requiredMin and $requiredMax.
+     * @param $requiredMin
+     * @param $requiredMax
+     * @param $current
+     * @return bool
+     */
+    private function meetsVersionRequirements($requiredMin, $requiredMax, $current)
+    {
+        $compatibilityString = ($requiredMin == $requiredMax) ? $requiredMin : "$requiredMin - $requiredMax";
+        $requiredVersionExpression = new expression($compatibilityString);
+
+        return $requiredVersionExpression->satisfiedBy($current);
     }
 }

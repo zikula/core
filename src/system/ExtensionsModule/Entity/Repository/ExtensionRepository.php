@@ -16,6 +16,7 @@ namespace Zikula\ExtensionsModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 class ExtensionRepository extends EntityRepository implements ExtensionRepositoryInterface
@@ -30,6 +31,10 @@ class ExtensionRepository extends EntityRepository implements ExtensionRepositor
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 
+    /**
+     * @param $name
+     * @return ExtensionEntity
+     */
     public function get($name)
     {
         return parent::findOneBy(['name' => $name]);

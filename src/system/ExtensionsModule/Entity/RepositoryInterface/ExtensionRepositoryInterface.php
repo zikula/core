@@ -14,7 +14,7 @@
 
 namespace Zikula\ExtensionsModule\Entity\RepositoryInterface;
 
-use Zikula\Module\ExtensionLibraryModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 interface ExtensionRepositoryInterface
 {
