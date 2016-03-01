@@ -24,9 +24,15 @@
                 {% for checkbox in form.dependencies %}
                 <tr>
                     <td>{{ dependencies[checkbox.vars.name].modname }}</td>
-                    <td>{% if dependencies[checkbox.vars.name].status == 1 %}{{ __('Required') }}{% else %}{{ __('Recommended') }}{% endif %}</td>
+                    <td>
+                        {% if dependencies[checkbox.vars.name].status == 1 %}
+                            <span class="label label-danger">{{ __('Required') }}</span>
+                        {% else %}
+                            <span class="label label-info">{{ __('Recommended') }}</span>
+                        {% endif %}
+                    </td>
                     <td>{{ dependencies[checkbox.vars.name].reason }}</td>
-                    <td>{{ form_widget(checkbox) }}</td>
+                    <td>{{ form_widget(checkbox, {'disabled': dependencies[checkbox.vars.name].status == constant('ModUtil::DEPENDENCY_REQUIRED')}) }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

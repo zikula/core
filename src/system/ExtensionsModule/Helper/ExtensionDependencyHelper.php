@@ -14,13 +14,14 @@
 namespace Zikula\ExtensionsModule\Helper;
 
 use Symfony\Component\HttpKernel\KernelInterface;
+use vierbergenlars\SemVer\expression;
+use vierbergenlars\SemVer\version;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use vierbergenlars\SemVer\expression;
-use vierbergenlars\SemVer\version;
+use Zikula\ExtensionsModule\Exception\ExtensionDependencyException;
 
 class ExtensionDependencyHelper
 {
@@ -96,13 +97,13 @@ class ExtensionDependencyHelper
             if ($this->bundleDependencySatisfied($dependency)) {
                 continue;
             }
-            $foundExtension = $this->extensionEntityRepo->findOneBy([
-                'name' => $dependency->getModname(),
-                'state' => ExtensionApi::STATE_ACTIVE
-            ]);
-            if (!is_null($foundExtension) && $this->meetsVersionRequirements($extension->getCore_min(), $extension->getCore_max(), $foundExtension->getVersion())) {
+            $foundExtension = $this->extensionEntityRepo->get($dependency->getModname());
+            if (!is_null($foundExtension)
+                && ExtensionApi::STATE_ACTIVE == $foundExtension->getState()
+                && $this->meetsVersionRequirements($extension->getCore_min(), $extension->getCore_max(), $foundExtension->getVersion())) {
                 continue;
             }
+            $this->checkForFatalDependency($dependency);
             $unsatisfiedDependencies[$dependency->getId()] = $dependency;
         }
 
@@ -110,8 +111,29 @@ class ExtensionDependencyHelper
     }
 
     /**
+     * Check for 'fatal' dependency.
+     * @param ExtensionDependencyEntity $dependency
+     * @throws ExtensionDependencyException
+     */
+    private function checkForFatalDependency(ExtensionDependencyEntity $dependency)
+    {
+        $foundExtension = $this->extensionEntityRepo->get($dependency->getModname());
+        if ($dependency->getStatus() == \ModUtil::DEPENDENCY_REQUIRED
+            && (is_null($foundExtension) // never in the filesystem
+                || $foundExtension->getState() == ExtensionApi::STATE_MISSING
+                || $foundExtension->getState() == ExtensionApi::STATE_INVALID
+                || $foundExtension->getState() > 10 // not compatible with current core
+            )) {
+            throw new ExtensionDependencyException(sprintf('Could not find a core-compatible, required dependency: %s.', $dependency->getModname()));
+        }
+        if (!is_null($foundExtension) && !$this->meetsVersionRequirements($dependency->getMinversion(), $dependency->getMaxversion(), $foundExtension->getVersion())) {
+            $versionString = ($dependency->getMinversion() == $dependency->getMaxversion()) ? $dependency->getMinversion() : $dependency->getMinversion() . ' - ' . $dependency->getMaxversion();
+            throw new ExtensionDependencyException(sprintf('A required dependency is found, but does not meet version requirements: %s (%s)', $dependency->getModname(), $versionString));
+        }
+    }
+
+    /**
      * compute if bundle requirements are met
-     *
      * @param ExtensionDependencyEntity $dependency
      * @return bool
      */
@@ -168,6 +190,6 @@ class ExtensionDependencyHelper
         $compatibilityString = ($requiredMin == $requiredMax) ? $requiredMin : "$requiredMin - $requiredMax";
         $requiredVersionExpression = new expression($compatibilityString);
 
-        return $requiredVersionExpression->satisfiedBy($current);
+        return $requiredVersionExpression->satisfiedBy(new version($current));
     }
 }

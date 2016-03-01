@@ -39,6 +39,10 @@ interface ExtensionRepositoryInterface
      */
     public function findOneBy(array $criteria, array $orderBy = null);
 
+    /**
+     * @param $name
+     * @return ExtensionEntity
+     */
     public function get($name);
 
     public function getPagedCollectionBy(array $criteria, array $orderBy = null, $limit = 0, $offset = 1);

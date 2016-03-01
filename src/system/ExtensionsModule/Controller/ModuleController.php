@@ -16,7 +16,6 @@ namespace Zikula\ExtensionsModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +24,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\CoreEvents;
+use Zikula\Core\Event\GenericEvent;
+use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ExtensionsModule\Util as ExtensionsUtil;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -38,6 +40,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
  */
 class ModuleController extends AbstractController
 {
+    const NEW_ROUTES_AVAIL = 'new.routes.avail';
     /**
      * @Route("/list/{pos}")
      * @Theme("admin")
@@ -50,6 +53,12 @@ class ModuleController extends AbstractController
     {
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
+        }
+        $modulesJustInstalled = $request->query->get('justinstalled', null);
+        if (!empty($modulesJustInstalled)) {
+            // notify the event dispatcher that new routes are available (ids of modules just installed avail as args)
+            $event = new GenericEvent(null, json_decode($modulesJustInstalled));
+            $this->get('event_dispatcher')->dispatch(self::NEW_ROUTES_AVAIL, $event);
         }
 
         $sortableColumns = new SortableColumns($this->get('router'), 'zikulaextensionsmodule_module_viewmodulelist');
@@ -101,8 +110,8 @@ class ModuleController extends AbstractController
         } else {
             // Update state
             $this->get('zikula_extensions_module.extension_state_helper')->updateState($id, ExtensionApi::STATE_ACTIVE);
+            // @todo this a legacy event. remove at Core-2.0
             $event = new GenericEvent(null, $extension->toArray());
-            // @todo is this a legacy event? refactor to Constant
             $this->get('event_dispatcher')->dispatch('installer.module.activated', $event);
             $this->get('zikula.cache_clearer')->clear('symfony.routing');
             $this->addFlash('status', $this->__f('Done! Activated %s module.', ['%s' => $extension->getName()]));
@@ -131,12 +140,12 @@ class ModuleController extends AbstractController
 
         $extension = $this->getDoctrine()->getManager()->find('ZikulaExtensionsModule:ExtensionEntity', $id);
         if ($this->get('zikula_extensions_module.api.extension')->isCoreModule($extension->getName())) {
-            $this->addFlash('error', $this->__f('Error! You cannot deactivate this module [%s]. It is a mandatory core module, and is needed by the system.', ['%s' => $extension->getName()]));
+            $this->addFlash('error', $this->__f('Error! You cannot deactivate this extension [%s]. It is a mandatory core extension, and is required by the system.', ['%s' => $extension->getName()]));
         } else {
             // Update state
             $this->get('zikula_extensions_module.extension_state_helper')->updateState($id, ExtensionApi::STATE_INACTIVE);
+            // @todo this a legacy event. remove at Core-2.0
             $event = new GenericEvent(null, $extension->toArray());
-            // @todo is this a legacy event? refactor to Constant
             $this->get('event_dispatcher')->dispatch('installer.module.deactivated', $event);
             $this->get('zikula.cache_clearer')->clear('symfony.routing');
             $this->addFlash('status', $this->__('Done! Deactivated module.'));
@@ -219,9 +228,6 @@ class ModuleController extends AbstractController
      */
     public function compatibilityAction(ExtensionEntity $extension)
     {
-        if (empty($extension)) {
-            throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
-        }
         if (!$this->hasPermission('ZikulaExtensionsModule::', $extension->getName() . "::" . $extension->getId(), ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -236,7 +242,7 @@ class ModuleController extends AbstractController
      * @Theme("admin")
      * @Template
      *
-     * Initialise a module.
+     * Initialise an extension.
      *
      * @param ExtensionEntity $extension
      * @return RedirectResponse
@@ -244,34 +250,31 @@ class ModuleController extends AbstractController
     public function installAction(Request $request, ExtensionEntity $extension)
     {
         $unsatisfiedDependencies = $this->get('zikula_extensions_module.extension_dependency_helper')->getUnsatisfiedExtensionDependencies($extension);
-        $form = $this->createFormBuilder(['dependencies' => $this->formatDependencyCheckboxArray($unsatisfiedDependencies)])
-            ->add('dependencies', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', [
-                'entry_type' => 'Symfony\Component\Form\Extension\Core\Type\CheckboxType',
-            ])
-            ->add('install', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Install'])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Cancel'])
-            ->getForm();
+        $form = $this->createForm('Zikula\ExtensionsModule\Form\Type\ExtensionInstallType', ['dependencies' => $this->formatDependencyCheckboxArray($unsatisfiedDependencies)]);
         $form->handleRequest($request);
 
         if ($form->isValid() || empty($unsatisfiedDependencies)) {
             if ($form->get('install')->isClicked() || empty($unsatisfiedDependencies)) {
-                $modulesInstalled = [];
-                /** @var ExtensionDependencyEntity[] $unsatisfiedDependencies */
-                foreach ($unsatisfiedDependencies as $dependency) {
-                    $installableExtension = $this->get('zikula_extensions_module.extension_repository')->get($dependency->getModname());
-                    if (isset($installableExtension) && !$this->get('zikula_extensions_module.extension_helper')->install($installableExtension)) {
-                        return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
+                $extensionsInstalled = [];
+                $data = $form->getData();
+                foreach ($data['dependencies'] as $dependencyId => $installSelected) {
+                    if (!$installSelected && $unsatisfiedDependencies[$dependencyId]->getStatus() != \ModUtil::DEPENDENCY_REQUIRED) {
+                        continue;
                     }
-                    $modulesInstalled[] = $installableExtension->getId();
+                    $dependencyExtensionEntity = $this->get('zikula_extensions_module.extension_repository')->get($unsatisfiedDependencies[$dependencyId]->getModname());
+                    if (isset($dependencyExtensionEntity)) {
+                        if (!$this->get('zikula_extensions_module.extension_helper')->enableExtension($dependencyExtensionEntity)) {
+                            return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
+                        }
+                    }
+                    $extensionsInstalled[] = $dependencyExtensionEntity->getId();
                 }
-
                 if ($this->get('zikula_extensions_module.extension_helper')->install($extension)) {
                     $this->addFlash('status', $this->__f('Done! Installed %s.', ['%s' => $extension->getName()]));
-                    $modulesInstalled[] = $extension->getId();
+                    $extensionsInstalled[] = $extension->getId();
+                    $this->get('zikula.cache_clearer')->clear('symfony');
 
-                    return $this->redirectToRoute('zikulaextensionsmodule_admin_view', [
-                        'postinstall' => json_encode($modulesInstalled)
-                    ]);
+                    return $this->redirectToRoute('zikulaextensionsmodule_module_postinstall', ['extensions' => json_encode($extensionsInstalled)]);
                 } else {
                     $this->addFlash('error', $this->__f('Initialization of %s failed!', ['%s' => $extension->getName()]));
                 }
@@ -290,6 +293,36 @@ class ModuleController extends AbstractController
         ];
     }
 
+    /**
+     * Post-installation action to trigger the MODULE_POSTINSTALL event.
+     * The additional Action is required because this event must occur AFTER the rebuild of the cache which occurs on Request.
+     * @Route("/postinstall/{extensions}")
+     * @Method("GET")
+     * @param string $extensions
+     * @return RedirectResponse
+     */
+    public function postInstallAction($extensions = null)
+    {
+        if (!empty($extensions)) {
+            $extensions = json_decode($extensions);
+            foreach ($extensions as $extensionId) {
+                $extensionEntity = $this->get('zikula_extensions_module.extension_repository')->find($extensionId);
+                $bundle = $this->get('zikula_extensions_module.api.extension')->getModuleInstanceOrNull($extensionEntity->getName());
+                if (!empty($bundle)) {
+                    $event = new ModuleStateEvent($bundle);
+                    $this->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
+                }
+            }
+        }
+
+        return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist', ['justinstalled' => json_encode($extensions)]);
+    }
+
+    /**
+     * Create array suitable for checkbox FormType [[ID => bool][ID => bool]]
+     * @param array $dependencies
+     * @return array
+     */
     private function formatDependencyCheckboxArray(array $dependencies)
     {
         $return = [];
@@ -304,7 +337,7 @@ class ModuleController extends AbstractController
     /**
      * @Route("/upgrade/{id}/{csrftoken}", requirements={"id" = "^[1-9]\d*$"})
      *
-     * Upgrade a module
+     * Upgrade an extension.
      *
      * @param ExtensionEntity $extension
      * @param string $csrftoken
@@ -333,7 +366,7 @@ class ModuleController extends AbstractController
      * @Theme("admin")
      * @Template
      *
-     * Uninstall a module
+     * Uninstall an extension.
      *
      * @param Request $request
      * @param ExtensionEntity $extension
@@ -362,7 +395,7 @@ class ModuleController extends AbstractController
             if ($form->get('uninstall')->isClicked()) {
                 // remove dependent extensions
                 if (!$this->get('zikula_extensions_module.extension_helper')->uninstallArray($requiredDependents)) {
-                    $this->addFlash('error', $this->__('Error: Could not uninstall dependent modules.'));
+                    $this->addFlash('error', $this->__('Error: Could not uninstall dependent extensions.'));
 
                     return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
                 }
@@ -374,7 +407,7 @@ class ModuleController extends AbstractController
 
                 // remove the extension
                 if ($this->get('zikula_extensions_module.extension_helper')->uninstall($extension)) {
-                    $this->addFlash('status', $this->__('Done! Uninstalled module.'));
+                    $this->addFlash('status', $this->__('Done! Uninstalled extension.'));
                 } else {
                     $this->addFlash('error', $this->__('Extension removal failed! (note: blocks and dependents may have been removed)'));
                 }

@@ -226,6 +226,30 @@ class ExtensionHelper
     }
 
     /**
+     * Based on the state of the extension, either install, upgrade or activate the extension.
+     * @param ExtensionEntity $extension
+     * @return bool
+     */
+    public function enableExtension(ExtensionEntity $extension)
+    {
+        switch ($extension->getState()) {
+            case ExtensionApi::STATE_UNINITIALISED:
+                return $this->install($extension);
+            case ExtensionApi::STATE_UPGRADED:
+                return $this->upgrade($extension);
+            case ExtensionApi::STATE_INACTIVE:
+                $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), ExtensionApi::STATE_ACTIVE);
+                // @todo this a legacy event. remove at Core-2.0
+                $event = new GenericEvent(null, $extension->toArray());
+                $this->container->get('event_dispatcher')->dispatch('installer.module.activated', $event);
+
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
      * Get an instance of a bundle class that is not currently loaded into the kernel.
      * Extensions that are deactivated or uninstalled are NOT loaded into the kernel.
      * Note: All System modules are always loaded into the kernel.
