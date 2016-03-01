@@ -71,10 +71,6 @@ class ExtensionHelper
         $cacheClearer->clear('symfony.config');
 
         // All went ok so issue installed event
-        // remove this legacy in 1.5.0
-        $event = new GenericEvent(null, $extension->toArray());
-        $serviceManager->get('event_dispatcher')->dispatch('installer.module.installed', $event);
-
         $event = new ModuleStateEvent(null, $extension->toArray());
         $serviceManager->get('event_dispatcher')->dispatch(CoreEvents::MODULE_INSTALL, $event);
 
@@ -132,10 +128,6 @@ class ExtensionHelper
         $serviceManager->get('zikula.cache_clearer')->clear('symfony');
 
         if (!\System::isInstalling()) {
-            // Upgrade succeeded, issue event.
-            $event = new GenericEvent(null, $extension->toArray());
-            $serviceManager->get('event_dispatcher')->dispatch('installer.module.upgraded', $event);
-
             $event = new ModuleStateEvent(null, $extension->toArray());
             $serviceManager->get('event_dispatcher')->dispatch(CoreEvents::MODULE_UPGRADE, $event);
         }
@@ -193,9 +185,6 @@ class ExtensionHelper
         /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
         $cacheClearer = $serviceManager->get('zikula.cache_clearer');
         $cacheClearer->clear('symfony.config');
-
-        $event = new GenericEvent(null, $extension->toArray());
-        $serviceManager->get('event_dispatcher')->dispatch('installer.module.uninstalled', $event);
 
         $event = new ModuleStateEvent(null, $extension->toArray());
         $serviceManager->get('event_dispatcher')->dispatch(CoreEvents::MODULE_REMOVE, $event);

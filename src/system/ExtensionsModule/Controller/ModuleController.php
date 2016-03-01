@@ -111,9 +111,6 @@ class ModuleController extends AbstractController
         } else {
             // Update state
             $this->get('zikula_extensions_module.extension_state_helper')->updateState($id, ExtensionApi::STATE_ACTIVE);
-            // @todo this a legacy event. remove at Core-2.0
-            $event = new GenericEvent(null, $extension->toArray());
-            $this->get('event_dispatcher')->dispatch('installer.module.activated', $event);
             $this->get('zikula.cache_clearer')->clear('symfony.routing');
             $this->addFlash('status', $this->__f('Done! Activated %s module.', ['%s' => $extension->getName()]));
         }
@@ -145,9 +142,6 @@ class ModuleController extends AbstractController
         } else {
             // Update state
             $this->get('zikula_extensions_module.extension_state_helper')->updateState($id, ExtensionApi::STATE_INACTIVE);
-            // @todo this a legacy event. remove at Core-2.0
-            $event = new GenericEvent(null, $extension->toArray());
-            $this->get('event_dispatcher')->dispatch('installer.module.deactivated', $event);
             $this->get('zikula.cache_clearer')->clear('symfony.routing');
             $this->addFlash('status', $this->__('Done! Deactivated module.'));
         }

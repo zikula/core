@@ -14,6 +14,7 @@
 
 /**
  * Event handler to override templates.
+ * @deprecated remove at Core-2.0
  */
 class SystemListeners extends Zikula_AbstractEventHandler
 {

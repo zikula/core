@@ -238,12 +238,7 @@ class ExtensionHelper
             case ExtensionApi::STATE_UPGRADED:
                 return $this->upgrade($extension);
             case ExtensionApi::STATE_INACTIVE:
-                $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), ExtensionApi::STATE_ACTIVE);
-                // @todo this a legacy event. remove at Core-2.0
-                $event = new GenericEvent(null, $extension->toArray());
-                $this->container->get('event_dispatcher')->dispatch('installer.module.activated', $event);
-
-                return true;
+                return $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), ExtensionApi::STATE_ACTIVE);
             default:
                 return false;
         }
