@@ -1,0 +1,91 @@
+{% if hasPermission('ZikulaAdminModule::', '::', 'ACCESS_ADMIN') %}
+    <div id="updatecheck" class="alert" style="background: #F7F7F7;">
+        <div class="row">    
+            <div class="col-md-12"> 
+                <i class="close" data-dismiss="alert">&times;</i>    
+                <a class="" data-toggle="collapse" href="#updatecheck_full" aria-expanded="false" aria-controls="updatecheck_full" title="{{__('Update checker')}}"> 
+                    <span class="fa-stack">
+                        <i class="fa fa-refresh fa-stack-2x"></i>
+                        <i class="fa fa-info fa-stack-1x"></i>
+                    </span>                    
+                    <strong> {{ __('Update checker') }}: </strong>  
+                    {# you use not realesed version #}
+                    {% if updateStatus.versionCompare == -1 %}
+                        {{  __('You are currently using not yet realesed version of Zikula Core.') }}
+                        {# you use latest version #}                    
+                    {% elseif updateStatus.versionCompare == 0 %}                    
+                        {{  __('A new version of the Zikula core is available. Please download the new Zikula core') }}         
+                        {# new version found #}                   
+                    {% elseif updateStatus.versionCompare == 1 %}                     
+                        {{  __('A new version of the Zikula core is available. Please download the new Zikula core') }}         
+                    {% endif %}               
+                </a>   
+            </div>            
+            <div class="collapse" id="updatecheck_full">  
+                <div class="alert col-md-12">
+                    <span class="col-md-4">{% if updateStatus.enabled %}<i class="fa fa-check"></i> {{  __('Update checker is enabled') }} {% else %}<i class="fa fa-close"></i> {{  __('Update checker is disabled') }} {% endif %}</span> 
+                    <span class="col-md-4"><i class="fa fa-calendar"></i> {{  __('Check interval') }}: {{ updateStatus.checkInterval }} {{ __('days')}} </span>                         
+                    <span class="col-md-4"><i class="fa fa-calendar-check-o"></i> {{  __('Last checked') }}: {{ updateStatus.lastChecked|date('F j, Y, g:i a') }}  </span>                                                 
+                </div>                
+                {% if updateStatus.releases %}    
+                    <div class="col-md-12">
+                        <strong>{{ __('Releases') }}</strong>
+                        <div class="col-md-12">
+                            <ul class="list-group">
+                                {% if updateStatus.versionCompare == -1 %}
+                                    <li class="list-group-item active clearfix">
+                                        <span class="col-md-3"> {{ __('Zikula Core') }} {{ updateStatus.currentVersion }} </span>
+                                        <span class="col-md-3"> {{ __('Currently used version') }}  </span>                                            
+                                    </li>                                  
+                                {% endif %}    
+                                {% for release in updateStatus.releases %}
+                                    {% if release.prerelease %} 
+                                    {% else %}    
+                                        <li class="list-group-item {% if loop.first %} list-group-item-success {% endif %} clearfix">
+                                            <a class="col-md-3" role="button" data-toggle="collapse" href="#release_{{ loop.index }}" aria-expanded="false" aria-controls="release_{{ loop.index }}">
+                                                {{ release.name }}
+                                            </a> 
+                                            {% if loop.first %}
+                                                <span class="col-md-3">
+                                                    {{ __('Latest stable relese') }} 
+                                                </span>    
+                                            {% endif %} 
+                                            <a class="pull-right" role="button" data-toggle="collapse" href="#release_{{ loop.index }}" aria-expanded="false" aria-controls="release_{{ loop.index }}">
+                                                <i class="fa fa-info"> </i>
+                                            </a>                                              
+                                            <div class="collapse clearfix" id="release_{{ loop.index }}">
+                                                <div class="col-md-6">
+                                                    {{ release.body|nl2br }}
+                                                </div>                                                
+                                                <div class="col-md-6">
+                                                    {% for asset in release.assets %}    
+                                                        <p> 
+                                                            <a class="text-success" href="{{ asset.browser_download_url }}">
+                                                                <i class="fa fa-cloud-download"></i> {{ asset.name }}
+                                                            </a>
+                                                        </p>
+                                                    {% endfor%}
+                                                </div>
+                                            </div>                                     
+                                        </li>  
+                                    {% endif %}
+                                {% endfor%}
+                            </ul>  
+                        </div>
+                    </div>  
+                {% else %}    
+                    <div class="col-md-12 text-center">                    
+                        <p>{{  __('Stable Zikula Core available') }}: {{ updateStatus.updateversion }} </p>                    
+                        <a class="btn btn-sm btn-primary"  href="{{ path(updateStatus._route, updateStatus._route_params|merge({'forceupdatecheck':1})) }}" >            
+                            {{  __('Check now') }}
+                            <span class="fa-stack">
+                                <i class="fa fa-refresh fa-stack-2x"></i>
+                                <i class="fa fa-info fa-stack-1x"></i>
+                            </span>              
+                        </a>              
+                    </div>           
+                {% endif %}       
+            </div>               
+        </div>
+    </div>     
+{% endif %}
