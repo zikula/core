@@ -41,6 +41,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class ModuleController extends AbstractController
 {
     const NEW_ROUTES_AVAIL = 'new.routes.avail';
+
     /**
      * @Route("/list/{pos}")
      * @Theme("admin")
