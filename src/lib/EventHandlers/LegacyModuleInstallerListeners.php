@@ -59,5 +59,4 @@ class LegacyModuleInstallerListeners extends Zikula_AbstractEventHandler
         $event = new \Zikula_Event('installer.module.uninstalled', null, $event->getArguments());
         $this->eventManager->dispatch('installer.module.uninstalled', $event);
     }
-
 }

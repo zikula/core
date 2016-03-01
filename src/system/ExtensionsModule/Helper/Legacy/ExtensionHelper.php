@@ -14,7 +14,6 @@
 namespace Zikula\ExtensionsModule\Helper\Legacy;
 
 use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
