@@ -17,6 +17,7 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\AdminMenuPanelSimpleFunction;
+use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DefaultPathSimpleFunction;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 class CoreExtension extends \Twig_Extension
@@ -80,7 +81,9 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
             new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
             new \Twig_SimpleFunction('adminPanelMenu', [new AdminMenuPanelSimpleFunction($this), 'display'], ['is_safe' => array('html')]),
-            new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable'])
+            new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this), 'getDefaultPath']),
+            new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable']),
+            new \Twig_SimpleFunction('callFunc', [$this, 'callFunc'])
         );
     }
 
@@ -90,6 +93,7 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFilter('languageName', [$this, 'languageName']),
             new \Twig_SimpleFilter('safeHtml', [$this, 'safeHtml'], array('is_safe' => array('html'))),
             new \Twig_SimpleFilter('yesNo', [$this, 'yesNo']),
+            new \Twig_SimpleFilter('php', [$this, 'applyPhp']),
         );
     }
 
@@ -155,6 +159,7 @@ class CoreExtension extends \Twig_Extension
             \Zikula_Session::MESSAGE_STATUS => 'success',
             'danger' => 'danger',
             'success' => 'success',
+            'info' => 'info'
         );
 
         foreach ($messageTypeMap as $messageType => $bootstrapClass) {
@@ -224,6 +229,21 @@ class CoreExtension extends \Twig_Extension
         }
 
         return (bool)$string ? __('Yes') :  __('No');
+    }
+
+    /**
+     * Apply an existing function (e.g. php's `md5`) to a string.
+     * @param $string
+     * @param $func
+     * @return mixed
+     */
+    public function applyPhp($string, $func)
+    {
+        if (function_exists($func)) {
+            return $func($string);
+        }
+
+        return $string;
     }
 
     /**
@@ -374,5 +394,20 @@ class CoreExtension extends \Twig_Extension
         $result = \ModUtil::available($modname, $force);
 
         return (bool)$result;
+    }
+
+    /**
+     * Call a php callable with parameters.
+     * @param array|string $callable
+     * @param array $params
+     * @return mixed
+     */
+    public function callFunc($callable, array $params = [])
+    {
+        if (function_exists($callable) && is_callable($callable)) {
+            return call_user_func_array($callable, $params);
+        }
+
+        throw new \InvalidArgumentException('Function does not exist or is not callable.');
     }
 }

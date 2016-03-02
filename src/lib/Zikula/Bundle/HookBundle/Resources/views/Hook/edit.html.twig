@@ -1,0 +1,82 @@
+{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
+{{ pageAddAsset('javascript', asset('bundles/zikulahook/js/hookui.js')) }}
+{{ pageAddAsset('stylesheet', asset('bundles/zikulahook/css/hooks.css')) }}
+{% set showBothPanels = false %}
+{% if isSubscriber and isProvider and providerAreas is not empty and total_available_subscriber_areas > 0 %}
+    {% set showBothPanels = true %}
+{% endif %}
+
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<h3>
+    <span class="fa fa-paperclip"></span>
+    {{ __('Hooks') }}
+</h3>
+
+{% if showBothPanels %}
+    <div role="tabpanel">
+        <ul id="hookTabs" class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#subscriberTab">{{ __('Subscription') }}</a></li>
+            <li role="presentation"><a href="#providerTab">{{ __('Provision') }}</a></li>
+        </ul>
+    </div>
+{% endif %}
+{% if showBothPanels %}
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="subscriberTab">
+            <br />
+            <div id="hookSubscriber" class="z-form clearfix">
+                {{ include('ZikulaHookBundle:Hook:subscriber.html.twig') }}
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="providerTab">
+            <br />
+            <div id="hookProvider" class="form-horizontal" role="form">
+                {{ include('ZikulaHookBundle:Hook:provider.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% else %}
+    {% if isSubscriber %}
+        <div id="hookSubscriber" class="z-form clearfix">
+            {{ include('ZikulaHookBundle:Hook:subscriber.html.twig') }}
+        </div>
+    {% endif %}
+
+    {% if isProvider and providerAreas is not empty and total_available_subscriber_areas > 0 %}
+        <div id="hookProvider" class="form-horizontal" role="form">
+            {{ include('ZikulaHookBundle:Hook:provider.html.twig') }}
+        </div>
+    {% endif %}
+
+    {% if total_available_subscriber_areas == 0 and not isSubscriber %}
+        <p class="alert alert-warning">{{ __f('There are no subscribers available for %sub%.', {"%sub%": currentmodule}) }}</p>
+    {% endif %}
+{% endif %}
+
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+{% if isSubscriber %}
+    {#{pageaddvarblock}#}{# @TODO #}
+    <script type="text/javascript">
+        var subscriberAreas = new Array();
+
+        {% if isSubscriber and subscriberAreas is not empty %}
+        {% for sarea in subscriberAreas %}
+        {% set sarea_md5 = sarea|php('md5') %}
+        subscriberAreas.push('sarea_{{ sarea_md5 }}');
+        {% endfor %}
+        {% endif %}
+
+        ( function($) {
+            $(document).ready(function() {
+                {% if showBothPanels %}
+                $('#hookTabs a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+                {% endif %}
+                initHookSubscriber();
+            });
+        })(jQuery);
+    </script>
+    {#{/pageaddvarblock}#}
+{% endif %}

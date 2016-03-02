@@ -33,7 +33,7 @@ class AtomThemeExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('atomId', [$this, 'id']),
-            new \Twig_SimpleFunction('updated', [$this, 'updated']),
+            new \Twig_SimpleFunction('atomFeedLastUpdated', [$this, 'atomFeedLastUpdated']),
         );
     }
 
@@ -53,7 +53,7 @@ class AtomThemeExtension extends \Twig_Extension
         return "tag:{$parts['host']},{$startdate}:{$sitename}";
     }
 
-    public function updated()
+    public function atomFeedLastUpdated()
     {
         if (!isset($GLOBALS['atom_feed_lastupdated'])) {
             $GLOBALS['atom_feed_lastupdated'] = time();

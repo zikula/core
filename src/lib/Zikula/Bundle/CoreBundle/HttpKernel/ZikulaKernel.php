@@ -67,7 +67,6 @@ abstract class ZikulaKernel extends Kernel
         $paths = array(
             $this->rootDir .'/../config/config.php',
             $this->rootDir.'/../config/personal_config.php',
-            $this->rootDir.'/../config/multisites_config.php',
         );
 
         foreach ($paths as $path) {

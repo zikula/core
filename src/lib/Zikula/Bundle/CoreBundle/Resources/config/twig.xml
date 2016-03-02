@@ -7,7 +7,6 @@
     <parameters>
         <parameter key="twig.extension.zikula_gettext.class">Zikula\Bundle\CoreBundle\Twig\Extension\GettextExtension</parameter>
         <parameter key="twig.extension.zikula_core.class">Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension</parameter>
-        <parameter key="twig.extension.zikula_hook.class">Zikula\Bundle\CoreBundle\Twig\Extension\HookExtension</parameter>
         <parameter key="twig.extension.zikula_pager.class">Zikula\Bundle\CoreBundle\Twig\Extension\PagerExtension</parameter>
     </parameters>
 
@@ -18,11 +17,6 @@
         </service>
 
         <service id="twig.extension.zikula_core" class="%twig.extension.zikula_core.class%" public="false">
-            <tag name="twig.extension" />
-            <argument type="service" id="service_container" />
-        </service>
-
-        <service id="twig.extension.zikula_hook" class="%twig.extension.zikula_hook.class%" public="false">
             <tag name="twig.extension" />
             <argument type="service" id="service_container" />
         </service>

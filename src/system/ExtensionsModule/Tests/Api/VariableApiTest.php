@@ -43,7 +43,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
         ;
 
         $repo = new ExtensionVarStubRepository();
-        $this->api = new VariableApi($repo, $kernel);
+        $this->api = new VariableApi($repo, $kernel, ['protected.systemvars' => []]);
     }
 
     /**

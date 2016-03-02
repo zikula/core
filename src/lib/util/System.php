@@ -95,7 +95,9 @@ class System
         $name = isset($name) ? (string)$name : '';
 
         // The database parameter are not allowed to change
-        if (empty($name) || $name == 'system' || $name == 'prefix' || in_array($name, ServiceUtil::getManager()->getArgument('protected.systemvars'))) {
+        $sm = ServiceUtil::getManager();
+        $multisitesParameters = $sm->getParameter('multisites');
+        if (empty($name) || $name == 'system' || $name == 'prefix' || in_array($name, $multisitesParameters['protected.systemvars'])) {
             return false;
         }
 
@@ -326,7 +328,7 @@ class System
             self::$cache['baseuri.path'] = substr($script_name, 0, strrpos($script_name, '/'));
         }
 
-        if ($serviceManager['multisites.enabled'] == 1) {
+        if ($serviceManager['multisites']['enabled'] == 1) {
             self::$cache['baseuri.path'] = $serviceManager['multisites.sitedns'];
         }
 

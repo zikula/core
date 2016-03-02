@@ -66,4 +66,16 @@ class ExtensionVarRepository extends EntityRepository implements ExtensionVarRep
     {
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
+
+    public function updateName($oldName, $newName)
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->update('Zikula\ExtensionsModule\Entity\ExtensionVarEntity', 'v')
+            ->set('v.modname', ':newname')
+            ->setParameter('newname', $newName)
+            ->where('v.modname = :oldname')
+            ->setParameter('oldname', $oldName)
+            ->getQuery();
+        $query->execute();
+    }
 }

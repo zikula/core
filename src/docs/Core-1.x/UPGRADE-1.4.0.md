@@ -721,10 +721,10 @@ The main changes are:
 
   - Four new Hook objects with no name arg in the constructor:
 
-    - `Zikula\Core\Hook\DisplayHook` (was `Zikula_DisplayHook`).
-    - `Zikula\Core\Hook\FilterHook` (was `Zikula_FilterHook`).
-    - `Zikula\Core\Hook\ProcessHook` (was `Zikula_ProcessHook`).
-    - `Zikula\Core\Hook\ValidationHook` (was `Zikula_ValidationHook`).
+    - `Zikula\Bundle\HookBundle\Hook\DisplayHook` (was `Zikula_DisplayHook`).
+    - `Zikula\Bundle\HookBundle\Hook\FilterHook` (was `Zikula_FilterHook`).
+    - `Zikula\Bundle\HookBundle\Hook\ProcessHook` (was `Zikula_ProcessHook`).
+    - `Zikula\Bundle\HookBundle\Hook\ValidationHook` (was `Zikula_ValidationHook`).
 
   - hooks are triggered by `->dispatch($name, $hook)` instead of `->notify($hook)`
 
@@ -737,17 +737,19 @@ $eventManager->notify($hook);
 
 Example in Core 1.4.0+
 
-    $hook = new Zikula\Core\Hook\DisplayHook($id, $url);
+    $hook = new Zikula\Bundle\HookBundle\Hook\DisplayHook($id, $url);
     $hookDispatcher->dispatch('hook.name', $hook);
 
 New class list:
 
-  - `Zikula\Core\Hook\ValidationProviders` (was `Zikula_Hook_ValidationProviders`).
-  - `Zikula\Core\Hook\ValidationResponse` (was `Zikula_Hook_ValidationResponse`).
-  - `Zikula\Core\Hook\DisplayResponse` (was `Zikula_Response_DisplayHook`).
-  - `Zikula\Core\Hook\AbstractHookListener` (was `Zikula_Hook_AbstractHandler`).
-  - `Zikula\Component\HookDispatcher\SubscriberBundle` (was `Zikula_HookManager_SubscriberBundle`).
-  - `Zikula\Component\HookDispatcher\ProviderBundle` (was `Zikula_HookManager_ProviderBundle`).
+  - `Zikula\Bundle\HookBundle\Hook\ValidationProviders` (was `Zikula_Hook_ValidationProviders`).
+  - `Zikula\Bundle\HookBundle\Hook\ValidationResponse` (was `Zikula_Hook_ValidationResponse`).
+  - `Zikula\Bundle\HookBundle\Hook\DisplayResponse` (was `Zikula_Response_DisplayHook`).
+  - `Zikula\Bundle\HookBundle\Hook\AbstractHookListener` (was `Zikula_Hook_AbstractHandler`).
+  - `Zikula\Bundle\HookBundle\Bundle\SubscriberBundle` (was `Zikula_HookManager_SubscriberBundle`).
+  - `Zikula\Bundle\HookBundle\Bundle\ProviderBundle` (was `Zikula_HookManager_ProviderBundle`).
+
+Notice: in Core-1.4.2 these classes changed again (class aliases are provided for BC):
 
 
 <a name="modurl" />

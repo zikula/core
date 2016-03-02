@@ -51,7 +51,7 @@ class CapabilityApi implements CapabilityApiInterface
      */
     private function load()
     {
-        $extensions = $this->extensionRepository->findAll();
+        $extensions = $this->extensionRepository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
         /** @var ExtensionEntity $extension */
         foreach ($extensions as $extension) {
             foreach ($extension->getCapabilities() as $capability => $definition) {

@@ -1,0 +1,37 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+{{ showflashes() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Settings') }}
+        </h3>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.displayname) }}
+        <div class="form-group">
+            {{ form_label(form.url) }}
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">/</span>
+                    {{ form_widget(form.url) }}
+                </div>
+                <em class="form-note text-warning">{{ __('WARNING: changing the url affects SEO by breaking existing indexed search results.') }}</em>
+            </div>
+        </div>
+        {{ form_row(form.description) }}
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
+                {{ form_widget(form.defaults, {attr: {class: 'btn btn-warning'}, icon:'fa-refresh'}) }}
+                {{ form_widget(form.cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

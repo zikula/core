@@ -307,7 +307,7 @@ class Zikula_Core
 
             foreach ($it as $file) {
                 $before = get_declared_classes();
-                include realpath($file);
+                include_once realpath($file);
                 $after = get_declared_classes();
 
                 $diff = new ArrayIterator(array_diff($after, $before));
@@ -323,7 +323,9 @@ class Zikula_Core
                 if (!isset($this->directoryContents[$dir])) {
                     $this->directoryContents[$dir] = array();
                 }
-                $this->directoryContents[$dir][] = $className;
+                if (isset($className)) {
+                    $this->directoryContents[$dir][] = $className;
+                }
             }
             $this->scannedDirs[$dir] = true;
         }

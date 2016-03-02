@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper as CoreBundleBootstrapHelper;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\AdminApi as ExtensionsAdminApi;
 use Zikula\ExtensionsModule\ZikulaExtensionsModule;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -77,6 +78,8 @@ class AjaxInstallController extends AbstractController
         switch ($stageName) {
             case "bundles":
                 return $this->createBundles();
+            case "install_event":
+                return $this->fireEvent(CoreEvents::CORE_INSTALL_PRE_MODULE);
             case "extensions":
                 return $this->installModule('ZikulaExtensionsModule');
             case "settings":
@@ -394,6 +397,17 @@ class AjaxInstallController extends AbstractController
         $this->yamlManager->setParameters($params);
         // clear the cache
         $this->container->get('zikula.cache_clearer')->clear('symfony.config');
+
+        return true;
+    }
+
+    private function fireEvent($eventName)
+    {
+        $event = new GenericEvent();
+        $this->container->get('event_dispatcher')->dispatch($eventName, $event);
+        if ($event->isPropagationStopped()) {
+            return false;
+        }
 
         return true;
     }

@@ -59,8 +59,3 @@ $ZConfig['System']['dbcache.compression'] = true; // true/false valid for dbcach
 // http://docs.doctrine-project.org/projects/doctrine1/en/latest/en/manual/caching.html#result-cache
 $ZConfig['System']['dbcache.cache_result'] = 0;      // 1 to enable or 0 to disable.
 $ZConfig['System']['dbcache.cache_result_ttl'] = 30; // seconds, 3600 = 1 hour.
-
-// Initialize multisites array
-$ZConfig['Multisites'] = array();
-$ZConfig['Multisites']['multisites.enabled'] = 0;
-$ZConfig['Multisites']['protected.systemvars'] = array();

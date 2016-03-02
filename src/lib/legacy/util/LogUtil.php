@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * LogUtil.
+ * @deprecated remove at Core-2.0
  */
 class LogUtil
 {

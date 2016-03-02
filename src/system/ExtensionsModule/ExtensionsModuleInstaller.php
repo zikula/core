@@ -13,12 +13,16 @@
 
 namespace Zikula\ExtensionsModule;
 
+use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Api\ExtensionApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
  * Installation and upgrade routines for the extensions module
  */
-class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
+class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * Install the Extensions module.
@@ -28,26 +32,21 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
     public function install()
     {
         // create tables
-        $tables = array(
+        $entities = array(
             'Zikula\ExtensionsModule\Entity\ExtensionEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionVarEntity',
-            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
-            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity',
-            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity',
-            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookRuntimeEntity',
-            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
         );
 
         try {
-            \DoctrineHelper::createSchema($this->entityManager, $tables);
+            $this->schemaTool->create($entities);
         } catch (\Exception $e) {
             return false;
         }
 
         // populate default data
-        $this->defaultdata();
-        $this->setVar('itemsperpage', 25);
+        $this->defaultData();
+        $this->setVar('itemsperpage', 40);
 
         // Initialisation successful
         return true;
@@ -63,10 +62,10 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
      *
      * @return  boolean|string True on success, last valid version string or false if fails.
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '3.7.10':
                 // Load DB connection
                 $connection = $this->entityManager->getConnection();
@@ -80,8 +79,10 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
                     $stmt = $connection->executeQuery($sql);
                 }
             case '3.7.11':
-                \DoctrineHelper::updateSchema($this->entityManager, array('Zikula\ExtensionsModule\Entity\ExtensionEntity'));
+                $this->schemaTool->update(['Zikula\ExtensionsModule\Entity\ExtensionEntity']);
             case '3.7.12':
+                $this->setVar('itemsperpage', 40);
+            case '3.7.13':
                 // future upgrade routines
         }
 
@@ -109,19 +110,24 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
      *
      * @return void
      */
-    public function defaultdata()
+    public function defaultData()
     {
-        $version = new ExtensionsModuleVersion(new ZikulaExtensionsModule());
-        $meta = $version->toArray();
-        $meta['state'] = \ModUtil::STATE_ACTIVE;
-
+        $scanner = new Scanner();
+        $jsonPath = realpath(__DIR__ . '/composer.json');
+        $jsonContent = $scanner->decode($jsonPath);
+        $metaData = new MetaData($jsonContent);
+        if (!empty($this->container)) {
+            $metaData->setTranslator($this->container->get('translator'));
+        }
+        $meta = $metaData->getFilteredVersionInfoArray();
+        $meta['state'] = ExtensionApi::STATE_ACTIVE;
         unset($meta['dependencies']);
         unset($meta['oldnames']);
 
-        $item = new ExtensionEntity();
-        $item->merge($meta);
+        $entity = new ExtensionEntity();
+        $entity->merge($meta);
 
-        $this->entityManager->persist($item);
+        $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }
 }

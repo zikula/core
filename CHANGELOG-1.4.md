@@ -14,6 +14,9 @@ CHANGELOG - ZIKULA 1.4.x
     - "Alternate Site View" feature (in theme settings) is deprecated. Use responsive design.
     - Zikula\Core\AbstractTheme is deprecated and aliased to Zikula\ThemeModule\AbstractTheme. Use the latter.
     - Zikula\Core\Theme\Annotation\Theme is deprecated and aliased to Zikula\ThemeModule\Engine\Annotation\Theme. Use the latter.
+    - All Hooks-related classes and files have been moved to HookBundle and former namespaces deprecated (aliases provided for BC).
+    - `DisplayHookResponse` has deprecated the third argument and now expects a rendered string instead of objects. (#2600)
+    - The visibility of ModuleStateEvent::modinfo property will change from public to private in Core-2.0. Use getModInfo() method instead.
  - Fixes:
     - Fix module stylesheet not being loaded automatically for Core-2.0 modules.
     - Fix SearchModule not working for older modules required tables.php (#2643)
@@ -31,6 +34,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix structure of `categorizable` key in version spec.
         - use `"categorizable": {"entities": ["Acme\FooModule\Entity\FooEntity", "Acme\FooModule\Entity\BarEntity"]}`
         - BC with previous method maintained but deprecated, e.g. `"categorizable": ["Acme\FooModule\Entity\FooEntity", "Acme\FooModule\Entity\BarEntity"]`
+    - Fix issues with dynamic url settings in ExtensionsModule
  - Features:
     - Add new advanced block filtering based on a combination of any query parameter or request attributes.
     - Add core routing for all legacy urls (both normal and 'shorturls').
@@ -41,6 +45,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Add collapseable blocks. This feature had disappeared since Core-1.3x (#2678)
     - Add Twig tag `modAvailable($moduleName)` (#2769)
     - Add CsrfTokenHandler service (`\Zikula\Core\Token\CsrfTokenHandler`)
+    - Add 'info' type flash messages.
  - Core-2.0 Features:
     - Add `currentUser` global variable to twig templates.
     - Add (move) `Zikula\CategoriesModule\Entity\AbstractCategoryAssignment` and related documentation.
@@ -51,7 +56,9 @@ CHANGELOG - ZIKULA 1.4.x
         - Zikula\BlocksModule\BlockHandlerInterface
         - Zikula\BlocksModule\AbstractBlockHandler
         - Updated BlocksModule Admin UI.
-        - BlocksModule updated to Core-2.0 Spec.
+    - BlocksModule updated to Core-2.0 Spec.
+    - ThemeModule updated to Core-2.0 Spec.
+    - ExtensionsModule updated to Core-2.0 Spec (except Plugin Handling).
     - Add AbstractExtensionInstaller for use by third-party developers.
     - Add ExtensionVariablesTrait for developers to insert into classes where Extension Variable management is needed.
     - Update Pending Content logic and definitions.
@@ -59,6 +66,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Listener classes from Zikula\Bundle\CoreBundle\EventListener\Theme have been moved to Zikula\ThemeModule\EventListener.
     - Add Zikula\Common\Translator\TranslatorInterface to use as typehint when using `translator.default` service.
     - Add CapabilityApi to manage and define Extension Capabilities for Core-2.0 applications.
+    - Update `\Zikula\Bundle\HookBundle\Hook\DisplayHookResponse` to allow response from non-Smarty sources. (#2600)
  - Vendor updates:
     - Symfony updated to 2.8.3
     - Font-Awesome updated to 4.5.0

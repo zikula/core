@@ -15,7 +15,7 @@
 /**
  * HTMLUtil is a class used to generate specific HTML code.
  *
- * @deprecated
+ * @deprecated remove at Core-2.0
  */
 class HtmlUtil
 {

@@ -14,7 +14,7 @@
 namespace Zikula\MailerModule;
 
 use HookUtil;
-use Zikula\Component\HookDispatcher\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 
 /**
  * Version information for the mailer module

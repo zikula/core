@@ -9,6 +9,12 @@ namespace Zikula\Core;
  */
 final class CoreEvents
 {
+    /**
+     * Occurs during Core installation before the modules are installed.
+     * Stop propagation of the event to cause the core installer to fail.
+     */
+    const CORE_INSTALL_PRE_MODULE = 'core.install.pre.module';
+
     /** Occurs when a module has been installed. */
     const MODULE_INSTALL = 'module.install';
 

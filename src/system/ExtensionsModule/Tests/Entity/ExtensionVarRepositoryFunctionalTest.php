@@ -52,7 +52,7 @@ class ExtensionVarRepositoryFunctionalTest extends KernelTestCase
             ->findBy(['modname' => 'ZikulaExtensionsModule', 'name' => 'itemsperpage']) // set in installer
         ;
         /** @var \Zikula\ExtensionsModule\Entity\ExtensionVarEntity $entity */
-        $this->assertEquals(25, $entity[0]->getValue(), "Expected value is 25 based on ZikulaExtensionsModule::install().");
+        $this->assertEquals(40, $entity[0]->getValue(), "Expected value is 25 based on ZikulaExtensionsModule::install().");
     }
 
     /**

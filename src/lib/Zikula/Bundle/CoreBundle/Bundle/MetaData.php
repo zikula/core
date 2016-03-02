@@ -114,6 +114,11 @@ class MetaData implements \ArrayAccess
         return $this->__(/** @Ignore */$this->description);
     }
 
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
     public function getDependencies()
     {
         return $this->dependencies;
@@ -126,11 +131,21 @@ class MetaData implements \ArrayAccess
         return $this->__(/** @Ignore */$this->displayName);
     }
 
+    public function setDisplayName($name)
+    {
+        $this->displayName = $name;
+    }
+
     public function getUrl($translated = true)
     {
         $this->confirmTranslator();
 
         return $translated ? $this->__(/** @Ignore */$this->url) : $this->url;
+    }
+
+    public function setUrl($url)
+    {
+        $this->url = $url;
     }
 
     public function getOldNames()

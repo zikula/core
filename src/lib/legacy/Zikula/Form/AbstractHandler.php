@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\HookDispatcher\Hook;
+use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**
  * Base form handler class
@@ -257,7 +257,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Notify any hookable events.
      *
-     * @param Zikula\Component\HookDispatcher\Hook $hook Hook interface.
+     * @param Zikula\Bundle\HookBundle\Hook\Hook $hook Hook interface.
      *
      * @return mixed Notification result.
      */
@@ -269,9 +269,9 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Dispatch hooks.
      *
-     * @param Zikula\Component\HookDispatcher\Hook $hook Hook interface.
+     * @param Zikula\Bundle\HookBundle\Hook\Hook $hook Hook interface.
      *
-     * @return Zikula\Component\HookDispatcher\Hook
+     * @return Zikula\Bundle\HookBundle\Hook\Hook
      */
     public function dispatchHooks($name, Hook $hook)
     {

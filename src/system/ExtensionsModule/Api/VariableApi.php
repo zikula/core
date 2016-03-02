@@ -38,7 +38,10 @@ class VariableApi
      * @var KernelInterface
      */
     private $kernel;
-
+    /**
+     * @var array
+     */
+    private $protectedSystemVars;
     /**
      * @var array
      */
@@ -49,10 +52,11 @@ class VariableApi
      * @param ExtensionVarRepositoryInterface $repository
      * @param KernelInterface $kernel
      */
-    public function __construct(ExtensionVarRepositoryInterface $repository, KernelInterface $kernel)
+    public function __construct(ExtensionVarRepositoryInterface $repository, KernelInterface $kernel, array $multisitesParameters)
     {
         $this->repository = $repository;
         $this->kernel = $kernel;
+        $this->protectedSystemVars = $multisitesParameters['protected.systemvars'];
     }
 
     /**
@@ -173,6 +177,9 @@ class VariableApi
         }
         if (!$this->isInitialized) {
             $this->initialize();
+        }
+        if ($extensionName == self::CONFIG && in_array($variableName, $this->protectedSystemVars)) {
+            return false;
         }
 
         $entities = $this->repository->findBy(['modname' => $extensionName, 'name' => $variableName]);

@@ -9,8 +9,7 @@
         "psr-0": {
             "Zikula\\": "src/lib",
             "Zikula_": "src/lib/legacy",
-            "DoctrineExtensions\\StandardFields\\": "src/lib/legacy",
-            "CustomBundle\\": "src/app/custom"
+            "DoctrineExtensions\\StandardFields\\": "src/lib/legacy"
         },
         "psr-4": {
             "Zikula\\": ["src/system", "src/themes"]
@@ -46,6 +45,7 @@
         "symfony/monolog-bundle": "2.7.*",
         "sensio/distribution-bundle": "5.0.*",
         "sensio/framework-extra-bundle": "3.0.*",
+        "sensio/generator-bundle": "3.0.*",
         "elao/web-profiler-extra-bundle" : "dev-master",
         "matthiasnoback/symfony-service-definition-validator": "1.2.*",
         "matthiasnoback/symfony-console-form": "1.*",
