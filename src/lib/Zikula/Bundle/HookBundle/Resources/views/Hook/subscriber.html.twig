@@ -1,0 +1,80 @@
+<div id="hookSubscriberAreas" class="pull-left z-w49">
+    <fieldset>
+        <legend>{{ __('Attached areas') }}</legend>
+        {% for category, areas in subscriberAreasAndCategories %}
+            <fieldset class="sareas_category">
+                <legend>{{ category }}</legend>
+                {% for sarea in areas %}
+                    {% set sarea_md5 = sarea|php('md5') %}
+                    <div id="sarea_{{ sarea_md5 }}" class="sarea_wrapper">
+                        <input type="hidden" id="sarea_{{ sarea_md5 }}_a" value="{{ sarea }}" />
+                        <input type="hidden" id="sarea_{{ sarea_md5 }}_c" value="{{ subscriberAreasToCategories[sarea] }}" />
+                        <input type="hidden" id="sarea_{{ sarea_md5 }}_i" value="{{ sarea_md5 }}" />
+                        <h4>{{ subscriberAreasToTitles[sarea] }}<span class="sub">({{ sarea }})</span></h4>
+                        <ol id="sarea_{{ sarea_md5 }}_list" class="z-itemlist">
+                            {% if areasSorting[category][sarea] is defined %}
+                                {% for parea in areasSorting[category][sarea] %}
+                                    {% set parea_md5 = parea|php('md5') %}
+                                    {% set attached_area_identifier = parea_md5 ~ '-' ~ sarea_md5 %}
+                                    <li id="attachedarea_{{ attached_area_identifier }}" class="clearfix z-sortable list-group-item ui-draggable {{ cycle(['z-even', 'z-odd'], loop.index) }}" style="cursor: move; left: 0; top: 0; opacity: 1; position: relative;">
+                                        <i class="fa fa-arrows"></i>
+                                        <span>
+                                            {{ areasSortingTitles[parea] }} <span class="sub">({{ parea }})</span>
+                                            <a class="detachlink" title="{{ __('Detach') }} {{ areasSortingTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('{{ sarea_md5 }}', '{{ sarea }}', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-remove"></i></a>
+                                        </span>
+                                        <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_a" value="{{ parea }}" />
+                                        <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_c" value="{{ category }}" />
+                                        <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_i" value="{{ parea_md5 }}" />
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                            <li id="sarea_empty_{{ sarea_md5 }}" class="clearfix sarea_empty{% if areasSorting[category][sarea] is defined %} hide{% endif %}">
+                                <span class="z-itemcell">{{ __('There aren\'t any areas attached here.<br />Drag an area from the right and drop it here to attach it.')|raw }}</span>
+                            </li>
+                        </ol>
+                    </div>
+                {% endfor %}
+            </fieldset>
+        {% else %}
+            <p class="alert alert-warning">{{ __f('There are no subscribers available for %sub%.', {"%sub%": currentmodule}) }}</p>
+        {% endfor %}
+    </fieldset>
+</div>
+<div id="hookProviderAreas" class="pull-right z-w49">
+    <fieldset>
+        <legend>{{ __('Available areas') }}</legend>
+        {% for hookprovider in hookproviders %}
+            {% if hookprovider.areas is not empty %}
+                <div class="parea_wrapper">
+                    <h4>{{ hookprovider.displayname }}</h4>
+                    <div class="panel-content">
+                        {% for category, areas in hookprovider.areasAndCategories %}
+                        <fieldset class="pareas_category">
+                            <legend>{{ category }}</legend>
+                            {% set draglist_identifier = hookprovider.name ~ '_' ~ category %}
+                            {% set draglist_identifier_md5 = draglist_identifier|php('md5') %}
+                            <ol id="availableareasdraglist_{{ draglist_identifier_md5 }}" class="z-itemlist list-group">
+                                {% for parea in areas %}
+                                    {% set parea_md5 = parea|php('md5') %}
+                                    {% set available_area_identifier = parea_md5 ~ '-sarea_identifier' %}
+                                    <li id="availablearea_{{ available_area_identifier }}" class="z-draggable clearfix list-group-item {{ cycle(['z-even', 'z-odd'], loop.index) }}">
+                                        <i class="fa fa-long-arrow-left"></i>
+                                        <span class="z-itemcell">
+                                            {{ hookprovider.areasToTitles[parea] }} <span class="sub">({{ parea }})</span>
+                                            <a class="detachlink hide" title="{{ __('Detach') }} {{ hookprovider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-remove"></i></a></span>
+                                        <input type="hidden" id="availablearea_{{ available_area_identifier }}_a" value="{{ parea }}" />
+                                        <input type="hidden" id="availablearea_{{ available_area_identifier }}_c" value="{{ hookprovider.areasToCategories[parea] }}" />
+                                        <input type="hidden" id="availablearea_{{ available_area_identifier }}_i" value="{{ parea_md5 }}" />
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        </fieldset>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="alert alert-warning">{{ __f('There are no providers available for %sub%.', {"%sub%": currentmodule}) }}</p>
+        {% endfor %}
+    </fieldset>
+</div>

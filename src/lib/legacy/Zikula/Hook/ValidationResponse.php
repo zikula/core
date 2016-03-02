@@ -17,9 +17,9 @@
  * Validation object for hooks.
  *
  * @deprecated since 1.4.0
- * @see Zikula\Core\Hook\ValidationResponse
+ * @see Zikula\Bundle\HookBundle\Hook\ValidationResponse
  */
-class Zikula_Hook_ValidationResponse extends Zikula\Core\Hook\ValidationResponse
+class Zikula_Hook_ValidationResponse extends Zikula\Bundle\HookBundle\Hook\ValidationResponse
 {
     public function __construct($key, $object)
     {

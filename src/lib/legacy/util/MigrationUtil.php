@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManager;
  *
  * This class provides some helpers to transition older modules
  *
- * @deprecated since 1.4.0 ;)
+ * @deprecated remove at Core-2.0
  */
 class MigrationUtil
 {

@@ -21,7 +21,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 /**
  * Extension dependencies.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository")
  * @ORM\Table(name="module_deps")
  */
 class ExtensionDependencyEntity extends EntityAccess
@@ -156,12 +156,12 @@ class ExtensionDependencyEntity extends EntityAccess
                 $versionClass =  $bundle->getVersionClass();
 
                 if (class_exists($versionClass)) {
-                    // 1.4-module spec - deprecated - remove in Core 2.0
+                    // 1.4-module spec - @deprecated - remove in Core-2.0
                     $version = new $versionClass($bundle);
                     $moduleVersionArray = $version->toArray();
                     $dependencies = $moduleVersionArray['dependencies'];
                 } else {
-                    // 2.0-module spec
+                    // Core-2.0 module spec
                     $moduleMetaData = $bundle->getMetaData();
                     $dependencies = $moduleMetaData->getDependencies();
                 }

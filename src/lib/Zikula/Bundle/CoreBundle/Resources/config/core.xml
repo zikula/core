@@ -5,15 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <!--<parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>-->
-
         <parameter key="zikula.doctrine1_connector.class">Zikula\Bundle\CoreBundle\EventListener\Doctrine1ConnectorListener</parameter>
         <parameter key="zikula.doctrine_connector.class">Zikula\Bundle\CoreBundle\EventListener\DoctrineListener</parameter>
-
-        <!--<parameter key="hook_dispatcher.class">Zikula\Component\HookDispatcher\HookDispatcher</parameter>-->
-        <parameter key="hook_dispatcher.class">Zikula_HookDispatcher</parameter>
-        <parameter key="hook_dispatcher.storage.class">Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage</parameter>
-        <parameter key="hook_dispatcher.servicefactory.class">Zikula\Component\HookDispatcher\ServiceFactory</parameter>
 
         <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
         <parameter key="token.generator.class">Zikula\Core\Token\Generator</parameter>
@@ -81,28 +74,6 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="session" />
         </service>
-
-        <service id="hook_dispatcher.storage" class="%hook_dispatcher.storage.class%">
-            <argument type="service" id="doctrine.orm.default_entity_manager" />
-        </service>
-
-        <service id="hook_dispatcher.servicefactory" class="%hook_dispatcher.servicefactory.class%">
-            <argument type="service" id="service_container" />
-            <argument>event_dispatcher</argument>
-        </service>
-
-        <service id="hook_dispatcher" class="%hook_dispatcher.class%">
-            <argument type="service" id="hook_dispatcher.storage" />
-            <argument type="service" id="event_dispatcher" />
-            <argument type="service" id="hook_dispatcher.servicefactory" />
-        </service>
-
-        <service id="zikula.hookmanager" alias="hook_dispatcher" />
-
-        <!--<service id="zikula.system_listeners" class="%zikula.system_listener.class%">-->
-            <!--<tag name="kernel.event_subscriber" />-->
-            <!--<argument type="service" id="service_container" />-->
-        <!--</service>-->
 
         <service id="zikula.site_off_listener" class="%zikula.site_off_listener.class%">
             <tag name="kernel.event_subscriber" />

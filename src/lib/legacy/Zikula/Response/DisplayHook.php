@@ -19,13 +19,14 @@
  * Hook handlers should return one of these.
  *
  * @deprecated since 1.4.0
- * @see Zikula\Core\Hook\DisplayHookResponse
+ * @see Zikula\Bundle\HookBundle\Hook\DisplayHookResponse
  */
-class Zikula_Response_DisplayHook extends Zikula\Core\Hook\DisplayHookResponse
+class Zikula_Response_DisplayHook extends Zikula\Bundle\HookBundle\Hook\DisplayHookResponse
 {
     public function __construct($area, Zikula_View $view, $template)
     {
         LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
-        parent::__construct($area, $view, $template);
+        $response = $view->fetch($template);
+        parent::__construct($area, $response);
     }
 }

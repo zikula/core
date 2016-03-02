@@ -1,0 +1,50 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-plus"></span> {{ __('Install Module') }} '{{ extension.displayname }}'
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>{{ __('Module name') }}</th>
+                    <th>{{ __('Level') }}</th>
+                    <th>{{ __('Reason') }}</th>
+                    <th>{{ __('Install') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for checkbox in form.dependencies %}
+                <tr>
+                    <td>{{ dependencies[checkbox.vars.name].modname }}</td>
+                    <td>
+                        {% if dependencies[checkbox.vars.name].status == 1 %}
+                            <span class="label label-danger">{{ __('Required') }}</span>
+                        {% else %}
+                            <span class="label label-info">{{ __('Recommended') }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ dependencies[checkbox.vars.name].reason }}</td>
+                    <td>{{ form_widget(checkbox, {'disabled': dependencies[checkbox.vars.name].status == constant('ModUtil::DEPENDENCY_REQUIRED')}) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.install, {attr: {class: 'btn btn-success'}, icon:'fa-plus'}) }}
+                {{ form_widget(form.cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

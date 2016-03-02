@@ -14,8 +14,8 @@ namespace Zikula\RoutesModule\Base;
 
 use HookUtil;
 use Zikula_AbstractVersion;
-use Zikula\Component\HookDispatcher\ProviderBundle;
-use Zikula\Component\HookDispatcher\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
+use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 use Zikula\SearchModule\AbstractSearchable;
 
 /**

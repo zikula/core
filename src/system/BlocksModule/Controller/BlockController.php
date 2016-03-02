@@ -129,12 +129,12 @@ class BlockController extends AbstractController
             $blockEntity->setModule($module);
             $em->persist($blockEntity);
             $em->flush();
-            $this->addFlash('status', __('Block saved!'));
+            $this->addFlash('status', $this->__('Block saved!'));
 
             return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
         }
         if ($form->isSubmitted() and $form->get('cancel')->isClicked()) {
-            $this->addFlash('status', __('Operation cancelled.'));
+            $this->addFlash('status', $this->__('Operation cancelled.'));
 
             return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
         }
@@ -175,10 +175,10 @@ class BlockController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($blockEntity);
                 $em->flush();
-                $this->addFlash('status', __('Done! Block deleted.'));
+                $this->addFlash('status', $this->__('Done! Block deleted.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', __('Operation cancelled.'));
+                $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
             return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));

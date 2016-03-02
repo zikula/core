@@ -24,24 +24,23 @@ use Zikula\Core\AbstractModule;
 class ModuleStateEvent extends Event
 {
     /**
-     * This will only hold if $module is not set, because it is a non-Symfony
-     * styled module. Your code MUST always use $module and only use $modinfo
-     * if $module is not set. This property can be removed at any time.
+     * An array of info for the module. Possibly a result of calling legacy ModUtil::getInfo()
+     * or $extensionEntity->toArray().
+     * Property will be converted to PRIVATE at Core-2.0.
      *
      * @var null|array
-     *
-     * @deprecated
      */
     public $modinfo;
 
     /**
-     * @var null|AbstractModule The module instance. Null for non-Symfony styled modules.
+     * @var null|AbstractModule The module instance. Null for non-Symfony styled modules
+     *   or when Module object is not available.
      */
     private $module;
 
     /**
-     * @param null|AbstractModule $module  The module instance. Null for non-Symfony styled modules.
-     * @param null|array          $modinfo Only used for non-Symfony styled modules. Can be removed at any time.
+     * @param null|AbstractModule $module The module instance.
+     * @param null|array $modinfo
      */
     public function __construct(AbstractModule $module = null, $modinfo = null)
     {
@@ -50,13 +49,20 @@ class ModuleStateEvent extends Event
     }
 
     /**
-     * Get the module instance. Null for non-Symfony styled modules. If this is null, the public property $modinfo
-     * will hold module information.
+     * Get the module instance.
      *
      * @return null|AbstractModule
      */
     public function getModule()
     {
         return $this->module;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getModInfo()
+    {
+        return $this->modinfo;
     }
 }

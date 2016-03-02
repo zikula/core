@@ -14,7 +14,7 @@
  */
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zikula\Component\HookDispatcher\Hook;
+use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**
  * Abstract controller for modules.
@@ -103,7 +103,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      * @deprecated since 1.4.0
      * @see self::dispatchHooks()
      *
-     * @return Zikula\Component\HookDispatcher\Hook
+     * @return Zikula\Bundle\HookBundle\Hook\Hook
      */
     public function notifyHooks(Hook $hook)
     {
@@ -115,7 +115,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      * @param Hook $hook Hook interface.
      *
-     * @return Zikula\Component\HookDispatcher\Hook
+     * @return Zikula\Bundle\HookBundle\Hook\Hook
      */
     public function dispatchHooks($name, Hook $hook)
     {

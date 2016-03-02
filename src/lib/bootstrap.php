@@ -30,6 +30,19 @@ class_alias('\Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity', '\Zikul
 class_alias('\Zikula\CategoriesModule\Entity\AbstractCategoryAssignment', '\Zikula\Core\Doctrine\Entity\AbstractEntityCategory', true);
 class_alias('\Zikula\ThemeModule\Engine\Annotation\Theme', '\Zikula\Core\Theme\Annotation\Theme', true);
 class_alias('\Zikula\ThemeModule\AbstractTheme', '\Zikula\Core\AbstractTheme', true);
+class_alias('\Zikula\Bundle\HookBundle\Api\HookApi', '\Zikula\ExtensionsModule\Api\HookApi');
+class_alias('\Zikula\Bundle\HookBundle\Bundle\ProviderBundle', '\Zikula\Component\HookDispatcher\ProviderBundle');
+class_alias('\Zikula\Bundle\HookBundle\Bundle\SubscriberBundle', '\Zikula\Component\HookDispatcher\SubscriberBundle');
+class_alias('\Zikula\Bundle\HookBundle\AbstractHookContainer', '\Zikula\Component\HookDispatcher\AbstractContainer');
+class_alias('\Zikula\Bundle\HookBundle\Hook\AbstractHookListener', '\Zikula\Core\Hook\AbstractContainer');
+class_alias('\Zikula\Bundle\HookBundle\Hook\DisplayHook', '\Zikula\Core\Hook\DisplayHook');
+class_alias('\Zikula\Bundle\HookBundle\Hook\DisplayHookResponse', '\Zikula\Core\Hook\DisplayHookResponse');
+class_alias('\Zikula\Bundle\HookBundle\Hook\FilterHook', '\Zikula\Core\Hook\FilterHook');
+class_alias('\Zikula\Bundle\HookBundle\Hook\Hook', '\Zikula\Component\HookDispatcher\Hook');
+class_alias('\Zikula\Bundle\HookBundle\Hook\ProcessHook', '\Zikula\Core\Hook\ProcessHook');
+class_alias('\Zikula\Bundle\HookBundle\Hook\ValidationHook', '\Zikula\Core\Hook\ValidationHook');
+class_alias('\Zikula\Bundle\HookBundle\Hook\ValidationProviders', '\Zikula\Core\Hook\ValidationProviders');
+class_alias('\Zikula\Bundle\HookBundle\Hook\ValidationResponse', '\Zikula\Core\Hook\ValidationResponse');
 
 $kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
 if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {

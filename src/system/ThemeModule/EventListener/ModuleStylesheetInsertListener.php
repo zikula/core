@@ -44,9 +44,9 @@ class ModuleStylesheetInsertListener implements EventSubscriberInterface
         }
         $controller = $event->getController()[0];
         if ($controller instanceof AbstractController) {
-            /** @var AbstractModule $module */
-            $module = $this->kernel->getModule($controller->getName());
             try {
+                /** @var AbstractModule $module */
+                $module = $this->kernel->getModule($controller->getName());
                 $module->addStylesheet();
             } catch (\InvalidArgumentException $e) {
                 // The module doesn't contain the default stylesheet.

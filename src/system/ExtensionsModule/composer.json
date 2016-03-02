@@ -1,5 +1,6 @@
 {
     "name": "zikula/extensions-module",
+    "version": "3.7.13",
     "description": "Extensions Administration Module",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -18,7 +19,17 @@
     "extra": {
         "zikula": {
             "url": "extensions",
-            "class": "Zikula\\ExtensionsModule\\ZikulaExtensionsModule"
+            "class": "Zikula\\ExtensionsModule\\ZikulaExtensionsModule",
+            "core-compatibility": ">=1.4.2",
+            "displayname": "Extensions",
+            "oldnames": [],
+            "capabilities": {
+                "admin": {"route": "zikulaextensionsmodule_module_viewmodulelist"}
+            },
+            "securityschema": {
+                "ZikulaExtensionsModule::": "::",
+                "ZikulaExtensionsModule::modify": "extensionName::extensionsId"
+            }
         }
     }
 }

@@ -1,0 +1,38 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Settings') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.itemsperpage) }}
+        <div class="alert alert-danger">{{ form_row(form.hardreset) }}</div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
+                {{ form_widget(form.cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+<script type="text/javascript">
+    (function ($) {
+        $(document).ready(function() {
+            $('#{{ form.hardreset.vars.id }}').click(function(event) {
+                if (!confirm('Warning! Do you really want to reset ALL displayname, url and description to defaults? This may break your existing indexed URLs, affecting SEO.')) {
+                    $(this).prop('checked', false);
+                }
+            });
+        });
+    })(jQuery);
+</script>

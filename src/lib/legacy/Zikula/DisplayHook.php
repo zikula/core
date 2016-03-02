@@ -19,9 +19,9 @@ use Zikula\Core\UrlInterface;
  * DisplayHook class.
  *
  * @deprecated since 1.4.0
- * @see Zikula\Core\Hook\DisplayHook
+ * @see Zikula\Bundle\HookBundle\Hook\DisplayHook
  */
-class Zikula_DisplayHook extends Zikula\Core\Hook\DisplayHook
+class Zikula_DisplayHook extends Zikula\Bundle\HookBundle\Hook\DisplayHook
 {
     public function __construct($name, $id, UrlInterface $url = null)
     {

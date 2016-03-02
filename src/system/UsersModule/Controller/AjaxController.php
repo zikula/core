@@ -15,8 +15,8 @@ namespace Zikula\UsersModule\Controller;
 
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\Core\Hook\ValidationHook;
-use Zikula\Core\Hook\ValidationProviders;
+use Zikula\Bundle\HookBundle\Hook\ValidationHook;
+use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use ModUtil;
 use SecurityUtil;

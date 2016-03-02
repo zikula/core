@@ -17,6 +17,6 @@
  *
  * @deprecated
  */
-class Zikula_HookManager_SubscriberBundle extends Zikula\Component\HookDispatcher\SubscriberBundle
+class Zikula_HookManager_SubscriberBundle extends Zikula\Bundle\HookBundle\Bundle\SubscriberBundle
 {
 }

@@ -1,0 +1,47 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-trash-o"></span> {{ __('Uninstall Module') }} '{{ extension.displayname }}'
+        </h3>
+
+        <p class="alert alert-warning">{{ __f("Do you really want to uninstall '%title%'?", {'%title%': extension.displayname}) }}</p>
+        <p class="alert alert-danger">{{  __('Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module.') }}</p>
+        {% if blocks|length > 0 %}
+            <div class="alert alert-danger">
+                {{ __("Warning! Removing this module will also remove the following blocks") }}:
+                <ul>
+                    {% for block in blocks %}
+                    <li>{{ block.blocktype }} : {{ block.title|default(block.description) }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if requiredDependents|length > 0 %}
+        <div class="alert alert-danger">
+            {{ __('Warning! Other modules present in the system require this module. If you uninstall this module then these modules that require it will also be uninstalled.') }}
+            <ul>
+                {% for dependent in requiredDependents %}
+                <li>{{ dependent.displayname }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.uninstall, {attr: {class: 'btn btn-success'}, icon:'fa-trash-o'}) }}
+                {{ form_widget(form.cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

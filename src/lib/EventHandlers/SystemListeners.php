@@ -12,10 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\Event\GenericEvent;
-
 /**
  * Event handler to override templates.
+ * @deprecated remove at Core-2.0
  */
 class SystemListeners extends Zikula_AbstractEventHandler
 {
@@ -32,12 +31,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.init', 'setupAutoloaderForGeneratedCategoryModels');
         $this->addHandlerDefinition('installer.module.uninstalled', 'deleteGeneratedCategoryModelsOnModuleRemove');
         $this->addHandlerDefinition('pageutil.addvar_filter', 'coreStylesheetOverride');
-        $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
-        $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
         $this->addHandlerDefinition('core.preinit', 'initDB');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
-        $this->addHandlerDefinition('zikula.link_collector', 'processHookListeners');
     }
 
     /**
@@ -212,69 +208,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
     }
 
     /**
-     * Dynamically add Hooks link to administration.
-     *
-     * Listens for 'module_dispatch.postexecute' events.
-     *
-     * @param Zikula_Event $event The event handler.
-     *
-     * @return void
-     */
-    public function addHooksLink(Zikula_Event $event)
-    {
-        // check if this is for this handler
-        if (!($event['modfunc'][1] == 'getLinks' && $event['type'] == 'admin' && $event['api'] == true)) {
-            return;
-        }
-
-        if (!SecurityUtil::checkPermission($event['modname'] . '::Hooks', '::', ACCESS_ADMIN)) {
-            return;
-        }
-
-        // return if module is not subscriber or provider capable
-        if (!HookUtil::isSubscriberCapable($event['modname']) && !HookUtil::isProviderCapable($event['modname'])) {
-            return;
-        }
-
-        $event->data[] = array(
-            'url' => $this->getContainer()->get('router')->generate('zikulaextensionsmodule_admin_hooks', array('moduleName' => $event['modname'])),
-            'text' => __('Hooks'),
-            'icon' => 'paperclip'
-        );
-    }
-
-    /**
-     * Dynamically add menu links to administration for system services.
-     *
-     * Listens for 'module_dispatch.postexecute' events.
-     *
-     * @param Zikula_Event $event The event handler.
-     *
-     * @return void
-     */
-    public function addServiceLink(Zikula_Event $event)
-    {
-        // check if this is for this handler
-        if (!($event['modfunc'][1] == 'getLinks' && $event['type'] == 'admin' && $event['api'] == true)) {
-            return;
-        }
-
-        // notify EVENT here to gather any system service links
-        $args = array('modname' => $event->getArgument('modname'));
-        $localevent = new \Zikula\Core\Event\GenericEvent($event->getSubject(), $args);
-        $this->eventManager->dispatch('module_dispatch.service_links', $localevent);
-        $sublinks = $localevent->getData();
-
-        if (!empty($sublinks)) {
-            $event->data[] = array(
-                'url' => $this->getContainer()->get('router')->generate('zikulaextensionsmodule_admin_moduleservices', array('moduleName' => $event['modname'])),
-                'text' => __('Services'),
-                'icon' => 'cogs',
-                'links' => $sublinks);
-        }
-    }
-
-    /**
      * Respond to theme.init events.
      *
      * Issues anti-clickjack headers.
@@ -293,21 +226,5 @@ class SystemListeners extends Zikula_AbstractEventHandler
         header('X-Frames-Options: SAMEORIGIN');
         //header("X-Content-Security-Policy: frame-ancestors 'self'");
         header('X-XSS-Protection: 1');
-    }
-
-    /**
-     * Respond to zikula.link_collector events.
-     *
-     * Create a BC Layer for the zikula.link_collector event to gather Hook-related links.
-     *
-     * @param GenericEvent $event
-     */
-    public function processHookListeners(GenericEvent $event)
-    {
-        $event->setArgument('modname', $event->getSubject());
-        $event->setArgument('modfunc', array(1 => 'getLinks'));
-        $event->setArgument('api', true);
-        $this->addHooksLink($event);
-        $this->addServiceLink($event);
     }
 }

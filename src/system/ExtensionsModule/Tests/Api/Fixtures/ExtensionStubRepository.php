@@ -77,11 +77,11 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
         return $this->entities;
     }
 
-    public function findOneBy(array $condition)
+    public function findOneBy(array $criteria, array $orderBy = null)
     {
         foreach ($this->entities as $entity) {
             $ret = true;
-            foreach ($condition as $prop => $value) {
+            foreach ($criteria as $prop => $value) {
                 $ret = $ret && ($entity[$prop] == $value);
             }
             if ($ret) {
@@ -94,7 +94,7 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return [];
+        return $this->entities;
     }
 
     public function get($name)

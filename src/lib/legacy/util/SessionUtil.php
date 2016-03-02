@@ -14,6 +14,7 @@
 
 /**
  * SessionUtil
+ * @deprecated remove at Core-2.0
  */
 class SessionUtil
 {

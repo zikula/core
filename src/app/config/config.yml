@@ -89,8 +89,8 @@ doctrine:
                     # hookstorage required in upgrade.php
                     zikula_hookstorage:
                         type: annotation
-                        prefix: Zikula\Component\HookDispatcher\Storage\Doctrine\Entity
-                        dir: "%kernel.root_dir%/../lib/Zikula/Component/HookDispatcher/Storage/Doctrine/Entity"
+                        prefix: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity
+                        dir: "%kernel.root_dir%/../lib/Zikula/Bundle/HookBundle/Dispatcher/Storage/Doctrine/Entity"
                         alias: ZikulaHookStorage # this one is optional and will default to the name set for the mapping
                         is_bundle: false
                     gedmo_translatable:

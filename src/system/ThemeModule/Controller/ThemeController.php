@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Event\GenericEvent;
+use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
@@ -53,14 +55,9 @@ class ThemeController extends AbstractController
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
-
-        if (isset($this->container['multisites.enabled']) && $this->container['multisites.enabled'] == 1) {
-            // only the main site can regenerate the themes list
-            if ($this->container['multisites.mainsiteurl'] == $request->query->get('sitedns', null)) {
-                //return true but any action has been made
-                $this->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
-            }
-        } else {
+        $vetoEvent = new GenericEvent();
+        $this->get('event_dispatcher')->dispatch(ExtensionEvents::REGENERATE_VETO, $vetoEvent);
+        if (!$vetoEvent->isPropagationStopped()) {
             $this->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
         }
 

@@ -1,0 +1,24 @@
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}{# @todo wrong header! see below #}
+
+{#{admincategorymenu}#}
+{#<div class="z-admin-content clearfix">#}
+    {#{modgetinfo modname=$currentmodule info='displayname' assign='displayName'}#}
+    {#{modgetimage modname=$currentmodule assign='image'}#}
+    {#{moduleheader modname=$currentmodule type='admin' title=$displayName putimage=true image=$image}<h3>#}
+    <h3>
+        <span class="fa fa-paperclip"></span>
+        {{ __('Module Services') }}
+    </h3>
+
+<p class="alert alert-info">{{ __('Module Services are functions provided by the core or other modules for this module.') }}</p>
+
+{% if count(sublinks) > 0 %}
+<ul class="list-unstyled">
+    {% for sublink in sublinks %}
+    <li><a href="{{ sublink.url }}" class="fa fa-cog">{{ sublink.text }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>{{ __('There arent any modules services available.') }}</p>
+{% endif %}
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

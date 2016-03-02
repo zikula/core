@@ -1,0 +1,26 @@
+{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-info-circle"></span>
+            {{ __('Incompatible version with the core') }} - {{ extension.displayname }}
+        </h3>
+        <strong>{{ __('The version of this module is incompatible with the version of the core.') }}</strong>
+        <ul>
+            <li>{{ __f('Current Core version is %version%',
+                {"%version%": '<span class="label label-success">' ~ pagevars.coredata.version ~ '</span>'})|raw }}</li>
+            {% if extension.core_min is not empty %}
+            <li>{{ __f('The minimum version of the core that this module supports is %s', {"%s": '<span class="label label-warning">' ~ extension.core_min ~ '</label>'})|raw }}</li>
+            {% endif %}
+            {% if extension.core_max is not empty %}
+            <li>{{ __f('The maximum version of the core that this module supports is %s', {"%s": '<span class="label label-warning">' ~ extension.core_max ~ '</label>'})|raw }}</li>
+            {% endif %}
+        </ul>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <a class="btn btn-danger" href="{{ path('zikulaextensionsmodule_module_viewmodulelist') }}"><i class="fa fa-check"></i> {{ __('Ok') }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}

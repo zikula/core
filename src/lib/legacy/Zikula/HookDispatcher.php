@@ -14,18 +14,19 @@
  */
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\Component\HookDispatcher\Exception\LogicException;
-use Zikula\Component\HookDispatcher\Hook;
-use Zikula\Component\HookDispatcher\ProviderBundle;
-use Zikula\Component\HookDispatcher\ServiceFactory;
-use Zikula\Component\HookDispatcher\StorageInterface;
-use Zikula\Component\HookDispatcher\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
+use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
+use Zikula\Bundle\HookBundle\Hook\Hook;
+use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
+use Zikula\Bundle\HookBundle\Dispatcher\ServiceFactory;
+use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 
 /**
  * HookDispatcher class.
- * @deprecated since 1.4.0 @see \Zikula\Component\HookDispatcher\HookDispatcher
+ * @deprecated since 1.4.0 @see \Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
  */
-class Zikula_HookDispatcher
+class Zikula_HookDispatcher implements HookDispatcherInterface
 {
     /**
      * Storage.
@@ -316,7 +317,7 @@ class Zikula_HookDispatcher
                     try {
                         $this->dispatcher->addListener($handler['eventname'], $callable);
                     } catch (\InvalidArgumentException $e) {
-                        throw new \Zikula\Component\HookDispatcher\Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                        throw new \Zikula\Bundle\HookBundle\Dispatcher\Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
                     }
                 }
             }
@@ -376,13 +377,13 @@ class Zikula_HookDispatcher
     {
         $currentClass = get_class($hook);
         switch ($currentClass) {
-            case 'Zikula\Core\Hook\ValidationHook':
-                /** @var $hook \Zikula\Core\Hook\ValidationHook */
+            case 'Zikula\Bundle\HookBundle\Hook\ValidationHook':
+                /** @var $hook \Zikula\Bundle\HookBundle\Hook\ValidationHook */
                 return new \Zikula_ValidationHook($name, $hook->getValidators());
                 break;
-            case 'Zikula\Core\Hook\ProcessHook':
+            case 'Zikula\Bundle\HookBundle\Hook\ProcessHook':
                 /** @var $oldUrl \Zikula\Core\ModUrl */
-                /** @var $hook \Zikula\Core\Hook\ProcessHook */
+                /** @var $hook \Zikula\Bundle\HookBundle\Hook\ProcessHook */
                 $oldUrl = $hook->getUrl();
                 if (isset($oldUrl)) {
                     $newUrl = new \Zikula_ModUrl($oldUrl->getApplication(), $oldUrl->getController(), $oldUrl->getAction(), $oldUrl->getLanguage(), $oldUrl->getArgs(), $oldUrl->getFragment());
@@ -392,8 +393,8 @@ class Zikula_HookDispatcher
 
                 return new \Zikula_ProcessHook($name, $hook->getId(), $newUrl);
                 break;
-            case 'Zikula\Core\Hook\FilterHook':
-                /** @var $hook \Zikula\Core\Hook\FilterHook */
+            case 'Zikula\Bundle\HookBundle\Hook\FilterHook':
+                /** @var $hook \Zikula\Bundle\HookBundle\Hook\FilterHook */
                 return new \Zikula_FilterHook($name, $hook->getData());
                 break;
             default:
