@@ -162,8 +162,10 @@ class JCSSUtil
             $overrideBootstrapPath = ThemeUtil::getVar('bootstrapPath', ''); // allows for theme override of bootstrap css path
             if (empty($overrideBootstrapPath)) {
                 $bootstrapFontAwesomePath = ServiceUtil::getManager()->getParameter('zikula.stylesheet.bootstrap-font-awesome.path');
-                array_unshift($stylesheets, $bootstrapFontAwesomePath);
+            } else {
+                $bootstrapFontAwesomePath = $overrideBootstrapPath;
             }
+            array_unshift($stylesheets, $bootstrapFontAwesomePath);
             // Add font-awesome
             if (!empty($overrideBootstrapPath)) {
                 $fontAwesomePath = ServiceUtil::getManager()->getParameter('zikula.stylesheet.fontawesome.min.path');
