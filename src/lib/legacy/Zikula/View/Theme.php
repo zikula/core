@@ -401,7 +401,8 @@ class Zikula_View_Theme extends Zikula_View
             $return .= $this->fetch($this->themeconfig['block']);
         } else {
             if (!empty($block['title'])) {
-                $return .= '<h4>' . DataUtil::formatForDisplayHTML($block['title']) . ' ' . $block['minbox'] . '</h4>';
+                $minbox = !empty($block['minbox']) ? $block['minbox'] : '';
+                $return .= '<h4>' . DataUtil::formatForDisplayHTML($block['title']) . ' ' . $minbox . '</h4>';
             }
             $return .= $block['content'];
         }
@@ -672,7 +673,7 @@ class Zikula_View_Theme extends Zikula_View
 
         // load the theme variables
         $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getvariables', array('theme' => $this->name));
-        if (!empty($variables)) {
+        if (!empty($variables['variables'])) {
             $this->assign($variables['variables']);
         }
     }

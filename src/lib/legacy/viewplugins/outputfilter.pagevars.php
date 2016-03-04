@@ -35,7 +35,8 @@ function smarty_outputfilter_pagevars($source, $view)
 
     $type = $view->getRequest()->get('type');
     $zkType = $view->getRequest()->attributes->get('_zkType');
-    $isAdminController = ($type == 'admin' || $zkType == 'admin');
+    $methodAnnotationValue = ServiceUtil::get('zikula_core.common.theme_engine')->getAnnotationValue(); // Core-2.0 FC
+    $isAdminController = ($type == 'admin' || $zkType == 'admin' || (isset($methodAnnotationValue) && ($methodAnnotationValue == 'admin')));
 
     // get list of stylesheets and scripts from JCSSUtil
     $jcss = JCSSUtil::prepareJCSS($cssjscombine, $view->cache_dir, $themeinfo, $isAdminController);

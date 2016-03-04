@@ -35,6 +35,7 @@ CHANGELOG - ZIKULA 1.4.x
         - use `"categorizable": {"entities": ["Acme\FooModule\Entity\FooEntity", "Acme\FooModule\Entity\BarEntity"]}`
         - BC with previous method maintained but deprecated, e.g. `"categorizable": ["Acme\FooModule\Entity\FooEntity", "Acme\FooModule\Entity\BarEntity"]`
     - Fix issues with dynamic url settings in ExtensionsModule
+    - Fix problems with legacy Themes (#2777)
  - Features:
     - Add new advanced block filtering based on a combination of any query parameter or request attributes.
     - Add core routing for all legacy urls (both normal and 'shorturls').
