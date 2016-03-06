@@ -344,7 +344,7 @@ class AdminInterfaceController extends AbstractController
                     'order' => $order,
                     'id' => $adminModule['id'],
                     'links' => $links,
-                    'icon' => \ModUtil::getModuleImagePath($adminModule['name'])
+                    'icon' => $masterRequest->getBaseUrl() . '/' . \ModUtil::getModuleImagePath($adminModule['name'])
                 );
 
                 $menuModules[$adminModule['name']] = $module;
