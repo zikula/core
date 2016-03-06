@@ -20,7 +20,7 @@ use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleLinksFunction;
 use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleFooterFunction;
 use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleHelpFunction;
 
-class ExtensionsExtension extends \Twig_Extension
+class UserInterfaceExtension extends \Twig_Extension
 {
 
 	private $handler;
@@ -31,7 +31,7 @@ class ExtensionsExtension extends \Twig_Extension
 	public function __construct(FragmentHandler $handler)
 	{
 		$this->handler = $handler;
-	}	
+	}
 	
 	public function getName()
 	{
