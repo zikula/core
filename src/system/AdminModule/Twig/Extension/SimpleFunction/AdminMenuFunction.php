@@ -42,12 +42,12 @@ class AdminMenuFunction
      */
     public function display($mode = 'categories', $template = 'tabs')
     {
-    	
-    	if (!\SecurityUtil::checkPermission('ZikulaAdminModule::', "::", ACCESS_EDIT)) {
-    		return ''; // Since no permission, return empty
-    	}
-    	
-        $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:menu', array('mode' => $mode,'template' => $template));
-        return $this->handler->render( $ref, 'inline', []);
+        if (!\SecurityUtil::checkPermission('ZikulaAdminModule::', "::", ACCESS_EDIT)) {
+            return ''; // Since no permission, return empty
+        }
+
+        $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:menu', array('mode' => $mode, 'template' => $template));
+
+        return $this->handler->render($ref, 'inline', []);
     }
 }

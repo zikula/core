@@ -22,34 +22,33 @@ use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleHelpFunction;
 
 class UserInterfaceExtension extends \Twig_Extension
 {
+    private $handler;
 
-	private $handler;
-	
-	/**
-	 * constructor.
-	 */
-	public function __construct(FragmentHandler $handler)
-	{
-		$this->handler = $handler;
-	}
-	
-	public function getName()
-	{
-		return 'zikulaextensionsmodule.admin_interface';
-	}
-	
-	/**
-	 * Returns a list of functions to add to the existing list.
-	 *
-	 * @return array An array of functions
-	 */
-	public function getFunctions()
-	{
-		return array(
-				new \Twig_SimpleFunction('moduleHeader', [new ModuleHeaderFunction($this->handler), 'display'], ['is_safe' => array('html')]),
-				new \Twig_SimpleFunction('moduleLinks', [new ModuleLinksFunction($this->handler), 'display'], ['is_safe' => array('html')]),
-				new \Twig_SimpleFunction('moduleHelp', [new ModuleHelpFunction($this->handler), 'display'], ['is_safe' => array('html')]),
-				new \Twig_SimpleFunction('moduleFooter', [new ModuleFooterFunction($this->handler), 'display'], ['is_safe' => array('html')]),
-		);
-	}
+    /**
+     * constructor.
+     */
+    public function __construct(FragmentHandler $handler)
+    {
+        $this->handler = $handler;
+    }
+
+    public function getName()
+    {
+        return 'zikulaextensionsmodule.admin_interface';
+    }
+
+    /**
+     * Returns a list of functions to add to the existing list.
+     *
+     * @return array An array of functions
+     */
+    public function getFunctions()
+    {
+        return array(
+                new \Twig_SimpleFunction('moduleHeader', [new ModuleHeaderFunction($this->handler), 'display'], ['is_safe' => array('html')]),
+                new \Twig_SimpleFunction('moduleLinks', [new ModuleLinksFunction($this->handler), 'display'], ['is_safe' => array('html')]),
+                new \Twig_SimpleFunction('moduleHelp', [new ModuleHelpFunction($this->handler), 'display'], ['is_safe' => array('html')]),
+                new \Twig_SimpleFunction('moduleFooter', [new ModuleFooterFunction($this->handler), 'display'], ['is_safe' => array('html')]),
+        );
+    }
 }

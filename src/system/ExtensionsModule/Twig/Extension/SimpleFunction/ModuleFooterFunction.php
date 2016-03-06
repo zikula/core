@@ -42,6 +42,7 @@ class ModuleFooterFunction
     public function display()
     {
         $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:footer');
-        return $this->handler->render( $ref, 'inline', []);
+
+        return $this->handler->render($ref, 'inline', []);
     }
 }

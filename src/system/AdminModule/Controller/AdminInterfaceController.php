@@ -25,8 +25,8 @@ use Zikula\Bundle\CoreBundle\Console\Application;
 /**
  * @Route("/admininterface")
  */
-class AdminInterfaceController extends AbstractController {
-
+class AdminInterfaceController extends AbstractController
+{
     /**
      * @Route("/header")
      *
@@ -34,7 +34,8 @@ class AdminInterfaceController extends AbstractController {
      *
      * @return Response symfony response object
      */
-    public function headerAction() {
+    public function headerAction()
+    {
         $masterRequest = $this->get('request_stack')->getMasterRequest();
         $caller = [];
         $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
@@ -53,7 +54,8 @@ class AdminInterfaceController extends AbstractController {
      *
      * @return Response symfony response object
      */
-    public function footerAction() {
+    public function footerAction()
+    {
         $masterRequest = $this->get('request_stack')->getMasterRequest();
         $caller = [];
         $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
@@ -74,7 +76,8 @@ class AdminInterfaceController extends AbstractController {
      *
      * @return Response symfony response object
      */
-    public function breadcrumbsAction() {
+    public function breadcrumbsAction()
+    {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -110,7 +113,8 @@ class AdminInterfaceController extends AbstractController {
      *
      * @return Response symfony response object
      */
-    public function developernoticesAction() {
+    public function developernoticesAction()
+    {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -165,7 +169,8 @@ class AdminInterfaceController extends AbstractController {
      *
      * @return Response symfony response object
      */
-    public function securityanalyzerAction() {
+    public function securityanalyzerAction()
+    {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -188,7 +193,8 @@ class AdminInterfaceController extends AbstractController {
      *
      * @return Response symfony response object
      */
-    public function updatecheckAction() {
+    public function updatecheckAction()
+    {
         if (!$this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatecheck')) {
             return [
                 'update_show' => false
@@ -262,10 +268,11 @@ class AdminInterfaceController extends AbstractController {
      *
      * @param string $mode
      *            string $template
-     *            
+     *
      * @return Response symfony response object
      */
-    public function menuAction() {
+    public function menuAction()
+    {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -325,7 +332,7 @@ class AdminInterfaceController extends AbstractController {
                 $menutexttitle = $adminModule['description'];
 
                 $links = ($this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin') == false)
-                        ? (array) \ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks') 
+                        ? (array) \ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks')
                         : $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin')
                         ;
 
@@ -366,13 +373,14 @@ class AdminInterfaceController extends AbstractController {
      * This function is internal for the time being and may be extended to be a proper library
      * or find an alternative solution later.
      *
-     * @param string $url            
+     * @param string $url
      * @param int $timeout
      *            default=5
-     *            
+     *
      * @return string|bool false if no url handling functions are present or url string
      */
-    private function zcurl($url, $timeout = 5) {
+    private function zcurl($url, $timeout = 5)
+    {
         $urlArray = parse_url($url);
         $data = '';
         $userAgent = 'Zikula/' . $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'Version_Num');

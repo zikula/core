@@ -11,13 +11,13 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\ExtensionsModule\Twig\Extension\SimpleFunction;
 
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
 class ModuleLinksFunction
 {
-
     private $handler;
 
     /**
@@ -60,6 +60,7 @@ class ModuleLinksFunction
             'first' => $first,
             'last' => $last
         ]);
+
         return $this->handler->render($ref, 'inline', []);
     }
 }
