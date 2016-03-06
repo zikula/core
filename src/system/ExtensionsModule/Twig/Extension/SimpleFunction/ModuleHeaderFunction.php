@@ -11,13 +11,13 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\ExtensionsModule\Twig\Extension\SimpleFunction;
 
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
 class ModuleHeaderFunction
 {
-
     private $handler;
 
     /**
@@ -30,7 +30,7 @@ class ModuleHeaderFunction
 
     /**
      * Inserts module header.
-     * 
+     *
      * Available parameters:
      *  type       Type of header (defaults to 'user')
      *  title      Title to display in header (optional, defaults to module name)
@@ -39,7 +39,7 @@ class ModuleHeaderFunction
      *  insertflashes If set to true, {insert name='getstatusmsg'} is put in front of template
      *  menufirst  If set to true, menu is first, then title
      *  image   If set to true, module image is also displayed next to title
-     *  
+     *
      * Examples:
      *
      * <samp>{( moduleHeader() }}</samp>
@@ -57,6 +57,7 @@ class ModuleHeaderFunction
             'menufirst' => $menufirst,
             'image' => $image
         ]);
+
         return $this->handler->render($ref, 'inline', []);
     }
 }

@@ -30,7 +30,7 @@ class AdminHeaderFunction
 
     /**
      * Inserts admin header.
-     * 
+     *
      * This has NO configuration options.
      *
      * Examples:
@@ -42,6 +42,7 @@ class AdminHeaderFunction
     public function display()
     {
         $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:header');
-        return $this->handler->render( $ref, 'inline', []);
+
+        return $this->handler->render($ref, 'inline', []);
     }
 }

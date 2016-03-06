@@ -42,6 +42,7 @@ class AdminBreadcrumbsFunction
     public function display()
     {
         $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:breadcrumbs');
-        return $this->handler->render( $ref, 'inline', []);
+
+        return $this->handler->render($ref, 'inline', []);
     }
 }
