@@ -17,8 +17,8 @@ namespace Zikula\AdminModule\Helper;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class UpdateCheckHelper {
-
+class UpdateCheckHelper
+{
     /**
      * @var \Zikula\ExtensionsModule\Api\VariableApi
      */
@@ -37,8 +37,8 @@ class UpdateCheckHelper {
     private $releases;
     private $checked;
 
-    public function __construct(VariableApi $variablesManager, RequestStack $requestStack) {
-
+    public function __construct(VariableApi $variablesManager, RequestStack $requestStack)
+    {
         $this->variablesManager = $variablesManager;
         $this->requestStack = $requestStack;
 
@@ -56,43 +56,50 @@ class UpdateCheckHelper {
         $this->checkForUpdates();
     }
 
-    public function getEnabled() {
+    public function getEnabled()
+    {
         return $this->enabled;
     }
 
-    public function getCurrentVersion() {
+    public function getCurrentVersion()
+    {
         return $this->currentVersion;
     }
 
-    public function getLastChecked() {
+    public function getLastChecked()
+    {
         return $this->lastChecked;
     }
 
-    public function getCheckInterval() {
+    public function getCheckInterval()
+    {
         return $this->checkInterval;
     }
 
-    public function getUpdateversion() {
+    public function getUpdateversion()
+    {
         return $this->updateversion;
     }
 
-    public function getReleases() {
+    public function getReleases()
+    {
         return $this->releases;
     }
 
-    public function versionCompare() {
+    public function versionCompare()
+    {
         return version_compare($this->updateversion, $this->currentVersion);
     }
 
-    public function checkForUpdates() {
-
+    public function checkForUpdates()
+    {
         $now = time();
 
         if ($this->force == false && (($now - $this->lastChecked) < ($this->checkInterval * 86400))) {
             // dont get an update because TTL not expired yet
         } else {
             $newVersionInfo = json_decode(trim($this->zcurl('https://api.github.com/repos/zikula/core/releases')), true);
-            // Will be set if rate limits encountered 
+            // Will be set if rate limits encountered
             if (!is_array($newVersionInfo) || isset($newVersionInfo['message'])) {
                 $this->releases = false;
             } else {
@@ -116,13 +123,14 @@ class UpdateCheckHelper {
      * This function is internal for the time being and may be extended to be a proper library
      * or find an alternative solution later.
      *
-     * @param string $url            
+     * @param string $url
      * @param int $timeout
      *            default=5
-     *            
+     *
      * @return string|bool false if no url handling functions are present or url string
      */
-    private function zcurl($url, $timeout = 5) {
+    private function zcurl($url, $timeout = 5)
+    {
         $urlArray = parse_url($url);
         $data = '';
         $userAgent = 'Zikula/' . $this->currentVersion;
@@ -181,5 +189,4 @@ class UpdateCheckHelper {
             return false;
         }
     }
-
 }

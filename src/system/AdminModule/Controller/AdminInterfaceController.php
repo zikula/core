@@ -182,11 +182,12 @@ class AdminInterfaceController extends AbstractController
      *
      * @return Response symfony response object
      */
-    public function updatecheckAction() {
+    public function updatecheckAction()
+    {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        
+
         $caller['_route'] = $this->get('request_stack')->getMasterRequest()->attributes->get('_route');
         $caller['_route_params'] = $this->get('request_stack')->getMasterRequest()->attributes->get('_route_params');
 
