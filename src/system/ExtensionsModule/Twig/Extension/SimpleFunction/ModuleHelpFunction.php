@@ -15,22 +15,26 @@
 namespace Zikula\ExtensionsModule\Twig\Extension\SimpleFunction;
 
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
+use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
 class ModuleHelpFunction
 {
+    /**
+     * @var FragmentHandler
+     */
     private $handler;
 
     /**
      * ModuleHelpFunction constructor.
+     * @param FragmentHandler $handler
      */
-    public function __construct($handler)
+    public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
     }
 
     /**
      * Inserts module help.
-     *
      *
      * This has NO configuration options.
      *

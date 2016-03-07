@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * Copyright Zikula Foundation 2016 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -16,11 +16,10 @@ namespace Zikula\AdminModule\Controller;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Console\Application;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * @Route("/admininterface")
@@ -36,14 +35,8 @@ class AdminInterfaceController extends AbstractController
      */
     public function headerAction()
     {
-        $masterRequest = $this->get('request_stack')->getMasterRequest();
-        $caller = [];
-        $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
-        $caller['_zkType'] = $masterRequest->attributes->get('_zkType');
-        $caller['_zkFunc'] = $masterRequest->attributes->get('_zkFunc');
-
-        return $this->render("ZikulaAdminModule:AdminInterface:header.html.twig", [
-                    'caller' => $caller
+        return $this->render("@ZikulaAdminModule/AdminInterface/header.html.twig", [
+            'caller' => $this->get('request_stack')->getMasterRequest()->attributes->all()
         ]);
     }
 
@@ -56,15 +49,13 @@ class AdminInterfaceController extends AbstractController
      */
     public function footerAction()
     {
-        $masterRequest = $this->get('request_stack')->getMasterRequest();
-        $caller = [];
-        $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
-        $caller['info'] = \ModUtil::getInfoFromName($caller['_zkModule']);
+        $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
+        $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
 
-        return $this->render("ZikulaAdminModule:AdminInterface:footer.html.twig", [
-                    'caller' => $caller,
-                    'symfonyversion' => \Symfony\Component\HttpKernel\Kernel::VERSION,
-                    'phpversion' => phpversion()
+        return $this->render("@ZikulaAdminModule/AdminInterface/footer.html.twig", [
+            'caller' => $caller,
+            'symfonyversion' => \Symfony\Component\HttpKernel\Kernel::VERSION,
+            'phpversion' => phpversion()
         ]);
     }
 
@@ -84,25 +75,22 @@ class AdminInterfaceController extends AbstractController
 
         $masterRequest = $this->get('request_stack')->getMasterRequest();
         $requested_cid = $masterRequest->attributes->get('acid');
-        $caller = [];
-        $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
-        $caller['_zkType'] = $masterRequest->attributes->get('_zkType');
-        $caller['_zkFunc'] = $masterRequest->attributes->get('_zkFunc');
-        $caller['info'] = \ModUtil::getInfoFromName($caller['_zkModule']);
+        $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
+        $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
 
         if ($caller['_zkModule'] == 'ZikulaAdminModule') {
             $cid = empty($requested_cid) ? $this->getVar('startcategory') : $requested_cid;
         } else {
             $cid = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', [
-                        'mid' => $caller['info']['id']
+                'mid' => $caller['info']['id']
             ]);
         }
         $caller['category'] = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', [
-                    'cid' => $cid
+            'cid' => $cid
         ]);
 
-        return $this->render("ZikulaAdminModule:AdminInterface:breadcrumbs.html.twig", [
-                    'caller' => $caller
+        return $this->render("@ZikulaAdminModule/AdminInterface/breadcrumbs.html.twig", [
+            'caller' => $caller
         ]);
     }
 
@@ -157,8 +145,8 @@ class AdminInterfaceController extends AbstractController
             ];
         }
 
-        return $this->render("ZikulaAdminModule:AdminInterface:developernotices.html.twig", [
-                    'developer' => $data
+        return $this->render("@ZikulaAdminModule/AdminInterface/developernotices.html.twig", [
+            'developer' => $data
         ]);
     }
 
@@ -178,11 +166,11 @@ class AdminInterfaceController extends AbstractController
         $data = [];
         $data['scactive'] = (bool) \ModUtil::available('ZikulaSecurityCenterModule');
         // check for outputfilter
-        $data['useids'] = (bool) (\ModUtil::available('ZikulaSecurityCenterModule') && $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'useids') == 1);
-        $data['idssoftblock'] = $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'idssoftblock');
+        $data['useids'] = (bool) (\ModUtil::available('ZikulaSecurityCenterModule') && $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'useids') == 1);
+        $data['idssoftblock'] = $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'idssoftblock');
 
-        return $this->render("ZikulaAdminModule:AdminInterface:securityanalyzer.html.twig", [
-                    'security' => $data
+        return $this->render("@ZikulaAdminModule/AdminInterface/securityanalyzer.html.twig", [
+            'security' => $data
         ]);
     }
 
@@ -195,7 +183,7 @@ class AdminInterfaceController extends AbstractController
      */
     public function updatecheckAction()
     {
-        if (!$this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatecheck')) {
+        if (!$this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'updatecheck')) {
             return [
                 'update_show' => false
             ];
@@ -203,9 +191,9 @@ class AdminInterfaceController extends AbstractController
         $force = false;
 
         $now = time();
-        $lastChecked = (int) $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatelastchecked');
-        $checkInterval = (int) $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatefrequency') * 86400;
-        $updateversion = $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updateversion');
+        $lastChecked = (int) $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'updatelastchecked');
+        $checkInterval = (int) $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'updatefrequency') * 86400;
+        $updateversion = $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'updateversion');
         $update_show = false;
         $update_version = false;
 
@@ -213,7 +201,7 @@ class AdminInterfaceController extends AbstractController
             // dont get an update because TTL not expired yet
             $onlineVersion = $updateversion;
         } else {
-            $this->get('zikula_extensions_module.api.variable')->set('ZConfig', 'updatelastchecked', (int) time());
+            $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'updatelastchecked', (int) time());
 
             $onlineVersion = '';
             $newVersionInfo = trim($this->zcurl('https://api.github.com/repos/zikula/core/releases'));
@@ -243,21 +231,19 @@ class AdminInterfaceController extends AbstractController
             if ($onlineVersion == '') {
                 $update_show = false;
             }
-            $this->get('zikula_extensions_module.api.variable')->set('ZConfig', 'updateversion', $onlineVersion);
+            $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'updateversion', $onlineVersion);
         }
 
         // compare with db Version_Num
         // if 1 then there is a later version available
-        if (version_compare($onlineVersion, $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'Version_Num') == 1)) {
+        if (version_compare($onlineVersion, $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'Version_Num') == 1)) {
             $update_show = true;
             $update_version = $onlineVersion;
-        } else {
-            $update_show = false;
         }
 
-        return $this->render("ZikulaAdminModule:AdminInterface:updatecheck.html.twig", [
-                    'update_show' => $update_show,
-                    'update_version' => $update_version
+        return $this->render("@ZikulaAdminModule/AdminInterface/updatecheck.html.twig", [
+            'update_show' => $update_show,
+            'update_version' => $update_version
         ]);
     }
 
@@ -265,9 +251,6 @@ class AdminInterfaceController extends AbstractController
      * @Route("/menu")
      *
      * Admin menu.
-     *
-     * @param string $mode
-     *            string $template
      *
      * @return Response symfony response object
      */
@@ -285,25 +268,27 @@ class AdminInterfaceController extends AbstractController
         $caller['_zkType'] = $masterRequest->attributes->get('_zkType');
         $caller['_zkFunc'] = $masterRequest->attributes->get('_zkFunc');
         $caller['path'] = $masterRequest->getPathInfo();
-        $caller['info'] = \ModUtil::getInfoFromName($caller['_zkModule']);
+        $caller['info'] = !empty($caller['_zkModule']) ? $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']) : [];
         // category we are in
         $requestedCid = $masterRequest->attributes->get('acid');
-        if ($caller['_zkModule'] == 'ZikulaAdminModule' || $caller['_zkModule'] == '') {
+        if ($caller['_zkModule'] == 'ZikulaAdminModule' || empty($caller['_zkModule'])) {
             $cid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
         } else {
             $cid = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', [
-                        'mid' => $caller['info']['id']
+                'mid' => $caller['info']['id']
             ]);
         }
         $caller['category'] = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', [
-                    'cid' => $cid
+            'cid' => $cid
         ]);
         // mode requested
-        $mode = (null !== $currentRequest->attributes->get('mode')) ? $currentRequest->attributes->get('mode') : 'categories';
+        $mode = $currentRequest->attributes->has('mode') ? $currentRequest->attributes->get('mode') : 'categories';
+        $mode = in_array($mode, ['categories', 'modules']) ? $mode : 'categories';
         // template requested
-        $template = (null !== $currentRequest->attributes->get('template')) ? $currentRequest->attributes->get('template') : 'tabs';
+        $template = $currentRequest->attributes->has('template') ? $currentRequest->attributes->get('template') : 'tabs';
+        $template = in_array($template, ['tabs', 'panel']) ? $template : 'tabs';
         // get admin capable modules
-        $adminModules = \ModUtil::getModulesCapableOf('admin');
+        $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
         // sort modules by displayname
         $moduleNames = [];
         foreach ($adminModules as $key => $module) {
@@ -316,14 +301,14 @@ class AdminInterfaceController extends AbstractController
             if ($this->hasPermission("$adminModule[name]::", '::', ACCESS_EDIT)) {
                 // cat
                 $catid = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', [
-                            'mid' => $adminModule['id']
+                    'mid' => $adminModule['id']
                 ]);
                 $category = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', [
-                            'cid' => $catid
+                    'cid' => $catid
                 ]);
                 // order
                 $order = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getSortOrder', [
-                            'mid' => \ModUtil::getIdFromName($adminModule['name'])
+                    'mid' => \ModUtil::getIdFromName($adminModule['name'])
                 ]);
                 // url
                 $menutexturl = isset($adminModule['capabilities']['admin']['url']) ? $adminModule['capabilities']['admin']['url'] : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
@@ -331,9 +316,10 @@ class AdminInterfaceController extends AbstractController
                 $menutext = $adminModule['displayname'];
                 $menutexttitle = $adminModule['description'];
 
-                $links = ($this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin') == false)
+                $linkCollection = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
+                $links = ($linkCollection == false)
                         ? (array) \ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks')
-                        : $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin')
+                        : $linkCollection
                         ;
 
                 $module = array(
@@ -349,21 +335,22 @@ class AdminInterfaceController extends AbstractController
 
                 $menuModules[$adminModule['name']] = $module;
                 // category menu
-                $menuCategories[$catid]['title'] = $category['name'];
-                $menuCategories[$catid]['url'] = $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', [
+                $menuCategories[$category['sortorder']]['title'] = $category['name'];
+                $menuCategories[$category['sortorder']]['url'] = $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', [
                     'acid' => $category['cid']
                 ]);
-                $menuCategories[$catid]['description'] = $category['description'];
-                $menuCategories[$catid]['cid'] = $category['cid'];
-                $menuCategories[$catid]['modules'][$adminModule['name']] = $module;
+                $menuCategories[$category['sortorder']]['description'] = $category['description'];
+                $menuCategories[$category['sortorder']]['cid'] = $category['cid'];
+                $menuCategories[$category['sortorder']]['modules'][$adminModule['name']] = $module;
             }
         }
         $fullTemplateName = $mode . '.' . $template;
+        ksort($menuCategories);
 
-        return $this->render("ZikulaAdminModule:AdminInterface:$fullTemplateName.html.twig", [
-                    'adminMenu' => ('categories' == $mode) ? $menuCategories : $menuModules,
-                    'mode' => $mode,
-                    'caller' => $caller
+        return $this->render("@ZikulaAdminModule/AdminInterface/$fullTemplateName.html.twig", [
+            'adminMenu' => ('categories' == $mode) ? $menuCategories : $menuModules,
+            'mode' => $mode,
+            'caller' => $caller
         ]);
     }
 
@@ -374,8 +361,7 @@ class AdminInterfaceController extends AbstractController
      * or find an alternative solution later.
      *
      * @param string $url
-     * @param int $timeout
-     *            default=5
+     * @param int $timeout default=5
      *
      * @return string|bool false if no url handling functions are present or url string
      */
@@ -383,7 +369,7 @@ class AdminInterfaceController extends AbstractController
     {
         $urlArray = parse_url($url);
         $data = '';
-        $userAgent = 'Zikula/' . $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'Version_Num');
+        $userAgent = 'Zikula/' . $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'Version_Num');
         $ref = $this->get('request_stack')
                 ->getMasterRequest()
                 ->getBaseURL();

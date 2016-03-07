@@ -2,15 +2,16 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:js/jQuery.mmenu-5.5.1/dist/core/css/jquery.mmenu.all.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/mmenu-hiddenpanel-customwidth.css')) }}
 
-{% macro draw(links, caller, module) %} {% for link in links %} 
+{% macro draw(links, caller, module) %}
+    {% for link in links %}
         {% if link.links is defined %}
             <li class="{% if caller._zkModule == module.modname and caller.path == link.url %} Selected{% else %}{% endif %}">
-                <a href="{{ link.url }}" title="{{ link.text }}"><i class="{{ link.icon }}"> </i> {{ link.text }}</a>
+                <a href="{{ link.url }}" title="{{ link.text }}"><i class="{{ link.icon }}"></i> {{ link.text }}</a>
                 <ul class="text-left">{{ _self.draw(link.links, caller, module) }}</ul>
             </li>
         {% else %}
             <li class="{% if caller._zkModule == module.modname and caller.path == link.url %} Selected {% else %}{% endif %}">
-                <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %} <i class="{{ link.icon }}"> </i> {% endif %} {{ link.text }}</a>
+                <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %} <i class="{{ link.icon }}"></i> {% endif %} {{ link.text }}</a>
             </li>
         {% endif %}
     {% endfor %}

@@ -5,11 +5,13 @@
 {% macro draw(links, caller, module) %}
     {% for link in links %}   
         {% if link.links is defined %}    
-            <li class="{% if caller._zkModule == module.modname and caller.path == link.url %} Selected {% else %} {% endif %}" ><a href="{{ link.url }}" title="{{ link.text }}"> <i class="{{ link.icon }}"> </i> {{ link.text }}</a>
+            <li class="{% if caller._zkModule == module.modname and caller.path == link.url %}Selected{% endif %}">
+                <a href="{{ link.url }}" title="{{ link.text }}"><i class="{{ link.icon }}"></i> {{ link.text }}</a>
                 <ul class="text-left">{{ _self.draw(link.links, caller, module) }}</ul>            
             </li>                
         {% else %}
-            <li class="{% if caller._zkModule == module.modname and caller.path == link.url %} Selected {% else %} {% endif %}" ><a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %} <i class="{{ link.icon }}"> </i> {% endif %} {{ link.text }}</a>          
+            <li class="{% if caller._zkModule == module.modname and caller.path == link.url %}Selected{% endif %}">
+                <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i class="{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
             </li> 
         {% endif %}    
     {% endfor %}

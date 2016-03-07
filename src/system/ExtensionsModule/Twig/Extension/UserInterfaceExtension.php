@@ -22,10 +22,14 @@ use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleHelpFunction;
 
 class UserInterfaceExtension extends \Twig_Extension
 {
+    /**
+     * @var FragmentHandler
+     */
     private $handler;
 
     /**
      * constructor.
+     * @param FragmentHandler $handler
      */
     public function __construct(FragmentHandler $handler)
     {
@@ -44,11 +48,11 @@ class UserInterfaceExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-                new \Twig_SimpleFunction('moduleHeader', [new ModuleHeaderFunction($this->handler), 'display'], ['is_safe' => array('html')]),
-                new \Twig_SimpleFunction('moduleLinks', [new ModuleLinksFunction($this->handler), 'display'], ['is_safe' => array('html')]),
-                new \Twig_SimpleFunction('moduleHelp', [new ModuleHelpFunction($this->handler), 'display'], ['is_safe' => array('html')]),
-                new \Twig_SimpleFunction('moduleFooter', [new ModuleFooterFunction($this->handler), 'display'], ['is_safe' => array('html')]),
-        );
+        return [
+            new \Twig_SimpleFunction('moduleHeader', [new ModuleHeaderFunction($this->handler), 'display'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('moduleLinks', [new ModuleLinksFunction($this->handler), 'display'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('moduleHelp', [new ModuleHelpFunction($this->handler), 'display'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('moduleFooter', [new ModuleFooterFunction($this->handler), 'display'], ['is_safe' => ['html']]),
+        ];
     }
 }

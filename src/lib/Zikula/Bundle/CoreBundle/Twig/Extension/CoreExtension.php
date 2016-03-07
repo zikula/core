@@ -377,7 +377,7 @@ class CoreExtension extends \Twig_Extension
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
-        $result = \SecurityUtil::checkPermission($component, $instance, constant($level));
+        $result = $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, constant($level));
 
         return (bool) $result;
     }

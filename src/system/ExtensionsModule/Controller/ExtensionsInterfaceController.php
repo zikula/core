@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2016 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -15,10 +15,9 @@ namespace Zikula\ExtensionsModule\Controller;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Console\Application;
 
 /**
  * @Route("/extensionsinterface")
@@ -34,15 +33,11 @@ class ExtensionsInterfaceController extends AbstractController
      */
     public function headerAction()
     {
-        $masterRequest = $this->get('request_stack')->getMasterRequest();
         $currentRequest = $this->get('request_stack')->getCurrentRequest();
-        $caller = [];
-        $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
-        $caller['_zkType'] = $masterRequest->attributes->get('_zkType');
-        $caller['_zkFunc'] = $masterRequest->attributes->get('_zkFunc');
-        $caller['info'] = \ModUtil::getInfoFromName($caller['_zkModule']);
+        $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
+        $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
 
-        return $this->render("ZikulaExtensionsModule:ExtensionsInterface:header.html.twig", [
+        return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/header.html.twig", [
             'caller' => $caller,
             'title' => ('' != $currentRequest->attributes->get('title')) ? $currentRequest->attributes->get('title') : $caller['info']['displayname'],
             'titlelink' => ('' != $currentRequest->attributes->get('titlelink')) ? $currentRequest->attributes->get('titlelink') : false,
@@ -57,25 +52,19 @@ class ExtensionsInterfaceController extends AbstractController
     /**
      * @Route("/footer")
      *
-     *
      * Module footer
      *
      * @return Response symfony response object
      */
     public function footerAction()
     {
-        $masterRequest = $this->get('request_stack')->getMasterRequest();
-        $caller = [];
-        $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
-
-        return $this->render("ZikulaExtensionsModule:ExtensionsInterface:footer.html.twig", [
-            'caller' => $caller
+        return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/footer.html.twig", [
+            'caller' => $this->get('request_stack')->getMasterRequest()->attributes->all()
         ]);
     }
 
     /**
      * @Route("/help")
-     *
      *
      * display the module help page
      *
@@ -85,13 +74,12 @@ class ExtensionsInterfaceController extends AbstractController
      */
     public function helpAction()
     {
-        return $this->render("ZikulaExtensionsModule:ExtensionsInterface:help.html.twig");
+        return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/help.html.twig");
     }
 
     /**
      * @Route("/breadcrumbs")
      * @Method("GET")
-     *
      *
      * Admin breadcrumbs
      *
@@ -99,21 +87,16 @@ class ExtensionsInterfaceController extends AbstractController
      */
     public function breadcrumbsAction()
     {
-        $masterRequest = $this->get('request_stack')->getMasterRequest();
-        $caller = [];
-        $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
-        $caller['_zkType'] = $masterRequest->attributes->get('_zkType');
-        $caller['_zkFunc'] = $masterRequest->attributes->get('_zkFunc');
-        $caller['info'] = \ModUtil::getInfoFromName($caller['_zkModule']);
+        $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
+        $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
 
-        return $this->render("ZikulaExtensionsModule:ExtensionsInterface:breadcrumbs.html.twig", [
+        return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/breadcrumbs.html.twig", [
             'caller' => $caller
         ]);
     }
 
     /**
      * @Route("/links")
-     *
      *
      * Open the admin container
      *
@@ -123,11 +106,8 @@ class ExtensionsInterfaceController extends AbstractController
     {
         $masterRequest = $this->get('request_stack')->getMasterRequest();
         $currentRequest = $this->get('request_stack')->getCurrentRequest();
-        $caller = [];
-        $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
-        $caller['_zkType'] = $masterRequest->attributes->get('_zkType');
-        $caller['_zkFunc'] = $masterRequest->attributes->get('_zkFunc');
-        $caller['info'] = \ModUtil::getInfoFromName($caller['_zkModule']);
+        $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
+        $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
         // your own links array
         $links = ('' !== $currentRequest->attributes->get('links')) ? $currentRequest->attributes->get('links') : '';
         // you can pass module name you want to get links for but
@@ -152,7 +132,7 @@ class ExtensionsInterfaceController extends AbstractController
             $links = $this->get('zikula.link_container_collector')->getLinks($modname, $links_type);
         }
 
-        return $this->render("ZikulaExtensionsModule:ExtensionsInterface:links.html.twig", [
+        return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/links.html.twig", [
             'caller' => $caller,
             'menu_css' => $menu_css,
             'links' => $links,

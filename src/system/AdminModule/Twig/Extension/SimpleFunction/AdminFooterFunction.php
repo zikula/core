@@ -15,21 +15,27 @@
 namespace Zikula\AdminModule\Twig\Extension\SimpleFunction;
 
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
+use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
 class AdminFooterFunction
 {
+    /**
+     * @var FragmentHandler
+     */
     private $handler;
 
     /**
      * AdminFooterFunction constructor.
+     * @param FragmentHandler $handler
      */
-    public function __construct($handler)
+    public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
     }
 
     /**
      * Inserts admin footer.
+     *
      * This has NO configuration options.
      *
      * Examples:

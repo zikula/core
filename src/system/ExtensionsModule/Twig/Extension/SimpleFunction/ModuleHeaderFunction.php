@@ -15,15 +15,20 @@
 namespace Zikula\ExtensionsModule\Twig\Extension\SimpleFunction;
 
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
+use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
 class ModuleHeaderFunction
 {
+    /**
+     * @var FragmentHandler
+     */
     private $handler;
 
     /**
      * ModuleHeaderFunction constructor.
+     * @param FragmentHandler $handler
      */
-    public function __construct($handler)
+    public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
     }
@@ -31,30 +36,28 @@ class ModuleHeaderFunction
     /**
      * Inserts module header.
      *
-     * Available parameters:
-     *  type       Type of header (defaults to 'user')
-     *  title      Title to display in header (optional, defaults to module name)
-     *  titlelink  Link to attach to title (optional, defaults to none)
-     *  setpagetitle If set to true, {pagesetvar} is used to set page title
-     *  insertflashes If set to true, {insert name='getstatusmsg'} is put in front of template
-     *  menufirst  If set to true, menu is first, then title
-     *  image   If set to true, module image is also displayed next to title
-     *
      * Examples:
      *
      * <samp>{( moduleHeader() }}</samp>
      *
+     * @param string $type Type of header (defaults to 'user')
+     * @param string $title Title to display in header (optional, defaults to module name)
+     * @param string $titleLink Link to attach to title (optional, defaults to none)
+     * @param bool $setPageTitle If set to true, {pagesetvar} is used to set page title is used to set page title
+     * @param bool $insertFlashes If set to true, {insert name='getstatusmsg'} is put in front of template is put in front of template
+     * @param bool $menuFirst If set to true, menu is first, then title
+     * @param bool $image If set to true, module image is also displayed next to title
      * @return string
      */
-    public function display($type = 'user', $title = '', $titlelink = '', $setpagetitle = false, $insertflashes = false, $menufirst = false, $image = false)
+    public function display($type = 'user', $title = '', $titleLink = '', $setPageTitle = false, $insertFlashes = false, $menuFirst = false, $image = false)
     {
         $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:header', [
             'type' => $type,
             'title' => $title,
-            'titlelink' => $titlelink,
-            'setpagetitle' => $setpagetitle,
-            'insertflashes' => $insertflashes,
-            'menufirst' => $menufirst,
+            'titlelink' => $titleLink,
+            'setpagetitle' => $setPageTitle,
+            'insertflashes' => $insertFlashes,
+            'menufirst' => $menuFirst,
             'image' => $image
         ]);
 

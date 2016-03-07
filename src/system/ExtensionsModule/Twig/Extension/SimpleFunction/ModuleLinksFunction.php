@@ -15,15 +15,20 @@
 namespace Zikula\ExtensionsModule\Twig\Extension\SimpleFunction;
 
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
+use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
 class ModuleLinksFunction
 {
+    /**
+     * @var FragmentHandler
+     */
     private $handler;
 
     /**
      * ModuleLinksFunction constructor.
+     * @param FragmentHandler $handler
      */
-    public function __construct($handler)
+    public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
     }
@@ -31,32 +36,29 @@ class ModuleLinksFunction
     /**
      * Inserts module links.
      *
-     *
-     * Available parameters:
-     * type Links type admin or user
-     * links Array with menulinks (text, url, title, id, class, disabled) (optional)
-     * modname Module name to display links for (optional)
-     * menuid ID for the unordered list (optional)
-     * menuclass Class for the unordered list (optional)
-     * itemclass Class for li element of unordered list
-     * first Class for the first element (optional)
-     * last Class for the last element (optional)
-     *
      * Examples:
      *
      * <samp>{( moduleLinks() }}</samp>
      *
+     * @param string $type Links type admin or user
+     * @param string $links Array with menulinks (text, url, title, id, class, disabled) (optional)
+     * @param string $modName Module name to display links for (optional)
+     * @param string $menuId ID for the unordered list (optional)
+     * @param string $menuClass Class for the unordered list (optional)
+     * @param string $itemClass Class for li element of unordered list
+     * @param string $first Class for the first element (optional)
+     * @param string $last Class for the last element (optional)
      * @return string
      */
-    public function display($type = 'user', $links = '', $modname = '', $menuid = '', $menuclass = '', $itemclass = '', $first = '', $last = '')
+    public function display($type = 'user', $links = '', $modName = '', $menuId = '', $menuClass = '', $itemClass = '', $first = '', $last = '')
     {
         $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:links', [
             'type' => $type,
             'links' => $links,
-            'modname' => $modname,
-            'menuid' => $menuid,
-            'menuclass' => $menuclass,
-            'itemclass' => $itemclass,
+            'modname' => $modName,
+            'menuid' => $menuId,
+            'menuclass' => $menuClass,
+            'itemclass' => $itemClass,
             'first' => $first,
             'last' => $last
         ]);

@@ -13,12 +13,12 @@
                         <h4>{{ __('Security warnings') }}</h4>  
                         {% if not security.scactive %}
                             <p>
-                                <a href="{{ adminhelpurl }}"> {{  __("Security center module is not installed, but preferably should be.") }}</a>
+                                <a href="{{ adminhelpurl }}"> {{ __("Security center module is not installed, but preferably should be.") }}</a>
                             </p>
                         {% endif %}
                         {% if  security.useids and security.idssoftblock %}
                             <p>
-                                <a href="{{ adminhelpurl }}"> {{  __("PHPIDS is activated, but requests are NOT blocked.") }}</a>
+                                <a href="{{ adminhelpurl }}"> {{ __("PHPIDS is activated, but requests are NOT blocked.") }}</a>
                             </p>
                         {% endif %}
                     </div> 
