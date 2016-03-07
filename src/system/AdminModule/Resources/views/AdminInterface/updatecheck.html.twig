@@ -8,15 +8,17 @@
                         <strong><i class="fa fa-caret-right fa-fw"></i>{{ __('Upgrade found!') }}</a></strong>
                 </div>
                 <div class="collapse" id="updatecheck_full">  
-                    <div class="col-md-6">
-                        <p>{{ __('A new version of the Zikula core is available. Please download the new Zikula core') }}</p>
+                    <div class="col-md-12">
+                        <p>{{  __('A new version of the Zikula core is available. Please download the new Zikula core') }}</p>
                         <a class="text-success" href="http://zikula.org/">
                             <i class="fa fa-cloud-download fa-3x"></i>
-                            <strong class="fa-2x">{{ update_version }}</strong>
+                            <strong class="fa-2x">{{ update_version.name }}</strong>
                         </a>
-                    </div>
+                        <p>{{ update_version.body|nl2br }} </p>
+                    </div>                        
                 </div>
             </div>
         </div>
     {% endif %}
 {% endif %}
+{{ dump() }}

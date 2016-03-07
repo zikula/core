@@ -75,7 +75,7 @@ class AdminInterfaceController extends AbstractController
 
         $masterRequest = $this->get('request_stack')->getMasterRequest();
         $requested_cid = $masterRequest->attributes->get('acid');
-        $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
+        $caller = $masterRequest->attributes->all();
         $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
 
         if ($caller['_zkModule'] == 'ZikulaAdminModule') {
@@ -195,20 +195,13 @@ class AdminInterfaceController extends AbstractController
         $checkInterval = (int) $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'updatefrequency') * 86400;
         $updateversion = $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'updateversion');
         $update_show = false;
-        $update_version = false;
+        $onlineVersion = ['tag_name' => '', 'checked' => false];
 
         if ($force == false && (($now - $lastChecked) < $checkInterval)) {
             // dont get an update because TTL not expired yet
-            $onlineVersion = $updateversion;
+            $onlineVersion['tag_name'] = $updateversion;
         } else {
-            $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'updatelastchecked', (int) time());
-
-            $onlineVersion = '';
-            $newVersionInfo = trim($this->zcurl('https://api.github.com/repos/zikula/core/releases'));
-            if ($newVersionInfo === '') {
-                $update_show = false;
-            }
-            $newVersionInfo = json_decode($newVersionInfo, true);
+            $newVersionInfo = json_decode(trim($this->zcurl('https://api.github.com/repos/zikula/core/releases')), true);
             if (!is_array($newVersionInfo) || isset($newVersionInfo['message']) /* Will be set if rate limits encountered */) {
                 $update_show = false;
             }
@@ -221,29 +214,29 @@ class AdminInterfaceController extends AbstractController
                 if (!array_key_exists('prerelease', $version) || $version['prerelease']) {
                     continue;
                 }
-                if (array_key_exists('tag_name', $version)) {
-                    if (version_compare($version['tag_name'], $onlineVersion) == 1) {
-                        $onlineVersion = $version['tag_name'];
-                    }
+                if (array_key_exists('tag_name', $version) && version_compare($version['tag_name'], $onlineVersion['tag_name']) == 1) {
+                    $onlineVersion = $version;
+                    $onlineVersion['checked'] = true;
                 }
             }
+        }
 
-            if ($onlineVersion == '') {
-                $update_show = false;
-            }
-            $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'updateversion', $onlineVersion);
+        if ($onlineVersion['checked'] === true && $onlineVersion['tag_name'] !== '') {
+            $this->get('zikula_extensions_module.api.variable')->set('ZConfig', 'updatelastchecked', (int) time());
+            $this->get('zikula_extensions_module.api.variable')->set('ZConfig', 'updateversion', $onlineVersion['tag_name']);
         }
 
         // compare with db Version_Num
         // if 1 then there is a later version available
-        if (version_compare($onlineVersion, $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'Version_Num') == 1)) {
+        if (version_compare($onlineVersion['tag_name'], $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'Version_Num') == 1)) {
             $update_show = true;
-            $update_version = $onlineVersion;
+        } else {
+            $update_show = false;
         }
 
         return $this->render("@ZikulaAdminModule/AdminInterface/updatecheck.html.twig", [
-            'update_show' => $update_show,
-            'update_version' => $update_version
+                    'update_show' => $update_show && $onlineVersion['checked'] ? true : false ,
+                    'update_version' => $onlineVersion
         ]);
     }
 
@@ -425,4 +418,5 @@ class AdminInterfaceController extends AbstractController
             return false;
         }
     }
+
 }
