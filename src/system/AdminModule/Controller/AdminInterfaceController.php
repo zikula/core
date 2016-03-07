@@ -164,6 +164,7 @@ class AdminInterfaceController extends AbstractController
         }
 
         $data = [];
+        $data['updatecheck'] = $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'updatecheck');
         $data['scactive'] = (bool) \ModUtil::available('ZikulaSecurityCenterModule');
         // check for outputfilter
         $data['useids'] = (bool) (\ModUtil::available('ZikulaSecurityCenterModule') && $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'useids') == 1);
@@ -181,62 +182,17 @@ class AdminInterfaceController extends AbstractController
      *
      * @return Response symfony response object
      */
-    public function updatecheckAction()
-    {
-        if (!$this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'updatecheck')) {
-            return [
-                'update_show' => false
-            ];
+    public function updatecheckAction() {
+        if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
         }
-        $force = false;
-
-        $now = time();
-        $lastChecked = (int) $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'updatelastchecked');
-        $checkInterval = (int) $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'updatefrequency') * 86400;
-        $updateversion = $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'updateversion');
-        $update_show = false;
-        $onlineVersion = ['tag_name' => '', 'checked' => false];
-
-        if ($force == false && (($now - $lastChecked) < $checkInterval)) {
-            // dont get an update because TTL not expired yet
-            $onlineVersion['tag_name'] = $updateversion;
-        } else {
-            $newVersionInfo = json_decode(trim($this->zcurl('https://api.github.com/repos/zikula/core/releases')), true);
-            if (!is_array($newVersionInfo) || isset($newVersionInfo['message']) /* Will be set if rate limits encountered */) {
-                $update_show = false;
-            }
-
-            foreach ($newVersionInfo as $version) {
-                if (!is_array($version)) {
-                    // Invalid response, probably api limits encountered.
-                    $update_show = false;
-                }
-                if (!array_key_exists('prerelease', $version) || $version['prerelease']) {
-                    continue;
-                }
-                if (array_key_exists('tag_name', $version) && version_compare($version['tag_name'], $onlineVersion['tag_name']) == 1) {
-                    $onlineVersion = $version;
-                    $onlineVersion['checked'] = true;
-                }
-            }
-        }
-
-        if ($onlineVersion['checked'] === true && $onlineVersion['tag_name'] !== '') {
-            $this->get('zikula_extensions_module.api.variable')->set('ZConfig', 'updatelastchecked', (int) time());
-            $this->get('zikula_extensions_module.api.variable')->set('ZConfig', 'updateversion', $onlineVersion['tag_name']);
-        }
-
-        // compare with db Version_Num
-        // if 1 then there is a later version available
-        if (version_compare($onlineVersion['tag_name'], $this->get('zikula_extensions_module.api.variable')->get('ZConfig', 'Version_Num') == 1)) {
-            $update_show = true;
-        } else {
-            $update_show = false;
-        }
+        
+        $caller['_route'] = $this->get('request_stack')->getMasterRequest()->attributes->get('_route');
+        $caller['_route_params'] = $this->get('request_stack')->getMasterRequest()->attributes->get('_route_params');
 
         return $this->render("@ZikulaAdminModule/AdminInterface/updatecheck.html.twig", [
-                    'update_show' => $update_show && $onlineVersion['checked'] ? true : false ,
-                    'update_version' => $onlineVersion
+                    'caller' => $caller,
+                    'updateCheckHelper' => $this->get('zikulaadminmodule.update_check_helper')
         ]);
     }
 
@@ -346,77 +302,4 @@ class AdminInterfaceController extends AbstractController
             'caller' => $caller
         ]);
     }
-
-    /**
-     * Zikula curl
-     *
-     * This function is internal for the time being and may be extended to be a proper library
-     * or find an alternative solution later.
-     *
-     * @param string $url
-     * @param int $timeout default=5
-     *
-     * @return string|bool false if no url handling functions are present or url string
-     */
-    private function zcurl($url, $timeout = 5)
-    {
-        $urlArray = parse_url($url);
-        $data = '';
-        $userAgent = 'Zikula/' . $this->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, 'Version_Num');
-        $ref = $this->get('request_stack')
-                ->getMasterRequest()
-                ->getBaseURL();
-        $port = (($urlArray['scheme'] == 'https') ? 443 : 80);
-        if (ini_get('allow_url_fopen')) {
-            // handle SSL connections
-            $path_query = (isset($urlArray['query']) ? $urlArray['path'] . $urlArray['query'] : $urlArray['path']);
-            $host = ($port == 443 ? "ssl://$urlArray[host]" : $urlArray['host']);
-            $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
-            if (!$fp) {
-                return false;
-            } else {
-                $out = "GET $path_query? HTTP/1.1\r\n";
-                $out .= "User-Agent: $userAgent\r\n";
-                $out .= "Referer: $ref\r\n";
-                $out .= "Host: $urlArray[host]\r\n";
-                $out .= "Connection: Close\r\n\r\n";
-                fwrite($fp, $out);
-                while (!feof($fp)) {
-                    $data .= fgets($fp, 1024);
-                }
-                fclose($fp);
-                $dataArray = explode("\r\n\r\n", $data);
-
-                return $dataArray[1];
-            }
-        } elseif (function_exists('curl_init')) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_URL, "$url?");
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
-            curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
-            curl_setopt($ch, CURLOPT_REFERER, $ref);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
-                // This option doesnt work in safe_mode or with open_basedir set in php.ini
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-            }
-            curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-            $data = curl_exec($ch);
-            if (!$data && $port = 443) {
-                // retry non ssl
-                $url = str_replace('https://', 'http://', $url);
-                curl_setopt($ch, CURLOPT_URL, "$url?");
-                $data = @curl_exec($ch);
-            }
-            //$headers = curl_getinfo($ch);
-            curl_close($ch);
-
-            return $data;
-        } else {
-            return false;
-        }
-    }
-
 }
