@@ -2,7 +2,7 @@
 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
 'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
-{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+{{ adminHeader() }}
 <h3>
     <span class="fa fa-check"></span>
     {{ __('Theme confirmation prompt') }}
@@ -31,4 +31,4 @@
         </div>
     </div>
 {{ form_end(form) }}
-{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+{{ adminFooter() }}

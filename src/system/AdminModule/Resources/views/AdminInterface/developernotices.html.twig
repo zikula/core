@@ -4,42 +4,50 @@
         <div id="developernotices" class="alert alert-info">
             <div class="row">
                 <div class="col-md-12">
-                    <i class="close" data-dismiss="alert">&times;</i>    
-                    <a class="text-primary" data-toggle="collapse" href="#developernotices_full" aria-expanded="false" aria-controls="developernotices_full"> 
-                        <strong><i class="fa fa-caret-right fa-fw"></i> {{ __('Developer notices (development mode on)') }}</a></strong>
+                    <i class="close" data-dismiss="alert">&times;</i>
+                    <a class="text-primary" data-toggle="collapse" href="#developernotices_full" aria-expanded="false"
+                       aria-controls="developernotices_full">
+                        <strong><i class="fa fa-caret-right fa-fw"></i> {{ __('Developer notices (development mode on)') }}
+                        </strong>
+                    </a>
                 </div>
-                <div class="collapse" id ="developernotices_full">  
+                <div class="collapse" id="developernotices_full">
                     <div class="legacy col-md-6">
-                        <h4>{{ __('Smarty engine settings') }}</h4>   
-                        {% if developer.legacy.render %}
+                        <h4>{{ __('Smarty engine settings') }}</h4>
+                        {% if developer.legacy.render is defined %}
                             <div class="col-md-6">
                                 <a href="{{ themeurl }}"><strong>{{ __('Enabled Template settings') }}:</strong></a>
                                 {% for item in developer.legacy.render %}
-                                    <p>{% if item.state %}<i class="fa fa-check-circle text-success"></i> {% else %} <i class="fa fa-exclamation-circle text-warning"></i> {% endif %} {{ item.title }}</p>
+                                    <p>{% if item.state %}<i class="fa fa-check-circle text-success"></i> {% else %} <i
+                                                class="fa fa-exclamation-circle text-warning"></i> {% endif %} {{ item.title }}
+                                    </p>
                                 {% endfor %}
                             </div>
-                        {% endif %}       
-                        {% if developer.legacy.theme %}
+                        {% endif %}
+                        {% if developer.legacy.theme is defined %}
                             <div class="col-md-6">
                                 <a href="{{ themeurl }}"><strong>{{ __('Enabled Theme settings') }}: </strong></a>
                                 {% for item in developer.legacy.theme %}
-                                    <p>{% if item.state %}<i class="fa fa-check-circle text-success"></i> {% else %} <i class="fa fa-exclamation-circle text-warning"></i> {% endif %} {{ item.title }}</p>
+                                    <p>{% if item.state %}<i class="fa fa-check-circle text-success"></i> {% else %} <i
+                                                class="fa fa-exclamation-circle text-warning"></i> {% endif %} {{ item.title }}
+                                    </p>
                                 {% endfor %}
                             </div>
                         {% endif %}
                         <p>
-                            {%  if developer.legacy.cssjscombine and developer.legacy.cssjscombine %}
+                            {% if developer.legacy.cssjscombine is defined and developer.legacy.cssjscombine is defined %}
                                 <i class="fa fa-check-circle text-success"></i> {{ __('CSS/JS combination is enabled') }}
-                            {% else %} 
-                                <i class="fa fa-exclamation-circle text-warning"></i> {{ __('CSS/JS combination is disabled') }}   
-                            {% endif %}     
-                        </p> 
-                        <div class="col-md-12"><a href="{{ themeurl }}"><strong><i class="fa fa-refresh"></i> {{ __('Clear all cache and compile directories') }}</strong></a></div>	
+                            {% else %}
+                                <i class="fa fa-exclamation-circle text-warning"></i> {{ __('CSS/JS combination is disabled') }}
+                            {% endif %}
+                        </p>
+                        <div class="col-md-12"><a href="{{ themeurl }}"><strong><i
+                                            class="fa fa-refresh"></i> {{ __('Clear all cache and compile directories') }}
+                                </strong></a></div>
                     </div>
                     <div class="legacy col-md-6">
-                        <h4>{{ __('Dev mode status') }}</h4>   
-
-                    </div>	
+                        <h4>{{ __('Dev mode status') }}</h4>
+                    </div>
                 </div>
             </div>
         </div>

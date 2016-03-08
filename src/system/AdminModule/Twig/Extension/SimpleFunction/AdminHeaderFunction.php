@@ -15,22 +15,27 @@
 namespace Zikula\AdminModule\Twig\Extension\SimpleFunction;
 
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
+use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
 class AdminHeaderFunction
 {
+    /**
+     * @var FragmentHandler
+     */
     private $handler;
 
     /**
      * AdminHeaderFunction constructor.
+     * @param FragmentHandler $handler
      */
-    public function __construct($handler)
+    public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
     }
 
     /**
      * Inserts admin header.
-     * 
+     *
      * This has NO configuration options.
      *
      * Examples:
@@ -42,6 +47,7 @@ class AdminHeaderFunction
     public function display()
     {
         $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:header');
-        return $this->handler->render( $ref, 'inline', []);
+
+        return $this->handler->render($ref, 'inline', []);
     }
 }

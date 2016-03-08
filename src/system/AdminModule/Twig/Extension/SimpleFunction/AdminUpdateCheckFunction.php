@@ -15,15 +15,20 @@
 namespace Zikula\AdminModule\Twig\Extension\SimpleFunction;
 
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
+use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
 class AdminUpdateCheckFunction
 {
+    /**
+     * @var FragmentHandler
+     */
     private $handler;
 
     /**
      * AdminUpdateCheckFunction constructor.
+     * @param FragmentHandler $handler
      */
-    public function __construct($handler)
+    public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
     }
@@ -42,6 +47,7 @@ class AdminUpdateCheckFunction
     public function display()
     {
         $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:updatecheck');
-        return $this->handler->render( $ref, 'inline', []);
+
+        return $this->handler->render($ref, 'inline', []);
     }
 }

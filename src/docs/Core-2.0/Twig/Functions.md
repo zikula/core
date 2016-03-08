@@ -43,6 +43,24 @@ Functions
  * lang(fs = false)
  * langdirection()
 
+### Admin Interface
+
+ * adminHeader()
+ * adminFooter()
+ * adminBreadcrumbs()
+ * adminMenu(mode, template)
+ * adminPanelMenu(mode)
+     - this function is a short-cut to  `adminMenu(mode, 'panel')`
+ * adminDeveloperNotices()
+ * adminSecurityAnalyzer()
+ * adminUpdateCheck()
+
+ * moduleHeader(type, title, titlelink, setpagetitle, insertflashes, menufirst, image)
+ * moduleFooter()
+ * moduleBreadcrumbs()
+ * moduleHelp(type)
+ * moduleLinks(type, links, modname, menuid, menuclass, itemclass, first, last)
+
 ### System Specific
 
  * adminPanelMenu()

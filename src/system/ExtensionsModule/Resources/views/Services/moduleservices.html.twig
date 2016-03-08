@@ -1,4 +1,4 @@
-{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}{# @todo wrong header! see below #}
+{{ adminHeader() }}{# @todo wrong header! see below #}
 
 {#{admincategorymenu}#}
 {#<div class="z-admin-content clearfix">#}
@@ -21,4 +21,4 @@
 {% else %}
     <p>{{ __('There arent any modules services available.') }}</p>
 {% endif %}
-{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+{{ adminFooter() }}

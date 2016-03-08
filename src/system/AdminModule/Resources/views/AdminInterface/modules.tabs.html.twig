@@ -1,33 +1,35 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/style.css')) }}
 {% macro draw(links) %}
-    {% for link in links %}   
-        {% if link.links is defined %}    
-            <li><a href="{{ link.url }}" title="{{ link.text }}"> <i class="{{ link.icon }}"> </i> {{ link.text }}</a>
-                <ul class="dropdown-toggle">{{ _self.draw(link.links) }}</ul>            
-            </li>                
+    {% for link in links %}
+        {% if link.links is defined %}
+            <li><a href="{{ link.url }}" title="{{ link.text }}"> <i class="fa fa-{{ link.icon }}"></i> {{ link.text }}
+                </a>
+                <ul class="dropdown-toggle">{{ _self.draw(link.links) }}</ul>
+            </li>
         {% else %}
-            <li><a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %} <i class="{{ link.icon }}"> </i> {% endif %} {{ link.text }}</a>          
-            </li> 
-        {% endif %}    
+            <li><a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i
+                        class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
+            </li>
+        {% endif %}
     {% endfor %}
 {% endmacro %}
-{% import _self as menu %}	
+{% import _self as menu %}
 
 <div class="admintabs-container" id="admintabs-container">
     <ul id="admintabs" class="nav nav-mouseover nav-tabs nav-tabs-admin">
-        {% for module in adminMenu %} 
+        {% for module in adminMenu %}
             <li class="dropdown droppable nowrap{% if caller._zkModule == module.modname %} active{% endif %}">
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="{{ module.menutext  }}">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="{{ module.menutext }}">
                     <span class="fa fa-arrows admintabs-lock"></span>
-                    <span><img src="/{{ module.icon }}" style="height:18px;"/></span>
+                    <span><img src="{{ app.request.baseUrl }}/{{ module.icon }}" style="height:18px;"/></span>
                     <span class="fa fa-caret-down"></span>
                 </a>
                 {% if module.links|length > 0 %}
                     <ul class="dropdown-menu">
-                        {{ menu.draw(module.links) }}	
-                    </ul>	
+                        {{ menu.draw(module.links) }}
+                    </ul>
                 {% endif %}
             </li>
-        {% endfor %}	
+        {% endfor %}
     </ul>
 </div>

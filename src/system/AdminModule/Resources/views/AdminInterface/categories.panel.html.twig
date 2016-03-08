@@ -2,15 +2,17 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:js/jQuery.mmenu-5.5.1/dist/core/css/jquery.mmenu.all.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/mmenu-hiddenpanel-customwidth.css')) }}
 
-{% macro draw(links, caller, module) %} {% for link in links %} 
+{% macro draw(links, caller, module) %}
+    {% for link in links %}
         {% if link.links is defined %}
-            <li class="{% if caller._zkModule == module.modname and caller.path == link.url %} Selected{% else %}{% endif %}">
-                <a href="{{ link.url }}" title="{{ link.text }}"><i class="{{ link.icon }}"> </i> {{ link.text }}</a>
+            <li{% if caller._zkModule == module.modname and caller.path == link.url %} class="selected"{% endif %}>
+                <a href="{{ link.url }}" title="{{ link.text }}"><i class="{{ link.icon }}"></i> {{ link.text }}</a>
                 <ul class="text-left">{{ _self.draw(link.links, caller, module) }}</ul>
             </li>
         {% else %}
-            <li class="{% if caller._zkModule == module.modname and caller.path == link.url %} Selected {% else %}{% endif %}">
-                <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %} <i class="{{ link.icon }}"> </i> {% endif %} {{ link.text }}</a>
+            <li{% if caller._zkModule == module.modname and caller.path == link.url %} class="selected"{% endif %}>
+                <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i
+                        class="{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
             </li>
         {% endif %}
     {% endfor %}
@@ -21,18 +23,21 @@
 <a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars"></i></a>
 <nav id="zikula-admin-hiddenpanel-menu">
     <div class="text-left">
-        <h1><img src="{{ zasset('@ZikulaAdminModule:images/admin.png') }}" alt="{{ __('Administration') }}" /> {{ __('Administration') }}</h1>
+        <h1><img src="{{ zasset('@ZikulaAdminModule:images/admin.png') }}"
+                 alt="{{ __('Administration') }}"/> {{ __('Administration') }}</h1>
         <ul>
             {% for category in adminMenu %}
-                <li class="{% if (caller.category.cid) == (category.cid) %} Selected{% endif %}">
+                <li{% if (caller.category.cid) == (category.cid) %} class="selected"{% endif %}>
                     <a href="{{ category.url }}">{{ category.title }}</a>
                     {% if category.modules|length > 0 %}
                         <ul class="text-left">
                             {% for module in category.modules %}
-                                <li class="{% if caller.path == module.menutexturl %} Selected{% endif %}">
-                                    <a href="{{ module.menutexturl }}"><img src="/{{ module.icon }}" style="height: 18px;" /> {{ module.menutext }}</a>
-                                        {% if module.links|length > 0 %}
-                                        <ul class="text-left">{{ menu.draw(module.links, caller, module) }}</ul> 
+                                <li{% if caller.path == module.menutexturl %} class="selected"{% endif %}>
+                                    <a href="{{ module.menutexturl }}"><img src="/{{ module.icon }}"
+                                                                            style="height: 18px;"/> {{ module.menutext }}
+                                    </a>
+                                    {% if module.links|length > 0 %}
+                                        <ul class="text-left">{{ menu.draw(module.links, caller, module) }}</ul>
                                     {% endif %}
                                 </li>
                             {% endfor %}

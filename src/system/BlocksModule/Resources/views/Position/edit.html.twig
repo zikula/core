@@ -3,7 +3,7 @@
 'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 
-{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+{{ adminHeader() }}
 
 <p class="alert alert-info">
     {% if form.vars.value.pid is empty %}
@@ -22,7 +22,7 @@
         {{ form_start(form) }}
         {{ form_errors(form) }}
         {{ form_row(form.name) }}
-            <em class="help-block sub">{{  __('Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_).') }}</em>
+            <em class="help-block sub">{{ __('Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_).') }}</em>
         {{ form_row(form.description) }}
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
@@ -34,4 +34,4 @@
     </div>
 
 </div>
-{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+{{ adminFooter() }}

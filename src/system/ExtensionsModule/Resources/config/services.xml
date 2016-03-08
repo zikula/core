@@ -12,10 +12,10 @@
         <parameter key="zikula_extensions_module.api.extension.class">Zikula\ExtensionsModule\Api\ExtensionApi</parameter>
         <parameter key="zikula_extensions_module.api.capability.class">Zikula\ExtensionsModule\Api\CapabilityApi</parameter>
         <parameter key="zikula_extensions_module.extension_var_repository.class">Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository</parameter>
-        <parameter key="twig.extension.zikula_extensions_module.class">Zikula\ExtensionsModule\Twig\Extension\ExtensionsExtension</parameter>
         <parameter key="zikula_extensions_module.extension_repository.class">Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository</parameter>
         <parameter key="zikula_extensions_module.extension_dependency_repository.class">Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository</parameter>
         <parameter key="twig.extension.zikula_extensions_module.class">Zikula\ExtensionsModule\Twig\Extension\ExtensionsExtension</parameter>
+        <parameter key="twig.extension.zikula_extensions_module.user_interface.class">Zikula\ExtensionsModule\Twig\Extension\UserInterfaceExtension</parameter>
         <parameter key="zikula_extensions_module.bundle_sync_helper.class">Zikula\ExtensionsModule\Helper\BundleSyncHelper</parameter>
         <parameter key="zikula_extensions_module.extension_state_helper.class">Zikula\ExtensionsModule\Helper\ExtensionStateHelper</parameter>
         <parameter key="zikula_extensions_module.extension_helper.class">Zikula\ExtensionsModule\Helper\ExtensionHelper</parameter>
@@ -64,11 +64,6 @@
             <argument type="service" id="kernel" />
             <argument>%multisites%</argument>
         </service>
-        
-        <service id="twig.extension.zikula_extensions_module" class="%twig.extension.zikula_extensions_module.class%" public="true">
-            <argument type="service" id="fragment.handler" />
-            <tag name="twig.extension" />
-        </service>          
 
         <service id="zikula_extensions_module.api.extension" class="%zikula_extensions_module.api.extension.class%">
             <argument type="service" id="zikula_extensions_module.extension_repository"/>
@@ -85,6 +80,11 @@
             <argument type="service" id="zikula_core.common.csrf_token_handler" />
             <argument type="service" id="router" />
             <argument type="service" id="zikula_extensions_module.api.extension" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="twig.extension.zikula_extensions_module.user_interface" class="%twig.extension.zikula_extensions_module.user_interface.class%" public="true">
+            <argument type="service" id="fragment.handler" />
             <tag name="twig.extension" />
         </service>
 
