@@ -1,0 +1,31 @@
+{% set adminhelpurl = path('zikulaadminmodule_admin_help') %}
+{% if hasPermission('ZikulaAdminModule::', '::', 'ACCESS_ADMIN') %}
+    {% if not security.scactive %}
+        <div id="securityanalyzer" class="alert alert-warning">
+            <div class="row">
+                <div class="col-sm-12">
+                    <i class="close" data-dismiss="alert">&times;</i>
+                    <a class="text-warning" data-toggle="collapse" href="#securitysettings_full" aria-expanded="false"
+                       aria-controls="securitysettings_full">
+                        <strong><i class="fa fa-caret-right fa-fw"></i>{{ __('Security analyser warnings') }}</strong>
+                    </a>
+                </div>
+                <div class="collapse" id="securitysettings_full">
+                    <div class="legacy col-sm-6">
+                        <h4>{{ __('Security warnings') }}</h4>
+                        {% if not security.scactive %}
+                            <p>
+                                <a href="{{ adminhelpurl }}"> {{ __("Security center module is not installed, but preferably should be.") }}</a>
+                            </p>
+                        {% endif %}
+                        {% if security.useids and security.idssoftblock %}
+                            <p>
+                                <a href="{{ adminhelpurl }}"> {{ __("PHPIDS is activated, but requests are NOT blocked.") }}</a>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}

@@ -6,12 +6,24 @@
 
     <parameters>
         <parameter key="zikulaadminmodule.module_event_listener.class">Zikula\AdminModule\Listener\ModuleEventListener</parameter>
+        <parameter key="twig.extension.zikula_admin_module.class">Zikula\AdminModule\Twig\Extension\AdminExtension</parameter>
+        <parameter key="zikulaadminmodule.update_check_helper.class">Zikula\AdminModule\Helper\UpdateCheckHelper</parameter>        
     </parameters>
 
     <services>
         <service id="zikulaadminmodule.module_event_listener" class="%zikulaadminmodule.module_event_listener.class%">
             <tag name="kernel.event_subscriber" />
         </service>
+
+        <service id="twig.extension.zikula_admin_module" class="%twig.extension.zikula_admin_module.class%" public="true">
+            <argument type="service" id="fragment.handler" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="zikulaadminmodule.update_check_helper" class="%zikulaadminmodule.update_check_helper.class%" public="true">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="request_stack" />
+        </service>
     </services>
 </container>
-

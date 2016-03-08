@@ -2,7 +2,7 @@
     'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
     'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
-{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+{{ adminHeader() }}
 <div class="container-fluid">
     <div class="row">
         <h3>
@@ -10,7 +10,7 @@
         </h3>
 
         <p class="alert alert-warning">{{ __f("Do you really want to uninstall '%title%'?", {'%title%': extension.displayname}) }}</p>
-        <p class="alert alert-danger">{{  __('Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module.') }}</p>
+        <p class="alert alert-danger">{{ __('Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module.') }}</p>
         {% if blocks|length > 0 %}
             <div class="alert alert-danger">
                 {{ __("Warning! Removing this module will also remove the following blocks") }}:
@@ -44,4 +44,4 @@
     </div>
 
 </div>
-{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+{{ adminFooter() }}

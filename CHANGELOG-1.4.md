@@ -48,6 +48,13 @@ CHANGELOG - ZIKULA 1.4.x
     - Add CsrfTokenHandler service (`\Zikula\Core\Token\CsrfTokenHandler`)
     - Add 'info' type flash messages.
  - Core-2.0 Features:
+    - Add AdminInterfaceController and Twig tags - AdminModule
+        - Refactored functions header, footer, breadcrumbs
+        - menu - replace old categorymenu action - supports both categries and modules mode as well as panel and tabs templates. 
+        - add updatecheck, securityanalyzer, developernotices instead of notices 
+    - Add ExtensionsInterfaceController and Twig tags - ExtensionsModule
+        - Refactor functions header, links
+        - Introduce footer, breadcrumbs and help - not fully functional 
     - Add `currentUser` global variable to twig templates.
     - Add (move) `Zikula\CategoriesModule\Entity\AbstractCategoryAssignment` and related documentation.
         - Replaces `Zikula\Core\Doctrine\Entity\AbstractEntityCategory` (aliased for BC).

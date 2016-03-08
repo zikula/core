@@ -1,6 +1,6 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaThemeModule:js/ZikulaThemeModule.Admin.View.js')) }}
 
-{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+{{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
     {{ __('Themes list') }}
@@ -68,4 +68,4 @@
 
 <em><span class="required"></span> = {{ __('Default theme') }}</em>
 
-{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+{{ adminFooter() }}

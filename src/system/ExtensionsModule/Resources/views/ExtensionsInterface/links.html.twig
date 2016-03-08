@@ -1,0 +1,26 @@
+{% macro draw(links, menu_css, current_path) %}
+    {% for link in links %}
+        {% if link.links is defined %}
+            <li class="dropdown {{ menu_css.menuItemClass }} {% if current_path == link.url %} active{% endif %}">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{{ link.title|default('') }}">
+                    <i class="fa fa-{{ link.icon }}"> </i>
+                    {{ link.text }}
+                    <span class="caret"></span></a>
+                <ul id="submenu_{{ menu_css.menuId }}" class="dropdown-menu">
+                    {{ _self.draw(link.links, menu_css, current_path) }}
+                </ul>
+            </li>
+        {% else %}
+            <li class="{{ menu_css.menuItemClass }}{% if current_path == link.url %} active{% endif %}">
+                <a href="{{ link.url }}" title="{{ link.title|default('') }}">{% if link.icon is defined %}<i
+                        class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{% import _self as menu %}
+
+<ul id="{{ menu_css.menuId }}" class="{{ menu_css.menuClass }}">
+    {{ menu.draw(links, menu_css, current_path) }}
+</ul>

@@ -1,4 +1,4 @@
-{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+{{ adminHeader() }}
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
@@ -15,9 +15,9 @@
             <td>
                 {% if module.capabilities.admin is defined and module.state == 3 %}
                     {% if module.capabilities.admin.route is defined %}
-                        <a title="{{  __("Go to the module's administration panel") }}" href="{{ path(module.capabilities.admin.route) }}"><i class="fa fa-link"></i></a>
+                        <a title="{{ __("Go to the module's administration panel") }}" href="{{ path(module.capabilities.admin.route) }}"><i class="fa fa-link"></i></a>
                     {% elseif module.capabilities.admin.url is defined %}
-                        <a title="{{  __("Go to the module's administration panel") }}" href="{{ module.capabilities.admin.url }}"><i class="fa fa-link"></i></a>
+                        <a title="{{ __("Go to the module's administration panel") }}" href="{{ module.capabilities.admin.url }}"><i class="fa fa-link"></i></a>
                     {% endif %}
                 {% endif %}
                 <strong>{{ module.displayname }}</strong>
@@ -45,7 +45,7 @@
     </tbody>
 </table>
 {{ pager({rowcount:pager.count, limit:pager.limit, route:'zikulaextensionsmodule_module_viewmodulelist'}) }}
-{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+{{ adminFooter() }}
 <!-- @todo move to own file -->
 <script>
     ( function($) {

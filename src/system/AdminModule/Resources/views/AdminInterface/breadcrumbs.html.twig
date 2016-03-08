@@ -1,0 +1,12 @@
+<ol class="breadcrumb">
+    <li>{{ __('You are in:') }} <a
+                href="{{ path('zikulaadminmodule_admin_adminpanel') }}">{{ __('Administration') }}</a></li>
+    <li>
+        <a href="{{ path('zikulaadminmodule_admin_adminpanel', {'acid': caller.category.cid}) }}">{{ caller.category.name }}</a>
+    </li>
+    <li><a href="#" class="text-capitalize">{{ caller.info.displayname }}</a></li>
+    {% if caller._zkType != 'admin' %}
+        <li><a href="#" class="text-capitalize">{{ caller._zkType }}</a></li>
+    {% endif %}
+    <li class="active z-admin-pagefunc">{{ caller._zkFunc }}</li>
+</ol>

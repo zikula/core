@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Twig;
-use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\AdminMenuPanelSimpleFunction;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DefaultPathSimpleFunction;
 use Zikula\ThemeModule\Engine\AssetBag;
 
@@ -80,7 +79,6 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
             new \Twig_SimpleFunction('setMetaTag', [$this, 'setMetaTag']),
             new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
-            new \Twig_SimpleFunction('adminPanelMenu', [new AdminMenuPanelSimpleFunction($this), 'display'], ['is_safe' => array('html')]),
             new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this), 'getDefaultPath']),
             new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable']),
             new \Twig_SimpleFunction('callFunc', [$this, 'callFunc'])
@@ -379,7 +377,7 @@ class CoreExtension extends \Twig_Extension
             throw new \InvalidArgumentException(__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
-        $result = \SecurityUtil::checkPermission($component, $instance, constant($level));
+        $result = $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, constant($level));
 
         return (bool) $result;
     }
