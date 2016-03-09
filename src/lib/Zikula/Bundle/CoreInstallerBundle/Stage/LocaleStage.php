@@ -71,7 +71,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
             if (($locale !== false) && (in_array($locale, $installedLanguages))) {
                 $this->writeParams(array('locale' => $locale));
 
-                return false;
+                return true;
             } else {
                 return true;
             }
