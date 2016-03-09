@@ -17,7 +17,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command\Install;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula_Core;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
@@ -56,16 +56,13 @@ class StartCommand extends AbstractCoreInstallerCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(array(
-            "<info>---------------------------</info>",
-            "| Zikula Installer Script |",
-            "<info>---------------------------</info>"
-        ));
+        $io = new SymfonyStyle($input, $output);
+        $io->title($this->translator->__('Zikula Installer Script'));
 
         $this->bootstrap();
 
         if ($this->getContainer()->getParameter('installed') == true) {
-            $output->writeln("<error>" . __('Zikula already appears to be installed.') . "</error>");
+            $io->error($this->translator->__('Zikula already appears to be installed.'));
 
             return;
         }
@@ -84,8 +81,8 @@ class StartCommand extends AbstractCoreInstallerCommand
 
         if ($input->isInteractive()) {
             $env = $this->getContainer()->get('kernel')->getEnvironment();
-            $output->writeln('Configuring Zikula installation in <info>' . $env . '</info> environment.');
-            $output->writeln("Please follow the instructions to install Zikula " . Zikula_Core::VERSION_NUM . ".");
+            $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $env]));
+            $io->comment($this->translator->__f('Please follow the instructions to install Zikula %version%.', ['%version%' => Zikula_Core::VERSION_NUM]));
         }
 
         // get the settings from user input
@@ -110,20 +107,18 @@ class StartCommand extends AbstractCoreInstallerCommand
         $settings = array_merge($settings, $data);
 
         if ($input->isInteractive()) {
-            $output->writeln(array("", "", ""));
-            $output->writeln("Configuration successful. Please verify your parameters below:");
-            $output->writeln("(Admin credentials have been encoded to make them json-safe.)");
+            $io->success($this->translator->__("Configuration successful. Please verify your parameters below:"));
+            $io->comment($this->translator->__("(Admin credentials have been encoded to make them json-safe.)"));
         }
 
-        $this->printSettings($settings, $output);
-        $output->writeln("");
+        $this->printSettings($settings, $io);
+        $io->newLine();
 
         if ($input->isInteractive()) {
-            $helper = $this->getHelper('question');
-            $question = new ConfirmationQuestion('<info>Start installation? <comment>[yes/no]</comment></info>: ', true);
+            $confirmation = $io->confirm($this->translator->__('Start installation?'), true);
 
-            if (!$helper->ask($input, $output, $question)) {
-                $output->writeln('<error>Installation aborted.</error>');
+            if (!$confirmation) {
+                $io->error($this->translator->__('Installation aborted'));
 
                 return;
             }
@@ -138,16 +133,18 @@ class StartCommand extends AbstractCoreInstallerCommand
         $this->getContainer()->get('core_installer.config.util')->writeLegacyConfig($params);
         $this->getContainer()->get('zikula.cache_clearer')->clear('symfony.config');
 
-        $output->writeln('<info>First stage of installation complete. Run `php app/console zikula:install:finish` to complete the installation.</info>');
+        $io->success($this->translator->__('First stage of installation complete. Run `php app/console zikula:install:finish` to complete the installation.'));
     }
 
-    private function printSettings($givenSettings, OutputInterface $output)
+    private function printSettings($givenSettings, SymfonyStyle $io)
     {
+        $rows = [];
         foreach ($givenSettings as $name => $givenSetting) {
             if (isset($this->settings[$name]['password']) && $this->settings[$name]['password']) {
                 $givenSetting = str_repeat("*", strlen($givenSetting));
             }
-            $output->writeln("<info>$name:</info> <comment>$givenSetting</comment>");
+            $rows[] = [$name, $givenSetting];
         }
+        $io->table([$this->translator->__('Param'), $this->translator->__('Value')], $rows);
     }
 }

@@ -16,8 +16,10 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula_Core;
 use Zikula_Request_Http as Request;
 
@@ -27,6 +29,10 @@ use Zikula_Request_Http as Request;
  */
 abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
 {
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
     /**
      * @var array
      * @see \Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand
@@ -147,21 +153,27 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
     private function errorCodeToMessage($key)
     {
         $messages = array(
-            'phpsatisfied' => __f("You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version %s or later.", array(phpversion(), Zikula_Core::PHP_MINIMUM_VERSION)),
-            'datetimezone' => __("date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."),
-            'pdo' => __("Your PHP installation doesn't have the PDO extension loaded."),
-            'phptokens' => __("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),
-            'mbstring' => __("Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets."),
-            'pcreUnicodePropertiesEnabled' => __("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."),
-            'json_encode' => __("Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests."),
-            'config_personal_config_php' => __f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "config/personal_config.php"),
-//            'custom_parameters_yml' => __f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "app/config/custom_parameters.yml"),
+            'phpsatisfied' => $this->translator->__f("You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version %s or later.", array(phpversion(), Zikula_Core::PHP_MINIMUM_VERSION)),
+            'datetimezone' => $this->translator->__("date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."),
+            'pdo' => $this->translator->__("Your PHP installation doesn't have the PDO extension loaded."),
+            'phptokens' => $this->translator->__("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),
+            'mbstring' => $this->translator->__("Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets."),
+            'pcreUnicodePropertiesEnabled' => $this->translator->__("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."),
+            'json_encode' => $this->translator->__("Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests."),
+            'config_personal_config_php' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "config/personal_config.php"),
+//            'custom_parameters_yml' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "app/config/custom_parameters.yml"),
         );
         if (array_key_exists($key, $messages)) {
             return $messages[$key];
         } else {
             // remaining keys are filenames
-            return __f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", $key);
+            return $this->translator->__f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", $key);
         }
+    }
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+        $this->translator = $container->get('translator.default');
     }
 }
