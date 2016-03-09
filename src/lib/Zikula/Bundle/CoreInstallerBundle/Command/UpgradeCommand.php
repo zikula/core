@@ -17,6 +17,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
@@ -72,21 +73,18 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             return false;
         }
 
-        $output->writeln(array(
-            "<info>---------------------------</info>",
-            "| Zikula Upgrader Script |",
-            "<info>---------------------------</info>"
-        ));
-        $output->writeln("*** UPGRADING TO ZIKULA CORE v" . \Zikula_Core::VERSION_NUM . " ***");
+        $io = new SymfonyStyle($input, $output);
+        $io->title($this->translator->__('Zikula Upgrader Script'));
+        $io->section($this->translator->__f('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => \Zikula_Core::VERSION_NUM]));
         $env = $this->getContainer()->get('kernel')->getEnvironment();
-        $output->writeln('Upgrading Zikula in <info>' . $env . '</info> environment.');
+        $io->text($this->translator->__f('Upgrading Zikula in %env% environment.', ['%env%' => $env]));
 
         $this->bootstrap(false);
 
-        $output->writeln('Initializing upgrade...');
+        $io->text($this->translator->__('Initializing upgrade...'));
         $initStage = new InitStage($this->getContainer());
         $initStage->isNecessary(); // runs init and upgradeUsersModule methods and intentionally returns false
-        $output->writeln('Initialization complete');
+        $io->success($this->translator->__('Initialization complete'));
 
         $warnings = $this->getContainer()->get('core_installer.controller.util')->initPhp();
         if (!empty($warnings)) {
@@ -128,13 +126,16 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $ajaxInstallerStage = new AjaxUpgraderStage();
         $stages = $ajaxInstallerStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
-            $output->writeln($stage[AjaxInstallerStage::PRE]);
-            $output->writeln("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
+            $io->text($stage[AjaxInstallerStage::PRE]);
+            $io->text("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
             $status = $this->getContainer()->get('core_installer.controller.ajaxupgrade')->commandLineAction($stage[AjaxInstallerStage::NAME]);
-            $message = $status ? "<info>" . $stage[AjaxInstallerStage::SUCCESS] . "</info>" : "<error>" . $stage[AjaxInstallerStage::FAIL] . "</error>";
-            $output->writeln($message);
+            if ($status) {
+                $io->success($stage[AjaxInstallerStage::SUCCESS]);
+            } else {
+                $io->error($stage[AjaxInstallerStage::FAIL]);
+            }
         }
 
-        $output->writeln("UPGRADE COMPLETE!");
+        $io->success($this->translator->__('UPGRADE COMPLETE!'));
     }
 }

@@ -47,6 +47,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Add Twig tag `modAvailable($moduleName)` (#2769)
     - Add CsrfTokenHandler service (`\Zikula\Core\Token\CsrfTokenHandler`)
     - Add 'info' type flash messages.
+    - Add CLI Symfony Styleguide to CLI install and upgrade (#2667)
  - Core-2.0 Features:
     - Add AdminInterfaceController and Twig tags - AdminModule
         - Refactored functions header, footer, breadcrumbs

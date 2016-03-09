@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command\Install;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 
@@ -39,27 +40,32 @@ class FinishCommand extends AbstractCoreInstallerCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
         $this->bootstrap(false);
 
         if ($this->getContainer()->getParameter('installed') == true) {
-            $output->writeln("<error>" . __('Zikula already appears to be installed.') . "</error>");
+            $io->error($this->translator->__('Zikula already appears to be installed.'));
 
             return;
         }
 
-        $output->writeln("*** INSTALLING ***");
+        $io->section($this->translator->__('*** INSTALLING ***'));
         $env = $this->getContainer()->get('kernel')->getEnvironment();
-        $output->writeln('Configuring Zikula installation in <info>' . $env . '</info> environment.');
+        $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $env]));
 
         // install!
         $ajaxInstallerStage = new AjaxInstallerStage();
         $stages = $ajaxInstallerStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
-            $output->writeln($stage[AjaxInstallerStage::PRE]);
-            $output->writeln("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
+            $io->text($stage[AjaxInstallerStage::PRE]);
+            $io->text("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
             $status = $this->getContainer()->get('core_installer.controller.ajaxinstall')->commandLineAction($stage[AjaxInstallerStage::NAME]);
-            $message = $status ? "<info>" . $stage[AjaxInstallerStage::SUCCESS] . "</info>" : "<error>" . $stage[AjaxInstallerStage::FAIL] . "</error>";
-            $output->writeln($message);
+            if ($status) {
+                $io->success($stage[AjaxInstallerStage::SUCCESS]);
+            } else {
+                $io->error($stage[AjaxInstallerStage::FAIL]);
+            }
         }
+        $io->success($this->translator->__('INSTALL COMPLETE!'));
     }
 }
