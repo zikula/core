@@ -6,7 +6,7 @@
     {% set showBothPanels = true %}
 {% endif %}
 
-{{ render(controller('ZikulaAdminModule:Admin:adminheader')) }}
+{{ adminHeader() }}
 <h3>
     <span class="fa fa-paperclip"></span>
     {{ __('Hooks') }}
@@ -53,7 +53,7 @@
     {% endif %}
 {% endif %}
 
-{{ render(controller('ZikulaAdminModule:Admin:adminfooter')) }}
+{{ adminFooter() }}
 {% if isSubscriber %}
     {#{pageaddvarblock}#}{# @TODO #}
     <script type="text/javascript">

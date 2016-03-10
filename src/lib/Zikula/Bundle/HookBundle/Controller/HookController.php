@@ -270,6 +270,10 @@ class HookController extends Controller
             $templateParameters['hookproviders'] = [];
         }
         $templateParameters['hookDispatcher'] = $this->get('hook_dispatcher');
+        $request = $this->get('request_stack')->getCurrentRequest();
+        $request->attributes->set('_zkModule', $moduleName);
+        $request->attributes->set('_zkType', 'admin');
+        $request->attributes->set('_zkFunc', 'Hooks');
 
         return $templateParameters;
     }
