@@ -18,7 +18,6 @@ use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 
@@ -40,7 +39,12 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function getFormType()
     {
-        return new LoginType();
+        return 'Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType';
+    }
+
+    public function getFormOptions()
+    {
+        return [];
     }
 
     public function getTemplateName()

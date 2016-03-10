@@ -202,12 +202,14 @@ abstract class AbstractBundle extends Bundle
             $metaData->setTranslator($this->container->get('translator'));
         }
         $metaData->setDirectoryFromBundle($this);
-        // overwrite composer.json settings with dynamic values from extension repository
-        $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($this->getName());
-        if (!is_null($extensionEntity)) {
-            $metaData->setUrl($extensionEntity->getUrl());
-            $metaData->setDisplayName($extensionEntity->getDisplayname());
-            $metaData->setDescription($extensionEntity->getDescription());
+        if ($this->container->getParameter('installed')) {
+            // overwrite composer.json settings with dynamic values from extension repository
+            $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($this->getName());
+            if (!is_null($extensionEntity)) {
+                $metaData->setUrl($extensionEntity->getUrl());
+                $metaData->setDisplayName($extensionEntity->getDisplayname());
+                $metaData->setDescription($extensionEntity->getDescription());
+            }
         }
 
         return $metaData;

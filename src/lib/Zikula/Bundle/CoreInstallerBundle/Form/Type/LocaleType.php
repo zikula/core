@@ -26,8 +26,8 @@ class LocaleType extends AbstractType
             ->add('locale', 'choice', array(
                 'label' => __('Select your default language'),
                 'label_attr' => array('class' => 'col-sm-3'),
-                'choices' => \ZLanguage::getInstalledLanguageNames(),
-                'data' => \ZLanguage::getLanguageCode()
+                'choices' => $options['choices'],
+                'data' => $options['choice']
             ));
     }
 
@@ -40,6 +40,8 @@ class LocaleType extends AbstractType
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
+            'choices' => \ZLanguage::getInstalledLanguageNames(),
+            'choice' => \ZLanguage::getLanguageCode()
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',

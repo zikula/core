@@ -21,10 +21,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula_Core;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 
 class StartCommand extends AbstractCoreInstallerCommand
 {
@@ -86,21 +82,17 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         // get the settings from user input
-        $formType = new LocaleType();
-        $settings = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
-        $formType = new RequestContextType();
-        $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+        $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output);
+        $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType', $input, $output);
         foreach ($data as $k => $v) {
             $newKey = str_replace(':', '.', $k);
             $data[$newKey] = $v;
             unset($data[$k]);
         }
         $settings = array_merge($settings, $data);
-        $formType = new DbCredsType();
-        $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+        $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType', $input, $output);
         $settings = array_merge($settings, $data);
-        $formType = new CreateAdminType();
-        $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+        $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType', $input, $output);
         foreach ($data as $k => $v) {
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
         }
