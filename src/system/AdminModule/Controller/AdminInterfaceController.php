@@ -245,6 +245,7 @@ class AdminInterfaceController extends AbstractController
             $moduleNames[$key] = $module['displayname'];
         }
         array_multisort($moduleNames, SORT_ASC, $adminModules);
+        $moduleCategories = $this->getDoctrine()->getManager()->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('cid');
         $menuModules = [];
         $menuCategories = [];
         foreach ($adminModules as $adminModule) {
@@ -252,9 +253,6 @@ class AdminInterfaceController extends AbstractController
                 // cat
                 $catid = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', [
                     'mid' => $adminModule['id']
-                ]);
-                $category = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', [
-                    'cid' => $catid
                 ]);
                 // order
                 $order = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getSortOrder', [
@@ -285,17 +283,32 @@ class AdminInterfaceController extends AbstractController
 
                 $menuModules[$adminModule['name']] = $module;
                 // category menu
-                $menuCategories[$category['sortorder']]['title'] = $category['name'];
-                $menuCategories[$category['sortorder']]['url'] = $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', [
-                    'acid' => $category['cid']
+                $menuCategories[$moduleCategories[$catid]['sortorder']]['title'] = $moduleCategories[$catid]['name'];
+                $menuCategories[$moduleCategories[$catid]['sortorder']]['url'] = $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', [
+                    'acid' => $moduleCategories[$catid]['cid']
                 ]);
-                $menuCategories[$category['sortorder']]['description'] = $category['description'];
-                $menuCategories[$category['sortorder']]['cid'] = $category['cid'];
-                $menuCategories[$category['sortorder']]['modules'][$adminModule['name']] = $module;
+                $menuCategories[$moduleCategories[$catid]['sortorder']]['description'] = $moduleCategories[$catid]['description'];
+                $menuCategories[$moduleCategories[$catid]['sortorder']]['cid'] = $moduleCategories[$catid]['cid'];
+                $menuCategories[$moduleCategories[$catid]['sortorder']]['modules'][$adminModule['name']] = $module;
             }
         }
-        $fullTemplateName = $mode . '.' . $template;
+        // add empty categories
+        /** @var \Zikula\AdminModule\Entity\AdminCategoryEntity[] $moduleCategories */
+        foreach ($moduleCategories as $moduleCategory) {
+            if (!array_key_exists($moduleCategory->getCid(), $menuCategories)) {
+                $menuCategories[$moduleCategory->getSortOrder()] = [
+                    'title' => $moduleCategory->getName(),
+                    'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', [
+                        'acid' => $moduleCategory->getCid()
+                    ]),
+                    'description' => $moduleCategory->getDescription(),
+                    'cid' => $moduleCategory->getCid(),
+                    'modules' => []
+                ];
+            }
+        }
         ksort($menuCategories);
+        $fullTemplateName = $mode . '.' . $template;
 
         return $this->render("@ZikulaAdminModule/AdminInterface/$fullTemplateName.html.twig", [
             'adminMenu' => ('categories' == $mode) ? $menuCategories : $menuModules,

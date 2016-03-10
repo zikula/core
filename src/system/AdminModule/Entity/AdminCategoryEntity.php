@@ -21,7 +21,7 @@ use Zikula\Core\Doctrine\EntityAccess;
  *
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\AdminModule\Entity\Repository\AdminCategoryRepository")
  * @ORM\Table(name="admin_category")
  */
 class AdminCategoryEntity extends EntityAccess
