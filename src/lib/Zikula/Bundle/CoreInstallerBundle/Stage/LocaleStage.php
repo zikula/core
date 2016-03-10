@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
@@ -35,11 +34,22 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
      * @var ContainerInterface
      */
     private $container;
+    /**
+     * @var array
+     */
+    private $installedLanguages;
+    /**
+     * @var string
+     */
+    private $matchedLocale;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml', 'parameters.yml');
+        $this->installedLanguages = \ZLanguage::getInstalledLanguages();
+        $detector = new \ZLanguageBrowser($this->installedLanguages);
+        $this->matchedLocale = $detector->discover();
     }
 
     public function getName()
@@ -49,7 +59,15 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
 
     public function getFormType()
     {
-        return new LocaleType();
+        return 'Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType';
+    }
+
+    public function getFormOptions()
+    {
+        return [
+            'choices' => \ZLanguage::getInstalledLanguageNames(),
+            'choice' => $this->matchedLocale
+        ];
     }
 
     public function getTemplateName()
@@ -59,22 +77,12 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
 
     public function isNecessary()
     {
-        $installedLanguages = \ZLanguage::getInstalledLanguages();
-        if (count($installedLanguages) == 1) {
-            $this->writeParams(array('locale' => $installedLanguages[0]));
+        if (count($this->installedLanguages) == 1) {
+            $this->writeParams(array('locale' => $this->matchedLocale));
 
             return false;
         } else {
-            // see if the browser has a preference set
-            $detector = new \ZLanguageBrowser($installedLanguages);
-            $locale = $detector->discover();
-            if (($locale !== false) && (in_array($locale, $installedLanguages))) {
-                $this->writeParams(array('locale' => $locale));
-
-                return false;
-            } else {
-                return true;
-            }
+            return true;
         }
     }
 

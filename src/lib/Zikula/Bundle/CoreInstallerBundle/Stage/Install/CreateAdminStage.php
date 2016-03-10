@@ -17,7 +17,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -43,7 +42,12 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
 
     public function getFormType()
     {
-        return new CreateAdminType();
+        return 'Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType';
+    }
+
+    public function getFormOptions()
+    {
+        return [];
     }
 
     public function getTemplateName()

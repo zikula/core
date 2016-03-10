@@ -37,62 +37,46 @@ class ZLanguageBrowser
     /**
      * Discover preferred language.
      *
-     * @return string|false
+     * @param string $default
+     * @return string
      */
-    public function discover()
+    public function discover($default = 'en')
     {
-        return $this->getPreferredLanguage();
+        return $this->matchBrowserLanguage($this->available, $default);
     }
 
     /**
-     * Get preferred language from list of available + browser.
+     * Detect languages preferred by browser and make best match to available provided languages.
      *
-     * @return string|false
+     * Adapted from StackOverflow response by Noel Whitemore
+     * @see http://stackoverflow.com/a/26169603/2600812
+     *
+     * @param array $supportedLanguages for example: ["en", "nl", "de"]
+     * @param string $default
+     * @return mixed|string
      */
-    private function getPreferredLanguage()
+    private function matchBrowserLanguage(array $supportedLanguages, $default = 'en')
     {
-        // Get system languages
-        $sysLang = $this->available;
-
-        // Get browser languages
-        $browserLang = (empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? false : $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-
-        // Check arguments
-        if (!$browserLang || !$sysLang || empty($sysLang)) {
-            return false;
+        $supportedLanguages = array_flip($supportedLanguages);
+        preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]), $matches, PREG_SET_ORDER);
+        $availableLanguages = [];
+        foreach ($matches as $match) {
+            list($languageCode, $unusedVar) = explode('-', $match[1]) + array('', '');
+            $priority = isset($match[2]) ? (float) $match[2] : 1.0;
+            $availableLanguages[][$languageCode] = $priority;
         }
 
-        // Explode the browser languages into a table
-        $browserLang = explode(',', $browserLang);
-        $browserLangArray = array();
-
-        foreach ($browserLang as $curLang) {
-            $curLang = trim($curLang);
-            $curLang = explode(';', $curLang);
-
-            if (!empty($curLang[1])) {
-                $curLangScore = explode('=', $curLang[1]);
-                $browserLangArray[$curLang[0]] = (float)$curLangScore[1];
-            } else {
-                $browserLangArray[$curLang[0]] = (float)1.0;
+        $defaultPriority = (float) 0;
+        $matchedLanguage = '';
+        foreach ($availableLanguages as $key => $value) {
+            $languageCode = key($value);
+            $priority = $value[$languageCode];
+            if ($priority > $defaultPriority && array_key_exists($languageCode, $supportedLanguages)) {
+                $defaultPriority = $priority;
+                $matchedLanguage = $languageCode;
             }
         }
 
-        // Check if one of the specific browser language is in the list of system languages
-        $langScore = 0;
-
-        foreach ($browserLangArray as $key => $value) {
-            if (in_array($key, $sysLang) && ($value > $langScore)) {
-                $langScore = $value;
-                $langName = $key;
-            }
-        }
-
-        // Return language name or false
-        if ($langScore != 0) {
-            return $langName;
-        }
-
-        return false;
+        return $matchedLanguage != '' ? $matchedLanguage : $default;
     }
 }

@@ -224,11 +224,7 @@ class ZLanguage
             if ($this->langSession) {
                 $this->languageCode = $this->langSession;
             } elseif ($this->langDetect) {
-                if ($this->discoverBrowserPrefs()) {
-                    $this->languageCode = $this->browserLanguagePref;
-                } else {
-                    $this->languageCode = $this->langSystemDefault;
-                }
+                $this->languageCode = $this->discoverBrowserPrefs();
             } else {
                 $this->languageCode = $this->langSystemDefault;
             }
@@ -639,7 +635,7 @@ class ZLanguage
     {
         $available = $this->getInstalledLanguages();
         $detector = new ZLanguageBrowser($available);
-        $this->browserLanguagePref = $detector->discover();
+        $this->browserLanguagePref = $detector->discover($this->langSystemDefault);
 
         return $this->browserLanguagePref;
     }

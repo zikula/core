@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
@@ -48,7 +47,12 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
 
     public function getFormType()
     {
-        return new DbCredsType();
+        return 'Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType';
+    }
+
+    public function getFormOptions()
+    {
+        return [];
     }
 
     public function getTemplateName()

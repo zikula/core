@@ -69,7 +69,7 @@ class UpgraderController extends AbstractController
 
         // handle the form
         if ($currentStage instanceof FormHandlerInterface) {
-            $form = $this->form->create($currentStage->getFormType());
+            $form = $this->form->create($currentStage->getFormType(), null, $currentStage->getFormOptions());
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);

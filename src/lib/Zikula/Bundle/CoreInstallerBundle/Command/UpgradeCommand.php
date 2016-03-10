@@ -23,9 +23,6 @@ use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\InitStage;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand
 {
@@ -100,16 +97,13 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
 
         // get the settings from user input
-        $formType = new LocaleType();
-        $settings = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
-        $formType = new LoginType();
-        $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+        $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output);
+        $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType', $input, $output);
         foreach ($data as $k => $v) {
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
         }
         $settings = array_merge($settings, $data);
-        $formType = new RequestContextType();
-        $data = $this->getHelper('form')->interactUsingForm($formType, $input, $output);
+        $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType', $input, $output);
         foreach ($data as $k => $v) {
             $newKey = str_replace(':', '.', $k);
             $data[$newKey] = $v;
