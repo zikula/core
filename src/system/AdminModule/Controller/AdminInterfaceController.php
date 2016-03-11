@@ -295,7 +295,7 @@ class AdminInterfaceController extends AbstractController
         // add empty categories
         /** @var \Zikula\AdminModule\Entity\AdminCategoryEntity[] $moduleCategories */
         foreach ($moduleCategories as $moduleCategory) {
-            if (!array_key_exists($moduleCategory->getCid(), $menuCategories)) {
+            if (!array_key_exists($moduleCategory->getSortorder(), $menuCategories)) {
                 $menuCategories[$moduleCategory->getSortOrder()] = [
                     'title' => $moduleCategory->getName(),
                     'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', [
