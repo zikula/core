@@ -27,6 +27,7 @@
     <property name="ignorepaths" value="lib/vendor/*,javascript/*,system/*,themes/*,install/*,lib/legacy,plugins/*"/>
     <property name="ownjslist" value="
     javascript/helpers/bootstrap-zikula.js,
+    javascript/helpers/form/form.js,
     javascript/helpers/Zikula.js,
     javascript/helpers/Zikula.ImageViewer.js,
     javascript/helpers/Zikula.Tree.js,
@@ -42,7 +43,6 @@
     system/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js,
     system/CategoriesModule/Resources/public/js/categories_admin_edit.js,
     system/CategoriesModule/Resources/public/js/categories_admin_view.js,
-    system/ExtensionsModule/Resources/public/js/hookui.js,
     system/GroupsModule/Resources/public/js/groups.js,
     system/PageLockModule/Resources/public/js/PageLock.js,
     system/PermissionsModule/Resources/public/js/Zikula.Permission.Admin.ModifyConfig.js,
@@ -55,7 +55,6 @@
     system/SecurityCenterModule/Resources/public/js/securitycenter_admin_allowedhtm.js,
     system/SecurityCenterModule/Resources/public/js/securitycenter_admin_purifierconfig.js,
     system/SettingsModule/Resources/public/js/ZikulaSettingsModule.Admin.Phpinfo.js,
-    system/ThemeModule/Resources/public/js/form/form.js,
     system/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.ModifyConfig.js,
     system/ThemeModule/Resources/public/js/ZikulaThemeModule.Admin.View.js,
     system/ThemeModule/Resources/public/js/themeswitcher.js,
