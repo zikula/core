@@ -110,11 +110,11 @@
 
         <!-- generate less file -->
         <exec command="${workspace}/source/build.php build:generate_less --write-to '${packagepath}/web/bootstrap-font-awesome.css'" checkreturn="true" passthru="true"/>
-        
+
         <!-- move doc files from repo root -->
         <echo msg="Moving doc files to /docs/en ..."/>
         <move file="${workspace}/source/README.md" tofile="${packagepath}/docs/en/README.md" overwrite="true"/>
-        <move file="${workspace}/source/INSTALL-1.4.0.md" tofile="${packagepath}/docs/en/INSTALL-1.4.0.md" overwrite="true"/>
+        <move file="${workspace}/source/INSTALL-1.4.md" tofile="${packagepath}/docs/en/INSTALL-1.4.md" overwrite="true"/>
         <move file="${workspace}/source/UPGRADE-1.4.md" tofile="${packagepath}/docs/en/UPGRADE-1.4.md" overwrite="true"/>
         <move file="${workspace}/source/CHANGELOG-1.3.md" tofile="${packagepath}/docs/en/CHANGELOG-1.3.md" overwrite="true"/>
         <move file="${workspace}/source/CHANGELOG-1.4.md" tofile="${packagepath}/docs/en/CHANGELOG-1.4.md" overwrite="true"/>
@@ -126,7 +126,7 @@
 
         <!-- install assets -->
         <!--<exec command="php ${packagepath}/app/console assets:install ${packagepath}/web" checkreturn="true" passthru="true"/>-->
-        
+
         <!-- create route translation dummy file -->
         <exec command="php ${packagepath}/app/console translation:extract --enable-extractor=jms_i18n_routing --dir=${packagepath}/app/logs --output-dir=${packagepath}/app/Resources/translations template" checkreturn="true" passthru="true" />
 
