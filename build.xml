@@ -78,7 +78,7 @@
         <echo msg="Clean..."/>
         <delete dir="${builddir}" includeemptydirs="true"/>
         <delete dir="${sourcedir}/src/vendor" includeemptydirs="true"/>
-        <delete file="${workspace}/source/composer.lock"/>
+        <!--<delete file="${workspace}/source/composer.lock"/>-->
         <delete file="${workspace}/source/composer.phar"/>
     </target>
 
