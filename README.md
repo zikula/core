@@ -16,7 +16,7 @@ Introduction
 
 Zikula Core is a web based application framework, fully extensible by modules, plugins and themes.
 
-For more information visit http://zikula.org/ and read our [user manual](https://github.com/zikula/zikula-docs/tree/master/Users%20Manual).
+For more information visit http://zikula.org/
 
 
 <a name="requirements"></a>
@@ -44,8 +44,11 @@ Please note:
 Before installing
 -----------------
 
-Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies. Composer must
-be run prior to installing a site using Zikula. Run `composer self-update && composer update`.
+Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies.
+If cloning via github, composer must be run prior to installation. Run:
+
+    `composer self-update`
+    `composer install`
 
 If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to `composer`
 to avoid your IDE reading the package contents.
@@ -54,7 +57,10 @@ to avoid your IDE reading the package contents.
 <a name="installing"></a>
 Installing
 ----------
-Once all of the pre-install steps are complete Run `http://yoursiteurl/install` and follow any on-screen prompts.
+Once all of the pre-install steps are complete, choose an installation method:
+
+  1) CLI install: `cd` to zikula root and run `php app/console zikula:install:start`
+  2) HTTP install: Run `http://yoursiteurl/install` and follow any on-screen prompts.
 
 
 <a name="contributing"></a>

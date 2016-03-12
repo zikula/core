@@ -21,7 +21,7 @@ everyone involved.
 Zikula can be extended with modules, plugins and themes which can add functionality to your
 website. These are available at http://www.zikula.org/library
 
-Zikula Core 1.4.0 maintains backward-compatibility with Zikula Core 1.3.0 and runs all 1.3.x-compatible
+Zikula Core 1.4 maintains backward-compatibility with Zikula Core 1.3 and runs all 1.3.x-compatible
 modules, plugins and themes without changes. If a module doesn't work with 1.4 but worked with 1.3, feel free
 to open an issue at the GitHub Core Repository and we will try to fix any problems.
 
@@ -31,7 +31,7 @@ to open an issue at the GitHub Core Repository and we will try to fix any proble
 -----------------------
 
 Before upgrading Zikula it's important to ensure that the hosting server environment meets the requirements
-of the new core release. Zikula Core 1.4.0 has the following requirements:
+of the new core release. Zikula Core 1.4 has the following requirements:
 
 |               | Minimum       | Recommended  |
 | ------------- |:-------------:| :-----------:|
@@ -62,13 +62,12 @@ instructions. This is **not recommended for non-developers**.
 If you obtained Zikula Core from zikula.org or the CI server, then you can upload the entire archive (`.zip`
 or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable than 
 uploading files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the
-correct permissions (`tar -xpzvf Zikula_Core-1.4.0.build123.tar.gz` where 123 must contain the downloaded build number).** 
+correct permissions (`tar -xpzvf Zikula_Core-1.4.0.build123.tar.gz`) change the filename to match the current download.** 
 Copy all the files and directories to your webroot (typically `public_html` or `httpdocs`).
 
 Another option can be to download the tar.gz directly from the ci server: e.g. 
 `wget http://ci.zikula.org/job/Zikula_Core-1.4.0/588/artifact/build/archive/Zikula_Core-1.4.0.build588.tar.gz`. 
-But you have to change the build number (e.g. 588) to the latest you can find at the ci server.
-
+Again, change the filename/url to match the correct filename from the ci server.
 
 Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
 to the server check if your longest path length is longer than Windows/FTP-Software allows (more than 256 characters).
