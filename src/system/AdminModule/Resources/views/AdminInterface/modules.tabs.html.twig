@@ -21,7 +21,7 @@
             <li class="dropdown droppable nowrap{% if caller._zkModule == module.modname %} active{% endif %}">
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="{{ module.menutext }}">
                     <span class="fa fa-arrows admintabs-lock"></span>
-                    <span><img src="{{ app.request.baseUrl }}/{{ module.icon }}" style="height:18px;"/></span>
+                    <span><img src="{{ app.request.basePath }}/{{ module.icon }}" style="height:18px;"/></span>
                     <span class="fa fa-caret-down"></span>
                 </a>
                 {% if module.links|length > 0 %}

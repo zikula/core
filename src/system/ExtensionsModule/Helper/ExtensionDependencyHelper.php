@@ -100,7 +100,7 @@ class ExtensionDependencyHelper
             $foundExtension = $this->extensionEntityRepo->get($dependency->getModname());
             if (!is_null($foundExtension)
                 && ExtensionApi::STATE_ACTIVE == $foundExtension->getState()
-                && $this->meetsVersionRequirements($extension->getCore_min(), $extension->getCore_max(), $foundExtension->getVersion())) {
+                && $this->meetsVersionRequirements($dependency->getMinversion(), $dependency->getMaxversion(), $foundExtension->getVersion())) {
                 continue;
             }
             $this->checkForFatalDependency($dependency);
@@ -187,7 +187,7 @@ class ExtensionDependencyHelper
      */
     private function meetsVersionRequirements($requiredMin, $requiredMax, $current)
     {
-        $compatibilityString = ($requiredMin == $requiredMax) ? $requiredMin : "$requiredMin - $requiredMax";
+        $compatibilityString = ($requiredMin == $requiredMax) || empty($requiredMax) ? ">=$requiredMin" : "$requiredMin - $requiredMax";
         $requiredVersionExpression = new expression($compatibilityString);
 
         return $requiredVersionExpression->satisfiedBy(new version($current));

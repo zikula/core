@@ -39,7 +39,6 @@ class ExtensionHelper
 
         $serviceManager = \ServiceUtil::getManager();
         $osdir = \DataUtil::formatForOS($extension->getDirectory());
-        \ModUtil::dbInfoLoad($extension->getName(), $osdir);
 
         // add autoloaders for 1.3-type modules
         if ((false === strpos($osdir, '/')) && (is_dir("modules/$osdir/lib"))) {

@@ -13,6 +13,7 @@
  */
 
 use Zikula\Core\CoreEvents;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 
 /**
@@ -32,31 +33,31 @@ class LegacyModuleInstallerListeners extends Zikula_AbstractEventHandler
 
     public function dispatchModuleDeactivated(ModuleStateEvent $event)
     {
-        $event = new \Zikula_Event('installer.module.deactivated', null, $this->getInfoFromEvent($event));
+        $event = new GenericEvent(null, $this->getInfoFromEvent($event));
         $this->eventManager->dispatch('installer.module.deactivated', $event);
     }
 
     public function dispatchModuleActivated(ModuleStateEvent $event)
     {
-        $event = new \Zikula_Event('installer.module.activated', null, $this->getInfoFromEvent($event));
+        $event = new GenericEvent(null, $this->getInfoFromEvent($event));
         $this->eventManager->dispatch('installer.module.activated', $event);
     }
 
     public function dispatchModuleInstalled(ModuleStateEvent $event)
     {
-        $event = new \Zikula_Event('installer.module.installed', null, $this->getInfoFromEvent($event));
+        $event = new GenericEvent(null, $this->getInfoFromEvent($event));
         $this->eventManager->dispatch('installer.module.installed', $event);
     }
 
     public function dispatchModuleUpgraded(ModuleStateEvent $event)
     {
-        $event = new \Zikula_Event('installer.module.upgraded', null, $this->getInfoFromEvent($event));
+        $event = new GenericEvent(null, $this->getInfoFromEvent($event));
         $this->eventManager->dispatch('installer.module.upgraded', $event);
     }
 
     public function dispatchModuleRemoved(ModuleStateEvent $event)
     {
-        $event = new \Zikula_Event('installer.module.uninstalled', null, $this->getInfoFromEvent($event));
+        $event = new GenericEvent(null, $this->getInfoFromEvent($event));
         $this->eventManager->dispatch('installer.module.uninstalled', $event);
     }
 
