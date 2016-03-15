@@ -13,9 +13,12 @@
 
 namespace Zikula\ExtensionsModule\Helper;
 
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\Console\Application;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\CoreEvents;
@@ -87,7 +90,7 @@ class ExtensionHelper
         $cacheClearer = $this->container->get('zikula.cache_clearer');
         $cacheClearer->clear('symfony.config');
 
-        $event = new ModuleStateEvent($bundle);
+        $event = new ModuleStateEvent($bundle, $extension->toArray());
         $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_INSTALL, $event);
 
         return true;
@@ -146,7 +149,7 @@ class ExtensionHelper
 
         if (!\System::isInstalling()) {
             // Upgrade succeeded, issue event.
-            $event = new ModuleStateEvent($bundle, null);
+            $event = new ModuleStateEvent($bundle, $extension->toArray());
             $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_UPGRADE, $event);
         }
 
@@ -201,7 +204,7 @@ class ExtensionHelper
         $cacheClearer = $this->container->get('zikula.cache_clearer');
         $cacheClearer->clear('symfony.config');
 
-        $event = new ModuleStateEvent($bundle);
+        $event = new ModuleStateEvent($bundle, $extension->toArray());
         $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_REMOVE, $event);
 
         return true;
@@ -283,6 +286,22 @@ class ExtensionHelper
         }
 
         return null;
+    }
+
+    /**
+     * Run the console command app/console assets:install
+     * @throws \Exception
+     */
+    public function installAssets()
+    {
+        $kernel = $this->container->get('kernel');
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+        $input = new ArrayInput([
+            'command' => 'assets:install'
+        ]);
+        $output = new NullOutput();
+        $application->run($input, $output);
     }
 
     /**

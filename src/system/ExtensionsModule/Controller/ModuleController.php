@@ -264,9 +264,11 @@ class ModuleController extends AbstractController
 
                             return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
                         }
+                        $extensionsInstalled[] = $dependencyExtensionEntity->getId();
+                        $this->addFlash('status', $this->__f('Installed dependency %s.', ['%s' => $dependencyExtensionEntity->getName()]));
+                    } else {
+                        $this->addFlash('warning', $this->__f('Warning: could not install selected dependency %s', ['%s' => $unsatisfiedDependencies[$dependencyId]->getModname()]));
                     }
-                    $extensionsInstalled[] = $dependencyExtensionEntity->getId();
-                    $this->addFlash('status', $this->__f('Installed dependency %s.', ['%s' => $dependencyExtensionEntity->getName()]));
                 }
                 if ($this->get('zikula_extensions_module.extension_helper')->install($extension)) {
                     $this->addFlash('status', $this->__f('Done! Installed %s.', ['%s' => $extension->getName()]));
@@ -312,6 +314,8 @@ class ModuleController extends AbstractController
                     $this->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
                 }
             }
+            // currently commented out because it takes a long time.
+//            $this->get('zikula_extensions_module.extension_helper')->installAssets();
         }
 
         return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist', ['justinstalled' => json_encode($extensions)]);
@@ -327,7 +331,8 @@ class ModuleController extends AbstractController
         $return = [];
         /** @var ExtensionDependencyEntity[] $dependencies */
         foreach ($dependencies as $dependency) {
-            $return[$dependency->getId()] = true;
+            $dependencyExtension = $this->get('zikula_extensions_module.extension_repository')->get($dependency->getModname());
+            $return[$dependency->getId()] = empty($dependencyExtension) ? false : true;
         }
 
         return $return;

@@ -202,7 +202,7 @@ abstract class AbstractBundle extends Bundle
             $metaData->setTranslator($this->container->get('translator'));
         }
         $metaData->setDirectoryFromBundle($this);
-        if ($this->container->getParameter('installed')) {
+        if (!empty($this->container) && $this->container->getParameter('installed')) {
             // overwrite composer.json settings with dynamic values from extension repository
             $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($this->getName());
             if (!is_null($extensionEntity)) {

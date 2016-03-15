@@ -49,7 +49,7 @@ class ModuleHeaderFunction
      * @param bool $image If set to true, module image is also displayed next to title
      * @return string
      */
-    public function display($type = 'user', $title = '', $titleLink = '', $setPageTitle = false, $insertFlashes = true, $menuFirst = false, $image = false)
+    public function display($type = 'user', $title = '', $titleLink = '', $setPageTitle = false, $insertFlashes = false, $menuFirst = false, $image = false)
     {
         $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:header', [
             'type' => $type,

@@ -187,7 +187,11 @@ class ExtensionDependencyHelper
      */
     private function meetsVersionRequirements($requiredMin, $requiredMax, $current)
     {
-        $compatibilityString = ($requiredMin == $requiredMax) || empty($requiredMax) ? ">=$requiredMin" : "$requiredMin - $requiredMax";
+        if (($requiredMin == $requiredMax) || empty($requiredMax)) {
+            $compatibilityString = (preg_match("/>|=|</", $requiredMin)) ? $requiredMin : ">=$requiredMin";
+        } else {
+            $compatibilityString = "$requiredMin - $requiredMax";
+        }
         $requiredVersionExpression = new expression($compatibilityString);
 
         return $requiredVersionExpression->satisfiedBy(new version($current));
