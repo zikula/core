@@ -195,6 +195,17 @@ class AjaxInstallController extends AbstractController
                 'state' => \ModUtil::STATE_INACTIVE));
             $modApi->setstate(array('id' => $mid,
                 'state' => \ModUtil::STATE_ACTIVE));
+
+            /**
+             * Prevent a potential timeout, if the site is using a load balancer.
+             */
+            sleep(1);
+
+            if (!headers_sent()) {
+                header('Content-Type: application/json');
+            }
+
+            flush();
         }
 
         return true;
