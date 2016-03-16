@@ -49,11 +49,6 @@ abstract class ZikulaKernel extends Kernel
     private $autoloader;
 
     /**
-     * @var boolean
-     */
-    private $bundlesSorted = false;
-
-    /**
      * @deprecated - Remove when inclusion of files inside the constructor is removed!
      * @var bool
      */
@@ -99,15 +94,11 @@ abstract class ZikulaKernel extends Kernel
 
         parent::boot();
 
-        if (true === $this->bundlesSorted) {
-            return;
-        }
-
-        foreach ($this->bundles as $bundle) {
-            if ($bundle instanceof AbstractModule) {
-                $this->modules[] = $bundle;
-            } elseif ($bundle instanceof AbstractTheme) {
-                $this->themes[] = $bundle;
+        foreach ($this->bundles as $name => $bundle) {
+            if ($bundle instanceof AbstractModule && !isset($this->modules[$name])) {
+                $this->modules[$name] = $bundle;
+            } elseif ($bundle instanceof AbstractTheme && !isset($this->themes[$name])) {
+                $this->themes[$name] = $bundle;
             }
         }
 
@@ -118,8 +109,6 @@ abstract class ZikulaKernel extends Kernel
                 $this->themeMap[$name] = $bundles;
             }
         }
-
-        $this->bundlesSorted = true;
     }
 
     /**

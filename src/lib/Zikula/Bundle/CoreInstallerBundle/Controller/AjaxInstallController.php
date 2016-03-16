@@ -21,8 +21,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper as CoreBundleBootstrapHelper;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\AdminApi as ExtensionsAdminApi;
-use Zikula\ExtensionsModule\ZikulaExtensionsModule;
+use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\Event\ModuleStateEvent;
@@ -122,6 +123,8 @@ class AjaxInstallController extends AbstractController
                 return $this->reloadRoutes();
             case "plugins":
                 return $this->installPlugins();
+            case "installassets":
+                return $this->installAssets();
             case "protect":
                 return $this->protectFiles();
         }
@@ -183,19 +186,17 @@ class AjaxInstallController extends AbstractController
 
     private function activateModules()
     {
-        // regenerate modules list
-        $modApi = new ExtensionsAdminApi($this->container, new ZikulaExtensionsModule());
-        $modApi->regenerate(array('filemodules' => $modApi->getfilemodules(array('system'))));
+        $extensionsInFileSystem = $this->container->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles();
+        $this->container->get('zikula_extensions_module.bundle_sync_helper')->syncExtensions($extensionsInFileSystem);
 
-        // set each of the core modules to active
-        reset($this->systemModules);
-        foreach ($this->systemModules as $systemModule) {
-            $mid = \ModUtil::getIdFromName($systemModule);
-            $modApi->setstate(array('id' => $mid,
-                'state' => \ModUtil::STATE_INACTIVE));
-            $modApi->setstate(array('id' => $mid,
-                'state' => \ModUtil::STATE_ACTIVE));
+        /** @var ExtensionEntity[] $extensions */
+        $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findAll();
+        foreach ($extensions as $extension) {
+            if (in_array($extension->getName(), $this->systemModules)) {
+                $extension->setState(ExtensionApi::STATE_ACTIVE);
+            }
         }
+        $this->container->get('doctrine.orm.entity_manager')->flush();
 
         return true;
     }
@@ -217,16 +218,15 @@ class AjaxInstallController extends AbstractController
             'ZikulaSettingsModule' => __('System'),
             'ZikulaRoutesModule' => __('System'), );
 
-        $categories = \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
-        $modulesCategories = array();
-        foreach ($categories as $category) {
-            $modulesCategories[$category['name']] = $category['cid'];
-        }
+        $modulesCategories = $this->container->get('doctrine.orm.entity_manager')
+            ->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('name');
+
         foreach ($this->systemModules as $systemModule) {
             $category = $systemModulesCategories[$systemModule];
-            \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory',
-                array('module' => $systemModule,
-                    'category' => $modulesCategories[$category]));
+            \ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', [
+                'module' => $systemModule,
+                'category' => $modulesCategories[$category]->getCid()
+            ]);
         }
 
         return true;
@@ -303,11 +303,11 @@ class AjaxInstallController extends AbstractController
         \ModUtil::initCoreVars(true); // initialize the modvars array (includes ZConfig (System) vars)
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
-        \System::setVar('language_i18n', $params['locale']);
+        $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
         // Set the System Identifier as a unique string.
-        \System::setVar('system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
+        $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
         // add admin email as site email
-        \System::setVar('adminmail', $params['email']);
+        $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'adminmail', $params['email']);
         // regenerate the theme list
         $this->container->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
 
@@ -373,6 +373,13 @@ class AjaxInstallController extends AbstractController
         }
 
         return $result;
+    }
+
+    private function installAssets()
+    {
+        $this->container->get('zikula_extensions_module.extension_helper')->installAssets();
+
+        return true;
     }
 
     private function protectFiles()

@@ -210,7 +210,14 @@ class AjaxInstallerStage implements StageInterface
                 self::SUCCESS => __('Configuration files protected'),
                 self::FAIL => __('There was an error protecting configuration files')
             ),
-            25 => array(
+            25 => [
+                self::NAME => "installassets",
+                self::PRE => __('Install assets'),
+                self::DURING => __('Installing assets to /web'),
+                self::SUCCESS => __('Assets installed'),
+                self::FAIL => __('Failed to install assets')
+            ],
+            26 => array(
                 self::NAME => "finish",
                 self::PRE => __('Finish'),
                 self::DURING => __('Finish'),
