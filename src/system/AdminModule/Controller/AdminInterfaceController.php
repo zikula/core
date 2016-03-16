@@ -259,7 +259,7 @@ class AdminInterfaceController extends AbstractController
                     'mid' => \ModUtil::getIdFromName($adminModule['name'])
                 ]);
                 // url
-                $menutexturl = isset($adminModule['capabilities']['admin']['url']) ? $adminModule['capabilities']['admin']['url'] : $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
+                $menutexturl = isset($adminModule['capabilities']['admin']['route']) ? $this->get('router')->generate($adminModule['capabilities']['admin']['route']): $adminModule['capabilities']['admin']['url'];
                 // text's
                 $menutext = $adminModule['displayname'];
                 $menutexttitle = $adminModule['description'];
