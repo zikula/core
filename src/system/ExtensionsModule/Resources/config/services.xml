@@ -7,7 +7,6 @@
     <parameters>
         <parameter key="zikula_extensions_module.container.link_container.class">Zikula\ExtensionsModule\Container\LinkContainer</parameter>
         <parameter key="zikula_extensions_module.listener.extension_services_listener.class">Zikula\ExtensionsModule\Listener\ExtensionServicesListener</parameter>
-        <parameter key="zikula_extensions_module.listener.multisites_listener.class">Zikula\ExtensionsModule\Listener\MultisitesListener</parameter>
         <parameter key="zikula_extensions_module.api.variable.class">Zikula\ExtensionsModule\Api\VariableApi</parameter>
         <parameter key="zikula_extensions_module.api.extension.class">Zikula\ExtensionsModule\Api\ExtensionApi</parameter>
         <parameter key="zikula_extensions_module.api.capability.class">Zikula\ExtensionsModule\Api\CapabilityApi</parameter>
@@ -33,14 +32,6 @@
         <service id="zikula_extensions_module.listener.extension_services_listener" class="%zikula_extensions_module.listener.extension_services_listener.class%">
             <argument id="event_dispatcher" type="service"/>
             <argument id="router" type="service"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service id="zikula.extensions_module.listener.multisites_listener" class="%zikula_extensions_module.listener.multisites_listener.class%">
-            <argument>%multisites%</argument>
-            <argument type="service" id="request_stack" />
-            <argument type="service" id="zikula_permissions_module.api.permission" />
-            <argument type="service" id="translator.default" />
             <tag name="kernel.event_subscriber"/>
         </service>
 
