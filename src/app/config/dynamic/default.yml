@@ -18,3 +18,9 @@ swiftmailer:
     disable_delivery: false
 parameters:
     zikula.session.name: _zsid
+    # multisites configuration does nothing unless the Multisites module is installed and configured properly.
+    multisites:
+        enabled: false
+        mainsiteurl: ~
+        based_on_domains: ~
+        protected.systemvars: []
