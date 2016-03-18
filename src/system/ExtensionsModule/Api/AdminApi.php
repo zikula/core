@@ -1462,11 +1462,11 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $msConfig = $this->serviceManager['multisites'];
 
-        return (
+        return
             ($msConfig['mainsiteurl'] == $this->request->query->get('sitedns', null)
                 && $msConfig['based_on_domains'] == 0)
             || ($msConfig['mainsiteurl'] == $_SERVER['HTTP_HOST']
                 && $msConfig['based_on_domains'] == 1)
-        );
+        ;
     }
 }
