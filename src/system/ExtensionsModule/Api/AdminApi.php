@@ -181,8 +181,11 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // filter by module state
-        $minimalState = $this->serviceManager['multisites']['enabled'] == true ? ModUtil::STATE_NOTALLOWED : ModUtil::STATE_UPGRADED;
-        $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > $minimalState) ? 0 : (int)$args['state'];
+        if ($this->serviceManager['multisites']['enabled'] == 1) {
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
+        } else {
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int)$args['state'];
+        }
         switch ($state) {
             case ModUtil::STATE_UNINITIALISED:
             case ModUtil::STATE_INACTIVE:
@@ -264,7 +267,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Check valid state transition
         switch ($args['state']) {
             case ModUtil::STATE_UNINITIALISED:
-                if ($this->serviceManager['multisites']['enabled'] == true) {
+                if ($this->serviceManager['multisites']['enabled'] == 1) {
                     if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
                         throw new \RuntimeException($this->__('Error! Invalid module state transition.'));
                     }
@@ -411,11 +414,15 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // remove the entry from the modules table
-        if ($this->serviceManager['multisites']['enabled'] == true) {
+        if ($this->serviceManager['multisites']['enabled'] == 1) {
             // who can access to the mainSite can delete the modules in any other site
-            $canDelete = $this->isMainSite();
-            // delete the module infomation only if it is not allowed, missign or invalid
-            if ($canDelete === true || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
+            $canDelete = (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)
+                    && $this->serviceManager['multisites.based_on_domains'] == 0)
+                || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST']
+                    && $this->serviceManager['multisites.based_on_domains'] == 1))
+                ? 1 : 0;
+            //delete the module infomation only if it is not allowed, missign or invalid
+            if ($canDelete == 1 || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
                 // remove the entry from the modules table
                 $query = $this->entityManager->createQueryBuilder()
                                              ->delete()
@@ -870,9 +877,12 @@ class AdminApi extends \Zikula_AbstractApi
                 $modinfo['securityschema'] = unserialize($modinfo['securityschema']);
 
                 // insert new module to db
-                if ($this->serviceManager['multisites']['enabled'] == true) {
+                if ($this->serviceManager['multisites']['enabled'] == 1) {
                     // only the main site can regenerate the modules list
-                    if ($this->isMainSite()) {
+                    if (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)
+                            && $this->serviceManager['multisites.based_on_domains'] == 0)
+                        || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST']
+                            && $this->serviceManager['multisites.based_on_domains'] == 1)) {
                         $item = new ExtensionEntity();
                         $item->merge($modinfo);
                         $this->entityManager->persist($item);
@@ -1209,8 +1219,11 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // filter by module state
-        $minimalState = $this->serviceManager['multisites']['enabled'] == true ? ModUtil::STATE_NOTALLOWED : ModUtil::STATE_UPGRADED;
-        $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > $minimalState) ? 0 : (int)$args['state'];
+        if ($this->serviceManager['multisites']['enabled'] == 1) {
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
+        } else {
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int)$args['state'];
+        }
         switch ($state) {
             case ModUtil::STATE_UNINITIALISED:
             case ModUtil::STATE_INACTIVE:
@@ -1451,22 +1464,5 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         return $installer;
-    }
-
-    /**
-     * Determines whether the current site is the main site within a Multisites system.
-     *
-     * @return boolean True if this is the main site, false otherwise.
-     */
-    private function isMainSite()
-    {
-        $msConfig = $this->serviceManager['multisites'];
-
-        return
-            ($msConfig['mainsiteurl'] == $this->request->query->get('sitedns', null)
-                && $msConfig['based_on_domains'] == 0)
-            || ($msConfig['mainsiteurl'] == $_SERVER['HTTP_HOST']
-                && $msConfig['based_on_domains'] == 1)
-        ;
     }
 }
