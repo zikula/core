@@ -140,13 +140,10 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
      */
     public function renderView($view, array $parameters = array())
     {
-        if ($this->container->has('templating')) {
-            return $this->container->get('templating')->render($view, $parameters);
+        if (!$this->container->has('twig')) {
+            throw new \LogicException('You can not use the "renderView" method if the Twig Bundle is not available.');
         }
 
-        if (!$this->container->has('twig')) {
-            throw new \LogicException('You can not use the "renderView" method if the Templating Component or the Twig Bundle are not available.');
-        }
         $parameters['domain'] = $this->translator->getDomain();
 
         return $this->container->get('twig')->render($view, $parameters);

@@ -17,7 +17,7 @@ class LinkContainerPass implements CompilerPassInterface
         $definition = $container->getDefinition('zikula.link_container_collector');
 
         foreach ($container->findTaggedServiceIds('zikula.link_container') as $id => $linkContainer) {
-            $definition->addMethodCall('addContainer', array(new Reference($id)));
+            $definition->addMethodCall('addContainer', [new Reference($id)]);
         }
     }
 }

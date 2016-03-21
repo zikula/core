@@ -19,7 +19,7 @@
  * icon packs to be seamlessly exchanged.
  */
 
-$icons = array(
+$icons = [
     'add'        => 'edit_add.png',
     'back'       => 'agt_back.png',
     'cancel'     => 'button_cancel.png',
@@ -61,4 +61,5 @@ $icons = array(
     'view'       => 'windowlist.png',
     'warning'    => 'bell.png',
     'xedit'      => 'xedit.png',
-    ''           => '');
+    ''           => ''
+];

@@ -334,7 +334,7 @@ class DBObjectArray
      * issues when accessing filter fields which may not be set + do additional processing as necessary.
      * Default implementation which can be overridden by subclasses.
      *
-     * @param array $filter An array containing the set filter values (optional) (default=array()).
+     * @param array $filter An array containing the set filter values (optional) (default=[]).
      *
      * @return array The processed filter array.
      */
@@ -348,7 +348,7 @@ class DBObjectArray
      *
      * Generate a filter for the array view. Default implementation which can be overridden by subclasses.
      *
-     * @param array $filter An array containing the set filter values (optional) (default=array()).
+     * @param array $filter An array containing the set filter values (optional) (default=[]).
      *
      * @return string The generated filter (where-clause) string.
      */

@@ -1,4 +1,15 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPv3 (or at your option any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Bundle\CoreBundle\Bundle\Helper;
 
@@ -23,7 +34,7 @@ class BootstrapHelper
     public function load()
     {
         $scanner = new Scanner();
-        $scanner->scan(array('modules', 'themes'), 5);
+        $scanner->scan(['modules', 'themes'], 5);
         $array = array_merge($scanner->getModulesMetaData(), $scanner->getThemesMetaData());
         $array = array_merge($array, $scanner->getPluginsMetaData());
         $this->sync($array);
@@ -56,8 +67,8 @@ class BootstrapHelper
                 $this->insert($metadata);
             } elseif (($metadata->getClass() != $row['bundleclass']) || (serialize($metadata->getAutoload()) != $row['autoload'])) {
                 // bundle json has been updated
-                $updatedMeta = array("bundleclass" => $metadata->getClass(), "autoload" => serialize($metadata->getAutoload()));
-                $this->conn->update('bundles', $updatedMeta, array('id' => $row['id']));
+                $updatedMeta = ['bundleclass' => $metadata->getClass(), 'autoload' => serialize($metadata->getAutoload())];
+                $this->conn->update('bundles', $updatedMeta, ['id' => $row['id']]);
             }
         }
 
@@ -80,14 +91,15 @@ class BootstrapHelper
 
     private function updateState($id, $state = AbstractBundle::STATE_DISABLED)
     {
-        $this->conn->update('bundles', array('bundlestate' => $state),
-                                       array('id' => $id)
+        $this->conn->update('bundles',
+            ['bundlestate' => $state],
+            ['id' => $id]
         );
     }
 
     private function removeById($id)
     {
-        $this->conn->delete('bundles', array('id' => $id));
+        $this->conn->delete('bundles', ['id' => $id]);
     }
 
     private function truncate()
@@ -114,13 +126,13 @@ class BootstrapHelper
                 throw new \InvalidArgumentException(sprintf('Unknown type %s', $metadata->getType()));
         }
 
-        $this->conn->insert('bundles', array(
-                 'bundlename'     => $name,
-                 'autoload' => $autoload,
-                 'bundleclass'    => $class,
-                 'bundletype'     => $type,
-                 'bundlestate'    => AbstractBundle::STATE_ACTIVE, // todo - this has to be changed
-            )
+        $this->conn->insert('bundles', [
+                 'bundlename'  => $name,
+                 'autoload'    => $autoload,
+                 'bundleclass' => $class,
+                 'bundletype'  => $type,
+                 'bundlestate' => AbstractBundle::STATE_ACTIVE, // todo - this has to be changed
+            ]
         );
     }
 
@@ -128,14 +140,14 @@ class BootstrapHelper
     {
         $schema = $this->conn->getSchemaManager();
         $table = new Table('bundles');
-        $table->addColumn('id', 'integer', array('autoincrement' => true));
-        $table->addColumn('bundlename', 'string', array('length' => 100));
-        $table->addColumn('autoload', 'string', array('length' => 384));
-        $table->addColumn('bundleclass', 'string', array('length' => 100));
-        $table->addColumn('bundletype', 'string', array('length' => 2));
-        $table->addColumn('bundlestate', 'integer', array('length' => 1));
-        $table->setPrimaryKey(array('id'));
-        $table->addUniqueIndex(array('bundlename'));
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('bundlename', 'string', ['length' => 100]);
+        $table->addColumn('autoload', 'string', ['length' => 384]);
+        $table->addColumn('bundleclass', 'string', ['length' => 100]);
+        $table->addColumn('bundletype', 'string', ['length' => 2]);
+        $table->addColumn('bundlestate', 'integer', ['length' => 1]);
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['bundlename']);
         $schema->createTable($table);
     }
 }
