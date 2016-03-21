@@ -73,11 +73,11 @@ class CsrfTokenHandler
         }
 
         if ($this->variableApi->get(VariableApi::CONFIG, 'sessioncsrftokenonetime') && $this->validator->validate($token, false, false)) {
-            return;
+            return true;
         }
 
         if ($this->validator->validate($token)) {
-            return;
+            return true;
         }
 
         // validation failed
