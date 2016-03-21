@@ -1,4 +1,15 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPv3 (or at your option any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
@@ -14,7 +25,7 @@ class Bootstrap
     /**
      * @var array the active/inactive state of each extension
      */
-    private $extensionStateMap = array();
+    private $extensionStateMap = [];
 
     public function getConnection($kernel)
     {
@@ -93,24 +104,24 @@ class Bootstrap
             $sql = "SELECT m.name, m.state, m.id FROM modules as m";
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
-                $this->extensionStateMap[$row['name']] = array(
+                $this->extensionStateMap[$row['name']] = [
                     'state' => (int)$row['state'],
                     'id'    => (int)$row['id'],
-                );
+                ];
             }
             $sql = "SELECT t.name, t.state, t.id FROM themes as t";
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
-                $this->extensionStateMap[$row['name']] = array(
+                $this->extensionStateMap[$row['name']] = [
                     'state' => (int)$row['state'],
                     'id'    => (int)$row['id'],
-                );
+                ];
             }
 
             if (isset($this->extensionStateMap[$extensionName])) {
                 $state = $this->extensionStateMap[$extensionName];
             } else {
-                $state =  array('state' => ($type == 'T') ?  \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED);
+                $state =  ['state' => ($type == 'T') ?  \ThemeUtil::STATE_INACTIVE : \ModUtil::STATE_UNINITIALISED];
             }
         }
 

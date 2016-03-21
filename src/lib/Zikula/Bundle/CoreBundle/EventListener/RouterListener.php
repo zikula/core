@@ -157,10 +157,10 @@ class RouterListener implements EventSubscriberInterface
             }
 
             if (null !== $this->logger) {
-                $this->logger->info(sprintf('Matched route "%s".', isset($parameters['_route']) ? $parameters['_route'] : 'n/a'), array(
+                $this->logger->info(sprintf('Matched route "%s".', isset($parameters['_route']) ? $parameters['_route'] : 'n/a'), [
                     'route_parameters' => $parameters,
                     'request_uri' => $request->getUri(),
-                ));
+                ]);
             }
 
             $request->attributes->add($parameters);
@@ -180,9 +180,9 @@ class RouterListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => array(array('onKernelRequest', 32)),
-            KernelEvents::FINISH_REQUEST => array(array('onKernelFinishRequest', 0)),
-        );
+        return [
+            KernelEvents::REQUEST => [['onKernelRequest', 32]],
+            KernelEvents::FINISH_REQUEST => [['onKernelFinishRequest', 0]],
+        ];
     }
 }

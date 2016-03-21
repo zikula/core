@@ -1,4 +1,15 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2014 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPv3 (or at your option any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
@@ -44,9 +55,9 @@ class MetaData implements \ArrayAccess
         $this->autoload = $json['autoload'];
         $this->displayName = isset($json['extra']['zikula']['displayname']) ? $json['extra']['zikula']['displayname'] : '';
         $this->url = isset($json['extra']['zikula']['url']) ? $json['extra']['zikula']['url'] : '';
-        $this->oldNames = isset($json['extra']['zikula']['oldnames']) ? $json['extra']['zikula']['oldnames'] : array();
-        $this->capabilities = isset($json['extra']['zikula']['capabilities']) ? $json['extra']['zikula']['capabilities'] : array();
-        $this->securitySchema = isset($json['extra']['zikula']['securityschema']) ? $json['extra']['zikula']['securityschema'] : array();
+        $this->oldNames = isset($json['extra']['zikula']['oldnames']) ? $json['extra']['zikula']['oldnames'] : [];
+        $this->capabilities = isset($json['extra']['zikula']['capabilities']) ? $json['extra']['zikula']['capabilities'] : [];
+        $this->securitySchema = isset($json['extra']['zikula']['securityschema']) ? $json['extra']['zikula']['securityschema'] : [];
         $this->extensionType = isset($json['extensionType']) ? $json['extensionType'] : \ModUtil::TYPE_MODULE;
         $this->directory = $json['name'];
         $this->coreCompatibility = isset($json['extra']['zikula']['core-compatibility']) ? $json['extra']['zikula']['core-compatibility'] : '>=1.4.0 <3.0.0'; // @todo >=1.4.1
@@ -69,12 +80,12 @@ class MetaData implements \ArrayAccess
 
     public function getPsr0()
     {
-        return isset($this->autoload['psr-0']) ? $this->autoload['psr-0'] : array();
+        return isset($this->autoload['psr-0']) ? $this->autoload['psr-0'] : [];
     }
 
     public function getPsr4()
     {
-        return isset($this->autoload['psr-4']) ? $this->autoload['psr-4'] : array();
+        return isset($this->autoload['psr-4']) ? $this->autoload['psr-4'] : [];
     }
 
     public function getAutoload()
@@ -175,7 +186,7 @@ class MetaData implements \ArrayAccess
 
     private function formatDependencies(array $json)
     {
-        $dependencies = array();
+        $dependencies = [];
         if (!empty($json['require'])) {
             foreach ($json['require'] as $package => $version) {
                 $dependencies[] = [
@@ -247,7 +258,7 @@ class MetaData implements \ArrayAccess
     {
         $capabilities = $this->getCapabilities();
 
-        return array(
+        return [
             'name' => $this->getShortName(),
             'type' => $this->getExtensionType(),
             'directory' => $this->getDirectory(),
@@ -260,7 +271,7 @@ class MetaData implements \ArrayAccess
             'admin' => isset($capabilities['admin']) ? $capabilities['admin'] : true,
             'system' => isset($capabilities['system']) ? $capabilities['system'] : false,
             'xhtml' => isset($capabilities['xhtml']) ? $capabilities['xhtml'] : true, // @todo is this valid any longer?
-        );
+        ];
     }
 
     /**
@@ -270,7 +281,7 @@ class MetaData implements \ArrayAccess
      */
     public function getFilteredVersionInfoArray()
     {
-        return array(
+        return [
             'name' => $this->getShortName(),
             'type' => $this->getExtensionType(),
             'directory' => $this->getDirectory(),
@@ -284,7 +295,7 @@ class MetaData implements \ArrayAccess
             'dependencies' => $this->getDependencies(),
             'corecompatibility' => $this->getCoreCompatibility(),
             'core_max' => '' // core_min is set from corecompatibility
-        );
+        ];
     }
 
     public function offsetExists($offset)

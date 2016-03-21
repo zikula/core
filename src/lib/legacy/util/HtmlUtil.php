@@ -340,7 +340,7 @@ class HtmlUtil
      * Return the HTML code for the values in a given category.
      *
      * @param string  $categoryPath The identifying category path.
-     * @param array   $values       The values used to populate the defautl states (optional) (default=array()).
+     * @param array   $values       The values used to populate the defautl states (optional) (default=[]).
      * @param string  $namePrefix   The path/object prefix to apply to the field name (optional) (default='').
      * @param string  $excludeList  A (string) list of IDs to exclude (optional) (default=null).
      * @param boolean $disabled     Whether or not the checkboxes are to be disabled (optional) (default=false).
