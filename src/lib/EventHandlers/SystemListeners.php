@@ -33,7 +33,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('pageutil.addvar_filter', 'coreStylesheetOverride');
         $this->addHandlerDefinition('core.preinit', 'initDB');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
-        $this->addHandlerDefinition('theme.init', 'clickJackProtection');
     }
 
     /**
@@ -205,26 +204,5 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
             $event->stopPropagation();
         }
-    }
-
-    /**
-     * Respond to theme.init events.
-     *
-     * Issues anti-clickjack headers.
-     *
-     * @link http://www.owasp.org/images/0/0e/OWASP_AppSec_Research_2010_Busting_Frame_Busting_by_Rydstedt.pdf
-     * @link http://www.contextis.co.uk/resources/white-papers/clickjacking/Context-Clickjacking_white_paper.pdf
-     *
-     * @todo Reimplement in response/header objects in 1.5.0 - drak.
-     *
-     * @param Zikula_Event $event
-     *
-     * @return void
-     */
-    public function clickJackProtection(Zikula_Event $event)
-    {
-        header('X-Frames-Options: SAMEORIGIN');
-        //header("X-Content-Security-Policy: frame-ancestors 'self'");
-        header('X-XSS-Protection: 1');
     }
 }

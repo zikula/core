@@ -44,3 +44,7 @@ parameters:
     # the umask is not thread-safe. Set this value to "~" (NULL), to disable support
     # for umask.
     umask:             ~
+
+    # the following parameter is used in the clickjacking protection listener
+    # it accepts any values allowed for X-Frame-Options
+    security.x_frame_options: SAMEORIGIN
