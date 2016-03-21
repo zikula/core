@@ -315,7 +315,7 @@ class ExtensionHelper
         $className = $bundle->getInstallerClass();
         $reflectionInstaller = new \ReflectionClass($className);
         if (!$reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
-            throw new \RuntimeException($this->translator->__f("%s must implement ExtensionInstallerInterface", $className));
+            throw new \RuntimeException($this->translator->__f("%s must implement ExtensionInstallerInterface", ['%s' => $className]));
         }
         $installer = $reflectionInstaller->newInstance();
         $installer->setBundle($bundle);
