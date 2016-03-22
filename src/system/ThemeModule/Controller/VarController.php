@@ -65,10 +65,10 @@ class VarController extends AbstractController
         if ($form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 // pseudo-hack to save theme vars in to modvars table
-                $this->get('zikula_extensions_module.api.variable')->set($themeName, $form->getData());
+                $this->get('zikula_extensions_module.api.variable')->setAll($themeName, $form->getData());
                 $this->addFlash('status', $this->__('Done! Theme configuration updated.'));
             } elseif ($form->get('toDefault')->isClicked()) {
-                $this->get('zikula_extensions_module.api.variable')->set($themeName, $themeBundle->getDefaultThemeVars());
+                $this->get('zikula_extensions_module.api.variable')->setAll($themeName, $themeBundle->getDefaultThemeVars());
                 $this->addFlash('status', $this->__('Done! Theme configuration updated to default values.'));
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
