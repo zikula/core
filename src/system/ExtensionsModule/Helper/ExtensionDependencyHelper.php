@@ -153,6 +153,12 @@ class ExtensionDependencyHelper
             // @todo this specifically is for `composer/installers` but will catch all with `composer/`
             return true;
         }
+
+        return true;
+        /**
+         * The section below is disabled because it doesn't work with dependencies that are in the module's own vendor directory.
+         */
+        /**
         if (strpos($dependency->getModname(), '/') !== false) {
             if ($this->kernel->isBundle($dependency->getModname())) {
                 if (empty($this->installedPackages)) {
@@ -176,6 +182,7 @@ class ExtensionDependencyHelper
         }
 
         return false;
+         */
     }
 
     /**
