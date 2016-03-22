@@ -1,15 +1,4 @@
 <?php
-/**
- * Copyright Zikula Foundation 2014 - Zikula Application Framework
- *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
- *
- * @license GNU/LGPv3 (or at your option any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
- */
 
 namespace DoctrineExtensions\StandardFields\Mapping\Driver;
 
@@ -35,9 +24,9 @@ class Annotation implements AnnotationDriverInterface
      *
      * @var array
      */
-    private $validTypes = [
+    private $validTypes = array(
         'integer'
-    ];
+    );
 
     /**
      * Annotation reader instance
@@ -91,18 +80,18 @@ class Annotation implements AnnotationDriverInterface
                 if ($timestampable->type != 'userid') {
                     throw new InvalidMappingException("Field - [{$field}] StandardFields annotation attribute 'type' is not 'userid' in class - {$meta->name}");
                 }
-                if (!in_array($timestampable->on, ['update', 'create', 'change'])) {
+                if (!in_array($timestampable->on, array('update', 'create', 'change'))) {
                     throw new InvalidMappingException("Field - [{$field}] trigger 'on' is not one of [update, create, change] in class - {$meta->name}");
                 }
                 if ($timestampable->on == 'change') {
                     if (!isset($timestampable->field) || !isset($timestampable->value)) {
                         throw new InvalidMappingException("Missing parameters on property - {$field}, field and value must be set on [change] trigger in class - {$meta->name}");
                     }
-                    $field = [
+                    $field = array(
                         'field'        => $field,
                         'trackedField' => $timestampable->field,
                         'value'        => $timestampable->value
-                    ];
+                    );
                 }
                 // properties are unique and mapper checks that, no risk here
                 $config[$timestampable->on][] = $field;

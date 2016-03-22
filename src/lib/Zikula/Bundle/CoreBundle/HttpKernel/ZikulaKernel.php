@@ -1,15 +1,4 @@
 <?php
-/**
- * Copyright Zikula Foundation 2014 - Zikula Application Framework
- *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
- *
- * @license GNU/LGPv3 (or at your option any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
- */
 
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
@@ -37,22 +26,22 @@ abstract class ZikulaKernel extends Kernel
     /**
      * @var array
      */
-    private $modules = [];
+    private $modules = array();
 
     /**
      * @var array
      */
-    private $moduleMap = [];
+    private $moduleMap = array();
 
     /**
      * @var array
      */
-    private $themes = [];
+    private $themes = array();
 
     /**
      * @var array
      */
-    private $themeMap = [];
+    private $themeMap = array();
 
     /**
      * @var ClassLoader
@@ -75,10 +64,10 @@ abstract class ZikulaKernel extends Kernel
         self::$included = true;
 
         // this is all to be deprecated (todo drak)
-        $paths = [
+        $paths = array(
             $this->rootDir .'/../config/config.php',
             $this->rootDir.'/../config/personal_config.php',
-        ];
+        );
 
         foreach ($paths as $path) {
             if (is_readable($path)) {
@@ -179,7 +168,7 @@ abstract class ZikulaKernel extends Kernel
 
     public function getJustBundles()
     {
-        $bundles = [];
+        $bundles = array();
         foreach ($this->bundles as $bundle) {
             if (!$bundle instanceof AbstractBundle) {
                 $bundles[] = $bundle;
@@ -265,9 +254,9 @@ abstract class ZikulaKernel extends Kernel
     protected function initializeBundles()
     {
         // init bundles
-        $this->bundles = [];
-        $topMostBundles = [];
-        $directChildren = [];
+        $this->bundles = array();
+        $topMostBundles = array();
+        $directChildren = array();
 
         foreach ($this->registerBundles() as $bundle) {
             $name = $bundle->getName();
@@ -295,10 +284,10 @@ abstract class ZikulaKernel extends Kernel
         }
 
         // inheritance
-        $this->bundleMap = [];
+        $this->bundleMap = array();
         foreach ($topMostBundles as $name => $bundle) {
-            $bundleMap = [$bundle];
-            $hierarchy = [$name];
+            $bundleMap = array($bundle);
+            $hierarchy = array($name);
 
             while (isset($directChildren[$name])) {
                 $name = $directChildren[$name];
@@ -343,7 +332,7 @@ abstract class ZikulaKernel extends Kernel
     {
         // cache the container
         $dumper = new PhpDumper($container);
-        $content = $dumper->dump(['class' => $class, 'base_class' => $baseClass]);
+        $content = $dumper->dump(array('class' => $class, 'base_class' => $baseClass));
         if (!$this->debug) {
             $content = self::stripComments($content);
         }
@@ -404,7 +393,7 @@ abstract class ZikulaKernel extends Kernel
      */
     protected function prepareContainer(ContainerBuilder $container)
     {
-        $extensions = [];
+        $extensions = array();
         foreach ($this->bundles as $bundle) {
             if ($bundle instanceof AbstractBundle && $bundle->getState() != AbstractBundle::STATE_ACTIVE) {
                 continue;

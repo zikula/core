@@ -61,7 +61,7 @@ abstract class AbstractController
     {
         $this->container = $container;
         $this->router = $this->container->get('router');
-        $this->templatingService = $this->container->get('twig');
+        $this->templatingService = $this->container->get('templating');
         $this->form = $this->container->get('form.factory');
         $this->util = $this->container->get('core_installer.controller.util');
         $this->configUtil = $this->container->get('core_installer.config.util');

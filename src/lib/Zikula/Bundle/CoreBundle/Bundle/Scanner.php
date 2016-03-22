@@ -6,6 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
+ * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,7 +18,7 @@ use Symfony\Component\Finder\Finder;
 
 class Scanner
 {
-    private $jsons = [];
+    private $jsons = array();
 
     /**
      * Scans and loads composer.json files.
@@ -141,7 +142,7 @@ class Scanner
 
     private function getMetaData($type, $indexByShortName)
     {
-        $array = [];
+        $array = array();
         foreach ($this->jsons as $json) {
             if ($json['type'] === $type) {
                 $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];

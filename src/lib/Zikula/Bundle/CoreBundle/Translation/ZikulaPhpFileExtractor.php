@@ -6,6 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
+ * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -67,12 +68,12 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
      *
      * @var array
      */
-    private $methodNames = [
+    private $methodNames = array(
         1 => '__',
         2 => '__f',
         3 => '_n',
         4 => '_fn'
-    ];
+    );
 
     public function __construct(DocParser $docParser, KernelInterface $kernel)
     {
@@ -155,7 +156,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         }
 
         $id = $node->args[0]->value->value;
-        if (in_array(strtolower($node->name), ['_n', '_fn'], true)) {
+        if (in_array(strtolower($node->name), array('_n', '_fn'), true)) {
             // concatenate pluralized strings from zikula functions
             $id = $node->args[0]->value->value . '|' . $node->args[1]->value->value;
         }

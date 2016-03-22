@@ -1,15 +1,4 @@
 <?php
-/**
- * Copyright Zikula Foundation 2014 - Zikula Application Framework
- *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
- *
- * @license GNU/LGPv3 (or at your option any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
- */
 
 namespace Zikula\Bundle\CoreBundle\Tests\Twig\TokenParser;
 
@@ -52,12 +41,12 @@ class SwitchTokenParserTest extends \PHPUnit_Framework_TestCase
 
     public function getDecideCaseFork()
     {
-        return [
-            [\Twig_Token::NAME_TYPE, 'case', 1],
-            [\Twig_Token::NAME_TYPE, 'default', 1],
-            [\Twig_Token::NAME_TYPE, 'break', 1],
-            [\Twig_Token::NAME_TYPE, 'endswitch', 1],
-        ];
+        return array(
+            array(\Twig_Token::NAME_TYPE, 'case', 1),
+            array(\Twig_Token::NAME_TYPE, 'default', 1),
+            array(\Twig_Token::NAME_TYPE, 'break', 1),
+            array(\Twig_Token::NAME_TYPE, 'endswitch', 1),
+        );
     }
 
     public function testGetTag()

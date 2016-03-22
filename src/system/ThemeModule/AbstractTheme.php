@@ -52,7 +52,7 @@ abstract class AbstractTheme extends AbstractBundle
     {
         $template = $this->config[$realm]['page'];
 
-        return $this->getContainer()->get('twig')->renderResponse($this->name . ':' . $template, array('maincontent' => $response->getContent()));
+        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, array('maincontent' => $response->getContent()));
     }
 
     /**
@@ -79,7 +79,7 @@ abstract class AbstractTheme extends AbstractBundle
         // @todo add collapsable block code see \BlockUtil::themeBlock
         // @todo including check for `isCollapsed` like \BlockUtil::checkUserBlock
 
-        return $this->getContainer()->get('twig')->render($template, $templateParameters);
+        return $this->getContainer()->get('templating')->render($template, $templateParameters);
     }
 
     /**

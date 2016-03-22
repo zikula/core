@@ -31,10 +31,10 @@ class AtomThemeExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return [
+        return array(
             new \Twig_SimpleFunction('atomId', [$this, 'id']),
             new \Twig_SimpleFunction('atomFeedLastUpdated', [$this, 'atomFeedLastUpdated']),
-        ];
+        );
     }
 
     public function id()

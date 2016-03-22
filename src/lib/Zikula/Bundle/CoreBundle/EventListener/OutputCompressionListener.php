@@ -46,10 +46,10 @@ class OutputCompressionListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return [
-            KernelEvents::REQUEST => [
-                ['onKernelRequest', 1023],
-            ]
-        ];
+        return array(
+            KernelEvents::REQUEST => array(
+                array('onKernelRequest', 1023),
+            )
+        );
     }
 }

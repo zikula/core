@@ -32,9 +32,9 @@ class AssetsInstallCommand extends ContainerAwareCommand
     {
         $this
             ->setName('assets:install')
-            ->setDefinition([
-                new InputArgument('target', InputArgument::OPTIONAL, 'The target directory', 'web'),
-            ])
+            ->setDefinition(array(
+                                 new InputArgument('target', InputArgument::OPTIONAL, 'The target directory', 'web'),
+                            ))
             ->addOption('symlink', null, InputOption::VALUE_NONE, 'Symlinks the assets instead of copying it')
             ->addOption('relative', null, InputOption::VALUE_NONE, 'Make relative symlinks')
             ->setDescription('Installs web assets under a public web directory')
@@ -76,11 +76,11 @@ EOT
         }
         $filesystem = $this->getContainer()->get('filesystem');
         $kernel = $this->getContainer()->get('kernel');
-        $array = [
+        $array = array(
             'bundle'  => $kernel->getJustBundles(),
             'module'  => $kernel->getModules(),
             'theme' => $kernel->getThemes(),
-        ];
+        );
         foreach ($array as $type => $bundles) {
             // Create the bundles directory otherwise symlink will fail.
             $filesystem->mkdir($targetArg . "/{$type}s/", 0777);
