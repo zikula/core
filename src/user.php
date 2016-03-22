@@ -18,7 +18,7 @@ include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
 $core->init(Zikula_Core::STAGE_ALL, $request);
-$url = $core->getContainer()->get('router')->generate('zikulausersmodule_user_index', [], \Symfony\Component\Routing\RouterInterface::ABSOLUTE_URL);
+$url = $core->getContainer()->get('router')->generate('zikulausersmodule_user_index', array(), \Symfony\Component\Routing\RouterInterface::ABSOLUTE_URL);
 $url = str_replace('/user.php', '', $url);
 $response = new \Symfony\Component\HttpFoundation\RedirectResponse($url);
 $response->send();

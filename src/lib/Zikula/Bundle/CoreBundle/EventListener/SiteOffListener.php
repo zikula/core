@@ -59,7 +59,7 @@ class SiteOffListener implements EventSubscriberInterface
             $lang->setup($request);
 
             $response = new Response();
-            $response->headers->add(['HTTP/1.1 503 Service Unavailable']);
+            $response->headers->add(array('HTTP/1.1 503 Service Unavailable'));
             $response->setStatusCode(503);
             $content = require_once \System::getSystemErrorTemplate('siteoff.tpl'); // move to CoreBundle and use Twig
             $response->setContent($content);
@@ -70,10 +70,10 @@ class SiteOffListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return [
-            KernelEvents::REQUEST => [
-                ['onKernelRequestSiteOff', 200], // priority set high to catch request before other subscribers
-            ]
-        ];
+        return array(
+            KernelEvents::REQUEST => array(
+                array('onKernelRequestSiteOff', 200), // priority set high to catch request before other subscribers
+            )
+        );
     }
 }

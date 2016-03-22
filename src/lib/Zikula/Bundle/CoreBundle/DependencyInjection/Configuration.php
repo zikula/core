@@ -6,6 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -58,9 +59,9 @@ class Configuration implements ConfigurationInterface
         ->fixXmlConfig('fallback')
         ->children()
         ->arrayNode('fallbacks')
-        ->beforeNormalization()->ifString()->then(function ($v) { return [$v]; })->end()
+        ->beforeNormalization()->ifString()->then(function ($v) { return array($v); })->end()
         ->prototype('scalar')->end()
-        ->defaultValue(['en'])
+        ->defaultValue(array('en'))
         ->end()
         ->booleanNode('logging')->defaultValue($this->debug)->end()
         ->end()

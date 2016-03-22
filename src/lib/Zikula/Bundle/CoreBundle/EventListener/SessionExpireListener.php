@@ -37,10 +37,10 @@ class SessionExpireListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return [
-            KernelEvents::REQUEST => [
-                ['onKernelRequestSessionExpire', 31],
-            ]
-        ];
+        return array(
+            KernelEvents::REQUEST => array(
+                array('onKernelRequestSessionExpire', 31),
+            )
+        );
     }
 }

@@ -65,8 +65,8 @@ class BlameListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [
-            KernelEvents::REQUEST => 'onKernelRequest'
-        ];
+        return array(
+            KernelEvents::REQUEST => 'onKernelRequest',
+        );
     }
 }

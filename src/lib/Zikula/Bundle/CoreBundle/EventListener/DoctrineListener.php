@@ -64,10 +64,8 @@ class DoctrineListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return [
-            'doctrine.boot' => [
-                ['initDoctrine', 100],
-            ]
-        ];
+        return array('doctrine.boot' => array(
+            array('initDoctrine', 100),
+        ));
     }
 }

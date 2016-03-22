@@ -49,8 +49,8 @@ if (!preg_match('#(^[a-z]{2,3}$)|(^[a-z]{2,3}-[a-z]{2,3}$)|(^[a-z]{2,3}-[a-z]{2,
 
 $gettext = ZGettext::getInstance();
 $gettext->setLocale(LC_MESSAGES, $lang);
-$translations = [];
-$translations[$lang] = [];
+$translations = array();
+$translations[$lang] = array();
 
 foreach ($_GET as $domain => $meta) {
     if ($domain == 'lang') {
@@ -98,7 +98,7 @@ foreach ($_GET as $domain => $meta) {
     $data = $reader->getCache_translations();
     unset($data['']);
     if ($data) {
-        $translations[$lang][$domain] = ['plural-forms' => $reader->getPluralheader(), 'translations' => $data];
+        $translations[$lang][$domain] = array('plural-forms' => $reader->getPluralheader(), 'translations' => $data);
     }
 }
 
