@@ -107,7 +107,7 @@
         </service>
 
         <service id="zikula.doctrine.schema_tool" class="%zikula.doctrine.schema_tool.class%" lazy="true">
-            <argument type="service" id="doctrine.entitymanager" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
     </services>
 </container>
