@@ -13,7 +13,7 @@
  */
 
 global $ZConfig;
-$ZConfig['System'] = array();
+$ZConfig['System'] = [];
 
 // ----------------------------------------------------------------------
 // This is the definition for the default Zikula system database.
@@ -52,7 +52,7 @@ $ZConfig['System']['dbcache.type'] = 'Array';         // Memcache, Apc, Array, D
 // array of arrays: params according to the addServer methods at e.g.
 // http://php.net/manual/memcached.addservers.php or
 // http://php.net/manual/function.memcache-addserver.php
-$ZConfig['System']['dbcache.servers'][] = array('host' => 'localhost', 'port' => '11211', 'weight' => 1);
+$ZConfig['System']['dbcache.servers'][] = ['host' => 'localhost', 'port' => '11211', 'weight' => 1];
 $ZConfig['System']['dbcache.compression'] = true; // true/false valid for dbcache.type = Memcache/d
 
 // For pure Doctrine Queries only. Effective only when dbcache.enable = true and dbcache.cache_result = 1

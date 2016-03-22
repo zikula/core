@@ -7,7 +7,7 @@ use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 
 class ZikulaPrinterTheme extends AbstractCoreTheme
 {
-    private $links = array();
+    private $links = [];
 
     /**
      * Override parent method in order to add Content-type header to Response
@@ -21,7 +21,7 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
         $mainContent = $this->createFootnotes($mainContent);
         $mainContent .= $this->renderFootnotes();
 
-        return $this->getContainer()->get('templating')->renderResponse('ZikulaPrinterTheme::master.html.twig', array('maincontent' => $mainContent));
+        return $this->getContainer()->get('twig')->renderResponse('ZikulaPrinterTheme::master.html.twig', ['maincontent' => $mainContent]);
     }
 
     /**

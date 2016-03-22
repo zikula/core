@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -33,7 +32,7 @@ class ControllerResolver extends BaseControllerResolver
                 // controller in the service:method notation
                 list($service, $method) = explode(':', $controller, 2);
 
-                return array($this->container->get($service), $method);
+                return [$this->container->get($service), $method];
             } else {
                 throw new \LogicException(sprintf('Unable to parse the controller name "%s".', $controller));
             }
@@ -77,6 +76,6 @@ class ControllerResolver extends BaseControllerResolver
             $controller->setContainer($this->container);
         }
 
-        return array($controller, $method);
+        return [$controller, $method];
     }
 }

@@ -46,11 +46,11 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            'doctrine.init_connection' => array('doctrineInit'),
-            'doctrine.configure' => array('configureDoctrine'),
-            'doctrine.cache' => array('configureCache'),
-        );
+        return [
+            'doctrine.init_connection' => ['doctrineInit'],
+            'doctrine.configure' => ['configureDoctrine'],
+            'doctrine.cache' => ['configureCache'],
+        ];
     }
 
     /**
@@ -91,7 +91,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
         // test the DB connection works or just set lazy
         try {
             if ($lazyConnect) {
-                $replaceValues = array(
+                $replaceValues = [
                     ":" => "%3a",
                     "/" => "%2f",
                     "@" => "%40",
@@ -101,7 +101,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
                     "?" => "%3f",
                     "=" => "%3d",
                     "&" => "%26"
-                );
+                ];
                 $connectionInfo['dbdriver'] = strtr($connectionInfo['dbdriver'], $replaceValues);
                 $connectionInfo['user']     = strtr($connectionInfo['user'], $replaceValues);
                 $connectionInfo['password'] = strtr($connectionInfo['password'], $replaceValues);
@@ -180,10 +180,10 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
             $type = ucfirst(strtolower($type));
             $doctrineCacheClass = "Doctrine_Cache_$type";
             $r = new \ReflectionClass($doctrineCacheClass);
-            $options = array('prefix' => 'dd');
+            $options = ['prefix' => 'dd'];
             if (strpos($type, 'Memcache') === 0) {
                 $servers = $this->container['dbcache.servers'];
-                $options = array_merge($options, array('servers' => $servers, 'compression' => $this->container['dbcache.compression']));
+                $options = array_merge($options, ['servers' => $servers, 'compression' => $this->container['dbcache.compression']]);
             }
 
             $this->container->set('doctrine.cachedriver', $cacheDriver = $r->newInstance($options));
@@ -279,16 +279,16 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
 
             // default column options
             //            $object->setAttribute(Doctrine_Core::ATTR_DEFAULT_COLUMN_OPTIONS,
-            //                                            array('type' => 'string',
-            //                                                  'length' => 255,
-            //                                                  'notnull' => true));
+            //                                            ['type' => 'string',
+            //                                             'length' => 255,
+            //                                             'notnull' => true]);
 
             // properties of default added primary key in models
             // %s is replaced with the table name
             //            $object->setAttribute(Doctrine_Core::ATTR_DEFAULT_IDENTIFIER_OPTIONS,
-            //                                            array('name' => '%s_id',
-            //                                                  'type' => 'string',
-            //                                                  'length' => 16));
+            //                                            ['name' => '%s_id',
+            //                                             'type' => 'string',
+            //                                             'length' => 16]);
 
             return;
         } elseif ($object instanceof \Doctrine_Table) {

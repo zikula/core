@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -25,7 +24,7 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
     private $file;
     private $catalogue;
     private $traverser;
-    private $stack = array();
+    private $stack = [];
     /**
      * @var array cache of domain names by composerPath
      */
@@ -35,17 +34,17 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
      *
      * @var array
      */
-    private $methodNames = array(
+    private $methodNames = [
         1 => '__',
         2 => '__f',
         3 => '_n',
         4 => '_fn'
-    );
+    ];
 
     public function __construct(\Twig_Environment $env)
     {
-        $this->traverser = new \Twig_NodeTraverser($env, array($this));
-        self::$domainCache = array();
+        $this->traverser = new \Twig_NodeTraverser($env, [$this]);
+        self::$domainCache = [];
     }
 
     public function enterNode(\Twig_NodeInterface $node, \Twig_Environment $env)
@@ -74,7 +73,7 @@ class ZikulaTwigFileExtractor implements FileVisitorInterface, \Twig_NodeVisitor
                     $domain = self::$domainCache[$composerPath];
                 } else {
                     $scanner = new Scanner();
-                    $scanner->scan(array($composerPath), 1);
+                    $scanner->scan([$composerPath], 1);
                     $metaData = $scanner->getModulesMetaData(true);
                     $domains = array_keys($metaData);
                     if (isset($domains[0])) {

@@ -89,7 +89,7 @@ class SelectionApi extends Zikula_AbstractBase
      * Selects a list of entities by different criteria.
      *
      * @param string  $args['ot']       The object type to retrieve (optional).
-     * @param string  $args['idList']   A list of ids to select (optional) (default=array()).
+     * @param string  $args['idList']   A list of ids to select (optional) (default=[]).
      * @param string  $args['where']    The where clause to use when retrieving the collection (optional) (default='').
      * @param string  $args['orderBy']  The order-by clause to use when retrieving the collection (optional) (default='').
      * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true).
