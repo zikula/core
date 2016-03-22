@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Strip the Front Controller (index.php) from the URI
+ * Strips the front controller (index.php) from the URI.
  */
 class StripFrontControllerListener implements EventSubscriberInterface
 {
@@ -34,9 +34,9 @@ class StripFrontControllerListener implements EventSubscriberInterface
     }
 
     /**
-     * Strip the Front Controller (index.php) from the URI
+     * Strips the front controller (index.php) from the URI.
      *
-     * @param GetResponseEvent $event An GetResponseEvent instance
+     * @param GetResponseEvent $event A GetResponseEvent instance
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
