@@ -13,9 +13,10 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
      * Override parent method in order to add Content-type header to Response
      * @param string $realm
      * @param Response $response
+     * @param null $moduleName
      * @return mixed
      */
-    public function generateThemedResponse($realm, Response $response)
+    public function generateThemedResponse($realm, Response $response, $moduleName = null)
     {
         $mainContent = $response->getContent();
         $mainContent = $this->createFootnotes($mainContent);
