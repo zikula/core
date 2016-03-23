@@ -38,13 +38,9 @@
                                 {% set sarea_md5 = sarea|php('md5') %}
                                 {# preliminary check to see if binding is allowed, if no bindings are allowed we don't show this row. Better usability. #}
                                 {% set total_bindings = 0 %}
-                                {% for parea in providerAreas %}
-                                    {% set allow_binding = hookDispatcher.isAllowedBindingBetweenAreas(sarea, parea) %}
-                                    {% if allow_binding %}
-                                        {% set total_bindings = total_bindings + 1 %}
-                                        {% set connection_exists = true %}
-                                        {break}
-                                    {% endif %}
+                                {% for parea in providerAreas if hookDispatcher.isAllowedBindingBetweenAreas(sarea, parea) %}
+                                    {% set total_bindings = total_bindings + 1 %}
+                                    {% set connection_exists = true %}
                                 {% endfor %}
 
                                 {% if total_bindings > 0 %}
