@@ -243,7 +243,7 @@ class HtmlUtil
         }
 
         /** @var $em \Doctrine\ORM\EntityManager */
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
         $qb = $em->createQueryBuilder();
         $qb->select('e')->from($entity, 'e');
         $dataArray = $qb->getQuery()->getResult(); // array of Entities

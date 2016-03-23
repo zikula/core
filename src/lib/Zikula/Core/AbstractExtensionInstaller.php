@@ -92,7 +92,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     {
         $this->container = $container;
         $this->setTranslator($container->get('translator'));
-        $this->entityManager = $container->get('doctrine.entitymanager');
+        $this->entityManager = $container->get('doctrine.orm.default_entity_manager');
         $this->schemaTool = $container->get('zikula.doctrine.schema_tool');
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
         $this->variableApi = $container->get('zikula_extensions_module.api.variable'); // for ExtensionVariablesTrait

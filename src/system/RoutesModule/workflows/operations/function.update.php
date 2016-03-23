@@ -42,7 +42,7 @@ function ZikulaRoutesModule_operation_update(&$entity, $params)
     
     // get entity manager
     $serviceManager = ServiceUtil::getManager();
-    $entityManager = $serviceManager->get('doctrine.entitymanager');
+    $entityManager = $serviceManager->get('doctrine.orm.default_entity_manager');
     
     // save entity data
     try {

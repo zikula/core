@@ -42,7 +42,7 @@ class GenericUtil
         }
 
         // get entity manager
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         // process name
         $data['name'] = self::processCategoryName($data['name']);
@@ -93,7 +93,7 @@ class GenericUtil
      */
     public static function processCategoryParent($parent_id)
     {
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         return $em->getReference('ZikulaCategoriesModule:CategoryEntity', $parent_id);
     }

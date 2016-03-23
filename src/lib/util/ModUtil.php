@@ -114,7 +114,7 @@ class ModUtil
         }
 
         // This loads all module variables into the modvars static class variable.
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
         /** @var \Zikula\ExtensionsModule\Entity\ExtensionVarEntity[] $modvars */
         $modvars = $em->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findAll();
         foreach ($modvars as $var) {
@@ -282,7 +282,7 @@ class ModUtil
             return false;
         }
 
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
         $entities = $em->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(array('modname' => $modname, 'name' => $name));
         if (count($entities) > 0) {
             foreach ($entities as $entity) {
@@ -370,7 +370,7 @@ class ModUtil
             }
         }
 
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         // if $name is not provided, delete all variables of this module
         // else just delete this specific variable
@@ -1744,7 +1744,7 @@ class ModUtil
         if (!self::$cache['modstable'] || System::isInstalling()) {
             // get entityManager
             $sm = ServiceUtil::getManager();
-            $entityManager = $sm->get('doctrine.entitymanager');
+            $entityManager = $sm->get('doctrine.orm.default_entity_manager');
 
             // get all modules
             $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findAll();
@@ -1786,7 +1786,7 @@ class ModUtil
     {
         // get entityManager
         $sm = ServiceUtil::getManager();
-        $entityManager = $sm->get('doctrine.entitymanager');
+        $entityManager = $sm->get('doctrine.orm.default_entity_manager');
 
         // get all modules
         $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy($where, array($sort => 'ASC'));
@@ -1808,7 +1808,7 @@ class ModUtil
     public static function getModulesByState($state = self::STATE_ACTIVE, $sort = 'displayname')
     {
         $sm = ServiceUtil::getManager();
-        $entityManager = $sm->get('doctrine.entitymanager');
+        $entityManager = $sm->get('doctrine.orm.default_entity_manager');
         $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy(array('state' => $state), array($sort => 'ASC'));
 
         return $modules;

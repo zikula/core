@@ -318,7 +318,7 @@ class SecurityUtil
         }
 
         /** @var \Doctrine\ORM\EntityManager $em */
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         // Get all groups that user is in
         $foundUsers = $em->getRepository('ZikulaUsersModule:UserEntity')->findBy(['uid' => $uids]);

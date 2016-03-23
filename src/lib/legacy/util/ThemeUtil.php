@@ -105,7 +105,7 @@ class ThemeUtil
 
         if (empty($themesarray[$key])) {
             /** @var $em Doctrine\ORM\EntityManager */
-            $em = ServiceUtil::get('doctrine.entitymanager');
+            $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
             $qb = $em->createQueryBuilder()
                      ->select('t')
                      ->from('ZikulaThemeModule:ThemeEntity', 't');
@@ -246,7 +246,7 @@ class ThemeUtil
         static $themestable;
         if (!isset($themestable) || System::isInstalling()) {
             /** @var $em Doctrine\ORM\EntityManager */
-            $em = ServiceUtil::get('doctrine.entitymanager');
+            $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
             /** @var $array ThemeEntity[] */
             $array = $em->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
             foreach ($array as $theme) {

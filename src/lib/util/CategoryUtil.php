@@ -56,7 +56,7 @@ class CategoryUtil
         $checkCat = self::getCategoryByPath("$rootPath/$name");
         if (!$checkCat) {
             $cat = new \Zikula\CategoriesModule\Entity\CategoryEntity();
-            $em = ServiceUtil::get('doctrine.entitymanager');
+            $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
             $em->persist($cat);
             $data = array();
             $data['parent'] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $rootCat['id']);
@@ -101,7 +101,7 @@ class CategoryUtil
 
         // get entity manager
         /** @var $em \Doctrine\ORM\EntityManager */
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         // get category
         $category = $em->find('ZikulaCategoriesModule:CategoryEntity', $cid);
@@ -156,7 +156,7 @@ class CategoryUtil
             $columns = 'c';
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         $dql = "SELECT $columns FROM Zikula\CategoriesModule\Entity\CategoryEntity c $where $sort";
         $query = $em->createQuery($dql);
@@ -292,7 +292,7 @@ class CategoryUtil
             return false;
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
         $cat = $em->find('ZikulaCategoriesModule:CategoryEntity', $id);
 
         $cats = array();
@@ -493,7 +493,7 @@ class CategoryUtil
      */
     public static function deleteCategoryByID($cid)
     {
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         $dql = "DELETE FROM Zikula\CategoriesModule\Entity\CategoryEntity c WHERE c.id = :cid";
         $query = $em->createQuery($dql);
@@ -520,7 +520,7 @@ class CategoryUtil
             return false;
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         $dql = "SELECT c.id FROM Zikula\CategoriesModule\Entity\CategoryEntity c WHERE c.$field LIKE :apath";
         $query = $em->createQuery($dql);
@@ -605,7 +605,7 @@ class CategoryUtil
         $fpath = 'path';
         $fipath = 'ipath';
 
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         $dql = "
             SELECT c
@@ -740,7 +740,7 @@ class CategoryUtil
             }
         }
 
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         $oldToNewID = array();
         $oldToNewID[$cats[0]['parent']['id']] = $em->getReference('ZikulaCategoriesModule:CategoryEntity', $newParent['id']);
@@ -1598,7 +1598,7 @@ class CategoryUtil
         $paths = self::buildPaths($cats, $sourceField);
 
         if ($cats && $paths) {
-            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
             foreach ($cats as $k => $v) {
                 if (isset($v[$field]) && isset($paths[$k]) && ($v[$field] != $paths[$k])) {

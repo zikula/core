@@ -188,7 +188,7 @@ class Zikula_Workflow_Util
          $theModule = isset($module) ? $module : ModUtil::getName();
 
         //This is a static function, so we have to use ServiceUtil to get the entity manager
-        $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
+        $em = ServiceUtil::getManager()->get('doctrine.orm.default_entity_manager');
 
         //create the dql query.
         $query = $em->createQueryBuilder()
@@ -215,7 +215,7 @@ class Zikula_Workflow_Util
         $idColumn = $workflow['obj_idcolumn'];
 
         //This is a static function, so we have to use ServiceUtil to get the entity manager
-        $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
+        $em = ServiceUtil::getManager()->get('doctrine.orm.default_entity_manager');
 
         //create the dql query.
         $query = $em->createQueryBuilder()
@@ -372,7 +372,7 @@ class Zikula_Workflow_Util
 
         if (!empty($obj[$idcolumn])) {
             //This is a static function, so we have to user ServiceUtil to get the manager
-            $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
+            $em = ServiceUtil::getManager()->get('doctrine.orm.default_entity_manager');
 
             //build the query and execute
             $query = $em->createQueryBuilder()

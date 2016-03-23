@@ -248,7 +248,7 @@ class AjaxInstallController extends AbstractController
      */
     private function updateAdmin()
     {
-        $em = $this->container->get('doctrine.entitymanager');
+        $em = $this->container->get('doctrine.orm.default_entity_manager');
         $params = $this->decodeParameters($this->yamlManager->getParameters());
 
         // create the password hash

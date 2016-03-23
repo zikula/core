@@ -33,7 +33,7 @@ class CategoryRegistryUtil
             throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         $params = array('modname' => $modname);
         if ($entryID) {
@@ -133,7 +133,7 @@ class CategoryRegistryUtil
             return false;
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         if (isset($catreg['id'])) {
             $entity = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->find($catreg['id']);
@@ -161,7 +161,7 @@ class CategoryRegistryUtil
             return false;
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         foreach ($catregs as $catreg) {
             if ($catreg['id']) {
@@ -199,7 +199,7 @@ class CategoryRegistryUtil
         }
 
         /** @var $em Doctrine\ORM\EntityManager */
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         $rCategories = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(array('modname' => $modname, 'entityname' => $entityname), array('id' => 'ASC'));
 
@@ -263,7 +263,7 @@ class CategoryRegistryUtil
             throw new \InvalidArgumentException(__f('Error! Received invalid specifications %1$s, %2$s.', array($modname, $entityname)));
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         $rCategories = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(array('modname' => $modname, 'entityname' => $entityname));
 

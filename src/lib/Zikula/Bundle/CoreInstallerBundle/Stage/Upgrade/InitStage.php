@@ -143,9 +143,9 @@ class InitStage implements StageInterface, InjectContainerInterface
         $installerInstance->upgrade($oldModuleInfo['version']);
         $versionInstance = new \Zikula\UsersModule\UsersModuleVersion($module);
         $metaData = $versionInstance->getMetaData();
-        $item = $this->container->get('doctrine.entitymanager')->getRepository(\Zikula\ExtensionsModule\Api\AdminApi::EXTENSION_ENTITY)->find($oldModuleInfo['id']);
+        $item = $this->container->get('doctrine.orm.default_entity_manager')->getRepository(\Zikula\ExtensionsModule\Api\AdminApi::EXTENSION_ENTITY)->find($oldModuleInfo['id']);
         $item['version'] = $metaData['version'];
         $item['state'] = \ModUtil::STATE_ACTIVE;
-        $this->container->get('doctrine.entitymanager')->flush();
+        $this->container->get('doctrine.orm.default_entity_manager')->flush();
     }
 }

@@ -250,7 +250,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             }
 
             // get entity manager
-            $em = ServiceUtil::get('doctrine.entitymanager');
+            $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
 
             $intrusionItems = array();
 

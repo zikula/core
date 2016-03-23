@@ -98,7 +98,7 @@ class UserListener implements EventSubscriberInterface
         $userRecord = $event->getSubject();
         $uid = $userRecord['uid'];
         $serviceManager = ServiceUtil::getManager();
-        $entityManager = $serviceManager->get('doctrine.entitymanager');
+        $entityManager = $serviceManager->get('doctrine.orm.default_entity_manager');
         
         $repo = $entityManager->getRepository('Zikula\RoutesModule\Entity\RouteEntity');
         // set creator to admin (2) for all routes created by this user

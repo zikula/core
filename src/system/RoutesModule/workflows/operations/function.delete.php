@@ -29,7 +29,7 @@ function ZikulaRoutesModule_operation_delete(&$entity, $params)
 
     // get entity manager
     $serviceManager = ServiceUtil::getManager();
-    $entityManager = $serviceManager->get('doctrine.entitymanager');
+    $entityManager = $serviceManager->get('doctrine.orm.default_entity_manager');
     
     // delete entity
     try {

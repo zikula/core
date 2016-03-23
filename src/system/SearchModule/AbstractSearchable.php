@@ -59,7 +59,7 @@ abstract class AbstractSearchable extends Translator
     public function __construct(ContainerInterface $container, AbstractModule $bundle)
     {
         $this->container = $container;
-        $this->entityManager = $container->get('doctrine.entitymanager');
+        $this->entityManager = $container->get('doctrine.orm.default_entity_manager');
         $this->name = $bundle->getName();
         $this->view = Zikula_View::getInstance($this->name);
         parent::__construct(ZLanguage::getModuleDomain($this->name));

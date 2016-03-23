@@ -70,7 +70,7 @@ class UserUtil
         }
 
         // we've now ruled out BC parameters
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
         $users = $em->getRepository('ZikulaUsersModule:UserEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
@@ -108,7 +108,7 @@ class UserUtil
      */
     public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey = 'gid')
     {
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
         $groups = $em->getRepository('ZikulaGroupsModule:GroupEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
@@ -1000,7 +1000,7 @@ class UserUtil
         $uname = mb_strtolower($uname);
 
         // get doctrine manager
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         // count of uname appearances in users table
         $qb = $em->createQueryBuilder()
@@ -1036,7 +1036,7 @@ class UserUtil
         $emailAddress = mb_strtolower($emailAddress);
 
         // get doctrine manager
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
         // count of email appearances in users table
         $qb = $em->createQueryBuilder()
@@ -1096,7 +1096,7 @@ class UserUtil
             }
 
             // Get verificationsent from the users_verifychg table
-            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
 
             $query = $em->createQueryBuilder()
                         ->select('v')
@@ -1182,7 +1182,7 @@ class UserUtil
         }
 
         if (!isset($user) || $force) {
-            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
             $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array($idfield => $id));
 
             if ($user) {
@@ -1404,7 +1404,7 @@ class UserUtil
         // Cannot setVar the user's uid or uname
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
-            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
             $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => $uid));
 
             // check if var to set belongs to table or it's an attribute
@@ -1751,7 +1751,7 @@ class UserUtil
         // Cannot delVar the user's uid or uname
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
-            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
             $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(array('uid' => $uid));
 
             if (self::fieldAlias($name)) {
@@ -2047,7 +2047,7 @@ class UserUtil
             }
         }
 
-        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
         $dql = "SELECT u FROM Zikula\UsersModule\Entity\UserEntity u $where $orderby";
         $query = $em->createQuery($dql);
 

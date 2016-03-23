@@ -183,7 +183,7 @@ class BlockUtil
         $content = '';
         $blockInstance = self::load($modname, $blockname);
         $displayfunc = array($blockInstance, 'display');
-        $blockEntity = isset($blockEntity) ? $blockEntity : ServiceUtil::get('doctrine.entitymanager')->find('Zikula\BlocksModule\Entity\BlockEntity', $blockinfo['bid']);
+        $blockEntity = isset($blockEntity) ? $blockEntity : ServiceUtil::get('doctrine.orm.default_entity_manager')->find('Zikula\BlocksModule\Entity\BlockEntity', $blockinfo['bid']);
         $instanceArgs = ($blockInstance instanceof BlockHandlerInterface) ? $blockEntity->getContent() : $blockinfo;
         if (is_callable($displayfunc)) {
             $content =  call_user_func($displayfunc, $instanceArgs);
@@ -407,7 +407,7 @@ class BlockUtil
         if (UserUtil::isLoggedIn()) {
             $uid = UserUtil::getVar('uid');
             $sm = ServiceUtil::getManager();
-            $entityManager = $sm->get('doctrine.entitymanager');
+            $entityManager = $sm->get('doctrine.orm.default_entity_manager');
             $item = $entityManager->getRepository('ZikulaBlocksModule:UserBlockEntity')->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
             if (!$item) {
                 $item = new \Zikula\BlocksModule\Entity\UserBlockEntity();

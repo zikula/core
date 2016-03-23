@@ -44,7 +44,7 @@ class BlameListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.orm.default_entity_manager');
         try {
             if (\System::isInstalling()) {
                 $uid = 2;
