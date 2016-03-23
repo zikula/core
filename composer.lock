@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "11979c5ff17df6bef6829d6c4a6ce7b3",
-    "content-hash": "a84ad388fa56791565432248508aa37a",
+    "hash": "e5876a7ff56470feb46d98a6256d4e0c",
+    "content-hash": "25365b006dc1f0271a0ab995f6e312e2",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -1449,16 +1449,16 @@
         },
         {
             "name": "elao/web-profiler-extra-bundle",
-            "version": "dev-master",
+            "version": "v2.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Elao/WebProfilerExtraBundle.git",
-                "reference": "247a1ac8c088e955385b1aab11eb52ebfdd1bbe5"
+                "reference": "1b29496eecddb5520de59e89e168582f88140e49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/247a1ac8c088e955385b1aab11eb52ebfdd1bbe5",
-                "reference": "247a1ac8c088e955385b1aab11eb52ebfdd1bbe5",
+                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/1b29496eecddb5520de59e89e168582f88140e49",
+                "reference": "1b29496eecddb5520de59e89e168582f88140e49",
                 "shasum": ""
             },
             "require": {
@@ -1499,7 +1499,7 @@
                 "extra",
                 "profiler"
             ],
-            "time": "2016-01-06 13:00:41"
+            "time": "2015-12-21 16:18:05"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -1833,17 +1833,17 @@
         },
         {
             "name": "jms/translation-bundle",
-            "version": "dev-master",
+            "version": "1.2.0",
             "target-dir": "JMS/TranslationBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSTranslationBundle.git",
-                "reference": "c97c57151ce0283d89a1bea8dbdb15b222052135"
+                "reference": "a71b968c0ac4d1e89798a888129242cfdbf9593e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/c97c57151ce0283d89a1bea8dbdb15b222052135",
-                "reference": "c97c57151ce0283d89a1bea8dbdb15b222052135",
+                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/a71b968c0ac4d1e89798a888129242cfdbf9593e",
+                "reference": "a71b968c0ac4d1e89798a888129242cfdbf9593e",
                 "shasum": ""
             },
             "require": {
@@ -1902,7 +1902,7 @@
                 "ui",
                 "webinterface"
             ],
-            "time": "2015-12-11 13:04:17"
+            "time": "2016-03-23 07:07:18"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -2264,19 +2264,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/oyejorge/less.php.git",
-                "reference": "1736a49af9249f2202aca1678ba80aba79ff4208"
+                "reference": "ca54efbb40403c5665e2dd7335662c44bb9fc644"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/1736a49af9249f2202aca1678ba80aba79ff4208",
-                "reference": "1736a49af9249f2202aca1678ba80aba79ff4208",
+                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/ca54efbb40403c5665e2dd7335662c44bb9fc644",
+                "reference": "ca54efbb40403c5665e2dd7335662c44bb9fc644",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.8.18"
+                "phpunit/phpunit": "~4.8.21"
             },
             "bin": [
                 "bin/lessc"
@@ -2318,7 +2318,7 @@
                 "php",
                 "stylesheet"
             ],
-            "time": "2016-02-05 05:02:03"
+            "time": "2016-03-23 04:37:27"
         },
         {
             "name": "paragonie/random_compat",
@@ -2490,54 +2490,6 @@
             "time": "2015-03-20 22:07:39"
         },
         {
-            "name": "robloach/component-installer",
-            "version": "0.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/RobLoach/component-installer.git",
-                "reference": "908a859aa7c4949ba9ad67091e67bac10b66d3d7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/RobLoach/component-installer/zipball/908a859aa7c4949ba9ad67091e67bac10b66d3d7",
-                "reference": "908a859aa7c4949ba9ad67091e67bac10b66d3d7",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.0",
-                "kriswallsmith/assetic": "1.*",
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "composer/composer": "1.*@alpha",
-                "phpunit/phpunit": "4.*"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                },
-                "class": "ComponentInstaller\\ComponentInstallerPlugin"
-            },
-            "autoload": {
-                "psr-0": {
-                    "ComponentInstaller": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rob Loach",
-                    "homepage": "http://robloach.net"
-                }
-            ],
-            "description": "Allows installation of Components via Composer.",
-            "time": "2015-08-10 12:35:38"
-        },
-        {
             "name": "sensio/distribution-bundle",
             "version": "v5.0.5",
             "source": {
@@ -2591,16 +2543,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.14",
+            "version": "v3.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "cccf975c565ccd835bddc30a8fea5cdfe3357bf1"
+                "reference": "40431d338da7ab4ef5f9edc1ba4551ea1d4d0782"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/cccf975c565ccd835bddc30a8fea5cdfe3357bf1",
-                "reference": "cccf975c565ccd835bddc30a8fea5cdfe3357bf1",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/40431d338da7ab4ef5f9edc1ba4551ea1d4d0782",
+                "reference": "40431d338da7ab4ef5f9edc1ba4551ea1d4d0782",
                 "shasum": ""
             },
             "require": {
@@ -2649,7 +2601,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2016-03-01 10:50:07"
+            "time": "2016-03-22 12:39:08"
         },
         {
             "name": "sensio/generator-bundle",
@@ -3836,21 +3788,23 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.2.1",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "8ea6ce78bba5fefe4c3233844cbcb22b12826b31"
+                "reference": "c0cd19cd3e0823ca817dd7991549c2fd57db0fad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/8ea6ce78bba5fefe4c3233844cbcb22b12826b31",
-                "reference": "8ea6ce78bba5fefe4c3233844cbcb22b12826b31",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/c0cd19cd3e0823ca817dd7991549c2fd57db0fad",
+                "reference": "c0cd19cd3e0823ca817dd7991549c2fd57db0fad",
                 "shasum": ""
             },
             "require": {
-                "components/jquery": ">=1.9.1",
-                "robloach/component-installer": "*"
+                "components/jquery": ">=1.9.1"
+            },
+            "suggest": {
+                "robloach/component-installer": "Allows installation of Components via Composer"
             },
             "type": "component",
             "extra": {
@@ -3887,7 +3841,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2015-08-24 11:32:18"
+            "time": "2016-03-19 23:19:56"
         },
         {
             "name": "vierbergenlars/php-semver",
@@ -4442,9 +4396,7 @@
     "stability-flags": {
         "zikula/legal-module": 20,
         "zikula/profile-module": 20,
-        "elao/web-profiler-extra-bundle": 20,
         "zikula/generator-bundle": 20,
-        "jms/translation-bundle": 20,
         "phpids/phpids": 20,
         "zikula/wizard": 20,
         "zikula/filesystem": 20,
