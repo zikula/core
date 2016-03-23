@@ -49,14 +49,15 @@ CHANGELOG - ZIKULA 1.4.x
     - Add CsrfTokenHandler service (`\Zikula\Core\Token\CsrfTokenHandler`)
     - Add 'info' type flash messages.
     - Add CLI Symfony Styleguide to CLI install and upgrade (#2667)
+    - Add Vagrant support (#2814)
  - Core-2.0 Features:
     - Add AdminInterfaceController and Twig tags - AdminModule
         - Refactored functions header, footer, breadcrumbs
-        - menu - replace old categorymenu action - supports both categries and modules mode as well as panel and tabs templates. 
-        - add updatecheck, securityanalyzer, developernotices instead of notices 
+        - menu - replace old categorymenu action - supports both categries and modules mode as well as panel and tabs templates.
+        - add updatecheck, securityanalyzer, developernotices instead of notices
     - Add ExtensionsInterfaceController and Twig tags - ExtensionsModule
         - Refactor functions header, links
-        - Introduce footer, breadcrumbs and help - not fully functional 
+        - Introduce footer, breadcrumbs and help - not fully functional
     - Add `currentUser` global variable to twig templates.
     - Add (move) `Zikula\CategoriesModule\Entity\AbstractCategoryAssignment` and related documentation.
         - Replaces `Zikula\Core\Doctrine\Entity\AbstractEntityCategory` (aliased for BC).
@@ -112,7 +113,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Add vierbergenlars/php-semver vendor lib for version comparison (#2560)
     - Combined and customized bootstrap/font-awesome css using Less.
     - Improved multilingual UI in general settings (#2547)
-    - [Imagine Plugin] Possibility to add transformations which are applied after the thumbnail 
+    - [Imagine Plugin] Possibility to add transformations which are applied after the thumbnail
         is generated. (#2594)
     - Add umask support
  - Core-2.0 Features:
@@ -193,7 +194,7 @@ CHANGELOG - ZIKULA 1.4.x
       - Switched to Symfony error handling.
       - Switched to HttpKernel request cycle.
       - [FORWARD COMPAT] Added forward compatibility layer with Symfony2 HttpFoundation
-    
+
         - `$request->isGet/Post()` should be replaced with `$request->isMethod('GET/POST')`.
         - The GET request is available from `$request->query->get()` and POST from
           `$request->request->get()`.

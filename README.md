@@ -8,7 +8,8 @@ Zikula Core - Application Framework
   2. [Requirements](#requirements)
   3. [Before installing](#beforeinstalling)
   4. [Installing](#installing)
-  5. [Contributing](#contributing)
+  5. [Vagrant installation](#vagrant)
+  6. [Contributing](#contributing)
 
 <a name="introduction"></a>
 Introduction
@@ -62,6 +63,16 @@ Once all of the pre-install steps are complete, choose an installation method:
   1) CLI install: `cd` to zikula root and run `php app/console zikula:install:start`
   2) HTTP install: Run `http://yoursiteurl/install` and follow any on-screen prompts.
 
+<a name="vagrant"></a>
+Vagrant installation
+--------------------
+You can use vagrant to easily setup a complete Zikula development environment.
+All you need to do is install [Vagrant](https://vagrantup.com) and
+[VirtualBox](https://www.virtualbox.org/). Then run `vagrant up` inside the
+cloned repository and wait for the machine to boot (first time booting might
+take several minutes). Then head over to `localhost:8080` and install Zikula.
+Database user, password and table are all set to `zikula`. PHPMyAdmin is
+accessible from `localhost:8081`.
 
 <a name="contributing"></a>
 Contributing
@@ -73,8 +84,8 @@ Contributions can be made to Zikula in a number of ways
   2. Assisting other users at the [user community site](http://zikula.org/forum/)
   3. Creating themes for Zikula.
   4. Authoring additional modules for Zikula. Please see our [developer documentation](https://github.com/zikula/core/tree/1.4/src/docs/en/dev)
-  5. Contributing bug fixes and patches to the Core. 
-  
+  5. Contributing bug fixes and patches to the Core.
+
 Pull requests are welcome, please see https://github.com/zikula/core/wiki/Contributing.
 
 All pull requests must follow [this template](https://github.com/zikula/core/wiki/Contributing#pull-request-template)
