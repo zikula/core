@@ -120,17 +120,9 @@ class Engine
         if (!isset($activeTheme) || !$activeTheme->isTwigBased()) {
             return false;
         }
-        // wrap page in unique div
-        $realm = $this->getRealm();
-        $attributes = $this->requestStack->getMasterRequest()->attributes->all();
-        $content = '<div id="z-maincontent" class="'
-            . ($realm == 'home' ? 'z-homepage' : '')
-            . (isset($attributes['_zkModule']) ? ' z-module-' . strtolower($attributes['_zkModule'])  : '') . '">'
-            . $response->getContent()
-            . '</div>';
-        $response->setContent($content);
 
-        $themedResponse = $activeTheme->generateThemedResponse($realm, $response);
+        $moduleName = $this->requestStack->getMasterRequest()->attributes->get('_zkModule');
+        $themedResponse = $activeTheme->generateThemedResponse($this->getRealm(), $response, $moduleName);
         $filteredResponse = $this->filter($themedResponse);
 
         return $filteredResponse;
