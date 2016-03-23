@@ -27,3 +27,5 @@
 /src/vendor/
 /src/web/*
 /src/ztemp/
+
+/.vagrant
