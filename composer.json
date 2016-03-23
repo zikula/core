@@ -46,14 +46,14 @@
         "sensio/distribution-bundle": "5.0.*",
         "sensio/framework-extra-bundle": "3.0.*",
         "sensio/generator-bundle": "3.0.*",
-        "elao/web-profiler-extra-bundle" : "dev-master",
+        "elao/web-profiler-extra-bundle" : "~2.3.3",
         "matthiasnoback/symfony-service-definition-validator": "1.2.*",
         "matthiasnoback/symfony-console-form": "1.*",
         "zikula/generator-bundle": "dev-master",
 
 
         "acasademont/i18n-routing-bundle": "2.0.0",
-        "jms/translation-bundle": "dev-master",
+        "jms/translation-bundle": "~1.2.0",
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
 
 
