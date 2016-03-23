@@ -140,7 +140,9 @@ class ExtensionDependencyHelper
     private function bundleDependencySatisfied(ExtensionDependencyEntity &$dependency)
     {
         if ($dependency->getModname() == "php") {
-            $phpVersion = new version(PHP_VERSION);
+            // Do not use PHP_VERSION constant, because it might throw off
+            // the semver parser.
+            $phpVersion = new version(PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION . "." . PHP_RELEASE_VERSION);
             $requiredVersionExpression = new expression($dependency->getMinversion());
 
             if (!$requiredVersionExpression->satisfiedBy($phpVersion)) {
