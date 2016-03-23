@@ -33,6 +33,7 @@
     "require": {
         "php": ">=5.4.1",
         "composer/installers": "1.0.*",
+        "robloach/component-installer": "*",
 
 
         "zikula/legal-module": "dev-master",
