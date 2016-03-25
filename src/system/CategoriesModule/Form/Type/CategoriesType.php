@@ -39,6 +39,7 @@ class CategoriesType extends AbstractType
                 'registry_' . $registryId,
                 'entity',
                 [
+                    'attr' => $options['attr'],
                     'required' => $options['required'],
                     'multiple' => $options['multiple'],
                     'class' => 'ZikulaCategoriesModule:CategoryEntity',
@@ -68,9 +69,7 @@ class CategoriesType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_protection' => false,
-            'attr' => [
-                'class' => 'form form-inline',
-            ],
+            'attr' => [],
             'multiple' => false,
             'module' => '',
             'entity' => '',
