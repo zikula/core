@@ -110,7 +110,8 @@ class AdminInterfaceController extends AbstractController
         $modvars = $this->get('zikula_extensions_module.api.variable')->getAll('ZikulaThemeModule');
         $data = [];
         $data['mode'] = $this->get('kernel')->getEnvironment();
-        if ($data['mode'] == 'dev') {
+        if ($data['mode'] != 'prod') {
+            $data['debug'] = $this->get('kernel')->isDebug() ? $this->__('Yes') : $this->__('No');
             $data['legacy'] = [
                 'status' => true,
                 'cssjscombine' => $modvars['cssjscombine'],
