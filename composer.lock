@@ -1507,12 +1507,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "25db9e1dd0eb5ff022ec7f5add5b35ea179c6c4c"
+                "reference": "096064dd0a26e2757b7559341623f27a1186407b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/25db9e1dd0eb5ff022ec7f5add5b35ea179c6c4c",
-                "reference": "25db9e1dd0eb5ff022ec7f5add5b35ea179c6c4c",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/096064dd0a26e2757b7559341623f27a1186407b",
+                "reference": "096064dd0a26e2757b7559341623f27a1186407b",
                 "shasum": ""
             },
             "require": {
@@ -1543,7 +1543,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2016-03-17 00:09:41"
+            "time": "2016-03-25 03:32:54"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -2584,16 +2584,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.15",
+            "version": "v3.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "40431d338da7ab4ef5f9edc1ba4551ea1d4d0782"
+                "reference": "507a15f56fa7699f6cc8c2c7de4080b19ce22546"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/40431d338da7ab4ef5f9edc1ba4551ea1d4d0782",
-                "reference": "40431d338da7ab4ef5f9edc1ba4551ea1d4d0782",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/507a15f56fa7699f6cc8c2c7de4080b19ce22546",
+                "reference": "507a15f56fa7699f6cc8c2c7de4080b19ce22546",
                 "shasum": ""
             },
             "require": {
@@ -2642,7 +2642,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2016-03-22 12:39:08"
+            "time": "2016-03-25 17:08:27"
         },
         {
             "name": "sensio/generator-bundle",
