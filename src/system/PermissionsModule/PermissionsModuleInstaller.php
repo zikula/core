@@ -92,53 +92,36 @@ class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function defaultdata()
     {
+        // give administrator group full access to everything as top priority
         $record = new PermissionEntity();
         $record['gid']       = 2;
         $record['sequence']  = 1;
         $record['realm']     = 0;
         $record['component'] = '.*';
         $record['instance']  = '.*';
-        $record['level']     = 800;
+        $record['level']     = ACCESS_ADMIN; // 800
         $record['bond']      = 0;
         $this->entityManager->persist($record);
 
-        $record = new PermissionEntity();
-        $record['gid']       = -1;
-        $record['sequence']  = 2;
-        $record['realm']     = 0;
-        $record['component'] = 'ExtendedMenublock::';
-        $record['instance']  = '1:1:';
-        $record['level']     = 0;
-        $record['bond']      = 0;
-        $this->entityManager->persist($record);
-
+        // give user group comment access to everything as second priority
         $record = new PermissionEntity();
         $record['gid']       = 1;
+        $record['sequence']  = 2;
+        $record['realm']     = 0;
+        $record['component'] = '.*';
+        $record['instance']  = '.*';
+        $record['level']     = ACCESS_COMMENT; // 300
+        $record['bond']      = 0;
+        $this->entityManager->persist($record);
+
+        // allow unregistered users only read access to everything as lowest priority
+        $record = new PermissionEntity();
+        $record['gid']       = 0;
         $record['sequence']  = 3;
         $record['realm']     = 0;
         $record['component'] = '.*';
         $record['instance']  = '.*';
-        $record['level']     = 300;
-        $record['bond']      = 0;
-        $this->entityManager->persist($record);
-
-        $record = new PermissionEntity();
-        $record['gid']       = 0;
-        $record['sequence']  = 4;
-        $record['realm']     = 0;
-        $record['component'] = 'ExtendedMenublock::';
-        $record['instance']  = '1:(1|2|3):';
-        $record['level']     = 0;
-        $record['bond']      = 0;
-        $this->entityManager->persist($record);
-
-        $record = new PermissionEntity();
-        $record['gid']       = 0;
-        $record['sequence']  = 5;
-        $record['realm']     = 0;
-        $record['component'] = '.*';
-        $record['instance']  = '.*';
-        $record['level']     = 200;
+        $record['level']     = ACCESS_READ; // 200
         $record['bond']      = 0;
         $this->entityManager->persist($record);
 

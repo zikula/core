@@ -6,6 +6,11 @@ a {
     cursor: pointer;
 }
 
+a > i,
+a.fa {
+    text-decoration: none !important;
+}
+
 iframe + p {
     margin-top: 1em;
 }
@@ -34,23 +39,25 @@ p + iframe {
 .pointer { cursor: pointer !important;}
 
 /******************************************************************************
-* Module linke navbar
+* Module links navbar bootstrap.css overrides
 ******************************************************************************/
 
-ul.navbar-modulelinks > li {
-    background: none;
-    border-right:1px solid #aaa;
-    display:inline;
-    padding:0 10px;
-    margin:0;
+.navbar-modulelinks {
+    min-height: inherit;
 }
 
-ul.navbar-modulelinks > li:last-child {
+.navbar-modulelinks > ul > li {
+    border-right: 1px solid #aaa;
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-modulelinks > ul > li:last-child {
     border-right-style: none;
 }
 
-ul.navbar-modulelinks {
-    min-height: inherit;
+.navbar-modulelinks > ul {
     padding: 3px;
     z-index: inherit;
     margin-left: 0;
@@ -60,22 +67,28 @@ ul.navbar > li.active > a {
     font-weight: bold;
 }
 
-ul.navbar-modulelinks ul {
-    margin-top: 6px;
-    border-top-width: 0px;
-    border-top-right-radius: 0px;
-    border-top-left-radius: 0px;
+.navbar-modulelinks .navbar-nav > .open > a,
+.navbar-modulelinks .navbar-nav > .open > a:hover,
+.navbar-modulelinks .navbar-nav > .open > a:focus {
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
 }
 
-ul.navbar-modulelinks ul > li {
-    padding: 0px;
-    margin: 0px;
+.navbar-modulelinks .navbar-nav a,
+.navbar-modulelinks .navbar-nav a:hover,
+.navbar-modulelinks .navbar-nav a:focus {
+    padding: 5px 10px;
 }
 
-ul.navbar-modulelinks ul > li > a {
-    margin: 0px;
-    padding: 6px 12px;
-    font-size: 78%;
+.navbar-nav > li > .dropdown-menu {
+    margin-top: 3px;
+}
+
+.navbar-nav > li > .dropdown-menu li {
+    margin: 0;
+    padding: 0;
 }
 
 .navbar-modulelinks-main {
@@ -126,7 +139,7 @@ ul.navbar-modulelinks ul > li > a {
     font-size: 0.9em;
     padding: 7px 5px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-    border-width: 0px;
+    border-width: 0;
     vertical-align: middle;
     text-align: left;
 }
@@ -161,7 +174,7 @@ td.actions .fa-gear {
 }
 
 td.actions a:hover {
-    text-decoration: none;    
+    text-decoration: none;
 }
 
 /******************************************************************************

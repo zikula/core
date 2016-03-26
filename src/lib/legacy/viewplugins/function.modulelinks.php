@@ -41,7 +41,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
 {
     $menuLinks          = isset($params['links'])       ? $params['links'] : '';
     $menuId             = isset($params['menuid'])      ? $params['menuid'] : '';
-    $menuClass          = isset($params['menuclass'])   ? $params['menuclass'] : 'navbar navbar-default navbar-modulelinks navbar-modulelinks-main';
+    $menuClass          = isset($params['menuclass'])   ? $params['menuclass'] : 'navbar-nav';
     $menuItemClass      = isset($params['itemclass'])   ? $params['itemclass'] : '';
     $menuItemFirst      = isset($params['first'])       ? $params['first'] : '';
     $menuItemLast       = isset($params['last'])        ? $params['last'] : '';
@@ -81,7 +81,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
     $html = '';
 
     if (!empty($menuLinks)) {
-        $html = '<ul';
+        $html = '<div class="navbar navbar-default navbar-modulelinks navbar-modulelinks-main"><ul';
         $html .= !empty($menuId) ? ' id="'.$menuId.'"' : '';
         $html .= !empty($menuClass) ? ' class="'.$menuClass.'"' : '';
         $html .= '>';
@@ -234,9 +234,10 @@ function smarty_function_modulelinks($params, Zikula_View $view)
 
             $html .= '<li';
             $html .= !empty($menuitem['id']) ? ' id="'.$menuitem['id'].'"' : '';
-            $html .= ' class="'.$active.$dropdown;
-            $html .= !empty($class) ? $class : '';
-            $html .= '">';
+            if (!empty($active) || !empty($dropdown) || !empty($class)) {
+                $html .= ' class="' . $active . $dropdown . $class . '"';
+            }
+            $html .= '>';
             $attr  = !empty($menuitem['title']) ? ' title="'.$menuitem['title'].'"' : '';
             $attr .= !empty($menuitem['class']) ? ' class="'.$menuitem['class'].'"' : '';
 
@@ -250,7 +251,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                 if (isset($menuitem['links'])) {
                     $html .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-decoration: none;">' . $icon . $menuitem['text'] . '&nbsp;<b class="caret"></b></a>';
                 } else {
-                    $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr.' style="display: inline-block;">'.$icon.$menuitem['text'].'</a>';
+                    $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr.'>'.$icon.$menuitem['text'].'</a>';
                 }
             } else {
                 $html .= '<span'.$attr.'>'.$menuitem['text'].'</span>';
@@ -271,7 +272,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             $html .= '</li>';
         }
 
-        $html .= '</ul>';
+        $html .= '</ul></div>';
     }
 
     if (isset($params['assign'])) {

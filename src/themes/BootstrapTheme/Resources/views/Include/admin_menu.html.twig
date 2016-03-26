@@ -1,39 +1,39 @@
-<div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{ pagevars.homepath }}">{{ getModVar('ZConfig', 'sitename') }}</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ pagevars.homepath }}"><i class="fa fa-rocket fa-lg text-success"></i>&nbsp;&nbsp;{{ getModVar('ZConfig', 'sitename') }}</a>
         </div>
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li>{{ adminPanelMenu() }}</li>
-            <li><a href="{{ pagevars.homepath }}">{{ __('Home') }}</a></li>
-            {% if hasPermission('ZikulaSettingsModule::', '::', 'ACCESS_ADMIN') %}
-            <li><a href="{{ path('zikulasettingsmodule_admin_index') }}">{{ __('Settings') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaExtensionsModule::', '::', 'ACCESS_ADMIN') %}
-            <li><a href="{{ path('zikulaextensionsmodule_admin_index') }}">{{ __('Extensions') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaBlocksModule::', '::', 'ACCESS_EDIT') %}
-            <li><a href="{{ path('zikulablocksmodule_admin_view') }}">{{ __('Blocks') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaUsersModule::', '::', 'ACCESS_MODERATE') %}
-            <li><a href="{{ path('zikulausersmodule_admin_index') }}">{{ __('Users') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaGroupsModule::', '::', 'ACCESS_EDIT') %}
-            <li><a href="{{ path('zikulagroupsmodule_admin_index') }}">{{ __('Groups') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaPermissionsModule::', '::', 'ACCESS_ADMIN') %}
-            <li><a href="{{ path('zikulapermissionsmodule_admin_index') }}">{{ __('Permission rules') }}</a></li>
-            {% endif %}
-            {% if hasPermission('ZikulaThemeModule::', '::', 'ACCESS_EDIT') %}
-            <li><a href="{{ path('zikulathememodule_admin_index') }}">{{ __('Themes') }}</a></li>
-            {% endif %}
-          </ul>
+            <ul class="nav navbar-nav">
+                <li>{{ adminPanelMenu() }}</li>
+                <li><a href="{{ pagevars.homepath }}">{{ __('Home') }}</a></li>
+                {% if hasPermission('ZikulaSettingsModule::', '::', 'ACCESS_ADMIN') %}
+                <li><a href="{{ path('zikulasettingsmodule_admin_index') }}">{{ __('Settings') }}</a></li>
+                {% endif %}
+                {% if hasPermission('ZikulaExtensionsModule::', '::', 'ACCESS_ADMIN') %}
+                <li><a href="{{ path('zikulaextensionsmodule_admin_index') }}">{{ __('Extensions') }}</a></li>
+                {% endif %}
+                {% if hasPermission('ZikulaBlocksModule::', '::', 'ACCESS_EDIT') %}
+                <li><a href="{{ path('zikulablocksmodule_admin_view') }}">{{ __('Blocks') }}</a></li>
+                {% endif %}
+                {% if hasPermission('ZikulaUsersModule::', '::', 'ACCESS_MODERATE') %}
+                <li><a href="{{ path('zikulausersmodule_admin_index') }}">{{ __('Users') }}</a></li>
+                {% endif %}
+                {% if hasPermission('ZikulaGroupsModule::', '::', 'ACCESS_EDIT') %}
+                <li><a href="{{ path('zikulagroupsmodule_admin_index') }}">{{ __('Groups') }}</a></li>
+                {% endif %}
+                {% if hasPermission('ZikulaPermissionsModule::', '::', 'ACCESS_ADMIN') %}
+                <li><a href="{{ path('zikulapermissionsmodule_admin_index') }}">{{ __('Permission rules') }}</a></li>
+                {% endif %}
+                {% if hasPermission('ZikulaThemeModule::', '::', 'ACCESS_EDIT') %}
+                <li><a href="{{ path('zikulathememodule_admin_index') }}">{{ __('Themes') }}</a></li>
+                {% endif %}
+            </ul>
         </div><!--/.navbar-collapse -->
-      </div>
     </div>
+</div>

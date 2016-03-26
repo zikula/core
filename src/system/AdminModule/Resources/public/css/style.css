@@ -12,7 +12,7 @@
     padding: 5px 1%;
 }
 
-#z-maincontent div.z-admin-content .navbar navbar-default {
+#z-maincontent div.z-admin-content .navbar .navbar-default {
     margin: 0.5em 0;
 }
 
@@ -280,7 +280,7 @@ div.z-adminbox {
     padding: 10px 1% 5px 1%;
 }
 
-#z-maincontent div.z-adminbox .navbar navbar-default,
+#z-maincontent div.z-adminbox .navbar .navbar-default,
 #z-maincontent div.z-adminbox .z-menu {
     margin: 0.5em 0 0;
 }

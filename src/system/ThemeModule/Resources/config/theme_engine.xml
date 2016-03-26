@@ -32,9 +32,11 @@
         <!-- @deprecated legacy services - remove at Core-2.0 -->
         <service id="zikula_core.legacy.theme_template_override_listener" class="%zikula_core.legacy.theme_template_override_listener.class%">
             <tag name="kernel.event_subscriber" />
+            <deprecated>The "%service_id%" service is deprecated and will be removed in Core-2.0.</deprecated>
         </service>
         <service id="zikula.config_template_override_listener" class="%zikula.config_template_override_listener.class%">
             <tag name="kernel.event_subscriber" />
+            <deprecated>The "%service_id%" service is deprecated and will be removed in Core-2.0.</deprecated>
         </service>
 
         <!-- non-legacy -->
@@ -50,6 +52,8 @@
             <argument type="service" id="zikula_core.common.theme.assets_js" />
             <argument type="service" id="zikula_core.common.theme.assets_css" />
             <argument type="service" id="router" />
+            <argument type="service" id="zikula_core.common.theme_engine" />
+            <argument>%kernel.root_dir%</argument>
             <call method="setParameters">
                 <argument type="service" id="service_container" />
             </call>
