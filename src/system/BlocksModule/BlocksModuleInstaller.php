@@ -188,32 +188,18 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         $languages = ZLanguage::getInstalledLanguages();
         $saveLanguage = ZLanguage::getLanguageCode();
         $menucontent = array();
-        $topnavcontent = array();
         foreach ($languages as $lang) {
             ZLanguage::setLocale($lang);
             ZLanguage::bindCoreDomain();
 
             $menucontent['displaymodules'] = '0';
             $menucontent['stylesheet'] = 'extmenu.css';
-            $menucontent['template'] = 'Block/Extmenu/extmenu.tpl';
+            $menucontent['template'] = 'Block/Extmenu/topnav.tpl';
             $menucontent['blocktitles'][$lang] = $this->__('Main menu');
 
             // insert the links
             $menucontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('Administration'), 'url' => '{Admin:admin:adminpanel}', 'title' => $this->__('Go to the site administration'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{ZikulaUsersModule}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('Log out'), 'url' => '{ZikulaUsersModule:user:logout}', 'title' => $this->__('Log out of this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
             $menucontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{ZikulaSearchModule}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-
-            $topnavcontent['displaymodules'] = '0';
-            $topnavcontent['stylesheet'] = 'extmenu.css';
-            $topnavcontent['template'] = 'Block/Extmenu/topnav.tpl';
-            $topnavcontent['blocktitles'][$lang] = $this->__('Top navigation');
-
-            // insert the links
-            $topnavcontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the site's home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $topnavcontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{ZikulaUsersModule}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $topnavcontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{ZikulaSearchModule}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
         }
 
         ZLanguage::setLocale($saveLanguage);
@@ -237,7 +223,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'title' => $this->__('Main menu'),
             'description' => $this->__('Main menu'),
             'content' => $menucontent,
-            'position' => $positions['left']
+            'position' => $positions['topnav'],
+            'order' => 0
             ];
         $blocks[] = [
             'bkey' => 'ZikulaSearchModule:\Zikula\SearchModule\Block\SearchBlock',
@@ -247,7 +234,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'title' => $this->__('Search box'),
             'description' => $this->__('Search block'),
             'content' => $searchcontent,
-            'position' => $positions['search']
+            'position' => $positions['left']
             ];
         $blocks[] = [
             'bkey' => 'ZikulaBlocksModule:\Zikula\BlocksModule\Block\HtmlBlock',
@@ -266,28 +253,21 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'module' => $usersModuleEntity,
             'title' => $this->__('User log-in'),
             'description' => $this->__('Login block'),
-            'position' => $positions['right']
-            ];
-        $blocks[] = [
-            'bkey' => 'ZikulaBlocksModule:\Zikula\BlocksModule\Block\ExtmenuBlock',
-            'blocktype' => 'Extmenu',
-            'language' => '',
-            'module' => $blocksModuleEntity,
-            'title' => $this->__('Top navigation'),
-            'description' => $this->__('Theme navigation'),
-            'content' => $topnavcontent,
-            'position' => $positions['topnav']
+            'position' => $positions['topnav'],
+            'order' => 1
             ];
 
         foreach ($blocks as $block) {
             $blockEntity = new BlockEntity();
             $position = $block['position'];
-            unset($block['position']);
+            $sortOrder = !empty($block['order']) ? $block['order'] : 0;
+            unset($block['position'], $block['order']);
             $blockEntity->merge($block);
             $this->entityManager->persist($blockEntity);
             $placement = new BlockPlacementEntity();
             $placement->setBlock($blockEntity);
             $placement->setPosition($position);
+            $placement->setSortorder($sortOrder);
             $this->entityManager->persist($placement);
         }
         $this->entityManager->flush();

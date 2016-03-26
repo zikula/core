@@ -115,7 +115,7 @@ class ExtensionsInterfaceController extends AbstractController
         // menu css
         $menu_css = [];
         $menu_css['menuId'] = ('' !== $currentRequest->attributes->get('menuid')) ? $currentRequest->attributes->get('menuid') : '';
-        $menu_css['menuClass'] = ('' !== $currentRequest->attributes->get('menuclass')) ? $currentRequest->attributes->get('menuclass') : 'navbar navbar-default navbar-modulelinks navbar-modulelinks-main';
+        $menu_css['menuClass'] = ('' !== $currentRequest->attributes->get('menuclass')) ? $currentRequest->attributes->get('menuclass') : 'navbar-nav';
         $menu_css['menuItemClass'] = ('' !== $currentRequest->attributes->get('itemclass')) ? $currentRequest->attributes->get('itemclass') : '';
         $menu_css['menuFirstItemClass'] = ('' !== $currentRequest->attributes->get('last')) ? $currentRequest->attributes->get('first') : '';
         $menu_css['menuLastItemClass'] = ('' !== $currentRequest->attributes->get('first')) ? $currentRequest->attributes->get('last') : '';
