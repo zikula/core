@@ -28,8 +28,8 @@
                 "user": {"route": "zikulathememodule_user_index"}
             },
             "securityschema": {
-                "ZikulaThemeModule::": "Theme name::",
-                "ZikulaThemeModule::ThemeChange": "::"
+                "ZikulaThemeModule::": "ThemeName::",
+                "ZikulaThemeModule::ThemeChange": ":(ThemeName|ThemeName):"
             }
         }
     }

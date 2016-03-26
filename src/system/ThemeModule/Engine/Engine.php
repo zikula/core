@@ -368,9 +368,8 @@ class Engine
     /**
      * Set the theme based on:
      *  1) manual setting
-     *  2) the request params (e.g. `?theme=MySpecialTheme`)
-     *  3) the request attributes (e.g. `_theme`)
-     *  4) the default system theme
+     *  2) the request attributes (e.g. `_theme`) @deprecated
+     *  3) the default system theme
      * @param string|null $newThemeName
      * @return mixed
      * kernel::getTheme() @throws \InvalidArgumentException if theme is invalid.
@@ -380,11 +379,8 @@ class Engine
         $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->get(VariableApi::CONFIG, 'Default_Theme');
         $request = $this->requestStack->getMasterRequest();
         if (isset($request)) {
-            // @todo do we want to allow changing the theme by the request?
-            $themeByRequest = $request->get('theme', null);
-            if (!empty($themeByRequest)) {
-                $activeTheme = $themeByRequest;
-            }
+            // This allows for setting the theme via the old method in \UserUtil::getTheme and check permissions
+            // This method is @deprecated and will be removed in Core-2.0
             $themeByRequest = $request->attributes->get('_theme');
             if (!empty($themeByRequest)) {
                 $activeTheme = $themeByRequest;
