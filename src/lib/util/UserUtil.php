@@ -1847,7 +1847,11 @@ class UserUtil
         $request = \ServiceUtil::get('request');
 
         $theme = FormUtil::getPassedValue('theme', null, 'GETPOST');
-        if (!empty($theme) && SecurityUtil::checkPermission('ZikulaThemeModule::ThemeChange', '::', ACCESS_COMMENT)) {
+        $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
+        if (!empty($theme) && (
+                SecurityUtil::checkPermission('ZikulaThemeModule::ThemeChange', ':' . $themeinfo['name'] . ':', ACCESS_COMMENT) ||
+                SecurityUtil::checkPermission('ZikulaThemeModule::ThemeChange', ':' . $themeinfo['displayname'] . ':', ACCESS_COMMENT))
+        ) {
             // theme passed as parameter takes priority, can be RSS, Atom, Printer or other
             $pagetheme = $theme;
         } else {
@@ -1871,9 +1875,7 @@ class UserUtil
         }
 
         // Page-specific theme
-        $qstring = System::serverGetVar('QUERY_STRING');
         if (!empty($pagetheme)) {
-            $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($pagetheme));
             if ($themeinfo['state'] == ThemeUtil::STATE_ACTIVE
                 && ($themeinfo['user']
                     || $themeinfo['system']

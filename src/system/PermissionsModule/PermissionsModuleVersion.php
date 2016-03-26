@@ -30,7 +30,7 @@ class PermissionsModuleVersion extends \Zikula_AbstractVersion
         $meta['description'] = $this->__('User permissions manager.');
         //! module name that appears in URL
         $meta['url'] = $this->__('permissions');
-        $meta['version'] = '1.1.1';
+        $meta['version'] = '1.1.2';
         $meta['core_min'] = '1.4.0';
         $meta['securityschema'] = array('ZikulaPermissionsModule::' => '::');
 
