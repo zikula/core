@@ -98,7 +98,6 @@ class ExtensionApi
             'ZikulaExtensionsModule',
             'ZikulaGroupsModule',
             'ZikulaMailerModule',
-            'ZikulaPageLockModule',
             'ZikulaPermissionsModule',
             'ZikulaRoutesModule',
             'ZikulaSearchModule',
