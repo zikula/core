@@ -37,6 +37,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix issues with dynamic url settings in ExtensionsModule
     - Fix problems with legacy Themes (#2777)
     - Fix post installation login (#2187)
+    - Improved compatibility of zikula-specific bootstrap overrides with respect to navbars.
  - Features:
     - Add new advanced block filtering based on a combination of any query parameter or request attributes.
     - Add core routing for all legacy urls (both normal and 'shorturls').
@@ -50,6 +51,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Add 'info' type flash messages.
     - Add CLI Symfony Styleguide to CLI install and upgrade (#2667)
     - Add Vagrant support (#2814)
+    - Change default theme to Bootstrap theme (new features added, blocks and permissions adjusted specific to theme)
+    - Provide method for customizing Bootstrap path in Core-2.0 themes. See ZikulaBootstrapTheme for example.
  - Core-2.0 Features:
     - Add AdminInterfaceController and Twig tags - AdminModule
         - Refactored functions header, footer, breadcrumbs

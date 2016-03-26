@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
+use Zikula\ThemeModule\Engine\Engine;
 
 /**
  * Class DefaultPageAssetSetterListener
@@ -31,14 +32,24 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 {
     private $cssAssetBag;
     private $jsAssetBag;
+    /**
+     * @var RouterInterface
+     */
     private $router;
+    /**
+     * @var Engine
+     */
+    private $themeEngine;
+    private $rootdir;
     private $params;
 
-    public function __construct(AssetBag $jsAssetBag, AssetBag $cssAssetBag, RouterInterface $router)
+    public function __construct(AssetBag $jsAssetBag, AssetBag $cssAssetBag, RouterInterface $router, Engine $themeEngine, $rootdir)
     {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
         $this->router = $router;
+        $this->themeEngine = $themeEngine;
+        $this->rootdir = $rootdir;
     }
 
     public function setParameters(ContainerInterface $container)
@@ -49,6 +60,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             'zikula.stylesheet.bootstrap-font-awesome.path' => $container->getParameter('zikula.stylesheet.bootstrap-font-awesome.path'),
             'zikula.stylesheet.fontawesome.min.path' => $container->getParameter('zikula.stylesheet.fontawesome.min.path'),
         ];
+        $this->params['zikula.stylesheet.bootstrap.min.path'] = $container->hasParameter('zikula.stylesheet.bootstrap.min.path') ? $container->getParameter('zikula.stylesheet.bootstrap.min.path') : '';
     }
 
     /**
@@ -125,8 +137,21 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     {
         $overrideBootstrapPath = '';
         if (!\System::isInstalling()) {
-            $overrideBootstrapPath = \ThemeUtil::getVar('bootstrapPath', ''); // allows for theme override of bootstrap css path
+            // Check for override of bootstrap css path
+            if (!empty($this->params['zikula.stylesheet.bootstrap.min.path'])) {
+                // Core-2.0 Site method
+                $overrideBootstrapPath = $this->params['zikula.stylesheet.bootstrap.min.path'];
+            } elseif (!empty($this->themeEngine->getTheme()->getConfig()['bootstrapPath'])) {
+                // Core-2.0 Theme method
+                $overrideBootstrapPath = $this->themeEngine->getTheme()->getConfig()['bootstrapPath'];
+            } else {
+                // Core-1.4 method @deprecated
+                $overrideBootstrapPath = \ThemeUtil::getVar('bootstrapPath', '');
+            }
         }
+        $path = realpath($this->rootdir . '/../') . "/$overrideBootstrapPath";
+        $overrideBootstrapPath = !empty($overrideBootstrapPath) && is_readable($path) ? $overrideBootstrapPath : '';
+
         if (empty($overrideBootstrapPath)) {
             $bootstrapFontAwesomePath = $this->params['zikula.stylesheet.bootstrap-font-awesome.path'];
             $this->cssAssetBag->add(["$basePath/$bootstrapFontAwesomePath" => 0]);

@@ -148,7 +148,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
                     // check for multiple options in image
                     $this->checkImage($link);
-                    $menuitems[] = $link;
+                    $menuitems[$link['url']] = $link;
                 }
             }
         }
@@ -163,31 +163,13 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                 }
             }
 
-            // Separate from current content, if any
-            if (count($menuitems) > 0) {
-                $menuitems[] = array('name'   => '&nbsp;',
-                                     'url'    => '',
-                                     'title'  => '',
-                                     'level'  => 0,
-                                     'parentid' => null,
-                                     'image'  => '');
-
-                if (SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_ADMIN)) {
-                    $menuitems[] = array('name'   => $this->__('--Installed modules--'),
-                                         'url'    => $this->get('router')->generate('zikulablocksmodule_block_edit', array('blockEntity' => $blockinfo['bid'])),
-                                         'title'  => '',
-                                         'level'  => 0,
-                                         'parentid' => null,
-                                         'image'  => '');
-                }
-            }
-
             foreach ($mods as $mod) {
-                $url = isset($mod['capabilities']['user']['url'])
-                    ? $mod['capabilities']['user']['url']
-                    : $this->get('router')->generate($mod['capabilities']['user']['route']);
-                if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
-                    $menuitems[] = array('name'   => $mod['displayname'],
+                $url = isset($mod['capabilities']['user']['route'])
+                    ? $this->get('router')->generate($mod['capabilities']['user']['route'])
+                    : $mod['capabilities']['user']['url'];
+                if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)
+                    && (empty($menuitems[$url]))) {
+                    $menuitems[$url] = array('name'   => $mod['displayname'],
                                          'url'    => $url,
                                          'title'  => $mod['description'],
                                          'level'  => 0,

@@ -1,7 +1,7 @@
 {% macro draw(links, menu_css, current_path) %}
     {% for link in links %}
         {% if link.links is defined %}
-            <li class="dropdown {{ menu_css.menuItemClass }} {% if current_path == link.url %} active{% endif %}">
+            <li class="dropdown{% if menu_css.menuItemClass is not empty %} {{ menu_css.menuItemClass }}{% endif %}{% if current_path == link.url %} active{% endif %}">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{{ link.title|default('') }}">
                     <i class="fa fa-{{ link.icon }}"> </i>
                     {{ link.text }}
@@ -11,7 +11,7 @@
                 </ul>
             </li>
         {% else %}
-            <li class="{{ menu_css.menuItemClass }}{% if current_path == link.url %} active{% endif %}">
+            <li {% if menu_css.menuItemClass is not empty and current_path != link.url %}class="{{ menu_css.menuItemClass }}{% if current_path == link.url %} active{% endif %}"{% endif %}>
                 <a href="{{ link.url }}" title="{{ link.title|default('') }}">{% if link.icon is defined %}<i
                         class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
             </li>
@@ -21,6 +21,8 @@
 
 {% import _self as menu %}
 
-<ul id="{{ menu_css.menuId }}" class="{{ menu_css.menuClass }}">
-    {{ menu.draw(links, menu_css, current_path) }}
-</ul>
+<div class="navbar navbar-default navbar-modulelinks">
+    <ul{% if menu_css.menuId is not empty %} id="{{ menu_css.menuId }}"{% endif %}{% if menu_css.menuClass is not empty %} class="{{ menu_css.menuClass }}"{% endif %}>
+        {{ menu.draw(links, menu_css, current_path) }}
+    </ul>
+</div>
