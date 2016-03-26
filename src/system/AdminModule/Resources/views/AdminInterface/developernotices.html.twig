@@ -1,14 +1,12 @@
 {% if hasPermission('ZikulaAdminModule::', '::', 'ACCESS_ADMIN') %}
     {% set themeurl = path('zikulaadminmodule_admin_adminpanel') %}
-    {% if developer.mode %}
+    {% if developer.mode != 'prod' %}
         <div id="developernotices" class="alert alert-info">
             <div class="row">
                 <div class="col-md-12">
                     <i class="close" data-dismiss="alert">&times;</i>
-                    <a class="text-primary" data-toggle="collapse" href="#developernotices_full" aria-expanded="false"
-                       aria-controls="developernotices_full">
-                        <strong><i class="fa fa-caret-right fa-fw"></i> {{ __('Developer notices (development mode on)') }}
-                        </strong>
+                    <a class="text-primary" data-toggle="collapse" href="#developernotices_full" aria-expanded="false" aria-controls="developernotices_full">
+                        <strong><i class="fa fa-caret-right fa-fw"></i> {{ __('Developer notices (development mode on)') }}</strong>
                     </a>
                 </div>
                 <div class="collapse" id="developernotices_full">
@@ -18,8 +16,8 @@
                             <div class="col-md-6">
                                 <a href="{{ themeurl }}"><strong>{{ __('Enabled Template settings') }}:</strong></a>
                                 {% for item in developer.legacy.render %}
-                                    <p>{% if item.state %}<i class="fa fa-check-circle text-success"></i> {% else %} <i
-                                                class="fa fa-exclamation-circle text-warning"></i> {% endif %} {{ item.title }}
+                                    <p>
+                                        <i class="fa {% if item.state %}fa-check-circle text-success{% else %}fa-times text-danger{% endif %}"></i> {{ item.title }}
                                     </p>
                                 {% endfor %}
                             </div>
@@ -28,8 +26,8 @@
                             <div class="col-md-6">
                                 <a href="{{ themeurl }}"><strong>{{ __('Enabled Theme settings') }}: </strong></a>
                                 {% for item in developer.legacy.theme %}
-                                    <p>{% if item.state %}<i class="fa fa-check-circle text-success"></i> {% else %} <i
-                                                class="fa fa-exclamation-circle text-warning"></i> {% endif %} {{ item.title }}
+                                    <p>
+                                        <i class="fa {% if item.state %}fa-check-circle text-success{% else %}fa-times text-danger{% endif %}"></i> {{ item.title }}
                                     </p>
                                 {% endfor %}
                             </div>
@@ -41,12 +39,18 @@
                                 <i class="fa fa-exclamation-circle text-warning"></i> {{ __('CSS/JS combination is disabled') }}
                             {% endif %}
                         </p>
-                        <div class="col-md-12"><a href="{{ themeurl }}"><strong><i
-                                            class="fa fa-refresh"></i> {{ __('Clear all cache and compile directories') }}
-                                </strong></a></div>
+                        <div class="col-md-12">
+                            <a href="{{ themeurl }}">
+                                <strong><i class="fa fa-refresh"></i> {{ __('Clear all cache and compile directories') }}</strong>
+                            </a>
+                        </div>
                     </div>
                     <div class="legacy col-md-6">
                         <h4>{{ __('Dev mode status') }}</h4>
+                        <ul>
+                            <li>{{ __('Mode') }}: {{ developer.mode }}</li>
+                            <li>{{ __('Debug enabled') }}: {{ developer.debug }}</li>
+                        </ul>
                     </div>
                 </div>
             </div>
