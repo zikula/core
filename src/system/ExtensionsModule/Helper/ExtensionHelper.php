@@ -261,7 +261,8 @@ class ExtensionHelper
     {
         $osDir = \DataUtil::formatForOS($extension->getDirectory());
         $scanner = new Scanner();
-        $scanner->scan(["modules/$osDir"], 1);
+        $directory = $extension->getName() == 'ZikulaPageLockModule' ? 'system' : 'modules';
+        $scanner->scan(["$directory/$osDir"], 1);
         $modules = $scanner->getModulesMetaData(true);
         /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
         $moduleMetaData = !empty($modules[$extension->getName()]) ? $modules[$extension->getName()] : null;
@@ -314,7 +315,10 @@ class ExtensionHelper
     {
         $className = $bundle->getInstallerClass();
         $reflectionInstaller = new \ReflectionClass($className);
-        if (!$reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
+        if ($reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) { // @deprecated remove at Core-2.0
+
+            return $reflectionInstaller->newInstanceArgs([$this->container, $bundle]);
+        } elseif (!$reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
             throw new \RuntimeException($this->translator->__f("%s must implement ExtensionInstallerInterface", ['%s' => $className]));
         }
         $installer = $reflectionInstaller->newInstance();
