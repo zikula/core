@@ -58,7 +58,23 @@ class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
     {
         // Upgrade dependent on old version number
         switch ($oldversion) {
-            case '1.1':
+            case '1.1.1':
+                $lastPerm = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findOneBy([], ['sequence' => 'DESC']);
+                // allow access to non-html themes
+                $record = new PermissionEntity();
+                $record['gid']       = -1;
+                $record['sequence']  = $lastPerm->getSequence();
+                $record['realm']     = 0;
+                $record['component'] = 'ZikulaThemeModule::ThemeChange';
+                $record['instance']  = ':(ZikulaRssTheme|ZikulaPrinterTheme|ZikulaAtomTheme):';
+                $record['level']     = ACCESS_COMMENT; // 300
+                $record['bond']      = 0;
+                $this->entityManager->persist($record);
+                $lastPerm->setSequence($record->getSequence() + 1);
+                $this->entityManager->flush();
+                $this->get('session')->addMessage('success', $this->__('A permission rule was added to allow users access to "utility" themes. Please check the sequence.'));
+
+            case '1.1.2':
             // future upgrade routines
         }
 
@@ -100,6 +116,17 @@ class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
         $record['component'] = '.*';
         $record['instance']  = '.*';
         $record['level']     = ACCESS_ADMIN; // 800
+        $record['bond']      = 0;
+        $this->entityManager->persist($record);
+
+        // allow access to non-html themes
+        $record = new PermissionEntity();
+        $record['gid']       = -1;
+        $record['sequence']  = 2;
+        $record['realm']     = 0;
+        $record['component'] = 'ZikulaThemeModule::ThemeChange';
+        $record['instance']  = ':(ZikulaRssTheme|ZikulaPrinterTheme|ZikulaAtomTheme):';
+        $record['level']     = ACCESS_COMMENT; // 300
         $record['bond']      = 0;
         $this->entityManager->persist($record);
 
