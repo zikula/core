@@ -83,7 +83,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Add CapabilityApi to manage and define Extension Capabilities for Core-2.0 applications.
     - Update `\Zikula\Bundle\HookBundle\Hook\DisplayHookResponse` to allow response from non-Smarty sources. (#2600)
  - Vendor updates:
-    - Symfony updated to 2.8.3
+    - Symfony updated to 2.8.4
     - Font-Awesome updated to 4.5.0
     - Bootstrap updated to 3.3.6
     - Colorbox (jQuery lightbox plugin) updated from 1.3.20.2 to 1.6.3 (`src/javascript/plugins/colorbox`)
