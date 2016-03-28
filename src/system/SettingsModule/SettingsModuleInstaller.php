@@ -13,12 +13,9 @@
 
 namespace Zikula\SettingsModule;
 
-use System;
-use Zikula_Core;
-use ModUtil;
+use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use ZLanguage;
-use DoctrineHelper;
-use EventUtil;
 
 /**
  * Installation and upgrade routines for the settings module
@@ -27,7 +24,7 @@ use EventUtil;
  * we cannot use $this->get/set/delVar() because the keys will be incorrectly
  * generated (System instead of ZConfig).
  */
-class SettingsModuleInstaller extends \Zikula_AbstractInstaller
+class SettingsModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * Initialise the settings module.
@@ -41,70 +38,68 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
         // than just left blank, this helps the user-side code and means that
         // there doesn't need to be a check to see if the variable is set in
         // the rest of the code as it always will be.
-        System::setVar('debug', '0');
-        System::setVar('startdate', date('m/Y', time()));
-        System::setVar('adminmail', 'example@example.com');
-        System::setVar('Default_Theme', 'ZikulaBootstrapTheme');
-        System::setVar('timezone_offset', '0');
-        System::setVar('timezone_server', '0');
-        System::setVar('funtext', '1');
-        System::setVar('reportlevel', '0');
-        System::setVar('startpage', '');
-        System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
-        System::setVar('Version_ID', Zikula_Core::VERSION_ID);
-        System::setVar('Version_Sub', Zikula_Core::VERSION_SUB);
-        System::setVar('debug_sql', '0');
-        System::setVar('multilingual', '1');
-        System::setVar('useflags', '0');
-        System::setVar('theme_change', '0');
-        System::setVar('UseCompression', '0');
-        System::setVar('siteoff', 0);
-        System::setVar('siteoffreason', '');
-        System::setVar('starttype', '');
-        System::setVar('startfunc', '');
-        System::setVar('startargs', '');
-        System::setVar('entrypoint', 'index.php');
-        System::setVar('language_detect', 0);
-        System::setVar('shorturls', false);
-        System::setVar('shorturlstype', '0');
-        System::setVar('shorturlsseparator', '-');
+        $this->setSystemVar('debug', '0');
+        $this->setSystemVar('startdate', date('m/Y', time()));
+        $this->setSystemVar('adminmail', 'example@example.com');
+        $this->setSystemVar('Default_Theme', 'ZikulaBootstrapTheme');
+        $this->setSystemVar('timezone_offset', '0');
+        $this->setSystemVar('timezone_server', '0');
+        $this->setSystemVar('funtext', '1');
+        $this->setSystemVar('reportlevel', '0');
+        $this->setSystemVar('startpage', '');
+        $this->setSystemVar('Version_Num', \Zikula_Core::VERSION_NUM);
+        $this->setSystemVar('Version_ID', \Zikula_Core::VERSION_ID);
+        $this->setSystemVar('Version_Sub', \Zikula_Core::VERSION_SUB);
+        $this->setSystemVar('debug_sql', '0');
+        $this->setSystemVar('multilingual', '1');
+        $this->setSystemVar('useflags', '0');
+        $this->setSystemVar('theme_change', '0');
+        $this->setSystemVar('UseCompression', '0');
+        $this->setSystemVar('siteoff', 0);
+        $this->setSystemVar('siteoffreason', '');
+        $this->setSystemVar('starttype', '');
+        $this->setSystemVar('startfunc', '');
+        $this->setSystemVar('startargs', '');
+        $this->setSystemVar('entrypoint', 'index.php');
+        $this->setSystemVar('language_detect', 0);
+        $this->setSystemVar('shorturls', false);
+        $this->setSystemVar('shorturlstype', '0');
+        $this->setSystemVar('shorturlsseparator', '-');
         // Multilingual support
         foreach (ZLanguage::getInstalledLanguages() as $lang) {
-            System::setVar('sitename_' . $lang, $this->__('Site name'));
-            System::setVar('slogan_' . $lang, $this->__('Site description'));
-            System::setVar('metakeywords_' . $lang, $this->__('zikula, portal, open source, web site, website, weblog, blog, content management system, cms, application framework'));
-            System::setVar('defaultpagetitle_' . $lang, $this->__('Site name'));
-            System::setVar('defaultmetadescription_' . $lang, $this->__('Site description'));
+            $this->setSystemVar('sitename_' . $lang, $this->__('Site name'));
+            $this->setSystemVar('slogan_' . $lang, $this->__('Site description'));
+            $this->setSystemVar('metakeywords_' . $lang, $this->__('zikula, portal, open source, web site, website, weblog, blog, content management system, cms, application framework'));
+            $this->setSystemVar('defaultpagetitle_' . $lang, $this->__('Site name'));
+            $this->setSystemVar('defaultmetadescription_' . $lang, $this->__('Site description'));
         }
 
         if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
             // Only strip entry point if "mod_rewrite" is available.
-            System::setVar('shorturlsstripentrypoint', true);
+            $this->setSystemVar('shorturlsstripentrypoint', true);
         } else {
-            System::setVar('shorturlsstripentrypoint', false);
+            $this->setSystemVar('shorturlsstripentrypoint', false);
         }
 
-        System::setVar('shorturlsdefaultmodule', '');
-        System::setVar('profilemodule', ((ModUtil::available('ZikulaProfileModule')) ? 'ZikulaProfileModule' : ''));
-        System::setVar('messagemodule', '');
-        System::setVar('languageurl', 0);
-        System::setVar('ajaxtimeout', 5000);
+        $this->setSystemVar('shorturlsdefaultmodule', '');
+        $this->setSystemVar('profilemodule', ((\ModUtil::available('ZikulaProfileModule')) ? 'ZikulaProfileModule' : ''));
+        $this->setSystemVar('messagemodule', '');
+        $this->setSystemVar('languageurl', 0);
+        $this->setSystemVar('ajaxtimeout', 5000);
         //! this is a comma-separated list of special characters to search for in permalinks
-        System::setVar('permasearch', $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+        $this->setSystemVar('permasearch', $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
         //! this is a comma-separated list of special characters to replace in permalinks
-        System::setVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+        $this->setSystemVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
 
-        System::setVar('language', ZLanguage::getLanguageCodeLegacy());
-        System::setVar('locale', ZLanguage::getLocale());
-        System::setVar('language_i18n', ZLanguage::getlanguageCode());
+        $this->setSystemVar('language', ZLanguage::getLanguageCodeLegacy());
+        $this->setSystemVar('locale', ZLanguage::getLocale());
+        $this->setSystemVar('language_i18n', ZLanguage::getLanguageCode());
 
-        System::setVar('idnnames', 1);
+        $this->setSystemVar('idnnames', 1);
 
         // create schema
         try {
-            DoctrineHelper::createSchema($this->entityManager, array(
-                'Zikula\Core\Doctrine\Entity\WorkflowEntity',
-            ));
+            $this->schemaTool->create(['Zikula\Core\Doctrine\Entity\WorkflowEntity']);
         } catch (\Exception $e) {
             return false;
         }
@@ -115,11 +110,11 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
          * is being removed at 2.0.0
          */
         try {
-            DoctrineHelper::createSchema($this->entityManager, array(
+            $this->schemaTool->create([
                 'Zikula\SettingsModule\Entity\ObjectdataAttributes',
                 'Zikula\SettingsModule\Entity\ObjectdataLog',
                 'Zikula\SettingsModule\Entity\ObjectdataMeta',
-            ));
+            ]);
         } catch (\Exception $e) {
             return false;
         }
@@ -138,34 +133,32 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
     public function upgrade($oldversion)
     {
         // always ensure that the version info is upgraded
-        System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
-        System::setVar('Version_ID', Zikula_Core::VERSION_ID);
-        System::setVar('Version_Sub', Zikula_Core::VERSION_SUB);
+        $this->setSystemVar('Version_Num', \Zikula_Core::VERSION_NUM);
+        $this->setSystemVar('Version_ID', \Zikula_Core::VERSION_ID);
+        $this->setSystemVar('Version_Sub', \Zikula_Core::VERSION_SUB);
 
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '2.9.7':
-                EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
-
             case '2.9.8':
-                $permasearch = System::getVar('permasearch');
+                $permasearch = $this->getSystemVar('permasearch');
                 if (empty($permasearch)) {
-                    System::setVar('permasearch', $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+                    $this->setSystemVar('permasearch', $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
                 }
-                $permareplace = System::getVar('permareplace');
+                $permareplace = $this->getSystemVar('permareplace');
                 if (empty($permareplace)) {
-                    System::setVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+                    $this->setSystemVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
                 }
-                $locale = System::getVar('locale');
+                $locale = $this->getSystemVar('locale');
                 if (empty($locale)) {
-                    System::setVar('locale', ZLanguage::getLocale());
+                    $this->setSystemVar('locale', ZLanguage::getLocale());
                 }
 
             case '2.9.9':
                 // update certain System vars to multilingual. provide default values for all locales using current value.
-                // must directly manipulate System vars at DB level because using System::getVar() returns empty values due to ModUtil::setupMultilingual()
+                // must directly manipulate System vars at DB level because using $this->getSystemVar() returns empty values due to ModUtil::setupMultilingual()
                 $varsToChange = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
-                $SystemVars = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(array('modname' => ModUtil::CONFIG_MODULE));
+                $SystemVars = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(array('modname' => VariableApi::CONFIG));
                 /** @var \Zikula\ExtensionsModule\Entity\ExtensionVarEntity $modVar */
                 foreach ($SystemVars as $modVar) {
                     if (in_array($modVar->getName(), $varsToChange)) {
@@ -180,9 +173,9 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 $this->entityManager->flush();
 
             case '2.9.10':
-                System::setVar('startController', '');
-                $newStargArgs = str_replace(',', '&', System::getVar('startargs')); // replace comma with `&`
-                System::setVar('startargs', $newStargArgs);
+                $this->setSystemVar('startController', '');
+                $newStargArgs = str_replace(',', '&', $this->getSystemVar('startargs')); // replace comma with `&`
+                $this->setSystemVar('startargs', $newStargArgs);
             case '2.9.11': // ship with Core-1.4.2
                 // current version
         }
@@ -200,5 +193,15 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
     {
         // This module cannot be uninstalled.
         return false;
+    }
+
+    private function setSystemVar($name, $value = '')
+    {
+        return $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, $name, $value);
+    }
+
+    private function getSystemVar($name)
+    {
+        return $this->container->get('zikula_extensions_module.api.variable')->get(VariableApi::CONFIG, $name);
     }
 }

@@ -1,0 +1,164 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Main Settings') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend>{{ __('Main info') }}</legend>
+            <div class="zikulasettings-tab-container">
+                <ul class="nav nav-tabs" role="tablist">
+                    {% for languageCode, language in languages %}
+                    <li role="presentation"{% if languageCode == pagevars.lang %} class="active"{% endif %}><a href="#main-{{ languageCode|lower }}" aria-controls="main-{{ languageCode|lower }}" role="tab" data-toggle="tab">{{ language }}</a></li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content">
+                    <!-- Tab panes -->
+                    {% for languageCode, language in languages %}
+                    <div role="tabpanel" class="tab-pane fade{% if languageCode == pagevars.lang %} in active{% endif %}" id="main-{{ languageCode|lower }}">
+                        {{ form_row(form['sitename_'~languageCode]) }}
+                        {{ form_row(form['slogan_'~languageCode]) }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {{ form_row(form.pagetitle) }}
+            <div class="col-sm-offset-3 col-sm-9">
+                <em class="help-block">{{ __('Possible tags: %pagetitle%, %sitename%, %modulename%') }}</em>
+            </div>
+            {{ form_row(form.adminmail) }}
+            {{ form_row(form.siteoff) }}
+            <div id="settings_siteoff_container">
+                <div data-switch="zikulasettingsmodule_mainsettings[siteoff]" data-switch-value="1">
+                    {{ form_row(form.siteoffreason) }}
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Meta tag settings') }}</legend>
+            <div class="zikulasettings-tab-container">
+                <ul class="nav nav-tabs" role="tablist">
+                    {% for languageCode, language in languages %}
+                    <li role="presentation"{% if languageCode == pagevars.lang %} class="active"{% endif %}><a href="#meta-{{ languageCode|lower }}" aria-controls="meta-{{ languageCode|lower }}" role="tab" data-toggle="tab">{{ language }}</a></li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content">
+                    <!-- Tab panes -->
+                    {% for languageCode, language in languages %}
+                    <div role="tabpanel" class="tab-pane fade{% if languageCode == pagevars.lang %} in active{% endif %}" id="meta-{{ languageCode|lower }}">
+                        {{ form_row(form['defaultpagetitle_'~languageCode]) }}
+                        {{ form_row(form['defaultmetadescription_'~languageCode]) }}
+                        {{ form_row(form['metakeywords_'~languageCode]) }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Start page settings') }}</legend>
+            {{ form_row(form.startController) }}
+            <div class="col-sm-offset-3 col-sm-9">
+                <em class="help-block">{{ __("MyModuleName:Controller:method") }}</em>
+                <em class="help-block alert alert-warning">{{ __("Start Controller will take precedence over module/type/function settings below.") }}<br />
+                    {{ __("This setting only works with Core-1.4.x/2.0 compatible modules (with routes).") }}<br />
+                    {{ __("The module/type/func method of setting the start page is deprecated and will be removed at Core-2.0.") }}<br />
+                    {{ __("Start function arguments (below) can also be combined with this setting.") }}
+                </em>
+            </div>
+            {{ form_row(form.startpage) }}
+            <div class="col-sm-offset-3 col-sm-9">
+                <em class="help-block">{{ __("('index.php' points to this)") }}</em>
+            </div>
+            <div id="settings_startpage_container">
+                {{ form_row(form.starttype) }}
+                {{ form_row(form.startfunc) }}
+                {{ form_row(form.startargs) }}
+                <div class="col-sm-offset-3 col-sm-9">
+                    <em class="help-block">{{ __('Separate with & for example:') }} <code>foo=2&bar=5</code></em>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Front Controller settings') }}</legend>
+            {{ form_row(form.entrypoint) }}
+            <div class="col-sm-offset-3 col-sm-9">
+                <em class="help-block">{{ __('(Default: index.php)') }}</em>
+                <p class="help-block alert alert-info">{{ __("Notice: The entry point file must be present in the Zikula root directory before you set it here as your site's start page.") }}</p>
+                <p class="help-block alert alert-danger">{{ __("Warning: This feature is deprecated and it is not recommended to change from index.php.") }}</p>
+            </div>
+            {{ form_row(form.shorturlsstripentrypoint) }}
+            <div class="col-sm-offset-3 col-sm-9">
+                <em class="help-block alert alert-info">{{ __('Recommended.') }}</em>
+                <em class="help-block alert alert-warning">{{ __("This setting was part of the 'shorturl configuration in the past (below).") }}<br />
+                        {{ __("It is now moved here because it is also used with core-1.4.x routing. This feature is deprecated.") }}
+                </em>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('General settings') }}</legend>
+            {{ form_row(form.useCompression) }}
+            {% if zlibEnabled is defined and not zlibEnabled %}
+            <div class="col-sm-offset-3 col-sm-9">
+                <p class="alert alert-warning">{{ __('Notice: The PHP Zlib extension is not enabled on your host. This setting will not do anything in this case.') }}</p>
+            </div>
+            {% endif %}
+            {{ form_row(form.profilemodule) }}
+            {{ form_row(form.messagemodule) }}
+            {{ form_row(form.ajaxtimeout) }}
+            <div class="col-sm-offset-3 col-sm-9">
+                <em>{{ __('(in milliseconds, default 5000 = 5 seconds)') }}</em>
+                <p class="help-block alert alert-info">{{ __('Notice: Increase this value if mobile appliances experience problems with using the site.') }}</p>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Permalinks settings') }}</legend>
+            <p class="alert alert-warning">{{ __("Notice: The following settings will rewrite your permalinks. Sometimes, international characters like 'ñ' and 'ß' may be re-encoded by your browser. Although this is technically the correct action, it may not be aesthetically pleasing.  These settings allow you to replace those characters, using a pair of comma-separated lists. The two fields below should resemble the examples provided: The first element of 'List to search for' will replace the first element in the 'List to replace with' and so on. In the example below, 'À' would be replace with 'A', and 'Á' with 'A'. If you do not want to use this feature, leave both fields blank.") }}</p>
+            {{ form_row(form.permasearch) }}
+            <div class="col-sm-offset-3 col-sm-9" style="padding-bottom: .5em;">
+                <label for="settings_permasearch_default">{{ __('Default') }}</label>
+                <input id="settings_permasearch_default" type="text" class="form-control" readonly="readonly" value="{{ __('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü') }}" />
+            </div>
+            {{ form_row(form.permareplace) }}
+            <div class="col-sm-offset-3 col-sm-9">
+                <label for="settings_permareplace_default">{{ __('Default') }}</label>
+                <input id="settings_permareplace_default" type="text" class="form-control" readonly="readonly" value="{{ __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue') }}" />
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Short URL settings') }}</legend>
+            <p class="alert alert-warning">{{ __("Notice: This feature is deprecated in favor of Symfony routing. This site may have a mixture of modules of both types; those capable of using the old functionality, and those using routing.") }}</p>
+                {{ form_row(form.shorturls) }}
+            <div data-switch="zikulasettingsmodule_mainsettings[shorturls]" data-switch-value="1">
+                <div id="settings_shorturlsseparator_container">
+                    {{ form_row(form.shorturlsseparator) }}
+                </div>
+                <div id="settings_shorturls_defaultmodule_container">
+                    {{ form_row(form.shorturlsdefaultmodule) }}
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <p class="help-block alert alert-info">{{ __('Routed modules cannot utilize this feature. Edit the routes directly instead.') }}</p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
+                {{ form_widget(form.cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ adminFooter() }}

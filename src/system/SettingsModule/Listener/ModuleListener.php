@@ -13,17 +13,37 @@
 
 namespace Zikula\SettingsModule\Listener;
 
-use LogUtil;
-use ModUtil;
-use System;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 class ModuleListener implements EventSubscriberInterface
 {
+    /**
+     * @var VariableApi
+     */
+    private $variableApi;
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * ModuleListener constructor.
+     * @param VariableApi $variableApi
+     * @param SessionInterface $session
+     */
+    public function __construct(VariableApi $variableApi, SessionInterface $session)
+    {
+        $this->variableApi = $variableApi;
+        $this->session = $session;
+    }
+
     public static function getSubscribedEvents()
     {
         return array(
+            // @todo convert to CoreEvent::MODULE_DISABLE at Core-2.0
             'installer.module.deactivated' => array('moduleDeactivated'),
         );
     }
@@ -36,13 +56,18 @@ class ModuleListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public static function moduleDeactivated(GenericEvent $event)
+    public function moduleDeactivated(GenericEvent $event)
     {
         $modname = $event['name'];
+        $startModule = $this->variableApi->get(VariableApi::CONFIG, 'startpage');
 
-        if ($modname == System::getVar('startpage')) {
-            ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'resetStartModule');
-            LogUtil::registerStatus(__('The start module was reset to a static frontpage.'));
+        if ($modname == $startModule) {
+            // since the start module has been removed, set all related variables to ''
+            $this->variableApi->set(VariableApi::CONFIG, 'startpage', '');
+            $this->variableApi->set(VariableApi::CONFIG, 'starttype', '');
+            $this->variableApi->set(VariableApi::CONFIG, 'startfunc', '');
+            $this->variableApi->set(VariableApi::CONFIG, 'startargs', '');
+            $this->session->getFlashBag()->add('info', __('The start module was reset to a static frontpage.'));
         }
     }
 }

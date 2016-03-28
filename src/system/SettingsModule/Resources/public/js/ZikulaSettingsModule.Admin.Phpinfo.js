@@ -1,3 +1,7 @@
-jQuery(function() {
-    jQuery('#phpinfo table').addClass('table table-striped table-bordered');
-});
+( function($) {
+    $(document).ready(function() {
+        $(function() {
+            $('#phpinfo table').addClass('table table-striped table-bordered');
+        });
+    });
+})(jQuery);
