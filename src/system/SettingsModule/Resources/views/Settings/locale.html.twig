@@ -1,0 +1,57 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Locale Settings') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend>{{ __('Language system') }}</legend>
+            {{ form_row(form.multilingual) }}
+            {{ form_row(form.languageurl) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Browser') }}</legend>
+            {{ form_row(form.language_detect) }}
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="help-block sub italic">{{ __('If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.') }}</div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Server') }}</legend>
+            {{ form_row(form.language_i18n) }}
+            {{ form_row(form.timezone_offset) }}
+            <div class="form-group">
+                <label class="col-sm-3 control-label">{{ __('Server time zone') }}</label>
+                <div class="col-sm-9">
+                    <span class="label label-default">{{ server_timezone }}</span>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Variable validation') }}</legend>
+            {{ form_row(form.idnnames) }}
+            <div class="col-sm-offset-3 col-sm-9">
+                <div class="help-block sub italic">{{ __('This only applies to legacy variable validation. The system itself has native IDN support.') }}</div>
+                <div class="help-block sub italic">{{ __('Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs.') }}</div>
+            </div>
+        </fieldset>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
+                {{ form_widget(form.cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ adminFooter() }}

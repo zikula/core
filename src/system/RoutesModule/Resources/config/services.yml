@@ -15,44 +15,44 @@ services:
         arguments:
             objectManager: "@doctrine.orm.entity_manager"
             className: "Zikula\\RoutesModule\\Entity\\RouteEntity"
-    
+
 
     # Event subscriber and listener classes
 #    zikularoutesmodule.core_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\CoreListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikularoutesmodule.kernel_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\KernelListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
     zikularoutesmodule.installer_listener:
         class: "Zikula\\RoutesModule\\Listener\\InstallerListener"
         tags:
             - { name: kernel.event_subscriber }
-    
+
 #    zikularoutesmodule.moduledispatch_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\ModuleDispatchListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikularoutesmodule.mailer_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\MailerListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikularoutesmodule.page_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\PageListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikularoutesmodule.theme_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\ThemeListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikularoutesmodule.view_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\ViewListener"
 #        tags:
@@ -62,12 +62,12 @@ services:
 #        class: "Zikula\\RoutesModule\\Listener\\UserLoginListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikularoutesmodule.userlogout_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\UserLogoutListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikularoutesmodule.user_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\UserListener"
 #        tags:
@@ -77,43 +77,43 @@ services:
 #        class: "Zikula\\RoutesModule\\Listener\\UserRegistrationListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikularoutesmodule.users_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\UsersListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 #    zikularoutesmodule.group_listener:
 #        class: "Zikula\\RoutesModule\\Listener\\GroupListener"
 #        tags:
 #            - { name: kernel.event_subscriber }
-    
+
 
     # Utility classes
     zikularoutesmodule.model_helper:
         class: "Zikula\\RoutesModule\\Helper\\ModelHelper"
         arguments:
             serviceManager: "@service_container"
-    
+
     zikularoutesmodule.controller_helper:
         class: "Zikula\\RoutesModule\\Helper\\ControllerHelper"
         arguments:
             translator: "@translator"
             session: "@session"
             logger: "@logger"
-    
+
     zikularoutesmodule.view_helper:
         class: "Zikula\\RoutesModule\\Helper\\ViewHelper"
         arguments:
             serviceManager: "@service_container"
             translator: "@translator"
-    
+
     zikularoutesmodule.workflow_helper:
         class: "Zikula\\RoutesModule\\Helper\\WorkflowHelper"
         arguments:
             serviceManager: "@service_container"
             translator: "@translator"
-    
+
     zikularoutesmodule.listentries_helper:
         class: "Zikula\\RoutesModule\\Helper\\ListEntriesHelper"
         arguments:
@@ -124,3 +124,11 @@ services:
         class: "Monolog\\Processor\\PsrLogMessageProcessor"
         tags:
             - { name: monolog.processor }
+
+    zikularoutesmodule.multilingual_routing_helper:
+        class: "Zikula\\RoutesModule\\Helper\\MultilingualRoutingHelper"
+        arguments:
+            variableApi: "@zikula_extensions_module.api.variable"
+            configDumper: "@zikula.dynamic_config_dumper"
+            cacheClearer: "@zikula.cache_clearer"
+            locale: '%locale%'

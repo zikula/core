@@ -16,7 +16,7 @@ CHANGELOG - ZIKULA 1.4.x
     - 
 
  - Core-2.0 Features:
-    -
+    - SettingsModule updated to Core-2.0 Spec.
 
  - Vendor updates:
     -
