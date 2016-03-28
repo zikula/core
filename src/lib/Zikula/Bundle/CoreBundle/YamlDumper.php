@@ -116,7 +116,7 @@ class YamlDumper
      * Sets a configuration.
      *
      * @param string $name  The configuration's name.
-     * @param bool   $value The configuration's value.
+     * @param mixed $value The configuration's value.
      */
     public function setConfiguration($name, $value)
     {

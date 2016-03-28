@@ -1,0 +1,11 @@
+{{ pageAddAsset('javascript', zasset('@ZikulaSettingsModule:js/ZikulaSettingsModule.Admin.Phpinfo.js')) }}
+{{ adminHeader() }}
+<h3>
+    <span class="fa fa-info-circle"></span>
+    {{ __('PHP configuration') }}
+</h3>
+
+<div id="phpinfo">
+    {{ phpinfo|raw }}
+</div>
+{{ adminFooter() }}

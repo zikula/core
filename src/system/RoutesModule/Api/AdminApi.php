@@ -12,10 +12,10 @@
 
 namespace Zikula\RoutesModule\Api;
 
-use SecurityUtil;
-
 /**
  * This is the Admin api helper class.
+ * @deprecated at Core-2.0
+ * @see \Zikula\RoutesModule\Helper\MultilingualRoutingHelper
  */
 class AdminApi extends \Zikula_AbstractApi
 {
@@ -28,22 +28,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function reloadMultilingualRoutingSettings($args)
     {
-        unset($args);
-
-        $defaultLocale = \System::getVar('language_i18n', $this->getContainer()->getParameter('locale'));
-        $installedLanguages = \ZLanguage::getInstalledLanguages();
-        $isRequiredLangParameter = \System::getVar('languageurl', 0);
-        $configDumper = $this->get('zikula.dynamic_config_dumper');
-        $configDumper->setConfiguration('jms_i18n_routing',
-            array(
-                'default_locale' => $defaultLocale,
-                'locales'        => $installedLanguages,
-                'strategy'       => $isRequiredLangParameter ? 'prefix' : 'prefix_except_default'
-            )
-        );
-
-        $cacheClearer = $this->get('zikula.cache_clearer');
-        $cacheClearer->clear('symfony');
+        $this->get('zikularoutesmodule.multilingual_routing_helper')->reloadMultilingualRoutingSettings();
 
         return true;
     }

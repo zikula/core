@@ -13,43 +13,15 @@
 
 namespace Zikula\SettingsModule\Api;
 
-use SecurityUtil;
-use System;
 use Zikula_View_Theme;
 use Zikula_View;
 
 /**
  * API functions used by administrative controllers
+ * @deprecated remove at Core-2.0
  */
 class AdminApi extends \Zikula_AbstractApi
 {
-    /**
-     * Get available admin panel links.
-     *
-     * @return array array of admin links
-     */
-    public function getLinks()
-    {
-        $links = array();
-
-        if (SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulasettingsmodule_admin_modifyconfig'),
-                'text' => $this->__('Main settings'),
-                'icon' => 'fa fa-wrench');
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulasettingsmodule_admin_multilingual'),
-                'text' => $this->__('Localisation settings'),
-                'icon' => 'globe');
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulasettingsmodule_admin_phpinfo'),
-                'text' => $this->__('PHP configuration'),
-                'icon' => 'info-circle');
-        }
-
-        return $links;
-    }
-
     /**
      * Clear all compiled and cache directories.
      *
@@ -67,21 +39,6 @@ class AdminApi extends \Zikula_AbstractApi
 
         $cacheClearer = $this->get('zikula.cache_clearer');
         $cacheClearer->clear('symfony');
-
-        return true;
-    }
-
-    /**
-     * Resets the startmodule to static frontpage.
-     *
-     * @return boolean true.
-     */
-    public function resetStartModule()
-    {
-        System::setVar('startpage', '');
-        System::setVar('starttype', '');
-        System::setVar('startfunc', '');
-        System::setVar('startargs', '');
 
         return true;
     }
