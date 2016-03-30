@@ -80,7 +80,7 @@
 
     <h5>{gt text="Do you need to..."}</h5>
     {if $modvars.ZikulaUsersModule.reg_allowreg}
-    <div style="padding: 2px 0;"><i class="fa fa-user-plus fa-fw fa-lg text-success"></i> <a href="{route name='zikulausersmodule_user_register'}">{gt text="Create an account?"}</a></div>
+    <div style="padding: 2px 0;"><i class="fa fa-user-plus fa-fw fa-lg text-success"></i> <a href="{route name='zikulausersmodule_registration_register'}">{gt text="Create an account?"}</a></div>
     {/if}
     <div style="padding: 2px 0;"><i class="fa fa-unlock-alt fa-fw fa-lg text-warning"></i> <a href="{route name='zikulausersmodule_user_lostpwduname'}">{gt text="Recover your account information?"}</a></div>
 </div>

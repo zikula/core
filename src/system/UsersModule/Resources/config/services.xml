@@ -11,6 +11,7 @@
         <parameter key="zikula_users_module.current_user.class">Zikula\UsersModule\Api\CurrentUserApi</parameter>
         <parameter key="zikulausersmodule.helper.authentication_method_list_helper.class">Zikula\UsersModule\Helper\AuthenticationMethodListHelper</parameter>
         <parameter key="zikula.users_module.twig.extension.registration_extension.class">Zikula\UsersModule\Twig\Extension\RegistrationExtension</parameter>
+        <parameter key="zikulausersmodule.container.link_container.class">Zikula\UsersModule\Container\LinkContainer</parameter>
     </parameters>
 
     <services>
@@ -34,12 +35,19 @@
             <argument type="service" id="zikula_users_module.user_repository"/>
         </service>
         <service id="zikulausersmodule.helper.authentication_method_list_helper" class="%zikulausersmodule.helper.authentication_method_list_helper.class%">
-            <argument type="service" id="monolog.logger_prototype" />
+            <argument type="service" id="monolog.logger" />
             <argument type="service" id="zikula_extensions_module.api.capability" />
             <argument type="service" id="translator.default" />
         </service>
         <service id="zikula.users_module.twig.extension.registration_extension" class="%zikula.users_module.twig.extension.registration_extension.class%">
             <tag name="twig.extension"/>
+        </service>
+        <service id="zikulausersmodule.container.link_container" class="%zikulausersmodule.container.link_container.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="router" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <tag name="zikula.link_container"/>
         </service>
     </services>
 </container>
