@@ -13,6 +13,7 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DefaultPathSimpleFunction;
+use Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction\DispatchEventSimpleFunction;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 class CoreExtension extends \Twig_Extension
@@ -77,8 +78,9 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
             new \Twig_SimpleFunction('defaultPath', [new DefaultPathSimpleFunction($this), 'getDefaultPath']),
             new \Twig_SimpleFunction('modAvailable', [$this, 'modAvailable']),
-            new \Twig_SimpleFunction('callFunc', [$this, 'callFunc'])
-        ];
+            new \Twig_SimpleFunction('callFunc', [$this, 'callFunc']),
+            new \Twig_SimpleFunction('dispatchEvent', [new DispatchEventSimpleFunction($this->container->get('event_dispatcher')), 'dispatchEvent'])
+        );
     }
 
     public function getFilters()
