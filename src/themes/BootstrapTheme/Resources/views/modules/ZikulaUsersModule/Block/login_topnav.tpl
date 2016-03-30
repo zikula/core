@@ -26,9 +26,6 @@
             <input type="hidden" id="users_loginblock_event_type" name="event_type" value="login_block" />
             <input type="hidden" id="users_loginblock_selected_authentication_module" name="authentication_method[modname]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|safetext|default:'false'}{/if}" />
             <input type="hidden" id="users_loginblock_selected_authentication_method" name="authentication_method[method]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.method|safetext|default:'false'}{/if}" />
-            {if ($modvars.ZConfig.seclevel|lower == 'high')}
-                <input id="users_loginblock_rememberme" type="hidden" name="rememberme" value="0" />
-            {/if}
         </div>
         <div id="users_loginblock_fields" style="display:inline;">
             {if !empty($login_form_fields)}
@@ -43,9 +40,32 @@
 
         {notifydisplayhooks eventname='users.ui_hooks.login_block.form_edit' id=null}
 
-        <button class="btn btn-success btn-sm" id="users_loginblock_submit" name="users_loginblock_submit" type="submit">
-            <i class="fa fa-arrow-right"></i> {gt text="Log in"}
-        </button>
+        <div class="btn-group navbar-btn btn-group-sm">
+            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">{gt text='Toggle Dropdown'}</span>
+            </button>
+            <button class="btn btn-success" id="users_loginblock_submit" name="users_loginblock_submit" type="submit">
+                <i class="fa fa-arrow-right"></i> {gt text="Log in"}
+            </button>
+            <ul class="dropdown-menu">
+                {if ($modvars.ZConfig.seclevel|lower == 'high')}
+                    <li class="hidden"><input id="users_loginblock_rememberme" type="hidden" name="rememberme" value="0" /></li>
+                {else}
+                <li style="padding-left: 20px;">
+                    <input id="users_login_rememberme" type="checkbox" name="rememberme" value="1" />
+                    <label for="users_login_rememberme">{gt text='Remember me'}</label>
+                </li>
+                <li role="separator" class="divider"></li>
+                {/if}
+                <li><a href="{route name='zikulausersmodule_user_login'}">{gt text='Log in page'}</a></li>
+                <li><a href="{route name='zikulausersmodule_user_register'}">{gt text='Create new account'}</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="{route name='zikulausersmodule_user_lostuname'}">{gt text='Recover lost username'}</a></li>
+                <li><a href="{route name='zikulausersmodule_user_lostpassword'}">{gt text='Recover lost password'}</a></li>
+                <li><a href="{route name='zikulausersmodule_user_lostpasswordcode'}">{gt text='Enter recovery code'}</a></li>
+            </ul>
+        </div>
     </form>
     <div id="users_loginblock_no_loginformfields"{if (!isset($selected_authentication_method) || !$selected_authentication_method) || (isset($selected_authentication_method) && $selected_authentication_method && isset($login_form_fields) && $login_form_fields)} class="hide"{/if}>
         <strong>{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|safetext|default:''}{/if}</strong>
