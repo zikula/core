@@ -12,6 +12,7 @@ Functions
  * array_unset(array, key)
  * callFunc(callable, params = [])
  * defaultPath(extensionName, type = "user")
+ * dispatchEvent($name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
  * getModVar(module, name, default = null)
  * hasPermission(component, instance, level)
  * modAvailable(modname, force = false)
