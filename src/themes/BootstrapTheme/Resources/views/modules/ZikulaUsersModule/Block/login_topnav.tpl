@@ -19,7 +19,7 @@
     <div id="users_loginblock_waiting" class="text-center hide">
         {img modname='core' set='ajax' src='indicator_circle.gif'}
     </div>
-    <form id="users_loginblock_login_form" class="navbar-form navbar-right{if !$show_login_form} hide{/if}" action="{route name='zikulausersmodule_user_login'}" method="post">
+    <form id="users_loginblock_login_form" class="navbar-form navbar-right{if !$show_login_form} hide{/if}" style="margin-top: 3px; margin-bottom: 3px;" action="{route name='zikulausersmodule_user_login'}" method="post">
         <div>
             <input type="hidden" id="users_loginblock_returnpage" name="returnpage" value="{$returnpage|safetext}" />
             <input type="hidden" id="users_loginblock_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
