@@ -14,16 +14,27 @@
 
 namespace Zikula\UsersModule\Helper;
 
-use Zikula_Api_AbstractAuthentication;
-use ModUtil;
-use LogUtil;
+use Symfony\Bridge\Monolog\Logger;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Exception\FatalErrorException;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
 /**
  * A list of authentication methods advertised by modules that have the authentication capability.
  */
-class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \ArrayAccess, \Countable, \Iterator
+class AuthenticationMethodListHelper implements \ArrayAccess, \Countable, \Iterator
 {
+    use TranslatorTrait;
+    /**
+     * @var Logger
+     */
+    private $logger;
+    /**
+     * @var CapabilityApiInterface
+     */
+    private $capabilityApi;
+
     /**
      * An internally maintained list of all authentication methods as gathered from modules advertising the 'authentication' capability.
      *
@@ -36,21 +47,21 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      *
      * @var array
      */
-    private $authenticationMethods = array();
+    private $authenticationMethods = [];
 
     /**
      * An index of the contents of {@link $authenticationMethods} organized by module name.
      *
      * @var array
      */
-    private $nameIndex = array();
+    private $nameIndex = [];
 
     /**
      * Used to order and filter the methods in this collection.
      *
      * @var array
      */
-    private $orderedListableAuthenticationMethods = array();
+    private $orderedListableAuthenticationMethods = [];
 
     /**
      * The current pointer position of the iterator used to navigate through this collection.
@@ -60,40 +71,48 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
     private $iteratorPosition = 0;
 
     /**
-     * Creates an instance of this collection, initializeing the list.
+     * AuthenticationMethodListHelper constructor.
+     * @param Logger $logger
+     * @param CapabilityApiInterface $capabilityApi
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(Logger $logger, CapabilityApiInterface $capabilityApi, TranslatorInterface $translator)
+    {
+        $this->logger = $logger;
+        $this->capabilityApi = $capabilityApi;
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * initializing the list.
      *
-     * @param \Zikula_AbstractBase $base                                 The parent base for this collection.
      * @param array                $orderedListableAuthenticationMethods Used to order and filter the list.
      * @param int                  $filter                               Filter to apply when getting methods
      *
-     * @throws FatalErrorException Thrown if a list of authentication modules cannot be obtained from ModUtil.
+     * @throws FatalErrorException Thrown if a list of authentication modules cannot be obtained from CapabilityApiInterface.
      */
-    public function __construct(\Zikula_AbstractBase $base, array $orderedListableAuthenticationMethods = array(), $filter = Zikula_Api_AbstractAuthentication::FILTER_NONE)
+    public function initialize(array $orderedListableAuthenticationMethods = [], $filter = \Zikula_Api_AbstractAuthentication::FILTER_NONE)
     {
-        parent::__construct($base);
-
-        $this->name = 'ZikulaUsersModule';
-
-        $authenticationModules = ModUtil::getModulesCapableOf('authentication');
+        $authenticationModules = $this->capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::AUTHENTICATION);
         if (!is_array($authenticationModules)) {
-            throw new FatalErrorException($this->__('An invalid list of authentication modules was returned by ModUtil::getModulesCapableOf().'));
+            throw new FatalErrorException($this->__('An invalid list of authentication modules was returned by CapabilityApiInterface::getExtensionsCapableOf().'));
         }
 
         foreach ($authenticationModules as $modinfo) {
             $getAuthenticationMethodsArgs = array(
                 'filter' => $filter,
             );
-            $moduleAuthenticationMethods = ModUtil::apiFunc($modinfo['name'], 'Authentication', 'getAuthenticationMethods', $getAuthenticationMethodsArgs, 'Zikula_Api_AbstractAuthentication');
+            $moduleAuthenticationMethods = \ModUtil::apiFunc($modinfo['name'], 'Authentication', 'getAuthenticationMethods', $getAuthenticationMethodsArgs, 'Zikula_Api_AbstractAuthentication');
             if (is_array($moduleAuthenticationMethods) && !empty($moduleAuthenticationMethods)) {
                 $this->authenticationMethods = array_merge($this->authenticationMethods, array_values($moduleAuthenticationMethods));
-                $this->nameIndex[$modinfo['name']] = array();
+                $this->nameIndex[$modinfo['name']] = [];
             }
         }
 
-        if (empty($this->authenticationMethods) && (($filter == Zikula_Api_AbstractAuthentication::FILTER_NONE) || ($filter == Zikula_Api_AbstractAuthentication::FILTER_ENABLED))) {
-            LogUtil::log($this->__('There were no authentication methods available. Forcing the Users module to be used for authentication.'), \Monolog\Logger::CRITICAL);
-            $this->authenticationMethods[] = new AuthenticationMethodHelper($this->name, 'uname', $this->__('User name'), $this->__('User name and password'));
-            $this->nameIndex[$this->name] = array();
+        if (empty($this->authenticationMethods) && (($filter == \Zikula_Api_AbstractAuthentication::FILTER_NONE) || ($filter == \Zikula_Api_AbstractAuthentication::FILTER_ENABLED))) {
+            $this->logger->addWarning($this->__('There were no authentication methods available. Forcing the Users module to be used for authentication.'));
+            $this->authenticationMethods[] = new AuthenticationMethodHelper('ZikulaUsersModule', 'uname', $this->__('User name'), $this->__('User name and password'));
+            $this->nameIndex['ZikulaUsersModule'] = [];
         }
 
         foreach ($this->authenticationMethods as $index => $authenticationMethod) {
@@ -106,25 +125,25 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
                     if (isset($this->nameIndex[$authenticationMethodId['modname']][$authenticationMethodId['method']])) {
                         $this->orderedListableAuthenticationMethods[] = $this->nameIndex[$authenticationMethodId['modname']][$authenticationMethodId['method']];
                     } else {
-                        LogUtil::log($this->__f('The authentication method \'%2$s\' is not a listable method for the module \'%1$s\'. It will be ignored.', array($authenticationMethod['modname'], $authenticationMethod['method'])), \Monolog\Logger::WARN);
+                        $this->logger->addWarning($this->__f('The authentication method \'%2$s\' is not a listable method for the module \'%1$s\'. It will be ignored.', array('%1$s' => $authenticationMethod['modname'], '%2$s' => $authenticationMethod['method'])));
                     }
                 } else {
-                    LogUtil::log($this->__f('The module \'%1$s\' is not a listable authentication module. All methods specified for it will be ignored.', array($authenticationMethod['modname'])), \Monolog\Logger::WARN);
+                    $this->logger->addWarning($this->__f('The module \'%1$s\' is not a listable authentication module. All methods specified for it will be ignored.', array('%1$s' => $authenticationMethod['modname'])));
                 }
             }
 
             if (empty($this->orderedListableAuthenticationMethods)) {
-                if (isset($this->nameIndex[$this->name])) {
+                if (isset($this->nameIndex['ZikulaUsersModule'])) {
                     $forcedMethod = array(
-                        'modname'   => $this->name,
-                        'method'    => array_shift(array_keys($this->nameIndex[$this->name])),
+                        'modname'   => 'ZikulaUsersModule',
+                        'method'    => array_shift(array_keys($this->nameIndex['ZikulaUsersModule'])),
                     );
                 } else {
                     $forcedMethod = $this->authenticationMethods[0];
                 }
 
                 $this->orderedListableAuthenticationMethods[] = $this->nameIndex[$forcedMethod['modname']][$forcedMethod['method']];
-                LogUtil::log($this->__f('The set of listable authentication methods did not contain any methods that are currently available. Forcing the \'%2$s\' method defined by the \'%1$s\' module to be listable.', array($forcedMethod['modname'], $forcedMethod['method'])), \Monolog\Logger::WARN);
+                $this->logger->addWarning($this->__f('The set of listable authentication methods did not contain any methods that are currently available. Forcing the \'%2$s\' method defined by the \'%1$s\' module to be listable.', array('%1$s' => $forcedMethod['modname'], '%2$s' => $forcedMethod['method'])));
             }
         } else {
             foreach ($this->authenticationMethods as $index => $authenticationMethod) {
@@ -134,6 +153,11 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
 
         // Initialize Iterator
         $this->rewind();
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
@@ -212,12 +236,12 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
             if ((int)$offset == $offset) {
                 return isset($this->authenticationMethods[$offset]);
             } else {
-                throw new FatalErrorException($this->__f('An invalid numeric offset was received (\'%1$s\').', array($offset)));
+                throw new FatalErrorException($this->__f('An invalid numeric offset was received (\'%s\').', array('%s' => $offset)));
             }
         } elseif (is_string($offset)) {
             return isset($this->nameIndex[$offset]);
         } else {
-            throw new FatalErrorException($this->__f('An invalid offset was received (\'%1$s\').', array($offset)));
+            throw new FatalErrorException($this->__f('An invalid offset was received (\'%s\').', array('%s' => $offset)));
         }
     }
 
@@ -251,7 +275,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      */
     public function offsetSet($offset, $value)
     {
-        throw new FatalErrorException($this->__f('Instances of $1$s are immutable.', array(__CLASS__)));
+        throw new FatalErrorException($this->__f('Instances of %s are immutable.', array('%s' => __CLASS__)));
     }
 
     /**
@@ -265,7 +289,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      */
     public function offsetUnset($offset)
     {
-        throw new FatalErrorException($this->__f('Instances of $1$s are immutable.', array(__CLASS__)));
+        throw new FatalErrorException($this->__f('Instances of %s are immutable.', array('%s' => __CLASS__)));
     }
 
     /**
