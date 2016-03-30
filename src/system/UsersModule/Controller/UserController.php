@@ -1413,7 +1413,7 @@ class UserController extends \Zikula_AbstractController
                                     $request->getSession()->clearMessages(Zikula_Session::MESSAGE_ERROR);
                                     $request->getSession()->set('User_register', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
 
-                                    return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_register', array('reentranttoken' => $reentrantTokenReceived), RouterInterface::ABSOLUTE_URL));
+                                    return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registration_register', array('reentranttoken' => $reentrantTokenReceived), RouterInterface::ABSOLUTE_URL));
                                 }
                             }
 

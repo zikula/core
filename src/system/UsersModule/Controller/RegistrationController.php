@@ -192,23 +192,35 @@ class RegistrationController extends AbstractController
                     // An authentication method has been selected (or defaulted), or there were errors with the last
                     // submission of the registration form.
                     // Display the registration form to the user.
-                    if (!isset($formData)) {
-                        $formData = new FormData\RegistrationForm('users_register', $this->container);
-                    }
+//                    if (!isset($formData)) {
+                        $form = $this->createForm('Zikula\UsersModule\Form\Type\RegistrationType',
+                            [],
+                            [
+                                'translator' => $this->get('translator.default'),
+                                'minimumPasswordLength' => $this->getVar(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH),
+                                'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED),
+                                'passwordReminderMandatory' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY),
+                                'antiSpamQuestion' => $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, ''),
+                                'antiSpamAnswer' => $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '')
+                            ]
+                        );
+
+//                        $formData = new FormData\RegistrationForm('users_register', $this->container);
+//                    }
 
                     $state = 'stop';
 
-                    $arguments = array(
+                    return $this->render('@ZikulaUsersModule/Registration/register.html.twig', [
+                        'form' => $form->createView(),
                         'authentication_method' => $selectedAuthenticationMethod,
                         'authentication_info'   => $authenticationInfo,
                         'registration_info'     => isset($registrationInfo) ? $registrationInfo : [],
-                        'errorFields'           => isset($errorFields) ? $errorFields : [],
-                        'errorMessages'         => isset($errorMessages) ? $errorMessages : [],
-                    );
+                        'modvars' => $this->getVars()
+                    ]);
 
-                    return new Response($this->view->assign_by_ref('formData', $formData)
-                        ->assign($arguments)
-                        ->fetch('User/register.tpl'));
+//                    return new Response($this->view->assign_by_ref('formData', $formData)
+//                        ->assign($arguments)
+//                        ->fetch('User/register.tpl'));
                     break;
 
                 case 'display_method_selector':
@@ -277,7 +289,7 @@ class RegistrationController extends AbstractController
                     // The authentication method selected might be reentrant (it might send the user out to an external web site
                     // for authentication, and then send us back to finish the job). We need to tell the external system to where
                     // we would like to return.
-                    $reentrantUrl = $this->get('router')->generate('zikulausersmodule_user_register', array('reentranttoken' => $reentrantToken), RouterInterface::ABSOLUTE_URL);
+                    $reentrantUrl = $this->get('router')->generate('zikulausersmodule_registration_register', array('reentranttoken' => $reentrantToken), RouterInterface::ABSOLUTE_URL);
 
                     // The chosen authentication method might be reentrant, and this is the point were the user might be directed
                     // outside the Zikula system for external authentication.

@@ -19,7 +19,7 @@
     <p>{gt text="You are logged-in as <strong>%s</strong>." tag1=$coredata.user.uname|profilelinkbyuname domain='zikula'}</p>
 
 {else}
-    {route name='zikulausersmodule_user_register' assign='url'}
+    {route name='zikulausersmodule_registration_register' assign='url'}
     <p>{gt text="You are an anonymous guest." domain='zikula'}
     {if $registerallowed eq 1}
     {gt text='You can <a href="%s">register here</a>.' tag1=$url|safetext domain='zikula'}

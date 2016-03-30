@@ -1,4 +1,4 @@
 {% if templatetitle|default('') == '' %}
     {% set templatetitle = __('My account') %}
 {% endif %}
-{( moduleHeader('Users', templatetitle, '', true, true) }}
+{{ moduleHeader('user', templatetitle, '', true, true) }}
