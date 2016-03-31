@@ -16,15 +16,14 @@ namespace Zikula\UsersModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Validator\Constraints\ValidEmail;
+use Zikula\UsersModule\Validator\Constraints\ValidUname;
+use Zikula\UsersModule\Validator\Constraints\ValidUserFields;
 
 class RegistrationType extends AbstractType
 {
@@ -37,27 +36,14 @@ class RegistrationType extends AbstractType
                     'class' => 'to-lower-case'
                 ],
                 'constraints' => [
-                    new NotNull(),
-                    new Type('string'),
-                    new Length(['min' => 1]),
-                    new Regex([
-                        'pattern' => '/^' . UsersConstant::UNAME_VALIDATION_PATTERN . '$/uD',
-                        'message' => $options['translator']->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')
-                    ]),
-                    new Callback([
-                        'callback' => function ($data, ExecutionContextInterface $context) use ($options) {
-                            $lowercaseData = mb_strtolower($data);
-                            if ($data != $lowercaseData) {
-                                $context->addViolation($options['translator']->__('Error! The username cannot use uppercase letters'));
-                            }
-                        }
-                    ])
+                    new ValidUname(),
                 ]
             ])
             ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
                 'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
                 'first_options' => ['label' => $options['translator']->__('Password')],
                 'second_options' => ['label' => $options['translator']->__('Repeat Password')],
+                'invalid_message' => $options['translator']->__('The passwords must match!'),
                 'constraints' => [
                     new NotNull(),
                     new Type('string'),
@@ -79,8 +65,9 @@ class RegistrationType extends AbstractType
                 'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
                 'first_options' => ['label' => $options['translator']->__('Email')],
                 'second_options' => ['label' => $options['translator']->__('Repeat Email')],
+                'invalid_message' => $options['translator']->__('The emails  must match!'),
                 'constraints' => [
-                    new Email(),
+                    new ValidEmail(),
                 ]
             ])
         ;
@@ -122,7 +109,8 @@ class RegistrationType extends AbstractType
             'passwordReminderEnabled' => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
             'passwordReminderMandatory' => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             'antiSpamQuestion' => '',
-            'antiSpamAnswer' => ''
+            'antiSpamAnswer' => '',
+            'constraints' => [new ValidUserFields()]
         ]);
     }
 }
