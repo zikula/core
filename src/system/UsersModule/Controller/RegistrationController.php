@@ -79,6 +79,18 @@ class RegistrationController extends AbstractController
             return $this->render('@ZikulaUsersModule/Registration/registration_disabled.html.twig');
         }
 
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\RegistrationType',
+            [],
+            [
+                'translator' => $this->get('translator.default'),
+                'minimumPasswordLength' => $this->getVar(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH),
+                'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED),
+                'passwordReminderMandatory' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY),
+                'antiSpamQuestion' => $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, ''),
+                'antiSpamAnswer' => $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '')
+            ]
+        );
+
         // Initialize state for the state machine later on.
         $state = 'error';
 
@@ -139,8 +151,10 @@ class RegistrationController extends AbstractController
                 if ($selectedAuthenticationMethod['modname'] != 'ZikulaUsersModule') {
                     $removePasswordReminderValidation = true;
                 }
-                $formData = new FormData\RegistrationForm('users_register', $this->container, $removePasswordReminderValidation);
-                $formData->setFromRequestCollection($request->request);
+//                $formData = new FormData\RegistrationForm('users_register', $this->container, $removePasswordReminderValidation);
+//                $formData->setFromRequestCollection($request->request);
+                $form->handleRequest($request);
+
                 $authenticationInfo = json_decode($request->request->get('authentication_info_ser', false), true);
 
                 $state = 'validate';
@@ -192,21 +206,6 @@ class RegistrationController extends AbstractController
                     // An authentication method has been selected (or defaulted), or there were errors with the last
                     // submission of the registration form.
                     // Display the registration form to the user.
-//                    if (!isset($formData)) {
-                        $form = $this->createForm('Zikula\UsersModule\Form\Type\RegistrationType',
-                            [],
-                            [
-                                'translator' => $this->get('translator.default'),
-                                'minimumPasswordLength' => $this->getVar(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH),
-                                'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED),
-                                'passwordReminderMandatory' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY),
-                                'antiSpamQuestion' => $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, ''),
-                                'antiSpamAnswer' => $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '')
-                            ]
-                        );
-
-//                        $formData = new FormData\RegistrationForm('users_register', $this->container);
-//                    }
 
                     $state = 'stop';
 
@@ -218,9 +217,6 @@ class RegistrationController extends AbstractController
                         'modvars' => $this->getVars()
                     ]);
 
-//                    return new Response($this->view->assign_by_ref('formData', $formData)
-//                        ->assign($arguments)
-//                        ->fetch('User/register.tpl'));
                     break;
 
                 case 'display_method_selector':
@@ -363,37 +359,37 @@ class RegistrationController extends AbstractController
                 case 'validate':
                     // The user filled in and submitted the main registration form and it needs to be validated.
                     // Get the form data
-                    $formData->getField('uname')->setData(mb_strtolower($formData->getField('uname')->getData()));
-                    $formData->getField('email')->setData(mb_strtolower($formData->getField('email')->getData()));
-                    $formData->getField('emailagain')->setData(mb_strtolower($formData->getField('emailagain')->getData()));
-
-                    // Set up the parameters for a call to Users_Api_Registration#getRegistrationErrors()
-                    $antispamAnswer = $formData->getFieldData('antispamanswer');
-                    $reginfo = $formData->toUserArray();
-                    $arguments = array(
-                        'checkmode'         => 'new',
-                        'reginfo'           => $reginfo,
-                        'passagain'         => $formData->getFieldData('passagain'),
-                        'emailagain'        => $formData->getFieldData('emailagain'),
-                        'antispamanswer'    => isset($antispamAnswer) ? $antispamAnswer : '',
-                    );
-
-                    if ($formData->isValid()) {
-                        $errorFields = \ModUtil::apiFunc($this->name, 'registration', 'getRegistrationErrors', $arguments);
-                    } else {
-                        $errorFields = $formData->getErrorMessages();
-                    }
+//                    $formData->getField('uname')->setData(mb_strtolower($formData->getField('uname')->getData()));
+//                    $formData->getField('email')->setData(mb_strtolower($formData->getField('email')->getData()));
+//                    $formData->getField('emailagain')->setData(mb_strtolower($formData->getField('emailagain')->getData()));
+//
+//                    // Set up the parameters for a call to Users_Api_Registration#getRegistrationErrors()
+//                    $antispamAnswer = $formData->getFieldData('antispamanswer');
+//                    $reginfo = $formData->toUserArray();
+//                    $arguments = array(
+//                        'checkmode'         => 'new',
+//                        'reginfo'           => $reginfo,
+//                        'passagain'         => $formData->getFieldData('passagain'),
+//                        'emailagain'        => $formData->getFieldData('emailagain'),
+//                        'antispamanswer'    => isset($antispamAnswer) ? $antispamAnswer : '',
+//                    );
+//
+//                    if ($formData->isValid()) {
+//                        $errorFields = \ModUtil::apiFunc($this->name, 'registration', 'getRegistrationErrors', $arguments);
+//                    } else {
+//                        $errorFields = $formData->getErrorMessages();
+//                    }
 
                     // Validate the hook-like event.
-                    $event = new GenericEvent($reginfo, [], new ValidationProviders());
-                    $validators = $this->get('event-dispatcher')->dispatch('module.users.ui.validate_edit.new_registration', $event)->getData();
+                    $event = new GenericEvent($form->getData(), [], new ValidationProviders());
+                    $validators = $this->get('event_dispatcher')->dispatch('module.users.ui.validate_edit.new_registration', $event)->getData();
 
                     // Validate the hook
                     $hook = new ValidationHook($validators);
                     $this->get('hook_dispatcher')->dispatch('users.ui_hooks.registration.validate_edit', $hook);
                     $validators = $hook->getValidators();
 
-                    if (empty($errorFields) && !$validators->hasErrors()) {
+                    if ($form->isValid() && !$validators->hasErrors()) {
                         // No errors, move on to registration.
                         $state = 'register';
                     } else {
@@ -406,6 +402,7 @@ class RegistrationController extends AbstractController
                     // The registration validated, so do the actual registration.
                     $canLogIn = false;
                     $redirectUrl = '';
+                    $reginfo = $form->getData();
 
                     $registeredObj = \ModUtil::apiFunc($this->name, 'registration', 'registerNewUser', array(
                         'reginfo'           => $reginfo,
@@ -449,7 +446,7 @@ class RegistrationController extends AbstractController
 
                         // Allow hook-like events to process the registration...
                         $event = new GenericEvent($registeredObj);
-                        $this->get('event-dispatcher')->dispatch('module.users.ui.process_edit.new_registration', $event);
+                        $this->get('event_dispatcher')->dispatch('module.users.ui.process_edit.new_registration', $event);
 
                         // ...and hooks to process the registration.
                         $hook = new ProcessHook($registeredObj['uid']);
@@ -520,7 +517,7 @@ class RegistrationController extends AbstractController
                             'redirecturl' => $redirectUrl,
                         );
                         $event = new GenericEvent($registeredObj, $arguments);
-                        $event = $this->get('event-dispatcher')->dispatch('module.users.ui.registration.succeeded', $event);
+                        $event = $this->get('event_dispatcher')->dispatch('module.users.ui.registration.succeeded', $event);
                         $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
                         // Set up the next state to follow this one, along with any data needed.
@@ -552,7 +549,7 @@ class RegistrationController extends AbstractController
                             'redirecturl' => $redirectUrl,
                         );
                         $event = new GenericEvent(null, $arguments);
-                        $event = $this->get('event-dispatcher')->dispatch('module.users.ui.registration.failed', $event);
+                        $event = $this->get('event_dispatcher')->dispatch('module.users.ui.registration.failed', $event);
                         $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
                         // Set the next state to folllow this one.
@@ -571,7 +568,8 @@ class RegistrationController extends AbstractController
                     // Show the user the current status message(s) or error message(s).
                     $state = 'stop';
 
-                    return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
+                    return $this->redirectToRoute('home');
+//                    return new Response($this->view->fetch('User/displaystatusmsg.tpl'));
                     break;
 
                 case 'redirect':

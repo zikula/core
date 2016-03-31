@@ -59,7 +59,7 @@
                 <li role="separator" class="divider"></li>
                 {/if}
                 <li><a href="{route name='zikulausersmodule_user_login'}">{gt text='Log in page'}</a></li>
-                <li><a href="{route name='zikulausersmodule_user_register'}">{gt text='Create new account'}</a></li>
+                <li><a href="{route name='zikulausersmodule_registration_register'}">{gt text='Create new account'}</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="{route name='zikulausersmodule_user_lostuname'}">{gt text='Recover lost username'}</a></li>
                 <li><a href="{route name='zikulausersmodule_user_lostpassword'}">{gt text='Recover lost password'}</a></li>
@@ -78,14 +78,14 @@
             {/if}
         </button>
     </div>
-    <div id="users_loginblock_authentication_method_selectors">
-        {if (count($authentication_method_display_order) > 1)}
-            <strong id="users_loginblock_h5_authentication_method"{if (!isset($selected_authentication_method) || !$selected_authentication_method)} class="hide"{/if}>{gt text="Or instead, login with your..."}</strong>
-            <strong id="users_loginblock_h5_no_authentication_method"{if (isset($selected_authentication_method) && $selected_authentication_method)} class="hide"{/if}>{gt text="Login with your..."}</strong>
-            {homepage assign='form_action'}
-            {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
-                {authentication_method_selector form_type='loginblock' form_action=$form_action authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}
-            {/foreach}
-        {/if}
-    </div>
+    {*<div id="users_loginblock_authentication_method_selectors">*}
+        {*{if (count($authentication_method_display_order) > 1)}*}
+            {*<strong id="users_loginblock_h5_authentication_method"{if (!isset($selected_authentication_method) || !$selected_authentication_method)} class="hide"{/if}>{gt text="Or instead, login with your..."}</strong>*}
+            {*<strong id="users_loginblock_h5_no_authentication_method"{if (isset($selected_authentication_method) && $selected_authentication_method)} class="hide"{/if}>{gt text="Login with your..."}</strong>*}
+            {*{homepage assign='form_action'}*}
+            {*{foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}*}
+                {*{authentication_method_selector form_type='loginblock' form_action=$form_action authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}*}
+            {*{/foreach}*}
+        {*{/if}*}
+    {*</div>*}
 </div>
