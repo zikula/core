@@ -1,8 +1,8 @@
-{% set templatetitle = __('New account registration') %}
+{% set templatetitle = __('Select registration method') %}
 {{ pageSetVar('title', templatetitle) }}
 {% for authentication_method in authentication_method_display_order %}
 {% if ('ZikulaUsersModule' != authentication_method.modname) %}
-    {# ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.Login.js' #}
+    {{ pageAddAsset('javascript', asset('modules/'~authentication_method.modname~'/javascript/'~authentication_method.modname~'.Login.js', 'zikula_default')) }}
 {% endif %}
 {% endfor %}
 <h2>{{ templatetitle }}</h2>
@@ -19,7 +19,7 @@
     </div>
     <div class="authentication_select_method_bigbutton">
     {% for authentication_method in authentication_method_display_order %}
-        {{ AuthenticationMethodSelector('registration', form_action, authentication_method, selected_authentication_method) }}
+        {{ authenticationMethodSelector('registration', form_action, authentication_method, selected_authentication_method) }}
     {% endfor %}
     </div>
 </div>
@@ -51,14 +51,14 @@
 </form>
 <div id="users_login_waiting" class="z-form z-clearer gap hide">
     <fieldset>
-        <p class="text-center gap">{img modname='core' set='ajax' src='large_fine_white.gif'}</p>
+        <p class="text-center gap"><i class="fa fa-spinner fa-spin fa-lg"></i></p>
     </fieldset>
 </div>
 <div id="users_login_no_loginformfields" class="z-clearer gap{% if (login_form_fields is defined and login_form_fields is not empty) or selected_authentication_method is not defined or selected_authentication_method is empty %} hide{% endif %}">
     <h5>{% if selected_authentication_method is defined and selected_authentication_method %}{$selected_authentication_method.modname|default:''}{% endif %}</h5>
     <p class="alert alert-danger">
         {{ __('The registration option you chose is not available at the moment.') }}
-        {% if count(authentication_method_display_order) > 1 %}
+        {% if authentication_method_display_order|length > 1 %}
         {{ __('Please choose another or contact the site administrator for assistance.') }}
         {% else %}
         {{ __('Please contact the site administrator for assistance.') }}

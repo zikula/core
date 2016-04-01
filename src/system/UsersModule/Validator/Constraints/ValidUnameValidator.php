@@ -80,6 +80,7 @@ class ValidUnameValidator extends ConstraintValidator
         }
 
         // ensure not reserved/illegal
+        // @todo old method allowed Admin to skip this check
         $illegalUserNames = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
         if (!empty($illegalUserNames)) {
             $pattern = array('/^(\s*,\s*|\s+)+/D', '/\b(\s*,\s*|\s+)+\b/D', '/(\s*,\s*|\s+)+$/D');
@@ -93,12 +94,17 @@ class ValidUnameValidator extends ConstraintValidator
         }
 
         // ensure unique
-        $query = $this->userRepository->createQueryBuilder('u')
+        $qb = $this->userRepository->createQueryBuilder('u')
             ->select('count(u.uid)')
             ->where('u.uname = :uname')
-            ->setParameter('uname', $value)
-            ->getQuery();
-        if ((int)$query->getSingleScalarResult() > 0) {
+            ->setParameter('uname', $value);
+        // when updating an existing User, the existing Uid must be excluded.
+        if (!empty($constraint->excludedUid)) {
+            $qb->andWhere('u.uid <> :excludedUid')
+                ->setParameter('excludeUid', $constraint->excludedUid);
+        }
+
+        if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
             $this->context->buildViolation($this->translator->__('The user name you entered has already been registered.'))
                 ->setParameter('%string%', $value)
                 ->addViolation();
