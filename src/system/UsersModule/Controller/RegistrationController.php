@@ -166,17 +166,7 @@ class RegistrationController extends AbstractController
             switch ($state) {
                 case 'start':
                     // Initial starting point for registration - a GET request without a reentrant token
-                    // Check for illegal user agents trying to register.
-                    $userAgent = $request->server->get('HTTP_USER_AGENT', '');
-                    $illegalUserAgents = $this->getVar(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, '');
-                    // Convert the comma-separated list into a regexp pattern.
-                    $pattern = array('/^(\s*,\s*)+/D', '/\b(\s*,\s*)+\b/D', '/(\s*,\s*)+$/D');
-                    $replace = array('', '|', '');
-                    $illegalUserAgents = preg_replace($pattern, $replace, preg_quote($illegalUserAgents, '/'));
-                    // Check for emptiness here, in case there were just spaces and commas in the original string.
-                    if (!empty($illegalUserAgents) && preg_match("/^({$illegalUserAgents})/iD", $userAgent)) {
-                        throw new AccessDeniedException($this->__('Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'));
-                    }
+                    $this->banIllegalUserAgents($request);
 
                     // Notify that we are beginning a registration session.
                     $event = new GenericEvent();
@@ -189,16 +179,16 @@ class RegistrationController extends AbstractController
                     if ($authenticationMethodList->countEnabledForRegistration() == 1 && $authenticationMethodList[0]->modname == $this->name) {
                         // There is only the default ZikulaUsersModule method available. Skip method selection.
 
-                        $selectedAuthenticationMethod = array(
-                            'modname'   => $authenticationMethodList[0]->modname,
-                            'method'    => $authenticationMethodList[0]->method,
-                        );
+                        $selectedAuthenticationMethod = [
+                            'modname' => $authenticationMethodList[0]->modname,
+                            'method' => $authenticationMethodList[0]->method,
+                        ];
 
                         $state = 'display_registration';
                     } else {
                         // There are other authentication modules with methods that are enabled for registration. Display
                         // the choices to the user.
-                        $state = 'display_method_selector';
+                        return $this->redirectToRoute('zikulausersmodule_registration_selectregistrationmethod');
                     }
                     break;
 
@@ -219,35 +209,6 @@ class RegistrationController extends AbstractController
 
                     break;
 
-                case 'display_method_selector':
-                    // An authentication method to use with the user's registration has not been selected.
-                    // Present the choices to the user.
-                    $authenticationMethodList = $this->get('zikulausersmodule.helper.authentication_method_list_helper');
-                    $authenticationMethodList->initialize([], \Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
-
-                    // TODO - The order and availability should be set by configuration
-                    $authenticationMethodDisplayOrder = [];
-                    foreach ($authenticationMethodList as $am) {
-                        if ($am->isEnabledForRegistration()) {
-                            $authenticationMethodDisplayOrder[] = array(
-                                'modname'   => $am->modname,
-                                'method'    => $am->method,
-                            );
-                        }
-                    }
-
-                    $state = 'stop';
-
-                    $arguments = array(
-                        'authentication_info'                   => isset($authenticationInfo) ? $authenticationInfo : [],
-                        'selected_authentication_method'        => $selectedAuthenticationMethod,
-                        'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
-                    );
-
-                    return new Response($this->view->assign($arguments)
-                        ->fetch('User/registration_method.tpl'));
-                    break;
-
                 case 'authentication_method_selector':
                     // One of the authentication method selectors on the registration methods page was clicked.
                     if (!$selectedAuthenticationMethod || !is_array($selectedAuthenticationMethod) || empty($selectedAuthenticationMethod)
@@ -260,7 +221,7 @@ class RegistrationController extends AbstractController
                     if ($selectedAuthenticationMethod['modname'] == $this->name) {
                         $state = 'display_registration';
                     } else {
-                        $state = 'display_method_selector';
+                        return $this->redirectToRoute('zikulausersmodule_registration_selectregistrationmethod', ['selected_authentication_method' => $selectedAuthenticationMethod]);
                     }
                     break;
 
@@ -338,13 +299,13 @@ class RegistrationController extends AbstractController
                             $state = 'display_registration';
                         } else {
                             $this->addFlash('error', $this->__('The credentials you provided are already associated with an existing user account or registration request.'));
-                            $state = 'display_method_selector';
+                            return $this->redirectToRoute('zikulausersmodule_registration_selectregistrationmethod');
                         }
                     } else {
                         if (!$request->getSession()->getFlashBag()->has(\Zikula_Session::MESSAGE_ERROR)) {
                             $this->addFlash('error', $this->__('We were unable to confirm your credentials with the selected service.'));
                         }
-                        $state = 'display_method_selector';
+                        return $this->redirectToRoute('zikulausersmodule_registration_selectregistrationmethod');
                     }
 
                     // If we have gotten to this point in the same call to registrationMethod(), then the authentication method was not external
@@ -358,27 +319,6 @@ class RegistrationController extends AbstractController
 
                 case 'validate':
                     // The user filled in and submitted the main registration form and it needs to be validated.
-                    // Get the form data
-//                    $formData->getField('uname')->setData(mb_strtolower($formData->getField('uname')->getData()));
-//                    $formData->getField('email')->setData(mb_strtolower($formData->getField('email')->getData()));
-//                    $formData->getField('emailagain')->setData(mb_strtolower($formData->getField('emailagain')->getData()));
-//
-//                    // Set up the parameters for a call to Users_Api_Registration#getRegistrationErrors()
-//                    $antispamAnswer = $formData->getFieldData('antispamanswer');
-//                    $reginfo = $formData->toUserArray();
-//                    $arguments = array(
-//                        'checkmode'         => 'new',
-//                        'reginfo'           => $reginfo,
-//                        'passagain'         => $formData->getFieldData('passagain'),
-//                        'emailagain'        => $formData->getFieldData('emailagain'),
-//                        'antispamanswer'    => isset($antispamAnswer) ? $antispamAnswer : '',
-//                    );
-//
-//                    if ($formData->isValid()) {
-//                        $errorFields = \ModUtil::apiFunc($this->name, 'registration', 'getRegistrationErrors', $arguments);
-//                    } else {
-//                        $errorFields = $formData->getErrorMessages();
-//                    }
 
                     // Validate the hook-like event.
                     $event = new GenericEvent($form->getData(), [], new ValidationProviders());
@@ -610,5 +550,58 @@ class RegistrationController extends AbstractController
         // If we got here then we exited the above state machine with a 'stop', but there was no return statement
         // in the terminal state. We don't know what to do.
         throw new FatalErrorException($this->__('The registration process has entered an unknown state.'));
+    }
+
+    /**
+     * @Route("/select-registration-method")
+     * @param Request $request
+     * @return Response
+     * @throws FatalErrorException
+     */
+    public function selectRegistrationMethodAction(Request $request)
+    {
+        // An authentication method to use with the user's registration has not been selected.
+        // Present the choices to the user.
+        $authenticationMethodList = $this->get('zikulausersmodule.helper.authentication_method_list_helper');
+        $authenticationMethodList->initialize([], \Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
+
+        // TODO - The order and availability should be set by configuration
+        $authenticationMethodDisplayOrder = [];
+        foreach ($authenticationMethodList as $am) {
+            if ($am->isEnabledForRegistration()) {
+                $authenticationMethodDisplayOrder[] = array(
+                    'modname'   => $am->modname,
+                    'method'    => $am->method,
+                );
+            }
+        }
+        $selectedAuthenticationMethod = $request->request->get('authentication_method', []);
+
+        $arguments = [
+            'authentication_info'                   => [],
+            'selected_authentication_method'        => $selectedAuthenticationMethod,
+            'authentication_method_display_order'   => $authenticationMethodDisplayOrder,
+        ];
+
+        return $this->render('@ZikulaUsersModule/Registration/selectRegistrationMethod.html.twig', $arguments);
+    }
+
+    /**
+     * @param Request $request
+     * @throws AccessDeniedException if User Agent is banned.
+     */
+    private function banIllegalUserAgents(Request $request)
+    {
+        // Check for illegal user agents trying to register.
+        $userAgent = $request->server->get('HTTP_USER_AGENT', '');
+        $illegalUserAgents = $this->getVar(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, '');
+        // Convert the comma-separated list into a regexp pattern.
+        $pattern = array('/^(\s*,\s*)+/D', '/\b(\s*,\s*)+\b/D', '/(\s*,\s*)+$/D');
+        $replace = array('', '|', '');
+        $illegalUserAgents = preg_replace($pattern, $replace, preg_quote($illegalUserAgents, '/'));
+        // Check for emptiness here, in case there were just spaces and commas in the original string.
+        if (!empty($illegalUserAgents) && preg_match("/^({$illegalUserAgents})/iD", $userAgent)) {
+            throw new AccessDeniedException($this->__('Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'));
+        }
     }
 }

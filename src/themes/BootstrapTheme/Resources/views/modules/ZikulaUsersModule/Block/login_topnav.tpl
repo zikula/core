@@ -1,8 +1,8 @@
 {strip}
-    {ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.LoginBlock.js'}
+    {pageaddvar name='javascript' value='system/UsersModule/Resources/public/js/Zikula.Users.LoginBlock.js'}
     {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
         {if ('ZikulaUsersModule' != $authentication_method.modname)}
-            {ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.LoginBlock.js'}
+            {ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.LoginBlock.js' noscriptaculous=1}
         {/if}
     {/foreach}
 {/strip}
@@ -16,8 +16,8 @@
             {/if}
         {/if}
     {/strip}
-    <div id="users_loginblock_waiting" class="text-center hide">
-        {img modname='core' set='ajax' src='indicator_circle.gif'}
+    <div id="users_loginblock_waiting" class="hide navbar-text navbar-right">
+        <i class="fa fa-spinner fa-lg fa-spin"></i>
     </div>
     <form id="users_loginblock_login_form" class="navbar-form navbar-right{if !$show_login_form} hide{/if}" style="margin-top: 3px; margin-bottom: 3px;" action="{route name='zikulausersmodule_user_login'}" method="post">
         <div>
@@ -77,6 +77,23 @@
                 {gt text='Please contact the site administrator for assistance.'}
             {/if}
         </button>
+    </div>
+    <div id="users_loginblock_authentication_method_selectors">
+        {if (count($authentication_method_display_order) > 1)}
+        <div class="btn-group btn-group-sm nav navbar-nav navbar-btn navbar-right">
+            <button type="button" class="btn btn-default dropdown-toggle" style='margin: 3px 0;' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <strong id="users_loginblock_h5_authentication_method"{if (!isset($selected_authentication_method) || !$selected_authentication_method)} class="hide"{/if}>{gt text="Or instead, login with your..."}</strong>
+                <strong id="users_loginblock_h5_no_authentication_method"{if (isset($selected_authentication_method) && $selected_authentication_method)} class="hide"{/if}>{gt text="Login with your..."}</strong>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                {homepage assign='form_action'}
+                {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
+                    <li>{authentication_method_selector form_type='loginblock' form_action=$form_action authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}</li>
+                {/foreach}
+            </ul>
+        </div>
+        {/if}
     </div>
     {*<div id="users_loginblock_authentication_method_selectors">*}
         {*{if (count($authentication_method_display_order) > 1)}*}
