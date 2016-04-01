@@ -76,13 +76,17 @@ class ValidEmailValidator extends ConstraintValidator
 
         // ensure unique
         if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL, false)) {
-            $query = $this->entityManager->createQueryBuilder()
+            $qb = $this->entityManager->createQueryBuilder()
                 ->select('count(u.uid)')
                 ->from('ZikulaUsersModule:UserEntity', 'u')
                 ->where('u.email = :email')
-                ->setParameter('email', $value)
-                ->getQuery();
-            $uCount = (int)$query->getSingleScalarResult();
+                ->setParameter('email', $value);
+            // when updating an existing User, the existing Uid must be excluded.
+            if (!empty($constraint->excludedUid)) {
+                $qb->andWhere('u.uid <> :excludedUid')
+                    ->setParameter('excludeUid', $constraint->excludedUid);
+            }
+            $uCount = (int)$qb->getQuery()->getSingleScalarResult();
 
             $query = $this->entityManager->createQueryBuilder()
                 ->select('count(v.uid)')
