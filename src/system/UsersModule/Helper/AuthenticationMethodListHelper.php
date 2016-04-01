@@ -26,6 +26,7 @@ use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 class AuthenticationMethodListHelper implements \ArrayAccess, \Countable, \Iterator
 {
     use TranslatorTrait;
+    private $initialized = false;
     /**
      * @var Logger
      */
@@ -93,6 +94,9 @@ class AuthenticationMethodListHelper implements \ArrayAccess, \Countable, \Itera
      */
     public function initialize(array $orderedListableAuthenticationMethods = [], $filter = \Zikula_Api_AbstractAuthentication::FILTER_NONE)
     {
+        if ($this->initialized) {
+            return;
+        }
         $authenticationModules = $this->capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::AUTHENTICATION);
         if (!is_array($authenticationModules)) {
             throw new FatalErrorException($this->__('An invalid list of authentication modules was returned by CapabilityApiInterface::getExtensionsCapableOf().'));
@@ -153,6 +157,7 @@ class AuthenticationMethodListHelper implements \ArrayAccess, \Countable, \Itera
 
         // Initialize Iterator
         $this->rewind();
+        $this->initialized = true;
     }
 
     public function setTranslator($translator)
