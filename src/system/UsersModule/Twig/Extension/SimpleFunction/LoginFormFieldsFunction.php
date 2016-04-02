@@ -51,7 +51,7 @@ class LoginFormFieldsFunction
             // Forward compatability. @deprecated Remove check in Core-2.0
             $content = $content->getContent();
         }
-        
+
         return $content;
     }
 }
