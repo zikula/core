@@ -55,7 +55,7 @@ class ValidEmailValidator extends ConstraintValidator
         ]);
         if (count($errors) > 0) {
             foreach ($errors as $error) {
-                 // this method forces the error to appear at the form input location instead of at the top of the form
+                // this method forces the error to appear at the form input location instead of at the top of the form
                 $this->context->buildViolation($error->getMessage())->addViolation();
             }
         }

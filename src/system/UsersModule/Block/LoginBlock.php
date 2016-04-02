@@ -16,7 +16,6 @@ namespace Zikula\UsersModule\Block;
 use Zikula_View;
 use SecurityUtil;
 use DataUtil;
-use Zikula\UsersModule\Helper\AuthenticationMethodListHelper;
 use System;
 use BlockUtil;
 use UserUtil;
