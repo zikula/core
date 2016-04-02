@@ -12,7 +12,7 @@
 <div>
     <h5 id="users_login_h5_no_authentication_method"{% if selected_authentication_method is not empty %} class="hide"{% endif %}>{{ __('Choose how you would like to log in.') }}</h5>
     <h5 id="users_login_h5_authentication_method"{% if selected_authentication_method is empty %} class="hide"{% endif %}>{{ __('Log in below, or change how you would like to log in.') }}</h5>
-    {% set form_action = path('zikulausersmodule_registration_register') %}
+    {% set form_action = path('zikulausersmodule_registration_selectregistrationmethod') %}
     <div class="alert alert-info">
         {{ __('If you prefer, you can create an account and password for use only with this site by clicking below...') }}
         {{ __('Click on one of the following to log into this site using that service...') }}
@@ -27,16 +27,16 @@
 {% if selected_authentication_method is not empty %}
     {% set login_form_fields = loginFormFields('registration', selected_authentication_method) %}
 {% endif %}
-<form id="users_login_login_form" class="z-form gap z-clearer{% if login_form_fields is not defined or login_form_fields is empty or selected_authentication_method is not defined or selected_authentication_method is empty %} hide{% endif %}" action="{{ path('zikulausersmodule_registration_register') }}" method="post">
+<form id="users_login_login_form" class="z-form gap z-clearer{% if login_form_fields is not defined or login_form_fields is empty or selected_authentication_method is not defined or selected_authentication_method is empty %} hide{% endif %}" action="{{ path('zikulausersmodule_registration_authenticateregistrationmethod') }}" method="post">
     <div>
-        <input id="users_login_selected_authentication_module" type="hidden" name="authentication_method[modname]" value="{$selected_authentication_method.modname|default:''}" />
-        <input id="users_login_selected_authentication_method" type="hidden" name="authentication_method[method]" value="{$selected_authentication_method.method|default:''}" />
+        <input id="users_login_selected_authentication_module" type="hidden" name="authentication_method[modname]" value="{{ selected_authentication_method.modname|default('') }}" />
+        <input id="users_login_selected_authentication_method" type="hidden" name="authentication_method[method]" value="{{ selected_authentication_method.method|default('') }}" />
         <input id="users_login_registration_authentication_info" type="hidden" name="registration_authentication_info" value="1" />
-        <input id="users_login_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        {#<input id="users_login_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />#}
         <fieldset>
             <div id="users_login_fields">
                 {% if login_form_fields is defined and login_form_fields is not empty %}
-                {{ login_form_fields }}
+                {{ login_form_fields|raw }}
                 {% endif %}
             </div>
         </fieldset>
@@ -55,7 +55,7 @@
     </fieldset>
 </div>
 <div id="users_login_no_loginformfields" class="z-clearer gap{% if (login_form_fields is defined and login_form_fields is not empty) or selected_authentication_method is not defined or selected_authentication_method is empty %} hide{% endif %}">
-    <h5>{% if selected_authentication_method is defined and selected_authentication_method %}{$selected_authentication_method.modname|default:''}{% endif %}</h5>
+    <h5>{% if selected_authentication_method is defined and selected_authentication_method %}{{ selected_authentication_method.modname|default('') }}{% endif %}</h5>
     <p class="alert alert-danger">
         {{ __('The registration option you chose is not available at the moment.') }}
         {% if authentication_method_display_order|length > 1 %}
