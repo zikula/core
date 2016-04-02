@@ -52,25 +52,27 @@ class RegistrationType extends AbstractType
             ])
         ;
         if ($options['passwordReminderEnabled']) {
-            $builder->add('passreminder', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'constraints' => [
-                    new NotNull(),
-                    new Type('string'),
-                ],
-                'required' => $options['passwordReminderMandatory']
-            ]);
+            $builder
+                ->add('passreminder', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                    'constraints' => [
+                        new NotNull(),
+                        new Type('string'),
+                    ],
+                    'required' => $options['passwordReminderMandatory']
+                ]);
         }
-        $builder
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
-                'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
-                'first_options' => ['label' => $options['translator']->__('Email')],
-                'second_options' => ['label' => $options['translator']->__('Repeat Email')],
-                'invalid_message' => $options['translator']->__('The emails  must match!'),
-                'constraints' => [
-                    new ValidEmail(),
-                ]
-            ])
-        ;
+        if ($options['includeEmail']) {
+            $builder
+                ->add('email', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
+                    'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
+                    'first_options' => ['label' => $options['translator']->__('Email')],
+                    'second_options' => ['label' => $options['translator']->__('Repeat Email')],
+                    'invalid_message' => $options['translator']->__('The emails  must match!'),
+                    'constraints' => [
+                        new ValidEmail(),
+                    ]
+                ]);
+        }
         if (!empty($options['antiSpamQuestion'])) {
             $builder->add('antispamanswer', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['antiSpamQuestion'],
@@ -110,6 +112,7 @@ class RegistrationType extends AbstractType
             'passwordReminderMandatory' => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             'antiSpamQuestion' => '',
             'antiSpamAnswer' => '',
+            'includeEmail' => true,
             'constraints' => [new ValidUserFields()]
         ]);
     }
