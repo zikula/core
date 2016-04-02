@@ -69,4 +69,4 @@ function smarty_core_process_cached_inserts($params, &$smarty)
     return $params['results'];
 }
 
-/* vim: set expandtab: */;
+/* vim: set expandtab: */

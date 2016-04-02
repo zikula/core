@@ -20,7 +20,7 @@ class HookContainer extends AbstractHookContainer
 {
     protected function setupHookBundles()
     {
-//        $bundle = new SubscriberBundle('ZikulaBlocksModule', 'subscriber.blocks.ui_hooks.htmlblock.content', 'ui_hooks', $this->__('HTML Block content hook'));
+        //        $bundle = new SubscriberBundle('ZikulaBlocksModule', 'subscriber.blocks.ui_hooks.htmlblock.content', 'ui_hooks', $this->__('HTML Block content hook'));
 //        $bundle->addEvent('form_edit', 'blocks.ui_hooks.htmlblock.content.form_edit');
 //        $this->registerHookSubscriberBundle($bundle);
     }
