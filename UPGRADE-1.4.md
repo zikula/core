@@ -82,7 +82,7 @@ Upgrading
 The following process should be followed for all upgrades even small point releases (e.g. `1.4.x`).
 
   - Backup all your files and database. Keep a note of your database settings from `config.php` (or
-    `personal_config.php`
+    `personal_config.php`)
   - Before uploading the new files, delete **all files** in your web root (typically `public_html` or `httpdocs`).
   - Upload the new package.
     - Remark for Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
@@ -90,6 +90,7 @@ to the server check if your longest path length is longer than Windows/FTP-Softw
   - Make a copy of `config/config.php` and rename it to `config/personal_config.php` -- update the values of this file with your database settings taken from your old 'config.php' file. * NOTE: you should now have both 'config.php' AND `personal_config.php` in your 'config/' folder. Make sure to set permissions on 'config.php' to 400
   - Make a copy of `app/config/parameters.yml` and rename it to `app/config/custom_parameters.yml` -- update the values of this file with your database settings. Also set `installed` to `true` (all instances of "~" should be replaced with their proper values) -- In most cases, 'database_port', 'database_path', and 'database_socket' should be 'null'. for ``url_secret`` you have to type a long random pass phrase -- * NOTE: you should now have both "parameters.yml" AND `custom_parameters.yml` in your 'app/config/' folder. The upgrade will not work unless both of these files are present. 
   - Make `app/cache` and `app/logs` writable. (**Zikula WILL NOT install without this critical step**)
+  - copy from your backup ``/userdata``, ``/modules`` and your theme to your new upload. The folders of your modules and themes should be at the exact same place like your backup.
   - **Upgrade: (do one or the other)**
     - Via Web: launch `http://yoursiteurl/upgrade` and follow any on-screen prompts.
     - Via CLI:
