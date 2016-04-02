@@ -110,5 +110,4 @@ class ValidUnameValidator extends ConstraintValidator
                 ->addViolation();
         }
     }
-
 }
