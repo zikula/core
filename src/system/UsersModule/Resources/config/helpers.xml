@@ -8,6 +8,7 @@
         <parameter key="zikulausersmodule.helper.authentication_method_list_helper.class">Zikula\UsersModule\Helper\AuthenticationMethodListHelper</parameter>
         <parameter key="zikulausersmodule.helper.registration_helper.class">Zikula\UsersModule\Helper\RegistrationHelper</parameter>
         <parameter key="zikulausersmodule.helper.registration_verification_helper.class">Zikula\UsersModule\Helper\RegistrationVerificationHelper</parameter>
+        <parameter key="zikulausersmodule.helper.notification_helper.class">Zikula\UsersModule\Helper\NotificationHelper</parameter>
     </parameters>
 
     <services>
@@ -25,6 +26,7 @@
             <argument type="service" id="zikula_users_module.user_verification_repository" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="translator.default" />
+            <argument type="service" id="zikulausersmodule.helper.registration_verification_helper" />
         </service>
         <service id="zikulausersmodule.helper.registration_verification_helper" class="%zikulausersmodule.helper.registration_verification_helper.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
@@ -32,7 +34,11 @@
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_users_module.user_verification_repository" />
             <argument type="service" id="translator.default" />
-            <argument id="zikulausersmodule.helper.registration_helper" type="service"/>
+        </service>
+        <service id="zikulausersmodule.helper.notification_helper" class="%zikulausersmodule.helper.notification_helper.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="twig" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
         </service>
 
     </services>

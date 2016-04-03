@@ -1,0 +1,17 @@
+{% if not reginfo.isapproved %}
+    {% set heading = __('New registration pending approval') %}
+{% elseif (not reginfo.isverified) %}
+    {% set heading = __('New registration pending e-mail verification') %}
+{% else %}
+    {% set heading = __('New user activated') %}
+{% endif %}
+<h3>{{ heading }}</h3>
+
+<p>
+{% set sitelink = '<a href=\'%1$s\'>%2$s</a>'|replace({"%1$s": siteurl, "%2$s": sitename}) %}
+{{ __f('A new user account has been activated on %s.', {"%s": sitelink}) }}
+{% if admincreated %}{{ __('It was created by an administrator or sub-administrator.') }}{% endif %}
+{{ __('The account details are as follows:') }}
+</p>
+
+<p>{{ __('User name') }}: '{{ reginfo.uname }}'</p>

@@ -39,10 +39,6 @@ class RegistrationVerificationHelper
      * @var UserVerificationRepositoryInterface
      */
     private $userVerificationRepository;
-    /**
-     * @var RegistrationHelper
-     */
-    private $registrationHelper;
 
     /**
      * RegistrationHelper constructor.
@@ -51,22 +47,19 @@ class RegistrationVerificationHelper
      * @param PermissionApi $permissionApi
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param TranslatorInterface $translator
-     * @param RegistrationHelper $registrationHelper
      */
     public function __construct(
         VariableApi $variableApi,
         SessionInterface $session,
         PermissionApi $permissionApi,
         UserVerificationRepositoryInterface $userVerificationRepository,
-        TranslatorInterface $translator,
-        RegistrationHelper $registrationHelper
+        TranslatorInterface $translator
     ) {
         $this->variableApi = $variableApi;
         $this->session = $session;
         $this->permissionApi = $permissionApi;
         $this->userVerificationRepository = $userVerificationRepository;
         $this->setTranslator($translator);
-        $this->registrationHelper = $registrationHelper;
     }
 
     public function setTranslator($translator)
@@ -239,10 +232,11 @@ class RegistrationVerificationHelper
 
         $reginfo = \UserUtil::getVars($reginfo['uid'], true, 'uid', true);
 
-        if (!empty($reginfo['approved_by'])) {
-            // The registration is now both verified and approved, time to make an honest user out of him.
-            $reginfo = $this->registrationHelper->createUser($reginfo, true, false);
-        }
+        // @todo move this createUser call to follow verify where it is used.
+//        if (!empty($reginfo['approved_by'])) {
+//            // The registration is now both verified and approved, time to make an honest user out of him.
+//            $reginfo = $this->registrationHelper->createUser($reginfo, true, false);
+//        }
 
         return $reginfo;
     }
