@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="zikulausersmodule.validator.constraints.valid_uname_validator.class">Zikula\UsersModule\Validator\Constraints\ValidUnameValidator</parameter>
+        <parameter key="zikulausersmodule.validator.constraints.valid_email_validator.class">Zikula\UsersModule\Validator\Constraints\ValidEmailValidator</parameter>
+        <parameter key="zikulausersmodule.validator.constraints.valid_user_fields_validator.class">Zikula\UsersModule\Validator\Constraints\ValidUserFieldsValidator</parameter>
+    </parameters>
+
+    <services>
+        <service id="zikulausersmodule.validator.constraints.valid_uname_validator" class="%zikulausersmodule.validator.constraints.valid_uname_validator.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="zikula_users_module.user_repository" />
+            <argument type="service" id="validator" />
+            <tag name="validator.constraint_validator" alias="zikula.uname.validator" />
+        </service>
+        <service id="zikulausersmodule.validator.constraints.valid_email_validator" class="%zikulausersmodule.validator.constraints.valid_email_validator.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+            <argument type="service" id="validator" />
+            <tag name="validator.constraint_validator" alias="zikula.email.validator" />
+        </service>
+        <service id="zikulausersmodule.validator.constraints.valid_user_fields_validator" class="%zikulausersmodule.validator.constraints.valid_user_fields_validator.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="translator.default" />
+            <tag name="validator.constraint_validator" alias="zikula.user_fields.validator" />
+        </service>
+    </services>
+</container>
+
