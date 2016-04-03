@@ -424,7 +424,7 @@ class RegistrationHelper
 
     /**
      * NOT A PUBLIC API !
-     * 
+     *
      * Creates a new users table record.
      *
      * This is an internal function that creates a new user. External calls to create either a new
@@ -698,7 +698,6 @@ class RegistrationHelper
      *
      * Either id, uname, or email must be specified, but no more than one of those three, and email is not allowed
      * if the system allows an email address to be registered more than once.
-     *
      */
     public function get($uid = null, $uname = null, $email = null)
     {
@@ -861,7 +860,6 @@ class RegistrationHelper
 
             return $count;
         } else {
-
             return $this->userRepository->count($filter);
         }
     }
