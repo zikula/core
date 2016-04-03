@@ -173,11 +173,12 @@ class RegistrationController extends AbstractController
                 $redirectUrl = '';
                 $reginfo = $form->getData();
 
-                $registeredObj = \ModUtil::apiFunc($this->name, 'registration', 'registerNewUser', [
-                    'reginfo'           => $reginfo,
-                    'usernotification'  => true,
-                    'adminnotification' => true
-                ]);
+                $registeredObj = $this->get('zikulausersmodule.helper.registration_helper')->registerNewUser($reginfo);
+//                $registeredObj = \ModUtil::apiFunc($this->name, 'registration', 'registerNewUser', [
+//                    'reginfo'           => $reginfo,
+//                    'usernotification'  => true,
+//                    'adminnotification' => true
+//                ]);
 
                 if (isset($registeredObj) && $registeredObj) {
                     // The main registration completed successfully.

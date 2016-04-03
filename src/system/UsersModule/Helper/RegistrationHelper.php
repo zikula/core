@@ -50,6 +50,14 @@ class RegistrationHelper
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    /**
+     * @var RegistrationVerificationHelper
+     */
+    private $verificationHelper;
+    /**
+     * @var NotificationHelper
+     */
+    private $notificationHelper;
 
     /**
      * RegistrationHelper constructor.
@@ -60,6 +68,8 @@ class RegistrationHelper
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param EventDispatcherInterface $eventDispatcher
      * @param TranslatorInterface $translator
+     * @param RegistrationVerificationHelper $verificationHelper
+     * @param NotificationHelper $notificationHelper
      */
     public function __construct(
         VariableApi $variableApi,
@@ -68,7 +78,9 @@ class RegistrationHelper
         UserRepositoryInterface $userRepository,
         UserVerificationRepositoryInterface $userVerificationRepository,
         EventDispatcherInterface $eventDispatcher,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        RegistrationVerificationHelper $verificationHelper,
+        NotificationHelper $notificationHelper
     ) {
         $this->variableApi = $variableApi;
         $this->session = $session;
@@ -77,6 +89,8 @@ class RegistrationHelper
         $this->userVerificationRepository = $userVerificationRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->setTranslator($translator);
+        $this->verificationHelper = $verificationHelper;
+        $this->notificationHelper = $notificationHelper;
     }
 
     public function setTranslator($translator)
@@ -125,11 +139,6 @@ class RegistrationHelper
      */
     public function registerNewUser(array $reginfo, $userMustVerify = false, $userNotification = true, $adminNotification = true, $sendPassword = false)
     {
-        // we do not check permissions here (see #1874)
-        /*if (!$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
-            throw new AccessDeniedException();
-        }*/
-
         $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
 
@@ -250,6 +259,7 @@ class RegistrationHelper
 
         $createdByAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
 
+        // @todo This forces both uname and email to all lowercase
         if (isset($reginfo['uname']) && !empty($reginfo['uname'])) {
             $reginfo['uname'] = mb_strtolower($reginfo['uname']);
         }
@@ -355,10 +365,7 @@ class RegistrationHelper
                 $rendererArgs['approvalorder'] = $approvalOrder;
 
                 if (!$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved'])) {
-                    $verificationSent = \ModUtil::apiFunc('ZikulaUsersModule', 'registration', 'sendVerificationCode', [
-                        'reginfo' => $reginfo,
-                        'rendererArgs' => $rendererArgs,
-                    ]);
+                    $verificationSent = $this->verificationHelper->sendVerificationCode($reginfo, null, null, $rendererArgs);
 
                     if (!$verificationSent) {
                         $regErrors[] = $this->__('Warning! The verification code for the new registration could not be sent.');
@@ -372,11 +379,7 @@ class RegistrationHelper
                     }
                     $userObj['verificationsent'] = $verificationSent;
                 } elseif (($userNotification && $reginfo['isapproved']) || !empty($passwordCreatedForUser)) {
-                    $notificationSent = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'sendNotification', [
-                        'toAddress' => $reginfo['email'],
-                        'notificationType' => 'welcome',
-                        'templateArgs' => $rendererArgs
-                    ]);
+                    $notificationSent = $this->notificationHelper->sendNotification($reginfo['email'], 'welcome', $rendererArgs);
 
                     if (!$notificationSent) {
                         $regErrors[] = $this->__('Warning! The welcoming email for the new registration could not be sent.');
@@ -394,11 +397,7 @@ class RegistrationHelper
                     // mail notify email to inform admin about registration
                     $notificationEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
                     if (!empty($notificationEmail)) {
-                        $notificationSent = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'sendNotification', [
-                            'toAddress' => $notificationEmail,
-                            'notificationType' => 'regadminnotify',
-                            'templateArgs' => $rendererArgs
-                        ]);
+                        $notificationSent = $this->notificationHelper->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs);
 
                         if (!$notificationSent) {
                             $regErrors[] = $this->__('Warning! The notification email for the new registration could not be sent.');
@@ -593,7 +592,7 @@ class RegistrationHelper
             $userObj['activated'] = UsersConstant::ACTIVATED_ACTIVE;
 
             // Add user to default group
-            $defaultGroup = \ModUtil::getVar('ZikulaGroupsModule', 'defaultgroup', false);
+            $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup', false);
             if (!$defaultGroup) {
                 throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
@@ -629,11 +628,7 @@ class RegistrationHelper
                 $rendererArgs['PWD_NO_USERS_AUTHENTICATION'] = UsersConstant::PWD_NO_USERS_AUTHENTICATION;
 
                 if ($userNotification || !empty($passwordCreatedForUser)) {
-                    $notificationSent = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'sendNotification', [
-                        'toAddress' => $userObj['email'],
-                        'notificationType' => 'welcome',
-                        'templateArgs' => $rendererArgs
-                    ]);
+                    $notificationSent = $this->notificationHelper->sendNotification($userObj['email'], 'welcome', $rendererArgs);
 
                     if (!$notificationSent) {
                         $loggedErrorMessages = $this->session->getFlashBag()->get(\Zikula_Session::MESSAGE_ERROR);
@@ -653,12 +648,7 @@ class RegistrationHelper
                     if (!empty($notificationEmail)) {
                         $subject = $this->__f('New registration: %s', $userObj['uname']);
 
-                        $notificationSent = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'sendNotification', [
-                            'toAddress' => $notificationEmail,
-                            'notificationType' => 'regadminnotify',
-                            'templateArgs' => $rendererArgs,
-                            'subject' => $subject
-                        ]);
+                        $notificationSent = $this->notificationHelper->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs, $subject);
 
                         if (!$notificationSent) {
                             $loggedErrorMessages = $this->session->getFlashBag()->get(\Zikula_Session::MESSAGE_ERROR);
@@ -963,7 +953,7 @@ class RegistrationHelper
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             // Got just an id.
-            $reginfo = \ModUtil::apiFunc('ZikulaUsersModule', 'registration', 'get', ['uid' => $uid]);
+            $reginfo = $this->get($uid);
             if (!$reginfo) {
                 throw new \RuntimeException($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $uid));
             }
