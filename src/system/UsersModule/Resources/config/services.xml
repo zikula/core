@@ -8,13 +8,10 @@
         <parameter key="zikulausersmodule.user_listener.class">Zikula\UsersModule\Listener\UserEventListener</parameter>
         <parameter key="zikulausersmodule.pending_content_listener.class">Zikula\UsersModule\Listener\PendingContentListener</parameter>
         <parameter key="zikula_users_module.user_repository.class">Zikula\UsersModule\Entity\Repository\UserRepository</parameter>
+        <parameter key="zikula_users_module.user_verification_repository.class">Zikula\UsersModule\Entity\Repository\UserVerificationRepository</parameter>
         <parameter key="zikula_users_module.current_user.class">Zikula\UsersModule\Api\CurrentUserApi</parameter>
-        <parameter key="zikulausersmodule.helper.authentication_method_list_helper.class">Zikula\UsersModule\Helper\AuthenticationMethodListHelper</parameter>
         <parameter key="zikula.users_module.twig.extension.registration_extension.class">Zikula\UsersModule\Twig\Extension\RegistrationExtension</parameter>
         <parameter key="zikulausersmodule.container.link_container.class">Zikula\UsersModule\Container\LinkContainer</parameter>
-        <parameter key="zikulausersmodule.validator.constraints.valid_uname_validator.class">Zikula\UsersModule\Validator\Constraints\ValidUnameValidator</parameter>
-        <parameter key="zikulausersmodule.validator.constraints.valid_email_validator.class">Zikula\UsersModule\Validator\Constraints\ValidEmailValidator</parameter>
-        <parameter key="zikulausersmodule.validator.constraints.valid_user_fields_validator.class">Zikula\UsersModule\Validator\Constraints\ValidUserFieldsValidator</parameter>
     </parameters>
 
     <services>
@@ -32,16 +29,16 @@
             <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
             <argument type="string">Zikula\UsersModule\Entity\UserEntity</argument>
         </service>
+        <service id="zikula_users_module.user_verification_repository" class="%zikula_users_module.user_verification_repository.class%">
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
+            <argument type="string">Zikula\UsersModule\Entity\UserVerificationEntity</argument>
+        </service>
 
         <service id="zikula_users_module.current_user" class="%zikula_users_module.current_user.class%">
             <argument type="service" id="session"/>
             <argument type="service" id="zikula_users_module.user_repository"/>
         </service>
-        <service id="zikulausersmodule.helper.authentication_method_list_helper" class="%zikulausersmodule.helper.authentication_method_list_helper.class%">
-            <argument type="service" id="monolog.logger" />
-            <argument type="service" id="zikula_extensions_module.api.capability" />
-            <argument type="service" id="translator.default" />
-        </service>
+
         <service id="zikula.users_module.twig.extension.registration_extension" class="%zikula.users_module.twig.extension.registration_extension.class%">
             <tag name="twig.extension"/>
         </service>
@@ -51,27 +48,6 @@
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <tag name="zikula.link_container"/>
-        </service>
-
-        <!-- validator services -->
-        <service id="zikulausersmodule.validator.constraints.valid_uname_validator" class="%zikulausersmodule.validator.constraints.valid_uname_validator.class%">
-            <argument type="service" id="zikula_extensions_module.api.variable" />
-            <argument type="service" id="translator.default" />
-            <argument type="service" id="zikula_users_module.user_repository" />
-            <argument type="service" id="validator" />
-            <tag name="validator.constraint_validator" alias="zikula.uname.validator" />
-        </service>
-        <service id="zikulausersmodule.validator.constraints.valid_email_validator" class="%zikulausersmodule.validator.constraints.valid_email_validator.class%">
-            <argument type="service" id="zikula_extensions_module.api.variable" />
-            <argument type="service" id="translator.default" />
-            <argument type="service" id="doctrine.orm.default_entity_manager"/>
-            <argument type="service" id="validator" />
-            <tag name="validator.constraint_validator" alias="zikula.email.validator" />
-        </service>
-        <service id="zikulausersmodule.validator.constraints.valid_user_fields_validator" class="%zikulausersmodule.validator.constraints.valid_user_fields_validator.class%">
-            <argument type="service" id="zikula_extensions_module.api.variable" />
-            <argument type="service" id="translator.default" />
-            <tag name="validator.constraint_validator" alias="zikula.user_fields.validator" />
         </service>
     </services>
 </container>

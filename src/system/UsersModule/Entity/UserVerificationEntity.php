@@ -16,7 +16,9 @@ use Zikula\Core\Doctrine\EntityAccess;
 /**
  * UserVerification entity class.
  *
- * @ORM\Entity
+ * We use annotations to define the entity mappings to database (see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html).
+ *
+ * @ORM\Entity(repositoryClass="Zikula\UsersModule\Entity\Repository\UserVerificationRepository")
  * @ORM\Table(name="users_verifychg")
  *
  * Account-change verification table.
