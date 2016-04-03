@@ -15,6 +15,7 @@ use Zikula\UsersModule\Entity\UserVerificationEntity;
 interface UserVerificationRepositoryInterface
 {
     public function persistAndFlush(UserVerificationEntity $entity);
+
     public function removeAndFlush(UserVerificationEntity $entity);
 
     /**
@@ -22,6 +23,6 @@ interface UserVerificationRepositoryInterface
      * @return array UserEntity[] records deleted
      */
     public function purgeExpiredRecords($daysOld);
-    
+
     public function findOneBy(array $criteria, array $orderBy = null);
 }

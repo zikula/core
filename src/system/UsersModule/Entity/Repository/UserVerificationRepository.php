@@ -30,7 +30,7 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function purgeExpiredRecords($daysOld)
     {

@@ -39,7 +39,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setApproved(UserEntity $user, $approvedOn, $approvedBy = null)
     {
@@ -50,7 +50,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function find($id, $lockMode = null, $lockVersion = null)
     {
@@ -159,5 +159,4 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
         return $expr;
     }
-
 }

@@ -15,7 +15,9 @@ use Zikula\UsersModule\Entity\UserEntity;
 interface UserRepositoryInterface
 {
     public function findByUids($uids);
+
     public function persistAndFlush(UserEntity $user);
+
     public function removeAndFlush(UserEntity $user);
 
     /**
@@ -49,5 +51,4 @@ interface UserRepositoryInterface
      * @return integer
      */
     public function count(array $filter = [], $exprType = 'and');
-
 }
