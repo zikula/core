@@ -191,73 +191,11 @@ class UserApi extends \Zikula_AbstractApi
     public function sendNotification($args)
     {
         $toAddress = $args['toAddress'];
-        $notificationType = $args['notificationType'];
-        $templateArgs = $args['templateArgs'];
+        $notificationType = isset($args['notificationType']) ? $args['notificationType'] : '';
+        $templateArgs = isset($args['templateArgs']) ? $args['templateArgs'] : [];
+        $subject = isset($args['subject']) ? $args['subject'] : '';
 
-        $renderer = Zikula_View::getInstance($this->name, false);
-
-        $mailerArgs = array();
-        $mailerArgs['toaddress'] = $toAddress;
-
-        $renderer->assign($templateArgs);
-
-        $templateName = "Email/{$notificationType}_html.tpl";
-        if ($renderer->template_exists($templateName)) {
-            $mailerArgs['html'] = true;
-            $mailerArgs['body'] = $renderer->fetch($templateName);
-            $subject = trim($renderer->get_template_vars('subject'));
-        }
-
-        $templateName = "Email/{$notificationType}_txt.tpl";
-        if ($renderer->template_exists($templateName)) {
-            if (isset($mailerArgs['body'])) {
-                $bodyType = 'altbody';
-                unset($mailerArgs['html']);
-            } else {
-                $bodyType = 'body';
-                $mailerArgs['html'] = false;
-            }
-            $mailerArgs[$bodyType] = $renderer->fetch($templateName);
-            if (!isset($subject) || empty($subject)) {
-                // Favor the subject set in the html template over this one.
-                $subject = trim($renderer->get_template_vars('subject'));
-            }
-        }
-
-        if (isset($subject) && !empty($subject)) {
-            $mailerArgs['subject'] = $subject;
-        } elseif (isset($args['subject']) && !empty($args['subject'])) {
-            $mailerArgs['subject'] = $args['subject'];
-        } else {
-            switch ($notificationType) {
-                case 'activation':
-                    $mailerArgs['subject'] = $this->__('Verify your account.');
-                    break;
-                case 'regadminnotify':
-                    $mailerArgs['subject'] = $this->__('New user or registration.');
-                    break;
-                case 'confirmchemail':
-                    $mailerArgs['subject'] = $this->__('Verify your new e-mail address.');
-                    break;
-                case 'lostpasscode':
-                    $mailerArgs['subject'] = $this->__('Recover your password.');
-                    break;
-                case 'lostuname':
-                    $mailerArgs['subject'] = $this->__('Recover your user name.');
-                    break;
-                case 'welcome':
-                    $mailerArgs['subject'] = $this->__('Welcome!');
-                    break;
-                default:
-                    $mailerArgs['subject'] = $this->__f('A message from %s.', array(System::getVar('sitename', System::getBaseUrl())));
-            }
-        }
-
-        if ($mailerArgs['body']) {
-            return ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', $mailerArgs);
-        }
-
-        return true;
+        return $this->getContainer()->get('zikulausersmodule.helper.notification_helper')->sendNotification($toAddress, $notificationType, $templateArgs, $subject);
     }
 
     /**
