@@ -27,6 +27,7 @@
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="translator.default" />
             <argument type="service" id="zikulausersmodule.helper.registration_verification_helper" />
+            <argument type="service" id="zikulausersmodule.helper.notification_helper" />
         </service>
         <service id="zikulausersmodule.helper.registration_verification_helper" class="%zikulausersmodule.helper.registration_verification_helper.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
