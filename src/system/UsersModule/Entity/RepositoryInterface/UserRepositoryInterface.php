@@ -1,20 +1,53 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
+use Zikula\UsersModule\Entity\UserEntity;
+
 interface UserRepositoryInterface
 {
     public function findByUids($uids);
+    public function persistAndFlush(UserEntity $user);
+    public function removeAndFlush(UserEntity $user);
+
+    /**
+     * @param UserEntity $user
+     * @param $approvedOn
+     * @param null $approvedBy if null, user is 'self-approved'
+     */
+    public function setApproved(UserEntity $user, $approvedOn, $approvedBy = null);
+
+    /**
+     * @param $id
+     * @param null $lockMode
+     * @param null $lockVersion
+     * @return UserEntity
+     */
+    public function find($id, $lockMode = null, $lockVersion = null);
+
+    /**
+     * @param array $filter
+     * @param array $sort
+     * @param int $limit
+     * @param int $offset
+     * @param string (and|or) $exprType expression type to use in the filter
+     * @return mixed
+     */
+    public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and');
+
+    /**
+     * @param array $filter
+     * @param string (and|or) $exprType expression type to use in the filter
+     * @return integer
+     */
+    public function count(array $filter = [], $exprType = 'and');
+
 }

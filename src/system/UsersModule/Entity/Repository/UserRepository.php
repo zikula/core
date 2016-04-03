@@ -1,21 +1,19 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\UsersModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
@@ -27,4 +25,139 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
         return parent::findBy(['uid' => $uids]);
     }
+
+    public function persistAndFlush(UserEntity $user)
+    {
+        $this->_em->persist($user);
+        $this->_em->flush($user);
+    }
+
+    public function removeAndFlush(UserEntity $user)
+    {
+        $this->_em->remove($user);
+        $this->_em->flush($user);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setApproved(UserEntity $user, $approvedOn, $approvedBy = null)
+    {
+        $user->setApproved_Date($approvedOn);
+        $approvedBy = isset($approvedBy) ? $approvedBy : $user->getUid();
+        $user->setApproved_By($approvedBy);
+        $this->_em->flush($user);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function find($id, $lockMode = null, $lockVersion = null)
+    {
+        return parent::find($id, $lockMode, $lockVersion);
+    }
+
+    public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and')
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('u')
+            ->where($this->whereFromFilter($filter, $exprType))
+            ->orderBy($this->orderByFromArray($sort));
+        $query = $qb->getQuery();
+        if ($limit > 0) {
+            $query->setMaxResults($limit);
+        }
+        if ($offset > 0) {
+            $query->setFirstResult($offset);
+        }
+
+        return $query->getResult();
+    }
+
+    public function count(array $filter = [], $exprType = 'and')
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('count(u.uid')
+            ->where($this->whereFromFilter($filter, $exprType));
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Construct a QueryBuilder Expr\OrderBy object suitable for use in QueryBuilder->orderBy() from an array.
+     * sort = [field => dir, field => dir, ...]
+     * @param array $sort
+     * @return Expr\OrderBy
+     */
+    private function orderByFromArray(array $sort)
+    {
+        $orderBy = new Expr\OrderBy();
+        foreach ($sort as $field => $direction) {
+            $orderBy->add("u.$field", $direction);
+        }
+
+        return $orderBy;
+    }
+
+    /**
+     * Construct a QueryBuilder Expr object suitable for use in QueryBuilder->where(Expr).
+     * filter = [field => value, field => value, field => [operator => '!=', 'operand' => value], ...]
+     * when value is not an array, operator is assumed to be '='
+     *
+     * @param array $filter The filter, see getAll() and countAll().
+     * @param string $exprType default 'and'
+     * @return \Doctrine\ORM\Query\Expr\Composite
+     */
+    private function whereFromFilter(array $filter, $exprType = 'and')
+    {
+        $qb = $this->createQueryBuilder('u');
+        $exprType = in_array($exprType, ['and', 'or']) ? $exprType : 'and';
+        $exprMethod = strtolower($exprType) . "X";
+        /** @var \Doctrine\ORM\Query\Expr\Composite $expr */
+        $expr = $qb->expr()->$exprMethod();
+        $i = 1; // parameter counter
+        foreach ($filter as $field => $value) {
+            if (!is_array($value)) {
+                $value = [
+                    'operator' => '=',
+                    'operand' => $value,
+                ];
+            }
+            if (preg_match('/^IS (NOT )?NULL/i', $value['operator'], $matches)) {
+                $method = isset($matches[1]) ? 'isNotNull' : 'isNull';
+                $expr->add($qb->expr()->$method('u.' . $field));
+            } elseif (preg_match('/^(NOT )?IN/i', $value['operator'], $matches)) {
+                if (is_array($value['operand']) && !empty($value['operand'])) {
+                    $method = isset($matches[1]) ? 'notIn' : 'in';
+                    $expr->add($qb->expr()->$method('u.' . $field, '?' . $i));
+                    $qb->setParameter($i, $value['operand']);
+                }
+            } else {
+                if (is_bool($value['operand'])) {
+                    $dbValue = $value['operand'] ? '1' : '0';
+                } elseif (is_int($value['operand'])) {
+                    $dbValue = $value['operand'];
+                } else {
+                    $dbValue = "'{$value['operand']}'";
+                }
+                $methodMap = [
+                    '=' => 'eq',
+                    '>' => 'gt',
+                    '<' => 'lt',
+                    '>=' => 'gte',
+                    '<=' => 'lte',
+                    '<>' => 'neq',
+                    '!=' => 'neq',
+                ];
+                $method = $methodMap[$value['operator']];
+
+                $expr->add($qb->expr()->$method('u' . $field, '?' . $i));
+                $qb->setParameter($i, $dbValue);
+            }
+            $i++;
+        }
+
+        return $expr;
+    }
+
 }
