@@ -67,8 +67,6 @@
 <p class="alert alert-info">{gt text='You can use bracket URLs in the form: &#123;modname&#125;, &#123;modname:type:func&#125; or &#123;modname:type:func:param1=value1&amp;param2=value2&#125;.  You may also specify the homepage as &#123;homepage&#125;.' domain='zikula'}</p>
 <p style="margin:2em 0; padding:0;"><a id="appendmenuitem" class="fa fa-plus" href="#">{gt text='Create new menu item' domain='zikula'}</a></p>
 
-{* return to this block after saving *}
-<input type="hidden" id="returntoblock" name="returntoblock" value="{$blockinfo.bid}" />
 <input type="hidden" id="linksorder" name="linksorder" value="" />
 {menu from=$links item='menuitem' key='itemid' name='extmenu' id='menuitemlist' class='z-itemlist' tag='ol' multilang=true}
     {if $extmenu.first}
