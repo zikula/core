@@ -121,7 +121,9 @@ class RegistrationController extends AbstractController
         }
         $this->throwExceptionForBannedUserAgents($request);
 
-        $selectedAuthenticationMethod = $request->query->get('authentication_method', []);
+        // @todo this is currently defaulting to the users module. If the /register-form path is used without going through /register first.
+        // @todo this may not be preferred. Perhaps this should default to [] and then redirect back to /register?
+        $selectedAuthenticationMethod = $request->query->get('authentication_method', ['modname' => 'ZikulaUsersModule', 'method' => 'register']);
 
         /**
          * @todo
@@ -174,11 +176,6 @@ class RegistrationController extends AbstractController
                 $reginfo = $form->getData();
 
                 $registeredObj = $this->get('zikulausersmodule.helper.registration_helper')->registerNewUser($reginfo);
-//                $registeredObj = \ModUtil::apiFunc($this->name, 'registration', 'registerNewUser', [
-//                    'reginfo'           => $reginfo,
-//                    'usernotification'  => true,
-//                    'adminnotification' => true
-//                ]);
 
                 if (isset($registeredObj) && $registeredObj) {
                     // The main registration completed successfully.
@@ -221,12 +218,6 @@ class RegistrationController extends AbstractController
                     // ...and hooks to process the registration.
                     $hook = new ProcessHook($registeredObj['uid']);
                     $this->get('hook_dispatcher')->dispatch('users.ui_hooks.registration.process_edit', $hook);
-
-                    // If there were errors after the main registration, then make sure they can be displayed.
-                    // TODO - Would this even happen?
-//                        if (!empty($registeredObj['regErrors'])) {
-//                            $this->view->assign('regErrors', $registeredObj['regErrors']);
-//                        }
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's
                     // activated status, whether registrations are moderated, whether e-mail addresses need to be verified,
