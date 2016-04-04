@@ -10,7 +10,7 @@ CHANGELOG - ZIKULA 1.4.x
     -
 
  - Fixes:
-    -
+    - Fix error on creation of new ExtendedMenublock
 
  - Features:
     - 
