@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b09b6a45e28ab85a4401b78ad973947a",
+    "hash": "42dcf50f7d363c099d127c6abdcc8b1a",
     "content-hash": "2736a80cf69908258601bbb9b14e29b6",
     "packages": [
         {
@@ -1507,12 +1507,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "096064dd0a26e2757b7559341623f27a1186407b"
+                "reference": "2e15d7a4dadb08ccdac3f060dcf81112e607b6c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/096064dd0a26e2757b7559341623f27a1186407b",
-                "reference": "096064dd0a26e2757b7559341623f27a1186407b",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/2e15d7a4dadb08ccdac3f060dcf81112e607b6c4",
+                "reference": "2e15d7a4dadb08ccdac3f060dcf81112e607b6c4",
                 "shasum": ""
             },
             "require": {
@@ -1543,7 +1543,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2016-03-25 03:32:54"
+            "time": "2016-03-31 21:39:10"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -1833,21 +1833,21 @@
         },
         {
             "name": "jms/translation-bundle",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "target-dir": "JMS/TranslationBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSTranslationBundle.git",
-                "reference": "f09499f3f0e4d98313fb54f089b464855236ce17"
+                "reference": "b025251eaf65b73a775fa22ec277e771cdba35d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/f09499f3f0e4d98313fb54f089b464855236ce17",
-                "reference": "f09499f3f0e4d98313fb54f089b464855236ce17",
+                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/b025251eaf65b73a775fa22ec277e771cdba35d8",
+                "reference": "b025251eaf65b73a775fa22ec277e771cdba35d8",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "~1.4.1",
+                "nikic/php-parser": "^1.4|^2.0",
                 "php": "^5.3.3|^7.0",
                 "symfony/console": "^2.3|^3.0",
                 "symfony/framework-bundle": "^2.3|^3.0"
@@ -1857,6 +1857,8 @@
             },
             "require-dev": {
                 "jms/di-extra-bundle": "^1.1",
+                "matthiasnoback/symfony-dependency-injection-test": "^0.7.6",
+                "psr/log": "^1.0",
                 "sensio/framework-extra-bundle": "^2.3|^3.0",
                 "symfony/expression-language": "~2.6|~3.0",
                 "symfony/symfony": "^2.3|^3.0",
@@ -1895,7 +1897,7 @@
                 "ui",
                 "webinterface"
             ],
-            "time": "2016-03-23 18:44:57"
+            "time": "2016-04-03 16:16:17"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -2130,16 +2132,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.18.1",
+            "version": "1.18.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "a5f2734e8c16f3aa21b3da09715d10e15b4d2d45"
+                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/a5f2734e8c16f3aa21b3da09715d10e15b4d2d45",
-                "reference": "a5f2734e8c16f3aa21b3da09715d10e15b4d2d45",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/064b38c16790249488e7a8b987acf1c9d7383c09",
+                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09",
                 "shasum": ""
             },
             "require": {
@@ -2154,13 +2156,13 @@
                 "doctrine/couchdb": "~1.0@dev",
                 "graylog2/gelf-php": "~1.0",
                 "jakub-onderka/php-parallel-lint": "0.9",
+                "php-amqplib/php-amqplib": "~2.4",
                 "php-console/php-console": "^3.1.3",
                 "phpunit/phpunit": "~4.5",
                 "phpunit/phpunit-mock-objects": "2.3.0",
                 "raven/raven": "^0.13",
                 "ruflin/elastica": ">=0.90 <3.0",
-                "swiftmailer/swiftmailer": "~5.3",
-                "videlalvaro/php-amqplib": "~2.4"
+                "swiftmailer/swiftmailer": "~5.3"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
@@ -2169,11 +2171,11 @@
                 "ext-mongo": "Allow sending log messages to a MongoDB server",
                 "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
                 "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
+                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
                 "php-console/php-console": "Allow sending log messages to Google Chrome",
                 "raven/raven": "Allow sending log messages to a Sentry server",
                 "rollbar/rollbar": "Allow sending log messages to Rollbar",
-                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
-                "videlalvaro/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib"
+                "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
             },
             "type": "library",
             "extra": {
@@ -2204,36 +2206,42 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-03-13 16:08:35"
+            "time": "2016-04-02 13:12:58"
         },
         {
             "name": "nikic/php-parser",
-            "version": "v1.4.1",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51"
+                "reference": "ce5be709d59b32dd8a88c80259028759991a4206"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51",
-                "reference": "f78af2c9c86107aa1a34cd1dbb5bbe9eeb0d9f51",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/ce5be709d59b32dd8a88c80259028759991a4206",
+                "reference": "ce5be709d59b32dd8a88c80259028759991a4206",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": ">=5.3"
+                "php": ">=5.4"
             },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "bin/php-parse"
+            ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
-                "files": [
-                    "lib/bootstrap.php"
-                ]
+                "psr-4": {
+                    "PhpParser\\": "lib/PhpParser"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2249,7 +2257,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2015-09-19 14:15:08"
+            "time": "2016-02-28 19:48:28"
         },
         {
             "name": "oyejorge/less.php",
