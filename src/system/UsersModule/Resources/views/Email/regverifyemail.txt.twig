@@ -7,7 +7,7 @@
 
 {{ __('If you did request a new user account, then your request is waiting for you to verify your e-mail address with us.') }}
 {% if not reginfo.isapproved %}{{ __('Your request is also waiting for administrator approval.') }}
-{% if approvalorder == 'Zikula\UsersModule\Constant(:APPROVAL_AFTER'|const) %}{{ __('We will not be able to approve your request until after you have completed this verification step.') }}{% endif %}
+{% if approvalorder == constant('Zikula\\UsersModule\\Constant::APPROVAL_AFTER') %}{{ __('We will not be able to approve your request until after you have completed this verification step.') }}{% endif %}
 {{ __('Once both this verification step is complete and an administrator has approved your request, you will be able to log in with your user name.') }}{% endif %}
 
 {{ __('Please click on the following link to complete the e-mail address check: ') }}{{ verificationurl }}
@@ -18,7 +18,7 @@
 
 {% if not reginfo.isapproved %}
 {{ __('Once verified and your account has been approved, then you will be able to log in.') }}
-{% elseif empty(reginfo.pass) %}
+{% elseif reginfo.pass is empty %}
 {{ __('Once verified, you will be able to choose a password and then log in.') }}
 {% else %}
 {{ __('Once verified, you will be able to log in.') }}
@@ -28,7 +28,7 @@
 {{ __f('User name: %sub%', {"%sub%": reginfo.uname}) }}
 {% if createdpassword is not empty %}
 {{ __f('Password: %sub%', {"%sub%": createdpassword}) }}
-{% elseif not empty(reginfo.passreminder) %}
+{% elseif reginfo.passreminder is not empty %}
 {{ __f('Password reminder: %sub%', {"%sub%": reginfo.passreminder}) }}
 {% endif %}
 

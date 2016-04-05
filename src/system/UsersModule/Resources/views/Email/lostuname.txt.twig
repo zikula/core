@@ -12,7 +12,7 @@
     {{ __('You may use the following information to log into your account at:') }} {{ url }}
 
     {% for authentication_method in authentication_methods %}
-    {{ authentication_method.short_description }}: {{ authentication_method.uname }}{% if not empty(authentication_method.link) %} ({{ authentication_method.link }}){% endif %}
+    {{ authentication_method.short_description }}: {{ authentication_method.uname }}{% if authentication_method.link is not empty %} ({{ authentication_method.link }}){% endif %}
 
     {% endfor %}
 {% else %}
