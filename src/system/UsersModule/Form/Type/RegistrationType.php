@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\UsersModule\Form\Type;
@@ -16,12 +13,11 @@ namespace Zikula\UsersModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\EqualTo;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Type;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Validator\Constraints\ValidAntiSpamAnswer;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
+use Zikula\UsersModule\Validator\Constraints\ValidPassword;
+use Zikula\UsersModule\Validator\Constraints\ValidPasswordReminder;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\UsersModule\Validator\Constraints\ValidUserFields;
 
@@ -45,9 +41,7 @@ class RegistrationType extends AbstractType
                 'second_options' => ['label' => $options['translator']->__('Repeat Password')],
                 'invalid_message' => $options['translator']->__('The passwords must match!'),
                 'constraints' => [
-                    new NotNull(),
-                    new Type('string'),
-                    new Length(['min' => $options['minimumPasswordLength']])
+                    new ValidPassword()
                 ]
             ])
         ;
@@ -55,8 +49,7 @@ class RegistrationType extends AbstractType
             $builder
                 ->add('passreminder', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                     'constraints' => [
-                        new NotNull(),
-                        new Type('string'),
+                        new ValidPasswordReminder(),
                     ],
                     'required' => $options['passwordReminderMandatory']
                 ]);
@@ -76,10 +69,7 @@ class RegistrationType extends AbstractType
         if (!empty($options['antiSpamQuestion'])) {
             $builder->add('antispamanswer', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['antiSpamQuestion'],
-                'constraints' => new EqualTo([
-                    'value' => $options['antiSpamAnswer'],
-                    'message' => $options['translator']->__('You did not provide the correct answer for the security question.')
-                ])
+                'constraints' => new ValidAntiSpamAnswer()
             ]);
         }
         $builder
@@ -107,11 +97,9 @@ class RegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'minimumPasswordLength' => 5,
             'passwordReminderEnabled' => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
             'passwordReminderMandatory' => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
             'antiSpamQuestion' => '',
-            'antiSpamAnswer' => '',
             'includeEmail' => true,
             'constraints' => [new ValidUserFields()]
         ]);

@@ -150,11 +150,9 @@ class RegistrationController extends AbstractController
             [],
             [
                 'translator' => $this->get('translator.default'),
-                'minimumPasswordLength' => $this->getVar(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH),
                 'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED),
                 'passwordReminderMandatory' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY),
                 'antiSpamQuestion' => $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, ''),
-                'antiSpamAnswer' => $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '')
             ]
         );
 
