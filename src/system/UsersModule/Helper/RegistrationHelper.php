@@ -315,6 +315,10 @@ class RegistrationHelper
         // we will persist them to the database after the user record is created
         $attributes = $userObj['__ATTRIBUTES__'];
         unset($userObj['__ATTRIBUTES__']);
+        if (isset($userObj['antispamanswer'])) {
+            // @todo remove this when mapping is removed
+            unset($userObj['antispamanswer']);
+        }
 
         // ATTENTION: Do NOT issue an item-create hook at this point! The record is a pending
         // registration, not a user, so a user account record has really not yet been "created".

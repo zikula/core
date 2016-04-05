@@ -8,6 +8,9 @@
         <parameter key="zikulausersmodule.validator.constraints.valid_uname_validator.class">Zikula\UsersModule\Validator\Constraints\ValidUnameValidator</parameter>
         <parameter key="zikulausersmodule.validator.constraints.valid_email_validator.class">Zikula\UsersModule\Validator\Constraints\ValidEmailValidator</parameter>
         <parameter key="zikulausersmodule.validator.constraints.valid_user_fields_validator.class">Zikula\UsersModule\Validator\Constraints\ValidUserFieldsValidator</parameter>
+        <parameter key="zikulausersmodule.validator.constraints.valid_password_validator.class">Zikula\UsersModule\Validator\Constraints\ValidPasswordValidator</parameter>
+        <parameter key="zikulausersmodule.validator.constraints.valid_anti_spam_answer_validator.class">Zikula\UsersModule\Validator\Constraints\ValidAntiSpamAnswerValidator</parameter>
+        <parameter key="zikulausersmodule.validator.constraints.valid_password_reminder_validator.class">Zikula\UsersModule\Validator\Constraints\ValidPasswordReminderValidator</parameter>
     </parameters>
 
     <services>
@@ -29,6 +32,23 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="translator.default" />
             <tag name="validator.constraint_validator" alias="zikula.user_fields.validator" />
+        </service>
+        <service id="zikulausersmodule.validator.constraints.valid_password_validator" class="%zikulausersmodule.validator.constraints.valid_password_validator.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="translator.default" />
+            <argument id="validator" type="service"/>
+            <tag name="validator.constraint_validator" alias="zikula.password.validator" />
+        </service>
+        <service id="zikulausersmodule.validator.constraints.valid_anti_spam_answer_validator" class="%zikulausersmodule.validator.constraints.valid_anti_spam_answer_validator.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="translator.default" />
+            <argument id="validator" type="service"/>
+            <tag name="validator.constraint_validator" alias="zikula.antispam_answer.validator" />
+        </service>
+        <service id="zikulausersmodule.validator.constraints.valid_password_reminder_validator" class="%zikulausersmodule.validator.constraints.valid_password_reminder_validator.class%">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument id="validator" type="service"/>
+            <tag name="validator.constraint_validator" alias="zikula.password_reminder.validator" />
         </service>
     </services>
 </container>
