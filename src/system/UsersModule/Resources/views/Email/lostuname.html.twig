@@ -12,7 +12,7 @@
     {% set xLink = __f('<a href=\'%s\'>log into your account</a>', {"%s": url}) %}
     <p>{{ __('You may use the following information to %s:', {"%s": xLink|raw}) }}</p>
     {% for authentication_method in authentication_methods %}
-        <p>{{ authentication_method.short_description }}: {{ authentication_method.uname }}{% if not empty(authentication_method.link) %} ({{ authentication_method.link }}){% endif %}</p>
+        <p>{{ authentication_method.short_description }}: {{ authentication_method.uname }}{% if authentication_method.link is not empty %} ({{ authentication_method.link }}){% endif %}</p>
     {% endfor %}
 
     <p>{{ __f('(If you cannot click on the log-in link, you can copy this URL and paste it into your browser: %sub% )', {"%sub%": url}) }}</p>

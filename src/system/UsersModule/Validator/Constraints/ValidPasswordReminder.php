@@ -15,21 +15,12 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class ValidEmail extends Constraint
+class ValidPasswordReminder extends Constraint
 {
-    public $message = 'The email "%string%" is invalid.';
-    public $excludedUid;
+    public $message = 'The password reminder is invalid.';
 
     public function validatedBy()
     {
-        return 'zikula.email.validator';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultOption()
-    {
-        return 'excludedUid';
+        return 'zikula.password_reminder.validator';
     }
 }
