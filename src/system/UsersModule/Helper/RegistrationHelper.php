@@ -358,11 +358,8 @@ class RegistrationHelper
             $this->eventDispatcher->dispatch('user.registration.create', $createEvent);
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
-                $siteurl = \System::getBaseUrl();
-
                 $rendererArgs = [];
-                $rendererArgs['sitename'] = \System::getVar('sitename');
-                $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl) - 1);
+                $rendererArgs['sitename'] = $this->variableApi->get(VariableApi::CONFIG, 'sitename');
                 $rendererArgs['reginfo'] = $reginfo;
                 $rendererArgs['createdpassword'] = $passwordCreatedForUser;
                 $rendererArgs['admincreated'] = $createdByAdminOrSubAdmin;
@@ -618,13 +615,11 @@ class RegistrationHelper
             $regErrors = [];
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
-                $sitename = \System::getVar('sitename');
-                $siteurl = \System::getBaseUrl();
+                $sitename = $this->variableApi->get(VariableApi::CONFIG, 'sitename');
                 $approvalOrder = $this->variableApi->get('ZikulaUsersModule', 'moderation_order', UsersConstant::APPROVAL_BEFORE);
 
                 $rendererArgs = [];
                 $rendererArgs['sitename'] = $sitename;
-                $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl) - 1);
                 $rendererArgs['reginfo'] = $reginfo;
                 $rendererArgs['createdpassword'] = $passwordCreatedForUser;
                 $rendererArgs['admincreated'] = $createdByAdminOrSubAdmin;

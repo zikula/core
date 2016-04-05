@@ -1,7 +1,7 @@
 {% set verificationurl = path('zikulausersmodule_user_verifyregistration', {"uname":"reginfo.uname","verifycode":"verifycode","urlencode":"urlencode","absolute":"true"}) %}
 <h3>{{ __f('Welcome to %1s!', {"%sub%": sitename}) }}</h3>
 
-<p>{{ __f('Hello! This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {"%email": reginfo.email, "%site": sitename, "%url": siteurl}) }}</p>
+<p>{{ __f('Hello! This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {"%email": reginfo.email, "%site": sitename, "%url": url('home')}) }}</p>
 <p>{{ __('If you did not request a new user account at this web site, please either contact our site administrator, or simply disregard this message.') }}</p>
 
 <p>{{ __('If you did request a new user account, then your request is waiting for you to verify your e-mail address with us.') }}
