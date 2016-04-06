@@ -28,6 +28,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Exception\FatalErrorException;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\UserEvents;
 
 /**
  * Class RegistrationController
@@ -160,11 +161,11 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted()) {
             $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-            $validators = $this->get('event_dispatcher')->dispatch('module.users.ui.validate_edit.new_registration', $event)->getData();
+            $validators = $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_VALIDATE_NEW, $event)->getData();
 
             // Validate the hook
             $hook = new ValidationHook($validators);
-            $this->get('hook_dispatcher')->dispatch('users.ui_hooks.registration.validate_edit', $hook);
+            $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_REGISTRATION_VALIDATE, $hook);
             $validators = $hook->getValidators();
 
             if ($form->isValid() && !$validators->hasErrors()) {
@@ -211,87 +212,35 @@ class RegistrationController extends AbstractController
 
                     // Allow hook-like events to process the registration...
                     $event = new GenericEvent($registeredObj);
-                    $this->get('event_dispatcher')->dispatch('module.users.ui.process_edit.new_registration', $event);
+                    $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_PROCESS_NEW, $event);
 
                     // ...and hooks to process the registration.
                     $hook = new ProcessHook($registeredObj['uid']);
-                    $this->get('hook_dispatcher')->dispatch('users.ui_hooks.registration.process_edit', $hook);
+                    $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_REGISTRATION_PROCESS, $hook);
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's
                     // activated status, whether registrations are moderated, whether e-mail addresses need to be verified,
                     // and other sundry conditions.
-                    if ($registeredObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) {
-                        // The account is saved and is pending either moderator approval, e-mail verification, or both.
-                        $moderation = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
-                        $moderationOrder = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
-                        $verifyEmail = $this->getVar(UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE, UsersConstant::DEFAULT_REGISTRATION_VERIFICATION_MODE);
-
-                        if (!empty($registeredObj['regErrors'])) {
-                            // There were errors. This message takes precedence.
-                            $this->addFlash('error', $this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
-                        } elseif ($moderation && ($verifyEmail != UsersConstant::VERIFY_NO)) {
-                            // Pending both moderator approval, and e-mail verification. Set the appropriate message
-                            // based on the order of approval/verification set.
-                            if ($moderationOrder == UsersConstant::APPROVAL_AFTER) {
-                                // Verification then approval.
-                                $this->addFlash('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message. Your account will not be approved until after the verification process is completed.'));
-                            } elseif ($moderationOrder == UsersConstant::APPROVAL_BEFORE) {
-                                // Approval then verification.
-                                $this->addFlash('status', $this->__('Done! Your registration request has been saved. Remember that your request must be approved and your e-mail address must be verified before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
-                            } else {
-                                // Approval and verification in any order.
-                                $this->addFlash('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
-                            }
-                        } elseif ($moderation) {
-                            // Pending moderator approval only.
-                            $this->addFlash('status', $this->__('Done! Your registration request has been saved. Remember that your request must be approved before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
-                        } elseif ($verifyEmail != UsersConstant::VERIFY_NO) {
-                            // Pending e-mail address verification only.
-                            $this->addFlash('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
-                        } else {
-                            // Some unknown state! Should never get here, but just in case...
-                            $this->addFlash('error', $this->__('Your registration request has been saved, however your current registration status could not be determined. Please contact the site administrator regarding the status of your request.'));
-                        }
-                    } elseif ($registeredObj['activated'] == UsersConstant::ACTIVATED_ACTIVE) {
-                        // The account is saved, and is active (no moderator approval, no e-mail verification, and the user can log in now).
-                        if (!empty($registeredObj['regErrors'])) {
-                            // Errors. This message takes precedence.
-                            $this->addFlash('error', $this->__('Your account has been created and you may now log in, however the problems listed below were detected during the registration process. Please contact the site administrator for more information.'));
-                        } elseif ($this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
-                            // No errors and auto-login is turned on. A simple post-log-in message.
-                            $this->addFlash('status', $this->__('Done! Your account has been created.'));
-                        } else {
-                            // No errors, and no auto-login. A simple message telling the user he may log in.
-                            $this->addFlash('status', $this->__('Done! Your account has been created and you may now log in.'));
-                        }
-                        $canLogIn = true;
-                    } else {
-                        // Shouldn't really get here out of the registration process, but cover all the bases.
-                        $this->addFlash('error', $this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
-                        $registeredObj['regErrors'] = $this->__('Your account status will not permit you to log in at this time. Please contact the site administrator for more information.');
-                    }
+                    $canLogIn = $this->generateFlashMessage($registeredObj);
 
                     // Notify that we are completing a registration session.
                     $arguments = ['redirecturl' => $redirectUrl];
                     $event = new GenericEvent($registeredObj, $arguments);
-                    $event = $this->get('event_dispatcher')->dispatch('module.users.ui.registration.succeeded', $event);
+                    $event = $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_SUCCEEDED, $event);
                     $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
                     // Set up the next state to follow this one, along with any data needed.
                     if ($canLogIn && $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
                         // Next is auto-login.
                         $post = [
+                            'csrftoken' => $this->get('zikula_core.common.csrf_token_handler')->generate(),
                             'authentication_method' => $selectedAuthenticationMethod,
                             'authentication_info' => $authenticationInfo,
                             'rememberme' => false,
                             'returnpage' => $this->get('router')->generate('home'),
                         ];
 
-                        $subRequest = $request->duplicate([], $post, ['_controller' => 'ZikulaUsersModule:User:login']);
-                        $httpKernel = $this->get('http_kernel');
-                        $response = $httpKernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
-
-                        return $response;
+                        return $this->forward('ZikulaUsersModule:User:login', [], [], $post);
                     } elseif (!empty($redirectUrl)) {
                         // No auto-login, but a redirect URL, so send the user there next.
                         return $this->redirect($redirectUrl);
@@ -311,7 +260,7 @@ class RegistrationController extends AbstractController
                     // Notify that we are completing a registration session.
                     $arguments = ['redirecturl' => $redirectUrl];
                     $event = new GenericEvent(null, $arguments);
-                    $event = $this->get('event_dispatcher')->dispatch('module.users.ui.registration.failed', $event);
+                    $event = $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_FAILED, $event);
                     $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
                     // Set the next state to folllow this one.
@@ -327,8 +276,7 @@ class RegistrationController extends AbstractController
         }
 
         // Notify that we are beginning a registration session.
-        $event = new GenericEvent();
-        $this->get('event_dispatcher')->dispatch('module.users.ui.registration.started', $event);
+        $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_STARTED, new GenericEvent());
 
         // display the registration form
         return $this->render('@ZikulaUsersModule/Registration/register.html.twig', [
@@ -465,5 +413,70 @@ class RegistrationController extends AbstractController
         if (!empty($illegalUserAgents) && preg_match("/^({$illegalUserAgents})/iD", $userAgent)) {
             throw new AccessDeniedException($this->__('Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'));
         }
+    }
+
+    /**
+     * Add flash message to session based on registration results.
+     *
+     * @param $registeredObj
+     * @return bool
+     */
+    private function generateFlashMessage(array $registeredObj)
+    {
+        if ($registeredObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) {
+            // The account is saved and is pending either moderator approval, e-mail verification, or both.
+            $moderation = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
+            $moderationOrder = $this->getVar(UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
+            $verifyEmail = $this->getVar(UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE, UsersConstant::DEFAULT_REGISTRATION_VERIFICATION_MODE);
+
+            if (!empty($registeredObj['regErrors'])) {
+                // There were errors. This message takes precedence.
+                $this->addFlash('error', $this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
+            } elseif ($moderation && ($verifyEmail != UsersConstant::VERIFY_NO)) {
+                // Pending both moderator approval, and e-mail verification. Set the appropriate message
+                // based on the order of approval/verification set.
+                if ($moderationOrder == UsersConstant::APPROVAL_AFTER) {
+                    // Verification then approval.
+                    $this->addFlash('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message. Your account will not be approved until after the verification process is completed.'));
+                } elseif ($moderationOrder == UsersConstant::APPROVAL_BEFORE) {
+                    // Approval then verification.
+                    $this->addFlash('status', $this->__('Done! Your registration request has been saved. Remember that your request must be approved and your e-mail address must be verified before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
+                } else {
+                    // Approval and verification in any order.
+                    $this->addFlash('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
+                }
+            } elseif ($moderation) {
+                // Pending moderator approval only.
+                $this->addFlash('status', $this->__('Done! Your registration request has been saved. Remember that your request must be approved before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
+            } elseif ($verifyEmail != UsersConstant::VERIFY_NO) {
+                // Pending e-mail address verification only.
+                $this->addFlash('status', $this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
+            } else {
+                // Some unknown state! Should never get here, but just in case...
+                $this->addFlash('error', $this->__('Your registration request has been saved, however your current registration status could not be determined. Please contact the site administrator regarding the status of your request.'));
+            }
+
+            return false;
+        } elseif ($registeredObj['activated'] == UsersConstant::ACTIVATED_ACTIVE) {
+            // The account is saved, and is active (no moderator approval, no e-mail verification, and the user can log in now).
+            if (!empty($registeredObj['regErrors'])) {
+                // Errors. This message takes precedence.
+                $this->addFlash('error', $this->__('Your account has been created and you may now log in, however the problems listed below were detected during the registration process. Please contact the site administrator for more information.'));
+            } elseif ($this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
+                // No errors and auto-login is turned on. A simple post-log-in message.
+                $this->addFlash('status', $this->__('Done! Your account has been created.'));
+            } else {
+                // No errors, and no auto-login. A simple message telling the user he may log in.
+                $this->addFlash('status', $this->__('Done! Your account has been created and you may now log in.'));
+            }
+
+            return true;
+        } else {
+            // Shouldn't really get here out of the registration process, but cover all the bases.
+            $this->addFlash('error', $this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
+            $registeredObj['regErrors'] = $this->__('Your account status will not permit you to log in at this time. Please contact the site administrator for more information.');
+        }
+
+        return false;
     }
 }
