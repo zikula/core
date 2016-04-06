@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractBundle;
@@ -186,5 +187,24 @@ abstract class AbstractController extends Controller
     public function hasPermission($component = null, $instance = null, $level = null, $user = null)
     {
         return $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, $level, $user);
+    }
+
+    /**
+     * Forwards the request to another controller.
+     * Overrides parent::forward() to add request parameters.
+     *
+     * @param string $controller The controller name (a string like BlogBundle:Post:index)
+     * @param array  $path       An array of path parameters
+     * @param array  $query      An array of query parameters
+     * @param array  $request    An array of request parameters
+     *
+     * @return Response A Response instance
+     */
+    public function forward($controller, array $path = array(), array $query = array(), array $request = array())
+    {
+        $path['_controller'] = $controller;
+        $subRequest = $this->container->get('request_stack')->getCurrentRequest()->duplicate($query, $request, $path);
+
+        return $this->container->get('http_kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }
 }

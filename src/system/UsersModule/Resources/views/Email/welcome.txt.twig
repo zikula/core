@@ -8,7 +8,7 @@
 {{ __('User name') }}: {{ reginfo.uname }}
 {% if createdpassword is not empty %}
 {{ __('Password') }}: {{ createdpassword }}
-{% elseif reginfo.passreminder is not empty %}
+{% elseif reginfo.passreminder is defined and not empty %}
 {{ __('Password reminder') }}: {{ reginfo.passreminder }}
 {% endif %}
 
