@@ -28,7 +28,7 @@
 {{ __f('User name: %sub%', {"%sub%": reginfo.uname}) }}
 {% if createdpassword is not empty %}
 {{ __f('Password: %sub%', {"%sub%": createdpassword}) }}
-{% elseif reginfo.passreminder is defined and not empty %}
+{% elseif reginfo.passreminder|default %}
 {{ __f('Password reminder: %sub%', {"%sub%": reginfo.passreminder}) }}
 {% endif %}
 
