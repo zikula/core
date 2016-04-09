@@ -100,6 +100,8 @@ class RegistrationHelper
 
     /**
      * Create a new user or registration.
+     * @todo used in \Zikula\UsersModule\Controller\AdminController::newUserAction() NEEDS REFACTORING
+     * @todo FYI used in \Zikula\UsersModule\Controller\RegistrationController::registerAction() correctly
      *
      * This is the primary and almost exclusive method for creating new user accounts, and the primary and
      * exclusive method for creating registration applications that are either pending approval, pending e-mail
@@ -112,18 +114,7 @@ class RegistrationHelper
      * All information provided to this function is in the form of registration data, even if it is expected that
      * the end result will be a fully active user account.
      *
-     * @param array   $reginfo {
-     *     @type integer   $uid          If the information is for a new user registration, then this should not be set. Otherwise,
-     *                                   the uid of the registration record.
-     *     @type string    $uname        The user name for the registering user.
-     *     @type string    $pass         The password for the registering user.
-     *     @type string    $passreminder The password reminder for the registering user.
-     *     @type string    $email        The e-mail address for the registering user.
-     *     @type bool|null $isverified   This will overwrite the verification status. Do not specify to calculate
-     *                                   it automatically.
-     *     @type bool|null $isapproved   This will overwrite the approval status. Do not specify to calculate
-     *                                   it automatically.
-     *                        }
+     * @param UserEntity   $userEntity
      * @param boolean $userMustVerify
      * @param boolean $userNotification
      * @param boolean $adminNotification
@@ -137,7 +128,7 @@ class RegistrationHelper
      * @throws \LogicException Thrown if registration is disabled.
      * @throws \InvalidArgumentException Thrown if reginfo is invalid
      */
-    public function registerNewUser(array $reginfo, $userMustVerify = false, $userNotification = true, $adminNotification = true, $sendPassword = false)
+    public function registerNewUser(UserEntity $userEntity, $userMustVerify = false, $userNotification = true, $adminNotification = true, $sendPassword = false)
     {
         $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
@@ -147,34 +138,38 @@ class RegistrationHelper
             throw new \LogicException($registrationUnavailableReason);
         }
 
-        if (!isset($reginfo['isverified'])) {
-            $adminWantsVerification = $isAdminOrSubAdmin && $userMustVerify || !isset($reginfo['pass']) || empty($reginfo['pass']);
-            $reginfo['isverified'] = ($isAdminOrSubAdmin && !$adminWantsVerification) || (!$isAdminOrSubAdmin && ($this->variableApi->get('ZikulaUsersModule', 'reg_verifyemail') == UsersConstant::VERIFY_NO));
+        /**
+         * @TODO 'isverified' and 'isapproved' are not entity properties and won't work. NEED to refactor this first.
+         */
+        if (!isset($userEntity['isverified'])) {
+            $adminWantsVerification = $isAdminOrSubAdmin && $userMustVerify || '' == $userEntity->getPass();
+            $userEntity['isverified'] = ($isAdminOrSubAdmin && !$adminWantsVerification) || (!$isAdminOrSubAdmin && ($this->variableApi->get('ZikulaUsersModule', 'reg_verifyemail') == UsersConstant::VERIFY_NO));
         }
-        if (!isset($reginfo['isapproved'])) {
-            $reginfo['isapproved'] = $isAdminOrSubAdmin || !$this->variableApi->get('ZikulaUsersModule', 'moderation', false);
+        if (!isset($userEntity['isapproved'])) {
+            $userEntity['isapproved'] = $isAdminOrSubAdmin || !$this->variableApi->get('ZikulaUsersModule', 'moderation', false);
         }
 
-        $createRegistration = !$reginfo['isapproved'] || !$reginfo['isverified'];
+        $createRegistration = !$userEntity['isapproved'] || !$userEntity['isverified'];
 
         if ($sendPassword) {
             // Function called by admin adding user/reg, administrator created the password; no approval needed, so must need verification.
-            $passwordCreatedForUser = $reginfo['pass'];
+            $passwordCreatedForUser = $userEntity->getPass();
         } else {
             $passwordCreatedForUser = '';
         }
 
-        if (isset($reginfo['pass']) && !empty($reginfo['pass']) && ($reginfo['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
-            $reginfo['pass'] = \UserUtil::getHashedPassword($reginfo['pass']);
+        if (('' != $userEntity->getPass()) && (UsersConstant::PWD_NO_USERS_AUTHENTICATION != $userEntity->getPass())) {
+            $hashedPassword = \UserUtil::getHashedPassword($userEntity->getPass());
+            $userEntity->setPass($hashedPassword);
         }
 
         // Dispatch to the appropriate function, depending on whether a registration record or a full user record is needed.
         if ($createRegistration) {
             // We need a registration record
-            $registeredObj = $this->createRegistration($reginfo, $userNotification, $adminNotification, $passwordCreatedForUser);
+            $registeredObj = $this->createRegistration($userEntity->toArray(), $userNotification, $adminNotification, $passwordCreatedForUser);
         } else {
             // Everything is in order for a full user record
-            $registeredObj = $this->createUser($reginfo, $userNotification, $adminNotification, $passwordCreatedForUser);
+            $registeredObj = $this->createUser($userEntity->toArray(), $userNotification, $adminNotification, $passwordCreatedForUser);
         }
 
         return $registeredObj;
@@ -315,10 +310,6 @@ class RegistrationHelper
         // we will persist them to the database after the user record is created
         $attributes = $userObj['__ATTRIBUTES__'];
         unset($userObj['__ATTRIBUTES__']);
-        if (isset($userObj['antispamanswer'])) {
-            // @todo remove this when mapping is removed
-            unset($userObj['antispamanswer']);
-        }
 
         // ATTENTION: Do NOT issue an item-create hook at this point! The record is a pending
         // registration, not a user, so a user account record has really not yet been "created".
