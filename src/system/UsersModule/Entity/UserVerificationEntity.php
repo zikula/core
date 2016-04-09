@@ -199,10 +199,14 @@ class UserVerificationEntity extends EntityAccess
     /**
      * set the created date for the user verification
      *
-     * @param datetime $created_dt the user verification's created date
+     * @param string|\DateTime $created_dt the user verification's created date
      */
     public function setCreated_Dt($created_dt)
     {
-        $this->created_dt = new \DateTime($created_dt);
+        if ($created_dt instanceof \DateTime) {
+            $this->created_dt = $created_dt;
+        } else {
+            $this->created_dt = new \DateTime($created_dt);
+        }
     }
 }

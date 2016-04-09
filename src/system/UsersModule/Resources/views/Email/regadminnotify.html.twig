@@ -1,4 +1,4 @@
-{% if not reginfo.isapproved %}
+{% if not reginfo.isApproved %}
     {% set heading = __('New registration pending approval') %}
 {% elseif (not reginfo.isverified) %}
     {% set heading = __('New registration pending e-mail verification') %}

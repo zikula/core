@@ -25,4 +25,6 @@ interface UserVerificationRepositoryInterface
     public function purgeExpiredRecords($daysOld);
 
     public function findOneBy(array $criteria, array $orderBy = null);
+
+    public function resetVerifyChgFor($uid, $types = null);
 }

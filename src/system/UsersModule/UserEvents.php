@@ -24,4 +24,8 @@ class UserEvents
 
     const HOOK_REGISTRATION_VALIDATE = 'users.ui_hooks.registration.validate_edit';
     const HOOK_REGISTRATION_PROCESS = 'users.ui_hooks.registration.process_edit';
+
+    const CREATE_REGISTRATION = 'user.registration.create';
+    const DELETE_REGISTRATION = 'user.registration.delete';
+    const CREATE_ACCOUNT = 'user.account.create';
 }

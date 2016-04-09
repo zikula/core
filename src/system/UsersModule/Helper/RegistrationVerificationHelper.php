@@ -17,7 +17,9 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\Repository\UserRepository;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Entity\UserVerificationEntity;
 
 class RegistrationVerificationHelper
@@ -39,6 +41,14 @@ class RegistrationVerificationHelper
      * @var UserVerificationRepositoryInterface
      */
     private $userVerificationRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+    /**
+     * @var NotificationHelper
+     */
+    private $notificationHelper;
 
     /**
      * RegistrationHelper constructor.
@@ -47,19 +57,25 @@ class RegistrationVerificationHelper
      * @param PermissionApi $permissionApi
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param TranslatorInterface $translator
+     * @param UserRepository $userRepository
+     * @param NotificationHelper $notificationHelper
      */
     public function __construct(
         VariableApi $variableApi,
         SessionInterface $session,
         PermissionApi $permissionApi,
         UserVerificationRepositoryInterface $userVerificationRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        UserRepository $userRepository,
+        NotificationHelper $notificationHelper
     ) {
         $this->variableApi = $variableApi;
         $this->session = $session;
         $this->permissionApi = $permissionApi;
         $this->userVerificationRepository = $userVerificationRepository;
         $this->setTranslator($translator);
+        $this->userRepository = $userRepository;
+        $this->notificationHelper = $notificationHelper;
     }
 
     public function setTranslator($translator)
@@ -70,8 +86,7 @@ class RegistrationVerificationHelper
     /**
      * Creates, saves and sends a registration e-mail address verification code.
      *
-     * @param array $reginfo An array containing a valid registration record; optional; if not set, then $uid must
-     *                                be set and point to a valid registration record.
+     * @param UserEntity $userEntity  optional; if not set, then $uid must be set and point to a valid registration record.
      * @param int $uid The uid of a valid registration record; optional; if not set, then $reginfo must be set and valid.
      * @param bool $force Indicates that a verification code should be sent, even if the Users module configuration is
      *                                set not to verify e-mail addresses; optional; only has an effect if the current user is
@@ -79,7 +94,7 @@ class RegistrationVerificationHelper
      * @param array $rendererArgs Optional arguments to send to the Zikula_View instance while rendering the e-mail message.
      * @return bool True on success; otherwise false.
      */
-    public function sendVerificationCode(array $reginfo = null, $uid = null, $force = null, array $rendererArgs = [])
+    public function sendVerificationCode(UserEntity $userEntity = null, $uid = null, $force = null, array $rendererArgs = [])
     {
         // In the future, it is possible we will add a feature to allow a newly registered user to resend
         // a new verification code to himself after doing a login-like process with information from  his
@@ -90,24 +105,18 @@ class RegistrationVerificationHelper
             throw new AccessDeniedException();
         }
 
-        if (isset($reginfo)) {
-            // Got a full reginfo record
-            if (!is_array($reginfo)) {
-                throw new \InvalidArgumentException($this->translator->__('Invalid arguments array received'));
-            }
-            if (!$reginfo || !is_array($reginfo) || !isset($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
-                throw new \InvalidArgumentException($this->translator->__('Invalid arguments array received'));
-            }
-        } elseif (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
+        if (!isset($userEntity) && (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid))) {
             throw new \InvalidArgumentException($this->translator->__('Invalid arguments array received'));
         } else {
-            // Got just a uid.
-            $reginfo = \UserUtil::getVars($uid, false, 'uid', true);
-            if (!$reginfo || empty($reginfo)) {
-                throw new \RuntimeException($this->translator->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+            if (!isset($userEntity)) {
+                // Got just a uid.
+                $userEntity = $this->userRepository->find($uid);
             }
-            if (!isset($reginfo['email'])) {
-                throw new \InvalidArgumentException($this->translator->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
+            if (!isset($userEntity)) {
+                throw new \RuntimeException($this->translator->__f('Error! Unable to retrieve registration record with uid \'%uid\'', ['%uid' => $uid]));
+            }
+            if (null == $userEntity->getEmail() || '' == $userEntity->getEmail()) {
+                throw new \InvalidArgumentException($this->translator->__f('Error! The registration record with uid \'%uid%\' does not contain an e-mail address.', ['%uid' => $userEntity->getUid()]));
             }
         }
 
@@ -117,50 +126,37 @@ class RegistrationVerificationHelper
             $forceVerification = false;
         }
 
-        $approvalOrder = $this->variableApi->get('ZikulaUsersModule', 'moderation_order', UsersConstant::APPROVAL_BEFORE);
+        $approvalOrder = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::APPROVAL_BEFORE);
 
         // Set the verification code
         if (isset($reginfo['isverified']) && $reginfo['isverified']) {
-            throw new \InvalidArgumentException($this->translator->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
+            throw new \InvalidArgumentException($this->translator->__f('Error! A verification code cannot be sent for the registration record for \'%name%\'. It is already verified.', ['%name%' => $userEntity->getUname()]));
         } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_BEFORE) && isset($reginfo['approvedby']) && !empty($reginfo['approved_by'])) {
-            throw new \InvalidArgumentException($this->translator->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
+            throw new \InvalidArgumentException($this->translator->__f('Error! A verification code cannot be sent for the registration record for \'%name%\'. It must first be approved.', ['%name%' => $userEntity->getUname()]));
         }
 
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $verificationCode = \UserUtil::generatePassword();
 
-        \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'resetVerifyChgFor', [
-            'uid' => $reginfo['uid'],
-            'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
-        ]);
+        $this->userVerificationRepository->resetVerifyChgFor($userEntity->getUid(), UsersConstant::VERIFYCHGTYPE_REGEMAIL);
 
         $verifyChgObj = new UserVerificationEntity();
-        $verifyChgObj['changetype'] = UsersConstant::VERIFYCHGTYPE_REGEMAIL;
-        $verifyChgObj['uid'] = $reginfo['uid'];
-        $verifyChgObj['newemail'] = $reginfo['email'];
-        $verifyChgObj['verifycode'] = \UserUtil::getHashedPassword($verificationCode);
-        $verifyChgObj['created_dt'] = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
+        $verifyChgObj->setChangetype(UsersConstant::VERIFYCHGTYPE_REGEMAIL);
+        $verifyChgObj->setUid($userEntity->getUid());
+        $verifyChgObj->setNewemail($userEntity->getEmail());
+        $verifyChgObj->setVerifycode(\UserUtil::getHashedPassword($verificationCode));
+        $verifyChgObj->setCreated_Dt($nowUTC);
         $this->userVerificationRepository->persistAndFlush($verifyChgObj);
 
-        if (empty($rendererArgs)) {
-            $siteurl = \System::getBaseUrl();
-
-            $rendererArgs = [];
-            $rendererArgs['sitename'] = \System::getVar('sitename');
-            $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl) - 1);
-        }
-        $rendererArgs['reginfo'] = $reginfo;
+        $rendererArgs['sitename'] = \System::getVar('sitename');
+        $rendererArgs['reginfo'] = $userEntity;
         $rendererArgs['verifycode'] = $verificationCode;
         $rendererArgs['approvalorder'] = $approvalOrder;
 
-        $codeSent = \ModUtil::apiFunc('ZikulaUsersModule', 'user', 'sendNotification', [
-            'toAddress' => $reginfo['email'],
-            'notificationType' => 'regverifyemail',
-            'templateArgs' => $rendererArgs,
-        ]);
+        $codeSent = $this->notificationHelper->sendNotification($userEntity->getEmail(), 'regverifyemail', $rendererArgs);
 
         if ($codeSent) {
-            return $verifyChgObj['created_dt'];
+            return $verifyChgObj->getCreated_Dt();
         } else {
             $this->userVerificationRepository->removeAndFlush($verifyChgObj);
 
@@ -216,10 +212,10 @@ class RegistrationVerificationHelper
             // Got just a uid.
             $reginfo = \UserUtil::getVars($uid, false, 'uid', true);
             if (!$reginfo || empty($reginfo)) {
-                throw new \RuntimeException($this->translator->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+                throw new \RuntimeException($this->translator->__f('Error! Unable to retrieve registration record with uid \'%uid\'', ['%uid' => $uid]));
             }
             if (!isset($reginfo['email'])) {
-                throw new \InvalidArgumentException($this->translator->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
+                throw new \InvalidArgumentException($this->translator->__f('Error! The registration record with uid \'%uid\' does not contain an e-mail address.', ['%uid' => $uid]));
             }
         }
 
@@ -229,7 +225,8 @@ class RegistrationVerificationHelper
             'uid' => $reginfo['uid'],
             'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
         ]);
-
+//        $this->userVerificationRepository->resetVerifyChgFor($userEntity->getUid(), UsersConstant::VERIFYCHGTYPE_REGEMAIL);
+//
         $reginfo = \UserUtil::getVars($reginfo['uid'], true, 'uid', true);
 
         // @todo move this createUser call to follow verify where it is used.
