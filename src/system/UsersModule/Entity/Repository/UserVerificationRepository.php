@@ -71,4 +71,29 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
     {
         return parent::findOneBy($criteria, $orderBy);
     }
+
+    /**
+     * Removes a record from the users_verifychg table for a specified uid and changetype.
+     *
+     * @param integer $uid The uid of the verifychg record to remove. Required.
+     * @param int|array $types The changetype(s) of the verifychg record to remove. If more
+     *                         than one type is to be removed, use an array. Optional. If
+     *                         not specifed, all verifychg records for the user will be
+     *                         removed. Note: specifying an empty array will remove none.
+     * @return array
+     */
+    public function resetVerifyChgFor($uid, $types = null)
+    {
+        $qb = $this->createQueryBuilder('v')
+            ->delete()
+            ->where('v.uid = :uid')
+            ->setParameter('uid', $uid);
+        if (isset($types)) {
+            $qb->andWhere($qb->expr()->in('v.changetype', ':changeType'))
+                ->setParameter('changeType', $types);
+        }
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }

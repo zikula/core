@@ -5,7 +5,7 @@
 <p>{{ __('If you did not request a new user account at this web site, please either contact our site administrator, or simply disregard this message.') }}</p>
 
 <p>{{ __('If you did request a new user account, then your request is waiting for you to verify your e-mail address with us.') }}
-{% if not reginfo.isapproved %}{{ __('Your request is also waiting for administrator approval.') }}
+{% if not reginfo.isApproved %}{{ __('Your request is also waiting for administrator approval.') }}
 {% if approvalorder == constant('Zikula\\UsersModule\\Constant::APPROVAL_AFTER') %}{{ __('We will not be able to approve your request until after you have completed this verification step.') }}{% endif %}
 {{ __('Once both this verification step is complete and an administrator has approved your request, you will be able to log in with your user name.') }}{% endif %}</p>
 
@@ -16,7 +16,7 @@
 <p>{{ __('Your verification code is:') }} {{ verifycode }}</p>
 
 <p>
-    {% if not reginfo.isapproved %}
+    {% if not reginfo.isApproved %}
         {{ __('Once verified and your account has been approved, then you will be able to log in.') }}
     {% elseif reginfo.pass is empty %}
         {{ __('Once verified, you will be able to choose a password and then log in.') }}
@@ -36,6 +36,6 @@
 
 {% if createdpassword is not empty %}<p>{{ __('(This is the only time you will receive your password. Please keep it in a safe place.)') }}</p>{% endif %}
 
-{% if not reginfo.isapproved %}
+{% if not reginfo.isApproved %}
     <p>{{ __('Remember: both this verification step and approval from an administrator must be completed before you can log in.') }} {{ __('You will receive an additional e-mail message once an administrator has reviewed your request.') }}</p>
 {% endif %}

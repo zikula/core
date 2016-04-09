@@ -14,7 +14,7 @@
 
 {% if createdpassword is not empty %}{{ __('(This is the only time you will receive your password. Please keep it in a safe place.)') }}{% endif %}
 
-{% if not reginfo.isapproved %}
+{% if not reginfo.isApproved %}
 {{ __('Thank you for your application for a new account. Your application has been forwarded to the site administrator for review. Please expect a message once the review process is complete.') }}
 {% elseif not admincreated %}
 {{ __('Your account application has been approved. Thank you for your patience during the new account application review process.') }}
@@ -22,8 +22,8 @@
 {{ __('The web site administrator has created this new account for you.') }}
 {% endif %}
 
-{% if reginfo.isapproved and reginfo.pass != PWD_NO_USERS_AUTHENTICATION %}
+{% if reginfo.isApproved and reginfo.pass != PWD_NO_USERS_AUTHENTICATION %}
 {{ __('You may now log into the web site with your user name and password.') }}
-{% elseif reginfo.isapproved and reginfo.pass == PWD_NO_USERS_AUTHENTICATION %}
+{% elseif reginfo.isApproved and reginfo.pass == PWD_NO_USERS_AUTHENTICATION %}
 {{ __('You may now log into the web site.') }}
 {% endif %}

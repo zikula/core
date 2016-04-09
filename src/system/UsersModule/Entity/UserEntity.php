@@ -395,9 +395,12 @@ class UserEntity extends EntityAccess
         $this->approved_by = $approved_by;
     }
 
+    /**
+     * @return bool
+     */
     public function isApproved()
     {
-        return $this->approved_by == 0;
+        return $this->approved_by != 0;
     }
 
     /**
@@ -553,11 +556,16 @@ class UserEntity extends EntityAccess
     /**
      * get the attributes of the user
      *
-     * @return UserAttributeEntity the user's attributes
+     * @return ArrayCollection UserAttributeEntity[] of the user's attributes
      */
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    public function getAttributeValue($name)
+    {
+        return $this->getAttributes()->get($name)->getValue();
     }
 
     /**

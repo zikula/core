@@ -35,6 +35,8 @@
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <argument type="service" id="zikula_users_module.user_verification_repository" />
             <argument type="service" id="translator.default" />
+            <argument type="service" id="zikula_users_module.user_repository" />
+            <argument type="service" id="zikulausersmodule.helper.notification_helper" />
         </service>
         <service id="zikulausersmodule.helper.notification_helper" class="%zikulausersmodule.helper.notification_helper.class%">
             <argument type="service" id="translator.default" />
