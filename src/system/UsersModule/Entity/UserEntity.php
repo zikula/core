@@ -12,14 +12,19 @@ namespace Zikula\UsersModule\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\UsersModule\Validator\Constraints as ZikulaAssert;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 /**
  * User entity class.
  *
  * @ORM\Entity(repositoryClass="Zikula\UsersModule\Entity\Repository\UserRepository")
  * @ORM\Table(name="users",indexes={@ORM\Index(name="uname",columns={"uname"}), @ORM\Index(name="email",columns={"email"})})
+ *
+ * @ZikulaAssert\ValidUserFields()
  *
  * Main Users table.
  * Stores core information about each user account.
@@ -38,6 +43,7 @@ class UserEntity extends EntityAccess
     /**
      * User Name: Primary user display name, primary log in identifier.
      *
+     * @ZikulaAssert\ValidUname()
      * @ORM\Column(type="string", length=25)
      */
     private $uname;
@@ -47,6 +53,7 @@ class UserEntity extends EntityAccess
      * For pending registrations awaiting e-mail address verification, this will be an empty string, and the email address for the account will be found in the users_verifychg table.
      * ("Regular" user accounts may also have e-mail addresses pending verification in the users_verifychg table, however those are the result of a request to change the account's address.)
      *
+     * @ZikulaAssert\ValidEmail()
      * @ORM\Column(type="string", length=60)
      */
     private $email;
@@ -57,6 +64,7 @@ class UserEntity extends EntityAccess
      * The hash algorithm is stored as a numeric code in the hash_method field. This field may be blank in instances
      * where the user registered with an alternative authentication module (e.g., OpenID) and did not also establish a password for his web site account.
      *
+     * @ZikulaAssert\ValidPassword()
      * @ORM\Column(type="string", length=138)
      */
     private $pass;
@@ -65,12 +73,14 @@ class UserEntity extends EntityAccess
      * Password reminder: Set during registration or password changes, to remind the user what his password is.
      *
      * This field may be blank if pass is blank.
+     *
+     * @ZikulaAssert\ValidPasswordReminder()
      * @ORM\Column(type="string", length=255)
      */
     private $passreminder;
 
     /**
-     * Account State: The user's current state, see UsersConstant::ACTIVE_* for defined constants.
+     * Account State: The user's current state, see \Zikula\UsersModule\Constant::ACTIVATED_* for defined constants.
      * A state represented by a negative integer means that the user's account is in a pending state, and should not yet be considered a "real" user account.
      * For example, user accounts pending the completion of the registration process (because either moderation, e-mail verification, or both are in use)
      * will have a negative integer representing their state. If the user's registration request expires before it the process is completed, or if the administrator
@@ -79,6 +89,7 @@ class UserEntity extends EntityAccess
      * because its state never progressed beyond its pending state, and therefore normal hooks/events may not be triggered
      * (although it is possible that events regarding the pending account may be triggered).
      *
+     * @Assert\Choice(callback = "getActivatedValues")
      * @ORM\Column(type="smallint")
      */
     private $activated;
@@ -93,6 +104,7 @@ class UserEntity extends EntityAccess
      * If SQL date/time functions must be used, then care should be taken to ensure that either the function is time zone neutral,
      * or that the function and its relationship to time zone settings is completely understood.
      *
+     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
     private $approved_date;
@@ -102,6 +114,7 @@ class UserEntity extends EntityAccess
      * If this is the same as the user account's uid, then moderation was not in use at the time the request for a new account was made.
      * If this is -1, the the user account that approved the request has since been deleted. If this is 0, the user account has not yet been approved.
      *
+     * @Assert\Type(type="integer")
      * @ORM\Column(type="integer")
      */
     private $approved_by;
@@ -117,6 +130,7 @@ class UserEntity extends EntityAccess
      * then this will be the date and time the user made the registration request UNTIL the registration process is complete, and then it is updated as above.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
      *
+     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
     private $user_regdate;
@@ -125,6 +139,7 @@ class UserEntity extends EntityAccess
      * Last Login Date/Time: Date/time user last successfully logged into the site.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
      *
+     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
     private $lastlogin;
@@ -132,6 +147,7 @@ class UserEntity extends EntityAccess
     /**
      * User's Theme: The name (identifier) of the per-user theme the user would like to use while viewing the site, when user theme switching is enabled.
      *
+     * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=255)
      */
     private $theme;
@@ -139,6 +155,7 @@ class UserEntity extends EntityAccess
     /**
      * User-defined Block On?: Whether the custom user-defined block is displayed or not (1 == true == displayed)
      *
+     * @Assert\Type(type="integer")
      * @ORM\Column(type="smallint")
      */
     private $ublockon;
@@ -154,6 +171,7 @@ class UserEntity extends EntityAccess
      * User's timezone, as supported by PHP (listed at http://us2.php.net/manual/en/timezones.php), and as expressed by the Olson tz database.
      * Optional, if blank then the system default timezone should be used. [FUTURE USE]
      *
+     * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=30)
      */
     private $tz;
@@ -162,6 +180,7 @@ class UserEntity extends EntityAccess
      * The user's chosen locale for i18n purposes, as defined by gettext, POSIX, and the Common Locale Data Repository;
      * Optional, if blank then the system default locale should be used. [FUTURE USE]
      *
+     * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=5)
      */
     private $locale;
@@ -348,7 +367,12 @@ class UserEntity extends EntityAccess
      */
     public function setApproved_Date($approved_date)
     {
-        $this->approved_date = new \DateTime($approved_date);
+        if ($approved_date instanceof \DateTime) {
+            $this->approved_date = $approved_date;
+        } else {
+            // assume $approved_date is a string.
+            $this->approved_date = new \DateTime($approved_date);
+        }
     }
 
     /**
@@ -371,6 +395,11 @@ class UserEntity extends EntityAccess
         $this->approved_by = $approved_by;
     }
 
+    public function isApproved()
+    {
+        return $this->approved_by == 0;
+    }
+
     /**
      * get the regdate of the user
      *
@@ -388,7 +417,12 @@ class UserEntity extends EntityAccess
      */
     public function setUser_Regdate($user_regdate)
     {
-        $this->user_regdate = new \DateTime($user_regdate);
+        if ($user_regdate instanceof \DateTime) {
+            $this->user_regdate = $user_regdate;
+        } else {
+            // assume $user_regdate is a string
+            $this->user_regdate = new \DateTime($user_regdate);
+        }
     }
 
     /**
@@ -408,7 +442,12 @@ class UserEntity extends EntityAccess
      */
     public function setLastlogin($lastlogin)
     {
-        $this->lastlogin = new \DateTime($lastlogin);
+        if ($lastlogin instanceof \DateTime) {
+            $this->lastlogin = $lastlogin;
+        } else {
+            // assume $lastlogin is a string
+            $this->lastlogin = new \DateTime($lastlogin);
+        }
     }
 
     /**
@@ -566,6 +605,11 @@ class UserEntity extends EntityAccess
         return $this->groups;
     }
 
+    public function setGroups(ArrayCollection $groups)
+    {
+        $this->groups = $groups;
+    }
+
     /**
      * UserEntity is the 'Owning side'
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html#owning-and-inverse-side-on-a-manytomany-association
@@ -590,5 +634,19 @@ class UserEntity extends EntityAccess
             $group->removeUser($this);
         }
         $this->groups->clear();
+    }
+
+    /**
+     * Callback function used to validate the activated value
+     * @return array
+     */
+    public static function getActivatedValues()
+    {
+        return [
+            UsersConstant::ACTIVATED_ACTIVE,
+            UsersConstant::ACTIVATED_INACTIVE,
+            UsersConstant::ACTIVATED_PENDING_DELETE,
+            UsersConstant::ACTIVATED_PENDING_REG
+        ];
     }
 }

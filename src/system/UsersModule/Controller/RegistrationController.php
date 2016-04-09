@@ -18,7 +18,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
@@ -28,6 +27,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Exception\FatalErrorException;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\UserEvents;
 
 /**
@@ -148,7 +148,7 @@ class RegistrationController extends AbstractController
         $authenticationInfo = json_decode($request->request->get('authentication_info_ser', false), true); // in register.twig.html
 
         $form = $this->createForm('Zikula\UsersModule\Form\Type\RegistrationType',
-            [],
+            new UserEntity(),
             [
                 'translator' => $this->get('translator.default'),
                 'passwordReminderEnabled' => $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED),
@@ -170,11 +170,8 @@ class RegistrationController extends AbstractController
 
             if ($form->isValid() && !$validators->hasErrors()) {
                 // No errors, process the form data.
-                $canLogIn = false;
                 $redirectUrl = '';
-                $reginfo = $form->getData();
-
-                $registeredObj = $this->get('zikulausersmodule.helper.registration_helper')->registerNewUser($reginfo);
+                $registeredObj = $this->get('zikulausersmodule.helper.registration_helper')->registerNewUser($form->getData());
 
                 if (isset($registeredObj) && $registeredObj) {
                     // The main registration completed successfully.
@@ -221,7 +218,9 @@ class RegistrationController extends AbstractController
                     // Register the appropriate status or error to be displayed to the user, depending on the account's
                     // activated status, whether registrations are moderated, whether e-mail addresses need to be verified,
                     // and other sundry conditions.
-                    $canLogIn = $this->generateFlashMessage($registeredObj);
+                    $canLogIn = $registeredObj['activated'] == UsersConstant::ACTIVATED_ACTIVE;
+                    $autoLogIn = $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN);
+                    $this->generateFlashMessage($registeredObj, $autoLogIn);
 
                     // Notify that we are completing a registration session.
                     $arguments = ['redirecturl' => $redirectUrl];
@@ -230,7 +229,7 @@ class RegistrationController extends AbstractController
                     $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
                     // Set up the next state to follow this one, along with any data needed.
-                    if ($canLogIn && $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
+                    if ($canLogIn && $autoLogIn) {
                         // Next is auto-login.
                         $post = [
                             'csrftoken' => $this->get('zikula_core.common.csrf_token_handler')->generate(),
@@ -418,10 +417,10 @@ class RegistrationController extends AbstractController
     /**
      * Add flash message to session based on registration results.
      *
-     * @param $registeredObj
-     * @return bool
+     * @param array $registeredObj
+     * @param bool $autoLogIn
      */
-    private function generateFlashMessage(array $registeredObj)
+    private function generateFlashMessage(array $registeredObj, $autoLogIn = false)
     {
         if ($registeredObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) {
             // The account is saved and is pending either moderator approval, e-mail verification, or both.
@@ -455,28 +454,22 @@ class RegistrationController extends AbstractController
                 // Some unknown state! Should never get here, but just in case...
                 $this->addFlash('error', $this->__('Your registration request has been saved, however your current registration status could not be determined. Please contact the site administrator regarding the status of your request.'));
             }
-
-            return false;
         } elseif ($registeredObj['activated'] == UsersConstant::ACTIVATED_ACTIVE) {
             // The account is saved, and is active (no moderator approval, no e-mail verification, and the user can log in now).
             if (!empty($registeredObj['regErrors'])) {
                 // Errors. This message takes precedence.
                 $this->addFlash('error', $this->__('Your account has been created and you may now log in, however the problems listed below were detected during the registration process. Please contact the site administrator for more information.'));
-            } elseif ($this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
+            } elseif ($autoLogIn) {
                 // No errors and auto-login is turned on. A simple post-log-in message.
                 $this->addFlash('status', $this->__('Done! Your account has been created.'));
             } else {
                 // No errors, and no auto-login. A simple message telling the user he may log in.
                 $this->addFlash('status', $this->__('Done! Your account has been created and you may now log in.'));
             }
-
-            return true;
         } else {
             // Shouldn't really get here out of the registration process, but cover all the bases.
             $this->addFlash('error', $this->__('Your registration request has been saved, however the problems listed below were detected during the registration process. Please contact the site administrator regarding the status of your request.'));
             $registeredObj['regErrors'] = $this->__('Your account status will not permit you to log in at this time. Please contact the site administrator for more information.');
         }
-
-        return false;
     }
 }
