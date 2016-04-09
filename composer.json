@@ -55,6 +55,7 @@
 
         "acasademont/i18n-routing-bundle": "2.0.0",
         "jms/translation-bundle": "~1.2.0",
+        "nikic/php-parser": "~1.4.0",
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
 
 
