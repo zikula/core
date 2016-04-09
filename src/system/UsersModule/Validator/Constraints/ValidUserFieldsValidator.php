@@ -15,6 +15,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class ValidUserFieldsValidator extends ConstraintValidator
 {
@@ -37,20 +38,20 @@ class ValidUserFieldsValidator extends ConstraintValidator
         $this->translator = $translator;
     }
 
-    public function validate($object, Constraint $constraint)
+    public function validate($userEntity, Constraint $constraint)
     {
-        // @todo the $object will eventually be an actual UserEntity object...
-        if ($object['uname'] == $object['pass']) {
+        /** @var UserEntity $userEntity */
+        if ($userEntity->getUname() == $userEntity->getPass()) {
             $this->context->buildViolation($this->translator->__('The password cannot be the same as the user name. Please choose a different password.'))
-                ->atPath('pass') // @todo not currently working - maybe works when $object becomes the entity
+                ->atPath('pass')
                 ->addViolation();
         }
         if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED)) {
-            $testPass = mb_strtolower(trim($object['pass']));
-            $testPassreminder = mb_strtolower(trim($object['passreminder']));
+            $testPass = mb_strtolower(trim($userEntity->getPass()));
+            $testPassreminder = mb_strtolower(trim($userEntity->getPassreminder()));
             if (!empty($testPass) && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
                 $this->context->buildViolation($this->translator->__('You cannot include your password in your password reminder.'))
-                    ->atPath('passreminder') // @todo not currently working - maybe works when $object becomes the entity
+                    ->atPath('passreminder')
                     ->addViolation();
             }
             // note: removed 'similar' reminder <=> pass comparison from <= Core-1.4.2
