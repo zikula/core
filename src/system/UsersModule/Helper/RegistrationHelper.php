@@ -169,13 +169,13 @@ class RegistrationHelper
         // Dispatch to the appropriate function, depending on whether a registration record or a full user record is needed.
         if (!$userEntity->isApproved() || !$userEntity->getAttributeValue('_Users_isVerified')) {
             // We need a registration record
-            $notificationErrors = $this->createRegistration($userEntity, $userNotification, $adminNotification, $passwordCreatedForUser);
+
+            return $this->createRegistration($userEntity, $userNotification, $adminNotification, $passwordCreatedForUser);
         } else {
             // Everything is in order for a full user record
-            $notificationErrors = $this->createUser($userEntity, $userNotification, $adminNotification, $passwordCreatedForUser);
-        }
 
-        return !empty($notificationErrors) ? $notificationErrors : $userEntity;
+            return $this->createUser($userEntity, $userNotification, $adminNotification, $passwordCreatedForUser);
+        }
     }
 
     /**
@@ -446,7 +446,7 @@ class RegistrationHelper
 
         if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
             $rendererArgs = [];
-            $rendererArgs['sitename'] = $this->variableApi->get(VariableApi::CONFIG, 'sitename');;
+            $rendererArgs['sitename'] = $this->variableApi->get(VariableApi::CONFIG, 'sitename');
             $rendererArgs['reginfo'] = $userEntity;
             $rendererArgs['createdpassword'] = $passwordCreatedForUser;
             $rendererArgs['admincreated'] = $createdByAdminOrSubAdmin;
