@@ -709,7 +709,7 @@ class UserApi extends \Zikula_AbstractApi
                 $links[] = array(
                     'icon' => 'plus',
                     'text'  => $this->__('New account'),
-                    'url'   => $this->getContainer()->get('router')->generate('zikulausersmodule_registration_register')
+                    'url'   => $this->getContainer()->get('router')->generate('zikulausersmodule_registration_selectregistrationmethod')
                 );
             }
         }

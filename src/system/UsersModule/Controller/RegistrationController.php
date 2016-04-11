@@ -122,9 +122,10 @@ class RegistrationController extends AbstractController
         }
         $this->throwExceptionForBannedUserAgents($request);
 
-        // @todo this is currently defaulting to the users module. If the /register-form path is used without going through /register first.
-        // @todo this may not be preferred. Perhaps this should default to [] and then redirect back to /register?
-        $selectedAuthenticationMethod = $request->query->get('authentication_method', ['modname' => 'ZikulaUsersModule', 'method' => 'register']);
+        $selectedAuthenticationMethod = $request->query->get('authentication_method', []);
+        if (empty($selectedAuthenticationMethod)) {
+            return $this->redirectToRoute('zikulausersmodule_registration_selectregistrationmethod');
+        }
 
         /**
          * @todo
@@ -145,7 +146,7 @@ class RegistrationController extends AbstractController
         if ($selectedAuthenticationMethod['modname'] != 'ZikulaUsersModule') {
             $removePasswordReminderValidation = true;
         }
-        $authenticationInfo = json_decode($request->request->get('authentication_info_ser', false), true); // in register.twig.html
+//        $authenticationInfo = json_decode($request->request->get('authentication_info_ser', false), true); // in register.twig.html
 
         $form = $this->createForm('Zikula\UsersModule\Form\Type\RegistrationType',
             new UserEntity(),
@@ -169,19 +170,31 @@ class RegistrationController extends AbstractController
             $validators = $hook->getValidators();
 
             if ($form->isValid() && !$validators->hasErrors()) {
-                // No errors, process the form data.
-                $redirectUrl = '';
-                $result = $this->get('zikulausersmodule.helper.registration_helper')->registerNewUser($form->getData());
+                // No validation errors, process the form data.
+                /** @var UserEntity $userEntity */
+                $userEntity = $form->getData();
+                $clearPassword = $userEntity->getPass();
+                $notificationErrors = $this->get('zikulausersmodule.helper.registration_helper')->registerNewUser($userEntity);
 
-                if ($result instanceof UserEntity) {
-                    $userEntity = $result;
+                if (!empty($notificationErrors)) {
+                    // The main registration process failed.
+                    $this->addFlash('error', $this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
+                    foreach ($notificationErrors as $notificationError) {
+                        $this->addFlash('error', $notificationError);
+                    }
+                    // Notify that we are completing a registration session.
+                    $event = $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_FAILED, new GenericEvent(null, ['redirecturl' => '']));
+                    $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
+
+                    return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
+                } else {
                     // The main registration completed successfully.
                     if ($selectedAuthenticationMethod['modname'] != $this->name) {
                         // The selected authentication module is NOT the Users module, so make sure the user is registered
                         // with the authentication module (associate the Users module record uid with the login information).
                         $arguments = [
                             'authentication_method' => $selectedAuthenticationMethod,
-                            'authentication_info'   => $authenticationInfo,
+//                            'authentication_info'   => $authenticationInfo,
                             'uid'                   => $userEntity->getUid(),
                         ];
                         $authenticationRegistered = \ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'register', $arguments, 'Zikula_Api_AbstractAuthentication');
@@ -190,30 +203,19 @@ class RegistrationController extends AbstractController
 
                             return $this->redirectToRoute('home');
                         }
-                    } elseif ($this->getVar(UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::LOGIN_METHOD_UNAME) == UsersConstant::LOGIN_METHOD_EMAIL) {
-                        // The authentication method IS the Users module, prepare for auto-login.
-                        // The log-in user ID is the user's e-mail address.
-                        $authenticationInfo = [
-                            'login_id' => $userEntity->getEmail(),
-                            // Need the unhashed password here for auto-login
-                            'pass'     => $form->getData()['pass'],
-                        ];
                     } else {
                         // The authentication method IS the Users module, prepare for auto-login.
-                        // The log-in user ID is the user's user name.
+                        $loginMethodIsEmail = $this->getVar(UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::LOGIN_METHOD_UNAME) == UsersConstant::LOGIN_METHOD_EMAIL;
                         $authenticationInfo = [
-                            'login_id' => $userEntity->getUname(),
-                            // Need the unhashed password here for auto-login
-                            'pass'     => $form->getData()['pass'],
+                            'login_id' => $loginMethodIsEmail ? $userEntity->getEmail() : $userEntity->getUname(),
+                            'pass'     => $clearPassword
                         ];
                     }
 
                     // Allow hook-like events to process the registration...
                     $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_PROCESS_NEW, new GenericEvent($userEntity));
-
                     // ...and hooks to process the registration.
-                    $hook = new ProcessHook($userEntity->getUid());
-                    $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_REGISTRATION_PROCESS, $hook);
+                    $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's
                     // activated status, whether registrations are moderated, whether e-mail addresses need to be verified,
@@ -223,11 +225,9 @@ class RegistrationController extends AbstractController
                     $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
 
                     // Notify that we are completing a registration session.
-                    $arguments = ['redirecturl' => $redirectUrl];
-                    $event = $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, $arguments));
-                    $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
+                    $event = $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirecturl' => '']));
+                    $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
 
-                    // Set up the next state to follow this one, along with any data needed.
                     if ($canLogIn && $autoLogIn) {
                         // Next is auto-login.
                         $post = [
@@ -240,48 +240,23 @@ class RegistrationController extends AbstractController
 
                         return $this->forward('ZikulaUsersModule:User:login', [], [], $post);
                     } elseif (!empty($redirectUrl)) {
-                        // No auto-login, but a redirect URL, so send the user there next.
                         return $this->redirect($redirectUrl);
                     } elseif (!$canLogIn) {
                         return $this->redirectToRoute('home');
                     } else {
                         return $this->redirectToRoute('zikulausersmodule_user_login');
                     }
-                } else {
-                    // The main registration process failed.
-                    $this->addFlash('error', $this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
-                    foreach ($request as $notificationError) {
-                        $this->addFlash('error', $notificationError);
-                    }
-
-                    // Notify that we are completing a registration session.
-                    $arguments = ['redirecturl' => $redirectUrl];
-                    $event = new GenericEvent(null, $arguments);
-                    $event = $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_FAILED, $event);
-                    $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
-
-                    // Set the next state to folllow this one.
-                    if (!empty($redirectUrl)) {
-                        // A redirect URL, so send the user there.
-                        return $this->redirect($redirectUrl);
-                    } else {
-                        // No redirect, so send the user to a page to show the current error message.
-                        return $this->redirectToRoute('home');
-                    }
                 }
             }
         }
 
-        // registration form not submitted yet!
-
         // Notify that we are beginning a registration session.
         $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_STARTED, new GenericEvent());
 
-        // display the registration form
         return $this->render('@ZikulaUsersModule/Registration/register.html.twig', [
             'form' => $form->createView(),
             'authentication_method' => $selectedAuthenticationMethod,
-            'authentication_info'   => $authenticationInfo,
+//            'authentication_info'   => $authenticationInfo,
             'registration_info'     => isset($registrationInfo) ? $registrationInfo : [],
             'modvars' => $this->getVars()
         ]);
