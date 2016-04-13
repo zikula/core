@@ -160,6 +160,11 @@ class LinkContainer implements LinkContainerInterface
                 'text' => $this->translator->__('Settings'),
                 'icon' => 'wrench'
             ];
+            $links[] = [
+                'url' => $this->router->generate('zikulausersmodule_config_config'),
+                'text' => $this->translator->__('NEW Settings'),
+                'icon' => 'wrench'
+            ];
         }
 
         return $links;
