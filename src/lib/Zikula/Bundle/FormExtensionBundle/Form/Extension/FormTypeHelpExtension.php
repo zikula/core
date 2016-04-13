@@ -23,10 +23,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Xatoo (http://stackoverflow.com/users/3492835/xatoo)
  * @link http://stackoverflow.com/q/27905939/2600812
- * Class ButtonTypeIconExtension
- * @package Zikula\Bundle\FormExtensionBundle\Form\Extension
  */
-class ButtonTypeIconExtension extends AbstractTypeExtension
+class FormTypeHelpExtension extends AbstractTypeExtension
 {
     /**
      * @param FormBuilderInterface $builder
@@ -34,7 +32,8 @@ class ButtonTypeIconExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->setAttribute('icon', $options['icon']);
+        $builder->setAttribute('help', $options['help'])
+            ->setAttribute('input_group', $options['input_group']);
     }
 
     /**
@@ -44,7 +43,8 @@ class ButtonTypeIconExtension extends AbstractTypeExtension
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['icon'] = $options['icon'];
+        $view->vars['help'] = $options['help'];
+        $view->vars['input_group'] = $options['input_group'];
     }
 
     /**
@@ -53,7 +53,8 @@ class ButtonTypeIconExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'icon' => null,
+            'help' => null,
+            'input_group' => null
         ));
     }
 
@@ -64,6 +65,6 @@ class ButtonTypeIconExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'Symfony\Component\Form\Extension\Core\Type\ButtonType'; // Extend the button field type
+        return 'Symfony\Component\Form\Extension\Core\Type\FormType'; // Extend all field types
     }
 }
