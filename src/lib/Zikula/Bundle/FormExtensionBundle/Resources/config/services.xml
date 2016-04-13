@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="zikula.form.type.locale.class">Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType</parameter>
         <parameter key="zikula.form_extension.icon.class">Zikula\Bundle\FormExtensionBundle\Form\Extension\ButtonTypeIconExtension</parameter>
+        <parameter key="zikula.form_extension.help.class">Zikula\Bundle\FormExtensionBundle\Form\Extension\FormTypeHelpExtension</parameter>
         <parameter key="zikula_form_extension_bundle.form_extension.class">Zikula\Bundle\FormExtensionBundle\Twig\Extension\FormExtension</parameter>
     </parameters>
     <services>
@@ -17,7 +18,10 @@
 
         <!-- form extensions -->
         <service id="zikula.form_extension.icon" class="%zikula.form_extension.icon.class%">
-            <tag name="form.type_extension" alias="button" />
+            <tag name="form.type_extension" extended_type="Symfony\Component\Form\Extension\Core\Type\ButtonType" />
+        </service>
+        <service id="zikula.form_extension.help" class="%zikula.form_extension.help.class%">
+            <tag name="form.type_extension" extended_type="Symfony\Component\Form\Extension\Core\Type\FormType" />
         </service>
 
         <service id="zikula_form_extension_bundle.form_extension" class="%zikula_form_extension_bundle.form_extension.class%">

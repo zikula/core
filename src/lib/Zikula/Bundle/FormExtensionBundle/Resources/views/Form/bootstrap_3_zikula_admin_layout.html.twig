@@ -24,6 +24,9 @@ col-sm-9
         <div class="{{ block('form_group_class') }}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
+            {% if help is defined %}
+                <em class="help-block small">{{ help }}</em>
+            {% endif %}
         </div>
     </div>
 {% endspaceless %}
@@ -39,3 +42,41 @@ col-sm-9
     </div>
 {% endspaceless %}
 {% endblock submit_row %}
+
+{# ADD HELP TEXT TO INPUT ELEMENTS & ADD INPUT GROUPS TO SIMPLE INPUTS #}
+{% block form_widget_simple %}
+    {% if type is not defined or type not in ['file', 'hidden'] %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
+    {% endif %}
+    {%- set type = type|default('text') -%}
+    {% if input_group|default %}<div class="input-group">{% endif %}
+    {% if input_group|default and input_group.left|default %}<div class="input-group-addon">{{ input_group.left|default|raw }}</div>{% endif %}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% if input_group|default and input_group.right|default %}<div class="input-group-addon">{{ input_group.right|default|raw }}</div>{% endif %}
+    {% if input_group|default %}</div>{% endif %}
+
+    {% if help is defined %}
+        <em class="help-block small">{{ help }}</em>
+    {% endif %}
+{% endblock %}
+
+{% block textarea_widget -%}
+    {{- parent() -}}
+    {% if help is defined %}
+        <em class="help-block small">{{ help }}</em>
+    {% endif %}
+{%- endblock textarea_widget %}
+
+{% block choice_widget_collapsed -%}
+    {{- parent() -}}
+    {% if help is defined %}
+        <em class="help-block small">{{ help }}</em>
+    {% endif %}
+{%- endblock %}
+
+{% block choice_widget_expanded -%}
+    {{- parent() -}}
+    {% if help is defined %}
+        <em class="help-block small">{{ help }}</em>
+    {% endif %}
+{%- endblock choice_widget_expanded %}
