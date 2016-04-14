@@ -271,7 +271,7 @@ class ConfigType extends AbstractType
                 'label' => $options['translator']->__('Reserved user names'),
                 'required' => false,
                 'data' => '',
-                'help' => $options['translator']->__('Separate each user name with a comma.\nEach user name on this list is not allowed to be chosen by someone registering for a new account.'),
+                'help' => $options['translator']->__('Separate each user name with a comma. Each user name on this list is not allowed to be chosen by someone registering for a new account.'),
                 'constraints' => [
                     new Type('string'),
                     new Regex([
@@ -284,7 +284,7 @@ class ConfigType extends AbstractType
                 'label' => $options['translator']->__('Banned user agents'),
                 'required' => false,
                 'data' => '',
-                'help' => $options['translator']->__('Separate each user agent string with a comma.\nEach item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process.'),
+                'help' => $options['translator']->__('Separate each user agent string with a comma. Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process.'),
                 'constraints' => [
                     new Type('string'),
                     new Regex([
@@ -297,7 +297,7 @@ class ConfigType extends AbstractType
                 'label' => $options['translator']->__('Banned e-mail address domains'),
                 'required' => false,
                 'data' => '',
-                'help' => $options['translator']->__('Separate each domain with a comma.\nEach item on this list is an e-mail address domain (the part after the \'@\'). E-mail addresses on new registrations or on an existing user\'s change of e-mail address requests are not allowed to have any domain on this list.'),
+                'help' => $options['translator']->__('Separate each domain with a comma. Each item on this list is an e-mail address domain (the part after the \'@\'). E-mail addresses on new registrations or on an existing user\'s change of e-mail address requests are not allowed to have any domain on this list.'),
                 'constraints' => [
                     new Type('string'),
                     new Regex([
