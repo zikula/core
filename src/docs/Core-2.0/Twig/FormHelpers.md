@@ -31,6 +31,11 @@ When using `ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.
         'input_group' => ['left' => '<i class="fa fa-rocket"></i>', 'right' => 'some text']
     ])
 
+It is also possible to have multiple help text elements using an array:
+
+    ->add('foo', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        'help' => ['Foo help text.', 'Bar another text.']
+    ])
 
 When using `ZikulaFormExtensionBundle:Form:form_div_layout.html.twig` you can specify an 'icon' parameter to button form elements. 
 
