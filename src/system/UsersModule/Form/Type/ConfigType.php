@@ -31,7 +31,6 @@ class ConfigType extends AbstractType
              */
             ->add(UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Name displayed for anonymous user'),
-                'data' => '',
                 'required' => false,
                 'help' => $options['translator']->__('Anonymous users are visitors to your site who have not logged in.'),
                 'constraints' => [
@@ -41,7 +40,6 @@ class ConfigType extends AbstractType
             ])
             ->add(UsersConstant::MODVAR_ITEMS_PER_PAGE, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $options['translator']->__('Number of users displayed per page'),
-                'data' => UsersConstant::DEFAULT_ITEMS_PER_PAGE,
                 'help' => $options['translator']->__('When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time.'),
                 'constraints' => [
                     new NotBlank(),
@@ -50,7 +48,6 @@ class ConfigType extends AbstractType
             ])
             ->add(UsersConstant::MODVAR_AVATAR_IMAGE_PATH, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Path to user\'s avatar images'),
-                'data' => UsersConstant::DEFAULT_AVATAR_IMAGE_PATH,
                 'constraints' => [
                     new NotBlank(),
                     new Type('string')
@@ -59,11 +56,9 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_GRAVATARS_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Allow globally recognized avatars'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_GRAVATARS_ENABLED
             ])
             ->add(UsersConstant::MODVAR_GRAVATAR_IMAGE, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Default gravatar image'),
-                'data' => UsersConstant::DEFAULT_GRAVATAR_IMAGE,
                 'constraints' => [
                     new NotBlank(),
                     new Type('string')
@@ -75,11 +70,9 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Display graphics on user\'s account page'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS
             ])
             ->add(UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Path to account page images'),
-                'data' => UsersConstant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
                 'constraints' => [
                     new NotBlank(),
                     new Type('string')
@@ -87,7 +80,6 @@ class ConfigType extends AbstractType
             ])
             ->add(UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_PAGE, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $options['translator']->__('Number of links per page'),
-                'data' => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThanOrEqual(['value' => 1])
@@ -95,7 +87,6 @@ class ConfigType extends AbstractType
             ])
             ->add(UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_ROW, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $options['translator']->__('Number of links per page'),
-                'data' => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThanOrEqual(['value' => 1])
@@ -104,14 +95,12 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Users module handles e-mail address maintenance'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS
             ])
             /**
              * User Credential Settings
              */
             ->add(UsersConstant::MODVAR_LOGIN_METHOD, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $options['translator']->__('Credential required for user log-in'),
-                'data' => UsersConstant::DEFAULT_LOGIN_METHOD,
                 'alert' => [
                     $options['translator']->__('Notice: If the \'Credential required for user log-in\' is set to \'E-mail address\' or to \'Either user name or e-mail address\', then the \'New e-mail addresses must be unique\' option below must be checked.') => 'warning',
                     $options['translator']->__('Notice: If the \'New e-mail addresses must be unique\' option was unchecked at some point, then user accounts with duplicate e-mail addresses might exist in the system. They will experience difficulties logging in with their e-mail address.') => 'warning'
@@ -122,11 +111,12 @@ class ConfigType extends AbstractType
                     $options['translator']->__('Either user name or e-mail address') => UsersConstant::LOGIN_METHOD_ANY
                 ],
                 'choices_as_values' => true,
-                'expanded' => true
+                'expanded' => true,
+                'label_attr' => ['class' => 'radio-inline']
             ])
             ->add(UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('New e-mail addresses must be unique'),
-                'data' => UsersConstant::DEFAULT_REQUIRE_UNIQUE_EMAIL,
+                'required' => false,
                 'help' => $options['translator']->__('If checked, then e-mail addresses entered for new registrations and for e-mail address change requests cannot already be in use by another user account or registration.'),
                 'alert' => [
                     $options['translator']->__('Notice: If the \'New e-mail addresses must be unique\' option was unchecked at some point, then user accounts with duplicate e-mail addresses might exist in the system. They will experience difficulties logging in with their e-mail address.') => 'warning'
@@ -135,7 +125,6 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $options['translator']->__('Minimum length for user passwords'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
                 'help' => $options['translator']->__('This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than zero.'),
                 'constraints' => [
                     new NotBlank(),
@@ -144,11 +133,10 @@ class ConfigType extends AbstractType
             ])
             ->add(UsersConstant::MODVAR_HASH_METHOD, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $options['translator']->__('Password hashing method'),
-                'data' => UsersConstant::DEFAULT_HASH_METHOD,
                 'help' => $options['translator']->__('The default hashing method is \'SHA256\'.'), //@todo
                 'choices' => [
-                    'sha1'  => 'sha1',
-                    'sha256' => 'sha256',
+                    'SHA1'  => 'sha1',
+                    'SHA256' => 'sha256',
                     // @todo bcrypt
                 ],
                 'choices_as_values' => true
@@ -156,11 +144,9 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Show password strength meter'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED
             ])
             ->add(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $options['translator']->__('E-mail address verifications expire in'),
-                'data' => UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
                 'help' => $options['translator']->__('Enter the number of days a user\'s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.'),
                 'input_group' => ['right' => $options['translator']->__('days')],
                 'alert' => [
@@ -173,7 +159,6 @@ class ConfigType extends AbstractType
             ])
             ->add(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $options['translator']->__('Password reset requests expire in'),
-                'data' => UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
                 'help' => $options['translator']->__('This setting only affects users who have not established security question responses. Enter the number of days a user\'s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.'),
                 'input_group' => ['right' => $options['translator']->__('days')],
                 'alert' => [
@@ -190,21 +175,17 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Allow new user account registrations'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_REGISTRATION_ENABLED
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON, 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
                 'label' => $options['translator']->__('Statement displayed if registration disabled'),
                 'required' => false,
-                'data' => '',
                 'constraints' => [
-//                    new NotBlank(),
                     new Type('string')
                 ]
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
                 'label' => $options['translator']->__('E-mail address to notify of registrations'),
                 'required' => false,
-                'data' => '',
                 'help' => $options['translator']->__('A notification is sent to this e-mail address for each registration. Leave blank for no notifications.'),
                 'input_group' => ['left' => '<i class="fa fa-at"></i>'],
                 'constraints' => [
@@ -214,21 +195,17 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Password reminder is enabled'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED
             ])
             ->add(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Password reminder is mandatory'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('User registration is moderated'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $options['translator']->__('Verify e-mail address during registration'),
-                'data' => UsersConstant::DEFAULT_REGISTRATION_VERIFICATION_MODE,
                 'choices' => [
                     $options['translator']->__('Yes. User chooses password, then activates account via e-mail') => UsersConstant::VERIFY_USERPWD,
                     $options['translator']->__('No') => UsersConstant::VERIFY_NO
@@ -239,11 +216,9 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Newly registered users are logged in automatically'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $options['translator']->__('Order that approval and verification occur'),
-                'data' => UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE,
                 'choices' => [
                     $options['translator']->__('Registration applications must be approved before users verify their e-mail address.') => UsersConstant::APPROVAL_BEFORE,
                     $options['translator']->__('Users must verify their e-mail address before their application is approved.') => UsersConstant::APPROVAL_AFTER,
@@ -254,7 +229,6 @@ class ConfigType extends AbstractType
             ])
             ->add(UsersConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $options['translator']->__('Registrations pending verification expire in'),
-                'data' => UsersConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
                 'help' => $options['translator']->__('Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion).'),
                 'input_group' => ['right' => $options['translator']->__('days')],
                 'alert' => [
@@ -269,7 +243,6 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Spam protection question'),
                 'required' => false,
-                'data' => '',
                 'help' => $options['translator']->__('You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts.'),
                 'constraints' => [
                     new Type('string')
@@ -278,7 +251,6 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Spam protection answer'),
                 'required' => false,
-                'data' => '',
                 'help' => $options['translator']->__('Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided.'),
                 'constraints' => [
                     new Type('string')
@@ -287,7 +259,6 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Reserved user names'),
                 'required' => false,
-                'data' => '',
                 'help' => [
                     $options['translator']->__('Separate each user name with a comma.'),
                     $options['translator']->__('Each user name on this list is not allowed to be chosen by someone registering for a new account.')
@@ -303,7 +274,6 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
                 'label' => $options['translator']->__('Banned user agents'),
                 'required' => false,
-                'data' => '',
                 'help' => $options['translator']->__('Separate each user agent string with a comma. Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process.'),
                 'constraints' => [
                     new Type('string'),
@@ -316,7 +286,6 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS, 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
                 'label' => $options['translator']->__('Banned e-mail address domains'),
                 'required' => false,
-                'data' => '',
                 'help' => [
                     $options['translator']->__('Separate each domain with a comma.'),
                     $options['translator']->__('Each item on this list is an e-mail address domain (the part after the \'@\'). E-mail addresses on new registrations or on an existing user\'s change of e-mail address requests are not allowed to have any domain on this list.')
@@ -335,25 +304,21 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_LOGIN_WCAG_COMPLIANT, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('WCAG-compliant log-in and log-out'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_LOGIN_WCAG_COMPLIANT,
                 'help' => $options['translator']->__('Notice: Uses meta refresh.'),
             ])
             ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Failed login displays inactive status'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
                 'help' => $options['translator']->__('If checked, the log-in error message will indicate that the user account is inactive. If not, a generic error message is displayed.'),
             ])
             ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Failed login displays verification status'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
                 'help' => $options['translator']->__('If checked, the log-in error message will indicate that the registration is pending verification. If not, a generic error message is displayed.'),
             ])
             ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Failed login displays approval status'),
                 'required' => false,
-                'data' => UsersConstant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
                 'help' => $options['translator']->__('If checked, the log-in error message will indicate that the registration is pending approval. If not, a generic error message is displayed.'),
             ])
             /**
