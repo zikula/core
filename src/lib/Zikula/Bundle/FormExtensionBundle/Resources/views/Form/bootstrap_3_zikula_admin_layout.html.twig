@@ -25,7 +25,13 @@ col-sm-9
             {{ form_widget(form) }}
             {{ form_errors(form) }}
             {% if help is defined %}
-                <em class="help-block small">{{ help }}</em>
+                {% if help is iterable %}
+                    {% for helpText in help %}
+                        <em class="help-block small">{{ helpText }}</em>
+                    {% endfor %}
+                {% else %}
+                    <em class="help-block small">{{ help }}</em>
+                {% endif %}
             {% endif %}
         </div>
     </div>
@@ -43,7 +49,7 @@ col-sm-9
 {% endspaceless %}
 {% endblock submit_row %}
 
-{# ADD HELP TEXT TO INPUT ELEMENTS & ADD INPUT GROUPS TO SIMPLE INPUTS #}
+{# add help text to input elements & add input groups to simple inputs #}
 {% block form_widget_simple %}
     {% if type is not defined or type not in ['file', 'hidden'] %}
         {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
@@ -56,27 +62,51 @@ col-sm-9
     {% if input_group|default %}</div>{% endif %}
 
     {% if help is defined %}
-        <em class="help-block small">{{ help }}</em>
+        {% if help is iterable %}
+            {% for helpText in help %}
+                <em class="help-block small">{{ helpText }}</em>
+            {% endfor %}
+        {% else %}
+            <em class="help-block small">{{ help }}</em>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
 {% block textarea_widget -%}
     {{- parent() -}}
     {% if help is defined %}
-        <em class="help-block small">{{ help }}</em>
+        {% if help is iterable %}
+            {% for helpText in help %}
+                <em class="help-block small">{{ helpText }}</em>
+            {% endfor %}
+        {% else %}
+            <em class="help-block small">{{ help }}</em>
+        {% endif %}
     {% endif %}
 {%- endblock textarea_widget %}
 
 {% block choice_widget_collapsed -%}
     {{- parent() -}}
     {% if help is defined %}
-        <em class="help-block small">{{ help }}</em>
+        {% if help is iterable %}
+            {% for helpText in help %}
+                <em class="help-block small">{{ helpText }}</em>
+            {% endfor %}
+        {% else %}
+            <em class="help-block small">{{ help }}</em>
+        {% endif %}
     {% endif %}
 {%- endblock %}
 
 {% block choice_widget_expanded -%}
     {{- parent() -}}
     {% if help is defined %}
-        <em class="help-block small">{{ help }}</em>
+        {% if help is iterable %}
+            {% for helpText in help %}
+                <em class="help-block small">{{ helpText }}</em>
+            {% endfor %}
+        {% else %}
+            <em class="help-block small">{{ help }}</em>
+        {% endif %}
     {% endif %}
 {%- endblock choice_widget_expanded %}
