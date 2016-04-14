@@ -27,7 +27,7 @@ class ConfigType extends AbstractType
     {
         $builder
             /**
-             * GENERAL SETTINGS
+             * General Settings
              */
             ->add(UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('Name displayed for anonymous user'),
@@ -70,7 +70,7 @@ class ConfigType extends AbstractType
                 ]
             ])
             /**
-             * ACCOUNT PAGE SETTINGS
+             * Account Page Settings
              */
             ->add(UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Display graphics on user\'s account page'),
@@ -107,11 +107,15 @@ class ConfigType extends AbstractType
                 'data' => UsersConstant::DEFAULT_MANAGE_EMAIL_ADDRESS
             ])
             /**
-             * USER CREDENTIAL SETTINGS
+             * User Credential Settings
              */
             ->add(UsersConstant::MODVAR_LOGIN_METHOD, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $options['translator']->__('Credential required for user log-in'),
                 'data' => UsersConstant::DEFAULT_LOGIN_METHOD,
+                'alert' => [
+                    $options['translator']->__('Notice: If the \'Credential required for user log-in\' is set to \'E-mail address\' or to \'Either user name or e-mail address\', then the \'New e-mail addresses must be unique\' option below must be checked.') => 'warning',
+                    $options['translator']->__('Notice: If the \'New e-mail addresses must be unique\' option was unchecked at some point, then user accounts with duplicate e-mail addresses might exist in the system. They will experience difficulties logging in with their e-mail address.') => 'warning'
+                ],
                 'choices' => [
                     $options['translator']->__('User name') => UsersConstant::LOGIN_METHOD_UNAME,
                     $options['translator']->__('E-mail address') => UsersConstant::LOGIN_METHOD_EMAIL,
@@ -124,6 +128,9 @@ class ConfigType extends AbstractType
                 'label' => $options['translator']->__('New e-mail addresses must be unique'),
                 'data' => UsersConstant::DEFAULT_REQUIRE_UNIQUE_EMAIL,
                 'help' => $options['translator']->__('If checked, then e-mail addresses entered for new registrations and for e-mail address change requests cannot already be in use by another user account or registration.'),
+                'alert' => [
+                    $options['translator']->__('Notice: If the \'New e-mail addresses must be unique\' option was unchecked at some point, then user accounts with duplicate e-mail addresses might exist in the system. They will experience difficulties logging in with their e-mail address.') => 'warning'
+                ]
             ])
             ->add(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $options['translator']->__('Minimum length for user passwords'),
@@ -156,6 +163,9 @@ class ConfigType extends AbstractType
                 'data' => UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
                 'help' => $options['translator']->__('Enter the number of days a user\'s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.'),
                 'input_group' => ['right' => $options['translator']->__('days')],
+                'alert' => [
+                    $options['translator']->__('Changing this setting will affect all requests to change e-mail addresses currently pending verification.') => 'warning'
+                ],
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThanOrEqual(['value' => 0])
@@ -166,13 +176,16 @@ class ConfigType extends AbstractType
                 'data' => UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
                 'help' => $options['translator']->__('This setting only affects users who have not established security question responses. Enter the number of days a user\'s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.'),
                 'input_group' => ['right' => $options['translator']->__('days')],
+                'alert' => [
+                    $options['translator']->__('Changing this setting will affect all password change requests currently pending verification.') => 'warning'
+                ],
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThanOrEqual(['value' => 0])
                 ]
             ])
             /**
-             * REGISTRATION SETTINGS
+             * Registration Settings
              */
             ->add(UsersConstant::MODVAR_REGISTRATION_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('Allow new user account registrations'),
@@ -244,6 +257,10 @@ class ConfigType extends AbstractType
                 'data' => UsersConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
                 'help' => $options['translator']->__('Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion).'),
                 'input_group' => ['right' => $options['translator']->__('days')],
+                'alert' => [
+                    $options['translator']->__('If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval.') => 'info',
+                    $options['translator']->__('Changing this setting will affect all password change requests currently pending verification.') => 'warning'
+                ],
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThanOrEqual(['value' => 0])
@@ -271,7 +288,10 @@ class ConfigType extends AbstractType
                 'label' => $options['translator']->__('Reserved user names'),
                 'required' => false,
                 'data' => '',
-                'help' => $options['translator']->__('Separate each user name with a comma. Each user name on this list is not allowed to be chosen by someone registering for a new account.'),
+                'help' => [
+                    $options['translator']->__('Separate each user name with a comma.'),
+                    $options['translator']->__('Each user name on this list is not allowed to be chosen by someone registering for a new account.')
+                    ],
                 'constraints' => [
                     new Type('string'),
                     new Regex([
@@ -297,7 +317,10 @@ class ConfigType extends AbstractType
                 'label' => $options['translator']->__('Banned e-mail address domains'),
                 'required' => false,
                 'data' => '',
-                'help' => $options['translator']->__('Separate each domain with a comma. Each item on this list is an e-mail address domain (the part after the \'@\'). E-mail addresses on new registrations or on an existing user\'s change of e-mail address requests are not allowed to have any domain on this list.'),
+                'help' => [
+                    $options['translator']->__('Separate each domain with a comma.'),
+                    $options['translator']->__('Each item on this list is an e-mail address domain (the part after the \'@\'). E-mail addresses on new registrations or on an existing user\'s change of e-mail address requests are not allowed to have any domain on this list.')
+                    ],
                 'constraints' => [
                     new Type('string'),
                     new Regex([
@@ -307,7 +330,7 @@ class ConfigType extends AbstractType
                 ]
             ])
             /**
-             * USER LOGIN SETTINGS
+             * User Login Settings
              */
             ->add(UsersConstant::MODVAR_LOGIN_WCAG_COMPLIANT, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('WCAG-compliant log-in and log-out'),
