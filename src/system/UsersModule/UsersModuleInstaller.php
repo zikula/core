@@ -104,6 +104,26 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
             case '2.2.5':
+                $modvarsToConvertToBool = [
+                    UsersConstant::MODVAR_GRAVATARS_ENABLED,
+                    UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS,
+                    UsersConstant::MODVAR_MANAGE_EMAIL_ADDRESS,
+                    UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL,
+                    UsersConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED,
+                    UsersConstant::MODVAR_REGISTRATION_ENABLED,
+                    UsersConstant::MODVAR_PASSWORD_REMINDER_ENABLED,
+                    UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY,
+                    UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED,
+                    UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN,
+                    UsersConstant::MODVAR_LOGIN_WCAG_COMPLIANT,
+                    UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS,
+                    UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS,
+                    UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS
+                ];
+                foreach ($modvarsToConvertToBool as $modvarToConvert) {
+                    $this->setVar($modvarToConvert, (bool) $this->getVar($modvarToConvert));
+                }
+            case '2.2.6':
                 // current version
         }
 

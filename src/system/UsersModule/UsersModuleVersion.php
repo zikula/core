@@ -28,7 +28,7 @@ class UsersModuleVersion extends \Zikula_AbstractVersion
     public function getMetaData()
     {
         return array(
-            'version' => '2.2.5',
+            'version' => '2.2.6',
             'displayname' => $this->__('Users'),
             'description' => $this->__('Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.'),
             'url' => $this->__('users'),
