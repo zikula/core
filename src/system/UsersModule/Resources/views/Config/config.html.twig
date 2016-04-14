@@ -33,17 +33,12 @@
         <fieldset>
             <legend>{{ __('User Credential Settings') }}</legend>
             {{ form_row(form[constant('MODVAR_LOGIN_METHOD', UC)]) }}
-            <div class="col-sm-offset-3 col-sm-9 help-block alert alert-warning">{{ __('Notice: If the \'Credential required for user log-in\' is set to \'E-mail address\' or to \'Either user name or e-mail address\', then the \'New e-mail addresses must be unique\' option below must be checked.') }}</div>
-            <div class="col-sm-offset-3 col-sm-9 help-block alert alert-warning">{{ __('Notice: If the \'New e-mail addresses must be unique\' option was unchecked at some point, then user accounts with duplicate e-mail addresses might exist in the system. They will experience difficulties logging in with their e-mail address.') }}</div>
             {{ form_row(form[constant('MODVAR_REQUIRE_UNIQUE_EMAIL', UC)]) }}
-            <div class="col-sm-offset-3 col-sm-9 help-block alert alert-warning">{{ __('Notice: If the \'New e-mail addresses must be unique\' option was unchecked at some point, then user accounts with duplicate e-mail addresses might exist in the system. They will experience difficulties logging in with their e-mail address.') }}</div>
             {{ form_row(form[constant('MODVAR_PASSWORD_MINIMUM_LENGTH', UC)]) }}
             {{ form_row(form[constant('MODVAR_HASH_METHOD', UC)]) }}
             {{ form_row(form[constant('MODVAR_PASSWORD_STRENGTH_METER_ENABLED', UC)]) }}
             {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_EMAIL', UC)]) }}
-            <div class="col-sm-offset-3 col-sm-9 alert alert-warning help-block">{{ __('Changing this setting will affect all requests to change e-mail addresses currently pending verification.') }}</div>
             {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD', UC)]) }}
-            <div class="col-sm-offset-3 col-sm-9 alert alert-warning help-block">{{ __('Changing this setting will affect all password change requests currently pending verification.') }}</div>
         </fieldset>
         <fieldset>
             <legend>{{ __('Registration Settings') }}</legend>
@@ -62,8 +57,6 @@
             {{ form_row(form[constant('MODVAR_REGISTRATION_AUTO_LOGIN', UC)]) }}
             {{ form_row(form[constant('MODVAR_REGISTRATION_APPROVAL_SEQUENCE', UC)]) }}
             {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_REGISTRATION', UC)]) }}
-            <div class="col-sm-offset-3 col-sm-9 alert alert-info help-block">{{ __('If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval.') }}</div>
-            <div class="col-sm-offset-3 col-sm-9 alert alert-warning help-block">{{ __('Changing this setting will affect all registrations currently pending e-mail address verification.') }}</div>
             {{ form_row(form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', UC)]) }}
             {{ form_row(form[constant('MODVAR_REGISTRATION_ANTISPAM_ANSWER', UC)]) }}
             {{ form_row(form[constant('MODVAR_REGISTRATION_ILLEGAL_UNAMES', UC)]) }}
