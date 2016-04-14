@@ -1,5 +1,24 @@
 {% extends "bootstrap_3_horizontal_layout.html.twig" %}
 
+{% macro helpBlock(param = null) %}
+    {% if param|default %}
+        {% if param is iterable %}
+            {% for helpText in param %}
+                <em class="help-block small">{{ helpText }}</em>
+            {% endfor %}
+        {% else %}
+            <em class="help-block small">{{ param }}</em>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+{% macro alertBlock(param = null) %}
+    {% if param|default and param is iterable %}
+        {% for alertText, type in param %}
+            <div class="alert alert-{{ type }}">{{ alertText }}</div>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
 {% block form_label_class -%}
 col-sm-3
 {%- endblock form_label_class %}
@@ -24,15 +43,8 @@ col-sm-9
         <div class="{{ block('form_group_class') }}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
-            {% if help|default %}
-                {% if help is iterable %}
-                    {% for helpText in help %}
-                        <em class="help-block small">{{ helpText }}</em>
-                    {% endfor %}
-                {% else %}
-                    <em class="help-block small">{{ help }}</em>
-                {% endif %}
-            {% endif %}
+            {% import _self as macros %}
+            {{ macros.helpBlock(help) }}
         </div>
     </div>
 {% endspaceless %}
@@ -50,6 +62,7 @@ col-sm-9
 {% endblock submit_row %}
 
 {# add help text to input elements & add input groups to simple inputs #}
+
 {% block form_widget_simple %}
     {% if type is not defined or type not in ['file', 'hidden'] %}
         {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
@@ -61,52 +74,28 @@ col-sm-9
     {% if input_group|default and input_group.right|default %}<div class="input-group-addon">{{ input_group.right|default|raw }}</div>{% endif %}
     {% if input_group|default %}</div>{% endif %}
 
-    {% if help|default %}
-        {% if help is iterable %}
-            {% for helpText in help %}
-                <em class="help-block small">{{ helpText }}</em>
-            {% endfor %}
-        {% else %}
-            <em class="help-block small">{{ help }}</em>
-        {% endif %}
-    {% endif %}
+    {% import _self as macros %}
+    {{ macros.helpBlock(help) }}
+    {{ macros.alertBlock(alert) }}
 {% endblock %}
 
 {% block textarea_widget -%}
     {{- parent() -}}
-    {% if help|default %}
-        {% if help is iterable %}
-            {% for helpText in help %}
-                <em class="help-block small">{{ helpText }}</em>
-            {% endfor %}
-        {% else %}
-            <em class="help-block small">{{ help }}</em>
-        {% endif %}
-    {% endif %}
+    {% import _self as macros %}
+    {{ macros.helpBlock(help) }}
+    {{ macros.alertBlock(alert) }}
 {%- endblock textarea_widget %}
 
 {% block choice_widget_collapsed -%}
     {{- parent() -}}
-    {% if help|default %}
-        {% if help is iterable %}
-            {% for helpText in help %}
-                <em class="help-block small">{{ helpText }}</em>
-            {% endfor %}
-        {% else %}
-            <em class="help-block small">{{ help }}</em>
-        {% endif %}
-    {% endif %}
+    {% import _self as macros %}
+    {{ macros.helpBlock(help) }}
+    {{ macros.alertBlock(alert) }}
 {%- endblock %}
 
 {% block choice_widget_expanded -%}
     {{- parent() -}}
-    {% if help|default %}
-        {% if help is iterable %}
-            {% for helpText in help %}
-                <em class="help-block small">{{ helpText }}</em>
-            {% endfor %}
-        {% else %}
-            <em class="help-block small">{{ help }}</em>
-        {% endif %}
-    {% endif %}
+    {% import _self as macros %}
+    {{ macros.helpBlock(help) }}
+    {{ macros.alertBlock(alert) }}
 {%- endblock choice_widget_expanded %}
