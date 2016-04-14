@@ -33,7 +33,8 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setAttribute('help', $options['help'])
-            ->setAttribute('input_group', $options['input_group']);
+            ->setAttribute('input_group', $options['input_group'])
+            ->setAttribute('alert', $options['alert']);
     }
 
     /**
@@ -45,6 +46,7 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     {
         $view->vars['help'] = $options['help'];
         $view->vars['input_group'] = $options['input_group'];
+        $view->vars['alert'] = $options['alert'];
     }
 
     /**
@@ -54,7 +56,8 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     {
         $resolver->setDefaults(array(
             'help' => null,
-            'input_group' => null
+            'input_group' => null,
+            'alert' => null
         ));
     }
 

@@ -13,7 +13,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix error on creation of new ExtendedMenublock
 
  - Features:
-    - Add help text and input groups to forms utilizing the provided form themes.
+    - Add help text, alert text and input groups to forms utilizing the provided form themes.
 
  - Core-2.0 Features:
     - SettingsModule updated to Core-2.0 Spec.
