@@ -24,7 +24,7 @@ col-sm-9
         <div class="{{ block('form_group_class') }}">
             {{ form_widget(form) }}
             {{ form_errors(form) }}
-            {% if help is defined %}
+            {% if help|default %}
                 {% if help is iterable %}
                     {% for helpText in help %}
                         <em class="help-block small">{{ helpText }}</em>
@@ -61,7 +61,7 @@ col-sm-9
     {% if input_group|default and input_group.right|default %}<div class="input-group-addon">{{ input_group.right|default|raw }}</div>{% endif %}
     {% if input_group|default %}</div>{% endif %}
 
-    {% if help is defined %}
+    {% if help|default %}
         {% if help is iterable %}
             {% for helpText in help %}
                 <em class="help-block small">{{ helpText }}</em>
@@ -74,7 +74,7 @@ col-sm-9
 
 {% block textarea_widget -%}
     {{- parent() -}}
-    {% if help is defined %}
+    {% if help|default %}
         {% if help is iterable %}
             {% for helpText in help %}
                 <em class="help-block small">{{ helpText }}</em>
@@ -87,7 +87,7 @@ col-sm-9
 
 {% block choice_widget_collapsed -%}
     {{- parent() -}}
-    {% if help is defined %}
+    {% if help|default %}
         {% if help is iterable %}
             {% for helpText in help %}
                 <em class="help-block small">{{ helpText }}</em>
@@ -100,7 +100,7 @@ col-sm-9
 
 {% block choice_widget_expanded -%}
     {{- parent() -}}
-    {% if help is defined %}
+    {% if help|default %}
         {% if help is iterable %}
             {% for helpText in help %}
                 <em class="help-block small">{{ helpText }}</em>
