@@ -10,7 +10,6 @@
 
 namespace Zikula\UsersModule\Form\Type;
 
-use DoctrineExtensions\Paginate\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
