@@ -10,8 +10,11 @@
 
 namespace Zikula\UsersModule\Form\Type;
 
+use DoctrineExtensions\Paginate\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
@@ -112,6 +115,9 @@ class ConfigType extends AbstractType
                 ],
                 'choices_as_values' => true,
                 'expanded' => true,
+                'choice_attr' => function() {
+                    return ['class' => 'login-method-input'];
+                },
                 'label_attr' => ['class' => 'radio-inline']
             ])
             ->add(UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
@@ -203,6 +209,7 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $options['translator']->__('User registration is moderated'),
                 'required' => false,
+                'attr' => ['class' => 'registration-moderation-input']
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $options['translator']->__('Verify e-mail address during registration'),
@@ -211,6 +218,9 @@ class ConfigType extends AbstractType
                     $options['translator']->__('No') => UsersConstant::VERIFY_NO
                 ],
                 'choices_as_values' => true,
+                'choice_attr' => function() {
+                    return ['class' => 'registration-moderation-input'];
+                },
                 'expanded' => true
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
@@ -322,7 +332,7 @@ class ConfigType extends AbstractType
                 'help' => $options['translator']->__('If checked, the log-in error message will indicate that the registration is pending approval. If not, a generic error message is displayed.'),
             ])
             /**
-             * BUTTONS
+             * Buttons
              */
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
                 'label' => $options['translator']->__('Save'),
@@ -334,6 +344,21 @@ class ConfigType extends AbstractType
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
+            /**
+             * Form Listeners
+             */
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $data = $event->getData();
+                // if Login method can use email, then require unique email.
+                if ($data[UsersConstant::MODVAR_LOGIN_METHOD] != UsersConstant::LOGIN_METHOD_UNAME) {
+                    $data[UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL] = true;
+                }
+                // clear anti-spam answer if there is no question
+                if (empty($data[UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION])) {
+                    $data[UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER] = '';
+                }
+                $event->setData($data);
+            })
         ;
     }
 
