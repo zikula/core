@@ -239,7 +239,7 @@
                 {assign var='fieldName' value='Zikula\UsersModule\Constant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD'|const}
                 <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Password reset requests expire in'}<span class="required"></span></label>
                 <div class="col-sm-9">
-                    <div class="input-group">                    
+                    <div class="input-group">
                         <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />
                         <span class="input-group-addon">{gt text='days'}</span>
                     </div>
@@ -378,7 +378,7 @@
                 <label class="col-sm-3 control-label" for="{$configData->getFieldId($fieldName)}">{gt text='Registrations pending verification expire in'}<span class="required"></span></label>
                 <div class="col-sm-9">
                     <div class="input-group">
-                        <input id="{$configData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />      
+                        <input id="{$configData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />
                         <span class="input-group-addon">{gt text='days'}</span>
                     </div>
                     <em class="sub help-block">{gt text="Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion)."}</em>
