@@ -115,7 +115,7 @@ class ConfigType extends AbstractType
                 ],
                 'choices_as_values' => true,
                 'expanded' => true,
-                'choice_attr' => function() {
+                'choice_attr' => function () {
                     return ['class' => 'login-method-input'];
                 },
                 'label_attr' => ['class' => 'radio-inline']
@@ -218,7 +218,7 @@ class ConfigType extends AbstractType
                     $options['translator']->__('No') => UsersConstant::VERIFY_NO
                 ],
                 'choices_as_values' => true,
-                'choice_attr' => function() {
+                'choice_attr' => function () {
                     return ['class' => 'registration-moderation-input'];
                 },
                 'expanded' => true
