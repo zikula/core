@@ -4,7 +4,7 @@
 ] %}
 {% set templatetitle = __('New account registration') %}
 {{ polyfill() }}
-{{ pageAddAsset('javascript', '@ZikulaUsersModule/Resources/public/js/Zikula.Users.Common.UserValidation.js') }}
+{{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Common.UserValidation.js')) }}
 
 {% include('@ZikulaUsersModule/User/menu.html.twig') %}
 
@@ -35,21 +35,17 @@
     <fieldset>
         <legend>{{ __('Choose a user name') }}</legend>
         {{ form_row(form.uname) }}
-        <em class="help-block sub col-sm-offset-3 col-sm-9">{{ __('User names can contain letters, numbers, underscores, periods and/or dashes.') }}</em>
         {% if (authentication_method.modname != 'ZikulaUsersModule') or ((authentication_method.modname == 'ZikulaUsersModule') and (modvars.loginviaoption == constant('Zikula\\UsersModule\\Constant::LOGIN_METHOD_EMAIL'))) %}
-            <em class="help-block sub col-sm-offset-3 col-sm-9">{{ __('Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.') }}</em>
+            <em class="help-block small col-sm-offset-3 col-sm-9">{{ __('Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.') }}</em>
         {% endif %}
     </fieldset>
     {% if authentication_method.modname == 'ZikulaUsersModule' %}
     <fieldset>
         <legend>{{ __('Set a password') }}</legend>
-        {{ form_row(form.pass) }}
-        <em class="help-block sub col-sm-offset-3 col-sm-9">{{ __f('The minimum length for user passwords is %sub% characters.', {"%sub%": modvars.minpass}) }}</em>
-        <div id="{{ form.vars.id }}_passmeter"></div>
+        {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": modvars.minpass})}) }}
+        <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
         {% if modvars.password_reminder_enabled is defined and modvars.password_reminder_enabled %}
             {{ form_row(form.passreminder) }}
-            <div class="sub help-block col-sm-offset-3 col-sm-9">{{ __('Enter a word or a phrase that will remind you of your password.') }}</div>
-            <div class="help-block alert alert-info col-sm-offset-3 col-sm-9">{{ __('Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!') }}</div>
         {% endif %}
     </fieldset>
     {% else %}
@@ -59,7 +55,6 @@
     <fieldset {% if hideEmail is defined and hideEmail %}class="hide"{% endif %}>
         <legend>{{ __('Enter your e-mail address') }}</legend>
         {{ form_row(form.email) }}
-        <em class="help-block sub col-sm-offset-3 col-sm-9">{{ __('You will use your e-mail address to identify yourself when you log in.') }}</em>
     </fieldset>
 
     {% set eventData = dispatchEvent('module.users.ui.form_edit.new_registration') %}
@@ -82,7 +77,6 @@
     <fieldset>
         <legend>{{ __('Answer the security question') }}</legend>
         {{ form_row(form.antispamanswer) }}
-        <em class="help-block sub col-sm-offset-3 col-sm-9">{{ __('Asking this question helps us prevent automated scripts from accessing private areas of the site.') }}</em>
     </fieldset>
     {% endif %}
     <div class="form-group">
@@ -94,11 +88,11 @@
     </div>
 {{ form_end(form) }}
 {% if modvars.use_password_strength_meter and (authentication_method.modname == 'ZikulaUsersModule') %}
-{{ pageAddAsset('javascript', '@ZikulaUsersModule/Resources/public/js/Zikula.Users.PassMeter.js') }}
+{{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.PassMeter.js')) }}
 <script type="text/javascript">
     (function($) {
         $(document).ready(function() {
-            ZikulaUsersPassMeter.init('{{ form.pass.vars.id }}', '{{ form.vars.id }}_passmeter', {
+            ZikulaUsersPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
                 username: '{{ form.uname.vars.id }}',
                 minLength: '{{ modvars.minpass }}'
             });
