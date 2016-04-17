@@ -10,6 +10,7 @@
 
 namespace Zikula\UsersModule\Controller;
 
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula_View;
 use UserUtil;
 use SecurityUtil;
@@ -252,12 +253,22 @@ class AdminController extends \Zikula_AbstractController
                 //$adminNotifyEmail = $this->getVar('reg_notifyemail', '');
                 //$adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
 
-                $registeredObj = ModUtil::apiFunc($this->name, 'registration', 'registerNewUser', array(
-                    'reginfo' => $registrationInfo,
-                    'sendpass' => $sendPass,
-                    'usernotification' => $request->request->get('usernotification'),
-                    'adminnotification' => $request->request->get('adminnotification')
-                ));
+//                $registeredObj = ModUtil::apiFunc($this->name, 'registration', 'registerNewUser', array(
+//                    'reginfo' => $registrationInfo,
+//                    'sendpass' => $sendPass,
+//                    'usernotification' => $request->request->get('usernotification'),
+//                    'adminnotification' => $request->request->get('adminnotification')
+//                ));
+                // @todo $tempUserEntity is only temporary until refactoring is complete. [CAH 17 Apr 2016]
+                $tempUserEntity = new UserEntity();
+                $tempUserEntity->merge($registrationInfo);
+                $registeredObj = $this->get('zikulausersmodule.helper.registration_helper')->registerNewUser(
+                    $tempUserEntity,
+                    false,
+                    $request->request->get('usernotification'),
+                    $request->request->get('adminnotification'),
+                    $sendPass
+                );
 
                 if (isset($registeredObj) && $registeredObj) {
                     $event = new GenericEvent($registeredObj);
@@ -1100,7 +1111,7 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-        $regCount = ModUtil::apiFunc($this->name, 'registration', 'countAll');
+        $regCount = $this->get('zikulausersmodule.helper.registration_helper')->countAll();
         $limitNumRows = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
         if (!is_numeric($limitNumRows) || ((int)$limitNumRows != $limitNumRows) || (($limitNumRows < 1) && ($limitNumRows != -1))) {
             $limitNumRows = 25;
@@ -1163,14 +1174,14 @@ class AdminController extends \Zikula_AbstractController
         );
         $request->getSession()->set('Admin_viewRegistrations', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
 
-        $reglist = ModUtil::apiFunc($this->name, 'registration', 'getAll', array('limitoffset' => $limitOffset, 'limitnumrows' => $limitNumRows));
+        $reglist = $this->get('zikulausersmodule.helper.registration_helper')->getAll([], ['user_regdate' => 'DESC'], $limitNumRows, $limitOffset);
 
         if (($reglist === false) || !is_array($reglist)) {
             if (!$request->getSession()->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR)) {
                 $request->getSession()->getFlashBag()->add('error', $this->__('An error occurred while trying to retrieve the registration records.'));
             }
 
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL), 500);
+            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
         }
 
         $actions = $this->getActionsForRegistrations($reglist, 'view');
@@ -1215,7 +1226,8 @@ class AdminController extends \Zikula_AbstractController
             throw new AccessDeniedException();
         }
 
-        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
+//        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
+        $reginfo = $this->get('zikulausersmodule.helper.registration_helper')->get($uid);
         if (!$reginfo) {
             // get application could fail (return false) because of a nonexistant
             // record, no permission to read an existing record, or a database error
@@ -1354,10 +1366,11 @@ class AdminController extends \Zikula_AbstractController
                 if ($emailUpdated) {
                     $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
                     if (!$originalRegistration['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $originalRegistration['isapproved'])) {
-                        $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
-                            'reginfo'   => $registration,
-                            'force'     => true,
-                        ));
+//                        $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
+//                            'reginfo'   => $registration,
+//                            'force'     => true,
+//                        ));
+                        $verificationSent = $this->get('zikulausersmodule.helper.registration_verification_helper')->sendVerificationCode(null, $registration['uid'], true);
                     }
                 }
 
@@ -1379,7 +1392,8 @@ class AdminController extends \Zikula_AbstractController
                 }
             }
 
-            $registration = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
+//            $registration = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
+            $registration = $this->get('zikulausersmodule.helper.registration_helper')->get($uid);
 
             if (!$registration) {
                 throw new NotFoundHttpException($this->__('Error! Unable to load registration record.'));
@@ -1475,7 +1489,8 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Got just a uid.
-        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
+//        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
+        $reginfo = $this->get('zikulausersmodule.helper.registration_helper')->get($uid);
         if (!$reginfo) {
             throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
         }
@@ -1514,10 +1529,11 @@ class AdminController extends \Zikula_AbstractController
                               ->assign('cancelurl', $cancelUrl)
                               ->fetch('Admin/verifyregistration.tpl'));
         } else {
-            $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
-                'reginfo'   => $reginfo,
-                'force'     => $forceVerification,
-            ));
+//            $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
+//                'reginfo'   => $reginfo,
+//                'force'     => $forceVerification,
+//            ));
+            $verificationSent = $this->get('zikulausersmodule.helper.registration_verification_helper')->sendVerificationCode(null, $uid, true);
 
             if (!$verificationSent) {
                 $request->getSession()->getFlashBag()->add('error', $this->__f('Sorry! There was a problem sending a verification code to \'%1$s\'.', $reginfo['uname']));
@@ -1582,7 +1598,8 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Got just an id.
-        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
+//        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
+        $reginfo = $this->get('zikulausersmodule.helper.registration_helper')->get($uid);
         if (!$reginfo) {
             throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
         }
@@ -1629,10 +1646,11 @@ class AdminController extends \Zikula_AbstractController
         } else {
             $this->checkCsrfToken();
 
-            $approved = ModUtil::apiFunc($this->name, 'registration', 'approve', array(
-                'reginfo'   => $reginfo,
-                'force'     => $forceVerification,
-            ));
+//            $approved = ModUtil::apiFunc($this->name, 'registration', 'approve', array(
+//                'reginfo'   => $reginfo,
+//                'force'     => $forceVerification,
+//            ));
+            $approved = $this->get('zikulausersmodule.helper.registration_helper')->approve($reginfo, null, $forceVerification);
 
             if (!$approved) {
                 $request->getSession()->getFlashBag()->add('error', $this->__f('Sorry! There was a problem approving the registration for \'%1$s\'.', $reginfo['uname']));
@@ -1708,7 +1726,8 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Got just a uid.
-        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
+//        $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
+        $reginfo = $this->get('zikulausersmodule.helper.registration_helper')->get($uid);
         if (!$reginfo) {
             throw new NotFoundHttpException($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
         }
@@ -1740,9 +1759,10 @@ class AdminController extends \Zikula_AbstractController
                               ->assign('cancelurl', $cancelUrl)
                               ->fetch('Admin/denyregistration.tpl'));
         } else {
-            $denied = ModUtil::apiFunc($this->name, 'registration', 'remove', array(
-                'reginfo'   => $reginfo,
-            ));
+//            $denied = ModUtil::apiFunc($this->name, 'registration', 'remove', array(
+//                'reginfo'   => $reginfo,
+//            ));
+            $denied = $this->get('zikulausersmodule.helper.registration_helper')->remove(null, $reginfo);
 
             if (!$denied) {
                 $request->getSession()->getFlashBag()->add('error', $this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']));
