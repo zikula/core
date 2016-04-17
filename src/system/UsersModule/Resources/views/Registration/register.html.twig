@@ -34,7 +34,7 @@
     {#<input id="{{ form.vars.id }}_authentication_info" type="hidden" name="authentication_info_ser" value="{{ authentication_info|json_encode }}" />#}
     <fieldset>
         <legend>{{ __('Choose a user name') }}</legend>
-        {{ form_row(form.uname) }}
+        {{ form_row(form.user.uname) }}
         {% if (authentication_method.modname != 'ZikulaUsersModule') or ((authentication_method.modname == 'ZikulaUsersModule') and (modvars.loginviaoption == constant('Zikula\\UsersModule\\Constant::LOGIN_METHOD_EMAIL'))) %}
             <em class="help-block small col-sm-offset-3 col-sm-9">{{ __('Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.') }}</em>
         {% endif %}
@@ -42,10 +42,10 @@
     {% if authentication_method.modname == 'ZikulaUsersModule' %}
     <fieldset>
         <legend>{{ __('Set a password') }}</legend>
-        {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": modvars.minpass})}) }}
+        {{ form_row(form.user.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": modvars.minpass})}) }}
         <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
         {% if modvars.password_reminder_enabled is defined and modvars.password_reminder_enabled %}
-            {{ form_row(form.passreminder) }}
+            {{ form_row(form.user.passreminder) }}
         {% endif %}
     </fieldset>
     {% else %}
@@ -54,7 +54,7 @@
     {% endif %}
     <fieldset {% if hideEmail is defined and hideEmail %}class="hide"{% endif %}>
         <legend>{{ __('Enter your e-mail address') }}</legend>
-        {{ form_row(form.email) }}
+        {{ form_row(form.user.email) }}
     </fieldset>
 
     {% set eventData = dispatchEvent('module.users.ui.form_edit.new_registration') %}
@@ -92,8 +92,8 @@
 <script type="text/javascript">
     (function($) {
         $(document).ready(function() {
-            ZikulaUsersPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
-                username: '{{ form.uname.vars.id }}',
+            ZikulaUsersPassMeter.init('{{ form.user.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
+                username: '{{ form.user.uname.vars.id }}',
                 minLength: '{{ modvars.minpass }}'
             });
         });
