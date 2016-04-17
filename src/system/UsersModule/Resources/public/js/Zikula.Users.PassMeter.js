@@ -203,7 +203,7 @@ var currentCalculator;
             }
             passindicatorBarContainer.append(passindicatorBar);
         }
-        passwordInput.bind('keyup', function() {
+        passwordInput.on('keyup', function() {
             var score = currentCalculator.calculate(passwordInput.val());
             score.messagesStr = [];
             for (var msg in score.messages) {

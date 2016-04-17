@@ -32,7 +32,6 @@ use Zikula\UsersModule\UserEvents;
 
 /**
  * Class RegistrationController
- * @package Zikula\UsersModule\Controller
  * @Route("")
  */
 class RegistrationController extends AbstractController
