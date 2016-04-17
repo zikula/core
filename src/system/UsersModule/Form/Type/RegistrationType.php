@@ -23,6 +23,7 @@ class RegistrationType extends AbstractType
         $builder
             ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('User name'),
+                'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods and/or dashes.'),
                 'attr' => [
                     'class' => 'to-lower-case'
                 ]
@@ -46,14 +47,19 @@ class RegistrationType extends AbstractType
         if ($options['passwordReminderEnabled']) {
             $builder
                 ->add('passreminder', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'required' => $options['passwordReminderMandatory']
+                    'required' => $options['passwordReminderMandatory'],
+                    'help' => $options['translator']->__('Enter a word or a phrase that will remind you of your password.'),
+                    'alert' => [$options['translator']->__('Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!') => 'info'],
                 ]);
         }
         if ($options['includeEmail']) {
             $builder
                 ->add('email', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
                     'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
-                    'first_options' => ['label' => $options['translator']->__('Email')],
+                    'first_options' => [
+                        'label' => $options['translator']->__('Email'),
+                        'help' => $options['translator']->__('You will use your e-mail address to identify yourself when you log in.'),
+                    ],
                     'second_options' => ['label' => $options['translator']->__('Repeat Email')],
                     'invalid_message' => $options['translator']->__('The emails  must match!'),
                 ]);
@@ -62,7 +68,8 @@ class RegistrationType extends AbstractType
             $builder->add('antispamanswer', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'mapped' => false,
                 'label' => $options['antiSpamQuestion'],
-                'constraints' => new ValidAntiSpamAnswer()
+                'constraints' => new ValidAntiSpamAnswer(),
+                'help' => $options['translator']->__('Asking this question helps us prevent automated scripts from accessing private areas of the site.'),
             ]);
         }
     }
