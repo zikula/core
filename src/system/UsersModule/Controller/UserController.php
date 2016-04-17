@@ -1079,7 +1079,8 @@ class UserController extends \Zikula_AbstractController
         if ($uname && $verifycode) {
             // Both a user name and verification code were submitted
 
-            $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uname' => $uname));
+//            $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uname' => $uname));
+            $reginfo = $this->get('zikulausersmodule.helper.registration_helper')->get(null, $uname);
 
             if ($reginfo) {
                 if (!isset($reginfo['pass']) || empty($reginfo['pass'])) {
@@ -1113,15 +1114,17 @@ class UserController extends \Zikula_AbstractController
                 }
 
                 if ($verifycode && $reginfo && isset($reginfo['pass']) && !empty($reginfo['pass'])) {
-                    $verifyChg = ModUtil::apiFunc($this->name, 'registration', 'getVerificationCode', array(
-                        'uid'   => $reginfo['uid'],
-                    ));
+//                    $verifyChg = ModUtil::apiFunc($this->name, 'registration', 'getVerificationCode', array(
+//                        'uid'   => $reginfo['uid'],
+//                    ));
+                    $verifyChg = $this->get('zikulausersmodule.helper.registration_verification_helper')->getVerificationCode($reginfo['uid']);
 
                     if ($verifyChg) {
                         $codesMatch = UserUtil::passwordsMatch($verifycode, $verifyChg['verifycode']);
 
                         if ($codesMatch) {
-                            $verified = ModUtil::apiFunc($this->name, 'registration', 'verify', array('reginfo' => $reginfo));
+//                            $verified = ModUtil::apiFunc($this->name, 'registration', 'verify', array('reginfo' => $reginfo));
+                            $verified = $this->get('zikulausersmodule.helper.registration_verification_helper')->verify($reginfo);
 
                             if ($verified) {
                                 if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
