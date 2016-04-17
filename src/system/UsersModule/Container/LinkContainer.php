@@ -19,6 +19,7 @@ use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Helper\RegistrationHelper;
 
 class LinkContainer implements LinkContainerInterface
 {
@@ -38,6 +39,10 @@ class LinkContainer implements LinkContainerInterface
      * @var VariableApi
      */
     private $variableApi;
+    /**
+     * @var RegistrationHelper
+     */
+    private $registrationHelper;
 
     /**
      * constructor.
@@ -46,13 +51,15 @@ class LinkContainer implements LinkContainerInterface
      * @param RouterInterface $router
      * @param PermissionApi $permissionApi
      * @param VariableApi $variableApi
+     * @param RegistrationHelper $registrationHelper
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi)
+    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApi $permissionApi, VariableApi $variableApi, RegistrationHelper $registrationHelper)
     {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
+        $this->registrationHelper = $registrationHelper;
     }
 
     /**
@@ -99,7 +106,7 @@ class LinkContainer implements LinkContainerInterface
             ];
         }
         if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_MODERATE)) {
-            $pending = (int) \ModUtil::apiFunc('ZikulaUsersModule', 'registration', 'countAll');
+            $pending = $this->registrationHelper->countAll();
             if ($pending) {
                 $links[] = [
                     'url' => $this->router->generate('zikulausersmodule_admin_viewregistrations'),

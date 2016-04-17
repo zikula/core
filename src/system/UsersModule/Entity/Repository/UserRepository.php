@@ -10,6 +10,7 @@
 
 namespace Zikula\UsersModule\Entity\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -60,8 +61,9 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and')
     {
         $qb = $this->createQueryBuilder('u')
-            ->select('u')
-            ->where($this->whereFromFilter($filter, $exprType))
+            ->select('u');
+        $where = $this->whereFromFilter($qb, $filter, $exprType);
+        $qb->andWhere($where)
             ->orderBy($this->orderByFromArray($sort));
         $query = $qb->getQuery();
         if ($limit > 0) {
@@ -77,10 +79,12 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     public function count(array $filter = [], $exprType = 'and')
     {
         $qb = $this->createQueryBuilder('u')
-            ->select('count(u.uid')
-            ->where($this->whereFromFilter($filter, $exprType));
+            ->select('count(u.uid)');
+        $where = $this->whereFromFilter($qb, $filter, $exprType);
+        $qb->andWhere($where);
+        $query = $qb->getQuery();
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return $query->getSingleScalarResult();
     }
 
     /**
@@ -104,13 +108,13 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      * filter = [field => value, field => value, field => [operator => '!=', 'operand' => value], ...]
      * when value is not an array, operator is assumed to be '='
      *
+     * @param QueryBuilder $qb
      * @param array $filter The filter, see getAll() and countAll().
      * @param string $exprType default 'and'
-     * @return \Doctrine\ORM\Query\Expr\Composite
+     * @return Expr\Composite
      */
-    private function whereFromFilter(array $filter, $exprType = 'and')
+    private function whereFromFilter(QueryBuilder $qb, array $filter, $exprType = 'and')
     {
-        $qb = $this->createQueryBuilder('u');
         $exprType = in_array($exprType, ['and', 'or']) ? $exprType : 'and';
         $exprMethod = strtolower($exprType) . "X";
         /** @var \Doctrine\ORM\Query\Expr\Composite $expr */
@@ -151,7 +155,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
                 ];
                 $method = $methodMap[$value['operator']];
 
-                $expr->add($qb->expr()->$method('u' . $field, '?' . $i));
+                $expr->add($qb->expr()->$method('u.' . $field, '?' . $i));
                 $qb->setParameter($i, $dbValue);
             }
             $i++;
