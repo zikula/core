@@ -140,6 +140,11 @@ class ExtensionHelper
         }
         // persist the updated version
         $newVersion = $bundle->getMetaData()->getVersion();
+        if (empty($newVersion)) {
+            // @todo remove this legacy at Core-2.0
+            $newVersion = \Zikula\ExtensionsModule\Util::getVersionMeta($extension->getName())->getVersion();
+        }
+
         $extension->setVersion($newVersion);
         $this->container->get('doctrine')->getManager()->flush();
 
