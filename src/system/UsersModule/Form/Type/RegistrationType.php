@@ -22,23 +22,28 @@ class RegistrationType extends AbstractType
     {
         $builder
             ->add('user', 'Zikula\UsersModule\Form\Type\UserType', [
-                'data_class' => 'Zikula\UsersModule\Entity\UserEntity',
                 'translator' => $options['translator'],
                 'passwordReminderEnabled' => $options['passwordReminderEnabled'],
                 'passwordReminderMandatory' => $options['passwordReminderMandatory']
             ])
             ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Save')
+                'label' => $options['translator']->__('Save'),
+                'icon' => 'fa-plus',
+                'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Cancel')
+                'label' => $options['translator']->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => ['class' => 'btn btn-danger']
             ])
             ->add('reset', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Reset')
+                'label' => $options['translator']->__('Reset'),
+                'icon' => 'fa-refresh',
+                'attr' => ['class' => 'btn btn-primary']
             ])
         ;
         if (!$options['includeEmail']) {
-            $builder->remove('email');
+            $builder->get('user')->remove('email');
         }
         if (!empty($options['antiSpamQuestion'])) {
             $builder->add('antispamanswer', 'Symfony\Component\Form\Extension\Core\Type\TextType', [

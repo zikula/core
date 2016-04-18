@@ -54,7 +54,7 @@
     {% endif %}
     <fieldset {% if hideEmail is defined and hideEmail %}class="hide"{% endif %}>
         <legend>{{ __('Enter your e-mail address') }}</legend>
-        {{ form_row(form.user.email) }}
+        {% if form.user.email is defined %}{{ form_row(form.user.email) }}{% endif %}{# email may not be defined if authentication is non-local #}
     </fieldset>
 
     {% set eventData = dispatchEvent('module.users.ui.form_edit.new_registration') %}
@@ -81,9 +81,9 @@
     {% endif %}
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-            {{ form_widget(form.submit, {attr: {class: 'btn btn-success'}, icon:'fa-plus'}) }}
-            {{ form_widget(form.cancel, {attr: {class: 'btn btn-danger'}, icon:'fa-times'}) }}
-            {{ form_widget(form.reset, {attr: {class: 'btn btn-primary'}, icon:'fa-refresh'}) }}
+            {{ form_widget(form.submit) }}
+            {{ form_widget(form.cancel) }}
+            {{ form_widget(form.reset) }}
         </div>
     </div>
 {{ form_end(form) }}

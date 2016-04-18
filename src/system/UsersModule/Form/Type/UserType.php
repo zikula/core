@@ -13,12 +13,14 @@ namespace Zikula\UsersModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $passwordConstraints = $options['allowNullPassword'] ? [] : [new NotNull()];
         $builder
             ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $options['translator']->__('User name'),
@@ -32,6 +34,7 @@ class UserType extends AbstractType
                 'first_options' => ['label' => $options['translator']->__('Password')],
                 'second_options' => ['label' => $options['translator']->__('Repeat Password')],
                 'invalid_message' => $options['translator']->__('The passwords must match!'),
+                'constraints' => $passwordConstraints
             ])
             ->add('email', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
                 'type' => 'Symfony\Component\Form\Extension\Core\Type\EmailType',
@@ -69,8 +72,10 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'data_class' => 'Zikula\UsersModule\Entity\UserEntity',
             'inherit_data' => true,
             'translator' => null,
+            'allowNullPassword' => false,
             'passwordReminderEnabled' => UsersConstant::DEFAULT_PASSWORD_REMINDER_ENABLED,
             'passwordReminderMandatory' => UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY
         ]);
