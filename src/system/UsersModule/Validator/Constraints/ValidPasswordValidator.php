@@ -52,7 +52,7 @@ class ValidPasswordValidator extends ConstraintValidator
     {
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, [
-            new NotNull(),
+//            new NotNull(),
             new Type('string'),
             new Length([
                 'min' => $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
