@@ -121,9 +121,7 @@ class RegistrationHelper
      * @param boolean $adminNotification
      * @param boolean $sendPassword
      *
-     * @return array|UserEntity If the user registration information is successfully saved (either full user record was
-     *                      created or a pending registration record was created in the users table), then the UserEntity
-     *                      is returned. If the creation was unsuccessful, an array of errors is returned.
+     * @return array If the creation was unsuccessful, an array of errors is returned.
      *
      * @throws \LogicException Thrown if registration is disabled.
      */
