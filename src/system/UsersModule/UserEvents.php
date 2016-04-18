@@ -22,8 +22,14 @@ class UserEvents
     const REGISTRATION_SUCCEEDED = 'module.users.ui.registration.succeeded';
     const REGISTRATION_FAILED = 'module.users.ui.registration.failed';
 
+    const USER_VALIDATE_NEW = 'module.users.ui.validate_edit.new_user';
+    const USER_PROCESS_NEW = 'module.users.ui.process_edit.new_user';
+
     const HOOK_REGISTRATION_VALIDATE = 'users.ui_hooks.registration.validate_edit';
     const HOOK_REGISTRATION_PROCESS = 'users.ui_hooks.registration.process_edit';
+
+    const HOOK_USER_VALIDATE = 'users.ui_hooks.user.validate_edit';
+    const HOOK_USER_PROCESS = 'users.ui_hooks.user.process_edit';
 
     const CREATE_REGISTRATION = 'user.registration.create';
     const DELETE_REGISTRATION = 'user.registration.delete';
