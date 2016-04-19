@@ -66,7 +66,7 @@ class MailerApi
     private $permissionApi;
 
     /**
-     * ConfigType constructor.
+     * MailerApi constructor.
      *
      * @param TranslatorInterface      $translator      Translator service instance.
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance.
