@@ -80,12 +80,12 @@ class LinkContainer implements LinkContainerInterface
         }
 
         $links[] = [
-            'url' => $this->router->generate('zikulamailermodule_admin_test'),
+            'url' => $this->router->generate('zikulamailermodule_config_test'),
             'text' => $this->translator->__('Test current settings'),
             'icon' => 'envelope'
         ];
         $links[] = [
-            'url' => $this->router->generate('zikulamailermodule_admin_config'),
+            'url' => $this->router->generate('zikulamailermodule_config_config'),
             'text' => $this->translator->__('Settings'),
             'icon' => 'wrench'
         ];
