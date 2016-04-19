@@ -1,6 +1,7 @@
 {
     "name": "zikula/pagelock-module",
-    "description": "Zikula Forms Pagelock Module",
+    "version": "1.2.0",
+    "description": "Provides the ability to lock pages when they are in use, for content and access control.",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
@@ -18,7 +19,12 @@
     "extra": {
         "zikula": {
             "url": "pagelock",
-            "class": "Zikula\\PageLockModule\\ZikulaPageLockModule"
+            "class": "Zikula\\PageLockModule\\ZikulaPageLockModule",
+            "displayname": "Page lock",
+            "url": "pagelock",
+            "securityschema": {
+                "ZikulaPageLockModule::": "::"
+            }
         }
     }
 }
