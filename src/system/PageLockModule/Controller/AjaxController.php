@@ -1,31 +1,27 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\PageLockModule\Controller;
 
-use UserUtil;
-use ModUtil;
-use Zikula\Core\Response\Ajax\AjaxResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Response\Ajax\AjaxResponse;
 
 /**
  * @Route("/ajax")
  *
  * Ajax controllers for the pagelock module
  */
-class AjaxController extends \Zikula_Controller_AbstractAjax
+class AjaxController extends AbstractController
 {
     /**
      * @Route("/refresh", options={"expose"=true})
@@ -39,8 +35,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function refreshpagelockAction(Request $request)
     {
-        $this->checkAjaxToken();
-
         $lockInfo = $this->getLockInfo($request);
 
         return new AjaxResponse($lockInfo);
@@ -58,8 +52,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function checkpagelockAction(Request $request)
     {
-        $this->checkAjaxToken();
-
         $lockInfo = $this->getLockInfo($request);
 
         return new AjaxResponse($lockInfo);
@@ -76,14 +68,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     {
         $lockName = $request->request->get('lockname');
 
-        $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',
-            array(
-                'lockName' => $lockName,
-                'sessionId' => $request->getSession()->getId(),
-                'lockedByTitle' => UserUtil::getVar('uname'),
-                'lockedByIPNo' => $request->getClientIp()
-            )
-        );
+        $lockInfo = $this->get('zikula_pagelock_module.api.locking')->requireLock($lockName, \UserUtil::getVar('uname'), $request->getClientIp(), $request->getSession()->getId());
 
         $lockInfo['message'] = $lockInfo['hasLock'] ? null : $this->__('Error! Lock broken!');
 
