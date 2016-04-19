@@ -11,14 +11,14 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\BlocksModule\DependencyInjection;
+namespace Zikula\MailerModule\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
 
-class ZikulaBlocksExtension extends Extension
+class ZikulaMailerExtension extends Extension
 {
     /**
      * Responds to the app.config configuration parameter.

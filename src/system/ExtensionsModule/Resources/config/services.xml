@@ -23,7 +23,7 @@
 
     <services>
         <service id="zikula_extensions_module.container.link_container" class="%zikula_extensions_module.container.link_container.class%">
-            <argument type="service" id="translator" />
+            <argument type="service" id="translator.default" />
             <argument type="service" id="jms_i18n_routing.router" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
             <tag name="zikula.link_container"/>

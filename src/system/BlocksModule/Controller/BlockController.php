@@ -164,8 +164,8 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Delete'])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Cancel'])
+            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => $this->__('Delete')])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => $this->__('Cancel')])
             ->getForm();
 
         $form->handleRequest($request);
@@ -247,11 +247,11 @@ class BlockController extends AbstractController
      */
     private function formContentModify(Request $request, BlockEntity $blockEntity = null)
     {
+        $options = [];
         if (isset($blockEntity)) {
             $options = ['data' => $blockEntity->getContent() == [] ? '' : $blockEntity->getContent()];
-        } else {
-            $options = [];
         }
+
         $form = $this->createFormBuilder()
             ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', $options)
             ->getForm();
@@ -277,7 +277,7 @@ class BlockController extends AbstractController
     public function viewAction(BlockEntity $blockEntity = null)
     {
         return $this->render('@ZikulaBlocksModule/Admin/blockview.html.twig', [
-                'block' => $blockEntity,
-            ]);
+            'block' => $blockEntity,
+        ]);
     }
 }
