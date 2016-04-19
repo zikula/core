@@ -61,7 +61,7 @@ class ConfigController extends AbstractController
                 foreach (['charset', 'encoding', 'html', 'wordwrap', 'enableLogging'] as $varName) {
                     $vars[$varName] = $formData[$varName];
                 }
-                $this->get('zikula_extensions_module.api.variable')->setAll('ZikulaMailerModule', $vars);
+                $this->setVars($vars);
 
                 // fetch different username and password fields depending on the transport type
                 $credentialsSuffix = $formData['transport'] == 'gmail' ? 'Gmail' : '';
