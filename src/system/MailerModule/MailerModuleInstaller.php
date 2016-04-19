@@ -13,6 +13,7 @@
 
 namespace Zikula\MailerModule;
 
+use Zikula\Core\AbstractExtensionInstaller;
 use ZLanguage;
 
 /**
