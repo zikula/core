@@ -41,7 +41,7 @@ class PageLockRepository extends EntityRepository
         $qb = $this->getEntityManager()->createQueryBuilder();
 
         $qb->select('count(tbl.id)')
-           ->from('ZikulaPageLockModule:PageLockEntity', 'tbl')
+           ->from('ZikulaPageLockModule:PageLockEntity', 'tbl');
         $qb = $this->addCommonFilters($qb, $lockName, $sessionId);
 
         $query = $qb->getQuery();
