@@ -14,45 +14,51 @@
 namespace Zikula\MailerModule;
 
 use ZLanguage;
-use HookUtil;
 
 /**
  * Installation and upgrade routines for the mailer module
  */
-class MailerModuleInstaller extends \Zikula_AbstractInstaller
+class MailerModuleInstaller extends AbstractExtensionInstaller
 {
     /**
-     * initialise the template module
+     * Install the ZikulaMailerModule application.
      *
-     * @return bool true if successful, false otherwise
+     * @return boolean True on success, or false.
+     *
+     * @throws RuntimeException Thrown if database tables can not be created or another error occurs
      */
     public function install()
     {
         $this->setVars($this->getDefaults());
 
-        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+        // install subscriber hooks
+        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
 
         // Initialisation successful
         return true;
     }
 
     /**
-     * upgrade the module from an old version
+     * Upgrade the ZikulaMailerModule application from an older version.
      *
-     * @param  string $oldversion version number string to upgrade from
+     * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @return bool|string  true on success, last valid version string or false if fails
+     * @param integer $oldVersion Version to upgrade from.
+     *
+     * @return boolean True on success, false otherwise.
+     *
+     * @throws RuntimeException Thrown if database tables can not be updated
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '1.3.1':
                 $this->setVar('smtpsecuremethod', 'ssl');
             case '1.3.2':
                 // clear old modvars
                 // use manual method because getVars() is not available during system upgrade
-                $modVarEntities = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(array('modname' => $this->name));
+                $modVarEntities = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(['modname' => $this->name]);
                 $modVars = array();
                 foreach ($modVarEntities as $var) {
                     $modVars[$var['name']] = $var['value'];
@@ -66,14 +72,14 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                 $this->setVarWithDefault('enableLogging', false);
 
                 // write the config file
-                $mailerTypeConversion = array(
+                $mailerTypeConversion = [
                     1 => 'mail',
                     2 => 'sendmail',
                     3 => 'mail',
                     4 => 'smtp',
                     5 => 'mail',
-                );
-                $config = array(
+                ];
+                $config = [
                     'transport' => $mailerTypeConversion[$modVars['mailertype']],
                     'username' => $modVars['smtpusername'],
                     'password' => $modVars['smtppassword'],
@@ -84,20 +90,21 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
                     'spool' => array('type' => 'memory'),
                     'delivery_addresses' => [],
                     'disable_delivery' => $modVars['mailertype'] == 5,
-                );
-                $configDumper = $this->getContainer()->get('zikula.dynamic_config_dumper');
+                ];
+                $configDumper = $this->container->get('zikula.dynamic_config_dumper');
                 $configDumper->setConfiguration('swiftmailer', $config);
 
             case '1.4.0':
-                $configDumper = $this->getContainer()->get('zikula.dynamic_config_dumper');
+                $configDumper = $this->container->get('zikula.dynamic_config_dumper');
                 $config = $configDumper->getConfiguration('swiftmailer');
                 // remove spool parameter
                 unset($config['spool']);
                 $configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.1':
-                HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+                // install subscriber hooks
+                $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
             case '1.4.2':
-                $configDumper = $this->getContainer()->get('zikula.dynamic_config_dumper');
+                $configDumper = $this->container->get('zikula.dynamic_config_dumper');
                 $config = $configDumper->getConfiguration('swiftmailer');
                 // delivery_address has changed to an array named delivery_addresses
                 $config['delivery_addresses'] = !empty($config['delivery_address']) ? [$config['delivery_address']] : [];
@@ -112,35 +119,38 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
     }
 
     /**
-     * delete the Mailer module
+     * Uninstall ZikulaMailerModule.
      *
-     * @return bool true if successful, false otherwise
+     * @return boolean True on success, false otherwise.
+     *
+     * @throws RuntimeException Thrown if database tables or stored workflows can not be removed
      */
     public function uninstall()
     {
         // Delete any module variables
         $this->delVars();
 
-        // Remove hooks
-        HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
+        // uninstall subscriber hooks
+        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
 
         // Deletion successful
         return true;
     }
 
     /**
-     * default module vars
+     * Default module vars.
+     *
      * @return array
      */
     private function getDefaults()
     {
-        return array(
+        return [
             'charset' => ZLanguage::getEncoding(),
             'encoding' => '8bit',
             'html' => false,
             'wordwrap' => 50,
             'enableLogging' => false,
-        );
+        ];
     }
 
     /**
@@ -152,9 +162,9 @@ class MailerModuleInstaller extends \Zikula_AbstractInstaller
     private function setVarWithDefault($key, $value = null)
     {
         if (isset($value)) {
-            parent::setVar($key, $value);
+            $this->setVar($key, $value);
         }
         $defaults = $this->getDefaults();
-        parent::setVar($key, $defaults[$key]);
+        $this->setVar($key, $defaults[$key]);
     }
 }
