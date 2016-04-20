@@ -96,7 +96,7 @@ class UserApi extends \Zikula_AbstractApi
             }
             $message->setTo($toAdds);
         } else {
-            $message->setTo(isset($args['toname']) ? [$args['toaddress'] => $args['toname']] : $args['toaddress'];
+            $message->setTo(isset($args['toname']) ? [$args['toaddress'] => $args['toname']] : $args['toaddress']);
         }
 
         // if replytoname and replytoaddress have been provided use them else use the fromname and fromaddress built earlier
