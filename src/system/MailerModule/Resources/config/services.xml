@@ -6,8 +6,6 @@
 
     <parameters>
         <parameter key="zikula_mailer_module.container.link_container.class">Zikula\MailerModule\Container\LinkContainer</parameter>
-        <parameter key="zikula_mailer_module.form.config_type.class">Zikula\MailerModule\Form\Type\ConfigType</parameter>
-        <parameter key="zikula_mailer_module.form.test_type.class">Zikula\MailerModule\Form\Type\TestType</parameter>
         <parameter key="twig.extension.zikula_mailer_module.class">Zikula\MailerModule\Twig\TwigExtension</parameter>
         <parameter key="zikula_mailer_module.api.mailer.class">Zikula\MailerModule\Api\MailerApi</parameter>
     </parameters>
@@ -20,20 +18,6 @@
             <tag name="zikula.link_container"/>
         </service>
 
-        <service id="zikula_mailer_module.form.config_type" class="%zikula_mailer_module.form.config_type.class%">
-            <argument type="service" id="translator.default" />
-            <argument type="service" id="zikula.dynamic_config_dumper" />
-            <argument type="service" id="zikula_extensions_module.api.variable" />
-            <tag name="form.type" />
-        </service>
-
-        <service id="zikula_mailer_module.form.test_type" class="%zikula_mailer_module.form.test_type.class%">
-            <argument type="service" id="translator.default" />
-            <argument type="service" id="zikula.dynamic_config_dumper" />
-            <argument type="service" id="zikula_extensions_module.api.variable" />
-            <tag name="form.type" />
-        </service>
-
         <service id="twig.extension.zikula_mailer_module" class="%twig.extension.zikula_mailer_module.class%" public="false">
             <tag name="twig.extension" />
         </service>
@@ -41,7 +25,7 @@
         <service id="zikula_mailer_module.api.mailer" class="%zikula_mailer_module.api.mailer.class%">
             <argument type="service" id="translator.default" />
             <argument type="service" id="event_dispatcher" />
-            <argument type="service" id="zikula.dynamic_config_dumper" />
+            <argument>%swiftmailer%</argument>
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="mailer" />
             <argument type="service" id="session" />

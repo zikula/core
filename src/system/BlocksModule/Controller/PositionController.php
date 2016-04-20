@@ -91,8 +91,20 @@ class PositionController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => $this->__('Delete')])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => $this->__('Cancel')])
+            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Delete'),
+                'icon' => 'fa-trash-o',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
             ->getForm();
 
         $form->handleRequest($request);

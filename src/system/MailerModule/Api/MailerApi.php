@@ -18,9 +18,9 @@ use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\PermissionApi;
 
@@ -70,12 +70,12 @@ class MailerApi
      *
      * @param TranslatorInterface      $translator      Translator service instance.
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance.
-     * @param DynamicConfigDumper      $configDumper    DynamicConfigDumper service instance.
+     * @param array                    $mailerParams    SwiftMailer configuration parameters.
      * @param VariableApi              $variableApi     VariableApi service instance.
      * @param Session                  $session         Session service instance.
      * @param PermissionApi            $permissionApi   PermissionApi service instance.
      */
-    public function __construct(TranslatorInterface $translator, EventDispatcherInterface $eventDispatcher, DynamicConfigDumper $configDumper, VariableApi $variableApi, Swift_Mailer $mailer, Session $session, PermissionApi $permissionApi)
+    public function __construct(TranslatorInterface $translator, EventDispatcherInterface $eventDispatcher, array $mailerParams, VariableApi $variableApi, Swift_Mailer $mailer, Session $session, PermissionApi $permissionApi)
     {
         $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;
@@ -83,9 +83,8 @@ class MailerApi
         $this->session = $session;
         $this->permissionApi = $permissionApi;
 
-        $params = $configDumper->getConfiguration('swiftmailer');
         $modVars = $variableApi->getAll('ZikulaMailerModule');
-        $this->dataValues = array_merge($params, $modVars);
+        $this->dataValues = array_merge($mailerParams, $modVars);
         $this->dataValues['sitename'] = $variableApi->get('ZConfig', 'sitename_' . \ZLanguage::getLanguageCode(), $variableApi->get('ZConfig', 'sitename_en'));
         $this->dataValues['adminmail'] = $variableApi->get('ZConfig', 'adminmail');
     }
@@ -156,7 +155,7 @@ class MailerApi
         }
 
         // Allow other bundles to control mailer behavior
-        $event = new \Zikula\Core\Event\GenericEvent($this, $args);
+        $event = new GenericEvent($this, $args);
         $this->eventDispatcher->dispatch('module.mailer.api.sendmessage', $event);
         if ($event->isPropagationStopped()) {
             return $event->getData();

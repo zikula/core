@@ -18,7 +18,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class AdminController
- * @package Zikula\MailerModule\Controller
  * @Route("/admin")
  */
 class AdminController extends AbstractController

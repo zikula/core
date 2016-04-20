@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\MailerModule\Container\Base;
+namespace Zikula\MailerModule\Container;
 
 use Zikula\Bundle\HookBundle\AbstractHookContainer;
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;

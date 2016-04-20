@@ -12,78 +12,40 @@ namespace Zikula\MailerModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
-use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Configuration form type class.
  */
 class ConfigType extends AbstractType
 {
-    use TranslatorTrait;
-
-    /**
-     * @var array
-     */
-    protected $dataValues;
-
-    /**
-     * ConfigType constructor.
-     *
-     * @param TranslatorInterface $translator   Translator service instance.
-     * @param DynamicConfigDumper $configDumper DynamicConfigDumper service instance.
-     * @param VariableApi         $variableApi  VariableApi service instance.
-     */
-    public function __construct(TranslatorInterface $translator, DynamicConfigDumper $configDumper, VariableApi $variableApi)
-    {
-        $this->setTranslator($translator);
-
-        $params = $configDumper->getConfiguration('swiftmailer');
-        $modVars = $variableApi->getAll('ZikulaMailerModule');
-        $this->dataValues = array_merge($params, $modVars);
-    }
-
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator Translator service instance.
-     */
-    public function setTranslator(/*TranslatorInterface */$translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $translator = $options['translator'];
+
         $builder
             ->add('transport', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $this->__('Mail transport'),
-                'data' => $this->dataValues['transport'],
+                'label' => $translator->__('Mail transport'),
                 'empty_data' => 'mail',
                 'choices' => [
-                    $this->__('Internal PHP `mail()` function') => 'mail',
-                    $this->__('Sendmail message transfer agent') => 'sendmail',
-                    $this->__('Google gmail') => 'gmail',
-                    $this->__('SMTP mail transfer protocol') => 'smtp',
-                    $this->__('Development/debug mode (Do not send any email)') => 'test'/*'null'*/
+                    $translator->__('Internal PHP `mail()` function') => 'mail',
+                    $translator->__('Sendmail message transfer agent') => 'sendmail',
+                    $translator->__('Google gmail') => 'gmail',
+                    $translator->__('SMTP mail transfer protocol') => 'smtp',
+                    $translator->__('Development/debug mode (Do not send any email)') => 'test'/*'null'*/
                 ],
                 'choices_as_values' => true
             ])
             ->add('charset', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $this->__('Character set'),
-                'data' => $this->dataValues['charset'],
+                'label' => $translator->__('Character set'),
                 'empty_data' => \ZLanguage::getEncoding(),
                 'max_length' => 20,
-                'help' => $this->__f("Default: '%s'", ['%s' => \ZLanguage::getEncoding()])
+                'help' => $translator->__f("Default: '%s'", ['%s' => \ZLanguage::getEncoding()])
             ])
             ->add('encoding', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $this->__('Encoding'),
-                'data' => $this->dataValues['encoding'],
+                'label' => $translator->__('Encoding'),
                 'empty_data' => '8bit',
                 'choices' => [
                     '8bit' => '8bit',
@@ -93,49 +55,43 @@ class ConfigType extends AbstractType
                     'quoted-printable' => 'quoted-printable'
                 ],
                 'choices_as_values' => true,
-                'help' => $this->__f("Default: '%s'", ['%s' => '8bit'])
+                'help' => $translator->__f("Default: '%s'", ['%s' => '8bit'])
             ])
             ->add('html', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $this->__('HTML-formatted messages'),
-                'data' => (bool) $this->dataValues['html'],
+                'label' => $translator->__('HTML-formatted messages'),
                 'required' => false
             ])
             ->add('wordwrap', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-                'label' => $this->__('Word wrap'),
-                'data' => $this->dataValues['wordwrap'],
+                'label' => $translator->__('Word wrap'),
                 'empty_data' => 50,
                 'scale' => 0,
                 'max_length' => 3,
-                'help' => $this->__f("Default: '%s'", ['%s' => '50'])
+                'help' => $translator->__f("Default: '%s'", ['%s' => '50'])
             ])
             ->add('enableLogging', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $this->__('Enable logging of sent mail'),
-                'data' => (bool) $this->dataValues['enableLogging'],
+                'label' => $translator->__('Enable logging of sent mail'),
                 'required' => false
             ])
             ->add('host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $this->__('SMTP host server'),
-                'data' => $this->dataValues['host'],
+                'label' => $translator->__('SMTP host server'),
                 'empty_data' => 'localhost',
                 'max_length' => 255,
                 'required' => false,
-                'help' => $this->__f("Default: '%s'", ['%s' => 'localhost'])
+                'help' => $translator->__f("Default: '%s'", ['%s' => 'localhost'])
             ])
             ->add('port', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-                'label' => $this->__('SMTP port'),
-                'data' => $this->dataValues['port'],
+                'label' => $translator->__('SMTP port'),
                 'empty_data' => 25,
                 'scale' => 0,
                 'max_length' => 5,
                 'required' => false,
-                'help' => $this->__f("Default: '%s'", ['%s' => '25'])
+                'help' => $translator->__f("Default: '%s'", ['%s' => '25'])
             ])
             ->add('encryption', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $this->__('SMTP encryption method'),
-                'data' => $this->dataValues['encryption'],
+                'label' => $translator->__('SMTP encryption method'),
                 'empty_data' => '',
                 'choices' => [
-                    $this->__('None') => '',
+                    $translator->__('None') => '',
                     'SSL' => 'ssl',
                     'TLS' => 'tls'
                 ],
@@ -143,11 +99,10 @@ class ConfigType extends AbstractType
                 'required' => false
             ])
             ->add('auth_mode', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $this->__('SMTP authentication type'),
-                'data' => $this->dataValues['auth_mode'],
+                'label' => $translator->__('SMTP authentication type'),
                 'empty_data' => '',
                 'choices' => [
-                    $this->__('None') => '',
+                    $translator->__('None') => '',
                     'Plain' => 'plain',
                     'Login' => 'login',
                     'Cram-MD5' => 'cram-md5'
@@ -156,37 +111,45 @@ class ConfigType extends AbstractType
                 'required' => false
             ])
             ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $this->__('SMTP user name'),
-                'data' => $this->dataValues['username'],
+                'label' => $translator->__('SMTP user name'),
                 'empty_data' => '',
                 'max_length' => 50,
                 'required' => false
             ])
             ->add('password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
-                'label' => $this->__('SMTP password'),
-                'data' => $this->dataValues['password'],
+                'label' => $translator->__('SMTP password'),
                 'empty_data' => '',
                 'max_length' => 50,
                 'always_empty' => false,
                 'required' => false
             ])
             ->add('usernameGmail', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $this->__('Gmail user name'),
-                'data' => $this->dataValues['usernameGmail'],
+                'label' => $translator->__('Gmail user name'),
                 'empty_data' => '',
                 'max_length' => 50,
                 'required' => false
             ])
             ->add('passwordGmail', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
-                'label' => $this->__('Gmail password'),
-                'data' => $this->dataValues['passwordGmail'],
+                'label' => $translator->__('Gmail password'),
                 'empty_data' => '',
                 'max_length' => 50,
                 'always_empty' => false,
                 'required' => false
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => $this->__('Save')])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => $this->__('Cancel')])
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $translator->__('Save'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $translator->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
         ;
     }
 

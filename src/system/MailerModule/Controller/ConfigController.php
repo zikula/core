@@ -19,22 +19,10 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class ConfigController
- * @package Zikula\MailerModule\Controller
  * @Route("/config")
  */
 class ConfigController extends AbstractController
 {
-    /**
-     * @Route("")
-     * @deprecated remove at Core-2.0
-     */
-    public function indexAction()
-    {
-        @trigger_error('The zikulamailermodule_config_index route is deprecated. please use zikulamailermodule_config_config instead.', E_USER_DEPRECATED);
-
-        return $this->redirect($this->generateUrl('zikulamailermodule_config_config'));
-    }
-
     /**
      * @Route("/config")
      * @Theme("admin")
@@ -50,7 +38,9 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm('Zikula\MailerModule\Form\Type\ConfigType');
+        $form = $this->createForm('Zikula\MailerModule\Form\Type\ConfigType',
+            $this->getDataValues(), ['translator' => $this->get('translator.default')]
+        );
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
@@ -122,10 +112,13 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
+        $variableApi = $this->get('zikula_extensions_module.api.variable');
         $dumper = $this->get('zikula.dynamic_config_dumper');
         $paramHtml = $dumper->getConfigurationForHtml('swiftmailer');
 
-        $form = $this->createForm('Zikula\MailerModule\Form\Type\TestType');
+        $form = $this->createForm('Zikula\MailerModule\Form\Type\TestType',
+            $this->getDataValues(), ['translator' => $this->get('translator.default')]
+        );
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('test')->isClicked()) {
@@ -157,7 +150,8 @@ class ConfigController extends AbstractController
 
                 // send the email
                 try {
-                    $result = \ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', [
+                    $mailer = $this->get('zikula_mailer_module.api.mailer');
+                    $result = $mailer->sendMessage([
                         'toname' => $formData['toName'],
                         'toaddress' => $formData['toAddress'],
                         'subject' => $formData['subject'],
@@ -186,5 +180,24 @@ class ConfigController extends AbstractController
             'form' => $form->createView(),
             'swiftmailerHtml' => $paramHtml
         ];
+    }
+
+    /**
+     * Returns required data from module variables and SwiftMailer configuration.
+     */
+    private function getDataValues()
+    {
+        $dumper = $this->get('zikula.dynamic_config_dumper');
+        $variableApi = $this->get('zikula_extensions_module.api.variable');
+
+        $params = $dumper->getConfiguration('swiftmailer');
+        $modVars = $variableApi->getAll('ZikulaMailerModule');
+
+        $dataValues = array_merge($params, $modVars);
+
+        $dataValues['sitename'] = $variableApi->get('ZConfig', 'sitename_' . \ZLanguage::getLanguageCode(), $variableApi->get('ZConfig', 'sitename_en'));
+        $dataValues['adminmail'] = $variableApi->get('ZConfig', 'adminmail');
+
+        return $dataValues;
     }
 }

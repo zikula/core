@@ -24,8 +24,20 @@ class ExtensionInstallType extends AbstractType
             ->add('dependencies', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', [
                 'entry_type' => 'Symfony\Component\Form\Extension\Core\Type\CheckboxType',
             ])
-            ->add('install', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Install'])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Cancel'])
+            ->add('install', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Install'),
+                'icon' => 'fa-plus',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
         ;
     }
 

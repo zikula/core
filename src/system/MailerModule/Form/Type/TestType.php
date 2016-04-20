@@ -12,85 +12,42 @@ namespace Zikula\MailerModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
-use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Configuration form type class.
  */
 class TestType extends AbstractType
 {
-    use TranslatorTrait;
-
-    /**
-     * @var array
-     */
-    protected $dataValues;
-
-    /**
-     * TestType constructor.
-     *
-     * @param TranslatorInterface $translator   Translator service instance.
-     * @param DynamicConfigDumper $configDumper DynamicConfigDumper service instance.
-     * @param VariableApi         $variableApi  VariableApi service instance.
-     */
-    public function __construct(TranslatorInterface $translator, DynamicConfigDumper $configDumper, VariableApi $variableApi)
-    {
-        $this->setTranslator($translator);
-
-        $params = $configDumper->getConfiguration('swiftmailer');
-        $modVars = $variableApi->getAll('ZikulaMailerModule');
-        $this->dataValues = array_merge($params, $modVars);
-        $this->dataValues['sitename'] = $variableApi->get('ZConfig', 'sitename_' . \ZLanguage::getLanguageCode(), $variableApi->get('ZConfig', 'sitename_en'));
-        $this->dataValues['adminmail'] = $variableApi->get('ZConfig', 'adminmail');
-    }
-
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator Translator service instance.
-     */
-    public function setTranslator(/*TranslatorInterface */$translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $translator = $options['translator'];
+
         $builder
             ->add('fromName', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $this->__('Sender\'s name'),
-                'data' => $this->dataValues['sitename'],
+                'label' => $translator->__('Sender\'s name'),
                 'disabled' => true
             ])
             ->add('fromAddress', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
-                'label' => $this->__('Sender\'s e-mail address'),
-                'data' => $this->dataValues['adminmail'],
+                'label' => $translator->__('Sender\'s e-mail address'),
                 'disabled' => true
             ])
             ->add('toName', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $this->__('Recipient\'s name'),
-                'data' => '',
+                'label' => $translator->__('Recipient\'s name'),
                 'max_length' => 50
             ])
             ->add('toAddress', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
-                'label' => $this->__('Recipient\'s e-mail address'),
-                'data' => '',
+                'label' => $translator->__('Recipient\'s e-mail address'),
                 'max_length' => 50
             ])
             ->add('subject', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $this->__('Subject'),
-                'data' => '',
+                'label' => $translator->__('Subject'),
                 'max_length' => 50
             ])
             ->add('messageType', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $this->__('Message type'),
-                'data' => ($this->dataValues['html'] ? 'html' : 'text'),
+                'label' => $translator->__('Message type'),
                 'empty_data' => 'text',
                 'choices' => [
                     'Plain-text message' => 'text',
@@ -101,17 +58,27 @@ class TestType extends AbstractType
                 'expanded' => false
             ])
             ->add('bodyHtml', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-                'label' => $this->__('HTML-formatted message'),
-                'data' => '',
+                'label' => $translator->__('HTML-formatted message'),
                 'required' => false
             ])
             ->add('bodyText', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-                'label' => $this->__('Plain-text message'),
-                'data' => '',
+                'label' => $translator->__('Plain-text message'),
                 'required' => false
             ])
-            ->add('test', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => $this->__('Send test email')])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => $this->__('Cancel')])
+            ->add('test', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $translator->__('Send test email'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $translator->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
         ;
     }
 

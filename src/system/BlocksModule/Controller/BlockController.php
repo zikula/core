@@ -48,7 +48,13 @@ class BlockController extends AbstractController
                 'choices' => $this->get('zikula_blocks_module.api.block')->getAvailableBlockTypes(),
                 'label' => 'Block type',
             ])
-            ->add('choose', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
+            ->add('choose', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Choose'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -164,8 +170,20 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => $this->__('Delete')])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => $this->__('Cancel')])
+            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Delete'),
+                'icon' => 'fa-trash-o',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
             ->getForm();
 
         $form->handleRequest($request);
