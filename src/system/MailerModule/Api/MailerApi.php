@@ -17,7 +17,6 @@ use Swift_DependencyContainer;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
@@ -56,11 +55,6 @@ class MailerApi
     protected $dataValues;
 
     /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
      * @var PermissionApi
      */
     private $permissionApi;
@@ -72,21 +66,17 @@ class MailerApi
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance.
      * @param array                    $mailerParams    SwiftMailer configuration parameters.
      * @param VariableApi              $variableApi     VariableApi service instance.
-     * @param Session                  $session         Session service instance.
      * @param PermissionApi            $permissionApi   PermissionApi service instance.
      */
-    public function __construct(TranslatorInterface $translator, EventDispatcherInterface $eventDispatcher, array $mailerParams, VariableApi $variableApi, Swift_Mailer $mailer, Session $session, PermissionApi $permissionApi)
+    public function __construct(TranslatorInterface $translator, EventDispatcherInterface $eventDispatcher, array $mailerParams, VariableApi $variableApi, Swift_Mailer $mailer, PermissionApi $permissionApi)
     {
         $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
-        $this->session = $session;
         $this->permissionApi = $permissionApi;
 
         $modVars = $variableApi->getAll('ZikulaMailerModule');
         $this->dataValues = array_merge($mailerParams, $modVars);
-        $this->dataValues['sitename'] = $variableApi->get('ZConfig', 'sitename_' . \ZLanguage::getLanguageCode(), $variableApi->get('ZConfig', 'sitename_en'));
-        $this->dataValues['adminmail'] = $variableApi->get('ZConfig', 'adminmail');
     }
 
     /**
@@ -100,60 +90,32 @@ class MailerApi
     }
 
     /**
-     * API function to send e-mail message
+     * API function to send e-mail message.
+     * It is assumed that basic parameters for sender and recipient(s) have already been set.
      *
-     * @param mixed[] $args {
-     *       @type string       $fromname name of the sender
-     *       @type string       $fromaddress address of the sender
-     *       @type string       $toname name to the recipient
-     *       @type string       $toaddress the address of the recipient
-     *       @type string       $replytoname name to reply to
-     *       @type string       $replytoaddress address to reply to
-     *       @type string       $subject message subject
-     *       @type string       $contenttype optional contenttype of the mail (default config)
-     *       @type string       $charset optional charset of the mail (default config)
-     *       @type string       $encoding optional mail encoding (default config)
-     *       @type string       $body message body, if altbody is provided then
-     *                                    this is the HTML version of the body
-     *       @type string       $altbody alternative plain-text message body, if specified the
-     *                                    e-mail will be sent as multipart/alternative
-     *       @type array        $cc addresses to add to the cc list
-     *       @type array        $bcc addresses to add to the bcc list
-     *       @type array|string $headers custom headers to add
-     *       @type int          $html HTML flag, if altbody is not specified then this
-     *                                    indicates whether body contains HTML or not; if altbody is
-     *                                    specified, then this value is ignored, the body is assumed
-     *                                    to be HTML, and the altbody is assumed to be plain text
-     *       @type array        $attachments array of either absolute filenames to attach
-     *                                    to the mail or array of arrays in format
-     *                                    array($path,$filename,$encoding,$type)
-     *       @type array        $stringattachments array of arrays to treat as attachments, format array($string,$filename,$encoding,$type)
-     *       @type array        $embeddedimages array of absolute filenames to image files to embed in the mail
-     *                       }
+     * @param Swift_Message $message The message object.
+     * @param string        $subject message subject
+     * @param string        $body message body, if altbody is provided then
+     *                            this is the HTML version of the body
+     * @param string        $altBody alternative plain-text message body, if specified the
+     *                               e-mail will be sent as multipart/alternative
+     * @param bool          $html HTML flag, if altbody is not specified then this
+     *                            indicates whether body contains HTML or not; if altbody is
+     *                            specified, then this value is ignored, the body is assumed
+     *                            to be HTML, and the altbody is assumed to be plain text
+     * @param array         $headers custom headers to add
+     * @param array         $attachments array of either absolute filenames to attach
+     *                                   to the mail or array of arrays in format
+     *                                   array($path,$filename,$encoding,$type)
+     * @param array         $stringAttachments array of arrays to treat as attachments, format array($string,$filename,$encoding,$type)
+     * @param array         $embeddedImages array of absolute filenames to image files to embed in the mail
      *
      * @throws \RuntimeException Thrown if there's an error sending the e-mail message
      *
      * @return bool true if successful
      */
-    public function sendMessage($args)
+    public function sendMessage(Swift_Message $message, $subject, $body, $altBody, $html, array $headers = array(), array $attachments = array(), array $stringAttachments = array(), array $embeddedImages = array())
     {
-        // Development mailer mode
-        if ($this->dataValues['transport'] == 'test') {
-            $output = '<p>';
-            foreach ($args as $key => $value) {
-                if ($key == 'password') {
-                    // do not expose the password (#2149)
-                    continue;
-                }
-                $output .= '<strong>' . $key . '</strong>: ' . $value . '<br />';
-            }
-            $output .= '</p>';
-
-            $this->session->getFlashBag()->add('status', $output);
-
-            return true;
-        }
-
         // Allow other bundles to control mailer behavior
         $event = new GenericEvent($this, $args);
         $this->eventDispatcher->dispatch('module.mailer.api.sendmessage', $event);
@@ -161,10 +123,60 @@ class MailerApi
             return $event->getData();
         }
 
-        // create new instance of mailer class
-        $this->message = Swift_Message::newInstance();
+        $this->message = $message;
+
+        $this->setTechnicalParameters();
+
+        // add any custom headers
+        if (count($headers)) {
+            $headers = $this->message->getHeaders();
+            foreach ($headers as $header) {
+                if (is_array($header)) {
+                    $headers->addTextHeader($header[0], $header[1]);
+                } else {
+                    $headers->addTextHeader($header);
+                }
+            }
+        }
+
+        // add message subject
+        $this->message->setSubject($subject);
+
+        // add body with formatting
+        $bodyFormat = 'text/plain';
+        if (!empty($altBody) || ((bool) $html) || $this->dataValues['html'])) {
+            $bodyFormat = 'text/html';
+        }
+        $this->message->setBody($body);
+        $this->message->setContentType($bodyFormat);
+        if (!empty($altBody)) {
+            $this->message->addPart($altBody, 'text/plain');
+        }
+
+        if (count($attachments)) {
+            $this->addAttachments($attachments);
+        }
+        if (count($stringAttachments)) {
+            $this->addStringAttachments($stringAttachments);
+        }
+        if (count($embeddedImages)) {
+            $this->addEmbeddedImages($embeddedImages);
+        }
+
+        // send message
+        $this->performSending();
+
+        return true; // message has been sent
+    }
+
+    /**
+     * Defines technical parameters for the current message.
+     */
+    private function setTechnicalParameters()
+    {
         $this->message->setCharset($this->dataValues['charset']);
         $this->message->setMaxLineLength($this->dataValues['wordwrap']);
+
         $encoderKeys = [
             '8bit' => '8bitcontentencoder',
             '7bit' => '7bitcontentencoder',
@@ -175,142 +187,65 @@ class MailerApi
         $encoderKey = $encoderKeys[$this->dataValues['encoding']];
         $encoder = Swift_DependencyContainer::getInstance()->lookup('mime.' . $encoderKey);
         $this->message->setEncoder($encoder);
-
-        // set fromname and fromaddress, default to 'sitename' and 'adminmail' config vars
-        $fromname = (isset($args['fromname']) && $args['fromname']) ? $args['fromname'] : $this->dataValues['sitename'];
-        $fromaddress = (isset($args['fromaddress'])) ? $args['fromaddress'] : $this->dataValues['adminmail'];
-        $this->message->setFrom($fromaddress, $fromname);
-
-        // add any to addresses
-        if (is_array($args['toaddress'])) {
-            $toAdds = [];
-            foreach ($args['toaddress'] as $key => $address) {
-                $toAdds[] = [$address => isset($args['toname'][$key]) ? $args['toname'][$key] : $address];
-            }
-            $this->message->setTo($toAdds);
-        } else {
-            $this->message->setTo($args['toaddress'], isset($args['toname']) ? $args['toname'] : $args['toaddress']);
-        }
-
-        // if replytoname and replytoaddress have been provided us them else use the fromname and fromaddress we built earlier
-        $args['replytoname'] = (!isset($args['replytoname']) || empty($args['replytoname'])) ? $fromname : $args['replytoname'];
-        $args['replytoaddress'] = (!isset($args['replytoaddress'])  || empty($args['replytoaddress'])) ? $fromaddress : $args['replytoaddress'];
-        $this->message->setReplyTo($args['replytoaddress'], $args['replytoname']);
-
-        // add any cc addresses
-        if (isset($args['cc']) && is_array($args['cc'])) {
-            foreach ($args['cc'] as $email) {
-                if (isset($email['name'])) {
-                    $this->message->addCc($email['address'], $email['name']);
-                } else {
-                    $this->message->addCc($email['address']);
-                }
-            }
-        }
-
-        // add any bcc addresses
-        if (isset($args['bcc']) && is_array($args['bcc'])) {
-            foreach ($args['bcc'] as $email) {
-                if (isset($email['name'])) {
-                    $this->message->addBcc($email['address'], $email['name']);
-                } else {
-                    $this->message->addBcc($email['address']);
-                }
-            }
-        }
-
-        // add any custom headers
-        if (isset($args['headers']) && is_string($args['headers'])) {
-            $args['headers'] = explode("\n", $args['headers']);
-        }
-        if (isset($args['headers']) && is_array($args['headers'])) {
-            $headers = $this->message->getHeaders();
-            foreach ($args['headers'] as $header) {
-                if (is_array($header)) {
-                    $headers->addTextHeader($header[0], $header[1]);
-                } else {
-                    $headers->addTextHeader($header);
-                }
-            }
-        }
-
-        // add message subject
-        $this->message->setSubject($args['subject']);
-
-        // add body with formatting
-        if ((!empty($args['altbody']))
-            || ((isset($args['html']) && is_bool($args['html']) && $args['html'])
-            || $this->dataValues['html'])) {
-            $bodyFormat = 'text/html';
-        } else {
-            $bodyFormat = 'text/plain';
-        }
-        $this->message->setBody($args['body']);
-        $this->message->setContentType($bodyFormat);
-        if (!empty($args['altbody'])) {
-            $this->message->addPart($args['altbody'], 'text/plain');
-        }
-
-        $this->addAttachments($args);
-
-        // send message
-        $this->performSending($args);
-
-        return true; // message has been sent
     }
 
     /**
      * Adds given attachments to the current message object.
      *
-     * @param mixed[] $args
+     * @param array $attachments List of attachments to add.
      */
-    private function addAttachments($args)
+    private function addAttachments(array $attachments)
     {
-        // add attachments
-        if (isset($args['attachments']) && !empty($args['attachments'])) {
-            foreach ($args['attachments'] as $attachment) {
-                if (is_array($attachment)) {
-                    if (count($attachment) != 4) {
-                        // skip invalid arrays
-                        continue;
-                    }
-                    $this->message->attach(Swift_Attachment::fromPath($attachment[0], $attachment[3])->setFilename($attachment[1]));
-                } else {
-                    $this->message->attach(Swift_Attachment::fromPath($attachment));
+        foreach ($attachments as $attachment) {
+            if (is_array($attachment)) {
+                if (count($attachment) != 4) {
+                    // skip invalid arrays
+                    continue;
                 }
-            }
-        }
-
-        // add string attachments
-        if (isset($args['stringattachments']) && !empty($args['stringattachments'])) {
-            foreach ($args['stringattachments'] as $attachment) {
-                if (is_array($attachment) && count($attachment) == 4) {
-                    $this->message->attach(Swift_Attachment::fromPath($attachment[0], $attachment[3])->setFilename($attachment[1]));
-                }
-            }
-        }
-
-        // add embedded images
-        if (isset($args['embeddedimages']) && !empty($args['embeddedimages'])) {
-            foreach ($args['embeddedimages'] as $embeddedimage) {
-                $this->message->attach(Swift_Attachment::fromPath($embeddedimage['path'], $embeddedimage['type'])->setFilename($embeddedimage['name']));
+                $this->message->attach(Swift_Attachment::fromPath($attachment[0], $attachment[3])->setFilename($attachment[1]));
+            } else {
+                $this->message->attach(Swift_Attachment::fromPath($attachment));
             }
         }
     }
 
     /**
-     * Does the actual sending of the current message.
+     * Adds given string attachments to the current message object.
      *
-     * @param mixed[] $args
+     * @param array $attachments List of string attachments to add.
      */
-    private function performSending($args)
+    private function addStringAttachments(array $attachments)
+    {
+        foreach ($attachments as $attachment) {
+            if (is_array($attachment) && count($attachment) == 4) {
+                $this->message->attach(Swift_Attachment::fromPath($attachment[0], $attachment[3])->setFilename($attachment[1]));
+            }
+        }
+    }
+
+    /**
+     * Adds given embedded images to the current message object.
+     *
+     * @param array $embeddedImages List of embedded images to add.
+     */
+    private function addEmbeddedImages(array $embeddedImages)
+    {
+        foreach ($embeddedImages as $embeddedImage) {
+            $this->message->attach(Swift_Attachment::fromPath($embeddedImage['path'], $embeddedImage['type'])->setFilename($embeddedImage['name']));
+        }
+    }
+
+    /**
+     * Does the actual sending of the current message.
+     */
+    private function performSending()
     {
         $logFile = 'app/logs/mailer.log';
 
         if (!$this->mailer->send($this->message, $failedEmails)) {
-            // message was not sent successfully
+            // message was not sent successfully, do error handling
+
             $emailList = implode(', ', $failedEmails);
-            $args['errorinfo'] = $this->__f('Error! Could not send mail to: %s.', ['%s' => $emailList]);
 
             if ($this->dataValues['enableLogging']) {
                 // access the logging channel
@@ -320,7 +255,7 @@ class MailerApi
             }
 
             if ($this->permissionApi->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
-                throw new \RuntimeException($args['errorinfo']);
+                throw new \RuntimeException($this->__f('Error! Could not send mail to: %s.', ['%s' => $emailList]));
             } else {
                 throw new \RuntimeException($this->__('Error! A problem occurred while sending the e-mail message.'));
             }
