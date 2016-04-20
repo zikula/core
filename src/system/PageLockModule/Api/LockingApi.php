@@ -29,12 +29,12 @@ class LockingApi
     /**
      * Amount of required/opened accesses.
      */
-    static $pageLockAccessCount = 0;
+    public static $pageLockAccessCount = 0;
 
     /**
      * Reference to file containing the internal lock.
      */
-    static $pageLockFile;
+    public static $pageLockFile;
 
     /**
      * length of time to lock a page
@@ -77,7 +77,7 @@ class LockingApi
     private $assetHelper;
 
     /**
-     * @var String
+     * @var string
      */
     private $tempDirectory;
 
@@ -91,7 +91,7 @@ class LockingApi
      * @param AssetBag         $cssAssetBag    AssetBag service instance for CSS files.
      * @param AssetBag         $footerAssetBag AssetBag service instance for footer code.
      * @param Asset            $assetHelper    Asset helper service instance.
-     * @param String           $tempDir        Directory for temporary files.
+     * @param string           $tempDir        Directory for temporary files.
      */
     public function __construct(
         Twig_Environment $twig,
