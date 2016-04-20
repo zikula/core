@@ -92,7 +92,7 @@ class UserApi extends \Zikula_AbstractApi
         if (is_array($args['toaddress'])) {
             $toAdds = [];
             foreach ($args['toaddress'] as $key => $address) {
-                $toAdds[] = isset($args['toname'][$key]) ? [$address => ? $args['toname'][$key]] : $address;
+                $toAdds[] = isset($args['toname'][$key]) ? [$address => $args['toname'][$key]] : $address;
             }
             $message->setTo($toAdds);
         } else {
