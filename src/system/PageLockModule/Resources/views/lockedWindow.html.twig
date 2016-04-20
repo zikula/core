@@ -18,3 +18,23 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    ( function($) {
+        $(document).ready(function() {
+            {% if lockName not empty %}
+                {% if hasLock %}
+                    $(document).ready(PageLock.UnlockedPage);
+                {% else %}
+                    $(document).ready(PageLock.LockedPage);
+                {% endif %}
+            {% endif %}
+        });
+    })(jQuery);
+
+    PageLock.LockName = '{{ lockName }}';
+    PageLock.ReturnUrl = '{{ returnUrl }}';
+    PageLock.PingTime = {{ pingTime }};
+/* ]]> */
+</script>

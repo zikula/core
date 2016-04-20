@@ -67,8 +67,10 @@ class AjaxController extends AbstractController
     private function getLockInfo(Request $request)
     {
         $lockName = $request->request->get('lockname');
+        $userName = $this->get('zikula_users_module.current_user')->get('uname');
 
-        $lockInfo = $this->get('zikula_pagelock_module.api.locking')->requireLock($lockName, \UserUtil::getVar('uname'), $request->getClientIp(), $request->getSession()->getId());
+        $lockInfo = $this->get('zikula_pagelock_module.api.locking')
+            ->requireLock($lockName, $userName, $request->getClientIp(), $request->getSession()->getId());
 
         $lockInfo['message'] = $lockInfo['hasLock'] ? null : $this->__('Error! Lock broken!');
 

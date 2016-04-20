@@ -11,6 +11,13 @@
     <services>
         <service id="zikula_pagelock_module.api.locking" class="%zikula_pagelock_module.api.locking.class%">
             <argument type="service" id="twig" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="zikula_users_module.current_user" />
+            <argument type="service" id="zikula_core.common.theme.assets_js" />
+            <argument type="service" id="zikula_core.common.theme.assets_css" />
+            <argument type="service" id="zikula_core.common.theme.assets_footer" />
+            <argument type="service" id="zikula_core.common.theme.asset_helper" />
+            <argument>%temp_dir%</argument>
         </service>
     </services>
 
