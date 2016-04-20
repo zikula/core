@@ -58,10 +58,10 @@ class UserApi extends \Zikula_AbstractApi
 
         $apiArgs = $args;
         if (!isset($apiArgs['lockedByTitle'])) {
-            $apiArgs['lockedByTitle'] = \UserUtil::getVar('uname');
+            $apiArgs['lockedByTitle'] = $this->getContainer()->get('zikula_users_module.current_user')->get('uname');
         }
         if (!isset($apiArgs['lockedByIPNo'])) {
-            $apiArgs['lockedByIPNo'] = $_SERVER['REMOTE_ADDR'];
+            $apiArgs['lockedByIPNo'] = $this->getContainer()->get('request_stack')->getCurrentRequest()->getClientIp();
         }
         if (!isset($apiArgs['sessionId'])) {
             $apiArgs['sessionId'] = '';

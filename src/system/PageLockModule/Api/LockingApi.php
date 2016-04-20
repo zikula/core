@@ -10,9 +10,12 @@
 
 namespace Zikula\PageLockModule\Api;
 
-use PageUtil;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig_Environment;
 use Zikula\PageLockModule\Entity\PageLockEntity;
+use Zikula\ThemeModule\Engine\Asset;
+use Zikula\ThemeModule\Engine\AssetBag;
+use Zikula\UsersModule\Api\CurrentUserApi;
 
 /**
  * Class LockingApi.
@@ -24,6 +27,16 @@ use Zikula\PageLockModule\Entity\PageLockEntity;
 class LockingApi
 {
     /**
+     * Amount of required/opened accesses.
+     */
+    static $pageLockAccessCount = 0;
+
+    /**
+     * Reference to file containing the internal lock.
+     */
+    static $pageLockFile;
+
+    /**
      * length of time to lock a page
      */
     const PAGELOCKLIFETIME = 30;
@@ -34,13 +47,70 @@ class LockingApi
     private $twig;
 
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var CurrentUserApi
+     */
+    private $currentUserApi;
+
+    /**
+     * @var AssetBag
+     */
+    private $jsAssetHelper;
+
+    /**
+     * @var AssetBag
+     */
+    private $cssAssetHelper;
+
+    /**
+     * @var AssetBag
+     */
+    private $footerAssetHelper;
+
+    /**
+     * @var Asset
+     */
+    private $assetHelper;
+
+    /**
+     * @var String
+     */
+    private $tempDirectory;
+
+    /**
      * LockingApi constructor.
      *
-     * @param Twig_Environment $twig Twig service instance.
+     * @param Twig_Environment $twig           Twig service instance.
+     * @param RequestStack     $requestStack   RequestStack service instance.
+     * @param CurrentUserApi   $currentUserApi CurrentUserApi service instance.
+     * @param AssetBag         $jsAssetBag     AssetBag service instance for JS files.
+     * @param AssetBag         $cssAssetBag    AssetBag service instance for CSS files.
+     * @param AssetBag         $footerAssetBag AssetBag service instance for footer code.
+     * @param Asset            $assetHelper    Asset helper service instance.
+     * @param String           $tempDir        Directory for temporary files.
      */
-    public function __construct(Twig_Environment $twig)
+    public function __construct(
+        Twig_Environment $twig,
+        RequestStack $requestStack,
+        CurrentUserApi $currentUserApi,
+        AssetBag $jsAssetBag,
+        AssetBag $cssAssetBag,
+        AssetBag $footerAssetBag,
+        Asset $assetHelper,
+        $tempDir)
     {
         $this->twig = $twig;
+        $this->requestStack = $requestStack;
+        $this->currentUserApi = $currentUserApi;
+        $this->jsAssetBag = $jsAssetBag;
+        $this->cssAssetBag = $cssAssetBag;
+        $this->footerAssetBag = $footerAssetBag;
+        $this->assetHelper = $assetHelper;
+        $this->tempDirectory = $tempDir;
     }
 
     /**
@@ -54,51 +124,33 @@ class LockingApi
      */
     public function pageLock($lockName, $returnUrl = null, $ignoreEmptyLock = false)
     {
-        $hasLock = true;
-        $lockedHtml = '';
-
-        if (!empty($lockName) || !$ignoreEmptyLock) {
-            PageUtil::addVar('javascript', 'zikula.ui');
-            PageUtil::addVar('javascript', 'system/PageLockModule/Resources/public/js/PageLock.js');
-            PageUtil::addVar('stylesheet', \ThemeUtil::getModuleStylesheet('ZikulaPageLockModule'));
-
-            $lockInfo = $this->requireLock($lockName, \UserUtil::getVar('uname'), $_SERVER['REMOTE_ADDR']);
-
-            $hasLock = $lockInfo['hasLock'];
-            if (!$hasLock) {
-                $templateParameters = [
-                    'lockedBy' => $lockInfo['lockedBy']
-                ];
-                $lockedHtml = $this->twig->render('@ZikulaPageLockModule/lockedWindow.html.twig', $templateParameters);
-            }
+        if (empty($lockName) && $ignoreEmptyLock) {
+            return true;
         }
 
-        $html = "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
-        $html .= "( function($) {\n";
+        $this->jsAssetBag->add($this->assetHelper->resolve('@ZikulaPageLockModule:js/PageLock.js'));
+        $this->cssAssetBag->add($this->assetHelper->resolve('@ZikulaPageLockModule:css/style.css'));
 
-        if (!empty($lockName)) {
-            if ($hasLock) {
-                $html .= "    $(document).ready(PageLock.UnlockedPage);\n";
-            } else {
-                $html .= "    $(document).ready(PageLock.LockedPage);\n";
-            }
+        $lockInfo = $this->requireLock($lockName, $this->currentUserApi->get('uname'), $this->requestStack->getCurrentRequest()->getClientIp());
+
+        $hasLock = $lockInfo['hasLock'];
+        if ($hasLock) {
+            return true;
         }
 
-        $html .= "})(jQuery);\n";
+        // add a good margin to lock timeout when pinging
+        $pingTime = (self::PAGELOCKLIFETIME * 2 / 3);
 
-        // Use "self::PAGELOCKLIFETIME*2/3" to add a good margin to lock timeout when pinging
+        $templateParameters = [
+            'lockedBy' => $lockInfo['lockedBy'],
+            'lockName' => $lockName,
+            'hasLock' => $hasLock,
+            'returnUrl' => $returnUrl,
+            'pingTime' => $pingTime
+        ];
+        $lockedHtml = $this->twig->render('@ZikulaPageLockModule/lockedWindow.html.twig', $templateParameters);
 
-        // disabled due to #2556 and #2745
-        // $returnUrl = \DataUtil::formatForDisplayHTML($returnUrl);
-
-        $html .= "
-PageLock.LockName = '$lockName';
-PageLock.ReturnUrl = '$returnUrl';
-PageLock.PingTime = " . (self::PAGELOCKLIFETIME * 2 / 3) . ";
- /* ]]> */</script>";
-
-        PageUtil::addVar('header', $html);
-        PageUtil::addVar('footer', $lockedHtml);
+        $this->footerAssetBag->add($lockedHtml);
 
         return true;
     }
@@ -146,8 +198,8 @@ PageLock.PingTime = " . (self::PAGELOCKLIFETIME * 2 / 3) . ";
             // create the new object
             $newLock = new PageLockEntity();
             $newLock->setName($lockName);
-            $newLock->setCdate(new \DateTime(\DateUtil::getDatetime($now)));
-            $newLock->setEdate(new \DateTime(\DateUtil::getDatetime($expireDate)));
+            $newLock->setCdate(new \DateTime($now));
+            $newLock->setEdate(new \DateTime($expireDate));
             $newLock->setSession($theSessionId);
             $newLock->setTitle($lockedByTitle);
             $newLock->setIpno($lockedByIPNo);
@@ -225,21 +277,19 @@ PageLock.PingTime = " . (self::PAGELOCKLIFETIME * 2 / 3) . ";
      */
     private function requireAccess()
     {
-        global $pageLockAccessCount;
-        if (null === $pageLockAccessCount) {
-            $pageLockAccessCount = 0;
+        if (null === self::$pageLockAccessCount) {
+            self::$pageLockAccessCount = 0;
         }
 
-        if ($pageLockAccessCount == 0) {
-            global $pageLockFile;
-            $ostemp = \DataUtil::formatForOS(\ServiceUtil::get('service_container')->getParameter('temp_dir'));
-            $pageLockFile = fopen($ostemp . '/pagelock.lock', 'w+');
-            flock($pageLockFile, LOCK_EX);
-            fwrite($pageLockFile, 'This is a locking file for synchronizing access to the PageLock module. Please do not delete.');
-            fflush($pageLockFile);
+        if (self::$pageLockAccessCount == 0) {
+            $ostemp = \DataUtil::formatForOS($this->tempDirectory);
+            self::$pageLockFile = fopen($ostemp . '/pagelock.lock', 'w+');
+            flock(self::$pageLockFile, LOCK_EX);
+            fwrite(self::$pageLockFile, 'This is a locking file for synchronizing access to the PageLock module. Please do not delete.');
+            fflush(self::$pageLockFile);
         }
 
-        ++$pageLockAccessCount;
+        ++self::$pageLockAccessCount;
     }
 
     /**
@@ -249,14 +299,11 @@ PageLock.PingTime = " . (self::PAGELOCKLIFETIME * 2 / 3) . ";
      */
     private function releaseAccess()
     {
-        global $pageLockAccessCount;
+        --self::$pageLockAccessCount;
 
-        --$pageLockAccessCount;
-
-        if ($pageLockAccessCount == 0) {
-            global $pageLockFile;
-            flock($pageLockFile, LOCK_UN);
-            fclose($pageLockFile);
+        if (self::$pageLockAccessCount == 0) {
+            flock(self::$pageLockFile, LOCK_UN);
+            fclose(self::$pageLockFile);
         }
     }
 }

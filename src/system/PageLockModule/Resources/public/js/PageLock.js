@@ -23,7 +23,7 @@ var PageLock = {};
     // Button event handler for "break lock"
     PageLock.BreakLock = function()
     {
-        if (confirm(Zikula.__('Are you sure you want to break this lock?')) == false) {
+        if (confirm(/*Zikula.__(*/'Are you sure you want to break this lock?'/*)*/) == false) {
             return;
         }
 
@@ -69,7 +69,7 @@ var PageLock = {};
         $.ajax({
             url: Routing.generate('zikulapagelockmodule_ajax_checkpagelock'),
             data: {
-            lockname: PageLock.LockName
+                lockname: PageLock.LockName
             },
             success: function (result) {
                 if (result.data.hasLock) {
@@ -118,7 +118,6 @@ var PageLock = {};
         $('#pageLockModal').modal('hide');
         return;
     };
-
 
     // see http://stackoverflow.com/questions/5205445/jquery-blinking-highlight-effect-on-div
     PageLock.BlinkAnimation = function(id)

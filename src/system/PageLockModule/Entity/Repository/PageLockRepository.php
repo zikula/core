@@ -76,7 +76,7 @@ class PageLockRepository extends EntityRepository
 
         $query = $qb->getQuery();
 
-        $locks = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $locks = $query->getArrayResult();
 
         // now flush to database
         $this->getEntityManager()->flush();
