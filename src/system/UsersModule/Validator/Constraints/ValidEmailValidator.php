@@ -10,7 +10,6 @@
 
 namespace Zikula\UsersModule\Validator\Constraints;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -19,7 +18,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\Repository\UserRepository;
 
 class ValidEmailValidator extends ConstraintValidator
 {
@@ -27,14 +25,12 @@ class ValidEmailValidator extends ConstraintValidator
      * @var VariableApi
      */
     private $variableApi;
+
     /**
      * @var TranslatorInterface
      */
     private $translator;
-    /**
-     * @var UserRepository
-     */
-    private $entityManager;
+
     /**
      * @var ValidatorInterface
      */
@@ -43,14 +39,12 @@ class ValidEmailValidator extends ConstraintValidator
     /**
      * @param VariableApi $variableApi
      * @param TranslatorInterface $translator
-     * @param EntityManager $entityManager
      * @param ValidatorInterface $validator
      */
-    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, EntityManager $entityManager, ValidatorInterface $validator)
+    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, ValidatorInterface $validator)
     {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
-        $this->entityManager = $entityManager;
         $this->validator = $validator;
     }
 
@@ -76,37 +70,6 @@ class ValidEmailValidator extends ConstraintValidator
             $emailDomain = strstr($value, '@');
             if (preg_match("/@({$illegalDomains})/iD", $emailDomain)) {
                 $this->context->buildViolation($this->translator->__('Sorry! The domain of the e-mail address you specified is banned.'))
-                    ->setParameter('%string%', $value)
-                    ->addViolation();
-            }
-        }
-
-        // ensure unique
-        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REQUIRE_UNIQUE_EMAIL, false)) {
-            $qb = $this->entityManager->createQueryBuilder()
-                ->select('count(u.uid)')
-                ->from('ZikulaUsersModule:UserEntity', 'u')
-                ->where('u.email = :email')
-                ->setParameter('email', $value);
-            // when updating an existing User, the existing Uid must be excluded.
-            if (!empty($constraint->excludedUid)) {
-                $qb->andWhere('u.uid <> :excludedUid')
-                    ->setParameter('excludeUid', $constraint->excludedUid);
-            }
-            $uCount = (int)$qb->getQuery()->getSingleScalarResult();
-
-            $query = $this->entityManager->createQueryBuilder()
-                ->select('count(v.uid)')
-                ->from('ZikulaUsersModule:UserVerificationEntity', 'v')
-                ->where('v.newemail = :email')
-                ->andWhere('v.changetype = :chgtype')
-                ->setParameter('email', $value)
-                ->setParameter('chgtype', UsersConstant::VERIFYCHGTYPE_EMAIL)
-                ->getQuery();
-            $vCount = (int)$query->getSingleScalarResult();
-
-            if ($uCount + $vCount > 0) {
-                $this->context->buildViolation($this->translator->__('The email address you entered has already been registered.'))
                     ->setParameter('%string%', $value)
                     ->addViolation();
             }

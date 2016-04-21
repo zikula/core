@@ -25,6 +25,7 @@ class ValidPasswordReminderValidator extends ConstraintValidator
      * @var VariableApi
      */
     private $variableApi;
+
     /**
      * @var ValidatorInterface
      */
