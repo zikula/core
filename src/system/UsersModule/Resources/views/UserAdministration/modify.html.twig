@@ -1,0 +1,107 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Common.UserValidation.js')) }}
+{{ polyfill() }}
+
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-plus"></span>
+            {{ __('Create new user') }}
+        </h3>
+        <div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>{{ __('Account information') }}</legend>
+            {{ form_row(form.user.uname) }}
+            {{ form_row(form.user.email) }}
+            {{ form_row(form.activated) }}
+            <div class="alert alert-info col-sm-offset-3 col-sm-9">{{ __('Setting a user theme is no longer available here.') }}</div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Log-in information') }}</legend>
+            {{ form_row(form.setpass, {'attr': {'data-toggle': 'collapse', 'data-target': '#'~form.setpass.vars.id~'_wrap'}}) }}
+            <div id="{{ form.setpass.vars.id }}_wrap" class="collapse{% if form.setpass.vars.data %} in {% endif %}">
+                {{ form_row(form.user.pass) }}
+                <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Group membership') }}</legend>
+            <table class="table table-bordered table-striped">
+                <thead><tr><th>{{ __('Group') }}</th><th>{{ __('Member') }}</th></tr></thead>
+                <tbody>
+                {% for group in form.groups %}
+                    <tr><td>{{ group.vars.label }}</td><td>{{ form_widget(group) }}</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {#{{ form_row(form.groups) }}#}
+        </fieldset>
+        {% set eventData = dispatchEvent('module.users.ui.form_edit.new_user') %}
+        {% for data in eventData %}
+            {{ data }}
+        {% endfor %}
+        {{ notifyDisplayHooks('users.ui_hooks.user.form_edit') }}
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.submit) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ adminFooter() }}
+{% if getModVar('ZikulaUsersModule' ,'use_password_strength_meter') %}
+    {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.PassMeter.js')) }}
+    <script type="text/javascript">
+        (function($) {
+            $(document).ready(function() {
+                var setPassEle = $("#{{ form.setpass.vars.id }}");
+                var setPassAlert = setPassEle.parent().find('.alert');
+                var setPassWrap = $('#{{ form.setpass.vars.id }}_wrap');
+                var passFirst = $('#{{ form.user.pass.vars.id }}_first');
+                var passSecond = $('#{{ form.user.pass.vars.id }}_second');
+                var showPasswordsRequired = function() {
+                    passFirst.prop('required', true);
+                    passFirst.parents('.form-group').find('label').addClass('required');
+                    passSecond.prop('required', true);
+                    passSecond.parents('.form-group').find('label').addClass('required');
+                };
+                var showPasswordsOptional = function() {
+                    passFirst.prop('required', false);
+                    passFirst.parents('.form-group').find('label').removeClass('required');
+                    passSecond.prop('required', false);
+                    passSecond.parents('.form-group').find('label').removeClass('required');
+                };
+                setPassAlert.addClass('collapse in');
+
+                ZikulaUsersPassMeter.init(passFirst.attr('id'), '{{ form.vars.id }}_passmeter', {
+                    username: '{{ form.user.uname.vars.id }}',
+                    minLength: '{{ getModVar('ZikulaUsersModule', 'minpass') }}'
+                });
+                // ensure wrap is shown on form re-draw
+                if (setPassEle.is(':checked')) {
+                    setPassWrap.collapse('show');
+                    setPassAlert.collapse('hide');
+                    showPasswordsRequired();
+                }
+                // add/remove required UI for password fields
+                setPassWrap.on('show.bs.collapse', function() {
+                    setPassAlert.collapse('hide');
+                    showPasswordsRequired();
+                }).on('hide.bs.collapse', function() {
+                    setPassAlert.collapse('show');
+                    showPasswordsOptional();
+                });
+            });
+        })(jQuery);
+    </script>
+{% endif %}
