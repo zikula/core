@@ -13,6 +13,7 @@ namespace Zikula\PageLockModule\Api;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig_Environment;
 use Zikula\PageLockModule\Entity\PageLockEntity;
+use Zikula\PageLockModule\Entity\Repository\PageLockRepository;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 use Zikula\UsersModule\Api\CurrentUserApi;
@@ -52,6 +53,11 @@ class LockingApi
     private $requestStack;
 
     /**
+     * @var PageLockRepository
+     */
+    private $repository;
+
+    /**
      * @var CurrentUserApi
      */
     private $currentUserApi;
@@ -84,18 +90,20 @@ class LockingApi
     /**
      * LockingApi constructor.
      *
-     * @param Twig_Environment $twig           Twig service instance.
-     * @param RequestStack     $requestStack   RequestStack service instance.
-     * @param CurrentUserApi   $currentUserApi CurrentUserApi service instance.
-     * @param AssetBag         $jsAssetBag     AssetBag service instance for JS files.
-     * @param AssetBag         $cssAssetBag    AssetBag service instance for CSS files.
-     * @param AssetBag         $footerAssetBag AssetBag service instance for footer code.
-     * @param Asset            $assetHelper    Asset helper service instance.
-     * @param string           $tempDir        Directory for temporary files.
+     * @param Twig_Environment   $twig           Twig service instance.
+     * @param RequestStack       $requestStack   RequestStack service instance.
+     * @param PageLockRepository $repository     PageLockRepository service instance.
+     * @param CurrentUserApi     $currentUserApi CurrentUserApi service instance.
+     * @param AssetBag           $jsAssetBag     AssetBag service instance for JS files.
+     * @param AssetBag           $cssAssetBag    AssetBag service instance for CSS files.
+     * @param AssetBag           $footerAssetBag AssetBag service instance for footer code.
+     * @param Asset              $assetHelper    Asset helper service instance.
+     * @param string             $tempDir        Directory for temporary files.
      */
     public function __construct(
         Twig_Environment $twig,
         RequestStack $requestStack,
+        PageLockRepository $repository,
         CurrentUserApi $currentUserApi,
         AssetBag $jsAssetBag,
         AssetBag $cssAssetBag,
@@ -105,6 +113,7 @@ class LockingApi
     {
         $this->twig = $twig;
         $this->requestStack = $requestStack;
+        $this->repository = $repository;
         $this->currentUserApi = $currentUserApi;
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
@@ -122,7 +131,7 @@ class LockingApi
      *
      * @return bool true
      */
-    public function pageLock($lockName, $returnUrl = null, $ignoreEmptyLock = false)
+    public function addLockingCodeForCurrentPage($lockName, $returnUrl = null, $ignoreEmptyLock = false)
     {
         if (empty($lockName) && $ignoreEmptyLock) {
             return true;
@@ -186,20 +195,20 @@ class LockingApi
         }
 
         // Look for existing lock
-        $count = $this->getRepository()->getLockAmount($lockName, $theSessionId);
+        $count = $this->repository->getLockAmount($lockName, $theSessionId);
 
         $now = time();
-        $expireDate = $now + self::PAGELOCKLIFETIME;
+        $expireDate = new \DateTime($now + self::PAGELOCKLIFETIME);
 
         if ($count > 0) {
             // update the existing lock with a new expiry date
-            $this->getRepository()->updateExpireDate($lockName, $theSessionId, $expireDate);
+            $this->repository->updateExpireDate($lockName, $theSessionId, $expireDate);
         } else {
             // create the new object
             $newLock = new PageLockEntity();
             $newLock->setName($lockName);
             $newLock->setCdate(new \DateTime($now));
-            $newLock->setEdate(new \DateTime($expireDate));
+            $newLock->setEdate($expireDate);
             $newLock->setSession($theSessionId);
             $newLock->setTitle($lockedByTitle);
             $newLock->setIpno($lockedByIPNo);
@@ -228,10 +237,10 @@ class LockingApi
         $this->requireAccess();
 
         // remove expired locks
-        $this->getRepository()->deleteExpiredLocks();
+        $this->repository->deleteExpiredLocks();
 
         // get remaining active locks
-        $locks = $this->getRepository()->getActiveLocks($lockName, $theSessionId);
+        $locks = $this->repository->getActiveLocks($lockName, $theSessionId);
 
         $this->releaseAccess();
 
@@ -252,22 +261,11 @@ class LockingApi
 
         $this->requireAccess();
 
-        $this->getRepository()->deleteByLockName($lockName, $theSessionId);
+        $this->repository->deleteByLockName($lockName, $theSessionId);
 
         $this->releaseAccess();
 
         return true;
-    }
-
-    /**
-     * Returns repository for the page lock entities.
-     *
-     * @return Doctrine\ORM\EntityRepository
-     */
-    private function getRepository()
-    {
-        return $this->getDoctrine()->getManager()
-            ->getRepository('ZikulaPageLockModule:PageLockEntity');
     }
 
     /**
