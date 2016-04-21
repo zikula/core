@@ -62,7 +62,7 @@
             {if $available_options.modify}
                 {if $usersitems[usersitems].options.modify}
                     {gt text="Edit '%s'" tag1=$usersitems[usersitems].uname assign='title'}
-                    <a class="fa fa-pencil tooltips" href="{route name='zikulausersmodule_admin_modify' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
+                    <a class="fa fa-pencil tooltips" href="{route name='zikulausersmodule_useradministration_modify' user=$usersitems[usersitems].uid}" title="{$title}"></a>
                 {else}
                     <span class="fa-fw"></span>
                 {/if}
