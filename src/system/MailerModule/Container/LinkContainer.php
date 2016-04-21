@@ -91,7 +91,7 @@ class LinkContainer implements LinkContainerInterface
     }
 
     /**
-     * set the BundleName as required buy the interface
+     * set the BundleName as required by the interface
      *
      * @return string
      */
