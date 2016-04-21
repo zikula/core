@@ -27,10 +27,12 @@ class ValidPasswordValidator extends ConstraintValidator
      * @var VariableApi
      */
     private $variableApi;
+
     /**
      * @var TranslatorInterface
      */
     private $translator;
+
     /**
      * @var ValidatorInterface
      */

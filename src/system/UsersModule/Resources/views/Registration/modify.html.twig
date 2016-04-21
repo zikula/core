@@ -1,0 +1,40 @@
+{% form_theme form with [
+'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Common.UserValidation.js')) }}
+{{ polyfill() }}
+
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-edit"></span>
+            {{ __('Edit user registration') }}
+        </h3>
+        <div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>{{ __('Account information') }}</legend>
+            {{ form_row(form.user.uname) }}
+            {{ form_row(form.user.email) }}
+            <div class="alert alert-info col-sm-offset-3 col-sm-9">{{ __('Setting a user theme is no longer available here.') }}</div>
+        </fieldset>
+        {% set eventData = dispatchEvent('module.users.ui.form_edit.new_user') %}
+        {% for data in eventData %}
+            {{ data }}
+        {% endfor %}
+        {{ notifyDisplayHooks('users.ui_hooks.user.form_edit') }}
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.submit) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{{ adminFooter() }}

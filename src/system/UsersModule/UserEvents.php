@@ -18,7 +18,9 @@ class UserEvents
 {
     const REGISTRATION_STARTED = 'module.users.ui.registration.started';
     const REGISTRATION_VALIDATE_NEW = 'module.users.ui.validate_edit.new_registration';
+    const REGISTRATION_VALIDATE_MODIFY = 'module.users.ui.validate_edit.modify_registration';
     const REGISTRATION_PROCESS_NEW = 'module.users.ui.process_edit.new_registration';
+    const REGISTRATION_PROCESS_MODIFY = 'module.users.ui.process_edit.modify_registration';
     const REGISTRATION_SUCCEEDED = 'module.users.ui.registration.succeeded';
     const REGISTRATION_FAILED = 'module.users.ui.registration.failed';
 
@@ -32,6 +34,7 @@ class UserEvents
     const HOOK_USER_PROCESS = 'users.ui_hooks.user.process_edit';
 
     const CREATE_REGISTRATION = 'user.registration.create';
+    const UPDATE_REGISTRATION = 'user.registration.update';
     const DELETE_REGISTRATION = 'user.registration.delete';
     const CREATE_ACCOUNT = 'user.account.create';
 }

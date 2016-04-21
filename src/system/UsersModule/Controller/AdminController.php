@@ -176,131 +176,14 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/newuser")
-     * @Method({"GET", "POST"})
      *
-     * Add a new user to the system.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * See the definition of {@link \Zikula\UsersModule\Controller\FormData\NewUserForm}.
-     *
-     * @return Response symfony response object containing the rendered template.
-     *
-     * @throws AccessDeniedException Thrown if the current user does not have add access
-     * @throws FatalErrorException Thrown if the method of accessing this function is improper
+     * @return RedirectResponse
      */
     public function newUserAction(Request $request)
     {
-        // The user must have ADD access to submit a new user record.
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('The zikulausersmodule_admin_newuser route is deprecated. please use zikulausersmodule_useradministration_edit instead.', E_USER_DEPRECATED);
 
-        // When new user registration is disabled, the user must have ADMIN access instead of ADD access.
-        if (!$this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, false) && !SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            $registrationUnavailableReason = $this->getVar(UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON, $this->__('Sorry! New user registration is currently disabled.'));
-            $request->getSession()->getFlashBag()->add('error', $registrationUnavailableReason);
-        }
-
-        $proceedToForm = true;
-        $formData = new FormData\NewUserForm('users_newuser', $this->getContainer());
-        $errorFields = array();
-        $errorMessages = array();
-
-        if ($this->request->getMethod() == 'POST') {
-            // Returning from a form POST operation. Process the input.
-            $this->checkCsrfToken();
-
-            $formData->setFromRequestCollection($request->request);
-
-            $registrationArgs = array(
-                'checkMode' => 'new',
-                'emailagain' => $formData->getField('emailagain')->getData(),
-                'setpass' => (bool)$formData->getField('setpass')->getData(),
-                'antispamanswer' => '',
-            );
-            $registrationArgs['passagain'] = $registrationArgs['setpass'] ? $formData->getField('passagain')->getData() : '';
-
-            $registrationInfo = array(
-                'uname' => $formData->getField('uname')->getData(),
-                'pass' => $registrationArgs['setpass'] ? $formData->getField('pass')->getData() : '',
-                'passreminder' => $registrationArgs['setpass'] ? $this->__('(Password provided by site administrator)') : '',
-                'email' => mb_strtolower($formData->getField('email')->getData()),
-            );
-            $registrationArgs['reginfo'] = $registrationInfo;
-
-            $sendPass = $formData->getField('sendpass')->getData();
-
-            if ($formData->isValid()) {
-                $errorFields = ModUtil::apiFunc($this->name, 'registration', 'getRegistrationErrors', $registrationArgs);
-            } else {
-                $errorFields = $formData->getErrorMessages();
-            }
-
-            $event = new GenericEvent($registrationInfo, array(), new ValidationProviders());
-            $this->getDispatcher()->dispatch('module.users.ui.validate_edit.new_user', $event);
-            $validators = $event->getData();
-
-            $hook = new ValidationHook($validators);
-            $this->dispatchHooks('users.ui_hooks.user.validate_edit', $hook);
-            $validators = $hook->getValidators();
-
-            if (empty($errorFields) && !$validators->hasErrors()) {
-                // TODO - Future functionality to suppress e-mail notifications, see ticket #2351
-                //$currentUserEmail = UserUtil::getVar('email');
-                //$adminNotifyEmail = $this->getVar('reg_notifyemail', '');
-                //$adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
-
-//                $registeredObj = ModUtil::apiFunc($this->name, 'registration', 'registerNewUser', array(
-//                    'reginfo' => $registrationInfo,
-//                    'sendpass' => $sendPass,
-//                    'usernotification' => $request->request->get('usernotification'),
-//                    'adminnotification' => $request->request->get('adminnotification')
-//                ));
-                // @todo $tempUserEntity is only temporary until refactoring is complete. [CAH 17 Apr 2016]
-                $tempUserEntity = new UserEntity();
-                $tempUserEntity->merge($registrationInfo);
-                $registeredObj = $this->get('zikulausersmodule.helper.registration_helper')->registerNewUser(
-                    $tempUserEntity,
-                    false,
-                    $request->request->get('usernotification'),
-                    $request->request->get('adminnotification'),
-                    $sendPass
-                );
-
-                if (isset($registeredObj) && $registeredObj) {
-                    $event = new GenericEvent($registeredObj);
-                    $this->getDispatcher()->dispatch('module.users.ui.process_edit.new_user', $event);
-
-                    $hook = new ProcessHook($registeredObj['uid']);
-                    $this->dispatchHooks('users.ui_hooks.user.process_edit', $hook);
-
-                    if ($registeredObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) {
-                        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Created new registration application.'));
-                    } elseif (isset($registeredObj['activated'])) {
-                        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Created new user account.'));
-                    } else {
-                        $request->getSession()->getFlashBag()->add('error', $this->__('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
-                    }
-
-                    $proceedToForm = false;
-                } else {
-                    $request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not create the new user account or registration application.'));
-                }
-            }
-        }
-
-        if ($proceedToForm) {
-            return new Response($this->view->assign_by_ref('formData', $formData)
-                    ->assign('mode', 'new')
-                    ->assign('errorMessages', $errorMessages)
-                    ->assign('errorFields', $errorFields)
-                    ->fetch('Admin/newuser.tpl'));
-        } else {
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
-        }
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_edit'));
     }
 
     /**

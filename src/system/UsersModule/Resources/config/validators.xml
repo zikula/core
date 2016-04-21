@@ -17,20 +17,20 @@
         <service id="zikulausersmodule.validator.constraints.valid_uname_validator" class="%zikulausersmodule.validator.constraints.valid_uname_validator.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="translator.default" />
-            <argument type="service" id="zikula_users_module.user_repository" />
             <argument type="service" id="validator" />
             <tag name="validator.constraint_validator" alias="zikula.uname.validator" />
         </service>
         <service id="zikulausersmodule.validator.constraints.valid_email_validator" class="%zikulausersmodule.validator.constraints.valid_email_validator.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="translator.default" />
-            <argument type="service" id="doctrine.orm.default_entity_manager"/>
             <argument type="service" id="validator" />
             <tag name="validator.constraint_validator" alias="zikula.email.validator" />
         </service>
         <service id="zikulausersmodule.validator.constraints.valid_user_fields_validator" class="%zikulausersmodule.validator.constraints.valid_user_fields_validator.class%">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="translator.default" />
+            <argument type="service" id="zikula_users_module.user_repository" />
+            <argument type="service" id="zikula_users_module.user_verification_repository" />
             <tag name="validator.constraint_validator" alias="zikula.user_fields.validator" />
         </service>
         <service id="zikulausersmodule.validator.constraints.valid_password_validator" class="%zikulausersmodule.validator.constraints.valid_password_validator.class%">

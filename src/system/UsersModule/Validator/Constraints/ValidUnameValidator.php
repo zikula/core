@@ -21,7 +21,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\Repository\UserRepository;
 
 class ValidUnameValidator extends ConstraintValidator
 {
@@ -29,15 +28,12 @@ class ValidUnameValidator extends ConstraintValidator
      * @var VariableApi
      */
     private $variableApi;
+
     /**
      * @var TranslatorInterface
      */
     private $translator;
-    /**
-     * @var UserRepository
-     * @todo refactor to use Interface when appropriate
-     */
-    private $userRepository;
+
     /**
      * @var ValidatorInterface
      */
@@ -46,14 +42,12 @@ class ValidUnameValidator extends ConstraintValidator
     /**
      * @param VariableApi $variableApi
      * @param TranslatorInterface $translator
-     * @param UserRepository $userRepository
      * @param ValidatorInterface $validator
      */
-    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, UserRepository $userRepository, ValidatorInterface $validator)
+    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, ValidatorInterface $validator)
     {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
-        $this->userRepository = $userRepository;
         $this->validator = $validator;
     }
 
@@ -98,23 +92,6 @@ class ValidUnameValidator extends ConstraintValidator
                     ->setParameter('%string%', $value)
                     ->addViolation();
             }
-        }
-
-        // ensure unique
-        $qb = $this->userRepository->createQueryBuilder('u')
-            ->select('count(u.uid)')
-            ->where('u.uname = :uname')
-            ->setParameter('uname', $value);
-        // when updating an existing User, the existing Uid must be excluded.
-        if (!empty($constraint->excludedUid)) {
-            $qb->andWhere('u.uid <> :excludedUid')
-                ->setParameter('excludeUid', $constraint->excludedUid);
-        }
-
-        if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
-            $this->context->buildViolation($this->translator->__('The user name you entered has already been registered.'))
-                ->setParameter('%string%', $value)
-                ->addViolation();
         }
     }
 }

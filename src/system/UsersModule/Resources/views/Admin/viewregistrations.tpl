@@ -62,7 +62,8 @@
             {/if}
             {if isset($regactions.modify)}
                 {if $regactions.modify}
-                <a class="fa fa-pencil-square-o fa-fw tooltips" href="{$regactions.modify|safetext}" title="{gt text='Modify registration details'}"></a>
+                    <a class="fa fa-pencil-square-o fa-fw tooltips" href="{$regactions.modify|safetext}" title="{gt text='Modify registration details'}"></a>
+                    <a class="fa fa-pencil-square fa-fw tooltips" href="{route name='zikulausersmodule_registration_modify' user=$reginfo.uid}" title="{gt text='Modify registration details'}"></a>
                 {else}
                 <span class="fa-fw"></span>fa fa-
                 {/if}
