@@ -12,6 +12,7 @@ namespace Zikula\MailerModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
@@ -150,15 +151,18 @@ class ConfigController extends AbstractController
 
                 // send the email
                 try {
+                    $sitename = $variableApi->get('ZConfig', 'sitename_' . \ZLanguage::getLanguageCode(), $variableApi->get('ZConfig', 'sitename_en'));
+                    $adminMail = $variableApi->get('ZConfig', 'adminmail');
+
+                    // create new message instance
+                    /** @var Swift_Message */
+                    $message = Swift_Message::newInstance();
+
+                    $message->setFrom([$adminMail => $sitename]);
+                    $message->setTo([$formData['toAddress'] => $formData['toName']]);
+
                     $mailer = $this->get('zikula_mailer_module.api.mailer');
-                    $result = $mailer->sendMessage([
-                        'toname' => $formData['toName'],
-                        'toaddress' => $formData['toAddress'],
-                        'subject' => $formData['subject'],
-                        'body' => $msgBody,
-                        'altbody' => $altBody,
-                        'html' => $html
-                    ]);
+                    $result = $mailer->sendMessage($message, $formData['subject'], $msgBody, $altBody, $html);
 
                     // check our result and return the correct error code
                     if (true === $result) {

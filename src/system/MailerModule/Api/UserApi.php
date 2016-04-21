@@ -13,6 +13,8 @@
 
 namespace Zikula\MailerModule\Api;
 
+use Swift_Message;
+
 /**
  * API functions used by user controllers
  */

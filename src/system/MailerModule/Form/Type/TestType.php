@@ -12,6 +12,8 @@ namespace Zikula\MailerModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Configuration form type class.
@@ -36,14 +38,24 @@ class TestType extends AbstractType
             ])
             ->add('toName', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Recipient\'s name'),
+                'constraints' => [
+                    new NotBlank()
+                ],
                 'max_length' => 50
             ])
             ->add('toAddress', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
                 'label' => $translator->__('Recipient\'s e-mail address'),
+                'constraints' => [
+                    new NotBlank(),
+                    new Email()
+                ],
                 'max_length' => 50
             ])
             ->add('subject', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => $translator->__('Subject'),
+                'constraints' => [
+                    new NotBlank()
+                ],
                 'max_length' => 50
             ])
             ->add('messageType', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
