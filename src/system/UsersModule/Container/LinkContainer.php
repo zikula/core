@@ -127,12 +127,8 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', $createUserAccessLevel)) {
             $submenulinks = [];
             $submenulinks[] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_newuser'),
+                'url' => $this->router->generate('zikulausersmodule_useradministration_create'),
                 'text' => $this->translator->__('Create new user')
-            ];
-            $submenulinks[] = [
-                'url' => $this->router->generate('zikulausersmodule_useradministration_edit'),
-                'text' => $this->translator->__('NEW Create new user')
             ];
             $submenulinks[] = [
                 'url' => $this->router->generate('zikulausersmodule_admin_import'),
@@ -167,13 +163,8 @@ class LinkContainer implements LinkContainerInterface
         }
         if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_ADMIN)) {
             $links[] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_config'),
-                'text' => $this->translator->__('Settings'),
-                'icon' => 'wrench'
-            ];
-            $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_config_config'),
-                'text' => $this->translator->__('NEW Settings'),
+                'text' => $this->translator->__('Settings'),
                 'icon' => 'wrench'
             ];
         }

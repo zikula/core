@@ -34,21 +34,19 @@ use Zikula\UsersModule\UserEvents;
 class UserAdministrationController extends AbstractController
 {
     /**
-     * @Route("/user/edit/{user}")
+     * @Route("/user/create")
      * @Theme("admin")
      * @Template()
      * @param Request $request
-     * @param UserEntity $user
      * @return array
      */
-    public function editAction(Request $request, UserEntity $user = null)
+    public function createAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        if (null === $user) {
-            $user = new UserEntity();
-        }
+
+        $user = new UserEntity();
         $form = $this->createForm('Zikula\UsersModule\Form\Type\AdminCreatedUserType',
             $user, ['translator' => $this->get('translator.default')]
         );
@@ -96,6 +94,68 @@ class UserAdministrationController extends AbstractController
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * @Route("/user/modify/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @Theme("admin")
+     * @Template()
+     * @param Request $request
+     * @param UserEntity $user
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function modifyAction(Request $request, UserEntity $user)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule::', $user->getUname() . "::" . $user->getUid(), ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
+        if (1 === $user->getUid()) {
+            throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
+        }
+
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\AdminModifyUserType',
+            $user, ['translator' => $this->get('translator.default')]
+        );
+        $originalUser = clone $user;
+        $form->handleRequest($request);
+
+        $event = new GenericEvent($form->getData(), array(), new ValidationProviders());
+        $this->get('event_dispatcher')->dispatch(UserEvents::USER_VALIDATE_MODIFY, $event);
+        $validators = $event->getData();
+        $hook = new ValidationHook($validators);
+        $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_USER_VALIDATE, $hook);
+        $validators = $hook->getValidators();
+
+        if ($form->isValid() && !$validators->hasErrors()) {
+            if ($form->get('submit')->isClicked()) {
+                $user = $form->getData();
+                // @todo hash new password if set @see UserUtil::setPassword
+                $this->get('doctrine')->getManager()->flush($user);
+                $eventArgs = [
+                    'action'    => 'setVar',
+                    'field'     => 'uname',
+                    'attribute' => null,
+                ];
+                $eventData = ['old_value' => $originalUser->getUname()];
+                $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
+                $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
+
+                $this->get('event_dispatcher')->dispatch(UserEvents::USER_PROCESS_MODIFY, new GenericEvent($user));
+                $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_USER_PROCESS, new ProcessHook($user->getUid()));
+
+                $this->addFlash('status', $this->__("Done! Saved user's account information."));
+
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+            }
+
+            return $this->redirectToRoute('zikulausersmodule_admin_view');
         }
 
         return [
