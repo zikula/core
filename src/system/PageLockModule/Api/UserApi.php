@@ -40,7 +40,7 @@ class UserApi extends \Zikula_AbstractApi
             $apiArgs['ignoreEmptyLock'] = false;
         }
 
-        return $locking->addLockingCodeForCurrentPage($apiArgs['lockName'], $apiArgs['returnUrl'], $apiArgs['ignoreEmptyLock']);
+        return $locking->addLock($apiArgs['lockName'], $apiArgs['returnUrl'], $apiArgs['ignoreEmptyLock']);
     }
 
     /**

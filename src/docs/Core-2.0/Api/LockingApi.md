@@ -10,7 +10,7 @@ about currently existing locks.
 
 The class makes the following methods available:
 
-    - addLockingCodeForCurrentPage($lockName, $returnUrl = null, $ignoreEmptyLock = false)
+    - addLock($lockName, $returnUrl = null, $ignoreEmptyLock = false)
     - requireLock($lockName, $lockedByTitle, $lockedByIPNo, $sessionId = '')
     - getLocks($lockName, $sessionId = '')
     - releaseLock($lockName, $sessionId = '')

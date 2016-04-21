@@ -123,7 +123,7 @@ class LockingApi
     }
 
     /**
-     * Add the page locking code to the page header
+     * Requires a lock and adds the page locking code to the page header
      *
      * @param string $lockName        The name of the lock to be released
      * @param string $returnUrl       The URL to return control to (optional) (default: null)
@@ -131,7 +131,7 @@ class LockingApi
      *
      * @return bool true
      */
-    public function addLockingCodeForCurrentPage($lockName, $returnUrl = null, $ignoreEmptyLock = false)
+    public function addLock($lockName, $returnUrl = null, $ignoreEmptyLock = false)
     {
         if (empty($lockName) && $ignoreEmptyLock) {
             return true;
