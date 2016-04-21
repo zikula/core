@@ -17,11 +17,11 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 
 /**
- * @Route("/ajax")
+ * @Route("/lock")
  *
- * Ajax controllers for the pagelock module
+ * Lock controller for the pagelock module
  */
-class AjaxController extends AbstractController
+class LockController extends AbstractController
 {
     /**
      * @Route("/refresh", options={"expose"=true})

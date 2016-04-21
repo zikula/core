@@ -28,6 +28,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function pageLock($args)
     {
+        @trigger_error('The pagelock user api is deprecated. please use the new locking api instead.', E_USER_DEPRECATED);
+
         $locking = $this->getContainer()->get('zikula_pagelock_module.api.locking');
 
         $apiArgs = $args;
@@ -38,7 +40,7 @@ class UserApi extends \Zikula_AbstractApi
             $apiArgs['ignoreEmptyLock'] = false;
         }
 
-        return $locking->pageLock($apiArgs['lockName'], $apiArgs['returnUrl'], $apiArgs['ignoreEmptyLock']);
+        return $locking->addLockingCodeForCurrentPage($apiArgs['lockName'], $apiArgs['returnUrl'], $apiArgs['ignoreEmptyLock']);
     }
 
     /**
@@ -54,6 +56,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function requireLock($args)
     {
+        @trigger_error('The pagelock user api is deprecated. please use the new locking api instead.', E_USER_DEPRECATED);
+
         $locking = $this->getContainer()->get('zikula_pagelock_module.api.locking');
 
         $apiArgs = $args;
@@ -82,6 +86,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getLocks($args)
     {
+        @trigger_error('The pagelock user api is deprecated. please use the new locking api instead.', E_USER_DEPRECATED);
+
         $locking = $this->getContainer()->get('zikula_pagelock_module.api.locking');
 
         $apiArgs = $args;
@@ -104,6 +110,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function releaseLock($args)
     {
+        @trigger_error('The pagelock user api is deprecated. please use the new locking api instead.', E_USER_DEPRECATED);
+
         $locking = $this->getContainer()->get('zikula_pagelock_module.api.locking');
 
         $apiArgs = $args;

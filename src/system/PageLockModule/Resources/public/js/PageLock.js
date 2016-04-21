@@ -46,7 +46,7 @@ var PageLock = {};
     PageLock.RefreshLock = function()
     {
         $.ajax({
-            url: Routing.generate('zikulapagelockmodule_ajax_refreshpagelock'),
+            url: Routing.generate('zikulapagelockmodule_lock_refreshpagelock'),
             data: {
                 lockname: PageLock.LockName
             },
@@ -67,7 +67,7 @@ var PageLock = {};
         PageLock.BlinkAnimation('#pageLockOverlayLED');
 
         $.ajax({
-            url: Routing.generate('zikulapagelockmodule_ajax_checkpagelock'),
+            url: Routing.generate('zikulapagelockmodule_lock_checkpagelock'),
             data: {
                 lockname: PageLock.LockName
             },

@@ -16,6 +16,7 @@ CHANGELOG - ZIKULA 1.4.x
     - Add help text, alert text and input groups to forms utilizing the provided form themes.
 
  - Core-2.0 Features:
+    - PageLockModule updated to Core-2.0 Spec.
     - SettingsModule updated to Core-2.0 Spec.
 
  - Vendor updates:

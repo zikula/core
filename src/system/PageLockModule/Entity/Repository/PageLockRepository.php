@@ -91,10 +91,10 @@ class PageLockRepository extends EntityRepository
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function updateExpireDate($lockName, $sessionId, $expireDate)
+    public function updateExpireDate($lockName, $sessionId, \DateTime $expireDate)
     {
         // check parameters
-        if ($lockName == '' || $sessionId == '' || !($expireDate instanceof \DateTime)) {
+        if ($lockName == '' || $sessionId == '') {
             throw new \InvalidArgumentException('Invalid parameter received.');
         }
 
