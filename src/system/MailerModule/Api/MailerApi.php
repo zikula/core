@@ -21,6 +21,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\MailerModule\MailerEvents;
 use Zikula\PermissionsModule\Api\PermissionApi;
 
 /**
@@ -116,14 +117,13 @@ class MailerApi
      */
     public function sendMessage(Swift_Message $message, $subject, $body, $altBody, $html, array $headers = array(), array $attachments = array(), array $stringAttachments = array(), array $embeddedImages = array())
     {
-        // Allow other bundles to control mailer behavior
-        $event = new GenericEvent($this, $args);
-        $this->eventDispatcher->dispatch('module.mailer.api.sendmessage', $event);
+        $this->message = $message;
+
+        $event = new GenericEvent($this, $this->message);
+        $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_START, $event);
         if ($event->isPropagationStopped()) {
             return $event->getData();
         }
-
-        $this->message = $message;
 
         $this->setTechnicalParameters();
 
@@ -161,6 +161,12 @@ class MailerApi
         }
         if (count($embeddedImages)) {
             $this->addEmbeddedImages($embeddedImages);
+        }
+
+        $event = new GenericEvent($this, $this->message);
+        $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_PERFORM, $event);
+        if ($event->isPropagationStopped()) {
+            return $event->getData();
         }
 
         // send message
@@ -241,6 +247,7 @@ class MailerApi
     private function performSending()
     {
         $logFile = 'app/logs/mailer.log';
+        $event = new GenericEvent($this, $this->message);
 
         if (!$this->mailer->send($this->message, $failedEmails)) {
             // message was not sent successfully, do error handling
@@ -253,6 +260,8 @@ class MailerApi
                 $logger->pushHandler(new StreamHandler($logFile, Logger::INFO));
                 $logger->addError("Could not send message to: $emailList :: " . $this->message->toString());
             }
+
+            $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_FAILURE, $event);
 
             if ($this->permissionApi->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
                 throw new \RuntimeException($this->__f('Error! Could not send mail to: %s.', ['%s' => $emailList]));
@@ -267,5 +276,7 @@ class MailerApi
             $logger->pushHandler(new StreamHandler($logFile, Logger::INFO));
             $logger->addInfo('Message sent: ' . $this->message->toString());
         }
+
+        $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_SUCCESS, $event);
     }
 }
