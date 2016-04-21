@@ -65,17 +65,17 @@ class LockingApi
     /**
      * @var AssetBag
      */
-    private $jsAssetHelper;
+    private $jsAssetBag;
 
     /**
      * @var AssetBag
      */
-    private $cssAssetHelper;
+    private $cssAssetBag;
 
     /**
      * @var AssetBag
      */
-    private $footerAssetHelper;
+    private $footerAssetBag;
 
     /**
      * @var Asset
