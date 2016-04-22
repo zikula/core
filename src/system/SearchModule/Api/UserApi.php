@@ -1,30 +1,27 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SearchModule\Api;
 
+use DataUtil;
 use ModUtil;
-use UserUtil;
+use SecurityUtil;
 use SessionUtil;
 use System;
-use DataUtil;
-use Zikula\Core\ModUrl;
+use UserUtil;
 use ZLanguage;
-use SecurityUtil;
-use Zikula\SearchModule\ResultHelper;
-use Zikula\SearchModule\Entity\SearchStatEntity;
+use Zikula\Core\ModUrl;
 use Zikula\SearchModule\AbstractSearchable;
 use Zikula\SearchModule\Entity\SearchResultEntity;
+use Zikula\SearchModule\Entity\SearchStatEntity;
+use Zikula\SearchModule\ResultHelper;
 
 /**
  * API's used by user controllers
@@ -56,17 +53,18 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['firstPage']) || ($args['firstPage'] && (!isset($args['q']) || empty($args['q'])))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
-        $vars = array();
-        $vars['q'] = str_replace('%', '', $args['q']);  // Don't allow user input % as wildcard
-        $vars['searchtype'] = isset($args['searchtype']) && !empty($args['searchtype']) ? $args['searchtype'] : 'AND';
-        $vars['searchorder'] = isset($args['searchorder']) && !empty($args['searchorder']) ? $args['searchorder'] : 'newest';
-        $vars['numlimit'] = isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : $this->getVar('itemsperpage', 25);
-        $vars['page'] = isset($args['page']) && !empty($args['page']) ? (int)$args['page'] : 1;
+        $vars = [
+            'q' => str_replace('%', '', $args['q']), // Don't allow user input % as wildcard
+            'searchtype' => isset($args['searchtype']) && !empty($args['searchtype']) ? $args['searchtype'] : 'AND',
+            'searchorder' => isset($args['searchorder']) && !empty($args['searchorder']) ? $args['searchorder'] : 'newest',
+            'numlimit' => isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : $this->getVar('itemsperpage', 25),
+            'page' => isset($args['page']) && !empty($args['page']) ? (int)$args['page'] : 1
+        ];
 
         $firstPage = isset($args['firstPage']) ? $args['firstPage'] : false;
 
-        $active = isset($args['active']) && is_array($args['active']) && !empty($args['active']) ? $args['active'] : array();
-        $modvar = isset($args['modvar']) && is_array($args['modvar']) && !empty($args['modvar']) ? $args['modvar'] : array();
+        $active = isset($args['active']) && is_array($args['active']) && !empty($args['active']) ? $args['active'] : [];
+        $modvar = isset($args['modvar']) && is_array($args['modvar']) && !empty($args['modvar']) ? $args['modvar'] : [];
 
         // work out row index from page number
         $vars['startnum'] = $vars['numlimit'] > 0 ? (($vars['page'] - 1) * $vars['numlimit']) + 1 : 1;
@@ -77,7 +75,11 @@ class UserApi extends \Zikula_AbstractApi
         if ($firstPage) {
             // Clear current search result for current user - before showing the first page
             // Clear also older searches from other users.
-            $query = $this->entityManager->createQuery("DELETE Zikula\SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid OR DATE_ADD(s.found, 1, 'DAY') < CURRENT_TIMESTAMP()");
+            $query = $this->entityManager->createQuery("
+                DELETE Zikula\SearchModule\Entity\SearchResultEntity s
+                WHERE s.sesid = :sid
+                OR DATE_ADD(s.found, 1, 'DAY') < CURRENT_TIMESTAMP()
+            ");
             $query->setParameter('sid', $sessionId);
             $query->execute();
 
@@ -87,21 +89,26 @@ class UserApi extends \Zikula_AbstractApi
             // Ask active modules to find their items and put them into $searchTable for the current user
             // At the same time convert modules list from numeric index to modname index
 
-            $searchModulesByName = array();
+            $searchModulesByName = [];
             foreach ($search_modules as $mod) {
-                // check we've a valid search plugin
-                if (isset($mod['functions']) && (empty($active) || isset($active[$mod['title']]))) {
-                    foreach ($mod['functions'] as $contenttype => $function) {
-                        if (isset($modvar[$mod['title']])) {
-                            $param = array_merge($vars, $modvar[$mod['title']]);
-                        } else {
-                            $param = $vars;
-                        }
-                        $searchModulesByName[$mod['name']] = $mod;
-                        $ok = ModUtil::apiFunc($mod['title'], 'search', $function, $param);
-                        if (!$ok) {
-                            throw new \RuntimeException($this->__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', array($mod['title'], $function)));
-                        }
+                // check if we've a valid search plugin
+                if (!isset($mod['functions'])) {
+                    continue;
+                }
+                if (!empty($active) && !isset($active[$mod['title']])) {
+                    continue;
+                }
+
+                foreach ($mod['functions'] as $contenttype => $function) {
+                    if (isset($modvar[$mod['title']])) {
+                        $param = array_merge($vars, $modvar[$mod['title']]);
+                    } else {
+                        $param = $vars;
+                    }
+                    $searchModulesByName[$mod['name']] = $mod;
+                    $ok = ModUtil::apiFunc($mod['title'], 'search', $function, $param);
+                    if (!$ok) {
+                        throw new \RuntimeException($this->__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', [$mod['title'], $function]));
                     }
                 }
             }
@@ -109,36 +116,39 @@ class UserApi extends \Zikula_AbstractApi
             // Ask 1.4.0+ type modules for search results and persist them
             $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
             foreach ($searchableModules as $searchableModule) {
-                if (empty($active) || isset($active[$searchableModule['name']])) {
-                    // send an *array* of queried words to 1.4.0+ type modules
-                    if ($vars['searchtype'] == 'EXACT') {
-                        $words = array(trim($vars['q']));
-                    } else {
-                        $words = preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
-                    }
-                    $moduleBundle = ModUtil::getModule($searchableModule['name']);
-                    /** @var $searchableInstance AbstractSearchable */
-                    $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->getContainer(), $moduleBundle);
-                    if ($searchableInstance instanceof AbstractSearchable) {
-                        $modvar[$searchableModule['name']] = isset($modvar[$searchableModule['name']]) ? $modvar[$searchableModule['name']] : null;
-                        $results = $searchableInstance->getResults($words, $vars['searchtype'], $modvar[$searchableModule['name']]);
-                        foreach ($results as $result) {
-                            $searchResult = new SearchResultEntity();
-                            $searchResult->merge($result);
-                            $this->entityManager->persist($searchResult);
-                        }
-                        $this->entityManager->flush();
-                    }
+                if (!empty($active) && !isset($active[$searchableModule['name']])) {
+                    continue;
                 }
+
+                // send an *array* of queried words to 1.4.0+ type modules
+                if ($vars['searchtype'] == 'EXACT') {
+                    $words = [trim($vars['q'])];
+                } else {
+                    $words = preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
+                }
+                $moduleBundle = ModUtil::getModule($searchableModule['name']);
+                /** @var $searchableInstance AbstractSearchable */
+                $searchableInstance = new $searchableModule['capabilities']['searchable']['class']($this->getContainer(), $moduleBundle);
+                if (!($searchableInstance instanceof AbstractSearchable)) {
+                    continue;
+                }
+                $modvar[$searchableModule['name']] = isset($modvar[$searchableModule['name']]) ? $modvar[$searchableModule['name']] : null;
+                $results = $searchableInstance->getResults($words, $vars['searchtype'], $modvar[$searchableModule['name']]);
+                foreach ($results as $result) {
+                    $searchResult = new SearchResultEntity();
+                    $searchResult->merge($result);
+                    $this->entityManager->persist($searchResult);
+                }
+                $this->entityManager->flush();
             }
 
             // Count number of found results
             $query = $this->entityManager->createQueryBuilder()
-                                         ->select('count(s.sesid)')
-                                         ->from('ZikulaSearchModule:SearchResultEntity', 's')
-                                         ->where('s.sesid = :sid')
-                                         ->setParameter('sid', $sessionId)
-                                         ->getQuery();
+                ->select('COUNT(s.sesid)')
+                ->from('ZikulaSearchModule:SearchResultEntity', 's')
+                ->where('s.sesid = :sid')
+                ->setParameter('sid', $sessionId)
+                ->getQuery();
             $resultCount = $query->getSingleScalarResult();
             SessionUtil::setVar('searchResultCount', $resultCount);
             SessionUtil::setVar('searchModulesByName', $searchModulesByName);
@@ -171,18 +181,18 @@ class UserApi extends \Zikula_AbstractApi
         $checker = new ResultHelper($searchModulesByName);
 
         $query = $this->entityManager->createQueryBuilder()
-                                     ->select('s')
-                                     ->from('ZikulaSearchModule:SearchResultEntity', 's')
-                                     ->where('s.sesid = :sid')
-                                     ->setParameter('sid', $sessionId)
-                                     ->orderBy("s.$sort", $dir)
-                                     ->setMaxResults($vars['numlimit'])
-                                     ->setFirstResult($vars['startnum'] - 1)
-                                     ->getQuery();
+            ->select('s')
+            ->from('ZikulaSearchModule:SearchResultEntity', 's')
+            ->where('s.sesid = :sid')
+            ->setParameter('sid', $sessionId)
+            ->orderBy("s.$sort", $dir)
+            ->setMaxResults($vars['numlimit'])
+            ->setFirstResult($vars['startnum'] - 1)
+            ->getQuery();
         $results = $query->getArrayResult();
 
         // add displayname of modules found
-        $sqlResult = array();
+        $sqlResult = [];
         foreach ($results as $result) {
             // reformat url for 1.4.0+ type searches @todo - refactor to do this in the template
             $result['url'] = (isset($result['url']) && ($result['url'] instanceof ModUrl)) ? $result['url']->getUrl() : null;
@@ -198,10 +208,10 @@ class UserApi extends \Zikula_AbstractApi
             $sqlResult[$i]['displayname'] = $modinfo['displayname'];
         }
 
-        $result = array(
-                'resultCount' => $resultCount,
-                'sqlResult' => $sqlResult,
-        );
+        $result = [
+            'resultCount' => $resultCount,
+            'sqlResult' => $sqlResult,
+        ];
         if (isset($searchableInstance)) {
             $result['errors'] = $searchableInstance->getErrors();
         }
@@ -229,11 +239,11 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
             $args['numitems'] = -1;
         }
-        if (!isset($args['sortorder']) || !in_array($args['sortorder'], array('count', 'date'))) {
+        if (!isset($args['sortorder']) || !in_array($args['sortorder'], ['count', 'date'])) {
             $args['sortorder'] = 'count';
         }
 
-        $items = array();
+        $items = [];
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_OVERVIEW)) {
@@ -242,8 +252,8 @@ class UserApi extends \Zikula_AbstractApi
 
         // Get items
         $qb = $this->entityManager->createQueryBuilder()
-                                  ->select('s')
-                                  ->from('ZikulaSearchModule:SearchStatEntity', 's');
+            ->select('s')
+            ->from('ZikulaSearchModule:SearchStatEntity', 's');
         if (isset($args['sortorder'])) {
             $qb->orderBy('s.'.$args['sortorder'], 'DESC');
         }
@@ -263,9 +273,9 @@ class UserApi extends \Zikula_AbstractApi
     public function countitems()
     {
         $query = $this->entityManager->createQueryBuilder()
-                                     ->select('count(s.id)')
-                                     ->from('ZikulaSearchModule:SearchStatEntity', 's')
-                                     ->getQuery();
+            ->select('COUNT(s.id)')
+            ->from('ZikulaSearchModule:SearchStatEntity', 's')
+            ->getQuery();
 
         return (int)$query->getSingleScalarResult();
     }
@@ -281,23 +291,20 @@ class UserApi extends \Zikula_AbstractApi
     public function getallplugins($args)
     {
         // defaults
-        if (!isset($args['loadall'])) {
-            $args['loadall'] = false;
-        }
+        $loadAll = isset($args['loadall']) ? (bool) $args['loadall'] : false;
 
         // initialize the search plugins array
-        $search_modules = array();
+        $search_modules = [];
 
         // Attempt to load the search API for each user module
         // The modules should be determined by a select of the modules table or something like that in the future
         $usermods = ModUtil::getAllMods();
         foreach ($usermods as $usermod) {
-            if ($args['loadall'] || (!$this->getVar("disable_$usermod[name]") && SecurityUtil::checkPermission('ZikulaSearchModule::Item', "$usermod[name]::", ACCESS_READ))) {
+            if ($loadAll || (!$this->getVar('disable_' . $usermod['name']) && SecurityUtil::checkPermission('ZikulaSearchModule::Item', "$usermod[name]::", ACCESS_READ))) {
                 $info = ModUtil::apiFunc($usermod['name'], 'search', 'info');
                 if ($info) {
                     $info['name'] = $usermod['name'];
                     $search_modules[] = $info;
-                    $plugins_found = 'yes';
                 }
             }
         }
@@ -315,7 +322,11 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function log($args)
     {
-        $obj = $this->entityManager->getRepository('ZikulaSearchModule:SearchStatEntity')->findOneBy(array('search' => $args['q']));
+        if (!isset($args['q'])) {
+            return true;
+        }
+
+        $obj = $this->entityManager->getRepository('ZikulaSearchModule:SearchStatEntity')->findOneBy(['search' => $args['q']]);
 
         if (!$obj) {
             $obj = new SearchStatEntity();
@@ -338,26 +349,23 @@ class UserApi extends \Zikula_AbstractApi
      * it is called from each plugin so we can't delete it or change it's name
      *
      * @param string $q          the string to parse and split.
-     * @param string $dbwildcard wrap each word in a DB wildcard character (%).
+     * @param bool   $dbWildcard whether to wrap each word in a DB wildcard character (%).
      *
      * @return array an array of words optionally surrounded by '%'
      */
-    public static function split_query($q, $dbwildcard = true)
+    public static function split_query($q, $dbWildcard = true)
     {
         if (!isset($q)) {
             return;
         }
 
-        $w = array();
+        $w = [];
         $stripped = DataUtil::formatForStore($q);
         $qwords = preg_split('/ /', $stripped, -1, PREG_SPLIT_NO_EMPTY);
 
         foreach ($qwords as $word) {
-            if ($dbwildcard) {
-                $w[] = '%' . $word . '%';
-            } else {
-                $w[] = $word;
-            }
+            $searchWord = $dbWildcard ? '%' . $word . '%' : $word;
+            $w[] = $searchWord;
         }
 
         return $w;
@@ -391,15 +399,14 @@ class UserApi extends \Zikula_AbstractApi
                 $searchwords = self::split_query($q);
                 $connector = $args['searchtype'] == 'AND' ? ' AND ' : ' OR ';
             } else {
-                $searchwords = array("%{$q}%");
+                $searchwords = ['%' . $q . '%'];
                 $connector = ' OR ';
             }
             $start = true;
             foreach ($searchwords as $word) {
                 $where .= (!$start ? $connector : '') . ' (';
-                // I'm not sure if "LIKE" is the best solution in terms of DB portability (PC)
                 foreach ($fields as $field) {
-                    $where .= "{$field} LIKE '$word' OR ";
+                    $where .= "{$field} LIKE '" . str_replace('\'', '', $word) . "' OR ";
                 }
                 $where = substr($where, 0, -4);
                 $where .= ')';
@@ -415,32 +422,5 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         return $where;
-    }
-
-    /**
-     * Get available menu links.
-     *
-     * @param mixed[] $args {
-     *                      }
-     *
-     * @return array array of menu links.
-     */
-    public function getLinks($args)
-    {
-        $links = array();
-        $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
-
-        if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => $this->get('router')->generate('zikulasearchmodule_admin_index'), 'text' => $this->__('Backend'), 'icon' => 'wrench');
-        }
-
-        if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => $this->get('router')->generate('zikulasearchmodule_user_form'), 'text' => $this->__('New search'), 'icon' => 'search');
-            if ((count($search_modules) > 0) && UserUtil::isLoggedIn()) {
-                $links[] = array('url' => $this->get('router')->generate('zikulasearchmodule_user_recent'), 'text' => $this->__('Recent searches list'), 'icon' => 'list');
-            }
-        }
-
-        return $links;
     }
 }

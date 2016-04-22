@@ -1,0 +1,44 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Settings') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend>{{ __('General settings') }}</legend>
+            {{ form_row(form.itemsperpage) }}
+            {{ form_row(form.limitsummary) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Disable search plug-ins') }}</legend>
+            {{ form_row(form.plugins) }}
+        </fieldset>
+        <fieldset>
+            <legend>OpenSearch</legend>
+            <p class="alert alert-info">
+                {{ __f('%linkStart OpenSearch %linkEnd makes it possible for your site\'s users to use your site\'s search function as a search engine.', {'%linkStart': '<a href="http://en.wikipedia.org/wiki/OpenSearch">', '%linkEnd': '</a>'})|raw }}
+            </p>
+            {{ form_row(form.opensearch_enabled) }}
+            {{ form_row(form.opensearch_adult_content) }}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ adminFooter() }}

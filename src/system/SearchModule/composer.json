@@ -1,6 +1,7 @@
 {
     "name": "zikula/search-module",
-    "description": "Search Module",
+    "version": "1.6.0",
+    "description": "Site search module.",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
@@ -17,8 +18,17 @@
     },
     "extra": {
         "zikula": {
+            "class": "Zikula\\SearchModule\\ZikulaSearchModule",
+            "core-compatibility": ">=1.4.1",
+            "displayname": "Site search",
             "url": "search",
-            "class": "Zikula\\SearchModule\\ZikulaSearchModule"
+            "capabilities": {
+                "admin": {"route": "zikulasearchmodule_config_config"},
+                "user": {"route": "zikulasearchmodule_user_form"}
+            },
+            "securityschema": {
+                "ZikulaSearchModule::": "Module name::"
+            }
         }
     }
 }
