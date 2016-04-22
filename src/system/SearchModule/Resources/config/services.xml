@@ -5,18 +5,52 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="zikulasearchmodule.front_controller_listener.class">Zikula\SearchModule\Listener\FrontControllerListener</parameter>
-        <parameter key="zikulasearchmodule.module_event_listener.class">Zikula\SearchModule\Listener\ModuleEventListener</parameter>
+        <parameter key="zikula_search_module.container.link_container.class">Zikula\SearchModule\Container\LinkContainer</parameter>
+        <parameter key="zikula_search_module.form.type.block.search.class">Zikula\SearchModule\Block\Form\Type\SearchBlockType</parameter>
+        <parameter key="twig.extension.zikula_search_module.class">Zikula\SearchModule\Twig\TwigExtension</parameter>
+        <parameter key="zikula_search_module.front_controller_listener.class">Zikula\SearchModule\Listener\FrontControllerListener</parameter>
+        <parameter key="zikula_search_module.module_event_listener.class">Zikula\SearchModule\Listener\ModuleEventListener</parameter>
     </parameters>
 
     <services>
-        <service id="zikulasearchmodule.front_controller_listener" class="%zikulasearchmodule.front_controller_listener.class%">
+        <service id="zikula_search_module.container.link_container" class="%zikula_search_module.container.link_container.class%">
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="jms_i18n_routing.router" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="zikula_users_module.current_user" />
+            <tag name="zikula.link_container" />
+        </service>
+
+        <service id="zikula_search_module.form.type.block.search" class="%zikula_search_module.form.type.block.search.class%">
+            <argument type="service" id="translator.default" />
+            <tag name="form.type" />
+        </service>
+
+        <service id="twig.extension.zikula_search_module" class="%twig.extension.zikula_search_module.class%" public="false">
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="zikula_search_module.front_controller_listener" class="%zikula_search_module.front_controller_listener.class%">
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="router" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_core.common.theme.assets_header" />
         </service>
-        <service id="zikulasearchmodule.module_event_listener" class="%zikulasearchmodule.module_event_listener.class%">
+        <!-- to be removed in 2.0 -->
+        <service id="zikulasearchmodule.front_controller_listener" alias="zikula_search_module.front_controller_listener" class="%zikula_search_module.front_controller_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="router" />
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="zikula_core.common.theme.assets_header" />
+        </service>
+        <service id="zikula_search_module.module_event_listener" class="%zikula_search_module.module_event_listener.class%">
+            <tag name="kernel.event_subscriber" />
+        </service>
+        <!-- to be removed in 2.0 -->
+        <service id="zikulasearchmodule.module_event_listener" alias="zikula_search_module.module_event_listener" class="%zikula_search_module.module_event_listener.class%">
             <tag name="kernel.event_subscriber" />
         </service>
     </services>
 </container>
-
