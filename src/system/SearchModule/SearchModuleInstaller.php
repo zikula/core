@@ -72,6 +72,7 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
                     ]);
                 } catch (\Exception $e) {
                     $this->addFlash('error', $e->getMessage());
+
                     return false;
                 }
             case '1.5.3':
@@ -82,6 +83,7 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
                     ]);
                 } catch (\Exception $e) {
                     $this->addFlash('error', $e->getMessage());
+
                     return false;
                 }
             case '1.5.4':

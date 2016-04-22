@@ -15,7 +15,6 @@ use ModUtil;
 use SecurityUtil;
 use SessionUtil;
 use System;
-use UserUtil;
 use ZLanguage;
 use Zikula\Core\ModUrl;
 use Zikula\SearchModule\AbstractSearchable;

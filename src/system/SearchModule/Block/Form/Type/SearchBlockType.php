@@ -50,17 +50,18 @@ class SearchBlockType extends AbstractType
             'required' => false
         ]);
 
-        /** TODO: reenable custom form options from other modules #}
-        $searchModules = [];
-        if (is_array($options['plugins']) && count($options['plugins'])) {
-            foreach ($options['plugins'] as $module) {
-                $searchModules[] = [
-                    'module' => ModUtil::apiFunc($module['title'], 'search', 'options', $vars)
-                ];
-            }
-        }
-        // add field array with name "active"
-        */
+        /**
+         * TODO: reenable custom form options from other modules
+         * $searchModules = [];
+         * if (is_array($options['plugins']) && count($options['plugins'])) {
+         *     foreach ($options['plugins'] as $module) {
+         *         $searchModules[] = [
+         *             'module' => ModUtil::apiFunc($module['title'], 'search', 'options', $vars)
+         *         ];
+         *     }
+         * }
+         * // add field array with name "active"
+         */
     }
 
     public function getName()

@@ -10,13 +10,8 @@
 
 namespace Zikula\SearchModule\Block;
 
-use Zikula\BlocksModule\AbstractBlockHandler;
-
-// use BlockUtil;
 use ModUtil;
-// use SecurityUtil;
-// use Zikula_View;
-// use Zikula_View_Theme;
+use Zikula\BlocksModule\AbstractBlockHandler;
 
 /**
  * Block to display a search form
