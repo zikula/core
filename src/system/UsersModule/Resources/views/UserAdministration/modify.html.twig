@@ -10,9 +10,13 @@
     <div class="row">
         <h3>
             <span class="fa fa-plus"></span>
-            {{ __('Create new user') }}
+            {{ __f('Edit user account of %uname', {'%uname': form.vars.value.uname}) }}
         </h3>
         <div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
+        {% if form.vars.value.uid == currentUser.uid %}
+            {# @todo see controller for notes about editing own account #}
+            <div class="alert alert-danger">{{ __('WARNING: You appear to be editing your OWN account.') }}</div>
+        {% endif %}
         {{ form_start(form) }}
         {{ form_errors(form) }}
         <fieldset>
@@ -42,7 +46,7 @@
             </table>
             {#{{ form_row(form.groups) }}#}
         </fieldset>
-        {% set eventData = dispatchEvent('module.users.ui.form_edit.new_user') %}
+        {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::FORM_MODIFY'), null, form.vars.value, {'id': form.vars.value.uid}) %}
         {% for data in eventData %}
             {{ data }}
         {% endfor %}
@@ -54,9 +58,21 @@
                 {{ form_widget(form.cancel) }}
             </div>
         </div>
+
+        <fieldset>
+            <legend>
+                <i class="fa fa-cog"></i> {{ __f('Other actions for %s', {'%s': form.vars.value.uname}) }}
+            </legend>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <a class="btn btn-danger" href="{{ path('zikulausersmodule_admin_deleteusers', {'userid': form.vars.value.uid}) }}"><i class="fa fa-times"></i> {{ __('Delete user account') }}</a>
+                    <a class="btn btn-info" href="{{ path('zikulausersmodule_admin_lostusername', {'userid': form.vars.value.uid}) }}"><i class="fa fa-reply"></i> {{ __('Send user name') }}</a>
+                    <a class="btn btn-info" href="{{ path('zikulausersmodule_admin_lostpassword', {'userid': form.vars.value.uid}) }}"><i class="fa fa-reply"></i> {{ __('Send password recovery code') }}</a>
+                </div>
+            </div>
+        </fieldset>
         {{ form_end(form) }}
     </div>
-
 </div>
 {{ adminFooter() }}
 {% if getModVar('ZikulaUsersModule' ,'use_password_strength_meter') %}
