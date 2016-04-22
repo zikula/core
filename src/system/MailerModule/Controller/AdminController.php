@@ -30,7 +30,7 @@ class AdminController extends AbstractController
     {
         @trigger_error('The zikulamailermodule_admin_index route is deprecated. please use zikulamailermodule_config_config instead.', E_USER_DEPRECATED);
 
-        return $this->redirect($this->generateUrl('zikulamailermodule_config_config'));
+        return $this->redirectToRoute('zikulamailermodule_config_config');
     }
 
     /**
@@ -49,6 +49,6 @@ class AdminController extends AbstractController
 
         @trigger_error('The zikulamailermodule_admin_config route is deprecated. please use zikulamailermodule_config_config instead.', E_USER_DEPRECATED);
 
-        return $this->redirect($this->generateUrl('zikulamailermodule_config_config'));
+        return $this->redirectToRoute('zikulamailermodule_config_config');
     }
 }
