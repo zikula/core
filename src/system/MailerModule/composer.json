@@ -18,8 +18,8 @@
     },
     "extra": {
         "zikula": {
-            "url": "mailer",
             "class": "Zikula\\MailerModule\\ZikulaMailerModule",
+            "core-compatibility": ">=1.4.1",
             "displayname": "Mailer Module",
             "url": "mailer",
             "capabilities": {
