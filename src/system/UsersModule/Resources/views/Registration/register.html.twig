@@ -57,7 +57,7 @@
         {% if form.user.email is defined %}{{ form_row(form.user.email) }}{% endif %}{# email may not be defined if authentication is non-local #}
     </fieldset>
 
-    {% set eventData = dispatchEvent('module.users.ui.form_edit.new_registration') %}
+    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::FORM_REGISTRATION_NEW')) %}
     {% for eventDisplay in eventData %}
         {{ eventDisplay }}
     {% endfor %}

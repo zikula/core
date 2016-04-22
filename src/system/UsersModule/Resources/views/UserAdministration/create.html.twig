@@ -33,7 +33,7 @@
             {{ form_row(form.adminnotification) }}
             {{ form_row(form.usermustverify) }}
         </fieldset>
-        {% set eventData = dispatchEvent('module.users.ui.form_edit.new_user') %}
+        {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::FORM_NEW')) %}
         {% for data in eventData %}
             {{ data }}
         {% endfor %}

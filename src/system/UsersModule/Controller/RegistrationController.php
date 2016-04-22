@@ -30,7 +30,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\UserEvents;
+use Zikula\UsersModule\RegistrationEvents;
 
 /**
  * Class RegistrationController
@@ -163,11 +163,11 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted()) {
             $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-            $validators = $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_VALIDATE_NEW, $event)->getData();
+            $validators = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_VALIDATE_NEW, $event)->getData();
 
             // Validate the hook
             $hook = new ValidationHook($validators);
-            $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_REGISTRATION_VALIDATE, $hook);
+            $this->get('hook_dispatcher')->dispatch(RegistrationEvents::HOOK_REGISTRATION_VALIDATE, $hook);
             $validators = $hook->getValidators();
 
             if ($form->isValid() && !$validators->hasErrors()) {
@@ -184,7 +184,7 @@ class RegistrationController extends AbstractController
                         $this->addFlash('error', $notificationError);
                     }
                     // Notify that we are completing a registration session.
-                    $event = $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_FAILED, new GenericEvent(null, ['redirecturl' => '']));
+                    $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_FAILED, new GenericEvent(null, ['redirecturl' => '']));
                     $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
 
                     return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
@@ -214,9 +214,9 @@ class RegistrationController extends AbstractController
                     }
 
                     // Allow hook-like events to process the registration...
-                    $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_PROCESS_NEW, new GenericEvent($userEntity));
+                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_PROCESS_NEW, new GenericEvent($userEntity));
                     // ...and hooks to process the registration.
-                    $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
+                    $this->get('hook_dispatcher')->dispatch(RegistrationEvents::HOOK_REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's
                     // activated status, whether registrations are moderated, whether e-mail addresses need to be verified,
@@ -226,7 +226,7 @@ class RegistrationController extends AbstractController
                     $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
 
                     // Notify that we are completing a registration session.
-                    $event = $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirecturl' => '']));
+                    $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirecturl' => '']));
                     $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
 
                     if ($canLogIn && $autoLogIn) {
@@ -252,7 +252,7 @@ class RegistrationController extends AbstractController
         }
 
         // Notify that we are beginning a registration session.
-        $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_STARTED, new GenericEvent());
+        $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_STARTED, new GenericEvent());
 
         return $this->render('@ZikulaUsersModule/Registration/register.html.twig', [
             'form' => $form->createView(),
@@ -461,10 +461,10 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), array(), new ValidationProviders());
-        $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_VALIDATE_MODIFY, $event);
+        $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_VALIDATE_MODIFY, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
-        $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_USER_VALIDATE, $hook);
+        $this->get('hook_dispatcher')->dispatch(RegistrationEvents::HOOK_REGISTRATION_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
         if ($form->isValid() && !$validators->hasErrors()) {
@@ -479,7 +479,7 @@ class RegistrationController extends AbstractController
                 ];
                 $eventData = ['old_value' => $originalUser->getUname()];
                 $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
-                $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_REGISTRATION, $updateEvent);
+                $this->get('event_dispatcher')->dispatch(RegistrationEvents::UPDATE_REGISTRATION, $updateEvent);
                 if ($user->getEmail() != $originalUser->getEmail()) {
                     $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
                     if (!(bool)$user->getAttributeValue('_Users_isVerified') && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $originalUser->isApproved())) {
@@ -489,8 +489,8 @@ class RegistrationController extends AbstractController
                         }
                     }
                 }
-                $this->get('event_dispatcher')->dispatch(UserEvents::REGISTRATION_PROCESS_MODIFY, new GenericEvent($user));
-                $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_REGISTRATION_PROCESS, new ProcessHook($user->getUid()));
+                $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_PROCESS_MODIFY, new GenericEvent($user));
+                $this->get('hook_dispatcher')->dispatch(RegistrationEvents::HOOK_REGISTRATION_PROCESS, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
 
