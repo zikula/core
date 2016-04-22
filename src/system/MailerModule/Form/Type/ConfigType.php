@@ -12,6 +12,7 @@ namespace Zikula\MailerModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Configuration form type class.
@@ -167,5 +168,15 @@ class ConfigType extends AbstractType
     public function getName()
     {
         return $this->getBlockPrefix();
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'translator' => null
+        ]);
     }
 }
