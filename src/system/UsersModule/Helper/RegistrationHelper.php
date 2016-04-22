@@ -22,6 +22,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
 class RegistrationHelper
@@ -289,7 +290,7 @@ class RegistrationHelper
         // TODO - Even though we are not firing an item-create hook, should we fire a special
         // registration created event?
 
-        $this->eventDispatcher->dispatch(UserEvents::CREATE_REGISTRATION, new GenericEvent($userEntity));
+        $this->eventDispatcher->dispatch(RegistrationEvents::CREATE_REGISTRATION, new GenericEvent($userEntity));
 
         $notificationErrors = [];
         if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
@@ -695,7 +696,7 @@ class RegistrationHelper
             ]);
 
             $deleteEvent = new GenericEvent($registration);
-            $this->eventDispatcher->dispatch(UserEvents::DELETE_REGISTRATION, $deleteEvent);
+            $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, $deleteEvent);
 
             return true;
         }
@@ -716,7 +717,7 @@ class RegistrationHelper
             $deletedUsers = $this->userVerificationRepository->purgeExpiredRecords($regExpireDays);
             foreach ($deletedUsers as $deletedUser) {
                 $deleteEvent = new GenericEvent($deletedUser);
-                $this->eventDispatcher->dispatch(UserEvents::DELETE_REGISTRATION, $deleteEvent);
+                $this->eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, $deleteEvent);
             }
         }
     }

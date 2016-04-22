@@ -131,6 +131,21 @@ class UserAdministrationController extends AbstractController
         $this->get('hook_dispatcher')->dispatch(UserEvents::HOOK_USER_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
+        /**
+         * @todo CAH 22 Apr 2016
+         * In previous version, user was not allowed to edit certain properties if editing himself:
+         *  - group membership in 'certain system groups'
+         *     - the 'default' group
+         *     - primary admin group
+         *  - activated state
+         * The fields were disabled in the form.
+         * User was not able to delete self. (button removed from form)
+         *
+         * It is possible users will not have a password if their account is provided externally. If they do not,
+         *  this may need to change the text displayed to users, e.g. 'change' -> 'create', etc.
+         *  Setting the password may 'disable' the external authorization and the editor should be made aware.
+         */
+
         if ($form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
                 $user = $form->getData();
