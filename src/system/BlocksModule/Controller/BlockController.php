@@ -60,7 +60,7 @@ class BlockController extends AbstractController
         if ($form->isValid()) {
             $bkey = json_encode($form->getData()['bkey']);
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_block_edit', ['bkey' => $bkey]));
+            return $this->redirectToRoute('zikulablocksmodule_block_edit', ['bkey' => $bkey]);
         }
 
         return $this->render('@ZikulaBlocksModule/Admin/new.html.twig', [
@@ -83,7 +83,7 @@ class BlockController extends AbstractController
         if (null === $blockEntity) {
             $bKey = json_decode($request->query->get('bkey'));
             if (empty($bKey)) {
-                return $this->redirect('zikulablocksmodule_block_new');
+                return $this->redirectToRoute('zikulablocksmodule_block_new');
             }
             $blockEntity = new BlockEntity(); // sets defaults in constructor
             $blockEntity->setBkey($bKey);
@@ -137,12 +137,12 @@ class BlockController extends AbstractController
             $em->flush();
             $this->addFlash('status', $this->__('Block saved!'));
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
         if ($form->isSubmitted() and $form->get('cancel')->isClicked()) {
             $this->addFlash('status', $this->__('Operation cancelled.'));
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return $this->render('@ZikulaBlocksModule/Admin/edit.html.twig', [
@@ -199,7 +199,7 @@ class BlockController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return $this->render('@ZikulaBlocksModule/Admin/delete.html.twig', [

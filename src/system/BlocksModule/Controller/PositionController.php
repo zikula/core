@@ -65,7 +65,7 @@ class PositionController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return [
@@ -120,7 +120,7 @@ class PositionController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return [

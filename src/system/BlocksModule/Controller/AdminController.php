@@ -37,7 +37,7 @@ class AdminController extends AbstractController
     {
         @trigger_error('The zikulablocksmodule_admin_index route is deprecated. please use zikulablocksmodule_admin_view instead.', E_USER_DEPRECATED);
 
-        return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+        return $this->redirectToRoute('zikulablocksmodule_admin_view');
     }
 
     /**
@@ -159,7 +159,7 @@ class AdminController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return [
