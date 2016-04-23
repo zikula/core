@@ -27,7 +27,8 @@
                 "user": {"route": "zikulasearchmodule_user_form"}
             },
             "securityschema": {
-                "ZikulaSearchModule::": "Module name::"
+                "ZikulaSearchModule::": "Module name::",
+                "Searchblock::": "Block title::"
             }
         }
     }
