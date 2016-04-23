@@ -13,6 +13,7 @@ namespace Zikula\UsersModule\Entity\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
@@ -58,22 +59,40 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         return parent::find($id, $lockMode, $lockVersion);
     }
 
+    /**
+     * Fetch a collection of users. Optionally filter, sort, limit, offset results.
+     *   filter = [field => value, field => value, field => ['operator' => '!=', 'operand' => value], ...]
+     *   when value is not an array, operator is assumed to be '='
+     *
+     * @param array $filter
+     * @param array $sort
+     * @param int $limit
+     * @param int $offset
+     * @param string $exprType
+     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     */
     public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and')
     {
         $qb = $this->createQueryBuilder('u')
             ->select('u');
-        $where = $this->whereFromFilter($qb, $filter, $exprType);
-        $qb->andWhere($where)
-            ->orderBy($this->orderByFromArray($sort));
+        if (!empty($filter)) {
+            $where = $this->whereFromFilter($qb, $filter, $exprType);
+            $qb->andWhere($where);
+        }
+        if (!empty($sort)) {
+            $qb->orderBy($this->orderByFromArray($sort));
+        }
         $query = $qb->getQuery();
+
         if ($limit > 0) {
             $query->setMaxResults($limit);
-        }
-        if ($offset > 0) {
             $query->setFirstResult($offset);
-        }
+            $paginator = new Paginator($query);
 
-        return $query->getResult();
+            return $paginator;
+        } else {
+            return $query->getResult();
+        }
     }
 
     public function count(array $filter = [], $exprType = 'and')
@@ -105,7 +124,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
     /**
      * Construct a QueryBuilder Expr object suitable for use in QueryBuilder->where(Expr).
-     * filter = [field => value, field => value, field => [operator => '!=', 'operand' => value], ...]
+     * filter = [field => value, field => value, field => ['operator' => '!=', 'operand' => value], ...]
      * when value is not an array, operator is assumed to be '='
      *
      * @param QueryBuilder $qb
@@ -139,10 +158,10 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
             } else {
                 if (is_bool($value['operand'])) {
                     $dbValue = $value['operand'] ? '1' : '0';
-                } elseif (is_int($value['operand'])) {
+                } elseif (is_int($value['operand']) || is_array($value['operand'])) {
                     $dbValue = $value['operand'];
                 } else {
-                    $dbValue = "'{$value['operand']}'";
+                    $dbValue = "{$value['operand']}";
                 }
                 $methodMap = [
                     '=' => 'eq',
@@ -152,6 +171,10 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
                     '<=' => 'lte',
                     '<>' => 'neq',
                     '!=' => 'neq',
+                    'like' => 'like',
+                    'notLike' => 'notLike',
+                    'in' => 'in',
+                    'notIn' => 'notIn',
                 ];
                 $method = $methodMap[$value['operator']];
 
