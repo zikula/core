@@ -100,7 +100,7 @@ class LinkContainer implements LinkContainerInterface
 
         if ($this->permissionApi->hasPermission("ZikulaUsersModule::", '::', ACCESS_MODERATE)) {
             $links[] = [
-                'url' => $this->router->generate('zikulausersmodule_admin_view'),
+                'url' => $this->router->generate('zikulausersmodule_useradministration_list'),
                 'text' => $this->translator->__('Users list'),
                 'icon' => 'list'
             ];

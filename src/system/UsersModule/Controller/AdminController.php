@@ -85,93 +85,13 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * @Route("/view")
-     * @Method("GET")
-     *
-     * Shows all items and lists the administration options.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * numeric startnum The ordinal number at which to start displaying user records.
-     * string  letter   The first letter of the user names to display.
-     * string  sort     The field on which to sort the data.
-     * string  sortdir  Either 'ASC' for an ascending sort (a to z) or 'DESC' for a descending sort (z to a).
-     *
-     * @return Response symfony response object containing the rendered template.
-     *
-     * @throws AccessDeniedException Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @return RedirectResponse
      */
     public function viewAction(Request $request)
     {
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use \UserAdministrationController::listAction', E_USER_DEPRECATED);
 
-        // we need this value multiple times, so we keep it
-        $itemsPerPage = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE);
-
-        $letter = $request->query->get('letter', null);
-        $sort = $request->query->get('sort', ($letter ? 'uname' : 'uid'));
-        $sortDirection = $request->query->get('sortdir', ($letter ? 'ASC' : 'DESC'));
-        $sortArgs = array(
-            $sort => $sortDirection,
-        );
-        if (!isset($sortArgs['uname'])) {
-            $sortArgs['uname'] = 'ASC';
-        }
-
-        $getAllArgs = array(
-            'startnum' => $request->query->get('startnum', null) - 1,
-            'numitems' => $itemsPerPage,
-            'letter' => $letter,
-            'sort' => $sortArgs,
-        );
-
-        // Get all users as specified by the arguments.
-        $userList = ModUtil::apiFunc($this->name, 'user', 'getAll', $getAllArgs);
-
-        // Get all groups
-        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
-
-        // check what groups can access the user
-        $userGroupsAccess = array();
-        $groupsArray = array();
-        $canSeeGroups = !empty($groups);
-
-        foreach ($groups as $group) {
-            // rewrite the groups array with the group id as key and the group name as value
-            $groupsArray[$group['gid']] = array('name' => DataUtil::formatForDisplayHTML($group['name']));
-        }
-
-        // Determine the available options
-        $currentUserHasModerateAccess = SecurityUtil::checkPermission($this->name . '::', 'ANY', ACCESS_MODERATE);
-        $currentUserHasEditAccess = SecurityUtil::checkPermission($this->name . '::', 'ANY', ACCESS_EDIT);
-        $currentUserHasDeleteAccess = SecurityUtil::checkPermission($this->name . '::', 'ANY', ACCESS_DELETE);
-        $availableOptions = array(
-            'lostUsername' => $currentUserHasModerateAccess,
-            'lostPassword' => $currentUserHasModerateAccess,
-            'toggleForcedPasswordChange' => $currentUserHasEditAccess,
-            'modify' => $currentUserHasEditAccess,
-            'deleteUsers' => $currentUserHasDeleteAccess,
-        );
-
-        $userList = ModUtil::apiFunc('ZikulaUsersModule', 'admin', 'extendUserList', array('userList' => $userList, 'groups' => $groups));
-
-        $pager = array(
-            'numitems' => ModUtil::apiFunc($this->name, 'user', 'countItems', array('letter' => $getAllArgs['letter'])),
-            'itemsperpage' => $itemsPerPage,
-        );
-
-        // Assign the items to the template & return output
-        return new Response($this->view->assign('usersitems', $userList)
-            ->assign('pager', $pager)
-            ->assign('allGroups', $groupsArray)
-            ->assign('canSeeGroups', $canSeeGroups)
-            ->assign('sort', $sort)
-            ->assign('sortdir', $sortDirection)
-            ->assign('available_options', $availableOptions)
-            ->fetch('Admin/view.tpl'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_list'));
     }
 
     /**
@@ -180,9 +100,9 @@ class AdminController extends \Zikula_AbstractController
      */
     public function newUserAction(Request $request)
     {
-        @trigger_error('The zikulausersmodule_admin_newuser route is deprecated. please use zikulausersmodule_useradministration_edit instead.', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use \UserAdministrationController::createAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_edit'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_create'));
     }
 
     /**

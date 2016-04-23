@@ -36,7 +36,6 @@
             {else}
                 {img modname='core' set='icons/extrasmall' src='lostusername.png' class=" hidden "}
             {/if}
-            {/if}
             {if $available_options.lostPassword}
                 {if $usersitems[usersitems].options.lostPassword}
                     {gt text="Send password recovery code to '%s'" tag1=$usersitems[usersitems].uname assign='title'}
@@ -76,5 +75,6 @@
                 {/if}
             {/if}
         </td>
+        {/if}
     </tr>
 {/section}
