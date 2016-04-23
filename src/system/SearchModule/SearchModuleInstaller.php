@@ -53,7 +53,7 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param  string $oldVersion version number string to upgrade from
+     * @param string $oldVersion version number string to upgrade from
      *
      * @return bool|string true on success, last valid version string or false if fails
      */
