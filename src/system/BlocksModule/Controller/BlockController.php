@@ -48,13 +48,19 @@ class BlockController extends AbstractController
                 'choices' => $this->get('zikula_blocks_module.api.block')->getAvailableBlockTypes(),
                 'label' => 'Block type',
             ])
-            ->add('choose', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
+            ->add('choose', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Choose'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
             ->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
             $bkey = json_encode($form->getData()['bkey']);
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_block_edit', ['bkey' => $bkey]));
+            return $this->redirectToRoute('zikulablocksmodule_block_edit', ['bkey' => $bkey]);
         }
 
         return $this->render('@ZikulaBlocksModule/Admin/new.html.twig', [
@@ -77,7 +83,7 @@ class BlockController extends AbstractController
         if (null === $blockEntity) {
             $bKey = json_decode($request->query->get('bkey'));
             if (empty($bKey)) {
-                return $this->redirect('zikulablocksmodule_block_new');
+                return $this->redirectToRoute('zikulablocksmodule_block_new');
             }
             $blockEntity = new BlockEntity(); // sets defaults in constructor
             $blockEntity->setBkey($bKey);
@@ -131,12 +137,12 @@ class BlockController extends AbstractController
             $em->flush();
             $this->addFlash('status', $this->__('Block saved!'));
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
         if ($form->isSubmitted() and $form->get('cancel')->isClicked()) {
             $this->addFlash('status', $this->__('Operation cancelled.'));
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return $this->render('@ZikulaBlocksModule/Admin/edit.html.twig', [
@@ -164,8 +170,20 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Delete'])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Cancel'])
+            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Delete'),
+                'icon' => 'fa-trash-o',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -181,7 +199,7 @@ class BlockController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return $this->render('@ZikulaBlocksModule/Admin/delete.html.twig', [
@@ -247,11 +265,11 @@ class BlockController extends AbstractController
      */
     private function formContentModify(Request $request, BlockEntity $blockEntity = null)
     {
+        $options = [];
         if (isset($blockEntity)) {
             $options = ['data' => $blockEntity->getContent() == [] ? '' : $blockEntity->getContent()];
-        } else {
-            $options = [];
         }
+
         $form = $this->createFormBuilder()
             ->add('content', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', $options)
             ->getForm();
@@ -277,7 +295,7 @@ class BlockController extends AbstractController
     public function viewAction(BlockEntity $blockEntity = null)
     {
         return $this->render('@ZikulaBlocksModule/Admin/blockview.html.twig', [
-                'block' => $blockEntity,
-            ]);
+            'block' => $blockEntity,
+        ]);
     }
 }

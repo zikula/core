@@ -40,7 +40,7 @@ class PlacementController extends AbstractController
      * @Template
      *
      * @param BlockPositionEntity $positionEntity
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(BlockPositionEntity $positionEntity)
     {

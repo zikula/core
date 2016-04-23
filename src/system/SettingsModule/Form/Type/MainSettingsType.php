@@ -170,10 +170,18 @@ class MainSettingsType extends AbstractType
                 'choices' => $options['modules']
             ])
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Save')
+                'label' => $options['translator']->__('Save'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Cancel')
+                'label' => $options['translator']->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
             ])
         ;
         foreach ($options['languages'] as $languageCode => $language) {

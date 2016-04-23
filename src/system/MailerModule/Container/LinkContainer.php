@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\BlocksModule\Container;
+namespace Zikula\MailerModule\Container;
 
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\Translator;
@@ -72,34 +72,20 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulablocksmodule_admin_view'),
-                'text' => $this->translator->__('Blocks list'),
-                'icon' => 'table'
-            ];
+        if (!$this->permissionApi->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
+            return $links;
         }
 
-        if ($this->permissionApi->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADD)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulablocksmodule_block_new'),
-                'text' => $this->translator->__('Create new block'),
-                'icon' => 'plus'
-            ];
-
-            $links[] = [
-                'url' => $this->router->generate('zikulablocksmodule_position_edit'),
-                'text' => $this->translator->__('Create new block position'),
-                'icon' => 'plus'
-            ];
-        }
-        if ($this->permissionApi->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulablocksmodule_admin_config'),
-                'text' => $this->translator->__('Settings'),
-                'icon' => 'wrench'
-            ];
-        }
+        $links[] = [
+            'url' => $this->router->generate('zikulamailermodule_config_test'),
+            'text' => $this->translator->__('Test current settings'),
+            'icon' => 'envelope'
+        ];
+        $links[] = [
+            'url' => $this->router->generate('zikulamailermodule_config_config'),
+            'text' => $this->translator->__('Settings'),
+            'icon' => 'wrench'
+        ];
 
         return $links;
     }
@@ -111,6 +97,6 @@ class LinkContainer implements LinkContainerInterface
      */
     public function getBundleName()
     {
-        return 'ZikulaBlocksModule';
+        return 'ZikulaMailerModule';
     }
 }

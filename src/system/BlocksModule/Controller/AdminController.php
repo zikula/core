@@ -37,7 +37,7 @@ class AdminController extends AbstractController
     {
         @trigger_error('The zikulablocksmodule_admin_index route is deprecated. please use zikulablocksmodule_admin_view instead.', E_USER_DEPRECATED);
 
-        return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+        return $this->redirectToRoute('zikulablocksmodule_admin_view');
     }
 
     /**
@@ -118,6 +118,7 @@ class AdminController extends AbstractController
      * @Template
      *
      * @param Request $request
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function configAction(Request $request)
@@ -127,11 +128,24 @@ class AdminController extends AbstractController
         }
 
         $form = $this->createFormBuilder($this->getVars())
-            ->add('collapseable', 'checkbox', ['label' => __('Enable block collapse icons'),
+            ->add('collapseable', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'label' => $this->__('Enable block collapse icons'),
                 'required' => false
             ])
-            ->add('save', 'submit', ['label' => 'Save'])
-            ->add('cancel', 'submit', ['label' => 'Cancel'])
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Save'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -139,13 +153,13 @@ class AdminController extends AbstractController
         if ($form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $this->setVars($form->getData());
-                $this->addFlash('status', __('Done! Module configuration updated.'));
+                $this->addFlash('status', $this->__('Done! Module configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', __('Operation cancelled.'));
+                $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return [
