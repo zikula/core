@@ -69,7 +69,7 @@ class AdministrationActionsFunction
         $hasModeratePermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE);
         $hasEditPermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_EDIT);
         $hasDeletePermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_DELETE);
-        $userHasActualPassword = !empty($user->getPass()) && ($user->getPass() != UsersConstant::PWD_NO_USERS_AUTHENTICATION);
+        $userHasActualPassword = (null != $user->getPass()) && ('' != $user->getPass()) && ($user->getPass() != UsersConstant::PWD_NO_USERS_AUTHENTICATION);
         if ($user->getUid() > 1 && $hasModeratePermissionToUser) {
             $url = $this->router->generate('zikulausersmodule_admin_lostusername', ['userid' => $user->getUid()]);
             $title = $this->translator->__f('Send user name to %sub%', ["%sub%" => $user->getUname()]);
