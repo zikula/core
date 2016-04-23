@@ -38,11 +38,11 @@ class PageLockModuleInstaller extends AbstractExtensionInstaller
     /**
      * upgrade the module from an old version
      *
-     * @param string $oldversion version number string to upgrade from
+     * @param string $oldVersion version number string to upgrade from
      *
      * @return bool true as there are no upgrade routines currently
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
         return true;
     }
