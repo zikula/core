@@ -41,7 +41,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
      *
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param integer $oldVersion Version to upgrade from.
+     * @param string $oldVersion Version to upgrade from.
      *
      * @return boolean True on success, false otherwise.
      *
