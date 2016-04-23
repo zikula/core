@@ -1,0 +1,33 @@
+{% for user in users %}
+    <tr class="user">
+        <td>{{ user.uname }}</td>
+        <td>{{ user.uid }}</td>
+        <td>{{ user.user_regdate|date() }}</td>
+        <td>{{ user.lastlogin|date() }}</td>
+        <td>
+            {% for group in user.groups %}
+                <div>{{ group.name }}</div>
+            {% endfor %}
+        </td>
+        <td class="users_activated">
+            {% switch user.activated %}
+            {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_ACTIVE') %}
+            <span class="label label-success">{{ __('Active') }}</span>
+            {% break %}
+            {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_INACTIVE') %}
+            <span class="label label-default">{{ __('Inactive') }}</span>
+            {% break %}
+            {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_DELETE') %}
+            <span class="label label-warning">{{ __('Marked for deletion') }}</span>
+            {% break %}
+            {% default %}
+            <span class="label label-danger">{{ __('Status unknown') }}</span>
+            {% endswitch %}
+        </td>
+        <td class="actions">
+            {{ userAdministrationActions(user) }}
+        </td>
+    </tr>
+{% else %}
+    <tr class="info"><td colspan="7" class="text-center">{{ __('No records found.') }}</td></tr>
+{% endfor %}
