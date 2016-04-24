@@ -1,0 +1,56 @@
+{% set adminHelpUrl = path('zikulaadminmodule_admin_help') %}
+{% if hasPermission('ZikulaAdminModule::', '::', 'ACCESS_ADMIN') %}
+    {% if not security.scactive %}
+        <div id="securityanalyzer" class="alert alert-warning">
+            <div class="row">
+                <div class="col-sm-12">
+                    <i class="close" data-dismiss="alert">&times;</i>
+                    <a class="text-warning" data-toggle="collapse" href="#securitysettings_full" aria-expanded="false"
+                       aria-controls="securitysettings_full">
+                        <strong><i class="fa fa-caret-right fa-fw"></i>{{ __('Security analyser warnings') }}</strong>
+                    </a>
+                </div>
+                <div class="collapse" id="securitysettings_full">
+                    <div class="legacy col-sm-6">
+                        <h4>{{ __('Security warnings') }}</h4>
+                        {% if security.config_php %}
+                            <p>
+                                <a href="{{ adminHelpUrl }}#admin_configphpwarning">{{ __("Configuration file 'config/config.php' is writeable, but should be read-only (please set to chmod 400, or 440 or last resort 444).") }}</a>
+                            </p>
+                        {% endif %}
+                        {% if security.magic_quotes_gpc %}
+                            <p>
+                                <a href="{{ adminHelpUrl }}#admin_magic_quotes_warning">{{ __("PHP 'magic_quotes_gpc' setting is ON, but should be OFF.") }}</a>
+                            </p>
+                        {% endif %}
+                        {% if security.register_globals %}
+                            <p>
+                                <a href="{{ adminHelpUrl }}#admin_register_globals_warning">{{ __("PHP 'register_globals' setting is ON, but should be OFF.") }}</a>
+                            </p>
+                        {% endif %}
+                        {% if not security.app_htaccess %}
+                            <p>
+                                <a href="{{ adminHelpUrl }}#admin_app_htaccess_warning">{{ __("There is no '.htaccess' file in the application directory '/app', but one should be present.") }}</a>
+                            </p>
+                        {% endif %}
+                        {% if not security.updatecheck %}
+                            <p>
+                                {{ __('The update check is not enabled, but preferably should be.') }}</a>
+                            </p>
+                        {% endif %}
+                        {% if not security.scactive %}
+                            <p>
+                                <a href="{{ adminHelpUrl }}#admin_security_center_warning2">{{ __("Security center module is not installed, but preferably should be.") }}</a>
+                            </p>
+                        {% endif %}
+                        {% if security.useids and security.idssoftblock %}
+                            <p>
+                                <a href="{{ adminHelpUrl }}#admin_idssoftblock_warning">{{ __("PHPIDS is activated, but requests are NOT blocked.") }}</a>
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}

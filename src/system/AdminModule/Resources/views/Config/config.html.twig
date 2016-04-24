@@ -1,0 +1,51 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Settings') }}
+        </h3>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend>{{ __('General settings') }}</legend>
+            {{ form_row(form.ignoreinstallercheck) }}
+            <div class="alert alert-warning" data-switch="zikulaadminmodule_config[ignoreInstallerCheck]" data-switch-value="1">
+                {{ __('Warning! Only enable the above option if this site is isolated from the Internet, otherwise security could be endangered if you omit to remove the Installer script from the site root and are not prompted to do so.') }}
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Display settings') }}</legend>
+            {{ form_row(form.admingraphic) }}
+            {{ form_row(form.displaynametype) }}
+            {{ form_row(form.itemsperpage) }}
+            {{ form_row(form.modulesperrow) }}
+            {{ form_row(form.admintheme) }}
+            {{ form_row(form.startcategory) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Modules categorisation') }}</legend>
+            {{ form_row(form.defaultcategory) }}
+            {% for module in modules %}
+                {{ form_row(attribute(form, 'modulecategory' ~ module.name)) }}
+            {% endfor %}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+                {{ form_widget(form.help) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ adminFooter() }}
