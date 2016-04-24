@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": ";;;AAMA;2CAEA;EACC,UAAU,ECmBU,2BAAc",
-"sources": ["jquery.mmenu.panelshadow.scss","../../../core/css/_inc/_variables.scss"],
-"names": [],
-"file": "jquery.mmenu.panelshadow.css"
-}

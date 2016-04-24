@@ -1,15 +1,11 @@
 <?php
-
 /**
- * Copyright Zikula Foundation 2014 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\AdminModule\Helper;
@@ -20,33 +16,71 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 class UpdateCheckHelper
 {
     /**
-     * @var \Zikula\ExtensionsModule\Api\VariableApi
+     * @var VariableApi
      */
-    protected $variablesManager;
+    protected $variableApi;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\RequestStack
+     * @var RequestStack
      */
     private $requestStack;
+
+    /**
+     * @var bool
+     */
     private $enabled;
+
+    /**
+     * @var string
+     */
     private $currentVersion;
+
+    /**
+     * @var int
+     */
     private $lastChecked;
+
+    /**
+     * @var int
+     */
     private $checkInterval;
+
+    /**
+     * @var string
+     */
     private $updateversion;
+
+    /**
+     * @var bool
+     */
     private $force;
+
+    /**
+     * @var bool|array
+     */
     private $releases;
+
+    /**
+     * @var bool
+     */
     private $checked;
 
-    public function __construct(VariableApi $variablesManager, RequestStack $requestStack)
+    /**
+     * UpdateCheckHelper constructor.
+     *
+     * @param VariableApi  $variableApi  VariableApi service instance.
+     * @param RequestStack $requestStack RequestStack service instance.
+     */
+    public function __construct(VariableApi $variableApi, RequestStack $requestStack)
     {
-        $this->variablesManager = $variablesManager;
+        $this->variableApi = $variableApi;
         $this->requestStack = $requestStack;
 
-        $this->enabled = (bool)$variablesManager->get(VariableApi::CONFIG, 'updatecheck');
-        $this->currentVersion = $variablesManager->get(VariableApi::CONFIG, 'Version_Num');
-        $this->lastChecked = (int)$variablesManager->get(VariableApi::CONFIG, 'updatelastchecked');
-        $this->checkInterval = (int)$variablesManager->get(VariableApi::CONFIG, 'updatefrequency');
-        $this->updateversion = $variablesManager->get(VariableApi::CONFIG, 'updateversion');
+        $this->enabled = (bool)$variableApi->get(VariableApi::CONFIG, 'updatecheck');
+        $this->currentVersion = $variableApi->get(VariableApi::CONFIG, 'Version_Num');
+        $this->lastChecked = (int)$variableApi->get(VariableApi::CONFIG, 'updatelastchecked');
+        $this->checkInterval = (int)$variableApi->get(VariableApi::CONFIG, 'updatefrequency');
+        $this->updateversion = $variableApi->get(VariableApi::CONFIG, 'updateversion');
 
         $this->force = (bool)$requestStack->getMasterRequest()->query->get('forceupdatecheck');
         $this->checked = false;
@@ -111,9 +145,9 @@ class UpdateCheckHelper
         }
 
         if ($this->checked === true && $this->updateversion !== '') {
-            $this->variablesManager->set(VariableApi::CONFIG, 'updatelastchecked', (int)time());
-            $this->variablesManager->set(VariableApi::CONFIG, 'updateversion', $this->updateversion);
-            $this->lastChecked = (int)$this->variablesManager->get(VariableApi::CONFIG, 'updatelastchecked');
+            $this->variableApi->set(VariableApi::CONFIG, 'updatelastchecked', (int)time());
+            $this->variableApi->set(VariableApi::CONFIG, 'updateversion', $this->updateversion);
+            $this->lastChecked = (int)$this->variableApi->get(VariableApi::CONFIG, 'updatelastchecked');
         }
     }
 

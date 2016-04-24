@@ -1,0 +1,37 @@
+{{ adminHeader() }}
+<h3>
+    <span class="fa fa-list"></span>
+    {{ __('Module categories list') }}
+</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>{{ __('Name') }}</th>
+            <th>{{ __('Actions') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in categories %}
+            {% set permissionInstance = category.name ~ '::' ~ category.cid %}
+            {% set accessEdit = hasPermission('ZikulaAdminModule::', permissionInstance, 'ACCESS_EDIT') %}
+            {% set accessDelete = hasPermission('ZikulaAdminModule::', permissionInstance, 'ACCESS_DELETE') %}
+            <tr>
+                <td><a href="{{ path('zikulaadminmodule_admin_adminpanel', { acid: category.cid }) }}">{{ category.name }}</a></td>
+                <td class="actions">
+                    {% if accessEdit %}
+                        <a href="{{ path('zikulaadminmodule_admin_modify', { cid: category.cid }) }}" title="{{ __('Edit') }}" class="tooltips fa fa-wrench"></a>
+                    {% endif %}
+                    {% if accessDelete %}
+                        <a href="{{ path('zikulaadminmodule_admin_delete', { cid: category.cid }) }}" title="{{ __('Delete') }}" class="tooltips fa fa-trash-o"></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr class="table table-borderedempty"><td colspan="2">{{ __('No items found.') }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulaadminmodule_admin_view'}) }}
+{{ adminFooter() }}
