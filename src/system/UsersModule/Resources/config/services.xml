@@ -10,9 +10,7 @@
         <parameter key="zikula_users_module.user_repository.class">Zikula\UsersModule\Entity\Repository\UserRepository</parameter>
         <parameter key="zikula_users_module.user_verification_repository.class">Zikula\UsersModule\Entity\Repository\UserVerificationRepository</parameter>
         <parameter key="zikula_users_module.current_user.class">Zikula\UsersModule\Api\CurrentUserApi</parameter>
-        <parameter key="zikula_users_module.twig.extension.simple_function.administration_actions_function.class">Zikula\UsersModule\Twig\Extension\SimpleFunction\AdministrationActionsFunction</parameter>
         <parameter key="zikula_users_module.twig.extension.registration_extension.class">Zikula\UsersModule\Twig\Extension\RegistrationExtension</parameter>
-        <parameter key="zikula_users_module.twig.extension.user_administration_extension.class">Zikula\UsersModule\Twig\Extension\UserAdministrationExtension</parameter>
         <parameter key="zikulausersmodule.container.link_container.class">Zikula\UsersModule\Container\LinkContainer</parameter>
     </parameters>
 
@@ -41,18 +39,7 @@
             <argument type="service" id="zikula_users_module.user_repository"/>
         </service>
 
-        <!-- TWIG -->
-        <service id="zikula_users_module.twig.extension.simple_function.administration_actions_function" class="%zikula_users_module.twig.extension.simple_function.administration_actions_function.class%">
-            <argument type="service" id="zikula_permissions_module.api.permission" />
-            <argument type="service" id="jms_i18n_routing.router" />
-            <argument type="service" id="translator.default" />
-            <argument type="service" id="zikula_users_module.current_user" />
-        </service>
         <service id="zikula_users_module.twig.extension.registration_extension" class="%zikula_users_module.twig.extension.registration_extension.class%">
-            <tag name="twig.extension"/>
-        </service>
-        <service id="zikula_users_module.twig.extension.user_administration_extension" class="%zikula_users_module.twig.extension.user_administration_extension.class%">
-            <argument type="service" id="zikula_users_module.twig.extension.simple_function.administration_actions_function" />
             <tag name="twig.extension"/>
         </service>
 

@@ -89,7 +89,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function viewAction(Request $request)
     {
-        @trigger_error('This method is deprecated. Please use \UserAdministrationController::listAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::listAction', E_USER_DEPRECATED);
 
         return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_list'));
     }
@@ -100,7 +100,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function newUserAction(Request $request)
     {
-        @trigger_error('This method is deprecated. Please use \UserAdministrationController::createAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::createAction', E_USER_DEPRECATED);
 
         return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_create'));
     }
@@ -313,7 +313,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function modifyAction(Request $request)
     {
-        @trigger_error('This method is deprecated. Please use \UserAdministrationController::modifyAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::modifyAction', E_USER_DEPRECATED);
 
         return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_modify', ['user' => $request->get('uid', null)]));
     }
@@ -555,226 +555,14 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * Constructs a list of various actions for a list of registrations appropriate for the current user.
-     *
-     * @param array  $reglist     The list of registration records.
-     * @param string $restoreView Indicates where the calling function expects to return to; 'view' indicates
-     *                                  that the calling function expects to return to the registration list
-     *                                  and 'display' indicates that the calling function expects to return
-     *                                  to an individual registration record.
-     *
-     * @return array An array of valid action URLs for each registration record in the list.
-     */
-    protected function getActionsForRegistrations(array $reglist, $restoreView = 'view')
-    {
-        $actions = array();
-        if (!empty($reglist)) {
-            $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
-
-            // Don't try to put any visual elements here (images, titles, colors, css classes, etc.). Leave that to
-            // the template, so that they can be customized without hacking the core code. In fact, all we really need here
-            // is what options are enabled. The template could build everything else. We will put the URL for the action
-            // in the array for convenience, but that could be done in the template too, really.
-            //
-            // Make certain that the following goes from most restricted to least (ADMIN...NONE order).  Having the
-            // security check as the outer if statement, and similar foreach loops within each saves on repeated checking
-            // of permissions, speeding things up a bit.
-            if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-                $actions['count'] = 6;
-                foreach ($reglist as $key => $reginfo) {
-                    $enableVerify = !$reginfo['isverified'];
-                    $enableApprove = !$reginfo['isapproved'];
-                    $enableForced = !$reginfo['isverified'] && isset($reginfo['pass']) && !empty($reginfo['pass']);
-                    $actions['list'][$reginfo['uid']] = array(
-                        'display' => $this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $reginfo['uid'])),
-                        'modify' => $this->get('router')->generate('zikulausersmodule_admin_modifyregistration', array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)),
-                        'verify' => $enableVerify ? $this->get('router')->generate('zikulausersmodule_admin_verifyregistration', array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)) : false,
-                        'approve' => $enableApprove ? $this->get('router')->generate('zikulausersmodule_admin_approveregistration', array('uid' => $reginfo['uid'])) : false,
-                        'deny' => $this->get('router')->generate('zikulausersmodule_admin_denyregistration', array('uid' => $reginfo['uid'])),
-                        'approveForce' => $enableForced ? $this->get('router')->generate('zikulausersmodule_admin_approveregistration', array('uid' => $reginfo['uid'], 'force' => true)) : false,
-                    );
-                }
-            } elseif (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_DELETE)) {
-                $actions['count'] = 5;
-                foreach ($reglist as $key => $reginfo) {
-                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved']);
-                    $enableApprove = !$reginfo['isapproved'] && (($approvalOrder != UsersConstant::APPROVAL_AFTER) || $reginfo['isverified']);
-                    $actions['list'][$reginfo['uid']] = array(
-                        'display' => $this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $reginfo['uid'])),
-                        'modify' => $this->get('router')->generate('zikulausersmodule_admin_modifyregistration', array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)),
-                        'verify' => $enableVerify ? $this->get('router')->generate('zikulausersmodule_admin_verifyregistration', array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)) : false,
-                        'approve' => $enableApprove ? $this->get('router')->generate('zikulausersmodule_admin_approveregistration', array('uid' => $reginfo['uid'])) : false,
-                        'deny' => $this->get('router')->generate('zikulausersmodule_admin_denyregistration', array('uid' => $reginfo['uid'])),
-                    );
-                }
-            } elseif (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADD)) {
-                $actions['count'] = 4;
-                foreach ($reglist as $key => $reginfo) {
-                    $actionUrlArgs['uid'] = $reginfo['uid'];
-                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved']);
-                    $enableApprove = !$reginfo['isapproved'] && (($approvalOrder != UsersConstant::APPROVAL_AFTER) || $reginfo['isverified']);
-                    $actions['list'][$reginfo['uid']] = array(
-                        'display' => $this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $reginfo['uid'])),
-                        'modify' => $this->get('router')->generate('zikulausersmodule_admin_modifyregistration', array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)),
-                        'verify' => $enableVerify ? $this->get('router')->generate('zikulausersmodule_admin_verifyregistration', array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)) : false,
-                        'approve' => $enableApprove ? $this->get('router')->generate('zikulausersmodule_admin_approveregistration', array('uid' => $reginfo['uid'])) : false,
-                    );
-                }
-            } elseif (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_EDIT)) {
-                $actions['count'] = 3;
-                foreach ($reglist as $key => $reginfo) {
-                    $actionUrlArgs['uid'] = $reginfo['uid'];
-                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved']);
-                    $actions['list'][$reginfo['uid']] = array(
-                        'display' => $this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $reginfo['uid'])),
-                        'modify' => $this->get('router')->generate('zikulausersmodule_admin_modifyregistration', array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)),
-                        'verify' => $enableVerify ? $this->get('router')->generate('zikulausersmodule_admin_verifyregistration', array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)) : false,
-                    );
-                }
-            } elseif (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-                $actions['count'] = 2;
-                foreach ($reglist as $key => $reginfo) {
-                    $actionUrlArgs['uid'] = $reginfo['uid'];
-                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved']);
-                    $actions['list'][$reginfo['uid']] = array(
-                        'display' => $this->get('router')->generate('zikulausersmodule_admin_displayregistration', array('uid' => $reginfo['uid'])),
-                        'verify' => $enableVerify ? $this->get('router')->generate('zikulausersmodule_admin_verifyregistration', array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)) : false,
-                    );
-                }
-            }
-        }
-
-        return $actions;
-    }
-
-    /**
      * @Route("/viewregistrations")
-     *
-     * Shows all the registration requests (applications), and the options available to the current user.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * string  restorview If returning from an action, and the previous view should be restored, then the value should be 'view';
-     *                          otherwise not present.
-     * integer startnum   The ordinal number of the first record to display, especially if using itemsperpage to limit
-     *                          the number of records on a single page.
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * None.
-     *
-     * Parameters passed via SESSION:
-     * ------------------------------
-     * Namespace: Zikula_Users
-     * Variable:  Users_Controller_Admin_viewRegistrations
-     * Type:      array
-     * Contents:  An array containing the parameters to restore the view configuration prior to executing an action.
-     *
-     * @return Response|RedirectResponse symfony response object containing the rendered template if a form is to be display, RedirectResponse otherwise
-     *
-     * @throws AccessDeniedException Thrown if the current user does not have moderate access.
+     * @return RedirectResponse
      */
     public function viewRegistrationsAction(Request $request)
     {
-        // security check
-        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::listAction', E_USER_DEPRECATED);
 
-        $regCount = $this->get('zikulausersmodule.helper.registration_helper')->countAll();
-        $limitNumRows = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
-        if (!is_numeric($limitNumRows) || ((int)$limitNumRows != $limitNumRows) || (($limitNumRows < 1) && ($limitNumRows != -1))) {
-            $limitNumRows = 25;
-        }
-
-        $backFromAction = $request->query->get('restoreview', false);
-
-        if ($backFromAction) {
-            $returnArgs = $request->getSession()->get('Admin_viewRegistrations', array('startnum' => 1), UsersConstant::SESSION_VAR_NAMESPACE);
-            $request->getSession()->remove('Admin_viewRegistrations', UsersConstant::SESSION_VAR_NAMESPACE);
-
-            if ($limitNumRows < 1) {
-                unset($returnArgs['startnum']);
-            } elseif (!isset($returnArgs['startnum']) || !is_numeric($returnArgs['startnum']) || empty($returnArgs['startnum'])
-                    || ((int)$returnArgs['startnum'] != $returnArgs['startnum']) || ($returnArgs['startnum'] < 1)) {
-                $returnArgs['startnum'] = 1;
-            } elseif ($returnArgs['startnum'] > $regCount) {
-                // Probably deleted something. Reset to last page.
-                $returnArgs['startnum'] = $regCount - ($regCount % $limitNumRows) + 1;
-            } elseif (($returnArgs['startnum'] % $limitNumRows) != 1) {
-                // Probably deleted something. Reset to last page.
-                $returnArgs['startnum'] = $returnArgs['startnum'] - ($returnArgs['startnum'] % $limitNumRows) + 1;
-            }
-
-            // Reset the URL and load the proper page.
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_viewregistrations', $returnArgs, RouterInterface::ABSOLUTE_URL));
-        } else {
-            $reset = false;
-
-            $startNum = $request->query->get('startnum', 1);
-            if (!is_numeric($startNum) || empty($startNum)  || ((int)$startNum != $startNum) || ($startNum < 1)) {
-                $limitOffset = -1;
-                $reset = true;
-            } elseif ($limitNumRows < 1) {
-                $limitOffset = -1;
-            } elseif ($startNum > $regCount) {
-                // Probably deleted something. Reset to last page.
-                $limitOffset = $regCount - ($regCount % $limitNumRows);
-                $reset = (($regCount == 0) && ($startNum != 1));
-            } elseif (($startNum % $limitNumRows) != 1) {
-                // Reset to page boundary
-                $limitOffset = $startNum - ($startNum % $limitNumRows) + 1;
-                $reset = true;
-            } else {
-                $limitOffset = $startNum - 1;
-            }
-
-            if ($reset) {
-                $returnArgs = array();
-                if ($limitOffset >= 0) {
-                    $returnArgs['startnum'] = $limitOffset + 1;
-                }
-
-                return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_viewregistrations', $returnArgs, RouterInterface::ABSOLUTE_URL));
-            }
-        }
-
-        $sessionVars = array(
-            'startnum'  => ($limitOffset + 1),
-        );
-        $request->getSession()->set('Admin_viewRegistrations', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
-
-        $reglist = $this->get('zikulausersmodule.helper.registration_helper')->getAll([], ['user_regdate' => 'DESC'], $limitNumRows, $limitOffset);
-
-        if (($reglist === false) || !is_array($reglist)) {
-            if (!$request->getSession()->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR)) {
-                $request->getSession()->getFlashBag()->add('error', $this->__('An error occurred while trying to retrieve the registration records.'));
-            }
-
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
-        }
-
-        $actions = $this->getActionsForRegistrations($reglist, 'view');
-
-        $pager = array();
-        if ($limitNumRows > 0) {
-            $pager = array(
-                'rowcount'  => $regCount,
-                'limit'     => $limitNumRows,
-                'posvar'    => 'startnum',
-            );
-        }
-
-        foreach ($reglist as $key => $user) {
-            $reglist[$key]['user_regdate'] = DateUtil::formatDatetime($user['user_regdate'], $this->__('%m-%d-%Y'));
-        }
-
-        return new Response($this->view->assign('reglist', $reglist)
-                          ->assign('actions', $actions)
-                          ->assign('pager', $pager)
-                          ->fetch('Admin/viewregistrations.tpl'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_list'));
     }
 
     /**
@@ -834,9 +622,9 @@ class AdminController extends \Zikula_AbstractController
      */
     public function modifyRegistrationAction(Request $request)
     {
-        @trigger_error('This method is deprecated. Please use RegistrationController::modifyAction', E_USER_DEPRECATED);
+        @trigger_error('This method is deprecated. Please use RegistrationAdministrationController::modifyAction', E_USER_DEPRECATED);
 
-        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registration_modify', ['user' => $request->get('uid', null)]));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_registrationadministration_modify', ['user' => $request->get('uid', null)]));
     }
 
     /**

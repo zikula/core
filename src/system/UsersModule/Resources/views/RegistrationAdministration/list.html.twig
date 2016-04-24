@@ -1,0 +1,109 @@
+{{ adminHeader() }}
+<h3>
+    <span class="fa fa-user"></span>
+    {{ __('Registration applications list') }}
+</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>{{ __('User name') }}</th>
+            <th>{{ __('Internal ID') }}</th>
+            <th>{{ __('Registration date') }}</th>
+            <th>{{ __('E-mail address') }}</th>
+            <th class="text-center">{{ __('Approved?') }}</th>
+            <th class="text-center">{{ __('Verified?') }}</th>
+            <th class="text-center">{{ __('Actions') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% set titleIfSent = __('Send a new e-mail verification code') %}
+        {% set titleIfNotSent = __('Send an e-mail verification code') %}
+        {% for user in users %}
+            <tr>
+                <td>{{ user.uname }}</td>
+                <td>{{ user.uid }}</td>
+                <td>{{ user.user_regdate|date() }}</td>
+                <td>{% if user.email|default %}<a href="mailto:{{ user.email|url_encode }}">{{ user.email }}</a>{% else %}---{% endif %}</td>
+                <td class="text-center">
+                    {% if user.approved %}
+                        <span class="fa fa-check fa-green tooltips" title="{{ __('Approved') }}"></span>
+                    {% else %}
+                        <span class="fa fa-times fa-red tooltips" title="{{ __('Pending approval') }}"></span>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if user.verified %}
+                        <span class="fa fa-check fa-green tooltips" title="{{ __('Verified') }}"></span>
+                    {% elseif not verificationRepo.verificationEmailSent(user.uid) %}
+                        {% if (moderationOrder != constant('Zikula\\UsersModule\\Constant::APPROVAL_BEFORE')) or (moderationOrder == constant('Zikula\\UsersModule\\Constant::APPROVAL_BEFORE') and user.approved) %}
+                            <span class="fa fa-exclamation-triangle fa-red tooltips" title="{{ __('E-mail verification not sent; must be resent') }}"></span>
+                        {% else %}
+                            <span class="fa fa-times fa-red tooltips" title="{{ __('E-mail verification not sent') }}"></span>
+                        {% endif %}
+                    {% else %}
+                        <span class="fa fa-clock-o fa-orange tooltips"  title="{{ __('Pending verification of e-mail address') }}"></span>
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    {{ actionsHelper.registration(user)|raw }}
+                </td>
+            </tr>
+        {% else %}
+            <tr class="info"><td colspan="7">{{ __('There are no pending registration applications to review.') }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ pager({rowcount:pager.count, limit:pager.limit, route:'zikulausersmodule_registrationadministration_list'}) }}
+
+<p class="sub text-center bold">{{ __('Legend') }}</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th colspan="2" class="sub text-center">{{ __('Approval') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="col-md-6">
+                <span title="{{ __('Approved') }}" class="fa fa-check fa-green"></span>
+                {{ __('An administrator has approved the registration, or approval was not required when the registration was completed.') }}
+            </td>
+            <td class="col-md-6">
+                <span title="{{ __('Pending approval') }}" class="fa fa-times fa-red"></span>
+                {{ __('Waiting for an administrator to approve the registration.') }}
+            </td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th colspan="2" class="sub text-center">{{ __('Verification') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="col-md-6">
+                <span title="{{ __('Verified') }}" class="fa fa-check fa-green"></span>
+                {{ __('The user has completed the e-mail verification process, or e-mail verification was not required when the registration was completed.') }}
+            </td>
+            <td class="col-md-6">
+                <span title="{{ __('Pending verification of e-mail address') }}" class="fa fa-clock-o fa-orange"></span>
+                {{ __('An e-mail has been sent to the registered e-mail address, but the user has not yet responded.') }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span title="{{ __('Verification e-mail message not yet sent') }}" class="fa fa-times fa-red"></span>
+                {{ __('A verification e-mail has not been sent to the registered e-mail address.') }}{% if moderationOrder == constant('Zikula\\UsersModule\\Constant::APPROVAL_BEFORE') %} {{ __('If it is not yet approved, then it will be sent on approval.') }}{% endif %}
+            </td>
+            <td>
+                <span title="{{ __('E-mail verification not sent; must be resent') }}" class="fa fa-exclamation-triangle fa-red"></span>
+                {{ __('A verification e-mail has not been sent to the registered e-mail address, but the registration is in a state where one should already have been sent.') }}
+            </td>
+        </tr>
+    </tbody>
+</table>
+{{ adminFooter() }}
