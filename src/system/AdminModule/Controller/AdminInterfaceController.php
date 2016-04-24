@@ -194,7 +194,6 @@ class AdminInterfaceController extends AbstractController
         $variableApi = $this->get('zikula_extensions_module.api.variable');
         $hasSecurityCenter = ModUtil::available('ZikulaSecurityCenterModule');
 
-
         return $this->render('@ZikulaAdminModule/AdminInterface/securityAnalyzer.html.twig', [
             'security' => [
                 'config_php' => is_writable('config/config.php'),
