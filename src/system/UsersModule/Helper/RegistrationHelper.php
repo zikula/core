@@ -588,6 +588,7 @@ class RegistrationHelper
         }
 
         // reformat to legacy
+        $legacyPendingRegistrationRequests = [];
         foreach ($pendingRegistrationRequests as $key => $userObj) {
             $userObj = $userObj->toArray();
             $attributes = [];
@@ -596,11 +597,11 @@ class RegistrationHelper
             }
             $userObj['__ATTRIBUTES__'] = $attributes;
             unset($userObj['attributes']);
-            $pendingRegistrationRequests[$key] = $userObj;
-            $pendingRegistrationRequests[$key] = \UserUtil::postProcessGetRegistration($userObj);
+            $legacyPendingRegistrationRequests[$key] = $userObj;
+            $legacyPendingRegistrationRequests[$key] = \UserUtil::postProcessGetRegistration($userObj);
         }
 
-        return $pendingRegistrationRequests;
+        return $legacyPendingRegistrationRequests;
     }
 
     /**
@@ -709,7 +710,7 @@ class RegistrationHelper
      *
      * @return void
      */
-    protected function purgeExpired()
+    public function purgeExpired()
     {
         $regExpireDays = $this->variableApi->get('ZikulaUsersModule', 'reg_expiredays', 0);
 

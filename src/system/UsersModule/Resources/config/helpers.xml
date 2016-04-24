@@ -9,16 +9,17 @@
         <parameter key="zikulausersmodule.helper.registration_helper.class">Zikula\UsersModule\Helper\RegistrationHelper</parameter>
         <parameter key="zikulausersmodule.helper.registration_verification_helper.class">Zikula\UsersModule\Helper\RegistrationVerificationHelper</parameter>
         <parameter key="zikulausersmodule.helper.notification_helper.class">Zikula\UsersModule\Helper\NotificationHelper</parameter>
+        <parameter key="zikula_users_module.helper.administration_actions.class">Zikula\UsersModule\Helper\AdministrationActionsHelper</parameter>
     </parameters>
 
     <services>
 
-        <service id="zikulausersmodule.helper.authentication_method_list_helper" class="%zikulausersmodule.helper.authentication_method_list_helper.class%">
+        <service id="zikulausersmodule.helper.authentication_method_list_helper" class="%zikulausersmodule.helper.authentication_method_list_helper.class%" lazy="true">
             <argument type="service" id="monolog.logger" />
             <argument type="service" id="zikula_extensions_module.api.capability" />
             <argument type="service" id="translator.default" />
         </service>
-        <service id="zikulausersmodule.helper.registration_helper" class="%zikulausersmodule.helper.registration_helper.class%">
+        <service id="zikulausersmodule.helper.registration_helper" class="%zikulausersmodule.helper.registration_helper.class%" lazy="true">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="session" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
@@ -29,7 +30,7 @@
             <argument type="service" id="zikulausersmodule.helper.registration_verification_helper" />
             <argument type="service" id="zikulausersmodule.helper.notification_helper" />
         </service>
-        <service id="zikulausersmodule.helper.registration_verification_helper" class="%zikulausersmodule.helper.registration_verification_helper.class%">
+        <service id="zikulausersmodule.helper.registration_verification_helper" class="%zikulausersmodule.helper.registration_verification_helper.class%" lazy="true">
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="session" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
@@ -38,10 +39,18 @@
             <argument type="service" id="zikula_users_module.user_repository" />
             <argument type="service" id="zikulausersmodule.helper.notification_helper" />
         </service>
-        <service id="zikulausersmodule.helper.notification_helper" class="%zikulausersmodule.helper.notification_helper.class%">
+        <service id="zikulausersmodule.helper.notification_helper" class="%zikulausersmodule.helper.notification_helper.class%" lazy="true">
             <argument type="service" id="translator.default" />
             <argument type="service" id="twig" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
+        </service>
+        <service id="zikula_users_module.helper.administration_actions" class="%zikula_users_module.helper.administration_actions.class%" lazy="true">
+            <argument type="service" id="zikula_permissions_module.api.permission" />
+            <argument type="service" id="jms_i18n_routing.router" />
+            <argument type="service" id="translator.default" />
+            <argument type="service" id="zikula_users_module.user_verification_repository" />
+            <argument type="service" id="zikula_extensions_module.api.variable" />
+            <argument type="service" id="zikula_users_module.current_user" />
         </service>
 
     </services>

@@ -27,4 +27,6 @@ interface UserVerificationRepositoryInterface
     public function findOneBy(array $criteria, array $orderBy = null);
 
     public function resetVerifyChgFor($uid, $types = null);
+
+    public function isVerificationEmailSent($uid);
 }
