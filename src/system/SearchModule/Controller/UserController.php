@@ -22,7 +22,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SearchModule\AbstractSearchable;
 use ZLanguage;
 
@@ -150,7 +149,10 @@ class UserController extends AbstractController
         }
 
         $templateParameters = array_merge($vars, [
-            'pluginOptions' => $pluginOptions
+            'pluginOptions' => $pluginOptions,
+            'q' => $vars['q'],
+            'searchType' => $vars['searchtype'],
+            'searchOrder' => $vars['searchorder']
         ]);
 
         return $templateParameters;
@@ -298,10 +300,10 @@ class UserController extends AbstractController
         $language = ZLanguage::getLanguageCode();
         $variableApi = $this->get('zikula_extensions_module.api.variable');
         $templateParameters = [
-            'siteName' => $variableApi->get(VariableApi::CONFIG, 'sitename_' . $language, $variableApi->get(VariableApi::CONFIG, 'sitename_en')),
-            'slogan' => $variableApi->get(VariableApi::CONFIG, 'slogan_' . $language, $variableApi->get(VariableApi::CONFIG, 'slogan_en')),
-            'metaKeywords' => $variableApi->get(VariableApi::CONFIG, 'metakeywords_' . $language, $variableApi->get(VariableApi::CONFIG, 'metakeywords_en')),
-            'adminMail' => $variableApi->get(VariableApi::CONFIG, 'adminmail'),
+            'siteName' => $variableApi->get('ZConfig', 'sitename_' . $language, $variableApi->get('ZConfig', 'sitename_en')),
+            'slogan' => $variableApi->get('ZConfig', 'slogan_' . $language, $variableApi->get('ZConfig', 'slogan_en')),
+            'metaKeywords' => $variableApi->get('ZConfig', 'metakeywords_' . $language, $variableApi->get('ZConfig', 'metakeywords_en')),
+            'adminMail' => $variableApi->get('ZConfig', 'adminmail'),
             'hasAdultContent' => $variableApi->get('ZikulaSearchModule', 'opensearch_adult_content', false)
         ];
 
