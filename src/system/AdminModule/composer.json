@@ -1,6 +1,7 @@
 {
     "name": "zikula/admin-module",
-    "description": "Backend Administration Module",
+    "version": "2.0.0",
+    "description": "Backend administration interface",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
@@ -17,8 +18,13 @@
     },
     "extra": {
         "zikula": {
+            "class": "Zikula\\AdminModule\\ZikulaAdminModule",
+            "core-compatibility": ">=1.4.1",
+            "displayname": "Administration panel",
             "url": "adminpanel",
-            "class": "Zikula\\AdminModule\\ZikulaAdminModule"
+            "securityschema": {
+                "ZikulaAdminModule::": "Admin Category name::Admin Category ID"
+            }
         }
     }
 }

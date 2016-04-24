@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>{{ siteName }}</ShortName>
+    <Description>{{ slogan }}</Description>
+    <Tags>{{ metaKeywords }}</Tags>
+    <Contact>{{ adminMail }}</Contact>
+    {% set q = '{searchTerms}' %}
+    {% set page = '{startPage?}' %}
+    {% set url = url('zikulasearchmodule_user_form', { q: 'QUERY', page: '999' }) %}
+    <Url type="text/html" template="{{ url|e('html_attr')|replace({'QUERY': q, '999': page }) }}"/>
+    <LongName>{{ siteName }} {{ __('Search') }}</LongName>
+    <Attribution>{{ __f('Search data copyright %s, all rights reserved.', { '%s': siteName }) }}</Attribution>
+    <SyndicationRight>open</SyndicationRight>
+    <AdultContent>{% if hasAdultContent %}1{% else %}0{% endif %}</AdultContent>
+    <Language>{{ lang() }}</Language>
+    <OutputEncoding>{{ pagevars.meta.charset }}</OutputEncoding>
+    <InputEncoding>{{ pagevars.meta.charset }}</InputEncoding>
+</OpenSearchDescription>

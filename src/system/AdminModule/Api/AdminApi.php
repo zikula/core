@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\AdminModule\Api;
@@ -82,7 +79,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Get the existing item
         /** @var AdminCategoryEntity $item */
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $args['cid']));
+        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $args['cid']]);
 
         if (empty($item)) {
             return false;
@@ -119,7 +116,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', array('cid' => $args['cid']));
+        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getCategory', ['cid' => $args['cid']]);
         if (empty($item)) {
             return false;
         }
@@ -139,11 +136,11 @@ class AdminApi extends \Zikula_AbstractApi
         // move all modules from the category to be deleted into the
         // default category.
         $query = $this->entityManager->createQueryBuilder()
-                                     ->update('ZikulaAdminModule:AdminModuleEntity', 'm')
-                                     ->set('m.cid', $defaultcategory)
-                                     ->where('m.cid = :cid')
-                                     ->setParameter('cid', $item['cid'])
-                                     ->getQuery();
+            ->update('ZikulaAdminModule:AdminModuleEntity', 'm')
+            ->set('m.cid', $defaultcategory)
+            ->where('m.cid = :cid')
+            ->setParameter('cid', $item['cid'])
+            ->getQuery();
 
         $query->getResult();
 
@@ -175,7 +172,7 @@ class AdminApi extends \Zikula_AbstractApi
             $args['numitems'] = null;
         }
 
-        $items = array();
+        $items = [];
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
@@ -183,7 +180,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         $entity = 'ZikulaAdminModule:AdminCategoryEntity';
-        $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'ASC'), $args['numitems'], $args['startnum']);
+        $items = $this->entityManager->getRepository($entity)->findBy([], ['sortorder' => 'ASC'], $args['numitems'], $args['startnum']);
 
         return $items;
     }
@@ -196,9 +193,9 @@ class AdminApi extends \Zikula_AbstractApi
     public function countitems()
     {
         $query = $this->entityManager->createQueryBuilder()
-                                     ->select('count(c.cid)')
-                                     ->from('ZikulaAdminModule:AdminCategoryEntity', 'c')
-                                     ->getQuery();
+            ->select('COUNT(c.cid)')
+            ->from('ZikulaAdminModule:AdminCategoryEntity', 'c')
+            ->getQuery();
 
         return (int)$query->getSingleScalarResult();
     }
@@ -223,10 +220,10 @@ class AdminApi extends \Zikula_AbstractApi
 
         // retrieve the category object
         $entity = 'ZikulaAdminModule:AdminCategoryEntity';
-        $category = $this->entityManager->getRepository($entity)->findOneBy(array('cid' => (int)$args['cid']));
+        $category = $this->entityManager->getRepository($entity)->findOneBy(['cid' => (int)$args['cid']]);
 
         if (!$category) {
-            return array();
+            return [];
         }
 
         // Return the item array
@@ -262,17 +259,15 @@ class AdminApi extends \Zikula_AbstractApi
         // get module id
         $mid = (int)ModUtil::getIdFromName($args['module']);
 
-        $item = $this->entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(array('mid' => $mid));
+        $item = $this->entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $mid]);
         if (!$item) {
             $item = new AdminModuleEntity();
         }
 
-        $values = array();
-        $values['cid'] = (int)$args['category'];
-        $values['mid'] = $mid;
-        $values['sortorder'] = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'countModsInCat', array('cid' => $args['category']));
+        $item->setMid($mid);
+        $item->setCid((int)$args['category']);
+        $item->setSortorder(ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'countModsInCat', ['cid' => $args['category']]));
 
-        $item->merge($values);
         $this->entityManager->persist($item);
         $this->entityManager->flush();
 
@@ -294,7 +289,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function getmodcategory($args)
     {
         // create a static result set to prevent multiple sql queries
-        static $catitems = array();
+        static $catitems = [];
 
         // Argument check
         if (!isset($args['mid']) || !is_numeric($args['mid'])) {
@@ -344,25 +339,28 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        static $associations = array();
+        static $associations = [];
 
         if (empty($associations)) {
             $associations = $this->entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity')->findAll();
         }
 
-        $sortorder = -1;
+        $sortOrder = -1;
+        $moduleId = (int)$args['mid'];
         foreach ($associations as $association) {
-            if ($association['mid'] == (int)$args['mid']) {
-                $sortorder = $association['sortorder'];
-                break;
+            if ($association['mid'] != $moduleId) {
+                continue;
             }
+
+            $sortOrder = $association['sortorder'];
+            break;
         }
 
-        if ($sortorder >= 0) {
-            return $sortorder;
-        } else {
-            return false;
+        if ($sortOrder >= 0) {
+            return $sortOrder;
         }
+
+        return false;
     }
 
     /**
@@ -386,11 +384,11 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         if (!isset($args['exclude']) || !is_array($args['exclude'])) {
-            $args['exclude'] = array();
+            $args['exclude'] = [];
         }
 
         // create an empty result set
-        $styles = array();
+        $styles = [];
 
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         $base = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
@@ -400,7 +398,9 @@ class AdminApi extends \Zikula_AbstractApi
             $path = $mpath.'/Resources/public/css';
         }
 
-        if ((isset($path) && is_dir($dir = $path)) || is_dir($dir = "$base/$osmoddir/style") || is_dir($dir = "$base/$osmoddir/pnstyle")) {
+        if ((isset($path) && is_dir($dir = $path))
+            || is_dir($dir = "$base/$osmoddir/style")
+            || is_dir($dir = "$base/$osmoddir/pnstyle")) {
             $handle = opendir($dir);
             while (false !== ($file = readdir($handle))) {
                 if (stristr($file, '.css') && !in_array($file, $args['exclude'])) {
@@ -411,41 +411,6 @@ class AdminApi extends \Zikula_AbstractApi
 
         // return our results
         return $styles;
-    }
-
-    /**
-     * get available admin panel links
-     *
-     * @return array array of admin links
-     */
-    public function getLinks()
-    {
-        $links = array();
-
-        if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulaadminmodule_admin_view'),
-                'text' => $this->__('Module categories list'),
-                'icon' => 'list');
-        }
-        if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADD)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulaadminmodule_admin_newcat'),
-                'text' => $this->__('Create new module category'),
-                'icon' => 'plus');
-        }
-        if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulaadminmodule_admin_help'),
-                'text' => $this->__('Help'),
-                'icon' => 'info');
-            $links[] = array(
-                'url' => $this->get('router')->generate('zikulaadminmodule_admin_modifyconfig'),
-                'text' => $this->__('Settings'),
-                'icon' => 'wrench');
-        }
-
-        return $links;
     }
 
     /**
@@ -466,11 +431,11 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         $query = $this->entityManager->createQueryBuilder()
-                                     ->select('count(m.amid)')
-                                     ->from('ZikulaAdminModule:AdminModuleEntity', 'm')
-                                     ->where('m.cid = :cid')
-                                     ->setParameter('cid', $args['cid'])
-                                     ->getQuery();
+            ->select('count(m.amid)')
+            ->from('ZikulaAdminModule:AdminModuleEntity', 'm')
+            ->where('m.cid = :cid')
+            ->setParameter('cid', $args['cid'])
+            ->getQuery();
 
         return (int)$query->getSingleScalarResult();
     }

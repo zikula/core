@@ -1,25 +1,21 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SearchModule;
 
-use LogUtil;
-use DoctrineHelper;
+use Zikula\Core\AbstractExtensionInstaller;
 
 /**
  * installation routines for the search module
  */
-class SearchModuleInstaller extends \Zikula_AbstractInstaller
+class SearchModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * initialise the Search module
@@ -33,10 +29,10 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create schema
         try {
-            DoctrineHelper::createSchema($this->entityManager, array(
+            $this->schemaTool->create([
                 'Zikula\SearchModule\Entity\SearchResultEntity',
                 'Zikula\SearchModule\Entity\SearchStatEntity',
-            ));
+            ]);
         } catch (\Exception $e) {
             return false;
         }
@@ -57,34 +53,38 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param  string $oldversion version number string to upgrade from
+     * @param  string $oldVersion version number string to upgrade from
      *
      * @return bool|string true on success, last valid version string or false if fails
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '1.5.2':
                 $this->setVar('opensearch_enabled', true);
                 $this->setVar('opensearch_adult_content', false);
 
                 // update schema
                 try {
-                    DoctrineHelper::updateSchema($this->entityManager, array(
+                    $this->schemaTool->update([
                         'Zikula\SearchModule\Entity\SearchResultEntity',
-                    ));
+                    ]);
                 } catch (\Exception $e) {
-                    return LogUtil::registerError($e->getMessage());
+                    $this->addFlash('error', $e->getMessage());
+
+                    return false;
                 }
             case '1.5.3':
                 // update schema
                 try {
-                    DoctrineHelper::updateSchema($this->entityManager, array(
+                    $this->schemaTool->update([
                         'Zikula\SearchModule\Entity\SearchResultEntity',
-                    ));
+                    ]);
                 } catch (\Exception $e) {
-                    return LogUtil::registerError($e->getMessage());
+                    $this->addFlash('error', $e->getMessage());
+
+                    return false;
                 }
             case '1.5.4':
                 // future upgrade routines
@@ -105,10 +105,10 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
     public function uninstall()
     {
         try {
-            DoctrineHelper::dropSchema($this->entityManager, array(
+            $this->schemaTool->drop([
                 'Zikula\SearchModule\Entity\SearchResultEntity',
                 'Zikula\SearchModule\Entity\SearchStatEntity',
-            ));
+            ]);
         } catch (\Exception $e) {
             return false;
         }

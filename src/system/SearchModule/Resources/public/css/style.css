@@ -11,7 +11,7 @@ label#search_q_label {
 }
 input#search_q {
     font-size: 140%;
-    font-weight: bold;
+    font-weight: 700;
     padding: 5px 2px;
 }
 dl.search_results div.search_created {

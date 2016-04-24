@@ -1,25 +1,22 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\AdminModule;
 
-use DoctrineHelper;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\Core\AbstractExtensionInstaller;
 
 /**
  * Installation and upgrade routines for the admin module
  */
-class AdminModuleInstaller extends \Zikula_AbstractInstaller
+class AdminModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * Initialise the Admin module.
@@ -33,10 +30,10 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create tables
         try {
-            DoctrineHelper::createSchema($this->entityManager, array(
+            $this->schemaTool->create([
                 'Zikula\AdminModule\Entity\AdminCategoryEntity',
                 'Zikula\AdminModule\Entity\AdminModuleEntity',
-            ));
+            ]);
         } catch (\Exception $e) {
             return false;
         }
@@ -64,21 +61,24 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param  string $oldversion version number string to upgrade from
+     * @param string $oldVersion version number string to upgrade from
      *
      * @return bool|string true on success, last valid version string or false if fails
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '1.9.1':
                 // ensure there is a proper sortorder for modulecategories
                 // has the sort order already been set?
                 $categories = $this->entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findBy(['sortorder' => 0]);
                 if (count($categories) > 1) {
                     // sort categories by id
-                    $dql = "UPDATE Zikula\\AdminModule\\Entity\\AdminCategoryEntity ac SET ac.sortorder = ac.cid - 1";
+                    $dql = "
+                        UPDATE Zikula\\AdminModule\\Entity\\AdminCategoryEntity ac
+                        SET ac.sortorder = ac.cid - 1
+                    ";
                     $query = $this->entityManager->createQuery($dql);
                     $query->execute();
                 }
