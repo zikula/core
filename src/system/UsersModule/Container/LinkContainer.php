@@ -109,7 +109,7 @@ class LinkContainer implements LinkContainerInterface
             $pending = $this->registrationHelper->countAll();
             if ($pending) {
                 $links[] = [
-                    'url' => $this->router->generate('zikulausersmodule_admin_viewregistrations'),
+                    'url' => $this->router->generate('zikulausersmodule_registrationadministration_list'),
                     'text' => $this->translator->__('Pending registrations') . ' (' . $pending . ')',
                     'icon' => 'plus'
                 ];

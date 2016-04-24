@@ -70,7 +70,7 @@ class UserAdministrationController extends AbstractController
         if (!empty($letter)) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "$letter%"];
         }
-        $limit = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE);
+        $limit = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
         $users = $this->get('zikula_users_module.user_repository')->query(
             $filter,
             [$sort => $sortdir],
@@ -84,6 +84,7 @@ class UserAdministrationController extends AbstractController
                 'count' => $users->count(),
                 'limit' => $limit
             ],
+            'actionsHelper' => $this->get('zikula_users_module.helper.administration_actions'),
             'users' => $users
         ];
     }

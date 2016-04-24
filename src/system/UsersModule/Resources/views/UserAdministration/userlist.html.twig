@@ -25,7 +25,7 @@
             {% endswitch %}
         </td>
         <td class="actions">
-            {{ userAdministrationActions(user) }}
+            {{ actionsHelper.user(user)|raw }}
         </td>
     </tr>
 {% else %}
