@@ -403,6 +403,14 @@ class UserEntity extends EntityAccess
         return $this->approved_by != 0;
     }
 
+    public function isVerified()
+    {
+        return ($this->getActivated() == UsersConstant::ACTIVATED_PENDING_REG)
+            && $this->getAttributes()->containsKey('_Users_isVerified')
+                ? $this->getAttributeValue('_Users_isVerified')
+                : false;
+    }
+
     /**
      * get the regdate of the user
      *

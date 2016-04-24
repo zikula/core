@@ -96,4 +96,12 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
 
         return $query->getResult();
     }
+
+    public function isVerificationEmailSent($uid)
+    {
+        /** @var UserVerificationEntity $userVerification */
+        $userVerification = $this->findOneBy(['uid' => $uid]);
+
+        return (null != $userVerification->getCreated_Dt());
+    }
 }
