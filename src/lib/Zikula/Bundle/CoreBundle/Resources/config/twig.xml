@@ -8,6 +8,10 @@
         <parameter key="twig.extension.zikula_gettext.class">Zikula\Bundle\CoreBundle\Twig\Extension\GettextExtension</parameter>
         <parameter key="twig.extension.zikula_core.class">Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension</parameter>
         <parameter key="twig.extension.zikula_pager.class">Zikula\Bundle\CoreBundle\Twig\Extension\PagerExtension</parameter>
+        <parameter key="twig.extension.text.class">Twig_Extensions_Extension_Text</parameter>
+        <parameter key="twig.extension.intl.class">Twig_Extensions_Extension_Intl</parameter>
+        <parameter key="twig.extension.date.class">Twig_Extensions_Extension_Date</parameter>
+        <parameter key="twig.extension.array.class">Twig_Extensions_Extension_Array</parameter>
     </parameters>
 
     <services>
@@ -24,6 +28,22 @@
         <service id="twig.extension.zikula_pager" class="%twig.extension.zikula_pager.class%" public="false">
             <tag name="twig.extension" />
             <argument type="service" id="service_container" />
+        </service>
+
+        <service id="twig.extension.text" class="%twig.extension.text.class%" public="false">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="twig.extension.intl" class="%twig.extension.intl.class%" public="false">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="twig.extension.date" class="%twig.extension.date.class%" public="false">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="twig.extension.array" class="%twig.extension.array.class%" public="false">
+            <tag name="twig.extension" />
         </service>
     </services>
 </container>
