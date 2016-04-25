@@ -1,0 +1,24 @@
+<form class="z-form z-linear" method="post" action="{{ path('zikulasearchmodule_user_search') }}">
+    <div>
+        <fieldset>
+            <legend>{{ __('Search keyword') }}</legend>
+            <div class="form-group">
+                <input id="block_search_q" type="search" name="q" size="20" maxlength="255" results="10" autosave="Search" />
+            </div>
+            {% if properties.displaySearchBtn == 1 %}
+                <div class="z-buttons">
+                    <input class="z-bt-ok z-bt-small" type="submit" value="{{ __('Search now') }}" />
+                </div>
+            {% endif %}
+            <div class="hidden">
+                {% for plugin, pluginOption in pluginOptions %}
+                    {{ pluginOption }}
+                {% endfor %}
+            </div>
+            {% set moduleVariables = zikulasearchmodule_searchVarToFieldNames() %}
+            {% for name, value in moduleVariables %}
+                <input type="hidden" name="{{ name }}" value="{{ value }}" />
+            {% endfor %}
+        </fieldset>
+    </div>
+</form>

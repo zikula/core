@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SearchModule;
@@ -30,7 +27,7 @@ class ResultHelper
      *
      * @var array
      */
-    private $search_modules = array();
+    private $search_modules = [];
 
     /**
      * Setup this helper object
@@ -66,14 +63,19 @@ class ResultHelper
 
         $ok = true;
 
-        if (isset($mod['functions'])) {
-            foreach ($mod['functions'] as $contenttype => $function) {
-                // Delegate check to search plugin
-                // (also allow plugin to write 'url' => ... into $datarow by passing it by reference)
-                $ok = $ok && ModUtil::apiFunc($mod['title'], 'search', $function . '_check',
-                    array('datarow' => &$datarow,
-                        'contenttype' => $contenttype));
-            }
+        if (!isset($mod['functions'])) {
+            return $ok;
+        }
+
+        foreach ($mod['functions'] as $contenttype => $function) {
+            // Delegate check to search plugin
+            // (also allow plugin to write 'url' => ... into $datarow by passing it by reference)
+            $ok = $ok && ModUtil::apiFunc($mod['title'], 'search', $function . '_check',
+                [
+                    'datarow' => &$datarow,
+                    'contenttype' => $contenttype
+                ]
+            );
         }
 
         return $ok;

@@ -1,0 +1,27 @@
+{% set templateTitle = __('Recent searches') %}
+{{ include('@ZikulaSearchModule/User/menu.html.twig') }}
+
+<h3>{{ templateTitle }}</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>{{ __('Search keywords') }}</th>
+            <th>{{ __('Number of searches') }}</th>
+            <th>{{ __('Date of last search') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for recentSearch in recentSearches %}
+        <tr>
+            <td><a href="{{ path('zikulasearchmodule_user_search', { q: recentSearch.search }) }}">{{ recentSearch.search|replace({' ': ', '}) }}</a></td>
+            <td>{{ recentSearch.count }}</td>
+            <td>{{ recentSearch.date->getTimestamp()|localizeddate('short', 'none') }}</td>
+        </tr>
+        {% else %}
+            <tr class="table table-borderedempty"><td colspan="3">{{ __('No items found.') }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', includePostVars: false, route: 'zikulasearchmodule_user_recent'}) }}
