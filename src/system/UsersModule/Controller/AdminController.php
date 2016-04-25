@@ -167,72 +167,14 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * @Route("/search")
-     * @Method({"GET", "POST"})
-     *
-     * Displays a user account search form, or the search results from a post.
-     *
-     * @param Request $request
-     *
-     * Parameters passed via GET:
-     * --------------------------
-     * None.
-     *
-     * Parameters passed via POST:
-     * ---------------------------
-     * See the definition of {@link getSearchResults()}.
-     *
-     * @return Response symfony response object containing the rendered template.
-     *
-     * @throws AccessDeniedException Thrown if the current user does not have moderate access
-     * @throws FatalErrorException if the method of accessing this function is improper.
-     * @throws NotFoundHttpException Thrown if no users are found
+     * @Route("/legacy-search")
+     * @return RedirectResponse
      */
     public function searchAction(Request $request)
     {
-        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
+        @trigger_error('This method is deprecated. Please use UserAdministrationController::searchAction', E_USER_DEPRECATED);
 
-        $actions = array();
-
-        if ($request->isMethod('POST')) {
-            $this->checkCsrfToken();
-
-            $usersList = $this->getSearchResults($request);
-
-            if ($usersList) {
-                $currentUid = UserUtil::getVar('uid');
-
-                foreach ($usersList as $key => $user) {
-                    $actions[$key] = array(
-                        'modifyUrl'    => false,
-                        'deleteUrl'    => false,
-                    );
-                    if ($user['uid'] != 1) {
-                        if (SecurityUtil::checkPermission($this->name.'::', $user['uname'].'::'.$user['uid'], ACCESS_EDIT)) {
-                            $actions[$key]['modifyUrl'] = $this->get('router')->generate('zikulausersmodule_admin_modify', array('userid' => $user['uid']));
-                        }
-                        if (($currentUid != $user['uid'])
-                                && SecurityUtil::checkPermission($this->name.'::', $user['uname'].'::'.$user['uid'], ACCESS_DELETE)) {
-                            $actions[$key]['deleteUrl'] = $this->get('router')->generate('zikulausersmodule_admin_deleteusers', array('userid' => $user['uid']));
-                        }
-                    }
-                }
-            } else {
-                throw new NotFoundHttpException($this->__('Sorry! No matching users found.'));
-            }
-        }
-
-        if (isset($usersList) && $usersList) {
-            $this->view->assign('items', $usersList)
-                ->assign('actions', $actions)
-                ->assign('deleteUsers', SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN));
-
-            return new Response($this->view->fetch('Admin/search_results.tpl'));
-        }
-
-        return new Response($this->renderSearchForm('search'));
+        return new RedirectResponse($this->get('router')->generate('zikulausersmodule_useradministration_search'));
     }
 
     /**

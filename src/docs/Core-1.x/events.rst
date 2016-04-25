@@ -428,15 +428,6 @@ data array.
 
 This event does not have a subject or arguments.
 
-#### `module.users.ui.form_edit.search`
-
-A hook-like UI event triggered when the users search form is displayed. Allows other
-modules to intercept and insert their own elements for submission to the search form.
-
-To add elements to the search form, render the output and then add this as an array element to the event's
-data array.
-
-This event does not have a subject or arguments.
 
 GROUPS
 ------
