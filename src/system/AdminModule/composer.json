@@ -23,7 +23,8 @@
             "displayname": "Administration panel",
             "url": "adminpanel",
             "securityschema": {
-                "ZikulaAdminModule::": "Admin Category name::Admin Category ID"
+                "ZikulaAdminModule::": "Admin Category name::Admin Category ID",
+                "ZikulaAdminModule:adminnavblock:": "Block title::Block ID"
             }
         }
     }

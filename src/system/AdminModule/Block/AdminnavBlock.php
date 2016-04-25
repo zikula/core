@@ -10,97 +10,44 @@
 
 namespace Zikula\AdminModule\Block;
 
-use Zikula_View;
-use SecurityUtil;
-use BlockUtil;
 use ModUtil;
-use DataUtil;
+use Zikula\BlocksModule\AbstractBlockHandler;
 
 /**
  * Administrative navigation block
  */
-class AdminnavBlock extends \Zikula_Controller_AbstractBlock
+class AdminnavBlock extends AbstractBlockHandler
 {
-    /**
-     * Post initialise.
-     *
-     * @return void
-     */
-    protected function postInitialize()
-    {
-        // In this block we do not want caching.
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
-    }
-
-    /**
-     * initialise block
-     *
-     * @return void
-     */
-    public function init()
-    {
-        SecurityUtil::registerPermissionSchema('ZikulaAdminModule:adminnavblock:', 'Block title::Block ID');
-    }
-
-    /**
-     * get information on block
-     *
-     * @return array array of meta information on the block
-     */
-    public function info()
-    {
-        // Values
-        return [
-            'module'         => 'ZikulaAdminModule',
-            'text_type'      => $this->__('Administration panel manager'),
-            'text_type_long' => $this->__('Display administration categories and modules'),
-            'allow_multiple' => false,
-            'form_content'   => false,
-            'form_refresh'   => false,
-            'show_preview'   => true
-        ];
-    }
-
     /**
      * display block
      *
-     * @param mixed[] $blockinfo {
-     *      @type string $title   the title of the block
-     *      @type int    $bid     the id of the block
-     *      @type string $content the seralized block content array
-     *                            }
+     * @param array $properties
      *
      * @return string html of the rendered blcok
      */
-    public function display($blockinfo)
+    public function display(array $properties)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaAdminModule:adminnavblock', "$blockinfo[title]::$blockinfo[bid]", ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaAdminModule:adminnavblock', $properties['title'] . '::' . $properties['bid'], ACCESS_ADMIN)) {
             return;
         }
-
-        // Get variables from content block
-        $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // Call the modules API to get the items
-        if (!ModUtil::available('ZikulaAdminModule')) {
-            return;
-        }
-
         $items = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
 
         // Check for no items returned
         if (empty($items)) {
-            return;
+            return '';
         }
 
         // get admin capable modules
-        $adminModules = ModUtil::getAdminMods();
+        $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
+        $defaultCategory = $this->get('zikula_extensions_module.api.variable')->get('ZikulaAdminModule', 'defaultcategory');
 
         // Display each item, permissions permitting
         $adminCategories = [];
         foreach ($items as $item) {
-            if (!SecurityUtil::checkPermission('ZikulaAdminModule::', "$item[name]::$item[cid]", ACCESS_READ)) {
+            if (!$this->hasPermission('ZikulaAdminModule::', $item['name'] . '::' . $item['cid'], ACCESS_READ)) {
                 continue;
             }
 
@@ -110,26 +57,25 @@ class AdminnavBlock extends \Zikula_Controller_AbstractBlock
                 $catid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory',
                                             ['mid' => ModUtil::getIdFromName($adminModule['name'])]);
 
-                if ($catid == $item['cid'] || (false == $catid && $item['cid'] == $this->getVar('defaultcategory'))) {
+                if ($catid == $item['cid'] || (false == $catid && $item['cid'] == $defaultCategory)) {
                     $moduleInfo = ModUtil::getInfoFromName($adminModule['name']);
                     $adminLinks[] = [
-                        'menutexturl' => ModUtil::url($moduleInfo['name'], 'admin'),
-                        'menutexttitle' => $moduleInfo['displayname']
+                        'menuTextUrl' => ModUtil::url($moduleInfo['name'], 'admin'),
+                        'menuTextTitle' => $moduleInfo['displayname']
                     ];
                 }
             }
             $adminCategories[] = [
                 'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', array('cid' => $item['cid'])),
-                'title' => DataUtil::formatForDisplay($item['name']),
+                'title' => $item['name'],
                 'modules' => $adminLinks
             ];
         }
 
-        $this->view->assign('admincategories', $adminCategories);
+        $templateParameters = [
+            'adminCategories' => $adminCategories
+        ];
 
-        // Populate block info and pass to theme
-        $blockinfo['content'] = $this->view->fetch('Block/adminnav.tpl');
-
-        return BlockUtil::themeBlock($blockinfo);
+        return $this->renderView('@ZikulaAdminModule/Block/adminNav.html.twig', $templateParameters);
     }
 }
