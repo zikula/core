@@ -1,0 +1,41 @@
+{{ menu|raw }}
+<div id="z-admincontainer" class="z-admin-content">
+    <h2>{{ category.name }}</h2>
+    <div class="z-admincategorydescription">{{ category.description }}</div>
+
+    {% if adminLinks is not empty %}
+        <ul id="modulelist">
+            {% for adminLink in adminLinks %}
+            <li data-modid="{{ adminLink.id }}" class="draggable">
+                {# module icon #}
+                {% if getModVar('ZikulaAdminModule', 'admingraphic') == 1 %}
+                <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}"><img src="{{ adminLink.adminIcon }}" title="{{ adminLink.menuText }}" alt="{{ adminLink.menuText }}" /></a>
+                {% endif %}
+                <div>
+                    {# movable icon #}
+                    <span title="{{ __('Drag and drop into a new module category') }}" class="tooltips fa fa-arrows admintabs-lock"></span>
+
+                    {# module title #}
+                    <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}">{{ adminLink.menuText }}</a>
+
+                    {% if adminLink.links %}
+                        <div class="dropdown" style="display: inline">
+                            <a class="caret" data-toggle="dropdown" href="#" title="{{ __('Functions') }}"></a>
+                            <ul class="dropdown-menu" role="menu">
+                                {% for item in adminLink.links %}
+                                    <li><a href="{{ item.url }}">{{ item.text }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    {# module description #}
+                    <p>{{ adminLink.menuTextTitle }}</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="clearfix"></div>
+    {% else %}
+        <p class="bold text-center">{{ __('There are currently no modules in this category.') }}</p>
+    {% endif %}
+    {{ adminFooter() }}

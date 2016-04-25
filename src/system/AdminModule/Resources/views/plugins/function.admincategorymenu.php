@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -28,10 +25,10 @@ function smarty_function_admincategorymenu($params, \Zikula_View $view)
     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('ZikulaAdminModule'));
 
     $modinfo = ModUtil::getInfoFromName($view->getTplVar('toplevelmodule'));
-    $acid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', array('mid' => $modinfo['id']));
+    $acid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', ['mid' => $modinfo['id']]);
 
-    $path = array('_controller' => 'ZikulaAdminModule:Admin:categorymenu', 'acid' => $acid);
-    $subRequest = $view->getRequest()->duplicate(array(), null, $path);
+    $path = ['_controller' => 'ZikulaAdminModule:Admin:categorymenu', 'acid' => $acid];
+    $subRequest = $view->getRequest()->duplicate([], null, $path);
 
     return $view->getContainer()
         ->get('http_kernel')

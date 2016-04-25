@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": ";;;AAOA,IACA;EACC,UAAU,EAAE,MAAM;;AAEnB,mBACA;EACC,OAAO,EAAE,KAAK;;AAEf,QACA;EACC,UAAU,EAAE,OAAO;EACnB,UAAU,EAAE,KAAK;;AAElB,YACA;EACC,UAAU,EAAE,UAAU;EACtB,aAAa,EC4BM,IAAkC;ECwDrD,iBAAgB,EAAE,uBAAI;EACtB,cAAa,EAAE,uBAAI;EACnB,aAAY,EAAE,uBAAI;EAClB,YAAW,EAAE,uBAAI;EACjB,SAAQ,EAAE,uBAAI",
-"sources": ["jquery.mmenu.iconbar.scss","../../core/css/_inc/_variables.scss","../../core/css/_inc/_mixins.scss"],
-"names": [],
-"file": "jquery.mmenu.iconbar.css"
-}

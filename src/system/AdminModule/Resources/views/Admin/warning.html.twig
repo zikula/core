@@ -1,0 +1,9 @@
+<div id="z-adminwarning">
+    <h2>{{ __('Stop!') }}</h2>
+    <ul>
+        {% if zrcExists eq true %}
+            <li>{{ __("The Zikula recovery console tool (file 'zrc.php') is present in the site webroot, but must be removed before you can access the site admin panel.") }}</li>
+        {/if}
+    </ul>
+    <p><strong><a href="{{ path('zikulaadminmodule_admin_adminpanel') }}">{{ __('Continue') }}</a></strong></p>
+</div>
