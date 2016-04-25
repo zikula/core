@@ -1,25 +1,21 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\RoutesModule\Translation;
 
+use JMS\I18nRoutingBundle\Router\PatternGenerationStrategyInterface;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Translation\LoggingTranslator;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Translation\TranslatorBagInterface;
-use Symfony\Component\Routing\Route;
-use JMS\I18nRoutingBundle\Router\PatternGenerationStrategyInterface;
 
 /**
  * This strategy duplicates \JMS\I18nRoutingBundle\Router\DefaultPatternGenerationStrategy

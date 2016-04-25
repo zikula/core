@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation 2013 - license GNU/LGPLv3 (or at your option, any later version).
+// Copyright Zikula Foundation, licensed MIT.
 
 /*******************************************************************************
  * Sort blocks in a block position
@@ -47,7 +47,7 @@
                     //descriptionDiv.after(message.result);
                 })
                 .fail(function(jqXHR, textStatus) {
-                    alert( "error: " + textStatus );
+                    alert('error: ' + textStatus);
                 })
             }
         }).disableSelection();

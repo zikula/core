@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\ThemeModule\Engine;
 
@@ -25,6 +33,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class Asset
 {
     private $kernel;
+
     private $assetPackages;
 
     public function __construct(KernelInterface $kernel, Packages $assetPackages)

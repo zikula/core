@@ -1,26 +1,22 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class CreateAdminType extends AbstractType
@@ -28,7 +24,7 @@ class CreateAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', 'text', array(
+            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
                 'label' => __('Admin User Name'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'data' => __('admin'),
@@ -40,7 +36,7 @@ class CreateAdminType extends AbstractType
                         'message' => __('Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _')
                     ))
                 )))
-            ->add('password', 'repeated', array(
+            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', array(
                 'type' => 'password',
                 'invalid_message' => 'The password fields must match.',
                 'options' => array(
@@ -54,16 +50,17 @@ class CreateAdminType extends AbstractType
                 'first_options'  => array('label' => 'Admin Password'),
                 'second_options' => array('label' => 'Repeat Password'),
                 ))
-            ->add('email', 'email', array(
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', array(
                 'label' => __('Admin Email Address'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'constraints' => array(
                     new NotBlank(),
                     new Email(),
-                )));
+                )))
+        ;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'createadmin';
     }

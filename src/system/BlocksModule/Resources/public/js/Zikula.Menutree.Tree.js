@@ -1,3 +1,5 @@
+// Copyright Zikula Foundation, licensed MIT.
+
 Zikula.define('Menutree');
 
 Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{

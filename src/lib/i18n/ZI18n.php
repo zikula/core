@@ -1,15 +1,11 @@
 <?php
 /**
- * Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * Licensed to the Zikula Foundation under one or more contributor license
- * agreements. This work is licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPv2.1 (or at your option any later version).
- * @package I18n
- *
- * Please see the NOTICE and LICENSE files distributed with this source
- * code for further information regarding copyright ownership and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**

@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
@@ -18,11 +14,11 @@ use Zikula\Component\Wizard\StageInterface;
 
 class AjaxInstallerStage implements StageInterface
 {
-    const NAME = "name";
-    const PRE = "pre";
-    const DURING = "during";
-    const SUCCESS = "success";
-    const FAIL = "fail";
+    const NAME = 'name';
+    const PRE = 'pre';
+    const DURING = 'during';
+    const SUCCESS = 'success';
+    const FAIL = 'fail';
 
     public function getName()
     {
@@ -31,7 +27,7 @@ class AjaxInstallerStage implements StageInterface
 
     public function getTemplateName()
     {
-        return "ZikulaCoreInstallerBundle:Install:ajaxinstaller.html.twig";
+        return 'ZikulaCoreInstallerBundle:Install:ajaxinstaller.html.twig';
     }
 
     public function isNecessary()

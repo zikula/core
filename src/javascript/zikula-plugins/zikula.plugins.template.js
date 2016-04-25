@@ -1,4 +1,6 @@
-(function($){
+// Copyright Zikula Foundation, licensed MIT.
+
+(function($) {
 /*
 Zikula.Plugins.Template(tpl, data).render();
 view = new Zikula.Plugins.Template();

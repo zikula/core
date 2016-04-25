@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation 2014 - license GNU/LGPLv3 (or at your option, any later version).
+// Copyright Zikula Foundation, licensed MIT.
 
 ( function($) {
 
@@ -30,7 +30,7 @@
 
             var fragment = $(this).attr('value');
 
-            if (fragment === "") {
+            if (fragment === '') {
                 $('#user-list').removeClass('hide');
                 $('#user-search-list').addClass('hide');
                 $('#user-search-min-char').addClass('hide');
@@ -84,6 +84,7 @@
                 ajax.abort;
             }
             ajax = $.ajax({
+                // TODO use a route for this url
                 url: Zikula.Config.baseURL + 'index.php?module=users&type=ajax&func=getUsersAsTable',
                 dataType: 'html',
                 type: 'GET',
@@ -104,7 +105,6 @@
                             resultStore[lastFragment] = $('#user-search-list tbody').html();
                         });
                     }
-
                 }
             });
             lastFragment = fragment;

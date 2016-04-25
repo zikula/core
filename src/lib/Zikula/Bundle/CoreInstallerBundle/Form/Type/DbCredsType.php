@@ -1,63 +1,59 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class DbCredsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('database_driver', 'choice', array(
+            ->add('database_driver', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
                 'label' => __('Database type'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'choices' => $this->getDbTypes(),
                 'data' => 'mysql'))
-            ->add('dbtabletype', 'choice', array(
+            ->add('dbtabletype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
                 'label' => __('Storage Engine'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'choices' => array(
                     'innodb' => __('InnoDB'),
                     'myisam' => __('MyISAM')),
                 'data' => 'innodb'))
-            ->add('database_host', 'text', array(
+            ->add('database_host', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
                 'label' => __('Database Host'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'data' => __('localhost'),
                 'constraints' => array(
                     new NotBlank(),
                 )))
-            ->add('database_user', 'text', array(
+            ->add('database_user', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
                 'label' => __('Database Username'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'constraints' => array(
                     new NotBlank(),
                 )))
-            ->add('database_password', 'password', array(
+            ->add('database_password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', array(
                 'label' => __('Database Password'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'required' => false
             ))
-            ->add('database_name', 'text', array(
+            ->add('database_name', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
                 'label' => __('Database Name'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'constraints' => array(
@@ -67,10 +63,11 @@ class DbCredsType extends AbstractType
                         'pattern' => '/^[\w-]*$/',
                         'message' => __('Error! Invalid database name. Please use only letters, numbers, "-" or "_".')
                     )),
-                )));
+                )))
+        ;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'dbcreds';
     }

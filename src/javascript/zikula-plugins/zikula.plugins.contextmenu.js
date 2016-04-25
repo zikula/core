@@ -1,5 +1,7 @@
+// Copyright Zikula Foundation, licensed MIT.
+
 // todo - docs
-(function($){
+(function($) {
     Zikula.define('Plugins');
 
     // promise to handle calls before context menu is ready

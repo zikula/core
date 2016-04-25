@@ -1,4 +1,5 @@
-// Copyright 2012 Zikula Foundation, licensed LGPLv3 or any later version.
+// Copyright Zikula Foundation, licensed MIT.
+
 /**
  * @fileOverview Bootstrap for Zikula javascript
  * @requires jQuery, underscore, zikula.js, lang.js, core.js, class.js, factory.js, util.cookie.js, util.gettext.js, dom.js, ajax.js

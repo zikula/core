@@ -1,9 +1,4 @@
-/**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
- *
- * @license      GNU/LGPLv3 (or at your option, any later version).
- * @fileOverview Zikula.UI Framework
- */
+// Copyright Zikula Foundation, licensed MIT.
 
 /**
  * Zikula UI namespace

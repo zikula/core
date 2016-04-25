@@ -1,4 +1,6 @@
-(function($){
+// Copyright Zikula Foundation, licensed MIT.
+
+(function($) {
     $.widget('ZikulaUI.zAccordion', $.ui.accordion, {
         options: {
             active: null, // when preserveState=false, active evaluate to 0

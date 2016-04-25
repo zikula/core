@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2015 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\BlocksModule\Block\Form\Type;
@@ -34,7 +31,7 @@ class FincludeBlockType extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                     new File([
-                        'mimeTypes' => ["text/html", "text/plain"],
+                        'mimeTypes' => ['text/html', 'text/plain'],
                     ])
                 ],
                 'label' => __('File Path'),
@@ -73,7 +70,7 @@ class FincludeBlockType extends AbstractType
      */
     public function validateFileAgainstMimeType($data, ExecutionContextInterface $context)
     {
-        if (("text/html" == mime_content_type($data['filo'])) && (0 !== $data['typo'])) {
+        if (('text/html' == mime_content_type($data['filo'])) && (0 !== $data['typo'])) {
             $context->addViolation(__('For Html files please select the Html file type.'));
         }
     }
