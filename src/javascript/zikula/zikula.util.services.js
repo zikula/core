@@ -1,3 +1,5 @@
+// Copyright Zikula Foundation, licensed MIT.
+
 (function($){
     Zikula.define('Util');
 

@@ -1,13 +1,11 @@
 <?php
 /**
- * Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * @copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
- * @copyright (c) 2009, Zikula Development Team
- * @link http://www.zikula.org
- * @license GNU/GPLv3 (or at your option, any later version).
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @package StreamReader
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**

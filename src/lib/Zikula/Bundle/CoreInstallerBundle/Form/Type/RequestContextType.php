@@ -1,37 +1,33 @@
 <?php
 /**
- * Copyright Zikula Foundation 2014 - Zikula CoreInstaller bundle.
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RequestContextType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('router:request_context:host', 'text', array(
+            ->add('router:request_context:host', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
                 'label' => __('The host where you install Zikula, e.g. "example.com". Do not include subdirectories.'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'data' => __('localhost'),
                 'constraints' => array(
                     new NotBlank(),
                 )))
-            ->add('router:request_context:scheme', 'choice', array(
+            ->add('router:request_context:scheme', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
                 'label' => __('Please enter the scheme of where you install Zikula, can be either "http" or "https"'),
                 'label_attr' => array('class' => 'col-sm-3'),
                 'choices' => array(
@@ -40,13 +36,14 @@ class RequestContextType extends AbstractType
                 ),
                 'data' => 'http',
                 ))
-            ->add('router:request_context:base_url', 'text', array(
+            ->add('router:request_context:base_url', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
                 'label' => __('Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir'),
                 'label_attr' => array('class' => 'col-sm-3'),
-            ));
+            ))
+        ;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'router_request_context';
     }

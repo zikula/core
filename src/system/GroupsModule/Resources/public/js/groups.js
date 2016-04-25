@@ -1,3 +1,5 @@
+// Copyright Zikula Foundation, licensed MIT.
+
 ( function($) {
     $(document).ready(function() {
         // Delete a group

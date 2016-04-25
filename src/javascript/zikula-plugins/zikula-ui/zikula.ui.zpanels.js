@@ -1,4 +1,6 @@
-(function($){
+// Copyright Zikula Foundation, licensed MIT.
+
+(function($) {
     $.widget('ZikulaUI.zPanels', $.ZikulaUI.zAccordion, {
         options: {
             active: [],

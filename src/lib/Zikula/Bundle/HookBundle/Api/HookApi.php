@@ -1,15 +1,11 @@
 <?php
 /**
- * Copyright 2015 Zikula Foundation
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Bundle\HookBundle\Api;
@@ -43,14 +39,17 @@ class HookApi
      * @see CapabilityApiInterface::HOOK_SUBSCRIBER_OWN
      */
     const SELF_TYPE = 'subscribe_own';
+
     /**
      * @var \Zikula\Common\Translator\Translator
      */
     private $translator;
+
     /**
      * @var HookDispatcherInterface
      */
     private $hookDispatcher;
+
     /**
      * @var EventDispatcherInterface
      */

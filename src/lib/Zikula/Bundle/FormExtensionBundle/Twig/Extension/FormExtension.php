@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\Bundle\FormExtensionBundle\Twig\Extension;
 
@@ -37,11 +45,13 @@ class FormExtension extends \Twig_Extension
     public function polyfill(array $features = ['forms'])
     {
         $basePath = $this->container->get('request')->getBasePath();
-        $this->container->get('zikula_core.common.theme.assets_js')->add([$basePath . '/javascript/js-webshim/dev/polyfiller.js' => AssetBag::WEIGHT_JQUERY + 1]);
-        $this->container->get('zikula_core.common.theme.assets_js')->add([$basePath . '/javascript/js-webshim/dev/polyfiller.init.js' => AssetBag::WEIGHT_JQUERY + 2]);
-        $existingFeatures = $this->container->get('zikula_core.common.theme.pagevars')->get('polyfill_features', []);
+        $jsAssetBag = $this->container->get('zikula_core.common.theme.assets_js');
+        $jsAssetBag->add([$basePath . '/javascript/js-webshim/dev/polyfiller.js' => AssetBag::WEIGHT_JQUERY + 1]);
+        $jsAssetBag->add([$basePath . '/javascript/js-webshim/dev/polyfiller.init.js' => AssetBag::WEIGHT_JQUERY + 2]);
+        $themePageVars = $this->container->get('zikula_core.common.theme.pagevars');
+        $existingFeatures = $themePageVars->get('polyfill_features', []);
         $features = array_unique(array_merge($existingFeatures, $features));
-        $this->container->get('zikula_core.common.theme.pagevars')->set('polyfill_features', $features);
+        $themePageVars->set('polyfill_features', $features);
     }
 
     /**

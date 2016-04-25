@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula Foundation - http://zikula.org/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Zikula\ThemeModule\Engine;
 
@@ -16,9 +24,13 @@ use Zikula\ThemeModule\Engine\Asset\ResolverInterface;
 class Filter
 {
     private $headers;
+
     private $footers;
+
     private $jsResolver;
+
     private $cssResolver;
+
     private $scriptPosition;
 
     public function __construct(AssetBag $headers, AssetBag $footers, ResolverInterface $js, ResolverInterface $css, $scriptPosition)

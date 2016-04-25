@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
+// Copyright Zikula Foundation, licensed MIT.
 
 ( function($) {
 
@@ -80,7 +80,7 @@
 
         var nodeId = $(node).attr('id');
         // append spinner
-        $('#'+nodeId).find('a').first().after("<i id='temp-spinner' class='fa fa-spinner fa-spin fa-lg text-primary'></i>");
+        $('#' + nodeId).find('a').first().after('<i id="temp-spinner" class="fa fa-spinner fa-spin fa-lg text-primary"></i>');
 
         var pars = {
             cid: nodeId.replace('node_', '')
@@ -115,7 +115,7 @@
         }
 
         $.ajax({
-            type: "POST",
+            type: 'POST',
             url: Routing.generate('zikulacategoriesmodule_ajax_' + action),
             data: pars
         }).success(function(result) {
@@ -169,7 +169,7 @@
 
                     // fetch each input and hidden field and store the value to POST
                     var pars = {};
-                    $.each($(":input, :hidden").serializeArray(), function(i, field) {
+                    $.each($(':input, :hidden').serializeArray(), function(i, field) {
                         pars[field.name] = field.value;
                     });
                     pars.mode = (mode == 'edit') ? 'edit' : 'new';
@@ -265,7 +265,7 @@
                         // present dialog to determine new parent
                         $(this).prepend("<i id='button-spinner' class='fa fa-gear fa-spin fa-lg text-danger'></i> ");
                         $.ajax({
-                            type: "POST",
+                            type: 'POST',
                             url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),
                             data: {
                                 cid: $(node).attr('id').replace('node_', '')
@@ -370,7 +370,7 @@
         });
 
         $.ajax({
-            type: "POST",
+            type: 'POST',
             url: Routing.generate('zikulacategoriesmodule_ajax_resequence'),
             data: {
                 tree: elements

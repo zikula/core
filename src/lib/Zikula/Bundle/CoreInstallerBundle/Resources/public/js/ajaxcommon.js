@@ -1,9 +1,4 @@
-/**
- * CoreInstallerBundle: Install and Upgrade templates for ajax operations
- * ajaxcommon.js
- *
- * jQuery based JS
- */
+// Copyright Zikula Foundation, licensed MIT.
 
 jQuery( document ).ready(function( $ ) {
     // the `stages` array is declared in the template

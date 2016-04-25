@@ -1,4 +1,5 @@
-// Copyright 2012 Zikula Foundation, licensed LGPLv3 or any later version.
+// Copyright Zikula Foundation, licensed MIT.
+
 /**
  * @fileOverview Class-based inheritance model for JavaScript
  * @requires core.js

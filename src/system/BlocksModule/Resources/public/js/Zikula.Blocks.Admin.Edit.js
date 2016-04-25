@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation 2015 - license GNU/LGPLv3 (or at your option, any later version).
+// Copyright Zikula Foundation, licensed MIT.
 
 ( function($) {
     $(document).ready(function() {

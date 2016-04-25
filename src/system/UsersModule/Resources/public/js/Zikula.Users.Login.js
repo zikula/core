@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation 2011 - license GNU/LGPLv3 (or at your option, any later version).
+// Copyright Zikula Foundation, licensed MIT.
 
 var ZikulaUsersLogin = {};
 

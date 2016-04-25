@@ -1,25 +1,22 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\UsersModule\Block;
 
-use Zikula_View;
-use SecurityUtil;
-use DataUtil;
-use Zikula\UsersModule\Helper\AuthenticationMethodListHelper;
-use System;
 use BlockUtil;
+use DataUtil;
+use SecurityUtil;
+use System;
 use UserUtil;
+use Zikula_View;
+use Zikula\UsersModule\Helper\AuthenticationMethodListHelper;
 
 /**
  * A block that allows users to log into the system.

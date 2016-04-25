@@ -1,16 +1,16 @@
 <?php
 /**
- * Copyright Zikula Foundation 2012 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version.
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
+/**
+ * Imagine plugin definition.
+ */
 class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface, Zikula_Plugin_ConfigurableInterface
 {
     /**
@@ -27,11 +27,11 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     protected function getMeta()
     {
-        return array(
+        return [
             'displayname' => $this->__('Imagine'),
             'description' => $this->__('Provides Imagine image manipulation library'),
             'version'     => '0.6.2'
-        );
+        ];
     }
 
     /**
@@ -56,10 +56,10 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function initialize()
     {
-        $definition = new Zikula_ServiceManager_Definition('SystemPlugin_Imagine_Manager', array(
+        $definition = new Zikula_ServiceManager_Definition('SystemPlugin_Imagine_Manager', [
             new Zikula_ServiceManager_Reference('service_container'),
             new Zikula_ServiceManager_Reference($this->getServiceId())
-        ));
+        ]);
         $this->serviceManager->registerService('systemplugin.imagine.manager', $definition, false);
 
         $this->addHandlerDefinition('view.init', 'registerPlugins');
@@ -92,7 +92,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
         if ($event['modname'] == 'ZikulaThemeModule') {
             // clear thumb when render cache is cleared
             // what with theme cache?
-            $themeClearMethods = array('clear_cache', 'render_clear_cache', 'clearallcompiledcaches');
+            $themeClearMethods = ['clear_cache', 'render_clear_cache', 'clearallcompiledcaches'];
             if ($event['modfunc'][0] instanceof Zikula\ThemeModule\Controller\AdminController && in_array($event['modfunc'][1], $themeClearMethods)) {
                 $this->getManager()->cleanupThumbs();
             }
@@ -168,18 +168,18 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function defaultSettings()
     {
-        $settings = array(
+        $settings = [
             'version' => $this->getMetaVersion(),
             'thumb_dir' => $this->getServiceId(),
             'thumb_auto_cleanup' => false,
             'thumb_auto_cleanup_period' => 'P1D',
-            'presets' => array(
-                'default' => new SystemPlugin_Imagine_Preset('default', array(
+            'presets' => [
+                'default' => new SystemPlugin_Imagine_Preset('default', [
                     'width' => 100,
                     'height' => 100
-                ))
-            )
-        );
+                ])
+            ]
+        ];
 
         return $settings;
     }
@@ -232,7 +232,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     public function getImagineEngine()
     {
         $imagine = null;
-        $engines = array('Imagick', 'Gmagick', 'Gd');
+        $engines = ['Imagick', 'Gmagick', 'Gd'];
         foreach ($engines as $engine) {
             try {
                 $class = "\\Imagine\\{$engine}\\Imagine";
