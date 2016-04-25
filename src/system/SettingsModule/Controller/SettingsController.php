@@ -1,18 +1,16 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SettingsModule\Controller;
 
+use DateUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,6 +23,7 @@ use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use ZLanguage;
 
 /**
  * Class SettingsController
@@ -46,26 +45,28 @@ class SettingsController extends AbstractController
         if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $userModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApiInterface::USER);
-        $profileModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApiInterface::PROFILE);
-        $messageModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApiInterface::MESSAGE);
+
+        $installedLanguageNames = ZLanguage::getInstalledLanguageNames();
+
+        $capabilityApi = $this->get('zikula_extensions_module.api.capability');
+        $userModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::USER);
+        $profileModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::PROFILE);
+        $messageModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::MESSAGE);
 
         $form = $this->createForm('Zikula\SettingsModule\Form\Type\MainSettingsType',
             $this->getSystemVars(),
             [
                 'translator' => $this->get('translator.default'),
-                'languages' => \ZLanguage::getInstalledLanguageNames(),
+                'languages' => $installedLanguageNames,
                 'modules' => $this->formatModuleArrayForSelect($userModules),
                 'profileModules' => $this->formatModuleArrayForSelect($profileModules),
                 'messageModules' => $this->formatModuleArrayForSelect($messageModules)
             ]
         );
-        $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $data = $form->getData();
-                $this->setSystemVars($data);
+                $this->setSystemVars($form->getData());
                 $this->addFlash('status', $this->__('Done! Configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -76,7 +77,7 @@ class SettingsController extends AbstractController
         }
 
         return [
-            'languages' => \ZLanguage::getInstalledLanguageNames(),
+            'languages' => $installedLanguageNames,
             'zlibEnabled' => extension_loaded('zlib'),
             'form' => $form->createView(),
         ];
@@ -108,8 +109,8 @@ class SettingsController extends AbstractController
             ],
             [
                 'translator' => $this->get('translator.default'),
-                'languages' => \ZLanguage::getInstalledLanguageNames(),
-                'timezones' => \DateUtil::getTimezones()
+                'languages' => ZLanguage::getInstalledLanguageNames(),
+                'timezones' => DateUtil::getTimezones()
             ]
         );
         $form->handleRequest($request);
@@ -137,7 +138,6 @@ class SettingsController extends AbstractController
         }
 
         return [
-            'server_timezone' => \DateUtil::getTimezoneAbbr(),
             'form' => $form->createView(),
         ];
     }
@@ -163,7 +163,7 @@ class SettingsController extends AbstractController
         phpinfo();
         $phpinfo = ob_get_contents();
         ob_end_clean();
-        $phpinfo = str_replace("module_Zend Optimizer", "module_Zend_Optimizer", preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo));
+        $phpinfo = str_replace('module_Zend Optimizer', 'module_Zend_Optimizer', preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo));
 
         return [
             'phpinfo' => $phpinfo

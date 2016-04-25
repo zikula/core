@@ -1,21 +1,18 @@
 <?php
 /**
- * Copyright Zikula Foundation 2013 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
-  *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SettingsModule\Listener;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class ModuleListener implements EventSubscriberInterface
@@ -24,6 +21,7 @@ class ModuleListener implements EventSubscriberInterface
      * @var VariableApi
      */
     private $variableApi;
+
     /**
      * @var SessionInterface
      */
@@ -42,10 +40,10 @@ class ModuleListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             // @todo convert to CoreEvent::MODULE_DISABLE at Core-2.0
-            'installer.module.deactivated' => array('moduleDeactivated'),
-        );
+            'installer.module.deactivated' => ['moduleDeactivated']
+        ];
     }
 
     /**
