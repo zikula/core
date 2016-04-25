@@ -39,7 +39,7 @@ class MainSettingsType extends AbstractType
             }
         );
         $pageTitleLocalizationTransformer = new CallbackTransformer(
-            function ($originalPageTitle) use ($options) {
+            function ($originalPageTitle) use ($translator) {
                 $originalPageTitle = empty($originalPageTitle) ? '%pagetitle%' : $originalPageTitle;
                 $originalPageTitle = str_replace('%pagetitle%', $translator->__('%pagetitle%'), $originalPageTitle);
                 $originalPageTitle = str_replace('%sitename%', $translator->__('%sitename%'), $originalPageTitle);
@@ -47,7 +47,7 @@ class MainSettingsType extends AbstractType
 
                 return $originalPageTitle;
             },
-            function ($submittedPageTitle) use ($options) {
+            function ($submittedPageTitle) use ($translator) {
                 $submittedPageTitle = str_replace($translator->__('%pagetitle%'), '%pagetitle%', $submittedPageTitle);
                 $submittedPageTitle = str_replace($translator->__('%sitename%'), '%sitename%', $submittedPageTitle);
                 $submittedPageTitle = str_replace($translator->__('%modulename%'), '%modulename%', $submittedPageTitle);
