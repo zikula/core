@@ -64,7 +64,8 @@ class ConfigType extends AbstractType
                 'required' => false,
                 'empty_data' => null,
                 'choices' => $this->getAdminThemeChoices($translator),
-                'choices_as_values' => true
+                'choices_as_values' => true,
+                'placeholder' => $translator->__('Use site\'s theme')
             ])
             ->add('startcategory', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $translator->__('Initially selected category'),
@@ -151,9 +152,7 @@ class ConfigType extends AbstractType
      */
     private function getAdminThemeChoices($translator)
     {
-        $choices = [
-            $translator->__('Use site\'s theme') => ''
-        ];
+        $choices = [];
 
         $themeList = [];
         $filter = ThemeUtil::FILTER_ADMIN;
