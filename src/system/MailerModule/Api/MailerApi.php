@@ -17,6 +17,7 @@ use Swift_DependencyContainer;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
@@ -65,17 +66,24 @@ class MailerApi
      *
      * @param TranslatorInterface      $translator      Translator service instance.
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance.
-     * @param array                    $mailerParams    SwiftMailer configuration parameters.
+     * @param DynamicConfigDumper      $configDumper    Configuration dumper for retrieving SwiftMailer configuration parameters.
      * @param VariableApi              $variableApi     VariableApi service instance.
      * @param PermissionApi            $permissionApi   PermissionApi service instance.
      */
-    public function __construct(TranslatorInterface $translator, EventDispatcherInterface $eventDispatcher, array $mailerParams, VariableApi $variableApi, Swift_Mailer $mailer, PermissionApi $permissionApi)
+    public function __construct(
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
+        DynamicConfigDumper $configDumper,
+        VariableApi $variableApi,
+        Swift_Mailer $mailer,
+        PermissionApi $permissionApi)
     {
         $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
         $this->permissionApi = $permissionApi;
 
+        $mailerParams = $configDumper->getConfiguration('swiftmailer');
         $modVars = $variableApi->getAll('ZikulaMailerModule');
         $this->dataValues = array_merge($mailerParams, $modVars);
     }

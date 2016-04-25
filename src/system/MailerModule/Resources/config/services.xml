@@ -25,7 +25,7 @@
         <service id="zikula_mailer_module.api.mailer" class="%zikula_mailer_module.api.mailer.class%">
             <argument type="service" id="translator.default" />
             <argument type="service" id="event_dispatcher" />
-            <argument>%swiftmailer%</argument>
+            <argument type="service" id="zikula.dynamic_config_dumper" />
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="mailer" />
             <argument type="service" id="zikula_permissions_module.api.permission" />

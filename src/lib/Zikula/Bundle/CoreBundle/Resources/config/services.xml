@@ -10,6 +10,8 @@
         <parameter key="controller_resolver.class">Zikula\Bundle\CoreBundle\Controller\ControllerResolver</parameter>
         <parameter key="zikula_core.controller.main_controller.class">Zikula\Bundle\CoreBundle\Controller\MainController</parameter>
         <parameter key="zikula_core.controller.legacy_controller.class">Zikula\Bundle\CoreBundle\Controller\LegacyController</parameter>
+        <parameter key="zikula.data_collector.class">Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector</parameter>
+        <parameter key="zikula.dynamic_config_dumper.class">Zikula\Bundle\CoreBundle\DynamicConfigDumper</parameter>
         <parameter key="zikula.cache_clearer.class">Zikula\Bundle\CoreBundle\CacheClearer</parameter>
         <parameter key="zikula.link_container_collector.class">Zikula\Core\LinkContainer\LinkContainerCollector</parameter>
     </parameters>
@@ -24,11 +26,11 @@
             <argument type="service" id="zikula_extensions_module.api.variable" />
             <argument type="service" id="zikula_permissions_module.api.permission" />
         </service>
-        <service id="data_collector.zikula_version" class="Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector" public="false">
+        <service id="data_collector.zikula_version" class="%zikula.data_collector.class%" public="false">
             <argument type="service" id="zikula_core.common.theme_engine" />
             <tag name="data_collector" template="CoreBundle:Collector:ZikulaVersion.html.twig" id="zikula_version" priority="300" />
         </service>
-        <service id="zikula.dynamic_config_dumper" class="Zikula\Bundle\CoreBundle\DynamicConfigDumper">
+        <service id="zikula.dynamic_config_dumper" class="%zikula.dynamic_config_dumper.class%">
             <argument type="expression">service('kernel').getRootDir() ~ "/config"</argument>
         </service>
         <service id="zikula.cache_clearer" class="%zikula.cache_clearer.class%">
