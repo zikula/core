@@ -14,7 +14,7 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Features:
     - Add help text, alert text and input groups to forms utilizing the provided form themes (#2846, #2847).
-    - Automatically initialise official Twig extensions (#2859).
+    - Automatically initialise official Twig extensions (#2866).
     - Extend mailer-related events (#2849)
       - MailerEvents::SEND_MESSAGE_START - Occurs when a new message should be sent.
       - MailerEvents::SEND_MESSAGE_PERFORM - Occurs right before a message is sent.
@@ -23,7 +23,7 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Core-2.0 Features:
     - AdminModule updated to Core-2.0 Spec (#2856, #2860).
-    - MailerModule updated to Core-2.0 Spec (#2849).
+    - MailerModule updated to Core-2.0 Spec (#2866).
     - PageLockModule updated to Core-2.0 Spec (#2862).
     - SearchModule updated to Core-2.0 Spec (#2853).
     - SettingsModule updated to Core-2.0 Spec (#2832).
