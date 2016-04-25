@@ -18,6 +18,7 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Core-2.0 Features:
     - AdminModule updated to Core-2.0 Spec.
+    - PageLockModule updated to Core-2.0 Spec.
     - SearchModule updated to Core-2.0 Spec.
     - SettingsModule updated to Core-2.0 Spec.
 

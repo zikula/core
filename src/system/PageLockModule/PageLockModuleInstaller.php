@@ -1,24 +1,21 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\PageLockModule;
 
-use DoctrineHelper;
+use Zikula\Core\AbstractExtensionInstaller;
 
 /**
  * Installation and upgrade routines for the pagelock module
  */
-class PageLockModuleInstaller extends \Zikula_AbstractInstaller
+class PageLockModuleInstaller extends AbstractExtensionInstaller
 {
     /**
      * initialize the module
@@ -28,9 +25,9 @@ class PageLockModuleInstaller extends \Zikula_AbstractInstaller
     public function install()
     {
         try {
-            DoctrineHelper::createSchema($this->entityManager, array(
+            $this->schemaTool->create([
                 'Zikula\PageLockModule\Entity\PageLockEntity',
-            ));
+            ]);
         } catch (\Exception $e) {
             return false;
         }
@@ -41,11 +38,11 @@ class PageLockModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * upgrade the module from an old version
      *
-     * @param string $oldversion version number string to upgrade from
+     * @param string $oldVersion version number string to upgrade from
      *
      * @return bool true as there are no upgrade routines currently
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
         return true;
     }
@@ -58,21 +55,19 @@ class PageLockModuleInstaller extends \Zikula_AbstractInstaller
     public function uninstall()
     {
         try {
-            DoctrineHelper::dropSchema($this->entityManager, array('Zikula\PageLockModule\Entity\PageLockEntity'));
+            $this->schemaTool->drop([
+                'Zikula\PageLockModule\Entity\PageLockEntity'
+            ]);
         } catch (\PDOException $e) {
-            $this->request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            $this->addFlash('error', $e->getMessage());
 
             return false;
         }
 
-        /**
-         * Delete any module variables.
-         */
+        // Delete any module variables.
         $this->delVars();
 
-        /**
-         * Deletion successful.
-         */
+        // Deletion successful.
         return true;
     }
 }
