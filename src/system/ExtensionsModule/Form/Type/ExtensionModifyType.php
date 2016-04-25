@@ -26,11 +26,27 @@ class ExtensionModifyType extends AbstractType
             ->add('displayname', 'Symfony\Component\Form\Extension\Core\Type\TextType')
             ->add('url', 'Symfony\Component\Form\Extension\Core\Type\TextType')
             ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextType')
-            ->add('defaults', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => __('Reload Defaults')
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Save'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
+            ->add('defaults', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Reload Defaults'),
+                'icon' => 'fa-refresh',
+                'attr' => [
+                    'class' => 'btn btn-warning'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
         ;
     }
 

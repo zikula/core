@@ -26,10 +26,12 @@ class BlockType extends AbstractType
      * @var BlockApi
      */
     private $blockApi;
+
     /**
      * @var BlockFilterApi
      */
     private $blockFilterApi;
+
     /**
      * @var
      */
@@ -78,8 +80,20 @@ class BlockType extends AbstractType
                 'label' => 'Custom filters',
                 'required' => false
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Save'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
         ;
     }
 

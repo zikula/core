@@ -31,19 +31,25 @@ class AdminViewFilterType extends AbstractType
                 'choices' => $options['positionChoices'],
                 'required' => false,
                 'placeholder' => $options['translator']->__('All'),
-                'attr' => ['class' => 'input-sm']
+                'attr' => [
+                    'class' => 'input-sm'
+                ]
             ])
             ->add('module', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => $options['moduleChoices'],
                 'required' => false,
                 'placeholder' => $options['translator']->__('All'),
-                'attr' => ['class' => 'input-sm']
+                'attr' => [
+                    'class' => 'input-sm'
+                ]
             ])
             ->add('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => \ZLanguage::getInstalledLanguageNames(),
                 'required' => false,
                 'placeholder' => $options['translator']->__('All'),
-                'attr' => ['class' => 'input-sm']
+                'attr' => [
+                    'class' => 'input-sm'
+                ]
             ])
             ->add('active', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => [
@@ -52,12 +58,16 @@ class AdminViewFilterType extends AbstractType
                 ],
                 'required' => false,
                 'placeholder' => $options['translator']->__('All'),
-                'attr' => ['class' => 'input-sm']
+                'attr' => [
+                    'class' => 'input-sm'
+                ]
             ])
-            ->add('filterButton', 'submit', [
+            ->add('filterButton', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $options['translator']->__('Filter'),
                 'icon' => 'fa-filter fa-lg',
-                'label' => __('Filter'),
-                'attr' => ['class' => "btn btn-default btn-sm"]
+                'attr' => [
+                    'class' => 'btn btn-default btn-sm'
+                ]
             ])
         ;
     }

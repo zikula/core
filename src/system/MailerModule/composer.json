@@ -1,6 +1,7 @@
 {
     "name": "zikula/mailer-module",
-    "description": "Mailer Module",
+    "version": "1.5.0",
+    "description": "Mailer module, provides mail API and mail setting administration.",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
     "authors": [
@@ -17,8 +18,17 @@
     },
     "extra": {
         "zikula": {
+            "class": "Zikula\\MailerModule\\ZikulaMailerModule",
+            "core-compatibility": ">=1.4.1",
+            "displayname": "Mailer Module",
             "url": "mailer",
-            "class": "Zikula\\MailerModule\\ZikulaMailerModule"
+            "capabilities": {
+                "admin": {"route": "zikulamailermodule_config_config"},
+                "hook_subscriber": {"class": "Zikula\\MailerModule\\Container\\HookContainer"}
+            },
+            "securityschema": {
+                "ZikulaMailerModule::": "::"
+            }
         }
     }
 }

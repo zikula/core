@@ -38,7 +38,7 @@ class ModuleHeaderFunction
      *
      * Examples:
      *
-     * <samp>{( moduleHeader() }}</samp>
+     * <samp>{{ moduleHeader() }}</samp>
      *
      * @param string $type Type of header (defaults to 'user')
      * @param string $title Title to display in header (optional, defaults to module name)

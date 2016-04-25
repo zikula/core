@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\ExtensionsModule\Container;
@@ -24,21 +21,23 @@ class LinkContainer implements LinkContainerInterface
      * @var Translator
      */
     private $translator;
+
     /**
      * @var RouterInterface
      */
     private $router;
+
     /**
      * @var PermissionApi
      */
     private $permissionApi;
 
     /**
-     * constructor.
+     * LinkContainer constructor.
      *
-     * @param $translator
-     * @param RouterInterface $router
-     * @param PermissionApi $permissionApi
+     * @param Translator      $translator    Translator service instance.
+     * @param RouterInterface $router        RouterInterface service instance.
+     * @param PermissionApi   $permissionApi PermissionApi service instance.
      */
     public function __construct($translator, RouterInterface $router, PermissionApi $permissionApi)
     {
@@ -71,56 +70,77 @@ class LinkContainer implements LinkContainerInterface
      */
     private function getAdmin()
     {
-        $links = array();
+        $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulaextensionsmodule_module_viewmodulelist'),
-                'text' => $this->translator->__('Extension List'),
-                'icon' => 'list'
-            ];
-
-            $links[] = array(
-                'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins'),
-                'text' => $this->translator->__('Plugins list'),
-                'icon' => 'table',
-                'links' => array(
-                    array('url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins'),
-                        'text' => $this->translator->__('All')),
-                    array('url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => \PluginUtil::NOTINSTALLED)),
-                        'text' => $this->translator->__('Not installed')),
-                    array('url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => \PluginUtil::DISABLED)),
-                        'text' => $this->translator->__('Inactive')),
-                    array('url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => \PluginUtil::ENABLED)),
-                        'text' => $this->translator->__('Active'))
-                ));
-
-            $links[] = array(
-                'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true)),
-                'text' => $this->translator->__('System Plugins'),
-                'icon' => 'table',
-                'links' => array(
-                    array('url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true)),
-                        'text' => $this->translator->__('All')),
-                    array('url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true, 'state' => \PluginUtil::NOTINSTALLED)),
-                        'text' => $this->translator->__('Not installed')),
-                    array('url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true, 'state' => \PluginUtil::DISABLED)),
-                        'text' => $this->translator->__('Inactive')),
-                    array('url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', array('systemplugins' => true, 'state' => \PluginUtil::ENABLED)),
-                        'text' => $this->translator->__('Active'))
-                ));
-
-            $links[] = array(
-                'url' => $this->router->generate('zikulaextensionsmodule_config_config'),
-                'text' => $this->translator->__('Settings'),
-                'icon' => 'wrench');
+        if (!$this->permissionApi->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
+            return $links;
         }
+
+        $links[] = [
+            'url' => $this->router->generate('zikulaextensionsmodule_module_viewmodulelist'),
+            'text' => $this->translator->__('Extension List'),
+            'icon' => 'list'
+        ];
+
+        $links[] = [
+            'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins'),
+            'text' => $this->translator->__('Plugins list'),
+            'icon' => 'table',
+            'links' => [
+                [
+                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins'),
+                    'text' => $this->translator->__('All')
+                ],
+                [
+                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['state' => \PluginUtil::NOTINSTALLED]),
+                    'text' => $this->translator->__('Not installed')
+                ],
+                [
+                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['state' => \PluginUtil::DISABLED]),
+                    'text' => $this->translator->__('Inactive')
+                ],
+                [
+                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['state' => \PluginUtil::ENABLED]),
+                    'text' => $this->translator->__('Active')
+                ]
+            ]
+        ];
+
+        $links[] = [
+            'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['systemplugins' => true]),
+            'text' => $this->translator->__('System Plugins'),
+            'icon' => 'table',
+            'links' => [
+                [
+                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['systemplugins' => true]),
+                    'text' => $this->translator->__('All')
+                ],
+                [
+                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['systemplugins' => true, 'state' => \PluginUtil::NOTINSTALLED]),
+                    'text' => $this->translator->__('Not installed')
+                ],
+                [
+                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['systemplugins' => true, 'state' => \PluginUtil::DISABLED]),
+                    'text' => $this->translator->__('Inactive')
+                ],
+                [
+                    'url' => $this->router->generate('zikulaextensionsmodule_admin_viewplugins', ['systemplugins' => true, 'state' => \PluginUtil::ENABLED]),
+                    'text' => $this->translator->__('Active')
+                ]
+            ]
+        ];
+
+        $links[] = [
+            'url' => $this->router->generate('zikulaextensionsmodule_config_config'),
+            'text' => $this->translator->__('Settings'),
+            'icon' => 'wrench'
+        ];
 
         return $links;
     }
 
     /**
-     * set the BundleName as required buy the interface
+     * set the BundleName as required by the interface
      *
      * @return string
      */

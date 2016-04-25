@@ -390,8 +390,20 @@ class ModuleController extends AbstractController
         $blocks = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['module' => $extension]);
 
         $form = $this->createFormBuilder()
-            ->add('uninstall', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Delete'])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Cancel'])
+            ->add('uninstall', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Delete'),
+                'icon' => 'fa-trash-o',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
             ->getForm();
         $form->handleRequest($request);
 
