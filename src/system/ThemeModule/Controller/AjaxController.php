@@ -13,10 +13,11 @@
 
 namespace Zikula\ThemeModule\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zikula\Core\Response\Ajax\AjaxResponse;
+use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
+use Zikula\Core\Response\Ajax\AjaxResponse;
 
 /**
  * @deprecated at Core-2.0 This feature will not be available in Core-2.0
@@ -24,7 +25,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotatio
  *
  * Ajax controllers for the theme module
  */
-class AjaxController extends \Zikula_Controller_AbstractAjax
+class AjaxController extends AbstractController
 {
     /**
      * @Route("/dispatch", options={"expose"=true})
@@ -37,7 +38,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function dispatchAction()
     {
-        $event = $this->getDispatcher()->dispatch('theme.ajax_request', new GenericEvent());
+        $event = $this->get('event_dispatcher')->dispatch('theme.ajax_request', new GenericEvent());
         if (!$event->isPropagationStopped()) {
             throw new NotFoundHttpException($this->__('No event handlers responded.'));
         }

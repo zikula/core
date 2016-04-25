@@ -45,7 +45,7 @@ class VarController extends AbstractController
         if (!file_exists($themeVarsPath)) {
             $this->addFlash('warning', $this->__f('%theme% has no configuration.', array('%theme%' => $themeName)));
 
-            return $this->redirect($this->generateUrl('zikulathememodule_theme_view'));
+            return $this->redirectToRoute('zikulathememodule_theme_view');
         }
         $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
         /** @var \Symfony\Component\Form\FormBuilder $formBuilder */
@@ -56,13 +56,32 @@ class VarController extends AbstractController
                 $formBuilder->add($fieldName, $definitions['type'], $options);
             }
         }
-        $formBuilder->add('save', 'submit', array('label' => $this->__('Save'), 'icon' => 'fa-check fa-lg', 'attr' => array('class' => "btn btn-success")))
-            ->add('toDefault', 'submit', array('label' => $this->__('Set to defaults'), 'icon' => 'fa-refresh fa-lg', 'attr' => array('class' => "btn btn-primary")))
-            ->add('cancel', 'submit', array('label' => $this->__('Cancel'), 'icon' => 'fa-times fa-lg', 'attr' => array('class' => "btn btn-danger")));
+        $formBuilder
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Save'),
+                'icon' => 'fa-check fa-lg',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('toDefault', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Set to defaults'),
+                'icon' => 'fa-refresh fa-lg',
+                'attr' => [
+                    'class' => 'btn btn-primary'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times fa-lg',
+                'attr' => [
+                    'class' => 'btn btn-danger'
+                ]
+            ])
+        ;
         $form = $formBuilder->getForm();
 
-        $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
                 // pseudo-hack to save theme vars in to modvars table
                 $this->get('zikula_extensions_module.api.variable')->setAll($themeName, $form->getData());
@@ -74,7 +93,7 @@ class VarController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulathememodule_theme_view'));
+            return $this->redirectToRoute('zikulathememodule_theme_view');
         }
 
         return [

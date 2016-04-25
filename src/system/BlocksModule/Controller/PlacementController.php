@@ -27,7 +27,6 @@ use Zikula\Core\Response\Ajax\ForbiddenResponse;
 
 /**
  * Class PlacementController
- * @package Zikula\BlocksModule\Controller
  * @Route("/admin/placement")
  */
 class PlacementController extends AbstractController

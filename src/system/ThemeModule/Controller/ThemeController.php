@@ -79,7 +79,7 @@ class ThemeController extends AbstractController
         $this->getDoctrine()->getManager()->flush();
         $this->get('zikula.cache_clearer')->clear('symfony.config');
 
-        return $this->redirect($this->generateUrl('zikulathememodule_theme_view'));
+        return $this->redirectToRoute('zikulathememodule_theme_view');
     }
 
     /**
@@ -108,14 +108,24 @@ class ThemeController extends AbstractController
                 'label' => $this->__('Override users\' theme settings'),
                 'required' => false,
             ])
-            ->add('Accept', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
-            ->add('Cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
+            ->add('accept', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Accept'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
             ->getForm();
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            if ($form->get('Accept')->isClicked()) {
+        if ($form->handleRequest($request)->isValid()) {
+            if ($form->get('accept')->isClicked()) {
                 $data = $form->getData();
                 // Set the default theme
                 $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'Default_Theme', $data['themeName']);
@@ -132,11 +142,11 @@ class ThemeController extends AbstractController
                 $this->get('zikula.cache_clearer')->clear('symfony.config');
                 $this->addFlash('status', $this->__('Done! Changed default theme.'));
             }
-            if ($form->get('Cancel')->isClicked()) {
+            if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulathememodule_theme_view'));
+            return $this->redirectToRoute('zikulathememodule_theme_view');
         }
 
         return [
@@ -173,14 +183,24 @@ class ThemeController extends AbstractController
                 'label' => $this->__('Also delete theme files, if possible'),
                 'required' => false,
             ])
-            ->add('Accept', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
-            ->add('Cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
+            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Delete'),
+                'icon' => 'fa-trash-o',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
             ->getForm();
 
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            if ($form->get('Accept')->isClicked()) {
+        if ($form->handleRequest($request)->isValid()) {
+            if ($form->get('delete')->isClicked()) {
                 $data = $form->getData();
                 $themeEntity = $this->getDoctrine()->getRepository('ZikulaThemeModule:ThemeEntity')->findOneBy(['name' => $themeName]);
                 if (empty($themeEntity)) {
@@ -210,11 +230,11 @@ class ThemeController extends AbstractController
                 $this->get('zikula.cache_clearer')->clear('symfony.config');
                 $this->addFlash('status', $data['deletefiles'] ? $this->__('Done! Deleted the theme.') : $this->__('Done! Deactivated the theme.'));
             }
-            if ($form->get('Cancel')->isClicked()) {
+            if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulathememodule_theme_view'));
+            return $this->redirectToRoute('zikulathememodule_theme_view');
         }
 
         return [

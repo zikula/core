@@ -13,27 +13,25 @@
 
 namespace Zikula\ThemeModule\Controller;
 
+use DataUtil;
 use ModUtil;
 use System;
-use SecurityUtil;
-use UserUtil;
 use ThemeUtil;
-use DataUtil;
-use Zikula_View;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use UserUtil;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-// used in annotations - do not remove
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * User controllers for the theme module
  * @deprecated at Core-2.0 This controller and feature of 'theme switching' will not be converted and will not be
  *   available in Core-2.0
  */
-class UserController extends \Zikula_AbstractController
+class UserController extends AbstractController
 {
     /**
      * @Route("")
@@ -49,22 +47,23 @@ class UserController extends \Zikula_AbstractController
      */
     public function indexAction(Request $request)
     {
+        $variableApi = $this->get('zikula_extensions_module.api.variable');
         // check if theme switching is allowed
-        if (!System::getVar('theme_change')) {
-            $request->getSession()->getFlashBag()->add('warning', $this->__('Notice: Theme switching is currently disabled.'));
+        if (!$variableApi->get(VariableApi::CONFIG, 'theme_change')) {
+            $this->addFlash('warning', $this->__('Notice: Theme switching is currently disabled.'));
 
             return new RedirectResponse(System::normalizeUrl(System::getHomepageUrl()));
         }
 
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
             throw new AccessDeniedException();
         }
 
         // get our input
-        $startnum = $request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : 1);
+        $startnum = $request->query->getDigits('startnum', isset($args['startnum']) ? $args['startnum'] : 1);
 
         // we need this value multiple times, so we keep it
-        $itemsperpage = $this->getVar('itemsperpage');
+        $itemsPerPage = $variableApi->get('ZikulaThemeModule', 'itemsperpage');
 
         // get some use information about our environment
         $currenttheme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
@@ -72,7 +71,7 @@ class UserController extends \Zikula_AbstractController
         // get all themes in our environment
         $allthemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
 
-        $previewthemes = array();
+        $previewThemes = [];
         $currentthemepic = null;
         foreach ($allthemes as $key => $themeinfo) {
             $themename = $themeinfo['name'];
@@ -87,22 +86,20 @@ class UserController extends \Zikula_AbstractController
                 $currentthemepic = $themepic;
                 unset($allthemes[$key]);
             } else {
-                $previewthemes[$themename] = $themeinfo;
+                $previewThemes[$themename] = $themeinfo;
             }
         }
 
-        $previewthemes = array_slice($previewthemes, $startnum - 1, $itemsperpage);
-
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $previewThemes = array_slice($previewThemes, $startnum - 1, $itemsPerPage);
 
         $this->view->assign('currentthemepic', $currentthemepic)
                    ->assign('currenttheme', $currenttheme)
-                   ->assign('themes', $previewthemes)
-                   ->assign('defaulttheme', ThemeUtil::getInfo(ThemeUtil::getIDFromName(System::getVar('Default_Theme'))));
+                   ->assign('themes', $previewThemes)
+                   ->assign('defaulttheme', ThemeUtil::getInfo(ThemeUtil::getIDFromName($variableApi->get(VariableApi::CONFIG, 'Default_Theme'))));
 
         // assign the values for the pager plugin
         $this->view->assign('pager', array('numitems' => count($allthemes),
-                                           'itemsperpage' => $itemsperpage));
+                                           'itemsperpage' => $itemsPerPage));
 
         return new Response($this->view->fetch('User/main.tpl'));
     }
@@ -119,8 +116,8 @@ class UserController extends \Zikula_AbstractController
     public function resettodefaultAction(Request $request)
     {
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'resettodefault');
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Theme has been reset to the default site theme.'));
+        $this->addFlash('status', $this->__('Done! Theme has been reset to the default site theme.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_user_index', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_user_index');
     }
 }

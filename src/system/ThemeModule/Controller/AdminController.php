@@ -13,23 +13,24 @@
 
 namespace Zikula\ThemeModule\Controller;
 
-use Zikula_View;
-use Modutil;
-use SecurityUtil;
-use ThemeUtil;
-use System;
+use BlockUtil;
 use CacheUtil;
 use DataUtil;
-use ZLanguage;
-use BlockUtil;
+use Modutil;
+use SecurityUtil;
+use System;
+use ThemeUtil;
+use Zikula_View;
 use Zikula_View_Theme;
+use ZLanguage;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; // used in annotations - do not remove
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Core\Controller\AbstractController;
 
 /**
  * @deprecated remove at Core-2.0
@@ -37,7 +38,7 @@ use Symfony\Component\Routing\RouterInterface;
  *
  * administrative controllers for the theme module
  */
-class AdminController extends \Zikula_AbstractController
+class AdminController extends AbstractController
 {
     /**
      * the theme container
@@ -66,7 +67,7 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in view()
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_theme_view', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_theme_view');
     }
 
     /**
@@ -81,7 +82,7 @@ class AdminController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check will be done in view()
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_theme_view', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_theme_view');
     }
 
     /**
@@ -109,15 +110,15 @@ class AdminController extends \Zikula_AbstractController
             if (!file_exists($zpath) || is_writable($zpath)) {
                 ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'createrunningconfig', array('themename' => $themeinfo['name']));
 
-                $request->getSession()->getFlashBag()->add('status', $this->__f('Notice: The changes made via Admin Panel will be saved on \'%1$s\' because it seems that the .ini files on \'%2$s\' are not writable.', array($zpath, $tpath)));
+                $this->addFlash('status', $this->__f('Notice: The changes made via Admin Panel will be saved on \'%1$s\' because it seems that the .ini files on \'%2$s\' are not writable.', array($zpath, $tpath)));
             } else {
-                $request->getSession()->getFlashBag()->add('error', $this->__f('Error! Cannot write any configuration changes. Make sure that the .ini files on \'%1$s\' or \'%2$s\', and the folder itself, are writable.', array($tpath, $zpath)));
+                $this->addFlash('error', $this->__f('Error! Cannot write any configuration changes. Make sure that the .ini files on \'%1$s\' or \'%2$s\', and the folder itself, are writable.', array($tpath, $zpath)));
             }
         } else {
-            $request->getSession()->getFlashBag()->add('status', $this->__f('Notice: Seems that your %1$s\'s .ini files are writable. Be sure that there are no .ini files on \'%2$s\' because if so, the Theme Engine will consider them and not your %1$s\'s ones.', array($themeinfo['name'], $zpath)));
+            $this->addFlash('status', $this->__f('Notice: Seems that your %1$s\'s .ini files are writable. Be sure that there are no .ini files on \'%2$s\' because if so, the Theme Engine will consider them and not your %1$s\'s ones.', array($themeinfo['name'], $zpath)));
         }
 
-        $request->getSession()->getFlashBag()->add('status', $this->__f("If the system cannot write on any .ini file, the changes will be saved on '%s' and the Theme Engine will use it.", $zpath));
+        $this->addFlash('status', $this->__f("If the system cannot write on any .ini file, the changes will be saved on '%s' and the Theme Engine will use it.", $zpath));
     }
 
     /**
@@ -136,7 +137,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifyAction(Request $request, $themename)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -181,7 +182,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::settings", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::settings', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -199,10 +200,10 @@ class AdminController extends \Zikula_AbstractController
         // rewrite the variables to the running config
         $updatesettings = ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'updatesettings', array('theme' => $themename, 'themeinfo' => $newthemeinfo));
         if ($updatesettings) {
-            $request->getSession()->getFlashBag()->add('status', $this->__('Done! Updated theme settings.'));
+            $this->addFlash('status', $this->__('Done! Updated theme settings.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_theme_view', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_theme_view');
     }
 
     /**
@@ -224,7 +225,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::variables", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::variables', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -288,7 +289,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::variables", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::variables', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -333,7 +334,7 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => $filename));
 
         // set a status message
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved your changes.'));
+        $this->addFlash('status', $this->__('Done! Saved your changes.'));
 
         return new RedirectResponse($returnurl);
     }
@@ -357,7 +358,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::colors", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::colors', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -427,7 +428,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::palettes", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::palettes', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -452,18 +453,18 @@ class AdminController extends \Zikula_AbstractController
                 'color4' => $color4, 'color5' => $color5, 'color6' => $color6, 'color7' => $color7, 'color8' => $color8,
                 'sepcolor' => $sepcolor, 'link' => $link, 'vlink' => $vlink, 'hover' => $hover);
         } else {
-            $request->getSession()->getFlashBag()->add('error', $this->__('Notice: Please make sure you type an entry in every field. Your palette cannot be saved if you do not.'));
+            $this->addFlash('error', $this->__('Notice: Please make sure you type an entry in every field. Your palette cannot be saved if you do not.'));
 
-            return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_palettes', array('themename' => $themename), RouterInterface::ABSOLUTE_URL));
+            return $this->redirectToRoute('zikulathememodule_admin_palettes', ['themename' => $themename]);
         }
 
         // rewrite the settings to the running config
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
 
         // set a status message
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved your changes.'));
+        $this->addFlash('status', $this->__('Done! Saved your changes.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_palettes', array('themename' => $themename), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_admin_palettes', ['themename' => $themename]);
     }
 
     /**
@@ -488,7 +489,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::pageconfigurations', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -568,7 +569,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::pageconfigurations', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -702,7 +703,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::pageconfigurations', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -732,9 +733,9 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfiguration, 'has_sections' => true, 'file' => $filename));
 
         // set a status message
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved your changes.'));
+        $this->addFlash('status', $this->__('Done! Saved your changes.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_pageconfigurations', array('themename' => $themename), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_admin_pageconfigurations', ['themename' => $themename]);
     }
 
     /**
@@ -796,7 +797,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::pageconfigurations', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -907,7 +908,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkIfMainThemeFileExists($themeinfo);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::pageconfigurations', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -953,9 +954,9 @@ class AdminController extends \Zikula_AbstractController
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
 
         // set a status message
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved your changes.'));
+        $this->addFlash('status', $this->__('Done! Saved your changes.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_pageconfigurations', array('themename' => $themename), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_admin_pageconfigurations', ['themename' => $themename]);
     }
 
     /**
@@ -987,7 +988,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::pageconfigurations", ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themename . '::pageconfigurations', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
 
@@ -1010,10 +1011,10 @@ class AdminController extends \Zikula_AbstractController
         // The return value of the function is checked
         if (ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deletepageconfigurationassignment', array('themename' => $themename, 'pcname' => $pcname))) {
             // Success
-            $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted it.'));
+            $this->addFlash('status', $this->__('Done! Deleted it.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_pageconfigurations', array('themename' => $themename), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_admin_pageconfigurations', ['themename' => $themename]);
     }
 
     /**
@@ -1029,7 +1030,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifyconfigAction()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -1041,30 +1042,33 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // register the renderer object allow access to various view values
-        $this->view->register_object('render', $this->view);
+        $view = Zikula_View::getInstance('ZikulaThemeModule');
+        $view->register_object('render', $view);
 
         // check for a .htaccess file
         if (file_exists('.htaccess')) {
-            $this->view->assign('htaccess', 1);
+            $view->assign('htaccess', 1);
         } else {
-            $this->view->assign('htaccess', 0);
+            $view->assign('htaccess', 0);
         }
 
-        $this->view->assign('currentTheme', $this->get('zikula_core.common.theme_engine')->getTheme());
+        $view->assign('currentTheme', $this->get('zikula_core.common.theme_engine')->getTheme());
 
         // assign the output variables and fetch the template
-        return new Response($this->view->assign('mods', $mods)
+        return new Response(
+            $view->assign('mods', $mods)
                 // assign all module vars
                 ->assign($this->getVars())
                 // assign admintheme var
-                ->assign('admintheme', ModUtil::getVar('Admin', 'admintheme', ''))
+                ->assign('admintheme', ModUtil::getVar('ZikulaAdminModule', 'admintheme', ''))
                 // assign an csrftoken for the clear cache/compile links
                 ->assign('csrftoken', SecurityUtil::generateCsrfToken($this->container, true))
                 // assign the core config var
                 ->assign('theme_change', System::getVar('theme_change'))
                 // extracted list of non-cached mods
                 ->assign('modulesnocache', array_flip(explode(',', $this->getVar('modulesnocache'))))
-                ->fetch('Admin/modifyconfig.tpl'));
+                ->fetch('Admin/modifyconfig.tpl')
+        );
     }
 
     /**
@@ -1106,7 +1110,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -1202,13 +1206,14 @@ class AdminController extends \Zikula_AbstractController
         $this->setVar('render_expose_template', $render_expose_template);
 
         // The configuration has been changed, so we clear all caches for this module.
-        $this->view->clear_compiled();
-        $this->view->clear_all_cache();
+        $view = Zikula_View::getInstance('ZikulaThemeModule');
+        $view->clear_compiled();
+        $view->clear_all_cache();
 
         // the module configuration has been updated successfuly
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
+        $this->addFlash('status', $this->__('Done! Saved module configuration.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_admin_modifyconfig');
     }
 
     /**
@@ -1232,7 +1237,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -1240,12 +1245,12 @@ class AdminController extends \Zikula_AbstractController
         $res = $theme->clear_compiled();
 
         if ($res) {
-            $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted theme engine compiled templates.'));
+            $this->addFlash('status', $this->__('Done! Deleted theme engine compiled templates.'));
         } else {
-            $request->getSession()->getFlashBag()->add('error', $this->__('Error! Failed to clear theme engine compiled templates.'));
+            $this->addFlash('error', $this->__('Error! Failed to clear theme engine compiled templates.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_config_config');
     }
 
     /**
@@ -1269,7 +1274,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -1285,22 +1290,22 @@ class AdminController extends \Zikula_AbstractController
                 $themedir = $themearr['directory'];
                 $res = $theme->clear_cache(null, $cacheid, null, null, $themedir);
                 if ($res) {
-                    $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted theme engine cached templates.').' '.$cacheid.', '.$themedir);
+                    $this->addFlash('status', $this->__('Done! Deleted theme engine cached templates.').' '.$cacheid.', '.$themedir);
                 } else {
-                    $request->getSession()->getFlashBag()->add('error', $this->__('Error! Failed to clear theme engine cached templates.').' '.$cacheid.', '.$themedir);
+                    $this->addFlash('error', $this->__('Error! Failed to clear theme engine cached templates.').' '.$cacheid.', '.$themedir);
                 }
             }
         } else {
             // this clear all cache for all themes
             $res = $theme->clear_all_cache();
             if ($res) {
-                $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted theme engine cached templates.'));
+                $this->addFlash('status', $this->__('Done! Deleted theme engine cached templates.'));
             } else {
-                $request->getSession()->getFlashBag()->add('error', $this->__('Error! Failed to clear theme engine cached templates.'));
+                $this->addFlash('error', $this->__('Error! Failed to clear theme engine cached templates.'));
             }
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_config_config');
     }
 
     /**
@@ -1324,16 +1329,16 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         $theme = Zikula_View_Theme::getInstance();
         $theme->clear_cssjscombinecache();
 
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted CSS/JS combination cached files.'));
+        $this->addFlash('status', $this->__('Done! Deleted CSS/JS combination cached files.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_config_config');
     }
 
     /**
@@ -1357,7 +1362,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -1365,12 +1370,12 @@ class AdminController extends \Zikula_AbstractController
         $res = $theme->clear_theme_config();
 
         if ($res) {
-            $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted theme engine configurations.'));
+            $this->addFlash('status', $this->__('Done! Deleted theme engine configurations.'));
         } else {
-            $request->getSession()->getFlashBag()->add('error', $this->__('Error! Failed to clear theme engine configurations.'));
+            $this->addFlash('error', $this->__('Error! Failed to clear theme engine configurations.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_config_config');
     }
 
     /**
@@ -1394,19 +1399,20 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $res = $this->view->clear_compiled();
+        $view = Zikula_View::getInstance('ZikulaThemeModule');
+        $res = $view->clear_compiled();
 
         if ($res) {
-            $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted rendering engine compiled templates.'));
+            $this->addFlash('status', $this->__('Done! Deleted rendering engine compiled templates.'));
         } else {
-            $request->getSession()->getFlashBag()->add('error', $this->__('Error! Failed to clear rendering engine compiled templates.'));
+            $this->addFlash('error', $this->__('Error! Failed to clear rendering engine compiled templates.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_config_config');
     }
 
     /**
@@ -1430,19 +1436,20 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $res = $this->view->clear_all_cache();
+        $view = Zikula_View::getInstance('ZikulaThemeModule');
+        $res = $view->clear_all_cache();
 
         if ($res) {
-            $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted rendering engine cached pages.'));
+            $this->addFlash('status', $this->__('Done! Deleted rendering engine cached pages.'));
         } else {
-            $request->getSession()->getFlashBag()->add('error', $this->__('Error! Failed to clear rendering engine cached pages.'));
+            $this->addFlash('error', $this->__('Error! Failed to clear rendering engine cached pages.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_config_config');
     }
 
     /**
@@ -1463,15 +1470,15 @@ class AdminController extends \Zikula_AbstractController
     public function clearallcompiledcachesAction(Request $request)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
 
-        $request->getSession()->getFlashBag()->add('status', $this->__('Done! Cleared all cache and compile directories.'));
+        $this->addFlash('status', $this->__('Done! Cleared all cache and compile directories.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulathememodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return $this->redirectToRoute('zikulathememodule_config_config');
     }
 
     /**

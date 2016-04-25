@@ -24,7 +24,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class AdminController
- * @package Zikula\BlocksModule\Controller
  * @Route("/admin")
  */
 class AdminController extends AbstractController
@@ -37,7 +36,7 @@ class AdminController extends AbstractController
     {
         @trigger_error('The zikulablocksmodule_admin_index route is deprecated. please use zikulablocksmodule_admin_view instead.', E_USER_DEPRECATED);
 
-        return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+        return $this->redirectToRoute('zikulablocksmodule_admin_view');
     }
 
     /**
@@ -110,46 +109,5 @@ class AdminController extends AbstractController
         $templateParameters['filterForm'] = $filterForm->createView();
 
         return $templateParameters;
-    }
-
-    /**
-     * @Route("/config")
-     * @Theme("admin")
-     * @Template
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function configAction(Request $request)
-    {
-        if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        $form = $this->createFormBuilder($this->getVars())
-            ->add('collapseable', 'checkbox', ['label' => __('Enable block collapse icons'),
-                'required' => false
-            ])
-            ->add('save', 'submit', ['label' => 'Save'])
-            ->add('cancel', 'submit', ['label' => 'Cancel'])
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            if ($form->get('save')->isClicked()) {
-                $this->setVars($form->getData());
-                $this->addFlash('status', __('Done! Module configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', __('Operation cancelled.'));
-            }
-
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
-        }
-
-        return [
-            'form' => $form->createView(),
-        ];
     }
 }
