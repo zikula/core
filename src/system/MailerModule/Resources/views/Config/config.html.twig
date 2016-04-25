@@ -1,0 +1,62 @@
+{% form_theme form with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<div class="container-fluid">
+    <div class="row">
+        <h3>
+            <span class="fa fa-wrench"></span>
+            {{ __('Settings') }}
+        </h3>
+
+        {# http://swiftmailer.org/docs/sending.html #}
+        {% if zikulamailermodule_hasProcessControlFunctions() != true %}
+            <div class='alert alert-danger'>
+                <h3>{gt text='WARNING'}</h3>
+                <p>{{ __f('The PHP functions, %s, that support SMTP and SENDMAIL do not appear to be functioning on this PHP installation. Please compile them and restart your server.', {'%s': '<code>proc_*</code>'}) }}</p>
+            </div>
+        {% endif %}
+        <p class="alert alert-info">
+            {{ __f('Mailer relies on %swiftmailer', {'%swiftmailer': '<a href="http://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fa fa-external-link"></i> SwiftMailer configuration</a>'})|raw }}
+        </p>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <legend>{{ __('General settings') }}</legend>
+            {{ form_row(form.transport) }}
+            {{ form_row(form.charset) }}
+            {{ form_row(form.encoding) }}
+            {{ form_row(form.html) }}
+            {{ form_row(form.wordwrap) }}
+            {{ form_row(form.enableLogging) }}
+        </fieldset>
+        <fieldset data-switch="zikulamailermodule_config[transport]" data-switch-value="smtp">
+            <legend>{{ __('SMTP settings') }}</legend>
+            {{ form_row(form.host) }}
+            {{ form_row(form.port) }}
+            {{ form_row(form.encryption) }}
+            {{ form_row(form.auth_mode) }}
+            <div data-switch="zikulamailermodule_config[auth_mode]" data-switch-value="login">
+                {{ form_row(form.username) }}
+                {{ form_row(form.password) }}
+            </div>
+        </fieldset>
+        <fieldset data-switch="zikulamailermodule_config[transport]" data-switch-value="gmail">
+            <legend>{{ __('Gmail settings') }}</legend>
+            {{ form_row(form.usernameGmail) }}
+            {{ form_row(form.passwordGmail) }}
+        </fieldset>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{{ adminFooter() }}

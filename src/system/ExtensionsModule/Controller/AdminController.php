@@ -316,10 +316,11 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Installed plugin.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => $state,
-                                                                              'sort'  => $sort,
-                                                                              'bymodule' => $module,
-                                                                              'systemplugins' => $systemplugins), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', [
+            'state' => $state,
+            'sort'  => $sort,
+            'bymodule' => $module,
+            'systemplugins' => $systemplugins], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -360,10 +361,11 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deactivated plugin.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => $state,
-                                                                              'sort'  => $sort,
-                                                                              'bymodule' => $module,
-                                                                              'systemplugins' => $systemplugins), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', [
+            'state' => $state,
+            'sort'  => $sort,
+            'bymodule' => $module,
+            'systemplugins' => $systemplugins], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -404,10 +406,11 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Activated plugin.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => $state,
-                                                                              'sort'  => $sort,
-                                                                              'bymodule' => $module,
-                                                                              'systemplugins' => $systemplugins), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', [
+            'state' => $state,
+            'sort'  => $sort,
+            'bymodule' => $module,
+            'systemplugins' => $systemplugins], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -448,10 +451,11 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! De-installed plugin.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => $state,
-                                                                              'sort'  => $sort,
-                                                                              'bymodule' => $module,
-                                                                              'systemplugins' => $systemplugins), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', [
+            'state' => $state,
+            'sort'  => $sort,
+            'bymodule' => $module,
+            'systemplugins' => $systemplugins], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -492,10 +496,11 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Upgraded plugin.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', array('state' => $state,
-                                                                              'sort'  => $sort,
-                                                                              'bymodule' => $module,
-                                                                              'systemplugins' => $systemplugins), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulaextensionsmodule_admin_viewplugins', [
+            'state' => $state,
+            'sort'  => $sort,
+            'bymodule' => $module,
+            'systemplugins' => $systemplugins], RouterInterface::ABSOLUTE_URL));
     }
 
     /**

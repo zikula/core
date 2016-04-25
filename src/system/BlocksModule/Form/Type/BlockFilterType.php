@@ -40,7 +40,9 @@ class BlockFilterType extends AbstractType
                 'choices' => $this->blockFilterApi->getFilterAttributeChoices(),
                 'choices_as_values' => true,
             ])
-            ->add('queryParameter', 'Symfony\Component\Form\Extension\Core\Type\TextType', ['required' => false])
+            ->add('queryParameter', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                'required' => false
+            ])
             ->add('comparator', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => [
                     '==' => '==',
@@ -54,7 +56,9 @@ class BlockFilterType extends AbstractType
                 ],
                 'choices_as_values' => true,
             ])
-            ->add('value', 'Symfony\Component\Form\Extension\Core\Type\TextType', ['required' => false])
+            ->add('value', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                'required' => false
+            ])
         ;
     }
 

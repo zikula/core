@@ -56,8 +56,20 @@ class ConfigController extends AbstractController
                 'mapped' => false,
                 'required' => false
             ])
-            ->add('save', 'submit', ['label' => $this->__('Save')])
-            ->add('cancel', 'submit', ['label' => $this->__('Cancel')])
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Save'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -76,7 +88,7 @@ class ConfigController extends AbstractController
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulaextensionsmodule_module_viewmodulelist'));
+            return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
         }
 
         return [

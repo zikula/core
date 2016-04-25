@@ -58,10 +58,10 @@ class PositionController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($positionEntity);
                 $em->flush();
-                $this->addFlash('status', __('Position saved!'));
+                $this->addFlash('status', $this->__('Position saved!'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', __('Operation cancelled.'));
+                $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');
@@ -90,8 +90,20 @@ class PositionController extends AbstractController
         }
 
         $form = $this->createFormBuilder()
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Delete'])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', ['label' => 'Cancel'])
+            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Delete'),
+                'icon' => 'fa-trash-o',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -101,10 +113,10 @@ class PositionController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($positionEntity);
                 $em->flush();
-                $this->addFlash('status', __('Done! Position deleted.'));
+                $this->addFlash('status', $this->__('Done! Position deleted.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', __('Operation cancelled.'));
+                $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');

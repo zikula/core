@@ -62,7 +62,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         } else {
             $request->getSession()->getFlashBag()->add('warning', __('Email settings are not yet configured. Please configure them below.'));
 
-            return new RedirectResponse($this->container->get('router')->generate('zikulamailermodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->container->get('router')->generate('zikulamailermodule_config_config', array(), RouterInterface::ABSOLUTE_URL));
         }
     }
 

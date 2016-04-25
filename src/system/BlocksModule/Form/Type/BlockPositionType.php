@@ -25,8 +25,20 @@ class BlockPositionType extends AbstractType
             ->add('pid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType')
             ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextType')
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
+            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Save'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
+            ])
+            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+                'label' => $this->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
         ;
     }
 
