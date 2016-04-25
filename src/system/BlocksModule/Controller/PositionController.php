@@ -23,7 +23,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class PositionController
- * @package Zikula\BlocksModule\Controller
  * @Route("/admin/position")
  */
 class PositionController extends AbstractController
@@ -65,7 +64,7 @@ class PositionController extends AbstractController
                 $this->addFlash('status', __('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return [
@@ -108,7 +107,7 @@ class PositionController extends AbstractController
                 $this->addFlash('status', __('Operation cancelled.'));
             }
 
-            return $this->redirect($this->generateUrl('zikulablocksmodule_admin_view'));
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return [
