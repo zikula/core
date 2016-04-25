@@ -1,0 +1,64 @@
+{% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+    {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/ZikulaUsersModule.Admin.MailUsers.js')) }}
+{% endif %}
+
+{{ adminHeader() }}
+<h3>
+    <span class="fa fa-list"></span>
+    {{ __('Search results') }}
+</h3>
+
+<form id="users_searchresults" class="form-horizontal" role="form" method="post" action="{{ path('zikulausersmodule_admin_deleteusers') }}">
+    <div>
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+                    <th>&nbsp;</th>
+                    {% endif %}
+                    <th>{{ __('User name') }}</th>
+                    <th>{{ __('Email address') }}</th>
+                    <th class="text-right">{{ __('Actions') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+                    <td>{% if (user.uid > 2) %}<input type="checkbox" class="user-checkboxes" name="userid[]" value="{{ user.uid }}" />{% endif %}</td>
+                    {% endif %}
+                    <td>{{ user.uname }}</td>
+                    <td>
+                        {% if (user.email is defined) and (user.uid != 1) %}
+                        {{ user.email }}
+                        {% endif %}
+                    </td>
+					<td class="actions">
+						{% if hasPermission('ZikulaUsersModule', user.uname~'::'~user.uid, 'ACCESS_EDIT') %}
+                            <a class="fa fa-pencil tooltips" href="{{ path('zikulausersmodule_useradministration_modify', {user:user.uid}) }}" title="{{ __f('Edit %sub%', {"%sub%": user.uname}) }}"></a>
+                        {% endif %}
+                        {% if currentUser.uid != user.uid and hasPermission('ZikulaUsersModule', user.uname~'::'~user.uid, 'ACCESS_DELETE') %}
+                            <a class="fa fa-trash-o fa-fw tooltips" href="{{ path('zikulausersmodule_admin_deleteusers', {userid:user.uid}) }}" title="{{ __f('Delete %sub%', {"%sub%": user.uname}) }}"></a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+        <p><a href="#" id="select-all">{{ __('Select all') }}</a> / <a href="#" id="deselect-all">{{ __('De-select all') }}</a></p>
+        {% endif %}
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+                    <button type="submit" class="btn btn-warning fa fa-trash-o" > {{ __('Delete selected users') }}</button>
+                {% endif %}
+                <a class="btn btn-default fa fa-refresh" href="{{ path('zikulausersmodule_admin_index') }}"> {{ __('Return to User Administration') }}</a>
+            </div>
+        </div>
+    </div>
+</form>
+{{ adminFooter() }}
