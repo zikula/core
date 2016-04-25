@@ -13,17 +13,19 @@ CHANGELOG - ZIKULA 1.4.x
     - Fix error on creation of new ExtendedMenublock
 
  - Features:
-    - Add help text, alert text and input groups to forms utilizing the provided form themes.
-    - Automatically initialise official Twig extensions.
+    - Add help text, alert text and input groups to forms utilizing the provided form themes (#2846, #2847).
+    - Automatically initialise official Twig extensions (#2859).
 
  - Core-2.0 Features:
-    - AdminModule updated to Core-2.0 Spec.
-    - PageLockModule updated to Core-2.0 Spec.
-    - SearchModule updated to Core-2.0 Spec.
-    - SettingsModule updated to Core-2.0 Spec.
+    - AdminModule updated to Core-2.0 Spec (#2856, #2860).
+    - PageLockModule updated to Core-2.0 Spec (#2862).
+    - SearchModule updated to Core-2.0 Spec (#2853).
+    - SettingsModule updated to Core-2.0 Spec (#2832).
 
  - Vendor updates:
-    -
+    - php-parser updated from 1.4.1 to 2.0.1
+    - jms/translation-bundle updated from 1.2.1 to 1.2.2
+    - monolog updated from 1.18.1 to 1.18.2
 
 * 1.4.2 (2016-03-28)
 
