@@ -1,68 +1,91 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SettingsModule\Form\Type;
 
+use DateUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Locale settings form type.
+ */
 class LocaleSettingsType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $translator = $options['translator'];
+
         $builder
             ->add('multilingual', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Activate multilingual features')
+                'label' => $translator->__('Activate multilingual features')
             ])
             ->add('languageurl', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Prepend language to URL'),
+                'label' => $translator->__('Prepend language to URL'),
                 'expanded' => true,
                 'choices' => [
-                    1 => $options['translator']->__('Always'),
-                    0 => $options['translator']->__('Only for non-default languages'),
+                    1 => $translator->__('Always'),
+                    0 => $translator->__('Only for non-default languages'),
                 ]
             ])
             ->add('language_detect', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Automatically detect language from browser settings')
+                'label' => $translator->__('Automatically detect language from browser settings'),
+                'help' => $translator->__('If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.')
             ])
             ->add('language_i18n', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Default language to use for this site'),
+                'label' => $translator->__('Default language to use for this site'),
                 'choices' => $options['languages']
             ])
             ->add('timezone_offset', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => $options['timezones'],
-                'label' => $options['translator']->__('Time zone for anonymous guests'),
+                'label' => $translator->__('Time zone for anonymous guests'),
+                'help' => $translator->__('Server time zone') . ': ' . DateUtil::getTimezoneAbbr()
             ])
             ->add('idnnames', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Allow IDN domain names')
+                'label' => $translator->__('Allow IDN domain names'),
+                'help' => [
+                    $translator->__('This only applies to legacy variable validation. The system itself has native IDN support.'),
+                    $translator->__('Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs.')
+                ]
             ])
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Save')
+                'label' => $translator->__('Save'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Cancel')
+                'label' => $translator->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
             ])
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulasettingsmodule_localesettings';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SettingsModule\Form\Type;
@@ -21,10 +18,18 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+/**
+ * Main settings form type.
+ */
 class MainSettingsType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $translator = $options['translator'];
+
         $spaceReplaceCallbackTransformer = new CallbackTransformer(
             function ($originalDescription) {
                 return $originalDescription;
@@ -36,16 +41,16 @@ class MainSettingsType extends AbstractType
         $pageTitleLocalizationTransformer = new CallbackTransformer(
             function ($originalPageTitle) use ($options) {
                 $originalPageTitle = empty($originalPageTitle) ? '%pagetitle%' : $originalPageTitle;
-                $originalPageTitle = str_replace('%pagetitle%', $options['translator']->__('%pagetitle%'), $originalPageTitle);
-                $originalPageTitle = str_replace('%sitename%', $options['translator']->__('%sitename%'), $originalPageTitle);
-                $originalPageTitle = str_replace('%modulename%', $options['translator']->__('%modulename%'), $originalPageTitle);
+                $originalPageTitle = str_replace('%pagetitle%', $translator->__('%pagetitle%'), $originalPageTitle);
+                $originalPageTitle = str_replace('%sitename%', $translator->__('%sitename%'), $originalPageTitle);
+                $originalPageTitle = str_replace('%modulename%', $translator->__('%modulename%'), $originalPageTitle);
 
                 return $originalPageTitle;
             },
             function ($submittedPageTitle) use ($options) {
-                $submittedPageTitle = str_replace($options['translator']->__('%pagetitle%'), '%pagetitle%', $submittedPageTitle);
-                $submittedPageTitle = str_replace($options['translator']->__('%sitename%'), '%sitename%', $submittedPageTitle);
-                $submittedPageTitle = str_replace($options['translator']->__('%modulename%'), '%modulename%', $submittedPageTitle);
+                $submittedPageTitle = str_replace($translator->__('%pagetitle%'), '%pagetitle%', $submittedPageTitle);
+                $submittedPageTitle = str_replace($translator->__('%sitename%'), '%sitename%', $submittedPageTitle);
+                $submittedPageTitle = str_replace($translator->__('%modulename%'), '%modulename%', $submittedPageTitle);
 
                 return $submittedPageTitle;
             }
@@ -54,98 +59,101 @@ class MainSettingsType extends AbstractType
         $builder
             ->add(
                 $builder->create('pagetitle', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $options['translator']->__('Page title structure'),
-                    'required' => false
+                    'label' => $translator->__('Page title structure'),
+                    'required' => false,
+                    'help' => $translator->__('Possible tags: %pagetitle%, %sitename%, %modulename%')
                 ])
                 ->addModelTransformer($pageTitleLocalizationTransformer)
             )
             ->add('adminmail', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
-                'label' => $options['translator']->__('Admin\'s e-mail address'),
+                'label' => $translator->__('Admin\'s e-mail address'),
                 'constraints' => new Email()
             ])
             ->add('siteoff', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Disable site'),
+                'label' => $translator->__('Disable site'),
                 'expanded' => true,
                 'choices' => [
-                    $options['translator']->__('Yes') => 1,
-                    $options['translator']->__('No') => 0,
+                    $translator->__('Yes') => 1,
+                    $translator->__('No') => 0,
                 ],
                 'choices_as_values' => true
             ])
             ->add('siteoffreason', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-                'label' => $options['translator']->__('Reason for disabling site'),
+                'label' => $translator->__('Reason for disabling site'),
                 'required' => false
             ])
             ->add('startController', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('Start Controller'),
+                'label' => $translator->__('Start Controller'),
                 'required' => false
             ])
             ->add('startpage', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Start module'),
+                'label' => $translator->__('Start module'),
                 'choices' => $options['modules'],
                 'choices_as_values' => true,
-                'placeholder' => $options['translator']->__('No start module (static frontpage)'),
-                'required' => false
+                'placeholder' => $translator->__('No start module (static frontpage)'),
+                'required' => false,
+                'help' => $translator->__("('index.php' points to this)")
             ])
             ->add('starttype', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('Start function type (required if module is set)'),
+                'label' => $translator->__('Start function type (required if module is set)'),
                 'required' => false
             ])
             ->add('startfunc', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('Start function (required if module is set)'),
+                'label' => $translator->__('Start function (required if module is set)'),
                 'required' => false
             ])
             ->add('startargs', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('Start function arguments'),
-                'required' => false
+                'label' => $translator->__('Start function arguments'),
+                'required' => false,
+                'help' => $translator->__('Separate with & for example:') . ' <code>foo=2&bar=5</code>'
             ])
             ->add('entrypoint', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('Site entry point (front controller)'),
+                'label' => $translator->__('Site entry point (front controller)'),
                 'constraints' => new Callback([
                     'callback' => function ($data, ExecutionContextInterface $context) use ($options) {
                         $falseEntryPoints = ['admin.php', 'ajax.php', 'user.php', 'mo2json.php', 'jcss.php'];
                         $entryPointExt = pathinfo($data, PATHINFO_EXTENSION);
                         if (in_array($data, $falseEntryPoints) || strtolower($entryPointExt) != 'php') {
-                            $context->addViolation($options['translator']->__('Error! You entered an invalid entry point.'));
+                            $context->addViolation($translator->__('Error! You entered an invalid entry point.'));
                         }
                         if (!file_exists($data)) {
-                            $context->addViolation($options['translator']->__('Error! The file was not found in the Zikula root directory.'));
+                            $context->addViolation($translator->__('Error! The file was not found in the Zikula root directory.'));
                         }
                     }
                 ])
             ])
             ->add('shorturlsstripentrypoint', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Strip entry point (front controller) from URLs'),
+                'label' => $translator->__('Strip entry point (front controller) from URLs'),
                 'required' => false
             ])
             ->add('useCompression', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Activate compression'),
+                'label' => $translator->__('Activate compression'),
                 'required' => false
             ])
             ->add('profilemodule', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Module used for managing user profiles'),
+                'label' => $translator->__('Module used for managing user profiles'),
                 'choices' => $options['profileModules'],
                 'choices_as_values' => true,
-                'placeholder' => $options['translator']->__('No profile module'),
+                'placeholder' => $translator->__('No profile module'),
                 'required' => false
             ])
             ->add('messagemodule', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Module used for private messaging'),
+                'label' => $translator->__('Module used for private messaging'),
                 'choices' => $options['messageModules'],
                 'choices_as_values' => true,
-                'placeholder' => $options['translator']->__('No message module'),
+                'placeholder' => $translator->__('No message module'),
                 'required' => false
             ])
             ->add('ajaxtimeout', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-                'label' => $options['translator']->__('Time-out for Ajax connections')
+                'label' => $translator->__('Time-out for Ajax connections')
             ])
             ->add(
                 $builder->create('permasearch', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $options['translator']->__('List to search for'),
+                    'label' => $translator->__('List to search for'),
                     'constraints' => new Callback([
                         'callback' => function ($data, ExecutionContextInterface $context) use ($options) {
                             if (mb_ereg(',$', $data)) {
-                                $context->addViolation($options['translator']->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
+                                $context->addViolation($translator->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
                             }
                         }
                     ])
@@ -154,56 +162,67 @@ class MainSettingsType extends AbstractType
             )
             ->add(
                 $builder->create('permareplace', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $options['translator']->__('List to replace with')
+                    'label' => $translator->__('List to replace with')
                 ])
                 ->addModelTransformer($spaceReplaceCallbackTransformer)
             )
             ->add('shorturls', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $options['translator']->__('Enable directory-based short URLs'),
+                'label' => $translator->__('Enable directory-based short URLs'),
                 'required' => false
             ])
             ->add('shorturlsseparator', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $options['translator']->__('Separator for permalink titles')
+                'label' => $translator->__('Separator for permalink titles')
             ])
             ->add('shorturlsdefaultmodule', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $options['translator']->__('Do not display module name in short URLs for'),
+                'label' => $translator->__('Do not display module name in short URLs for'),
                 'choices' => $options['modules']
             ])
             ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Save')
+                'label' => $translator->__('Save'),
+                'icon' => 'fa-check',
+                'attr' => [
+                    'class' => 'btn btn-success'
+                ]
             ])
             ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $options['translator']->__('Cancel')
+                'label' => $translator->__('Cancel'),
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
             ])
         ;
         foreach ($options['languages'] as $languageCode => $language) {
             $builder
                 ->add('sitename_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $options['translator']->__('Site name')
+                    'label' => $translator->__('Site name')
                 ])
                 ->add('slogan_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $options['translator']->__('Description line')
+                    'label' => $translator->__('Description line')
                 ])
                 ->add('defaultpagetitle_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $options['translator']->__('Default page title')
+                    'label' => $translator->__('Default page title')
                 ])
                 ->add('defaultmetadescription_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $options['translator']->__('Default meta description')
+                    'label' => $translator->__('Default meta description')
                 ])
                 ->add('metakeywords_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-                    'label' => $options['translator']->__('Default meta keywords')
+                    'label' => $translator->__('Default meta keywords')
                 ])
             ;
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'zikulasettingsmodule_mainsettings';
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

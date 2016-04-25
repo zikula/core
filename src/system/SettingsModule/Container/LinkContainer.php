@@ -1,14 +1,11 @@
 <?php
 /**
- * Copyright Zikula Foundation 2016 - Zikula Application Framework
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula Foundation - http://zikula.org/
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\SettingsModule\Container;
@@ -24,21 +21,23 @@ class LinkContainer implements LinkContainerInterface
      * @var Translator
      */
     private $translator;
+
     /**
      * @var RouterInterface
      */
     private $router;
+
     /**
      * @var PermissionApi
      */
     private $permissionApi;
 
     /**
-     * constructor.
+     * LinkContainer constructor.
      *
-     * @param $translator
-     * @param RouterInterface $router
-     * @param PermissionApi $permissionApi
+     * @param Translator      $translator    Translator service instance.
+     * @param RouterInterface $router        RouterInterface service instance.
+     * @param PermissionApi   $permissionApi PermissionApi service instance.
      */
     public function __construct($translator, RouterInterface $router, PermissionApi $permissionApi)
     {
@@ -83,23 +82,25 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
 
-        if ($this->permissionApi->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = [
-                'url' => $this->router->generate('zikulasettingsmodule_settings_main'),
-                'text' => $this->translator->__('Main settings'),
-                'icon' => 'wrench'
-            ];
-            $links[] = [
-                'url' => $this->router->generate('zikulasettingsmodule_settings_locale'),
-                'text' => $this->translator->__('Localisation settings'),
-                'icon' => 'globe'
-            ];
-            $links[] = [
-                'url' => $this->router->generate('zikulasettingsmodule_settings_phpinfo'),
-                'text' => $this->translator->__('PHP configuration'),
-                'icon' => 'info-circle'
-            ];
+        if (!$this->permissionApi->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
+            return $links;
         }
+
+        $links[] = [
+            'url' => $this->router->generate('zikulasettingsmodule_settings_main'),
+            'text' => $this->translator->__('Main settings'),
+            'icon' => 'wrench'
+        ];
+        $links[] = [
+            'url' => $this->router->generate('zikulasettingsmodule_settings_locale'),
+            'text' => $this->translator->__('Localisation settings'),
+            'icon' => 'globe'
+        ];
+        $links[] = [
+            'url' => $this->router->generate('zikulasettingsmodule_settings_phpinfo'),
+            'text' => $this->translator->__('PHP configuration'),
+            'icon' => 'info-circle'
+        ];
 
         return $links;
     }

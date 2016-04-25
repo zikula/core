@@ -1,6 +1,6 @@
 {% form_theme form with [
-'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
 <div class="container-fluid">
@@ -22,19 +22,16 @@
                     {% endfor %}
                 </ul>
                 <div class="tab-content">
-                    <!-- Tab panes -->
+                    {# Tab panes #}
                     {% for languageCode, language in languages %}
                     <div role="tabpanel" class="tab-pane fade{% if languageCode == pagevars.lang %} in active{% endif %}" id="main-{{ languageCode|lower }}">
-                        {{ form_row(form['sitename_'~languageCode]) }}
-                        {{ form_row(form['slogan_'~languageCode]) }}
+                        {{ form_row(form['sitename_' ~ languageCode]) }}
+                        {{ form_row(form['slogan_' ~ languageCode]) }}
                     </div>
                     {% endfor %}
                 </div>
             </div>
             {{ form_row(form.pagetitle) }}
-            <div class="col-sm-offset-3 col-sm-9">
-                <em class="help-block">{{ __('Possible tags: %pagetitle%, %sitename%, %modulename%') }}</em>
-            </div>
             {{ form_row(form.adminmail) }}
             {{ form_row(form.siteoff) }}
             <div id="settings_siteoff_container">
@@ -52,12 +49,12 @@
                     {% endfor %}
                 </ul>
                 <div class="tab-content">
-                    <!-- Tab panes -->
+                    {# Tab panes #}
                     {% for languageCode, language in languages %}
                     <div role="tabpanel" class="tab-pane fade{% if languageCode == pagevars.lang %} in active{% endif %}" id="meta-{{ languageCode|lower }}">
-                        {{ form_row(form['defaultpagetitle_'~languageCode]) }}
-                        {{ form_row(form['defaultmetadescription_'~languageCode]) }}
-                        {{ form_row(form['metakeywords_'~languageCode]) }}
+                        {{ form_row(form['defaultpagetitle_' ~ languageCode]) }}
+                        {{ form_row(form['defaultmetadescription_' ~ languageCode]) }}
+                        {{ form_row(form['metakeywords_' ~ languageCode]) }}
                     </div>
                     {% endfor %}
                 </div>
@@ -75,16 +72,10 @@
                 </em>
             </div>
             {{ form_row(form.startpage) }}
-            <div class="col-sm-offset-3 col-sm-9">
-                <em class="help-block">{{ __("('index.php' points to this)") }}</em>
-            </div>
             <div id="settings_startpage_container">
                 {{ form_row(form.starttype) }}
                 {{ form_row(form.startfunc) }}
                 {{ form_row(form.startargs) }}
-                <div class="col-sm-offset-3 col-sm-9">
-                    <em class="help-block">{{ __('Separate with & for example:') }} <code>foo=2&bar=5</code></em>
-                </div>
             </div>
         </fieldset>
         <fieldset>
@@ -136,7 +127,7 @@
         <fieldset>
             <legend>{{ __('Short URL settings') }}</legend>
             <p class="alert alert-warning">{{ __("Notice: This feature is deprecated in favor of Symfony routing. This site may have a mixture of modules of both types; those capable of using the old functionality, and those using routing.") }}</p>
-                {{ form_row(form.shorturls) }}
+            {{ form_row(form.shorturls) }}
             <div data-switch="zikulasettingsmodule_mainsettings[shorturls]" data-switch-value="1">
                 <div id="settings_shorturlsseparator_container">
                     {{ form_row(form.shorturlsseparator) }}
@@ -152,13 +143,12 @@
 
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.save, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
-                {{ form_widget(form.cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
             </div>
         </div>
 
         {{ form_end(form) }}
     </div>
-
 </div>
 {{ adminFooter() }}
