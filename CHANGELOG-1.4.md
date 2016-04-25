@@ -14,8 +14,10 @@ CHANGELOG - ZIKULA 1.4.x
 
  - Features:
     - Add help text, alert text and input groups to forms utilizing the provided form themes.
+    - Automatically initialise official Twig extensions.
 
  - Core-2.0 Features:
+    - AdminModule updated to Core-2.0 Spec.
     - SettingsModule updated to Core-2.0 Spec.
 
  - Vendor updates:
