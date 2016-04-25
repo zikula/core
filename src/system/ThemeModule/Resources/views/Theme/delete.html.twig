@@ -1,6 +1,6 @@
 {% form_theme form with [
-'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
 <h3>
@@ -14,8 +14,8 @@
     {{ form_row(form.deletefiles) }}
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-            {{ form_widget(form.Accept, {attr: {class: 'btn btn-success'}, icon:'fa-check'}) }}
-            {{ form_widget(form.Cancel, {attr: {class: 'btn btn-default'}, icon:'fa-times'}) }}
+            {{ form_widget(form.delete) }}
+            {{ form_widget(form.cancel) }}
         </div>
     </div>
 {{ form_end(form) }}
