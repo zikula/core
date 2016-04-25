@@ -13,6 +13,7 @@
 
 namespace Zikula\UsersModule\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -113,7 +114,10 @@ class UserAdministrationController extends AbstractController
         ];
         $users = $this->get('zikula_users_module.user_repository')->query($filter);
 
-        return $this->render('@ZikulaUsersModule/UserAdministration/userlist.html.twig', ['users' => $users], new PlainResponse());
+        return $this->render('@ZikulaUsersModule/UserAdministration/userlist.html.twig', [
+            'users' => $users,
+            'actionsHelper' => $this->get('zikula_users_module.helper.administration_actions'),
+        ], new PlainResponse());
     }
 
     /**
@@ -254,6 +258,57 @@ class UserAdministrationController extends AbstractController
             }
 
             return $this->redirectToRoute('zikulausersmodule_admin_view');
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    /**
+     * @Route("/search")
+     * @Theme("admin")
+     * @Template()
+     * @param Request $request
+     * @return array
+     */
+    public function searchAction(Request $request)
+    {
+        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
+            throw new AccessDeniedException();
+        }
+        $form = $this->createForm('Zikula\UsersModule\Form\Type\SearchUserType',
+            [], ['translator' => $this->get('translator.default')]
+        );
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $filter = ['activated' => ['operator' => '!=', 'operand' => UsersConstant::ACTIVATED_PENDING_REG]];
+            $data = $form->getData();
+            foreach ($data as $k => $v) {
+                if (!empty($v)) {
+                    switch($k) {
+                        case 'registered_before':
+                            $filter['user_regdate'] = ['operator' => '<=', 'operand' => $v];
+                            break;
+                        case 'registered_after':
+                            $filter['user_regdate'] = ['operator' => '>=', 'operand' => $v];
+                            break;
+                        case 'groups':
+                            /** @var ArrayCollection $v */
+                            if (!$v->isEmpty()) {
+                                $filter['groups'] = ['operator' => 'in', 'operand' => $v->getValues()];
+                            }
+                            break;
+                        default:
+                            $filter[$k] = ['operator' => 'like', 'operand' => "%$v%"];
+                    }
+                }
+            }
+            $users = $this->get('zikula_users_module.user_repository')->query($filter);
+
+            return $this->render('@ZikulaUsersModule/UserAdministration/searchResults.html.twig', [
+                'users' => $users
+            ]);
         }
 
         return [

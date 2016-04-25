@@ -60,6 +60,15 @@ class UserEvents
     const FORM_MODIFY = 'module.users.ui.form_edit.modify_user';
 
     /**
+     * A hook-like UI event triggered when the users search form is displayed. Allows other
+     * modules to intercept and insert their own elements for submission to the search form.
+     * To add elements to the search form, render the output and then add this as an array element to the event's
+     * data array.
+     * This event does not have a subject or arguments.
+     */
+    const FORM_SEARCH = 'module.users.ui.form_edit.search';
+
+    /**
      * Occurs after the Users module configuration has been updated via the administration interface.
      * Event data is populated by the new values.
      */

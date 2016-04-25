@@ -75,6 +75,9 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     {
         $qb = $this->createQueryBuilder('u')
             ->select('u');
+        if(!empty($filter['groups'])) {
+            $qb->join('u.groups', 'g');
+        }
         if (!empty($filter)) {
             $where = $this->whereFromFilter($qb, $filter, $exprType);
             $qb->andWhere($where);
@@ -139,7 +142,12 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         /** @var \Doctrine\ORM\Query\Expr\Composite $expr */
         $expr = $qb->expr()->$exprMethod();
         $i = 1; // parameter counter
+        $alias = 'u';
         foreach ($filter as $field => $value) {
+            if ($field == 'groups') {
+                $field = 'gid';
+                $alias = 'g';
+            }
             if (!is_array($value)) {
                 $value = [
                     'operator' => '=',
@@ -148,17 +156,11 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
             }
             if (preg_match('/^IS (NOT )?NULL/i', $value['operator'], $matches)) {
                 $method = isset($matches[1]) ? 'isNotNull' : 'isNull';
-                $expr->add($qb->expr()->$method('u.' . $field));
-            } elseif (preg_match('/^(NOT )?IN/i', $value['operator'], $matches)) {
-                if (is_array($value['operand']) && !empty($value['operand'])) {
-                    $method = isset($matches[1]) ? 'notIn' : 'in';
-                    $expr->add($qb->expr()->$method('u.' . $field, '?' . $i));
-                    $qb->setParameter($i, $value['operand']);
-                }
+                $expr->add($qb->expr()->$method($alias . '.' . $field));
             } else {
                 if (is_bool($value['operand'])) {
                     $dbValue = $value['operand'] ? '1' : '0';
-                } elseif (is_int($value['operand']) || is_array($value['operand'])) {
+                } elseif (is_int($value['operand']) || is_array($value['operand']) || ($value['operand'] instanceof \DateTime)) {
                     $dbValue = $value['operand'];
                 } else {
                     $dbValue = "{$value['operand']}";
@@ -178,7 +180,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
                 ];
                 $method = $methodMap[$value['operator']];
 
-                $expr->add($qb->expr()->$method('u.' . $field, '?' . $i));
+                $expr->add($qb->expr()->$method($alias . '.' . $field, '?' . $i));
                 $qb->setParameter($i, $dbValue);
             }
             $i++;
