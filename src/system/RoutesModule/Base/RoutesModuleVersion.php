@@ -54,8 +54,8 @@ class RoutesModuleVersion extends Zikula_AbstractVersion
             'securityschema' => [
                 'ZikulaRoutesModule::' => '::',
                 'ZikulaRoutesModule::Ajax' => '::',
-                'ZikulaRoutesModule:Route:' => 'Route ID::',
-            ];
+                'ZikulaRoutesModule:Route:' => 'Route ID::'
+            ]
         ];
 
         return $meta;
