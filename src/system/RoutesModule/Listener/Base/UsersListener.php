@@ -26,9 +26,9 @@ class UsersListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            'module.users.config.updated' => array('configUpdated', 5)
-        );
+        return [
+            'module.users.config.updated' => ['configUpdated', 5]
+        ];
     }
     
     /**

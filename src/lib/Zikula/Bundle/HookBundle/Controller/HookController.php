@@ -78,7 +78,7 @@ class HookController extends Controller
             $providerAreas = $this->get('hook_dispatcher')->getProviderAreasByOwner($moduleName);
             $templateParameters['providerAreas'] = $providerAreas;
 
-            $providerAreasToTitles = array();
+            $providerAreasToTitles = [];
             foreach ($providerAreas as $providerArea) {
                 $providerAreasToTitles[$providerArea] = $this->get('translator.default')->__(/** @Ignore */$moduleVersionObj->getHookProviderBundle($providerArea)->getTitle());
             }
@@ -91,20 +91,20 @@ class HookController extends Controller
             $subscriberAreas = $this->get('hook_dispatcher')->getSubscriberAreasByOwner($moduleName);
             $templateParameters['subscriberAreas'] = $subscriberAreas;
 
-            $subscriberAreasToTitles = array();
+            $subscriberAreasToTitles = [];
             foreach ($subscriberAreas as $subscriberArea) {
                 $subscriberAreasToTitles[$subscriberArea] = $this->get('translator.default')->__(/** @Ignore */$moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getTitle());
             }
             $templateParameters['subscriberAreasToTitles'] = $subscriberAreasToTitles;
 
-            $subscriberAreasToCategories = array();
+            $subscriberAreasToCategories = [];
             foreach ($subscriberAreas as $subscriberArea) {
                 $category = $this->get('translator.default')->__(/** @Ignore */$moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory());
                 $subscriberAreasToCategories[$subscriberArea] = $category;
             }
             $templateParameters['subscriberAreasToCategories'] = $subscriberAreasToCategories;
 
-            $subscriberAreasAndCategories = array();
+            $subscriberAreasAndCategories = [];
             foreach ($subscriberAreas as $subscriberArea) {
                 $category = $this->get('translator.default')->__(/** @Ignore */$moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory());
                 $subscriberAreasAndCategories[$category][] = $subscriberArea;
@@ -145,14 +145,14 @@ class HookController extends Controller
                 $total_available_subscriber_areas += count($hooksubscriberAreas);
 
                 // and get the titles
-                $hooksubscriberAreasToTitles = array();
+                $hooksubscriberAreasToTitles = [];
                 foreach ($hooksubscriberAreas as $hooksubscriberArea) {
                     $hooksubscriberAreasToTitles[$hooksubscriberArea] = $this->get('translator.default')->__(/** @Ignore */$hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getTitle());
                 }
                 $hooksubscribers[$i]['areasToTitles'] = $hooksubscriberAreasToTitles;
 
                 // and get the categories
-                $hooksubscriberAreasToCategories = array();
+                $hooksubscriberAreasToCategories = [];
                 foreach ($hooksubscriberAreas as $hooksubscriberArea) {
                     $category = $this->get('translator.default')->__(/** @Ignore */$hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getCategory());
                     $hooksubscriberAreasToCategories[$hooksubscriberArea] = $category;
@@ -169,8 +169,8 @@ class HookController extends Controller
         // and providers that can attach to the subscriber
         if ($isSubscriber && !empty($subscriberAreas)) {
             // get current sorting
-            $currentSortingTitles = array();
-            $currentSorting = array();
+            $currentSortingTitles = [];
+            $currentSorting = [];
             $total_attached_provider_areas = 0;
             for ($i = 0; $i < count($subscriberAreas); $i++) {
                 $sortsByArea = $this->get('hook_dispatcher')->getBindingsFor($subscriberAreas[$i]);
@@ -179,11 +179,11 @@ class HookController extends Controller
                     $category = $sba['category'];
 
                     if (!isset($currentSorting[$category])) {
-                        $currentSorting[$category] = array();
+                        $currentSorting[$category] = [];
                     }
 
                     if (!isset($currentSorting[$category][$subscriberAreas[$i]])) {
-                        $currentSorting[$category][$subscriberAreas[$i]] = array();
+                        $currentSorting[$category][$subscriberAreas[$i]] = [];
                     }
 
                     array_push($currentSorting[$category][$subscriberAreas[$i]], $areaname);
@@ -240,21 +240,21 @@ class HookController extends Controller
                 $total_available_provider_areas += count($hookproviderAreas);
 
                 // and get the titles
-                $hookproviderAreasToTitles = array();
+                $hookproviderAreasToTitles = [];
                 foreach ($hookproviderAreas as $hookproviderArea) {
                     $hookproviderAreasToTitles[$hookproviderArea] = $this->get('translator.default')->__(/** @Ignore */$hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getTitle());
                 }
                 $hookproviders[$i]['areasToTitles'] = $hookproviderAreasToTitles;
 
                 // and get the categories
-                $hookproviderAreasToCategories = array();
+                $hookproviderAreasToCategories = [];
                 foreach ($hookproviderAreas as $hookproviderArea) {
                     $hookproviderAreasToCategories[$hookproviderArea] = $this->get('translator.default')->__(/** @Ignore */$hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getCategory());
                 }
                 $hookproviders[$i]['areasToCategories'] = $hookproviderAreasToCategories;
 
                 // and build array with category => areas
-                $hookproviderAreasAndCategories = array();
+                $hookproviderAreasAndCategories = [];
                 foreach ($hookproviderAreas as $hookproviderArea) {
                     $category = $this->get('translator.default')->__(/** @Ignore */$hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getCategory());
                     $hookproviderAreasAndCategories[$category][] = $hookproviderArea;
@@ -341,7 +341,7 @@ class HookController extends Controller
         }
 
         // ajax response
-        $response = array(
+        $response = [
             'result' => true,
             'action' => $binding ? 'unbind' : 'bind',
             'subscriberarea' => $subscriberArea,
@@ -349,7 +349,7 @@ class HookController extends Controller
             'providerarea' => $providerArea,
             'providerarea_id' => md5($providerArea),
             'isSubscriberSelfCapable' => ($this->get('zikula_extensions_module.api.capability')->isCapable($subscriber, CapabilityApiInterface::HOOK_SUBSCRIBE_OWN) ? true : false)
-        );
+        ];
 
         return new AjaxResponse($response);
     }
@@ -405,7 +405,7 @@ class HookController extends Controller
 
         $ol_id = $request->request->get('ol_id', '');
 
-        return new AjaxResponse(array('result' => true, 'ol_id' => $ol_id));
+        return new AjaxResponse(['result' => true, 'ol_id' => $ol_id]);
     }
 
     /**

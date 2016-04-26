@@ -76,7 +76,7 @@ class SortableColumns
      * Additional url parameters that must be included in the generated urls
      * @var array
      */
-    private $additionalUrlParameters = array();
+    private $additionalUrlParameters = [];
 
     public function __construct(RouterInterface $router, $routeName, $sortFieldName = 'sort-field', $directionFieldName = 'sort-direction')
     {
@@ -101,15 +101,15 @@ class SortableColumns
      */
     public function generateSortableColumns()
     {
-        $resultArray = array();
+        $resultArray = [];
         /** @var Column $column */
         foreach ($this->columnCollection as $column) {
             $this->additionalUrlParameters[$this->directionFieldName] = $column->isSortColumn() ? $column->getReverseSortDirection() : $column->getCurrentSortDirection();
             $this->additionalUrlParameters[$this->sortFieldName] = $column->getName();
-            $resultArray[$column->getName()] = array(
+            $resultArray[$column->getName()] = [
                 'url' => $this->router->generate($this->routeName, $this->additionalUrlParameters),
                 'class' => $column->getCssClassString(),
-            );
+            ];
         }
 
         return $resultArray;
@@ -218,7 +218,7 @@ class SortableColumns
      */
     private function setSortDirection($sortDirection)
     {
-        if (in_array($sortDirection, array(Column::DIRECTION_ASCENDING, Column::DIRECTION_DESCENDING))) {
+        if (in_array($sortDirection, [Column::DIRECTION_ASCENDING, Column::DIRECTION_DESCENDING])) {
             $this->sortDirection = $sortDirection;
         }
     }
@@ -230,9 +230,9 @@ class SortableColumns
     {
         if (!empty($this->defaultColumn)) {
             return $this->defaultColumn;
-        } else {
-            return $this->columnCollection->first();
         }
+
+        return $this->columnCollection->first();
     }
 
     /**
@@ -254,7 +254,7 @@ class SortableColumns
     /**
      * @param array $additionalUrlParameters
      */
-    public function setAdditionalUrlParameters(array $additionalUrlParameters = array())
+    public function setAdditionalUrlParameters(array $additionalUrlParameters = [])
     {
         $this->additionalUrlParameters = $additionalUrlParameters;
     }

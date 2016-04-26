@@ -26,14 +26,14 @@ class ZLocale implements ArrayAccess
      *
      * @var array
      */
-    private $errors = array();
+    private $errors = [];
 
     /**
      * Locale data.
      *
      * @var array
      */
-    private $localeData = array(
+    private $localeData = [
         'language_direction' => 'ltr',
         'decimal_point' => '.',
         'thousands_sep' => ',',
@@ -53,8 +53,9 @@ class ZLocale implements ArrayAccess
         'n_sign_posn' => '2',
         'firstweekday' => '0',
         'timeformat' => '24',
-        'grouping' => array(),
-        'mon_grouping' => array());
+        'grouping' => [],
+        'mon_grouping' => []
+    ];
 
     /**
      * Constructor.
@@ -106,21 +107,17 @@ class ZLocale implements ArrayAccess
     private function validateLocale($file)
     {
         if (count($this->localeData) == 0) {
-            $this->registerError(__f('Error! The locale file %s contains invalid data.', array($file)));
+            $this->registerError(__f('Error! The locale file %s contains invalid data.', [$file]));
 
             return;
         }
-        $validationArray = array('language_direction' => '#^(ltr|rtl)$#');
+        $validationArray = ['language_direction' => '#^(ltr|rtl)$#'];
         foreach ($validationArray as $key => $validation) {
             if (!isset($this->localeData[$key])) {
-                $this->registerError(__f('Error! %1$s is missing in %2$s.', array(
-                    $key,
-                    $file)));
+                $this->registerError(__f('Error! %1$s is missing in %2$s.', [$key, $file]));
             } else {
                 if (!preg_match($validation, $this->localeData[$key])) {
-                    $this->registerError(__f('Error! There is an invalid value for %1$s in %2$s.', array(
-                        $key,
-                        $file)));
+                    $this->registerError(__f('Error! There is an invalid value for %1$s in %2$s.', [$key, $file]));
                 }
             }
         }

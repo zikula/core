@@ -41,7 +41,7 @@ class Zikula_EventManager extends EventDispatcher
         $priority = 0 - (int)$priority;
 
         if ($handler instanceof Zikula_ServiceHandler) {
-            $callable = array($handler->getId(), $handler->getMethodName());
+            $callable = [$handler->getId(), $handler->getMethodName()];
 
             return $this->addListenerService($name, $callable, $priority);
         }

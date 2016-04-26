@@ -44,14 +44,16 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-        return array('module'          => $this->name,
-                     'text_type'       => $this->__('Extended menu'),
-                     'text_type_long'  => $this->__('Extended menu block'),
-                     'allow_multiple'  => true,
-                     'form_content'    => false,
-                     'form_refresh'    => false,
-                     'show_preview'    => true,
-                     'admin_tableless' => true);
+        return [
+            'module'          => $this->name,
+            'text_type'       => $this->__('Extended menu'),
+            'text_type_long'  => $this->__('Extended menu block'),
+            'allow_multiple'  => true,
+            'form_content'    => false,
+            'form_refresh'    => false,
+            'show_preview'    => true,
+            'admin_tableless' => true
+        ];
     }
 
     /**
@@ -102,10 +104,10 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
         // create default block variables
         if (!isset($vars['blocktitles'])) {
-            $vars['blocktitles'] = array();
+            $vars['blocktitles'] = [];
         }
         if (!isset($vars['links'])) {
-            $vars['links'] = array();
+            $vars['links'] = [];
         }
         if (!isset($vars['stylesheet'])) {
             $vars['stylesheet'] = '';
@@ -126,9 +128,9 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // Content
-        $menuitems = array();
+        $menuitems = [];
         if (!empty($vars['links'][$thislang])) {
-            $blocked = array();
+            $blocked = [];
             foreach ($vars['links'][$thislang] as $linkid => $link) {
                 $link['parentid'] = isset($link['parentid']) ? $link['parentid'] : null;
                 $denied = !SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . ':' . $linkid . ':', ACCESS_READ);
@@ -153,7 +155,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         // Modules
         if (!empty($vars['displaymodules'])) {
             $newmods = ModUtil::getModulesCapableOf('user');
-            $mods = array();
+            $mods = [];
             foreach ($newmods as $module) {
                 if (!preg_match('#(?:error|blocks)#', strtolower($module['name']))) {
                     $mods[] = $module;
@@ -166,12 +168,14 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                     : $mod['capabilities']['user']['url'];
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)
                     && (empty($menuitems[$url]))) {
-                    $menuitems[$url] = array('name'   => $mod['displayname'],
-                                         'url'    => $url,
-                                         'title'  => $mod['description'],
-                                         'level'  => 0,
-                                         'parentid' => null,
-                                         'image'  => '');
+                    $menuitems[$url] = [
+                        'name'   => $mod['displayname'],
+                        'url'    => $url,
+                        'title'  => $mod['description'],
+                        'level'  => 0,
+                        'parentid' => null,
+                        'image'  => ''
+                    ];
                 }
             }
         }
@@ -244,10 +248,10 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
         // create default block variables
         if (!isset($vars['blocktitles'])) {
-            $vars['blocktitles'] = array();
+            $vars['blocktitles'] = [];
         }
         if (!isset($vars['links'])) {
-            $vars['links'] = array();
+            $vars['links'] = [];
         }
         if (!isset($vars['stylesheet'])) {
             $vars['stylesheet'] = '';
@@ -282,13 +286,15 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                 $newurl = System::getHomepageUrl();
             }
             foreach ($languages as $singlelanguage) {
-                $vars['links'][$singlelanguage][] = array('name'   => $this->__('--New link--'),
-                                                          'url'    => $newurl,
-                                                          'title'  => $this->__('--New link--'),
-                                                          'level'  => 0,
-                                                          'parentid' => null,
-                                                          'image'  => '',
-                                                          'active' => 1);
+                $vars['links'][$singlelanguage][] = [
+                    'name'   => $this->__('--New link--'),
+                    'url'    => $newurl,
+                    'title'  => $this->__('--New link--'),
+                    'level'  => 0,
+                    'parentid' => null,
+                    'image'  => '',
+                    'active' => 1
+                ];
             }
         } elseif (isset($fromblock)) {
             $redirect = urlencode(System::serverGetVar('HTTP_REFERER'));
@@ -299,7 +305,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         // we need to know which language has the most links, this language will be the "master"
         // for new languages to be added. this ensures that all links for the new language
         // are prepared.
-        $link_master = array();
+        $link_master = [];
         foreach ($languages as $lang) {
             if (isset($vars['links'][$lang]) && count($link_master) < count($vars['links'][$lang])) {
                 $link_master = $vars['links'][$lang];
@@ -319,7 +325,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         // menuitems are sorted by language per default for easier
         // access when showing them (which is more often necessary than
         // editing them), but for editing them we need them sorted by id
-        $menuitems = array();
+        $menuitems = [];
         foreach ($vars['links'] as $lang => $langlinks) {
             // langlinks now contains an array of links for a certain language
             // sorted by key=id
@@ -328,7 +334,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                 if (!isset($link['id'])) {
                     $link['id'] = $linkid;
                 }
-                $link['errors'] = array();
+                $link['errors'] = [];
                 $this->checkImage($link);
                 $menuitems[$linkid][$lang] = $link;
             }
@@ -380,7 +386,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // User links
-        $content = array();
+        $content = [];
 
         $vars['links'] = $this->request->request->get('links');
         $vars['blockversion'] = 1;

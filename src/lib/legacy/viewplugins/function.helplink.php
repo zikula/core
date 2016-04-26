@@ -44,7 +44,7 @@
  *   - icon_*        all remaining parameters with a "icon_" prefix are passed to the {icon} function and subsequently to the <img> tag, except for
  *                      'icon_assign' which is completely ignored; optional if link_icon_type is specified, otherwise ignored
  *   - class:        class for use in the <a> tag.
- *   - assign:       if set, the results (array('url', 'link') are assigned to the corresponding variable instead of printed out.
+ *   - assign:       if set, the results (['url', 'link']) are assigned to the corresponding variable instead of printed out.
  *
  * Example: A pop-up help window with a width of 400 and a height of 300, containing the contents of help.txt, and a title of 'Help'
  * {helplink popup='1' width='400' height='300' filename='help.txt' title='Help'}
@@ -70,7 +70,7 @@ function smarty_function_helplink($params, Zikula_View $view)
     $userLang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
     $systemLang = System::getVar('language_i18n');
 
-    $iconParams = array();
+    $iconParams = [];
     if (!empty($params) && is_array($params)) {
         foreach ($params as $key => $value) {
             if ((strpos($key, 'icon_') === 0) && (strlen($key) > 5)) {
@@ -110,7 +110,7 @@ function smarty_function_helplink($params, Zikula_View $view)
     $modname = $view->getModuleName();
     $linkID = (isset($params['linkid'])) ? $params['linkid'] : DataUtil::formatForDisplay(strtolower('manuallink_' . $modname . '_' . hash('md5', serialize($params))));
 
-    $paths = array();
+    $paths = [];
     $module = ModUtil::getModule($modname);
     if ($module) {
         $base = $module->getPath();
@@ -158,7 +158,7 @@ function smarty_function_helplink($params, Zikula_View $view)
 
     if ($popup) {
         PageUtil::addVar('javascript', 'zikula.ui');
-        $link = array();
+        $link = [];
         $link[] = "<a id=\"{$linkID}\" {$class} data-toggle=\"modal\" data-target=\"#{$linkID}_content\" title=\"{$title}\">" . $linkContents . "</a>";
         $link[] = '<div class="modal fade" id="'.$linkID.'_content" tabindex="-1" role="dialog" aria-labelledby="'.$linkID.'_label" aria-hidden="true">';
         $link[] = '<div class="modal-dialog">';
@@ -179,7 +179,10 @@ function smarty_function_helplink($params, Zikula_View $view)
     }
 
     if (isset($params['assign'])) {
-        $ret = array('url' => $url, 'link' => $link);
+        $ret = [
+            'url' => $url,
+            'link' => $link
+        ];
         $view->assign($params['assign'], $ret);
 
         return;

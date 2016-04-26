@@ -22,15 +22,17 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize(Zikula_Form_View $view)
- * {
- * $items = array( array('text' => 'A', 'value' => '1'),
- * array('text' => 'B', 'value' => '2'),
- * array('text' => 'C', 'value' => '3') );
+ *     function initialize(Zikula_Form_View $view)
+ *     {
+ *         $items = [
+ *             ['text' => 'A', 'value' => '1'],
+ *             ['text' => 'B', 'value' => '2'],
+ *             ['text' => 'C', 'value' => '3']
+ *         ];
  *
- * $view->assign('items', $items); // Supply items
- * $view->assign('mylist', 2);     // Supply selected value
- * }
+ *         $view->assign('items', $items); // Supply items
+ *         $view->assign('mylist', 2);     // Supply selected value
+ *     }
  * }
  * </code>
  * Or you can set them indirectly using the plugin's databased features:
@@ -41,15 +43,17 @@
  * <code>
  * class mymodule_user_testHandler extends Zikula_Form_Handler
  * {
- * function initialize(Zikula_Form_View $view)
- * {
- * $items = array( array('text' => 'A', 'value' => '1'),
- * array('text' => 'B', 'value' => '2'),
- * array('text' => 'C', 'value' => '3') );
+ *     function initialize(Zikula_Form_View $view)
+ *     {
+ *         $items = [
+ *             ['text' => 'A', 'value' => '1'],
+ *             ['text' => 'B', 'value' => '2'],
+ *             ['text' => 'C', 'value' => '3']
+ *         ];
  *
- * $view->assign('mylistItems', $items);  // Supply items
- * $view->assign('mylist', 2);            // Supply selected value
- * }
+ *         $view->assign('mylistItems', $items);  // Supply items
+ *         $view->assign('mylist', 2);            // Supply selected value
+ *     }
  * }
  * </code>
  *
@@ -58,9 +62,11 @@
  * get a dataset like this:
  *
  * <code>
- * array('xxx' => 'valueXX',
- * 'checkboxes' => array('15','17','22','34'),
- * 'yyy' => 'valueYYY')
+ * [
+ *     'xxx' => 'valueXX',
+ *     'checkboxes' => ['15','17','22','34'],
+ *     'yyy' => 'valueYYY'
+ * ]
  * </code>
  *
  * @deprecated for Symfony2 Forms
@@ -177,7 +183,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
         $classHtml = ($class == '' ? '' : " class=\"$class\"");
         $nameHtml = " name=\"{$this->inputName}[]\"";
 
-        $selectedByValue = array();
+        $selectedByValue = [];
         if (is_array($this->selectedValue)) {
             foreach ($this->selectedValue as $v) {
                 $selectedByValue[$v] = 1;
@@ -261,7 +267,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
         if (!$this->readOnly) {
             $value = $this->request->request->get($this->inputName, null);
             if ($value == null) {
-                $value = array();
+                $value = [];
             }
             for ($i = 0, $count = count($value); $i < $count; ++$i) {
                 $value[$i] = ($value[$i] == '#null#' ? null : $value[$i]);
@@ -331,7 +337,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
                 $data[$this->dataField] = $this->getSelectedValue();
             } else {
                 if (!array_key_exists($this->group, $data)) {
-                    $data[$this->group] = array();
+                    $data[$this->group] = [];
                 }
                 $data[$this->group][$this->dataField] = $this->getSelectedValue();
             }
@@ -394,7 +400,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
         if (is_string($value)) {
             $value = explode(':', $value);
         } elseif (!is_array($value)) {
-            $value = array($value);
+            $value = [$value];
         }
 
         $this->selectedValue = $value;

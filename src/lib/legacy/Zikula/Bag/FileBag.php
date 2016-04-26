@@ -18,7 +18,7 @@ use Zikula_UploadedFile as UploadedFile;
  */
 class Zikula_Bag_FileBag extends \Symfony\Component\HttpFoundation\FileBag
 {
-    private static $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
+    private static $fileKeys = ['error', 'name', 'size', 'tmp_name', 'type'];
 
     /**
      * Converts uploaded files to UploadedFile instances.
@@ -47,7 +47,7 @@ class Zikula_Bag_FileBag extends \Symfony\Component\HttpFoundation\FileBag
                     $file = new UploadedFile($file['tmp_name'], $file['name'], $file['type'], $file['size'], $file['error']);
                 }
             } else {
-                $file = array_map(array($this, 'convertFileInformation'), $file);
+                $file = array_map([$this, 'convertFileInformation'], $file);
             }
         }
 

@@ -102,18 +102,18 @@ class SystemPlugin_Imagine_Preset extends ArrayObject
      */
     private function getEmptyPreset()
     {
-        return array(
+        return [
             'width' => 100,
             'height' => 100,
             'mode' => 'inset',
             'extension' => null,
-            'options' => array(
+            'options' => [
                 'jpeg_quality' => 75,
                 'png_compression_level' => 7
-            ),
+            ],
             '__module' => null,
             '__imagine' => null,
             '__transformation' => null
-        );
+        ];
     }
 }

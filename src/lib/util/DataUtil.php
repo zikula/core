@@ -59,7 +59,7 @@ class DataUtil
      */
     public static function decodeNVP($nvpstr, $separator = '&', $urldecode = true)
     {
-        $assoc = array();
+        $assoc = [];
         $items = explode($separator, $nvpstr);
         foreach ($items as $item) {
             $fields = explode('=', $item);
@@ -225,7 +225,7 @@ class DataUtil
             $event = new \Zikula\Core\Event\GenericEvent();
         }
         if (!isset($allowedtags)) {
-            $allowedHTML = array();
+            $allowedHTML = [];
             $allowableHTML = System::getVar('AllowableHTML');
             if (is_array($allowableHTML)) {
                 foreach ($allowableHTML as $k => $v) {
@@ -301,8 +301,8 @@ class DataUtil
             return;
         }
 
-        //return '<' . strtr($m[1], array('&gt;' => '>', '&lt;' => '<', '&quot;' => '"', '&amp;' => '&')) . '>';
-        return '<' . strtr($m[1], array('&gt;' => '>', '&lt;' => '<', '&quot;' => '"')) . '>';
+        //return '<' . strtr($m[1], ['&gt;' => '>', '&lt;' => '<', '&quot;' => '"', '&amp;' => '&']) . '>';
+        return '<' . strtr($m[1], ['&gt;' => '>', '&lt;' => '<', '&quot;' => '"']) . '>';
     }
 
     /**
@@ -354,13 +354,13 @@ class DataUtil
 
         static $cached;
         if (null === $cached) {
-            $cached = array(0, 1);
+            $cached = [0, 1];
         }
         if (isset($cached[(int)$absolute][$var])) {
             return $cached[(int)$absolute][$var];
         }
         $orgVar = $var;
-        $clean_array = array();
+        $clean_array = [];
         //Check if it is a windows absolute path beginning with "c:" or similar
         $windowsAbsolutePath = preg_match("#^[A-Za-z]:#", $var);
         //Check if it is a linux absolute path beginning "/"
@@ -480,7 +480,7 @@ class DataUtil
      */
     public static function hash($string, $type = 'sha1')
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::hash()', 'hash()')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', ['DataUtil::hash()', 'hash()']), E_USER_DEPRECATED);
 
         return hash(strtolower($type), $string);
     }
@@ -589,7 +589,7 @@ class DataUtil
     public static function convertToUTF8($input = '')
     {
         if (is_array($input)) {
-            $return = array();
+            $return = [];
             foreach ($input as $key => $value) {
                 $return[$key] = self::convertToUTF8($value);
             }
@@ -618,7 +618,7 @@ class DataUtil
     public static function convertFromUTF8($input = '')
     {
         if (is_array($input)) {
-            $return = array();
+            $return = [];
             foreach ($input as $key => $value) {
                 $return[$key] = self::convertFromUTF8($value);
             }
@@ -706,7 +706,7 @@ class DataUtil
      */
     public static function parseIniFile($iniFile, $process_sections = true)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::parseIniFile()', 'parse_ini_file()')), E_USER_DEPRECATED);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', ['DataUtil::parseIniFile()', 'parse_ini_file()']), E_USER_DEPRECATED);
 
         return parse_ini_file($iniFile, $process_sections);
     }

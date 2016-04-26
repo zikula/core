@@ -92,7 +92,7 @@ class YamlDumper
             return $configuration['parameters'];
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -206,7 +206,7 @@ class YamlDumper
     protected function parseFile()
     {
         if (!$this->fs->exists($this->fullPath)) {
-            return array();
+            return [];
         }
 
         return Yaml::parse(file_get_contents($this->fullPath));

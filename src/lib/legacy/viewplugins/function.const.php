@@ -30,7 +30,7 @@ function smarty_function_const($params, Zikula_View $view)
     $name = isset($params['name']) ? $params['name'] : null;
 
     if (!$name) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('const', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['const', 'name']));
 
         return false;
     }

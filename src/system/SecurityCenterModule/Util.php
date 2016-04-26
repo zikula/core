@@ -33,7 +33,7 @@ class Util
         $purifierDefaultConfig = HTMLPurifier_Config::createDefault();
         $purifierDefaultConfigValues = $purifierDefaultConfig->def->defaults;
 
-        $config = array();
+        $config = [];
 
         foreach ($purifierDefaultConfigValues as $key => $val) {
             $keys = explode(".", $key, 2);
@@ -75,7 +75,11 @@ class Util
 
         // allow nofollow and imageviewer to be used as document relationships in the rel attribute
         // see http://htmlpurifier.org/live/configdoc/plain.html#Attr.AllowedRel
-        $config['Attr']['AllowedRel'] = array('nofollow' => true, 'imageviewer' => true, 'lightbox' => true);
+        $config['Attr']['AllowedRel'] = [
+            'nofollow' => true,
+            'imageviewer' => true,
+            'lightbox' => true
+        ];
 
         // allow Youtube by default
         $config['Filter']['YouTube'] = false; // technically deprecated in favour of HTML.SafeEmbed and HTML.Object
@@ -139,7 +143,7 @@ class Util
         static $purifier;
 
         if (!isset($purifier) || $force) {
-            $config = self::getpurifierconfig(array('forcedefault' => false));
+            $config = self::getpurifierconfig(['forcedefault' => false]);
 
             $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
 

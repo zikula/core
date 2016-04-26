@@ -38,7 +38,7 @@ class SchemaHelper
      */
     public function create(array $classes)
     {
-        $metaClasses = array();
+        $metaClasses = [];
         foreach ($classes as $class) {
             $metaClasses[] = $this->entityManager->getClassMetadata($class);
         }
@@ -51,7 +51,7 @@ class SchemaHelper
      */
     public function drop(array $classes)
     {
-        $metaClasses = array();
+        $metaClasses = [];
         foreach ($classes as $class) {
             $metaClasses[] = $this->entityManager->getClassMetadata($class);
         }
@@ -65,7 +65,7 @@ class SchemaHelper
      */
     public function update(array $classes, $saveMode = true)
     {
-        $metaClasses = array();
+        $metaClasses = [];
         foreach ($classes as $class) {
             $metaClasses[] = $this->entityManager->getClassMetadata($class);
         }

@@ -41,13 +41,13 @@ function smarty_function_modgetvar($params, Zikula_View $view)
     $name    = isset($params['name'])    ? $params['name']       : null;
 
     if (!$module) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modgetvar', 'module')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['modgetvar', 'module']));
 
         return false;
     }
 
     if (!$name && !$assign) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modgetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['modgetvar', 'name']));
 
         return false;
     }

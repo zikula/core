@@ -85,7 +85,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         $params['class_numon'] = ' ';
     }
 
-    $pager = array();
+    $pager = [];
 
     if (!empty($params['names'])) {
         if (!is_array($params['names'])) {
@@ -110,9 +110,9 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         // predefined abc
         if (strtolower($params['skin']) == 'hu') {
             // Hungarian
-            $pager['names']  = $pager['values'] = array('A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z');
-            //$params['names']  = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z');
-            //$params['values'] = array('A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z');
+            $pager['names']  = $pager['values'] = ['A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+            //$params['names']  = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z'];
+            //$params['values'] = ['A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z'];
         } else {
             $alphabet = (defined('_ALPHABET')) ? constant('_ALPHABET') : 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
             $pager['names'] = $pager['values'] = explode(',', $alphabet);
@@ -148,9 +148,9 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         return $view->getContainer()->get('router')->generate($pager['route'], $pager['args']);
     };
 
-    $allVars = array_merge($view->getRequest()->request->all(), $view->getRequest()->query->all(), $view->getRequest()->attributes->get('_route_params', array()));
+    $allVars = array_merge($view->getRequest()->request->all(), $view->getRequest()->query->all(), $view->getRequest()->attributes->get('_route_params', []));
 
-    $pager['args'] = array();
+    $pager['args'] = [];
     if (empty($pager['module']) && empty($pager['route'])) {
         $pager['module'] = System::getVar('startpage');
         $starttype = System::getVar('starttype');

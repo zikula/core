@@ -54,26 +54,28 @@ class LinkContainer implements LinkContainerInterface
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
-        $links = array();
+        $links = [];
         $serviceManager = ServiceUtil::getManager();
         $request = $serviceManager->get('request');
 
         $controllerHelper = $serviceManager->get('zikularoutesmodule.controller_helper');
-        $utilArgs = array('api' => 'ajax', 'action' => 'getLinks');
+        $utilArgs = ['api' => 'ajax', 'action' => 'getLinks'];
         $allowedObjectTypes = $controllerHelper->getObjectTypes('api', $utilArgs);
 
         $currentLegacyType = $request->query->filter('lct', 'user', false, FILTER_SANITIZE_STRING);
-        $permLevel = in_array('admin', array($type, $currentLegacyType)) ? ACCESS_ADMIN : ACCESS_READ;
+        $permLevel = in_array('admin', [$type, $currentLegacyType]) ? ACCESS_ADMIN : ACCESS_READ;
 
-        
-        if (in_array('admin', array($type, $currentLegacyType))) {
-            
-            if (in_array('route', $allowedObjectTypes)
-                && SecurityUtil::checkPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
-                $links[] = array('url' => $this->router->generate('zikularoutesmodule_route_view', array('lct' => 'admin')),
-                                 'text' => $this->translator->__('Routes'),
-                                 'title' => $this->translator->__('Route list'));
-            }
+        if (!in_array('admin', [$type, $currentLegacyType])) {
+            return $links;
+        }
+
+        if (in_array('route', $allowedObjectTypes)
+            && SecurityUtil::checkPermission($this->getBundleName() . ':Route:', '::', $permLevel)) {
+            $links[] = [
+                'url' => $this->router->generate('zikularoutesmodule_route_view', ['lct' => 'admin']),
+                'text' => $this->translator->__('Routes'),
+                'title' => $this->translator->__('Route list')
+            ];
         }
 
         return $links;

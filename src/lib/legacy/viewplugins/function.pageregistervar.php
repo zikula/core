@@ -49,7 +49,7 @@ function smarty_function_pageregistervar($params, Zikula_View $view)
     $default =    isset($params['default']) ? $params['default'] : null;
 
     if (!$name) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpageregistervar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['pageregistervar', 'name']));
 
         return false;
     }

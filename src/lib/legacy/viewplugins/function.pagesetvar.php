@@ -47,12 +47,12 @@ function smarty_function_pagesetvar($params, Zikula_View $view)
     $value = isset($params['value']) ? $params['value'] : null;
 
     if (!$name) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pagesetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['pagesetvar', 'name']));
 
         return false;
     }
     if (!$value) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pagesetvar', 'value')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['pagesetvar', 'value']));
 
         return false;
     }
@@ -62,7 +62,7 @@ function smarty_function_pagesetvar($params, Zikula_View $view)
         $value = str_replace('system/Theme/style/', 'system/ThemeModule/Resources/public/css/', $value);
     }
 
-    if (in_array($name, array('stylesheet', 'javascript'))) {
+    if (in_array($name, ['stylesheet', 'javascript'])) {
         $value = explode(',', $value);
     }
 

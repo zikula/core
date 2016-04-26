@@ -56,7 +56,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
      * @var array
      * @internal
      */
-    public $titles = array();
+    public $titles = [];
 
     /**
      * Internal tab index counter.

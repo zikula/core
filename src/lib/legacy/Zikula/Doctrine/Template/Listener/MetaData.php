@@ -28,7 +28,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
         $tableName = $this->getTableNameFromEvent($event);
         $idColumn = $this->getIdColumnFromEvent($event);
 
-        $dataForObjectUtil = array();
+        $dataForObjectUtil = [];
         $dataForObjectUtil[$idColumn] = $data[$idColumn];
 
         ObjectUtil::expandObjectWithMeta($dataForObjectUtil, $tableName, $idColumn);
@@ -55,7 +55,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
         $tableName = $this->getTableNameFromEvent($event);
         $idColumn = $this->getIdColumnFromEvent($event);
 
-        $dataForObjectUtil = array();
+        $dataForObjectUtil = [];
         $dataForObjectUtil[$idColumn] = $data[$idColumn];
         $dataForObjectUtil['__META__'] = $data['__META__'];
 
@@ -87,7 +87,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
         if (isset($data['__META__']['id'])) {
             $metaId = $data['__META__']['id'];
         } else {
-            $dataForObjectUtil = array();
+            $dataForObjectUtil = [];
             $dataForObjectUtil[$idColumn] = $data[$idColumn];
             $dataForObjectUtil['__META__'] = $data['__META__'];
 
@@ -98,7 +98,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
             $metaId = $meta['id'];
         }
 
-        $dataForObjectUtil = array();
+        $dataForObjectUtil = [];
         $dataForObjectUtil[$idColumn] = $data[$idColumn];
         $dataForObjectUtil['__META__'] = $data['__META__'];
         $dataForObjectUtil['__META__']['id'] = $metaId;
@@ -132,7 +132,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
         if (isset($data['__META__']['id'])) {
             $metaId = $data['__META__']['id'];
         } else {
-            $dataForObjectUtil = array();
+            $dataForObjectUtil = [];
             $dataForObjectUtil[$idColumn] = $data[$idColumn];
             $dataForObjectUtil['__META__'] = $data['__META__'];
 
@@ -143,7 +143,7 @@ class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Templat
             $metaId = $meta['id'];
         }
 
-        $dataForObjectUtil = array();
+        $dataForObjectUtil = [];
         $dataForObjectUtil[$idColumn] = $data[$idColumn];
         $dataForObjectUtil['__META__'] = $data['__META__'];
         $dataForObjectUtil['__META__']['id'] = $metaId;

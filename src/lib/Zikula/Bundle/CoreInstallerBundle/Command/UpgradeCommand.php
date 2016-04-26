@@ -25,13 +25,13 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     /**
      * @var array
      */
-    private $selectedSettings = array(
+    private $selectedSettings = [
         'username',
         'password',
         'router.request_context.host',
         'router.request_context.scheme',
         'router.request_context.base_url'
-    );
+    ];
 
     protected function configure()
     {
@@ -61,7 +61,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (version_compare(ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<=')) {
-            $output->writeln(__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION)));
+            $output->writeln(__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', [ZIKULACORE_CURRENT_INSTALLED_VERSION, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
             return false;
         }

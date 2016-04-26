@@ -57,14 +57,14 @@ class CoreInstallerValidator
      */
     public static function validateAndLogin($object, ExecutionContextInterface $context)
     {
-        $authenticationInfo = array(
+        $authenticationInfo = [
             'login_id' => $object['username'],
             'pass'     => $object['password']
-        );
-        $authenticationMethod = array(
+        ];
+        $authenticationMethod = [
             'modname' => 'ZikulaUsersModule',
             'method'  => 'uname',
-        );
+        ];
         try {
             $loginResult = \UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
             if (!$loginResult) {

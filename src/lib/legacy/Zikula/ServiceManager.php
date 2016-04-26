@@ -160,7 +160,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function listServices($prefix = '')
     {
-        $list = array();
+        $list = [];
         foreach ($this->getServiceIds() as $service) {
             if (empty($prefix) || strpos($service, $prefix) === 0) {
                 $list[] = $service;

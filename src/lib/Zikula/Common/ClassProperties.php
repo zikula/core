@@ -47,7 +47,7 @@ class ClassProperties
         $reflection = new \ReflectionObject($object);
         $className = $reflection->getName();
         $methods = $reflection->getMethods();
-        $methodMap = array();
+        $methodMap = [];
         foreach ($methods as $method) {
             $methodMap[strtolower($method->name)] = $method->name;
         }

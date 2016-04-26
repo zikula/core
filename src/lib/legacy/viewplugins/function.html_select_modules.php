@@ -60,8 +60,8 @@ function smarty_function_html_select_modules($params, Zikula_View $view)
     }
 
     // process our list of modules for input to the html_options plugin
-    $moduleslist = array();
-    $installerArray = array('ZikulaBlocksModule', 'ZikulaErrorsModule', 'ZikulaPermissionsModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', 'ZikulaUsersModule', 'ZikulaSearchModule');
+    $moduleslist = [];
+    $installerArray = ['ZikulaBlocksModule', 'ZikulaErrorsModule', 'ZikulaPermissionsModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', 'ZikulaUsersModule', 'ZikulaSearchModule'];
     if (!empty($modules)) {
         foreach ($modules as $module) {
             if (!(System::isInstalling() && in_array($module['name'], $installerArray))) {
@@ -72,11 +72,12 @@ function smarty_function_html_select_modules($params, Zikula_View $view)
     natcasesort($moduleslist);
 
     // get the formatted list
-    $output = smarty_function_html_options(array('options'   => $moduleslist,
-                                                 'selected'  => isset($params['selected']) ? $params['selected'] : null,
-                                                 'name'      => isset($params['name'])     ? $params['name']     : null,
-                                                 'id'        => isset($params['id'])       ? $params['id']       : null),
-                                                 $view);
+    $output = smarty_function_html_options([
+        'options'   => $moduleslist,
+        'selected'  => isset($params['selected']) ? $params['selected'] : null,
+        'name'      => isset($params['name'])     ? $params['name']     : null,
+        'id'        => isset($params['id'])       ? $params['id']       : null
+    ], $view);
     if (isset($params['assign']) && !empty($params['assign'])) {
         $view->assign($params['assign'], $output);
     } else {

@@ -49,7 +49,7 @@ function smarty_function_modfunc($params, Zikula_View $view)
     unset($params['assign']);
 
     if (!$modname) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modfunc', 'modname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['modfunc', 'modname']));
 
         return false;
     }

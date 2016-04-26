@@ -31,7 +31,7 @@ function smarty_function_themesetvar($params, Zikula_View $view)
     $value  = isset($params['value'])  ? $params['value'] : null;
 
     if (!$name) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('themegetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['themegetvar', 'name']));
 
         return false;
     }

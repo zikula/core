@@ -21,14 +21,14 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      *
      * @var array
      */
-    private $_plg = array();
+    private $_plg = [];
 
     /**
      * Loaded plugins list.
      *
      * @var array;
      */
-    private $_loaded = array();
+    private $_loaded = [];
 
     /**
      * Loaded operators.
@@ -117,13 +117,14 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      */
     public static function getPluginsAvailable()
     {
-        $classNames = array();
-        $classNames['category']    = 'FilterUtil_Filter_Category';
-        $classNames['default']     = 'FilterUtil_Filter_Default';
-        $classNames['date']        = 'FilterUtil_Filter_Date';
-        $classNames['mnlist']      = 'FilterUtil_Filter_Mnlist';
-        $classNames['pmlist']      = 'FilterUtil_Filter_Pmlist';
-        $classNames['replaceName'] = 'FilterUtil_Filter_ReplaceName';
+        $classNames = [
+            'category'    => 'FilterUtil_Filter_Category',
+            'default'     => 'FilterUtil_Filter_Default',
+            'date'        => 'FilterUtil_Filter_Date',
+            'mnlist'      => 'FilterUtil_Filter_Mnlist',
+            'pmlist'      => 'FilterUtil_Filter_Pmlist',
+            'replaceName' => 'FilterUtil_Filter_ReplaceName'
+        ];
 
         // collect classes from other providers also allows for override
         // TODO A [This is only allowed for the module which owns this object.]
@@ -143,7 +144,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      *
      * @return integer The plugin's id.
      */
-    public function loadPlugin($name, $config = array())
+    public function loadPlugin($name, $config = [])
     {
         if ($this->isLoaded($name)) {
             return $this->_loaded[$name];
@@ -181,7 +182,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      *
      * @return integer The plugin's id.
      */
-    public function loadPluginLegacy($name, $config = array())
+    public function loadPluginLegacy($name, $config = [])
     {
         $module = $this->getConfig()->getModule();
         if (strpos($name, '@')) {
@@ -196,7 +197,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
         $file  = 'filter.' . $name . '.class.php';
 
         // Load hierarchy
-        $dest = array();
+        $dest = [];
         if ($module != 'core' && ModUtil::available($module)) {
             $modinfo = ModUtil::getInfoFromName($module);
             $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
@@ -212,7 +213,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
             }
         }
 
-        $config = array();
+        $config = [];
         $this->addCommon($config);
         $obj = new $class($config);
 
@@ -246,7 +247,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
 
             if (isset($ops) && is_array($ops)) {
                 foreach ($ops as $op => $fields) {
-                    $flds = array();
+                    $flds = [];
                     foreach ($fields as $field) {
                         $flds[$field] = $k;
                     }
@@ -318,11 +319,11 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
             }
         }
 
-        return array(
-                     'field' => $field,
-                     'op'    => $op,
-                     'value' => $value
-                    );
+        return [
+            'field' => $field,
+            'op'    => $op,
+            'value' => $value
+        ];
     }
 
     /**
@@ -332,19 +333,21 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      * @param string $op    Operator.
      * @param string $value Test value.
      *
-     * @return array Sql set.
+     * @return string Sql set.
      */
     public function getSQL($field, $op, $value)
     {
         if (!isset($this->_ops[$op]) || !is_array($this->_ops[$op])) {
             return '';
-        } elseif (isset($this->_ops[$op][$field])) {
-            return $this->_plg[$this->_ops[$op][$field]]->getSQL($field, $op, $value);
-        } elseif (isset($this->_ops[$op]['-'])) {
-            return $this->_plg[$this->_ops[$op]['-']]->getSQL($field, $op, $value);
-        } else {
-            return '';
         }
+        if (isset($this->_ops[$op][$field])) {
+            return $this->_plg[$this->_ops[$op][$field]]->getSQL($field, $op, $value);
+        }
+        if (isset($this->_ops[$op]['-'])) {
+            return $this->_plg[$this->_ops[$op]['-']]->getSQL($field, $op, $value);
+        }
+
+        return '';
     }
 
     /**
@@ -354,20 +357,23 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      * @param string $op    Operator.
      * @param string $value Test value.
      *
-     * @return array Doctrine Query where clause and parameters.
+     * @return string Doctrine Query where clause and parameters.
      */
     public function getDql($field, $op, $value)
     {
         if (!isset($this->_ops[$op]) || !is_array($this->_ops[$op])) {
             return '';
-        } elseif (isset($this->_restrictions[$field]) && !in_array($op, $this->_restrictions[$field])) {
-            return '';
-        } elseif (isset($this->_ops[$op][$field])) {
-            return $this->_plg[$this->_ops[$op][$field]]->getDql($field, $op, $value);
-        } elseif (isset($this->_ops[$op]['-'])) {
-            return $this->_plg[$this->_ops[$op]['-']]->getDql($field, $op, $value);
-        } else {
+        }
+        if (isset($this->_restrictions[$field]) && !in_array($op, $this->_restrictions[$field])) {
             return '';
         }
+        if (isset($this->_ops[$op][$field])) {
+            return $this->_plg[$this->_ops[$op][$field]]->getDql($field, $op, $value);
+        }
+        if (isset($this->_ops[$op]['-'])) {
+            return $this->_plg[$this->_ops[$op]['-']]->getDql($field, $op, $value);
+        }
+
+        return '';
     }
 }

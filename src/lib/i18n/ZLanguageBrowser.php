@@ -57,7 +57,7 @@ class ZLanguageBrowser
         preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]), $matches, PREG_SET_ORDER);
         $availableLanguages = [];
         foreach ($matches as $match) {
-            list($languageCode, $unusedVar) = explode('-', $match[1]) + array('', '');
+            list($languageCode, $unusedVar) = explode('-', $match[1]) + ['', ''];
             $priority = isset($match[2]) ? (float) $match[2] : 1.0;
             $availableLanguages[][$languageCode] = $priority;
         }

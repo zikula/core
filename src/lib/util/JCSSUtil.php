@@ -21,7 +21,7 @@ class JCSSUtil
     public static function getJSConfig()
     {
         $return = '';
-        $config = array(
+        $config = [
             'entrypoint' => System::getVar('entrypoint', 'index.php'),
             'baseURL' => System::getBaseUrl(),
             'baseURI' => System::getBaseUri() . '/',
@@ -29,7 +29,7 @@ class JCSSUtil
             'lang' => ZLanguage::getLanguageCode(),
             'sessionName' => session_name(),
             'uid' => (int)UserUtil::getVar('uid')
-        );
+        ];
 
         $polyfill_features = PageUtil::getVar('polyfill_features');
         // merge in features added via twig
@@ -68,7 +68,7 @@ class JCSSUtil
      *
      * @return array Array with two array containing the files to be embedded into HTML HEAD
      */
-    public static function prepareJCSS($combine = false, $cache_dir = null, $themeinfo = array(), $isAdminController = false)
+    public static function prepareJCSS($combine = false, $cache_dir = null, $themeinfo = [], $isAdminController = false)
     {
         $combine = $combine && is_writable($cache_dir);
 
@@ -105,10 +105,10 @@ class JCSSUtil
             $javascripts = (array)self::save($javascripts, 'js', $cache_dir);
             $stylesheets = (array)self::save($stylesheets, 'css', $cache_dir);
         }
-        $jcss = array(
+        $jcss = [
             'stylesheets' => $stylesheets,
             'javascripts' => $javascripts
-        );
+        ];
         // some core js libs require js gettext - ensure that it will be loaded
         $jsgettext = self::getJSGettext();
         if (!empty($jsgettext)) {
@@ -127,18 +127,18 @@ class JCSSUtil
      *
      * @return array List of stylesheets
      */
-    public static function prepareStylesheets($stylesheets, $themeinfo = array(), $isAdminController = false)
+    public static function prepareStylesheets($stylesheets, $themeinfo = [], $isAdminController = false)
     {
         if (ThemeUtil::getVar('noCoreCss', false)) {
             $initStyle = null;
         } else {
-            $initStyle = array('style/core.css');
+            $initStyle = ['style/core.css'];
         }
         // Add generic stylesheet as the first stylesheet.
-        $event = new \Zikula\Core\Event\GenericEvent('stylesheet', array(), $initStyle);
+        $event = new \Zikula\Core\Event\GenericEvent('stylesheet', [], $initStyle);
         $coreStyle = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event)->getData();
         if (!is_array($stylesheets)) {
-            $stylesheets = array();
+            $stylesheets = [];
         }
         // Add legacy stylesheet
         if (System::isLegacyMode('1.4.0')) {
@@ -192,14 +192,14 @@ class JCSSUtil
         if ($sm->getParameter('env') == 'prod' && file_exists(realpath('web/js/fos_js_routes.js'))) {
             array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', 'web/js/fos_js_routes.js');
         } else {
-            $routeScript = $sm->get('router')->generate('fos_js_routing_js', array('callback' => 'fos.Router.setData'));
+            $routeScript = $sm->get('router')->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
             array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', $routeScript);
         }
         // first resolve any dependencies
         $javascripts = self::resolveDependencies($javascripts);
         // set proper file paths for aliased scripts
         $coreScripts = self::scriptsMap();
-        $styles = array();
+        $styles = [];
         $gettext = false;
         foreach ($javascripts as $i => $script) {
             if (array_key_exists($script, $coreScripts)) {
@@ -231,9 +231,9 @@ class JCSSUtil
     {
         $jsgettext = PageUtil::getVar('jsgettext');
         if (!empty($jsgettext)) {
-            $params = array(
+            $params = [
                 'lang' => ZLanguage::getLanguageCode()
-            );
+            ];
             foreach ($jsgettext as $entry) {
                 $vars = explode(':', $entry);
                 if (isset($vars[0])) {
@@ -262,10 +262,10 @@ class JCSSUtil
      *
      * @return array List of javascript files
      */
-    private static function resolveDependencies($javascripts, &$resolved = array())
+    private static function resolveDependencies($javascripts, &$resolved = [])
     {
         $coreScripts = self::scriptsMap();
-        $withDeps = array();
+        $withDeps = [];
         foreach ($javascripts as $script) {
             $script = self::getScriptName($script);
             if (isset($coreScripts[$script]) && isset($coreScripts[$script]['require']) && !in_array($script, $resolved)) {
@@ -348,8 +348,8 @@ class JCSSUtil
             }
         } elseif (System::isLegacyMode() && (strpos($script, 'system/') === 0 || strpos($script, 'modules/') === 0)) {
             // check for customized javascripts
-            $custom = str_replace(array('javascript/', 'pnjavascript/'), '', $script);
-            $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
+            $custom = str_replace(['javascript/', 'pnjavascript/'], '', $script);
+            $custom = str_replace(['modules', 'system'], 'config/javascript', $custom);
             if (file_exists($custom)) {
                 $script = $custom;
             }
@@ -375,171 +375,171 @@ class JCSSUtil
      */
     public static function scriptsMap()
     {
-        $scripts = array(
-            'prototype' => array(
+        $scripts = [
+            'prototype' => [
                 'path' => 'javascript/ajax/proto_scriptaculous.combined.min.js',
-                'require' => array('zikula'),
-                'aliases' => array('prototype', 'scriptaculous'),
-            ),
-            'jquery' => array(
+                'require' => ['zikula'],
+                'aliases' => ['prototype', 'scriptaculous']
+            ],
+            'jquery' => [
                 'path' => 'web/jquery/jquery.min.js',
-                'require' => array('noconflict', 'jquery-migrate'),
-            ),
-            'jquery-ui' => array(
+                'require' => ['noconflict', 'jquery-migrate']
+            ],
+            'jquery-ui' => [
                 'path' => 'web/jquery-ui/jquery-ui.min.js',
-                'require' => array('jquery'),
-            ),
-            'noconflict' => array(
-                'path' => 'javascript/jquery_config.js',
-            ),
-            'jquery-migrate' => array(
-                'path' => 'web/jquery/jquery-migrate.min.js',
-            ),
-            'livepipe' => array(
+                'require' => ['jquery']
+            ],
+            'noconflict' => [
+                'path' => 'javascript/jquery_config.js'
+            ],
+            'jquery-migrate' => [
+                'path' => 'web/jquery/jquery-migrate.min.js'
+            ],
+            'livepipe' => [
                 'path' => 'javascript/livepipe/livepipe.combined.min.js',
-                'require' => array('prototype'),
-            ),
-            'zikula' => array(
+                'require' => ['prototype']
+            ],
+            'zikula' => [
                 'path' => 'javascript/helpers/Zikula.js',
-                'require' => array('prototype'),
-                'aliases' => array('javascript/ajax/ajax.js'),
-            ),
-            'zikula.ui' => array(
+                'require' => ['prototype'],
+                'aliases' => ['javascript/ajax/ajax.js']
+            ],
+            'zikula.ui' => [
                 'path' => 'javascript/helpers/Zikula.UI.js',
-                'require' => array('prototype', 'livepipe', 'zikula'),
-                'styles' => array('javascript/helpers/Zikula.UI.css'),
+                'require' => ['prototype', 'livepipe', 'zikula'],
+                'styles' => ['javascript/helpers/Zikula.UI.css'],
                 'gettext' => true
-            ),
-            'zikula.imageviewer' => array(
+            ],
+            'zikula.imageviewer' => [
                 'path' => 'javascript/helpers/Zikula.ImageViewer.js',
-                'require' => array('prototype', 'zikula'),
-                'styles' => array('javascript/helpers/ImageViewer/ImageViewer.css'),
-                'aliases' => array('imageviewer', 'lightbox'),
+                'require' => ['prototype', 'zikula'],
+                'styles' => ['javascript/helpers/ImageViewer/ImageViewer.css'],
+                'aliases' => ['imageviewer', 'lightbox'],
                 'gettext' => true
-            ),
-            'zikula.itemlist' => array(
+            ],
+            'zikula.itemlist' => [
                 'path' => 'javascript/helpers/Zikula.itemlist.js',
-                'require' => array('prototype', 'zikula'),
-            ),
-            'zikula.tree' => array(
+                'require' => ['prototype', 'zikula']
+            ],
+            'zikula.tree' => [
                 'path' => 'javascript/helpers/Zikula.Tree.js',
-                'require' => array('prototype', 'zikula'),
-                'styles' => array('javascript/helpers/Tree/Tree.css'),
-            ),
-            'validation' => array(
+                'require' => ['prototype', 'zikula'],
+                'styles' => ['javascript/helpers/Tree/Tree.css']
+            ],
+            'validation' => [
                 'path' => 'javascript/ajax/validation.min.js',
-                'require' => array('prototype'),
-            ),
-            'polyfill' => array(
+                'require' => ['prototype']
+            ],
+            'polyfill' => [
                 'path' => 'javascript/js-webshim/minified/polyfiller.js',
-                'require' => array('jquery', 'polyfill.init'),
-            ),
-            'polyfill.init' => array(
-                'path' => 'javascript/js-webshim/minified/polyfiller.init.js',
-            ),
-        );
+                'require' => ['jquery', 'polyfill.init']
+            ],
+            'polyfill.init' => [
+                'path' => 'javascript/js-webshim/minified/polyfiller.init.js'
+            ]
+        ];
         if (System::isDevelopmentMode()) {
-            $prototypeUncompressed = array(
-                'prototype' => array(
+            $prototypeUncompressed = [
+                'prototype' => [
                     'path' => 'javascript/ajax/original_uncompressed/prototype.js',
-                    'require' => array('zikula', 'builder', 'controls', 'dragdrop', 'effects', 'slider', 'sound'),
-                    'aliases' => array('prototype', 'scriptaculous'),
-                ),
-                'scriptaculous' => array(
+                    'require' => ['zikula', 'builder', 'controls', 'dragdrop', 'effects', 'slider', 'sound'],
+                    'aliases' => ['prototype', 'scriptaculous']
+                ],
+                'scriptaculous' => [
                     'path' => 'javascript/ajax/original_uncompressed/prototype.js',
-                    'require' => array('prototype'),
-                ),
-                'effects' => array(
-                    'path' => 'javascript/ajax/original_uncompressed/effects.js',
-                ),
-                'builder' => array(
-                    'path' => 'javascript/ajax/original_uncompressed/builder.js',
-                ),
-                'controls' => array(
-                    'path' => 'javascript/ajax/original_uncompressed/controls.js',
-                ),
-                'dragdrop' => array(
-                    'path' => 'javascript/ajax/original_uncompressed/dragdrop.js',
-                ),
-                'slider' => array(
-                    'path' => 'javascript/ajax/original_uncompressed/slider.js',
-                ),
-                'sound' => array(
-                    'path' => 'javascript/ajax/original_uncompressed/sound.js',
-                )
-            );
-            $livepipeUncompressed = array(
-                'livepipe' => array(
+                    'require' => ['prototype']
+                ],
+                'effects' => [
+                    'path' => 'javascript/ajax/original_uncompressed/effects.js'
+                ],
+                'builder' => [
+                    'path' => 'javascript/ajax/original_uncompressed/builder.js'
+                ],
+                'controls' => [
+                    'path' => 'javascript/ajax/original_uncompressed/controls.js'
+                ],
+                'dragdrop' => [
+                    'path' => 'javascript/ajax/original_uncompressed/dragdrop.js'
+                ],
+                'slider' => [
+                    'path' => 'javascript/ajax/original_uncompressed/slider.js'
+                ],
+                'sound' => [
+                    'path' => 'javascript/ajax/original_uncompressed/sound.js'
+                ]
+            ];
+            $livepipeUncompressed = [
+                'livepipe' => [
                     'path' => 'javascript/livepipe/original_uncompressed/livepipe.js',
-                    'require' => array('prototype', 'contextmenu', 'cookie', 'event_behavior', 'hotkey', 'progressbar', 'rating', 'resizable', 'scrollbar', 'selection', 'selectmultiple', 'tabs', 'textarea', 'window'),
-                ),
-                'contextmenu' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/contextmenu.js',
-                ),
-                'cookie' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/cookie.js',
-                ),
-                'event_behavior' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/event_behavior.js',
-                ),
-                'hotkey' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/hotkey.js',
-                ),
-                'progressbar' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/progressbar.js',
-                ),
-                'rating' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/rating.js',
-                ),
-                'resizable' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/resizable.js',
-                ),
-                'scrollbar' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/scrollbar.js',
-                ),
-                'selection' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/selection.js',
-                ),
-                'selectmultiple' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/selectmultiple.js',
-                ),
-                'tabs' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/tabs.js',
-                ),
-                'textarea' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/textarea.js',
-                ),
-                'window' => array(
-                    'path' => 'javascript/livepipe/original_uncompressed/window.js',
-                )
-            );
-            $jQueryUncompressed = array(
-                'jquery' => array(
+                    'require' => ['prototype', 'contextmenu', 'cookie', 'event_behavior', 'hotkey', 'progressbar', 'rating', 'resizable', 'scrollbar', 'selection', 'selectmultiple', 'tabs', 'textarea', 'window']
+                ],
+                'contextmenu' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/contextmenu.js'
+                ],
+                'cookie' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/cookie.js'
+                ],
+                'event_behavior' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/event_behavior.js'
+                ],
+                'hotkey' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/hotkey.js'
+                ],
+                'progressbar' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/progressbar.js'
+                ],
+                'rating' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/rating.js'
+                ],
+                'resizable' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/resizable.js'
+                ],
+                'scrollbar' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/scrollbar.js'
+                ],
+                'selection' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/selection.js'
+                ],
+                'selectmultiple' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/selectmultiple.js'
+                ],
+                'tabs' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/tabs.js'
+                ],
+                'textarea' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/textarea.js'
+                ],
+                'window' => [
+                    'path' => 'javascript/livepipe/original_uncompressed/window.js'
+                ]
+            ];
+            $jQueryUncompressed = [
+                'jquery' => [
                     'path' => 'web/jquery/jquery.js',
-                    'require' => array('noconflict', 'jquery-migrate'),
-                ),
-                'noconflict' => array(
-                    'path' => 'javascript/jquery_config.js',
-                ),
-                'jquery-migrate' => array(
-                    'path' => 'web/jquery/jquery-migrate.min.js',
-                ),
-            );
-            $jQueryUiUncompressed = array(
-                'jquery-ui' => array(
+                    'require' => ['noconflict', 'jquery-migrate']
+                ],
+                'noconflict' => [
+                    'path' => 'javascript/jquery_config.js'
+                ],
+                'jquery-migrate' => [
+                    'path' => 'web/jquery/jquery-migrate.min.js'
+                ]
+            ];
+            $jQueryUiUncompressed = [
+                'jquery-ui' => [
                     'path' => 'web/jquery-ui/jquery-ui.js',
-                    'require' => array('jquery'),
-                ),
-            );
-            $polyfillUncompressed = array(
-                'polyfill' => array(
+                    'require' => ['jquery']
+                ]
+            ];
+            $polyfillUncompressed = [
+                'polyfill' => [
                     'path' => 'javascript/js-webshim/dev/polyfiller.js',
-                    'require' => array('jquery', 'polyfill.init')
-                ),
-                'polyfill.init' => array(
-                    'path' => 'javascript/js-webshim/dev/polyfiller.init.js',
-                ),
-            );
+                    'require' => ['jquery', 'polyfill.init']
+                ],
+                'polyfill.init' => [
+                    'path' => 'javascript/js-webshim/dev/polyfiller.init.js'
+                ]
+            ];
 
             $scripts = array_merge($prototypeUncompressed, $jQueryUncompressed, $jQueryUiUncompressed, $livepipeUncompressed, array_slice($scripts, 5), $polyfillUncompressed);
         }
@@ -577,9 +577,9 @@ class JCSSUtil
                 $ctype = 'text/plain';
                 break;
         }
-        $includedFiles = array();
-        $outputFiles = array();
-        $contents = array();
+        $includedFiles = [];
+        $outputFiles = [];
+        $contents = [];
         $dest = fopen($cachedFile, 'w');
         foreach ($files as $file) {
             if (!empty($file)) {
@@ -610,7 +610,13 @@ class JCSSUtil
         global $ZConfig;
         $signingKey = md5(serialize($ZConfig['DBInfo']['databases']['default']));
         $signature = md5($contents . $ctype . $lifetime . $themevars['cssjscompress'] . $signingKey);
-        $data = array('contents' => $contents, 'ctype' => $ctype, 'lifetime' => $lifetime, 'gz' => $themevars['cssjscompress'], 'signature' => $signature);
+        $data = [
+            'contents' => $contents,
+            'ctype' => $ctype,
+            'lifetime' => $lifetime,
+            'gz' => $themevars['cssjscompress'],
+            'signature' => $signature
+        ];
         fwrite($dest, serialize($data));
         fclose($dest);
         $combined = System::getBaseUri() . '/jcss.php?f=' . $cachedFileUri;

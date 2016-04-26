@@ -29,7 +29,9 @@ class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            \DoctrineHelper::createSchema($this->entityManager, array('Zikula\PermissionsModule\Entity\PermissionEntity'));
+            \DoctrineHelper::createSchema($this->entityManager, [
+                'Zikula\PermissionsModule\Entity\PermissionEntity'
+            ]);
         } catch (\Exception $e) {
             return false;
         }

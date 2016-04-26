@@ -69,7 +69,7 @@ class AdminController extends Zikula_AbstractController
         }
         
         // redirect to view action
-        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($objectType) . '_view', array('lct' => 'admin'));
+        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_' . strtolower($objectType) . '_view', ['lct' => 'admin']);
         
         return new RedirectResponse(System::normalizeUrl($redirectUrl));
     }

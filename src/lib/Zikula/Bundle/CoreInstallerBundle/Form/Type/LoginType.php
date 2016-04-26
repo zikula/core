@@ -21,19 +21,25 @@ class LoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
+            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => __('User Name'),
-                'label_attr' => array('class' => 'col-sm-3'),
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
                 'data' => __('admin'),
-                'constraints' => array(
+                'constraints' => [
                     new NotBlank(),
-                )))
-            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', array(
+                ]
+            ])
+            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
                 'label' => __('Password'),
-                'label_attr' => array('class' => 'col-sm-3'),
-                'constraints' => array(
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
+                'constraints' => [
                     new NotBlank(),
-                )))
+                ]
+            ])
         ;
     }
 
@@ -44,12 +50,12 @@ class LoginType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'constraints' => new Callback(array('callback' => array('Zikula\Bundle\CoreInstallerBundle\Validator\CoreInstallerValidator', 'validateAndLogin'))),
+        $resolver->setDefaults([
+            'constraints' => new Callback(['callback' => ['Zikula\Bundle\CoreInstallerBundle\Validator\CoreInstallerValidator', 'validateAndLogin']]),
             'csrf_protection' => false,
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',
-        ));
+        ]);
     }
 }

@@ -74,6 +74,6 @@ class AdminformController extends \Zikula_AbstractController
             $this->entityManager->flush();
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog', [], RouterInterface::ABSOLUTE_URL));
     }
 }

@@ -34,63 +34,63 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
      * @var array
      * @see \Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand
      */
-    protected $settings = array(
+    protected $settings = [
         /* Database */
-        'database_host' => array(
+        'database_host' => [
             'description' => 'The location of your database, most of the times "localhost".',
             'default' => 'localhost'
-        ),
-        'database_user' => array(
+        ],
+        'database_user' => [
             'description' => 'The database user.',
             'default' => null
-        ),
-        'database_password' => array(
+        ],
+        'database_password' => [
             'description' => 'Your database user\'s password.',
             'default' => null,
-        ),
-        'database_name' => array(
+        ],
+        'database_name' => [
             'description' => 'The name of the database.',
             'default' => null
-        ),
-        'database_driver' => array(
+        ],
+        'database_driver' => [
             'description' => 'Your database driver.',
             'default' => 'mysql'
-        ),
-        'dbtabletype' => array(
+        ],
+        'dbtabletype' => [
             'description' => '@todo ?',
             'default' => 'myisam'
-        ),
+        ],
         /* Admin user */
-        'username' => array(
+        'username' => [
             'description' => 'Username of the new Zikula admin user.',
             'default' => 'admin'
-        ),
-        'password' => array(
+        ],
+        'password' => [
             'description' => 'Password of the new Zikula admin user.',
             'default' => null,
-        ),
-        'email' => array(
+        ],
+        'email' => [
             'description' => 'Email of the new Zikula admin user.',
             'default' => null
-        ),
+        ],
         /* Http settings */
-        'router:request_context:host' => array(
+        'router:request_context:host' => [
             'description' => 'The host where you install Zikula, e.g. "example.com". Do not include subdirectories.',
             'default' => null,
-        ),
-        'router:request_context:scheme' => array(
+        ],
+        'router:request_context:scheme' => [
             'description' => 'The scheme of where you install Zikula, can be either "http" or "https".',
             'default' => 'http',
-        ),
-        'router:request_context:base_url' => array(
+        ],
+        'router:request_context:base_url' => [
             'description' => 'The url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir',
             'default' => '',
-        ),
+        ],
         'locale' => [
             'description' => 'The locale to use.',
             'default' => 'en'
         ]
-    );
+    ];
 
     protected function bootstrap($disableSessions = true, $loadZikulaCore = true, $fakeRequest = true)
     {
@@ -137,7 +137,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
 
     protected function printRequirementsWarnings(OutputInterface $output, $warnings)
     {
-        $failures = array();
+        $failures = [];
         foreach ($warnings as $key => $value) {
             if ($value === true) {
                 continue;
@@ -149,8 +149,8 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
 
     private function errorCodeToMessage($key)
     {
-        $messages = array(
-            'phpsatisfied' => $this->translator->__f("You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version %s or later.", array(phpversion(), Zikula_Core::PHP_MINIMUM_VERSION)),
+        $messages = [
+            'phpsatisfied' => $this->translator->__f("You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version %s or later.", [phpversion(), Zikula_Core::PHP_MINIMUM_VERSION]),
             'datetimezone' => $this->translator->__("date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."),
             'pdo' => $this->translator->__("Your PHP installation doesn't have the PDO extension loaded."),
             'phptokens' => $this->translator->__("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),
@@ -159,13 +159,13 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
             'json_encode' => $this->translator->__("Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests."),
             'config_personal_config_php' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "config/personal_config.php"),
 //            'custom_parameters_yml' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "app/config/custom_parameters.yml"),
-        );
+        ];
         if (array_key_exists($key, $messages)) {
             return $messages[$key];
-        } else {
-            // remaining keys are filenames
-            return $this->translator->__f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", $key);
         }
+
+        // remaining keys are filenames
+        return $this->translator->__f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", $key);
     }
 
     public function setContainer(ContainerInterface $container = null)

@@ -254,13 +254,13 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * For example:
      *
      * <code>
-     * $accountRecoveryInfo[] = array(
+     * $accountRecoveryInfo[] = [
      *     'modname'           => $this->name,
      *     'short_description' => $this->__('E-mail Address'),
      *     'long_description'  => $this->__('E-mail Address'),
      *     'uname'             => $userObj['email'],
      *     'link'              => '',
-     * )
+     * ]
      * </code>
      *
      * Parameters passed in the $arg array:

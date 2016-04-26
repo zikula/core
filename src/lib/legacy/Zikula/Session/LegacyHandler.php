@@ -62,7 +62,7 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
             return '';
         }
 
-        $result = $this->conn->executeQuery('SELECT vars FROM session_info WHERE sessid=:id', array('id' => $sessionId))->fetch();
+        $result = $this->conn->executeQuery('SELECT vars FROM session_info WHERE sessid=:id', ['id' => $sessionId])->fetch();
 
         return isset($result['vars']) ? $result['vars'] : '';
     }
@@ -87,11 +87,12 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
         $obj['ipaddr'] = $this->storage->getBag('attributes')->get('obj/ipaddr', $ipDefault);
         $obj['lastused'] = date('Y-m-d H:i:s', $this->storage->getMetadataBag()->getLastUsed());
 
-        $query = $this->conn->executeQuery('SELECT * FROM session_info WHERE sessid=:id', array('id' => $sessionId));
+        $query = $this->conn->executeQuery('SELECT * FROM session_info WHERE sessid=:id', ['id' => $sessionId]);
         if (!$res = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $res = $this->conn->executeUpdate('INSERT INTO session_info (sessid, ipaddr, lastused, uid, remember, vars)
-            VALUES (:sessid, :ipaddr, :lastused, :uid, :remember, :vars)',
-                array(
+            $res = $this->conn->executeUpdate('
+                INSERT INTO session_info (sessid, ipaddr, lastused, uid, remember, vars)
+                VALUES (:sessid, :ipaddr, :lastused, :uid, :remember, :vars)',
+                [
                      'sessid' => $obj['sessid'],
                      'ipaddr' => $obj['ipaddr'],
                      'lastused' => $obj['lastused'],
@@ -99,11 +100,19 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
                      'remember' => $obj['remember'],
                      'uid' => $obj['uid'],
                      'vars' => $obj['vars'],
-                ));
+                ]
+            );
         } else {
             // check for regenerated session and update ID in database
-            $res = $this->conn->executeUpdate('UPDATE session_info SET ipaddr = :ipaddr, lastused = :lastused, uid = :uid, remember = :remember, vars = :vars WHERE sessid = :sessid',
-                array(
+            $res = $this->conn->executeUpdate('
+                UPDATE session_info
+                SET ipaddr = :ipaddr,
+                    lastused = :lastused,
+                    uid = :uid,
+                    remember = :remember,
+                    vars = :vars
+                WHERE sessid = :sessid',
+                [
                      'sessid' => $obj['sessid'],
                      'ipaddr' => $obj['ipaddr'],
                      'lastused' => $obj['lastused'],
@@ -111,7 +120,8 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
                      'remember' => $obj['remember'],
                      'uid' => $obj['uid'],
                      'vars' => $obj['vars'],
-                ));
+                ]
+            );
         }
 
         return (bool) $res;
@@ -127,7 +137,7 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
             setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
         }
 
-        $this->conn->executeUpdate('DELETE FROM session_info WHERE sessid=:id', array('id' => $sessionId));
+        $this->conn->executeUpdate('DELETE FROM session_info WHERE sessid=:id', ['id' => $sessionId]);
     }
 
     /**

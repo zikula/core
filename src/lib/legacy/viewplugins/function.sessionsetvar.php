@@ -39,13 +39,13 @@ function smarty_function_sessionsetvar($params, Zikula_View $view)
     $path    = isset($params['path'])    ? $params['path']    : '/';
 
     if (!$name) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessionsetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['sessionsetvar', 'name']));
 
         return false;
     }
 
     if (!$value) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessionsetvar', 'value')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['sessionsetvar', 'value']));
 
         return false;
     }

@@ -61,18 +61,18 @@ function smarty_function_pageaddvar($params, Zikula_View $view)
     }
 
     if (!$name) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pageaddvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['pageaddvar', 'name']));
 
         return false;
     }
 
     if (!$value) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pageaddvar', 'value')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['pageaddvar', 'value']));
 
         return false;
     }
 
-    if (in_array($name, array('stylesheet', 'javascript')) && !$raw) {
+    if (in_array($name, ['stylesheet', 'javascript']) && !$raw) {
         $value = explode(',', $value);
     }
 

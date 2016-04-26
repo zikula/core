@@ -16,20 +16,20 @@
  * <li>load all values of an column (with unique result using DISTINCT)
  * <code>
  * $array = Doctrine_Query::create()
- *              ->select("DISTINCT myColumn")
- *              ->from("MyTable")
- *              ->execute(array(), DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY)
- * // $array is array(0 => "myColumn value 1", 1 => "myColumn value 2")
+ *              ->select('DISTINCT myColumn')
+ *              ->from('MyTable')
+ *              ->execute([], DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY)
+ * // $array is [0 => 'myColumn value 1', 1 => 'myColumn value 2']
  * </code>
  * </li>
  *
  * <li>use an column as array key
  * <code>
  * $array = Doctrine_Query::create()
- *              ->select("myKeyColumn, myColumn")
- *              ->from("MyTable INDEXBY myKeyColumn")
- *              ->execute(array(), DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY)
- * // $array is array("key1" => "myColumn value 1", "key2" => "myColumn value 2")
+ *              ->select('myKeyColumn, myColumn')
+ *              ->from('MyTable INDEXBY myKeyColumn')
+ *              ->execute([], DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY)
+ * // $array is ['key1' => 'myColumn value 1', 'key2' => 'myColumn value 2']
  * </code>
  * </li>
  * </ul>
@@ -57,7 +57,7 @@ class Zikula_Doctrine_Hydrator_SingleScalarArray extends Doctrine_Hydrator_Abstr
 
         // load rows from db
         $resultRows = $stmt->fetchAll(Doctrine::FETCH_ASSOC);
-        $fieldArray = array();
+        $fieldArray = [];
 
         if ($isAssoc) {
             $assocColumnName = $rootTablePrefix . '__' . $rootComponent['map'];

@@ -40,7 +40,7 @@ class Filter
         $this->jsResolver = $js;
         $this->cssResolver = $css;
         // @todo default to 'head' for BC in Core 1.x but default to 'foot' in Core-2.0
-        $this->scriptPosition = isset($scriptPosition) && in_array($scriptPosition, array('head', 'foot')) ? $scriptPosition : 'head';
+        $this->scriptPosition = isset($scriptPosition) && in_array($scriptPosition, ['head', 'foot']) ? $scriptPosition : 'head';
     }
 
     /**
@@ -52,7 +52,7 @@ class Filter
      * @param array $css
      * @return string
      */
-    public function filter($source, $js = array(), $css = array())
+    public function filter($source, $js = [], $css = [])
     {
         if (!empty($css)) {
             $this->cssResolver->getBag()->add($css);

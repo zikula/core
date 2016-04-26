@@ -68,15 +68,16 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // Pass to API
-        ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'update',
-                array('pid'       => $pid,
-                      'seq'       => $seq,
-                      'oldseq'    => $seq,
-                      'realm'     => 0,
-                      'id'        => $gid,
-                      'component' => $component,
-                      'instance'  => $instance,
-                      'level'     => $level));
+        ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'update', [
+            'pid'       => $pid,
+            'seq'       => $seq,
+            'oldseq'    => $seq,
+            'realm'     => 0,
+            'id'        => $gid,
+            'component' => $component,
+            'instance'  => $instance,
+            'level'     => $level
+        ]);
 
         // read current settings and return them
         $permission = $this->entityManager->find('ZikulaPermissionsModule:PermissionEntity', $pid)->toArray();
@@ -117,7 +118,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $this->entityManager->flush();
 
-        return new AjaxResponse(array('result' => true));
+        return new AjaxResponse(['result' => true]);
     }
 
     /**
@@ -141,14 +142,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // create a new permission array
-        $dummyperm = array(
+        $dummyperm = [
             'realm'     => 0,
             'id'        => $request->request->get('group', 0),
             'component' => $request->request->get('component', '.*'),
             'instance'  => $request->request->get('instance', '.*'),
             'level'     => $request->request->get('level', ACCESS_NONE),
-            'insseq'    => $request->request->get('insseq'),
-        );
+            'insseq'    => $request->request->get('insseq')
+        ];
 
         $newperm = ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'create', $dummyperm);
         if ($newperm == false) {
@@ -193,13 +194,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             throw new FatalErrorException($this->__('Notice: You cannot delete the main administration permission rule.'));
         }
 
-        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete', array('pid' => $pid)) == true) {
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete', ['pid' => $pid]) == true) {
             if ($pid == $this->getVar('adminid')) {
                 $this->setVar('adminid', 0);
                 $this->setVar('lockadmin', false);
             }
 
-            return new AjaxResponse(array('pid' => $pid));
+            return new AjaxResponse(['pid' => $pid]);
         }
 
         throw new FatalErrorException($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
@@ -256,7 +257,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $result .= '</span>';
         }
 
-        return new AjaxResponse(array('testresult' => $result));
+        return new AjaxResponse(['testresult' => $result]);
     }
 
     /**
@@ -277,7 +278,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 break;
 
             default:
-                $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid, 'group_membership' => false));
+                $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid, 'group_membership' => false]);
                 $name = $group['name'];
         }
 

@@ -53,10 +53,10 @@ class CollapseableBlockListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => array(
-                array('addCollapseableBehavior', 202),
-            ),
-        );
+        return [
+            KernelEvents::REQUEST => [
+                ['addCollapseableBehavior', 202]
+            ]
+        ];
     }
 }

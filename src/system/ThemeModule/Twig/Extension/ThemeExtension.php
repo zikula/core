@@ -68,7 +68,7 @@ class ThemeExtension extends \Twig_Extension
             throw new \InvalidArgumentException('Invalid theme name.');
         }
 
-        if (!in_array($size, array('large', 'medium', 'small'))) {
+        if (!in_array($size, ['large', 'medium', 'small'])) {
             $size = 'medium';
         }
 

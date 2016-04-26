@@ -50,7 +50,7 @@ class InitStage implements StageInterface, InjectContainerInterface
 
     public function getTemplateParams()
     {
-        return array();
+        return [];
     }
 
     private function init()
@@ -73,11 +73,11 @@ class InitStage implements StageInterface, InjectContainerInterface
         $conn->executeQuery("DELETE FROM modules WHERE name = 'Errors'");
 
         // rename modules in tables: modules, module_vars, group_perms
-        $oldModuleNames = array(
+        $oldModuleNames = [
             'Admin', 'Blocks', 'Categories', 'Extensions', 'Groups',
             'Mailer', 'PageLock', 'Permissions', 'Search', 'SecurityCenter',
             'Settings', 'Theme', 'Users',
-        );
+        ];
         foreach ($oldModuleNames as $module) {
             $conn->executeQuery("UPDATE modules SET name = 'Zikula{$module}Module', directory = '{$module}Module' WHERE name = '$module'");
             $conn->executeQuery("UPDATE module_vars SET modname = 'Zikula{$module}Module' WHERE modname = '$module'");
@@ -86,16 +86,16 @@ class InitStage implements StageInterface, InjectContainerInterface
         }
 
         // rename themes in tables: themes
-        $oldThemeNames = array(
+        $oldThemeNames = [
             'Andreas08', 'Atom', 'SeaBreeze', 'Mobile', 'Printer',
-        );
+        ];
         foreach ($oldThemeNames as $theme) {
             $conn->executeQuery("UPDATE themes SET name = 'Zikula{$theme}Theme', directory = '{$theme}Theme' WHERE name = '$theme'");
         }
         $conn->executeQuery("UPDATE themes SET name = 'ZikulaRssTheme', directory = 'RssTheme' WHERE name = 'RSS'");
 
         // update 'Users' -> 'ZikulaUsersModule' in all the hook tables
-        $sqls = array();
+        $sqls = [];
         $sqls[] = "UPDATE hook_area SET owner = 'ZikulaUsersModule' WHERE owner = 'Users'";
         $sqls[] = "UPDATE hook_binding SET sowner = 'ZikulaUsersModule' WHERE sowner = 'Users'";
         $sqls[] = "UPDATE hook_runtime SET sowner = 'ZikulaUsersModule' WHERE sowner = 'Users'";
@@ -125,7 +125,7 @@ class InitStage implements StageInterface, InjectContainerInterface
         $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($kernel));
         $helper->createSchema();
         $helper->load();
-        $bundles = array();
+        $bundles = [];
         // this neatly autoloads
         $boot->getPersistedBundles($kernel, $bundles);
     }

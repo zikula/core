@@ -44,7 +44,7 @@ function smarty_modifier_profilelinkbyuname($uname, $class = '', $image = '', $m
     $profileModule = System::getVar('profilemodule', '');
 
     if ($uid && ($uid > 1) && !empty($profileModule) && ModUtil::available($profileModule)) {
-        $userDisplayName = ModUtil::apiFunc($profileModule, 'user', 'getUserDisplayName', array('uid' => $uid));
+        $userDisplayName = ModUtil::apiFunc($profileModule, 'user', 'getUserDisplayName', ['uid' => $uid]);
 
         if (empty($userDisplayName)) {
             $userDisplayName = $uname;
@@ -70,7 +70,7 @@ function smarty_modifier_profilelinkbyuname($uname, $class = '', $image = '', $m
             $show = DataUtil::formatForDisplay($userDisplayName);
         }
 
-        $profileLink = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Profile')) . ': ' . DataUtil::formatForDisplay($userDisplayName) . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $show . '</a>';
+        $profileLink = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Profile')) . ': ' . DataUtil::formatForDisplay($userDisplayName) . '" href="' . DataUtil::formatForDisplay(ModUtil::url($profileModule, 'user', 'view', ['uid' => $uid], null, null, true)) . '">' . $show . '</a>';
     } elseif (!empty($image)) {
         $profileLink = ''; // image for anonymous user should be "empty"
     } else {

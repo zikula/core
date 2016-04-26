@@ -48,7 +48,7 @@ function smarty_function_gt($params, Zikula_View $view)
     }
 
     if (!isset($params['text'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_gt', 'text')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_function_gt', 'text']));
 
         return false;
     }
@@ -66,7 +66,7 @@ function smarty_function_gt($params, Zikula_View $view)
 
     // build array for tags (for %s, %1$s etc) if applicable
     ksort($params);
-    $tags = array();
+    $tags = [];
     foreach ($params as $key => $value) {
         if (preg_match('#^tag([0-9]{1,2})$#', $key)) {
             $tags[] = $value;

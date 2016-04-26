@@ -161,7 +161,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
         if ($firstTime) {
             $lang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
             // map of the jscalendar supported languages
-            $map = array(
+            $map = [
                 'ca' => 'ca_ES',
                 'cz' => 'cs_CZ',
                 'da' => 'da_DK',
@@ -188,7 +188,8 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
                 'si' => 'si_SL',
                 'sk' => 'sk_SK',
                 'sv' => 'sv_SE',
-                'tr' => 'tr_TR');
+                'tr' => 'tr_TR'
+            ];
 
             if (isset($map[$lang])) {
                 $lang = $map[$lang];
@@ -207,8 +208,8 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
         $result = '';
 
         if ($this->useSelectionMode) {
-            $hiddenInputField = str_replace(array('type="text"', '&nbsp;*'),
-                                            array('type="hidden"', ''),
+            $hiddenInputField = str_replace(['type="text"', '&nbsp;*'],
+                                            ['type="hidden"', ''],
                                             parent::render($view));
 
             $result .= '<div>' . $hiddenInputField . '<span id="' . $this->id . 'cal" style="background-color: #ff8; cursor: default" onmouseover="this.style.backgroundColor=\'#ff0\';" onmouseout="this.style.backgroundColor=\'#ff8\';">';

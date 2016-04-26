@@ -19,7 +19,7 @@
  *
  *  Initialize an empty array.
  *
- *  <samp>{setvar var='foo' php='array()'}</samp>
+ *  <samp>{setvar var='foo' php='[]'}</samp>
  *
  *  Set an array item.
  *
@@ -94,7 +94,7 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
             }
 
             $_code = "\$_values = $_rval; ".
-                     "if (!isset($_lval)) { $_lval = array(); } "
+                     "if (!isset($_lval)) { $_lval = []; } "
                      ."foreach (explode($_delim, ".$_attrs['keys'].") as \$_i => \$_key) { "
                      ."    ${_lval}[\$_key] = \$_values[\$_i]; "
                      ."}";

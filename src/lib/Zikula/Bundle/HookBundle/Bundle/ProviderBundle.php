@@ -34,7 +34,7 @@ class ProviderBundle
      *
      * @var array
      */
-    private $hooks = array();
+    private $hooks = [];
 
     /**
      * Title.
@@ -188,12 +188,12 @@ class ProviderBundle
      */
     private function addHandler($hookType, $className, $method, $serviceId = null)
     {
-        $this->hooks[$hookType] = array(
+        $this->hooks[$hookType] = [
             'hooktype' => $hookType,
             'classname' => $className,
             'method' => $method,
             'serviceid' => $serviceId,
-        );
+        ];
 
         return $this;
     }

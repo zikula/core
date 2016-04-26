@@ -23,7 +23,9 @@ class CategoriesMergeCollectionListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::SUBMIT => 'onBindNormData');
+        return [
+            FormEvents::SUBMIT => 'onBindNormData'
+        ];
     }
 
     public function onBindNormData(FormEvent $event)

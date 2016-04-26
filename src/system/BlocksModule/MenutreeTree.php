@@ -26,16 +26,16 @@ class MenutreeTree extends \Zikula_Tree
      *
      * @return void
      */
-    public function __construct(array $config = array())
+    public function __construct(array $config = [])
     {
-        $config = array_merge($config, array(
-            'langs'        => array('en'),
+        $config = array_merge($config, [
+            'langs'        => ['en'],
             'flat'         => false,
             'parseURL'     => false,
             'sortable'     => false,
             'dynamicClass' => 'z-tree-dynamic',
             'imagesDir'    => 'system/BlocksModule/Resources/public/images/menutree/',
-        ));
+        ]);
         parent::__construct($config);
     }
 
@@ -46,14 +46,14 @@ class MenutreeTree extends \Zikula_Tree
      */
     protected function _parseData()
     {
-        $this->tree = array();
-        $map = array();
+        $this->tree = [];
+        $map = [];
 
         $langs = $this->config['langs'];
         $reflang = $langs[0];
 
         foreach ($this->data as $a) {
-            $item = array();
+            $item = [];
 
             foreach ((array)$langs as $lang) {
                 if (empty($a[$lang])) {
@@ -68,7 +68,7 @@ class MenutreeTree extends \Zikula_Tree
                     $_item = $a[$lang];
                 }
 
-                $item[$lang] = array(
+                $item[$lang] = [
                     'id'        => isset($_item['id']) ? $_item['id'] : null,
                     'parent_id' => isset($_item['parent']) ? $_item['parent'] : $this->config['nullParent'],
                     'name'      => isset($_item['name']) ? $_item['name'] : null,
@@ -80,16 +80,22 @@ class MenutreeTree extends \Zikula_Tree
                     'href'      => isset($_item['href']) ? $_item['href'] : '',
                     'lang'      => isset($_item['lang']) ? $_item['lang'] : '',
                     'dynamic'   => strpos($_item['href'], '{ext:') === 0,
-                );
+                ];
                 if ($this->config['parseURL']) {
                     $item[$lang]['href'] = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'encodebracketurl', $item[$lang]['href']);
                 }
             }
 
             if ($this->config['flat']) {
-                $_node = array('item' => $item[$reflang], 'nodes' => array());
+                $_node = [
+                    'item' => $item[$reflang],
+                    'nodes' => []
+                ];
             } else {
-                $_node = array('item' => $item, 'nodes' => array());
+                $_node = [
+                    'item' => $item,
+                    'nodes' => []
+                ];
             }
 
             if ($a[$reflang]['parent'] == 0) {
@@ -180,7 +186,7 @@ class MenutreeTree extends \Zikula_Tree
         $iconImage = !empty($tab['nodes']) ?  $this->config['parentOpen'] : $iconImage;
         $icon      = $indent.'<img class="'.$this->config['icon'].'" alt="" src="'.$this->config['imagesDir'].$iconImage.'" />';
 
-        $links = array();
+        $links = [];
         foreach ($item as $lang => $translated) {
             $isDynamic = $isDynamic || $translated['dynamic'];
             $linkClass = $translated['active'] == 1 ? $translated['class'] : $this->config['nodeUnactive'].' '.$translated['class'];
@@ -196,7 +202,7 @@ class MenutreeTree extends \Zikula_Tree
         $itemid  = $indent.'<span class="sub">'.$translated['id'].'.</span>';
 
         $liId    = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
-        $liClass = array();
+        $liClass = [];
         $liClass[] = $isDynamic ?  $this->config['dynamicClass'] : '';
         $liClass[] = $size == 1 ? $this->config['nodeSingle'] : '';
         $liClass[] = ($i == 1 && $size > 1) ? $this->config['nodeFirst'] : '';

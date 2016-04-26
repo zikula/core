@@ -56,7 +56,7 @@ function smarty_function_ajaxheader($params, Zikula_View $view)
     $return = '';
 
     // we always need those
-    $scripts = array('prototype', 'zikula');
+    $scripts = ['prototype', 'zikula'];
 
     if ($validation) {
         $scripts[] = 'validation';

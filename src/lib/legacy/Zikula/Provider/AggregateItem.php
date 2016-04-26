@@ -65,7 +65,7 @@ class Zikula_Provider_AggregateItem
      * @param string  $method      Name of method in controller (to view action).
      * @param array   $args        Arguments for method.
      */
-    public function __construct($type, $description, $number, $controller, $method, array $args = array())
+    public function __construct($type, $description, $number, $controller, $method, array $args = [])
     {
         $this->type = (string)$type;
         $this->description = (string)$description;

@@ -89,7 +89,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * (optional) the javascript date format used for the storage element (should mirror the dateTime version) (default: computed from valuestorageformat)
      * @see http://docs.jquery.com/UI/Datepicker/formatDate
      */
-    $valueStorageFormat_javascript = (isset($params['valuestorageformat_javascript'])) ? $params['valuestorageformat_javascript'] : str_replace(array('Y', 'm', 'd'), array('yy', 'mm', 'dd'), $valueStorageFormat_dateTime);
+    $valueStorageFormat_javascript = (isset($params['valuestorageformat_javascript'])) ? $params['valuestorageformat_javascript'] : str_replace(['Y', 'm', 'd'], ['yy', 'mm', 'dd'], $valueStorageFormat_dateTime);
     unset($params['valuestorageformat_javascript']);
     /**
      * onselectcallback
@@ -147,7 +147,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
 
     // check required params
     if (!isset($displayElement)) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('jquery_datepicker', 'displayelement')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['jquery_datepicker', 'displayelement']));
 
         return false;
     }

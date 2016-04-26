@@ -96,12 +96,14 @@ class Zikula_Workflow
     {
         $idcolumn = $obj['__WORKFLOW__']['obj_idcolumn'];
 
-        $insertObj = array('obj_table'    => $obj['__WORKFLOW__']['obj_table'],
-                           'obj_idcolumn' => $obj['__WORKFLOW__']['obj_idcolumn'],
-                           'obj_id'       => $obj[$idcolumn],
-                           'module'       => $this->getModule(),
-                           'schemaname'   => $this->id,
-                           'state'        => $stateID);
+        $insertObj = [
+            'obj_table'    => $obj['__WORKFLOW__']['obj_table'],
+            'obj_idcolumn' => $obj['__WORKFLOW__']['obj_idcolumn'],
+            'obj_id'       => $obj[$idcolumn],
+            'module'       => $this->getModule(),
+            'schemaname'   => $this->id,
+            'state'        => $stateID
+        ];
 
         $entity = new Zikula\Core\Doctrine\Entity\WorkflowEntity();
         $entity->setObjTable($insertObj['obj_table']);
@@ -179,7 +181,7 @@ class Zikula_Workflow
 
         // check the action exists for given state
         if (!isset($this->actionMap[$stateID][$actionID])) {
-            throw new \Exception(__f('Action: %1$s not available in this State: %2$s', array($actionID, $stateID)));
+            throw new \Exception(__f('Action: %1$s not available in this State: %2$s', [$actionID, $stateID]));
         }
 
         $action = $this->actionMap[$stateID][$actionID];
@@ -196,7 +198,7 @@ class Zikula_Workflow
         $nextState = (isset($action['nextState']) ? $action['nextState'] : $stateID);
 
         // process the action operations
-        $result = array();
+        $result = [];
         foreach ($action['operations'] as $operation) {
             // execute the operation
             $result[$operation['name']] = $this->executeOperation($operation, $obj, $nextState);
@@ -273,7 +275,7 @@ class Zikula_Workflow
         $states = array_keys($this->stateMap);
         // checks for an invalid next state value
         if (!in_array($params['nextstate'], $states)) {
-            LogUtil::addErrorPopup(__f('Invalid next-state value [%1$s] retrieved by the \'%2$s\' operation for the workflow \'%3$s\' [\'%4$s\'].', array($nextState, $operation, $this->getID(), $this->getModule())));
+            LogUtil::addErrorPopup(__f('Invalid next-state value [%1$s] retrieved by the \'%2$s\' operation for the workflow \'%3$s\' [\'%4$s\'].', [$nextState, $operation, $this->getID(), $this->getModule()]));
         } else {
             $nextState = $params['nextstate'];
         }

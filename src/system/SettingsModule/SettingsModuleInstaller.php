@@ -154,8 +154,8 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             case '2.9.9':
                 // update certain System vars to multilingual. provide default values for all locales using current value.
                 // must directly manipulate System vars at DB level because using $this->getSystemVar() returns empty values due to ModUtil::setupMultilingual()
-                $varsToChange = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
-                $SystemVars = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(array('modname' => VariableApi::CONFIG));
+                $varsToChange = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
+                $SystemVars = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(['modname' => VariableApi::CONFIG]);
                 /** @var \Zikula\ExtensionsModule\Entity\ExtensionVarEntity $modVar */
                 foreach ($SystemVars as $modVar) {
                     if (in_array($modVar->getName(), $varsToChange)) {

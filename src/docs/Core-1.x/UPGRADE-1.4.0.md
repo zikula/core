@@ -466,7 +466,7 @@ in XYZVersion.php:
    ```php
    public function getMetaData()
    {
-       $meta = array();
+       $meta = [];
        ...
        $meta['url'] = $this->__('acmeexample');
        ...
@@ -796,7 +796,7 @@ The Api/methodology for the search module has changed. The previous method of us
 fully functional) in favor of a dedicated class that is identified in the Version file's `capabilities` area, like so:
 
 ```php
-$meta['capabilities'][AbstractSearchable::SEARCHABLE] = array('class' => 'Zikula\UsersModule\Helper\SearchHelper');
+$meta['capabilities'][AbstractSearchable::SEARCHABLE] = ['class' => 'Zikula\UsersModule\Helper\SearchHelper'];
 ```
 
 The `class` key must point to a helper class that extends `Zikula\SearchModule\AbstractSearchable` and defines
@@ -829,13 +829,15 @@ Modules should have `core_min = 1.4.0`.
 You now can add a reason for each dependency. Add a `reason` key to any dependency array you want. Example:
 
 ```php
-$meta['dependencies'] = array(
-        array('modname'    => 'Scribite',
-              'minversion' => '5.0.0',
-              'maxversion' => '',
-              'status'     => ModUtil::DEPENDENCY_RECOMMENDED,
-              'reason'     => 'Scribite adds a html editor.'),
-);
+$meta['dependencies'] = [
+    [
+        'modname'    => 'Scribite',
+        'minversion' => '5.0.0',
+        'maxversion' => '',
+        'status'     => ModUtil::DEPENDENCY_RECOMMENDED,
+        'reason'     => 'Scribite adds a html editor.'
+    ]
+];
 ```
 
 *Note: This only works for modules using the new >= 1.4.0 structure. Modules with the < 1.3.x structure are ignoring this setting.*

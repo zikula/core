@@ -22,11 +22,11 @@
  */
 function array_sort_by_fields(&$data, $sortby)
 {
-    static $sort_funcs = array();
+    static $sort_funcs = [];
 
     if (empty($sort_funcs[$sortby])) {
         $code = "\$c=0;";
-        foreach (split(',', $sortby) as $key) {
+        foreach (explode(',', $sortby) as $key) {
             $d = '1';
             if (substr($key, 0, 1) == '-') {
                 $d = '-1';

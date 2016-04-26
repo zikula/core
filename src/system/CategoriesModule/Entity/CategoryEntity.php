@@ -201,8 +201,8 @@ class CategoryEntity extends EntityAccess
         $this->name = '';
         $this->value = '';
         $this->sort_value = 2147483647;
-        $this->display_name = array();
-        $this->display_desc = array();
+        $this->display_name = [];
+        $this->display_desc = [];
         $this->path = '';
         $this->ipath = '';
         $this->status = 'A';
@@ -258,7 +258,7 @@ class CategoryEntity extends EntityAccess
      */
     public function getChildren()
     {
-        return !empty($this->children) ? $this->children : array();
+        return !empty($this->children) ? $this->children : [];
     }
 
     /**

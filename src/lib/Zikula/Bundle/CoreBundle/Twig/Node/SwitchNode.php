@@ -14,12 +14,12 @@ class SwitchNode extends \Twig_Node
 {
     public function __construct(\Twig_NodeInterface $cases, \Twig_NodeInterface $default = null, \Twig_Node_Expression $expression, $lineno, $tag = null)
     {
-        $nodes = array(
+        $nodes = [
             'cases' => $cases,
             'default' => $default,
             'expression' => $expression
-        );
-        parent::__construct($nodes, array(), $lineno, $tag);
+        ];
+        parent::__construct($nodes, [], $lineno, $tag);
     }
 
     public function compile(\Twig_Compiler $compiler)

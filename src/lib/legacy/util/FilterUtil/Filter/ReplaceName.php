@@ -23,7 +23,7 @@ class FilterUtil_Filter_ReplaceName extends FilterUtil_AbstractPlugin implements
      *
      * @var array
      */
-    protected $pair = array();
+    protected $pair = [];
 
     /**
      * Constructor.
@@ -75,6 +75,6 @@ class FilterUtil_Filter_ReplaceName extends FilterUtil_AbstractPlugin implements
             $field = $this->pair[$field];
         }
 
-        return array($field, $op, $value);
+        return [$field, $op, $value];
     }
 }

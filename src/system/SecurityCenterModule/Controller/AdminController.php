@@ -56,7 +56,7 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in modifyconfig()
-        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -71,7 +71,7 @@ class AdminController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check will be done in modifyconfig()
-        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -296,7 +296,7 @@ class AdminController extends \Zikula_AbstractController
 
         $idshtmlfields = $request->request->get('idshtmlfields', '');
         $idshtmlfields = explode(PHP_EOL, $idshtmlfields);
-        $idshtmlarray = array();
+        $idshtmlarray = [];
         foreach ($idshtmlfields as $idshtmlfield) {
             $idshtmlfield = trim($idshtmlfield);
             if (!empty($idshtmlfield)) {
@@ -307,7 +307,7 @@ class AdminController extends \Zikula_AbstractController
 
         $idsjsonfields = $request->request->get('idsjsonfields', '');
         $idsjsonfields = explode(PHP_EOL, $idsjsonfields);
-        $idsjsonarray = array();
+        $idsjsonarray = [];
         foreach ($idsjsonfields as $idsjsonfield) {
             $idsjsonfield = trim($idsjsonfield);
             if (!empty($idsjsonfield)) {
@@ -318,7 +318,7 @@ class AdminController extends \Zikula_AbstractController
 
         $idsexceptions = $request->request->get('idsexceptions', '');
         $idsexceptions = explode(PHP_EOL, $idsexceptions);
-        $idsexceptarray = array();
+        $idsexceptarray = [];
         foreach ($idsexceptions as $idsexception) {
             $idsexception = trim($idsexception);
             if (!empty($idsexception)) {
@@ -339,13 +339,13 @@ class AdminController extends \Zikula_AbstractController
         if ($cause_logout == true) {
             UserUtil::logout();
             $request->getSession()->getFlashBag()->add('status', $this->__('Session handling variables have changed. You must log in again.'));
-            $returnPage = urlencode($this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+            $returnPage = urlencode($this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig', [], RouterInterface::ABSOLUTE_URL));
 
-            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', array('returnpage' => $returnPage), RouterInterface::ABSOLUTE_URL));
+            return new RedirectResponse($this->get('router')->generate('zikulausersmodule_user_login', ['returnpage' => $returnPage], RouterInterface::ABSOLUTE_URL));
         }
 
         // the user to an appropriate page for them to carry on their work
-        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -387,9 +387,9 @@ class AdminController extends \Zikula_AbstractController
         $allowed = \HTMLPurifier_Config::getAllowedDirectivesForForm(true, $config->def);
 
         // list of excluded directives, format is $namespace_$directive
-        $excluded = array('Cache_SerializerPath');
+        $excluded = ['Cache_SerializerPath'];
 
-        $purifierAllowed = array();
+        $purifierAllowed = [];
         foreach ($allowed as $allowedDirective) {
             list($namespace, $directive) = $allowedDirective;
 
@@ -410,7 +410,7 @@ class AdminController extends \Zikula_AbstractController
                 }
             }
 
-            $directiveRec = array();
+            $directiveRec = [];
             $directiveRec['key'] = $namespace . '.' . $directive;
             $def = $config->def->info[$directiveRec['key']];
             $directiveRec['value'] = $config->get($directiveRec['key']);
@@ -421,7 +421,7 @@ class AdminController extends \Zikula_AbstractController
                 $directiveRec['allowNull'] = (isset($def->allow_null) && $def->allow_null);
                 $directiveRec['type'] = (isset($def->type) ? $def->type : 0);
                 if (isset($def->allowed)) {
-                    $directiveRec['allowedValues'] = array();
+                    $directiveRec['allowedValues'] = [];
                     foreach ($def->allowed as $val => $b) {
                         $directiveRec['allowedValues'][] = $val;
                     }
@@ -430,7 +430,7 @@ class AdminController extends \Zikula_AbstractController
             if (is_array($directiveRec['value'])) {
                 switch ($directiveRec['type']) {
                     case \HTMLPurifier_VarParser::LOOKUP:
-                        $value = array();
+                        $value = [];
                         foreach ($directiveRec['value'] as $val => $b) {
                             $value[] = $val;
                         }
@@ -527,7 +527,7 @@ class AdminController extends \Zikula_AbstractController
                 switch ($directiveType) {
                     case \HTMLPurifier_VarParser::LOOKUP:
                         $value = explode(PHP_EOL, $config[$namespace][$directive]);
-                        $config[$namespace][$directive] = array();
+                        $config[$namespace][$directive] = [];
                         foreach ($value as $val) {
                             $val = trim($val);
                             if (!empty($val)) {
@@ -540,7 +540,7 @@ class AdminController extends \Zikula_AbstractController
                         break;
                     case \HTMLPurifier_VarParser::ALIST:
                         $value = explode(PHP_EOL, $config[$namespace][$directive]);
-                        $config[$namespace][$directive] = array();
+                        $config[$namespace][$directive] = [];
                         foreach ($value as $val) {
                             $val = trim($val);
                             if (!empty($val)) {
@@ -553,7 +553,7 @@ class AdminController extends \Zikula_AbstractController
                         break;
                     case \HTMLPurifier_VarParser::HASH:
                         $value = explode(PHP_EOL, $config[$namespace][$directive]);
-                        $config[$namespace][$directive] = array();
+                        $config[$namespace][$directive] = [];
                         foreach ($value as $val) {
                             list($i, $v) = explode(':', $val);
                             $i = trim($i);
@@ -588,7 +588,7 @@ class AdminController extends \Zikula_AbstractController
         // the module configuration has been updated successfuly
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved HTMLPurifier configuration.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_modifyconfig', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -611,11 +611,11 @@ class AdminController extends \Zikula_AbstractController
 
         // sorting
         $sort = $request->get('sort', 'date DESC');
-        $sort_exp = explode(" ", $sort);
-        $sorting = array($sort_exp[0] => (isset($sort_exp[1]) ? $sort_exp[1] : 'ASC'));
+        $sort_exp = explode(' ', $sort);
+        $sorting = [$sort_exp[0] => (isset($sort_exp[1]) ? $sort_exp[1] : 'ASC')];
 
         // filtering
-        $filterdefault = array(
+        $filterdefault = [
             'uid' => 0,
             'name' => null,
             'tag' => null,
@@ -623,9 +623,9 @@ class AdminController extends \Zikula_AbstractController
             'page' => null,
             'ip' => null,
             'impact' => null
-        );
+        ];
         $filter = $request->get('filter', $filterdefault);
-        $where = array();
+        $where = [];
         foreach ($filter as $flt_key => $flt_value) {
             if (isset($flt_value) && !empty($flt_value)) {
                 $where[$flt_key] = $flt_value;
@@ -639,15 +639,15 @@ class AdminController extends \Zikula_AbstractController
         $pagesize = (int)$this->getVar('pagesize', 25);
 
         // get data
-        $item_params = array(
+        $item_params = [
             'where' => $where,
             'sorting' => $sorting,
             'limit' => $pagesize,
             'offset' => $startnum
-        );
+        ];
         $items = ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'getAllIntrusions', $item_params);
 
-        $data = array();
+        $data = [];
         foreach ($items as $item) {
             $dta = $item->toArray();
             $dta['username'] = $dta['user']['uname'];
@@ -662,7 +662,7 @@ class AdminController extends \Zikula_AbstractController
                    ->assign('objectArray', $data);
 
         // Assign the values for the smarty plugin to produce a pager.
-        $pager = array();
+        $pager = [];
         $pager['numitems'] = ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'countAllIntrusions', $item_params);
         $pager['itemsperpage'] = $pagesize;
 
@@ -733,28 +733,28 @@ class AdminController extends \Zikula_AbstractController
 
             // titles
             if ($exportTitles == 1) {
-                $titles = array(
-                        $this->__('Name'),
-                        $this->__('Tag'),
-                        $this->__('Value'),
-                        $this->__('Page'),
-                        $this->__('User Name'),
-                        $this->__('IP'),
-                        $this->__('Impact'),
-                        $this->__('PHPIDS filters used'),
-                        $this->__('Date')
-                );
+                $titles = [
+                    $this->__('Name'),
+                    $this->__('Tag'),
+                    $this->__('Value'),
+                    $this->__('Page'),
+                    $this->__('User Name'),
+                    $this->__('IP'),
+                    $this->__('Impact'),
+                    $this->__('PHPIDS filters used'),
+                    $this->__('Date')
+                ];
             } else {
-                $titles = array();
+                $titles = [];
             }
 
             // get data
-            $item_params = array(
-                'sorting' => array('date' => 'DESC')
-            );
+            $item_params = [
+                'sorting' => ['date' => 'DESC']
+            ];
             $items = ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'getAllIntrusions', $item_params);
 
-            $objData = array();
+            $objData = [];
             foreach ($items as $item) {
                 $dta = $item->toArray();
                 $dta['username'] = $dta['user']['uname'];
@@ -764,17 +764,17 @@ class AdminController extends \Zikula_AbstractController
                 $objData[] = $dta;
             }
 
-            $data = array();
-            $find = array("\r\n", "\n");
-            $replace = array("", "");
+            $data = [];
+            $find = ["\r\n", "\n"];
+            $replace = ['', ''];
 
             foreach ($objData as $key => $idsdata) {
                 $filtersused = '';
                 foreach ($objData[$key]['filters'] as $filter) {
-                    $filtersused .= $filter['id'] . " ";
+                    $filtersused .= $filter['id'] . ' ';
                 }
 
-                $datarow = array(
+                $datarow = [
                     $objData[$key]['name'],
                     $objData[$key]['tag'],
                     htmlspecialchars(str_replace($find, $replace, $objData[$key]['value']), ENT_COMPAT, 'UTF-8', false),
@@ -784,7 +784,7 @@ class AdminController extends \Zikula_AbstractController
                     $objData[$key]['impact'],
                     $filtersused,
                     $objData[$key]['date']
-                );
+                ];
 
                 array_push($data, $datarow);
             }
@@ -831,7 +831,7 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Purged IDS Log.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_viewidslog', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -886,7 +886,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // update the allowed html settings
-        $allowedhtml = array();
+        $allowedhtml = [];
         $htmltags = $this->_gethtmltags();
         foreach ($htmltags as $htmltag => $usagetag) {
             $tagval = (int)$request->request->get('htmlallow' . $htmltag . 'tag', 0);
@@ -908,7 +908,7 @@ class AdminController extends \Zikula_AbstractController
         // all done successfully
         $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
 
-        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_allowedhtml', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulasecuritycentermodule_admin_allowedhtml', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -919,116 +919,117 @@ class AdminController extends \Zikula_AbstractController
     private function _gethtmltags()
     {
         // Possible allowed HTML tags
-        return array(
-                '!--' => 'http://www.w3schools.com/html5/tag_comment.asp',
-                'a' => 'http://www.w3schools.com/html5/tag_a.asp',
-                'abbr' => 'http://www.w3schools.com/html5/tag_abbr.asp',
-                'acronym' => 'http://www.w3schools.com/html5/tag_acronym.asp',
-                'address' => 'http://www.w3schools.com/html5/tag_address.asp',
-                'applet' => 'http://www.w3schools.com/tags/tag_applet.asp',
-                'area' => 'http://www.w3schools.com/html5/tag_area.asp',
-                'article' => 'http://www.w3schools.com/html5/tag_article.asp',
-                'aside' => 'http://www.w3schools.com/html5/tag_aside.asp',
-                'audio' => 'http://www.w3schools.com/html5/tag_audio.asp',
-                'b' => 'http://www.w3schools.com/html5/tag_b.asp',
-                'base' => 'http://www.w3schools.com/html5/tag_base.asp',
-                'basefont' => 'http://www.w3schools.com/tags/tag_basefont.asp',
-                'bdo' => 'http://www.w3schools.com/html5/tag_bdo.asp',
-                'big' => 'http://www.w3schools.com/tags/tag_font_style.asp',
-                'blockquote' => 'http://www.w3schools.com/html5/tag_blockquote.asp',
-                'br' => 'http://www.w3schools.com/html5/tag_br.asp',
-                'button' => 'http://www.w3schools.com/html5/tag_button.asp',
-                'canvas' => 'http://www.w3schools.com/html5/tag_canvas.asp',
-                'caption' => 'http://www.w3schools.com/html5/tag_caption.asp',
-                'center' => 'http://www.w3schools.com/tags/tag_center.asp',
-                'cite' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
-                'code' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
-                'col' => 'http://www.w3schools.com/html5/tag_col.asp',
-                'colgroup' => 'http://www.w3schools.com/html5/tag_colgroup.asp',
-                'command' => 'http://www.w3schools.com/html5/tag_command.asp',
-                'datalist' => 'http://www.w3schools.com/html5/tag_datalist.asp',
-                'dd' => 'http://www.w3schools.com/html5/tag_dd.asp',
-                'del' => 'http://www.w3schools.com/html5/tag_del.asp',
-                'details' => 'http://www.w3schools.com/html5/tag_details.asp',
-                'dfn' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
-                'dir' => 'http://www.w3schools.com/tags/tag_dir.asp',
-                'div' => 'http://www.w3schools.com/html5/tag_div.asp',
-                'dl' => 'http://www.w3schools.com/html5/tag_dl.asp',
-                'dt' => 'http://www.w3schools.com/html5/tag_dt.asp',
-                'em' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
-                'embed' => 'http://www.w3schools.com/html5/tag_embed.asp',
-                'fieldset' => 'http://www.w3schools.com/html5/tag_fieldset.asp',
-                'figcaption' => 'http://www.w3schools.com/html5/tag_figcaption.asp',
-                'figure' => 'http://www.w3schools.com/html5/tag_figure.asp',
-                'font' => 'http://www.w3schools.com/tags/tag_font.asp',
-                'footer' => 'http://www.w3schools.com/html5/tag_footer.asp',
-                'form' => 'http://www.w3schools.com/html5/tag_form.asp',
-                'h1' => 'http://www.w3schools.com/html5/tag_hn.asp',
-                'h2' => 'http://www.w3schools.com/html5/tag_hn.asp',
-                'h3' => 'http://www.w3schools.com/html5/tag_hn.asp',
-                'h4' => 'http://www.w3schools.com/html5/tag_hn.asp',
-                'h5' => 'http://www.w3schools.com/html5/tag_hn.asp',
-                'h6' => 'http://www.w3schools.com/html5/tag_hn.asp',
-                'header' => 'http://www.w3schools.com/html5/tag_header.asp',
-                'hgroup' => 'http://www.w3schools.com/html5/tag_hgroup.asp',
-                'hr' => 'http://www.w3schools.com/html5/tag_hr.asp',
-                'i' => 'http://www.w3schools.com/html5/tag_i.asp',
-                'iframe' => 'http://www.w3schools.com/html5/tag_iframe.asp',
-                'img' => 'http://www.w3schools.com/html5/tag_img.asp',
-                'input' => 'http://www.w3schools.com/html5/tag_input.asp',
-                'ins' => 'http://www.w3schools.com/html5/tag_ins.asp',
-                'keygen' => 'http://www.w3schools.com/html5/tag_keygen.asp',
-                'kbd' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
-                'label' => 'http://www.w3schools.com/html5/tag_label.asp',
-                'legend' => 'http://www.w3schools.com/html5/tag_legend.asp',
-                'li' => 'http://www.w3schools.com/html5/tag_li.asp',
-                'map' => 'http://www.w3schools.com/html5/tag_map.asp',
-                'mark' => 'http://www.w3schools.com/html5/tag_mark.asp',
-                'menu' => 'http://www.w3schools.com/html5/tag_menu.asp',
-                'marquee' => '',
-                'meter' => 'http://www.w3schools.com/html5/tag_meter.asp',
-                'nav' => 'http://www.w3schools.com/html5/tag_nav.asp',
-                'nobr' => '',
-                'object' => 'http://www.w3schools.com/html5/tag_object.asp',
-                'ol' => 'http://www.w3schools.com/html5/tag_ol.asp',
-                'optgroup' => 'http://www.w3schools.com/html5/tag_optgroup.asp',
-                'option' => 'http://www.w3schools.com/html5/tag_option.asp',
-                'output' => 'http://www.w3schools.com/html5/tag_output.asp',
-                'p' => 'http://www.w3schools.com/html5/tag_p.asp',
-                'param' => 'http://www.w3schools.com/html5/tag_param.asp',
-                'pre' => 'http://www.w3schools.com/html5/tag_pre.asp',
-                'progress' => 'http://www.w3schools.com/html5/tag_progress.asp',
-                'q' => 'http://www.w3schools.com/html5/tag_q.asp',
-                'rp' => 'http://www.w3schools.com/html5/tag_rp.asp',
-                'rt' => 'http://www.w3schools.com/html5/tag_rt.asp',
-                'ruby' => 'http://www.w3schools.com/html5/tag_ruby.asp',
-                's' => 'http://www.w3schools.com/tags/tag_strike.asp',
-                'samp' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
-                'script' => 'http://www.w3schools.com/html5/tag_script.asp',
-                'section' => 'http://www.w3schools.com/html5/tag_section.asp',
-                'select' => 'http://www.w3schools.com/html5/tag_select.asp',
-                'small' => 'http://www.w3schools.com/html5/tag_small.asp',
-                'source' => 'http://www.w3schools.com/html5/tag_source.asp',
-                'span' => 'http://www.w3schools.com/html5/tag_span.asp',
-                'strike' => 'http://www.w3schools.com/tags/tag_strike.asp',
-                'strong' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
-                'sub' => 'http://www.w3schools.com/html5/tag_sup.asp',
-                'summary' => 'http://www.w3schools.com/html5/tag_summary.asp',
-                'sup' => 'http://www.w3schools.com/html5/tag_sup.asp',
-                'table' => 'http://www.w3schools.com/html5/tag_table.asp',
-                'tbody' => 'http://www.w3schools.com/html5/tag_tbody.asp',
-                'td' => 'http://www.w3schools.com/html5/tag_td.asp',
-                'textarea' => 'http://www.w3schools.com/html5/tag_textarea.asp',
-                'tfoot' => 'http://www.w3schools.com/html5/tag_tfoot.asp',
-                'th' => 'http://www.w3schools.com/html5/tag_th.asp',
-                'thead' => 'http://www.w3schools.com/html5/tag_thead.asp',
-                'time' => 'http://www.w3schools.com/html5/tag_time.asp',
-                'tr' => 'http://www.w3schools.com/html5/tag_tr.asp',
-                'tt' => 'http://www.w3schools.com/tags/tag_font_style.asp',
-                'u' => 'http://www.w3schools.com/tags/tag_u.asp',
-                'ul' => 'http://www.w3schools.com/html5/tag_ul.asp',
-                'var' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
-                'video' => 'http://www.w3schools.com/html5/tag_video.asp',
-                'wbr' => 'http://www.w3schools.com/html5/tag_wbr.asp');
+        return [
+            '!--' => 'http://www.w3schools.com/html5/tag_comment.asp',
+            'a' => 'http://www.w3schools.com/html5/tag_a.asp',
+            'abbr' => 'http://www.w3schools.com/html5/tag_abbr.asp',
+            'acronym' => 'http://www.w3schools.com/html5/tag_acronym.asp',
+            'address' => 'http://www.w3schools.com/html5/tag_address.asp',
+            'applet' => 'http://www.w3schools.com/tags/tag_applet.asp',
+            'area' => 'http://www.w3schools.com/html5/tag_area.asp',
+            'article' => 'http://www.w3schools.com/html5/tag_article.asp',
+            'aside' => 'http://www.w3schools.com/html5/tag_aside.asp',
+            'audio' => 'http://www.w3schools.com/html5/tag_audio.asp',
+            'b' => 'http://www.w3schools.com/html5/tag_b.asp',
+            'base' => 'http://www.w3schools.com/html5/tag_base.asp',
+            'basefont' => 'http://www.w3schools.com/tags/tag_basefont.asp',
+            'bdo' => 'http://www.w3schools.com/html5/tag_bdo.asp',
+            'big' => 'http://www.w3schools.com/tags/tag_font_style.asp',
+            'blockquote' => 'http://www.w3schools.com/html5/tag_blockquote.asp',
+            'br' => 'http://www.w3schools.com/html5/tag_br.asp',
+            'button' => 'http://www.w3schools.com/html5/tag_button.asp',
+            'canvas' => 'http://www.w3schools.com/html5/tag_canvas.asp',
+            'caption' => 'http://www.w3schools.com/html5/tag_caption.asp',
+            'center' => 'http://www.w3schools.com/tags/tag_center.asp',
+            'cite' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
+            'code' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
+            'col' => 'http://www.w3schools.com/html5/tag_col.asp',
+            'colgroup' => 'http://www.w3schools.com/html5/tag_colgroup.asp',
+            'command' => 'http://www.w3schools.com/html5/tag_command.asp',
+            'datalist' => 'http://www.w3schools.com/html5/tag_datalist.asp',
+            'dd' => 'http://www.w3schools.com/html5/tag_dd.asp',
+            'del' => 'http://www.w3schools.com/html5/tag_del.asp',
+            'details' => 'http://www.w3schools.com/html5/tag_details.asp',
+            'dfn' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
+            'dir' => 'http://www.w3schools.com/tags/tag_dir.asp',
+            'div' => 'http://www.w3schools.com/html5/tag_div.asp',
+            'dl' => 'http://www.w3schools.com/html5/tag_dl.asp',
+            'dt' => 'http://www.w3schools.com/html5/tag_dt.asp',
+            'em' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
+            'embed' => 'http://www.w3schools.com/html5/tag_embed.asp',
+            'fieldset' => 'http://www.w3schools.com/html5/tag_fieldset.asp',
+            'figcaption' => 'http://www.w3schools.com/html5/tag_figcaption.asp',
+            'figure' => 'http://www.w3schools.com/html5/tag_figure.asp',
+            'font' => 'http://www.w3schools.com/tags/tag_font.asp',
+            'footer' => 'http://www.w3schools.com/html5/tag_footer.asp',
+            'form' => 'http://www.w3schools.com/html5/tag_form.asp',
+            'h1' => 'http://www.w3schools.com/html5/tag_hn.asp',
+            'h2' => 'http://www.w3schools.com/html5/tag_hn.asp',
+            'h3' => 'http://www.w3schools.com/html5/tag_hn.asp',
+            'h4' => 'http://www.w3schools.com/html5/tag_hn.asp',
+            'h5' => 'http://www.w3schools.com/html5/tag_hn.asp',
+            'h6' => 'http://www.w3schools.com/html5/tag_hn.asp',
+            'header' => 'http://www.w3schools.com/html5/tag_header.asp',
+            'hgroup' => 'http://www.w3schools.com/html5/tag_hgroup.asp',
+            'hr' => 'http://www.w3schools.com/html5/tag_hr.asp',
+            'i' => 'http://www.w3schools.com/html5/tag_i.asp',
+            'iframe' => 'http://www.w3schools.com/html5/tag_iframe.asp',
+            'img' => 'http://www.w3schools.com/html5/tag_img.asp',
+            'input' => 'http://www.w3schools.com/html5/tag_input.asp',
+            'ins' => 'http://www.w3schools.com/html5/tag_ins.asp',
+            'keygen' => 'http://www.w3schools.com/html5/tag_keygen.asp',
+            'kbd' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
+            'label' => 'http://www.w3schools.com/html5/tag_label.asp',
+            'legend' => 'http://www.w3schools.com/html5/tag_legend.asp',
+            'li' => 'http://www.w3schools.com/html5/tag_li.asp',
+            'map' => 'http://www.w3schools.com/html5/tag_map.asp',
+            'mark' => 'http://www.w3schools.com/html5/tag_mark.asp',
+            'menu' => 'http://www.w3schools.com/html5/tag_menu.asp',
+            'marquee' => '',
+            'meter' => 'http://www.w3schools.com/html5/tag_meter.asp',
+            'nav' => 'http://www.w3schools.com/html5/tag_nav.asp',
+            'nobr' => '',
+            'object' => 'http://www.w3schools.com/html5/tag_object.asp',
+            'ol' => 'http://www.w3schools.com/html5/tag_ol.asp',
+            'optgroup' => 'http://www.w3schools.com/html5/tag_optgroup.asp',
+            'option' => 'http://www.w3schools.com/html5/tag_option.asp',
+            'output' => 'http://www.w3schools.com/html5/tag_output.asp',
+            'p' => 'http://www.w3schools.com/html5/tag_p.asp',
+            'param' => 'http://www.w3schools.com/html5/tag_param.asp',
+            'pre' => 'http://www.w3schools.com/html5/tag_pre.asp',
+            'progress' => 'http://www.w3schools.com/html5/tag_progress.asp',
+            'q' => 'http://www.w3schools.com/html5/tag_q.asp',
+            'rp' => 'http://www.w3schools.com/html5/tag_rp.asp',
+            'rt' => 'http://www.w3schools.com/html5/tag_rt.asp',
+            'ruby' => 'http://www.w3schools.com/html5/tag_ruby.asp',
+            's' => 'http://www.w3schools.com/tags/tag_strike.asp',
+            'samp' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
+            'script' => 'http://www.w3schools.com/html5/tag_script.asp',
+            'section' => 'http://www.w3schools.com/html5/tag_section.asp',
+            'select' => 'http://www.w3schools.com/html5/tag_select.asp',
+            'small' => 'http://www.w3schools.com/html5/tag_small.asp',
+            'source' => 'http://www.w3schools.com/html5/tag_source.asp',
+            'span' => 'http://www.w3schools.com/html5/tag_span.asp',
+            'strike' => 'http://www.w3schools.com/tags/tag_strike.asp',
+            'strong' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
+            'sub' => 'http://www.w3schools.com/html5/tag_sup.asp',
+            'summary' => 'http://www.w3schools.com/html5/tag_summary.asp',
+            'sup' => 'http://www.w3schools.com/html5/tag_sup.asp',
+            'table' => 'http://www.w3schools.com/html5/tag_table.asp',
+            'tbody' => 'http://www.w3schools.com/html5/tag_tbody.asp',
+            'td' => 'http://www.w3schools.com/html5/tag_td.asp',
+            'textarea' => 'http://www.w3schools.com/html5/tag_textarea.asp',
+            'tfoot' => 'http://www.w3schools.com/html5/tag_tfoot.asp',
+            'th' => 'http://www.w3schools.com/html5/tag_th.asp',
+            'thead' => 'http://www.w3schools.com/html5/tag_thead.asp',
+            'time' => 'http://www.w3schools.com/html5/tag_time.asp',
+            'tr' => 'http://www.w3schools.com/html5/tag_tr.asp',
+            'tt' => 'http://www.w3schools.com/tags/tag_font_style.asp',
+            'u' => 'http://www.w3schools.com/tags/tag_u.asp',
+            'ul' => 'http://www.w3schools.com/html5/tag_ul.asp',
+            'var' => 'http://www.w3schools.com/html5/tag_phrase_elements.asp',
+            'video' => 'http://www.w3schools.com/html5/tag_video.asp',
+            'wbr' => 'http://www.w3schools.com/html5/tag_wbr.asp'
+        ];
     }
 }

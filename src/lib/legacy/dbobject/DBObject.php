@@ -349,7 +349,7 @@ class DBObject
     public function select($key, $field = '', $where = '')
     {
         if (!$this->_objType) {
-            return array();
+            return [];
         }
 
         if (!$field) {
@@ -357,7 +357,7 @@ class DBObject
         }
 
         if ((!$key || !$field) && !$where) {
-            return array();
+            return [];
         }
 
         // use explicit where clause
@@ -374,7 +374,7 @@ class DBObject
                 if (isset($objArray[0])) {
                     $this->_objData = $objArray[0];
                 } else {
-                    $this->_objData = array();
+                    $this->_objData = [];
                 }
             }
 
@@ -419,7 +419,7 @@ class DBObject
      *
      * @return mixed The requested object/value.
      */
-    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter = null, array $args = array())
+    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter = null, array $args = [])
     {
         if (!$key) {
             $key = $this->_objPath;

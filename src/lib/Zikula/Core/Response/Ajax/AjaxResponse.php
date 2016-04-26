@@ -22,7 +22,7 @@ class AjaxResponse extends AbstractBaseResponse
      * @param mixed $message Response status/error message, may be string or array.
      * @param array $options Options.
      */
-    public function __construct($payload, $message = null, array $options = array())
+    public function __construct($payload, $message = null, array $options = [])
     {
         $this->payload = $payload;
         $this->messages = (array)$message;

@@ -34,7 +34,7 @@ class SubscriberBundle
      *
      * @var array
      */
-    private $events = array();
+    private $events = [];
 
     /**
      * Title.

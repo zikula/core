@@ -28,7 +28,7 @@ class BarLinkContainer implements LinkContainerInterface
             return $this->$method();
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -42,7 +42,8 @@ class BarLinkContainer implements LinkContainerInterface
         $links[] = [
             'url' => '/bar/admin',
             'text' => 'Bar Admin',
-            'icon' => 'plus'];
+            'icon' => 'plus'
+        ];
 
         return $links;
     }
@@ -58,11 +59,13 @@ class BarLinkContainer implements LinkContainerInterface
         $links[] = [
             'url' => '/bar',
             'text' => 'Bar',
-            'icon' => 'check'];
+            'icon' => 'check'
+        ];
         $links[] = [
             'url' => '/bar2',
             'text' => 'Bar 2',
-            'icon' => 'check'];
+            'icon' => 'check'
+        ];
 
         return $links;
     }
@@ -78,7 +81,8 @@ class BarLinkContainer implements LinkContainerInterface
         $links[] = [
             'url' => '/bar/account',
             'text' => 'Bar Account',
-            'icon' => 'check'];
+            'icon' => 'check'
+        ];
 
         return $links;
     }

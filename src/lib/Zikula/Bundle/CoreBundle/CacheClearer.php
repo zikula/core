@@ -38,35 +38,35 @@ class CacheClearer
 
         $cacheFolder = $cacheDir . DIRECTORY_SEPARATOR;
 
-        $fosJsRoutingFiles = array();
+        $fosJsRoutingFiles = [];
         foreach ($routingLocales as $locale) {
             $fosJsRoutingFiles[] = $fosJsRoutesExtractor->getCachePath($locale);
         }
 
-        $this->cacheTypes = array(
-            "symfony.annotations" => array(
-                "$cacheFolder/annotations"
-            ),
-            "symfony.routing.generator" => array(
-                "$cacheFolder{$cachePrefix}UrlGenerator.php",
-                "$cacheFolder{$cachePrefix}UrlGenerator.php.meta",
-            ),
-            "symfony.routing.matcher" => array(
-                "$cacheFolder{$cachePrefix}UrlMatcher.php",
-                "$cacheFolder{$cachePrefix}UrlMatcher.php.meta"
-            ),
-            "symfony.routing.fosjs" => $fosJsRoutingFiles,
-            "symfony.config" => array(
-                "$cacheFolder$kernelContainerClass.php",
-                "$cacheFolder$kernelContainerClass.php.meta",
-                "$cacheFolder$kernelContainerClass.xml",
-                "$cacheFolder{$kernelContainerClass}Compiler.log",
-                "{$cacheFolder}classes.map"
-            ),
-            "twig" => [
-                "$cacheFolder/twig"
+        $this->cacheTypes = [
+            'symfony.annotations' => [
+                $cacheFolder . '/annotations'
+            ],
+            'symfony.routing.generator' => [
+                $cacheFolder . $cachePrefix . 'UrlGenerator.php',
+                $cacheFolder . $cachePrefix . 'UrlGenerator.php.meta'
+            ],
+            'symfony.routing.matcher' => [
+                $cacheFolder . $cachePrefix . 'UrlMatcher.php',
+                $cacheFolder . $cachePrefix . 'UrlMatcher.php.meta'
+            ],
+            'symfony.routing.fosjs' => $fosJsRoutingFiles,
+            'symfony.config' => [
+                $cacheFolder . $kernelContainerClass . '.php',
+                $cacheFolder . $kernelContainerClass . '.php.meta',
+                $cacheFolder . $kernelContainerClass . '.xml',
+                $cacheFolder . $kernelContainerClass . 'Compiler.log',
+                $cacheFolder . 'classes.map'
+            ],
+            'twig' => [
+                $cacheFolder . '/twig'
             ]
-        );
+        ];
     }
 
     public function clear($type)

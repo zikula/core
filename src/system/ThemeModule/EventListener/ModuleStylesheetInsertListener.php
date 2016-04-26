@@ -54,10 +54,10 @@ class ModuleStylesheetInsertListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::CONTROLLER => array(
-                array('insertModuleStylesheet'),
-            ),
-        );
+        return [
+            KernelEvents::CONTROLLER => [
+                ['insertModuleStylesheet']
+            ]
+        ];
     }
 }

@@ -30,12 +30,12 @@
 function smarty_function_previewimage($params, Zikula_View $view)
 {
     if (!isset($params['name'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('previewimage', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['previewimage', 'name']));
 
         return false;
     }
 
-    if (!isset($params['size']) || !in_array($params['size'], array('large', 'medium', 'small'))) {
+    if (!isset($params['size']) || !in_array($params['size'], ['large', 'medium', 'small'])) {
         $params['size'] = 'medium';
     }
 

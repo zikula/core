@@ -38,7 +38,7 @@ class Zikula_Collection_Container implements CollectionInterface
     public function __construct($name, ArrayObject $collection = null)
     {
         $this->name = $name;
-        $this->collection = !$collection ? new ArrayObject(array()) : $collection;
+        $this->collection = !$collection ? new ArrayObject([]) : $collection;
     }
 
     /**

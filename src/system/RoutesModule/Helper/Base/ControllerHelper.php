@@ -63,13 +63,13 @@ class ControllerHelper
      *
      * @return array List of allowed object types.
      */
-    public function getObjectTypes($context = '', $args = array())
+    public function getObjectTypes($context = '', $args = [])
     {
-        if (!in_array($context, array('controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'))) {
+        if (!in_array($context, ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'])) {
             $context = 'controllerAction';
         }
     
-        $allowedObjectTypes = array();
+        $allowedObjectTypes = [];
         $allowedObjectTypes[] = 'route';
     
         return $allowedObjectTypes;
@@ -83,9 +83,9 @@ class ControllerHelper
      *
      * @return string The name of the default object type.
      */
-    public function getDefaultObjectType($context = '', $args = array())
+    public function getDefaultObjectType($context = '', $args = [])
     {
-        if (!in_array($context, array('controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'))) {
+        if (!in_array($context, ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'util'])) {
             $context = 'controllerAction';
         }
     
@@ -123,8 +123,8 @@ class ControllerHelper
      */
     public function retrieveIdentifier(Zikula_Request_Http $request, array $args, $objectType = '', array $idFields)
     {
-        $idValues = array();
-        $routeParams = $request->get('_route_params', array());
+        $idValues = [];
+        $routeParams = $request->get('_route_params', []);
         foreach ($idFields as $idField) {
             $defaultValue = isset($args[$idField]) && is_numeric($args[$idField]) ? $args[$idField] : 0;
             if ($this->hasCompositeKeys($objectType)) {
@@ -196,8 +196,8 @@ class ControllerHelper
      */
     public function formatPermalink($name)
     {
-        $name = str_replace(array('?', '?', '?', '?', '?', '?', '?', '.', '?', '"', '/', ':', '?', '?', '?'),
-                            array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'),
+        $name = str_replace(['?', '?', '?', '?', '?', '?', '?', '.', '?', '"', '/', ':', '?', '?', '?'],
+                            ['ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'],
                             $name);
         $name = DataUtil::formatPermalink($name);
     

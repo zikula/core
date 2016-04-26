@@ -14,19 +14,19 @@
     default case
 {% endswitch %}
 --DATA--
-return array('foo' => 1)
+return ['foo' => 1]
 --EXPECT--
     case 1
     case 2
 --DATA--
-return array('foo' => 2)
+return ['foo' => 2]
 --EXPECT--
     case 2
 --DATA--
-return array('foo' => 3)
+return ['foo' => 3]
 --EXPECT--
     case 3
 --DATA--
-return array('foo' => 4)
+return ['foo' => 4]
 --EXPECT--
     default case

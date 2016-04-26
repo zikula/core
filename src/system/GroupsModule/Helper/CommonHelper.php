@@ -59,11 +59,11 @@ class CommonHelper extends \Zikula_AbstractHelper
         static $gtypeLabels;
 
         if (!isset($gtypeLabels)) {
-            $gtypeLabels = array(
-                    self::GTYPE_CORE => $this->__('Core'),
-                    self::GTYPE_PUBLIC => $this->__('Public'),
-                    self::GTYPE_PRIVATE => $this->__('Private')
-            );
+            $gtypeLabels = [
+                self::GTYPE_CORE => $this->__('Core'),
+                self::GTYPE_PUBLIC => $this->__('Public'),
+                self::GTYPE_PRIVATE => $this->__('Private')
+            ];
         }
 
         return $gtypeLabels;
@@ -81,10 +81,10 @@ class CommonHelper extends \Zikula_AbstractHelper
         static $stateLabels;
 
         if (!isset($stateLabels)) {
-            $stateLabels = array(
-                    self::STATE_CLOSED => $this->__('Closed'),
-                    self::STATE_OPEN => $this->__('Open')
-            );
+            $stateLabels = [
+                self::STATE_CLOSED => $this->__('Closed'),
+                self::STATE_OPEN => $this->__('Open')
+            ];
         }
 
         return $stateLabels;

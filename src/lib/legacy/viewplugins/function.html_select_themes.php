@@ -52,7 +52,7 @@ function smarty_function_html_select_themes($params, Zikula_View $view)
         $type = constant($params['type']);
     }
 
-    $themelist = array();
+    $themelist = [];
     $themes = ThemeUtil::getAllThemes($filter, $state, $type);
     if (!empty($themes)) {
         foreach ($themes as $theme) {
@@ -62,11 +62,12 @@ function smarty_function_html_select_themes($params, Zikula_View $view)
     natcasesort($themelist);
 
     require_once $view->_get_plugin_filepath('function', 'html_options');
-    $output = smarty_function_html_options(array('options'  => $themelist,
-                                                 'selected' => isset($params['selected']) ? $params['selected'] : null,
-                                                 'name'     => isset($params['name'])     ? $params['name']     : null,
-                                                 'id'       => isset($params['id'])       ? $params['id']       : null),
-                                                 $view);
+    $output = smarty_function_html_options([
+        'options'  => $themelist,
+        'selected' => isset($params['selected']) ? $params['selected'] : null,
+        'name'     => isset($params['name'])     ? $params['name']     : null,
+        'id'       => isset($params['id'])       ? $params['id']       : null
+    ], $view);
 
     if (isset($params['assign'])) {
         $view->assign($params['assign'], $output);

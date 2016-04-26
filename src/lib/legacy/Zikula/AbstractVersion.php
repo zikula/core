@@ -60,29 +60,29 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *
      * Displayed by the Permissions module to assist the user, example:
      * <code>
-     * array(
+     * [
      *     'ModName::'          => 'ItemName::',
      *     'ModName::Component' => '::',
-     * );
+     * ];
      * </code>
      *
      * @var array
      */
-    protected $securityschema = array();
+    protected $securityschema = [];
 
     /**
      * Module dependencies.
      *
      * @var array
      */
-    protected $dependencies = array();
+    protected $dependencies = [];
 
     /**
      * Module capabilities.
      *
      * @var array
      */
-    protected $capabilities = array();
+    protected $capabilities = [];
 
     /**
      * Gettext language domain, computed from {@link ZLanguage::getModuleDomain()}.
@@ -172,14 +172,14 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *
      * @var array Indexed array of Zikula_Version_HookSubscriberBundle
      */
-    protected $hookSubscriberBundles = array();
+    protected $hookSubscriberBundles = [];
 
     /**
      * Hook provider bundles.
      *
      * @var array Indexed array of Zikula_Version_HookProviderBundle
      */
-    protected $hookProviderBundles = array();
+    protected $hookProviderBundles = [];
 
     //abstract public function getMetaData();
 
@@ -230,20 +230,21 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      */
     public function toArray()
     {
-        $meta = array();
-        $meta['name'] = $this->name;
-        $meta['description'] = $this->description;
-        $meta['displayname'] = $this->displayname;
-        $meta['url'] = $this->url;
-        $meta['version'] = $this->version;
-        $meta['capabilities'] = $this->capabilities;
-        $meta['dependencies'] = $this->dependencies;
-        $meta['type'] = $this->type;
-        $meta['directory'] = $this->directory;
-        $meta['securityschema'] = $this->securityschema;
-        $meta['core_min'] = $this->core_min;
-        $meta['core_max'] = $this->core_max;
-        $meta['oldnames'] = $this->oldnames;
+        $meta = [
+            'name' => $this->name,
+            'description' => $this->description,
+            'displayname' => $this->displayname,
+            'url' => $this->url,
+            'version' => $this->version,
+            'capabilities' => $this->capabilities,
+            'dependencies' => $this->dependencies,
+            'type' => $this->type,
+            'directory' => $this->directory,
+            'securityschema' => $this->securityschema,
+            'core_min' => $this->core_min,
+            'core_max' => $this->core_max,
+            'oldnames' => $this->oldnames
+        ];
 
         return $meta;
     }
@@ -421,10 +422,10 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *
      * Example:
      * <code>
-     * $moduleVersion->setSecuritySchema(array(
+     * $moduleVersion->setSecuritySchema([
      *     'ModName::'          => 'ItemName::',
      *     'ModName::Component' => '::',
-     * ));
+     * ]);
      * </code>
      *
      * @param array $securitySchema The schema.
@@ -471,13 +472,13 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Set the module's capabilities.
      *
-     * The capabilities array is in the form: array(capability => array(version => capabilityVersion ...
+     * The capabilities array is in the form: [capability => [version => capabilityVersion ...
      *
      * Example:
      * <code>
-     * $capabilities = array(
-     *     'authentication' => array('version' => '1.0')
-     * );
+     * $capabilities = [
+     *     'authentication' => ['version' => '1.0']
+     * ];
      * $moduleVersion->setCapabilities($capabilities);
      * </code>
      *
@@ -490,15 +491,15 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     public function setCapabilities($capabilities)
     {
         if (!is_array($capabilities) || !$capabilities) {
-            throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form array(capability => array(version => string, ... => ... in %s', get_class($this)));
+            throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form [capability => [version => string, ... => ... in %s', get_class($this)));
         }
         foreach ($capabilities as $key => $capability) {
             if (is_int($key) || !is_array($capability) || !$capability) {
-                throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form array(capability => array(version => string, ... => ... in %s', get_class($this)));
+                throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form [capability => [version => string, ... => ... in %s', get_class($this)));
             }
             foreach ($capability as $capkey => $cap) {
                 if (is_int($capkey)) {
-                    throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form array(capability => array(version => string, ... => ... in %s', get_class($this)));
+                    throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form [capability => [version => string, ... => ... in %s', get_class($this)));
                 }
             }
         }

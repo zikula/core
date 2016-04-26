@@ -40,7 +40,7 @@ class VarController extends AbstractController
         }
         $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yml';
         if (!file_exists($themeVarsPath)) {
-            $this->addFlash('warning', $this->__f('%theme% has no configuration.', array('%theme%' => $themeName)));
+            $this->addFlash('warning', $this->__f('%theme% has no configuration.', ['%theme%' => $themeName]));
 
             return $this->redirectToRoute('zikulathememodule_theme_view');
         }

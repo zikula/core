@@ -127,7 +127,7 @@ class ConfigController extends AbstractController
             if ($form->get('test')->isClicked()) {
                 $formData = $form->getData();
 
-                $html = in_array($formData['messageType'], array('html', 'multipart')) ? true : false;
+                $html = in_array($formData['messageType'], ['html', 'multipart']) ? true : false;
 
                 $textBody = $formData['bodyText'];
                 $htmlBody = $formData['bodyHtml'];

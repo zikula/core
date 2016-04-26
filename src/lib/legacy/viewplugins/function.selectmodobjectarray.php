@@ -40,10 +40,10 @@ function smarty_function_selectmodobjectarray($params, Zikula_View $view)
     } else {
         // DBObject checks
         if (!isset($params['module']) || empty($params['module'])) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'module')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['selectmodobjectarray', 'module']));
         }
         if (!isset($params['objecttype']) || empty($params['objecttype'])) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'objecttype')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['selectmodobjectarray', 'objecttype']));
         }
         if (!isset($params['prefix'])) {
             $params['prefix'] = 'PN';
@@ -53,13 +53,13 @@ function smarty_function_selectmodobjectarray($params, Zikula_View $view)
     }
 
     if (!isset($params['assign'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'assign')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['selectmodobjectarray', 'assign']));
     }
 
      // load object depending on mode: doctrine or dbobject
     if (!$doctrineMode) {
         if (!ModUtil::available($params['module'])) {
-            $view->trigger_error(__f('Invalid %1$s passed to %2$s.', array('module', 'selectmodobjectarray')));
+            $view->trigger_error(__f('Invalid %1$s passed to %2$s.', ['module', 'selectmodobjectarray']));
         }
 
         ModUtil::dbInfoLoad($params['module']);

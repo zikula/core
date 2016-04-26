@@ -35,7 +35,7 @@ class Config
 
     /**
      * Metadata of all Entities.
-     * array(alias => MetaObject)
+     * [alias => MetaObject]
      *
      * @var array
      */

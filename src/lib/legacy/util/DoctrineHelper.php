@@ -20,7 +20,7 @@ class DoctrineHelper
     public static function createSchema(EntityManager $em, array $classes)
     {
         $tool = new SchemaTool($em);
-        $metaClasses = array();
+        $metaClasses = [];
         foreach ($classes as $class) {
             $metaClasses[] = $em->getClassMetadata($class);
         }
@@ -34,7 +34,7 @@ class DoctrineHelper
     public static function dropSchema(EntityManager $em, array $classes)
     {
         $tool = new SchemaTool($em);
-        $metaClasses = array();
+        $metaClasses = [];
         foreach ($classes as $class) {
             $metaClasses[] = $em->getClassMetadata($class);
         }
@@ -48,7 +48,7 @@ class DoctrineHelper
     public static function updateSchema(EntityManager $em, array $classes, $saveMode = true)
     {
         $tool = new SchemaTool($em);
-        $metaClasses = array();
+        $metaClasses = [];
         foreach ($classes as $class) {
             $metaClasses[] = $em->getClassMetadata($class);
         }

@@ -25,7 +25,10 @@ class ZikulaSqlLogger implements SQLLogger
     public function startQuery($sql, array $params = null, array $types = null)
     {
         $this->start = microtime(true);
-        $this->currentQuery = array('query' => $sql, 'time' => 0);
+        $this->currentQuery = [
+            'query' => $sql,
+            'time' => 0
+        ];
     }
 
     public function stopQuery()

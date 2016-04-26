@@ -21,19 +21,19 @@ class Zikula_Doctrine_Query extends Doctrine_Query
      * There are three ways to call this method:
      * Way 1: return all rows that are in one of these categories
      * <code>
-     * $query->addWhereCategories(array(41,42,43));
+     * $query->addWhereCategories([41,42,43]);
      * </code>
      *
      * Way 2: return all rows that are in category 41 or 42 in the main property
      *        or in category 43 in the secound property
      * <code>
-     * $query->addWhereCategories(array('main' => array(41,42), 'secound' => 43));
+     * $query->addWhereCategories(['main' => [41,42], 'secound' => 43]);
      * </code>
      *
      * Way 3: return all rows that are in category 41 or 42 in the main property
      *        AND in category 43 in the secound property
      * <code>
-     * $query->addWhereCategories(array('main' => array(41,42), 'secound' => 43), true);
+     * $query->addWhereCategories(['main' => [41,42], 'secound' => 43], true);
      * </code>
      *
      * The queried doctrine model must have the Zikula_Doctrine_Template_Categorisable behavoir.
@@ -70,7 +70,7 @@ class Zikula_Doctrine_Query extends Doctrine_Query
                 foreach ($categories as $property => $categories) {
                     $categories = (array)$categories;
 
-                    $params = array($property);
+                    $params = [$property];
                     $params = array_merge($params, $categories);
 
                     $inDQL = array_fill(0, count($categories), '?');
@@ -82,8 +82,8 @@ class Zikula_Doctrine_Query extends Doctrine_Query
                     $tableId++;
                 }
             } else {
-                $where = array();
-                $params = array();
+                $where = [];
+                $params = [];
                 foreach ($categories as $property => $categories) {
                     $categories = (array)$categories;
 

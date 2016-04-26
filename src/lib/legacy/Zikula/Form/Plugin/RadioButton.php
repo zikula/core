@@ -321,10 +321,10 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
      */
     public function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
-        $args = array(
+        $args = [
             'commandName' => null,
             'commandArgument' => null
-        );
+        ];
         if (!empty($this->onCheckedChanged)) {
             $view->raiseEvent($this->onCheckedChanged, $args);
         }
@@ -460,7 +460,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
             } else {
                 if ($this->checked) {
                     if (!array_key_exists($this->group, $data)) {
-                        $data[$this->group] = array();
+                        $data[$this->group] = [];
                     }
                     $data[$this->group][$this->dataField] = $this->value;
                 }

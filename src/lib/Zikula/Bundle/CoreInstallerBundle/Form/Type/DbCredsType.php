@@ -23,47 +23,65 @@ class DbCredsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('database_driver', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
+            ->add('database_driver', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => __('Database type'),
-                'label_attr' => array('class' => 'col-sm-3'),
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
                 'choices' => $this->getDbTypes(),
-                'data' => 'mysql'))
-            ->add('dbtabletype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
+                'data' => 'mysql'
+            ])
+            ->add('dbtabletype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => __('Storage Engine'),
-                'label_attr' => array('class' => 'col-sm-3'),
-                'choices' => array(
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
+                'choices' => [
                     'innodb' => __('InnoDB'),
-                    'myisam' => __('MyISAM')),
-                'data' => 'innodb'))
-            ->add('database_host', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
+                    'myisam' => __('MyISAM')
+                ],
+                'data' => 'innodb'
+            ])
+            ->add('database_host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => __('Database Host'),
-                'label_attr' => array('class' => 'col-sm-3'),
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
                 'data' => __('localhost'),
-                'constraints' => array(
-                    new NotBlank(),
-                )))
-            ->add('database_user', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
+                'constraints' => [
+                    new NotBlank()
+                ]
+            ])
+            ->add('database_user', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => __('Database Username'),
-                'label_attr' => array('class' => 'col-sm-3'),
-                'constraints' => array(
-                    new NotBlank(),
-                )))
-            ->add('database_password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', array(
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
+                'constraints' => [
+                    new NotBlank()
+                ]
+            ])
+            ->add('database_password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
                 'label' => __('Database Password'),
-                'label_attr' => array('class' => 'col-sm-3'),
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
                 'required' => false
-            ))
-            ->add('database_name', 'Symfony\Component\Form\Extension\Core\Type\TextType', array(
+            ])
+            ->add('database_name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'label' => __('Database Name'),
-                'label_attr' => array('class' => 'col-sm-3'),
-                'constraints' => array(
+                'label_attr' => [
+                    'class' => 'col-sm-3'
+                ],
+                'constraints' => [
                     new NotBlank(),
-                    new Length(array('max' => 64)),
-                    new Regex(array(
+                    new Length(['max' => 64]),
+                    new Regex([
                         'pattern' => '/^[\w-]*$/',
                         'message' => __('Error! Invalid database name. Please use only letters, numbers, "-" or "_".')
-                    )),
-                )))
+                    ])
+                ]
+            ])
         ;
     }
 
@@ -74,7 +92,7 @@ class DbCredsType extends AbstractType
 
     private function getDbTypes()
     {
-        $types = array();
+        $types = [];
         if (function_exists('mysql_connect') || function_exists('mysqli_connect')) {
             $types['mysql'] = __('MySQL');
         }
@@ -96,12 +114,12 @@ class DbCredsType extends AbstractType
     {
         // add a constraint to the entire form
         // thanks to @Matt Daum : http://shout.setfive.com/2013/06/27/symfony2-forms-without-an-entity-and-with-a-conditional-validator/
-        $resolver->setDefaults(array(
-            'constraints' => new Callback(array('callback' => array('Zikula\Bundle\CoreInstallerBundle\Validator\CoreInstallerValidator', 'validatePdoConnection'))),
+        $resolver->setDefaults([
+            'constraints' => new Callback(['callback' => ['Zikula\Bundle\CoreInstallerBundle\Validator\CoreInstallerValidator', 'validatePdoConnection']]),
             'csrf_protection' => false,
 //                'csrf_field_name' => '_token',
 //                // a unique key to help generate the secret token
 //                'intention'       => '_zk_bdcreds',
-        ));
+        ]);
     }
 }

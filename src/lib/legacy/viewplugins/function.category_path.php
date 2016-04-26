@@ -61,17 +61,17 @@ function smarty_function_category_path($params, Zikula_View $view)
     $html      = isset($params['html'])     ? $params['html']     : false;
 
     if (!$id) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'id')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['category_path', 'id']));
     }
 
     if (!$idcolumn) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'idcolumn')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['category_path', 'idcolumn']));
     } elseif (($idcolumn != 'id') && ($idcolumn != 'path') && ($idcolumn != 'ipath')) {
-        $view->trigger_error(__f('Error! in %1$s: invalid value for the %2$s parameter (%3$s).', array('category_path', 'idcolumn', $idcolumn)));
+        $view->trigger_error(__f('Error! in %1$s: invalid value for the %2$s parameter (%3$s).', ['category_path', 'idcolumn', $idcolumn]));
     }
 
     if (!$field) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'field')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['category_path', 'field']));
     }
 
     $result = null;
@@ -85,7 +85,7 @@ function smarty_function_category_path($params, Zikula_View $view)
         if (isset($cat[$field])) {
             $result = $cat[$field];
         } else {
-            $view->trigger_error(__f('Error! Category [%1$s] does not have the field [%2$s] set.', array($id, $field)));
+            $view->trigger_error(__f('Error! Category [%1$s] does not have the field [%2$s] set.', [$id, $field]));
 
             return;
         }

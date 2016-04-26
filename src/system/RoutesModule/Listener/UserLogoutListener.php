@@ -34,8 +34,8 @@ class UserLogoutListener extends BaseUserLogoutListener
      * Occurs right after a successful logout.
      * All handlers are notified.
      * The event's subject contains the user's user record.
-     * Args contain array of `array('authentication_method' => $authenticationMethod,
-     *                              'uid'                   => $uid));`
+     * Args contain array of `['authentication_method' => $authenticationMethod,
+     *                         'uid'                   => $uid];`
      *
      * @param GenericEvent $event The event instance.
      */

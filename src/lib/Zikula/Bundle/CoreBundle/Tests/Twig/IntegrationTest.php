@@ -16,7 +16,7 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
 {
     public function getExtensions()
     {
-        return array(new CoreExtension());
+        return [new CoreExtension()];
     }
 
     public function getFixturesDir()

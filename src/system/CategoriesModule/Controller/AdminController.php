@@ -57,7 +57,7 @@ class AdminController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check will be done in view()
-        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -70,7 +70,7 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in view()
-        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -153,14 +153,14 @@ class AdminController extends \Zikula_AbstractController
             if (!$cid) {
                 $request->getSession()->getFlashBag()->add('error', $this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
 
-                return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+                return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', [], RouterInterface::ABSOLUTE_URL));
             }
 
             $editCat = CategoryUtil::getCategoryByID($cid);
             if (!$editCat) {
                 $request->getSession()->getFlashBag()->add('error', $this->__('Sorry! No such item found.'));
 
-                return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+                return new RedirectResponse($this->get('router')->generate('zikulacategoriesmodule_admin_view', [], RouterInterface::ABSOLUTE_URL));
             }
         } else {
             // new category creation
@@ -220,7 +220,7 @@ class AdminController extends \Zikula_AbstractController
                                                          false,
                                                          'form-control');
 
-        $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
+        $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : [];
 
         $this->view->assign('mode', $mode)
                    ->assign('category', $editCat)
@@ -265,9 +265,9 @@ class AdminController extends \Zikula_AbstractController
             $obj = $obj->toArray();
         }
 
-        $registries = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(array(), array('modname' => 'ASC', 'property' => 'ASC'));
-        $modules = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy(array('state' => 3), array('displayname' => 'ASC'));
-        $moduleOptions = array();
+        $registries = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy([], ['modname' => 'ASC', 'property' => 'ASC']);
+        $modules = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy(['state' => 3], ['displayname' => 'ASC']);
+        $moduleOptions = [];
         foreach ($modules as $module) {
             $bundle = \ModUtil::getModule($module['name']);
             if ((null !== $bundle) && !class_exists($bundle->getVersionClass())) {
@@ -330,7 +330,10 @@ class AdminController extends \Zikula_AbstractController
      */
     public function newcatAction(Request $request)
     {
-        $path = array('_controller' => 'ZikulaCategoriesModule:Admin:edit', 'mode' => 'new');
+        $path = [
+            '_controller' => 'ZikulaCategoriesModule:Admin:edit',
+            'mode' => 'new'
+        ];
         $subRequest = $request->duplicate($request->query->all(), $request->request->all(), $path);
 
         return $this->get('http_kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);

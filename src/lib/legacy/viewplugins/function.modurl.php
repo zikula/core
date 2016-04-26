@@ -55,9 +55,9 @@ function smarty_function_modurl($params, Zikula_View $view)
     } else {
         if (System::isLegacyMode()) {
             $func = 'index';
-            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)), E_USER_DEPRECATED);
+            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', ['func', $view->template]), E_USER_DEPRECATED);
         } else {
-            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)));
+            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', ['func', $view->template]));
 
             return false;
         }
@@ -68,9 +68,9 @@ function smarty_function_modurl($params, Zikula_View $view)
     } else {
         if (System::isLegacyMode()) {
             $type = 'user';
-            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)), E_USER_DEPRECATED);
+            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', ['type', $view->template]), E_USER_DEPRECATED);
         } else {
-            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)));
+            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', ['type', $view->template]));
 
             return false;
         }
@@ -93,7 +93,7 @@ function smarty_function_modurl($params, Zikula_View $view)
     unset($params['forcelongurl']);
 
     if (!$modname) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modurl', 'modname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['modurl', 'modname']));
 
         return false;
     }

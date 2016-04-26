@@ -54,14 +54,14 @@ class ZGettext
      *
      * @var array
      */
-    public $textDomains = array();
+    public $textDomains = [];
 
     /**
      * Private construct for singleton.
      */
     private function __construct()
     {
-        $this->LC_CATEGORIES = array('LC_CTYPE', 'LC_NUMERIC', 'LC_TIME', 'LC_COLLATE', 'LC_MONETARY', 'LC_MESSAGES', 'LC_ALL');
+        $this->LC_CATEGORIES = ['LC_CTYPE', 'LC_NUMERIC', 'LC_TIME', 'LC_COLLATE', 'LC_MONETARY', 'LC_MESSAGES', 'LC_ALL'];
     }
 
     /**
@@ -141,7 +141,11 @@ class ZGettext
     {
         $codeset = (version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset');
 
-        $this->textDomains[$this->getLocale()][$this->getCategory()][$domain] = array('path' => "$path/", 'codeset' => $codeset, 'reader' => null);
+        $this->textDomains[$this->getLocale()][$this->getCategory()][$domain] = [
+            'path' => $path . '/',
+            'codeset' => $codeset,
+            'reader' => null
+        ];
     }
 
     /**
@@ -204,7 +208,11 @@ class ZGettext
 
         if (!isset($_this->textDomains[$locale][$category][$domain])) {
             $codeset = (version_compare(\PHP_VERSION, '5.6.0', '<')) ? ini_get('mbstring.internal_encoding') : ini_get('default_charset');
-            $_this->textDomains[$locale][$category][$domain] = array('path' => "locale/", 'codeset' => $codeset, 'reader' => null);
+            $_this->textDomains[$locale][$category][$domain] = [
+                'path' => 'locale/',
+                'codeset' => $codeset,
+                'reader' => null
+            ];
         }
         $textDomain = &$_this->textDomains[$locale][$category][$domain];
 

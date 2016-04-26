@@ -26,10 +26,10 @@ class ViewListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            'view.init'      => array('init', 5),
-            'view.postfetch' => array('postFetch', 5)
-        );
+        return [
+            'view.init'      => ['init', 5],
+            'view.postfetch' => ['postFetch', 5]
+        ];
     }
     
     /**
@@ -49,7 +49,7 @@ class ViewListener implements EventSubscriberInterface
      *
      * Filter of result of a fetch.
      * Receives `Zikula_View` instance as subject,
-     * args are `array('template' => $template)`,
+     * args are `['template' => $template]`,
      * $data was the result of the fetch to be filtered.
      *
      * @param GenericEvent $event The event instance.

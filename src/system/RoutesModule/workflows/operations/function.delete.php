@@ -38,12 +38,12 @@ function ZikulaRoutesModule_operation_delete(&$entity, $params)
         $result = true;
     
         $logger = $serviceManager->get('logger');
-        $logger->notice('{app}: User {user} deleted an entity.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')));
+        $logger->notice('{app}: User {user} deleted an entity.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')]);
     } catch (\Exception $e) {
         throw new \RuntimeException($e->getMessage());
     
         $logger = $serviceManager->get('logger');
-        $logger->error('{app}: User {user} tried to delete an entity, but failed.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')));
+        $logger->error('{app}: User {user} tried to delete an entity, but failed.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname')]);
     }
 
     // return result of this operation

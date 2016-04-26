@@ -29,11 +29,11 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
     public function install()
     {
         // create tables
-        $entities = array(
+        $entities = [
             'Zikula\ExtensionsModule\Entity\ExtensionEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity',
             'Zikula\ExtensionsModule\Entity\ExtensionVarEntity',
-        );
+        ];
 
         try {
             $this->schemaTool->create($entities);
@@ -68,7 +68,7 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
                 $connection = $this->entityManager->getConnection();
 
                 // increase length of some hook table fields from 20 to 60
-                $commands = array();
+                $commands = [];
                 $commands[] = "ALTER TABLE `hook_provider` CHANGE `method` `method` VARCHAR(60) NOT NULL";
                 $commands[] = "ALTER TABLE `hook_runtime` CHANGE `method` `method` VARCHAR(60) NOT NULL";
 

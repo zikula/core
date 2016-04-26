@@ -39,7 +39,7 @@ function smarty_block_checkgroup($params, $content, Zikula_View $view)
 
     // check our input
     if (!isset($params['gid'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkgroup', 'component')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_block_checkgroup', 'component']));
 
         return false;
     }
@@ -49,7 +49,7 @@ function smarty_block_checkgroup($params, $content, Zikula_View $view)
         return;
     }
 
-    if (!ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', array('uid' => $uid, 'gid' => $params['gid']))) {
+    if (!ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', ['uid' => $uid, 'gid' => $params['gid']])) {
         return;
     }
 

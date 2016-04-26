@@ -78,7 +78,7 @@ function smarty_function_button($params, Zikula_View $view)
     require_once $view->_get_plugin_filepath('function', 'img');
 
     if (isset($params['src']) && !isset($params['set'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'set')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['smarty_function_button', 'set']));
 
         return false;
     }
@@ -116,7 +116,12 @@ function smarty_function_button($params, Zikula_View $view)
     $img = '';
     $imgsrc = '';
     if (isset($params['src'])) {
-        smarty_function_img(array('assign' => 'buttonsrc', 'src' => $params['src'], 'set' => $params['set'], 'modname' => 'core'), $view);
+        smarty_function_img([
+            'assign' => 'buttonsrc',
+            'src' => $params['src'],
+            'set' => $params['set'],
+            'modname' => 'core'
+        ], $view);
         $imgvars = $view->get_template_vars('buttonsrc');
         $imgsrc = $imgvars['src'];
         $img = '<img src="'.DataUtil::formatForDisplay($imgsrc).'" alt="'.DataUtil::formatForDisplay($alt).'" />';

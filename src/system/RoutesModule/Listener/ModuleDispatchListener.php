@@ -32,7 +32,7 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
      * Listener for the `module_dispatch.postloadgeneric` event.
      *
      * Called after a module api or controller has been loaded.
-     * Receives the args `array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api)`.
+     * Receives the args `['modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api]`.
      *
      * @param GenericEvent $event The event instance.
      */
@@ -64,12 +64,14 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
      * Listener for the `module_dispatch.preexecute` event.
      *
      * Occurs in `ModUtil::exec()` before function call with the following args:
-     *     `array('modname' => $modname,
-     *            'modfunc' => $modfunc,
-     *            'args' => $args,
-     *            'modinfo' => $modinfo,
-     *            'type' => $type,
-     *            'api' => $api)`
+     *     `[
+     *          'modname' => $modname,
+     *          'modfunc' => $modfunc,
+     *          'args' => $args,
+     *          'modinfo' => $modinfo,
+     *          'type' => $type,
+     *          'api' => $api
+     *      ]`
      * .
      *
      * @param GenericEvent $event The event instance.
@@ -102,12 +104,14 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
      * Listener for the `module_dispatch.postexecute` event.
      *
      * Occurs in `ModUtil::exec()` after function call with the following args:
-     *     `array('modname' => $modname,
-     *            'modfunc' => $modfunc,
-     *            'args' => $args,
-     *            'modinfo' => $modinfo,
-     *            'type' => $type,
-     *            'api' => $api)`
+     *     `[
+     *          'modname' => $modname,
+     *          'modfunc' => $modfunc,
+     *          'args' => $args,
+     *          'modinfo' => $modinfo,
+     *          'type' => $type,
+     *          'api' => $api
+     *      ]`
      * .
      * Receives the modules output with `$event->getData();`.
      * Can modify this output with `$event->setData($data);`.
@@ -144,7 +148,7 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
      * In order to override the classname calculated in `ModUtil::exec()`.
      * In order to override a pre-existing controller/api method, use this event type to override the class name that is loaded.
      * This allows to override the methods using inheritance.
-     * Receives no subject, args of `array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
+     * Receives no subject, args of `['modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api]`
      * and 'event data' of `$className`. This can be altered by setting `$event->setData()` followed by `$event->stopPropagation()`.
      *
      * @param GenericEvent $event The event instance.
@@ -187,7 +191,7 @@ class ModuleDispatchListener extends BaseModuleDispatchListener
         parent::customClassName($event);
     
         // Format data like so:
-        // $event->data[] = array('url' => ModUtil::url('ZikulaRoutesModule', 'user', 'index'), 'text' => __('Link Text'));
+        // $event->data[] = ['url' => ModUtil::url('ZikulaRoutesModule', 'user', 'index'), 'text' => __('Link Text')];
     
         // you can access general data available in the event
         

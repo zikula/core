@@ -29,15 +29,16 @@ class Zikula_Doctrine_Template_Listener_Logging extends Zikula_Doctrine_Template
         $tableName = $this->getTableNameFromEvent($event);
         $idColumn = $this->getIdColumnFromEvent($event);
 
-        $log = array();
-        $log['object_type'] = $tableName;
-        $log['object_id']   = $data[$idColumn];
-        $log['op']          = $opType;
+        $log = [
+            'object_type' => $tableName,
+            'object_id' => $data[$idColumn],
+            'op' => $opType
+        ];
 
         if ($opType == 'U') {
             $oldValues = $data->getLastModified(true);
 
-            $diff = array();
+            $diff = [];
             foreach ($oldValues as $column => $oldValue) {
                 if (empty($oldValue) && isset($data[$column]) && !empty($data[$column])) {
                     $diff[$column] = 'I: '.$data[$column];

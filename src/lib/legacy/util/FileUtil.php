@@ -25,7 +25,7 @@ class FileUtil
     public static function getFilebase($filename, $keepDot = false)
     {
         if (!$filename) {
-            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::getFilename', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::getFilename', 'filename']));
         }
 
         $base = basename($filename);
@@ -51,7 +51,7 @@ class FileUtil
     public static function getBasename($filename)
     {
         if (!$filename) {
-            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::getBasename', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::getBasename', 'filename']));
         }
 
         return basename($filename);
@@ -68,7 +68,7 @@ class FileUtil
     public static function getExtension($filename, $keepDot = false)
     {
         if (!$filename) {
-            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::getExtension', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::getExtension', 'filename']));
         }
 
         $p = strrpos($filename, '.');
@@ -94,7 +94,7 @@ class FileUtil
     public static function stripExtension($filename, $keepDot = false)
     {
         if (!$filename) {
-            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::stripExtension', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::stripExtension', 'filename']));
         }
 
         $p = strrpos($filename, '.');
@@ -163,7 +163,7 @@ class FileUtil
      */
     public static function getFiles($rootPath, $recurse = true, $relativePath = true, $extensions = null, $type = null, $nestedData = false, $regexpMatch = null, $regexpMatchCaseSensitive = true)
     {
-        $files = array();
+        $files = [];
         $type  = strtolower($type);
 
         if ($type && $type != 'd' && $type != 'f') {
@@ -174,7 +174,7 @@ class FileUtil
             return $files;
         }
 
-        $skiplist = array('.', '..', 'CVS', '.svn', '_svn', 'index.html', '.htaccess', '.DS_Store', '-vti-cnf');
+        $skiplist = ['.', '..', 'CVS', '.svn', '_svn', 'index.html', '.htaccess', '.DS_Store', '-vti-cnf'];
 
         $el       = (is_string($extensions) ? strlen($extensions) : 0);
         $dh       = opendir($rootPath);
@@ -311,7 +311,7 @@ class FileUtil
     public static function readFile($filename, $absolute = false)
     {
         if (!strlen($filename)) {
-            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::readFile', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::readFile', 'filename']));
         }
 
         $fName = DataUtil::formatForOS($filename, $absolute);
@@ -398,7 +398,7 @@ class FileUtil
     public static function writeFile($filename, $data = '', $absolute = false)
     {
         if (!$filename) {
-            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::writeFile', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::writeFile', 'filename']));
         }
 
         $fName = DataUtil::formatForOS($filename, $absolute);
@@ -433,11 +433,11 @@ class FileUtil
     public static function uploadFile($key, $destination, $newName = '', $absolute = false)
     {
         if (!$key) {
-            throw new \Exception(__f('%s: called with invalid %s.', array('FileUtil::uploadFile', 'key')));
+            throw new \Exception(__f('%s: called with invalid %s.', ['FileUtil::uploadFile', 'key']));
         }
 
         if (!$destination) {
-            throw new \Exception(__f('%s: called with invalid %s.', array('FileUtil::uploadFile', 'destination')));
+            throw new \Exception(__f('%s: called with invalid %s.', ['FileUtil::uploadFile', 'destination']));
         }
 
         $msg = '';
@@ -512,16 +512,16 @@ class FileUtil
      *
      * @return nothing
      */
-    public static function exportCSV($datarows, $titlerow = array(), $delimiter = ',', $enclosure = '"', $filename = null)
+    public static function exportCSV($datarows, $titlerow = [], $delimiter = ',', $enclosure = '"', $filename = null)
     {
         // check if $datarows is array
         if (!is_array($datarows)) {
-            throw new \Exception(__f('%1$s: %2$s is not an array', array('FileUtil::exportCSV', 'datarows')));
+            throw new \Exception(__f('%1$s: %2$s is not an array', ['FileUtil::exportCSV', 'datarows']));
         }
 
         // check if $datarows is empty
         if (count($datarows) == 0) {
-            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::exportCSV', 'datarows')));
+            throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::exportCSV', 'datarows']));
         }
 
         // create random filename if none is given or else format it appropriately

@@ -42,11 +42,11 @@ class ExceptionListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::EXCEPTION => array(
-                array('onKernelException', 31),
-            )
-        );
+        return [
+            KernelEvents::EXCEPTION => [
+                ['onKernelException', 31]
+            ]
+        ];
     }
 
     /**
@@ -90,7 +90,7 @@ class ExceptionListener implements EventSubscriberInterface
             $message = ($message == 'Access Denied') ? __('You do not have permission. You must login first.') : $message;
             $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
 
-            $params = array('returnpage' => urlencode($event->getRequest()->getSchemeAndHttpHost() . $event->getRequest()->getRequestUri()));
+            $params = ['returnpage' => urlencode($event->getRequest()->getSchemeAndHttpHost() . $event->getRequest()->getRequestUri())];
             // redirect to login page
             $route = $this->router->generate('zikulausersmodule_user_login', $params, RouterInterface::ABSOLUTE_URL);
         } else {
@@ -119,7 +119,7 @@ class ExceptionListener implements EventSubscriberInterface
         $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
         if ($userLoggedIn && \SecurityUtil::checkPermission('ZikulaRoutesModule::', '::', ACCESS_ADMIN)) {
             try {
-                $url = $this->router->generate('zikularoutesmodule_route_reload', array('lct' => 'admin'), RouterInterface::ABSOLUTE_URL);
+                $url = $this->router->generate('zikularoutesmodule_route_reload', ['lct' => 'admin'], RouterInterface::ABSOLUTE_URL);
                 $link = "<a href='$url'>". __('re-loading the routes') . "</a>";
                 $event->getRequest()->getSession()->getFlashBag()->add('error', __f('You might try %s for the extension in question.', $link));
             } catch (RouteNotFoundException $e) {
@@ -138,17 +138,20 @@ class ExceptionListener implements EventSubscriberInterface
     {
         $modinfo = \ModUtil::getInfoFromName($event->getRequest()->attributes->get('_zkModule'));
         $legacyEvent = new \Zikula\Core\Event\GenericEvent($event->getException(),
-            array('modinfo' => $modinfo,
+            [
+                'modinfo' => $modinfo,
                 'type' => $event->getRequest()->attributes->get('_zkType'),
                 'func' => $event->getRequest()->attributes->get('_zkFunc'),
-                'arguments' => $event->getRequest()->attributes->all()));
+                'arguments' => $event->getRequest()->attributes->all()
+            ]
+        );
         $this->dispatcher->dispatch('frontcontroller.exception', $legacyEvent);
         if ($legacyEvent->isPropagationStopped()) {
-            $event->getRequest()->getSession()->getFlashBag()->add('error', __f('The \'%1$s\' module returned an error in \'%2$s\'. (%3$s)', array(
+            $event->getRequest()->getSession()->getFlashBag()->add('error', __f('The \'%1$s\' module returned an error in \'%2$s\'. (%3$s)', [
                 $event->getRequest()->attributes->get('_zkModule'),
                 $event->getRequest()->attributes->get('_zkFunc'),
-                $legacyEvent->getArgument('message'))),
-                    $legacyEvent->getArgument('httpcode'));
+                $legacyEvent->getArgument('message')
+            ]), $legacyEvent->getArgument('httpcode'));
             $route = $event->getRequest()->server->get('referrer');
             $response = new RedirectResponse($route);
             $event->setResponse($response);

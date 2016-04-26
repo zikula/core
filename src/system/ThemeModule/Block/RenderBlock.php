@@ -69,13 +69,15 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-        return array('module'         => 'ZikulaThemeModule',
-                     'text_type'      => $this->__('Rendering engine'),
-                     'text_type_long' => $this->__('Custom rendering engine block'),
-                     'allow_multiple' => true,
-                     'form_content'   => false,
-                     'form_refresh'   => false,
-                     'show_preview'   => true);
+        return [
+            'module'         => 'ZikulaThemeModule',
+            'text_type'      => $this->__('Rendering engine'),
+            'text_type_long' => $this->__('Custom rendering engine block'),
+            'allow_multiple' => true,
+            'form_content'   => false,
+            'form_refresh'   => false,
+            'show_preview'   => true
+        ];
     }
 
     /**
@@ -122,7 +124,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
         // checks the existance of the template
         if (!$this->view->template_exists($vars['template'])) {
             if ($showerror) {
-                throw new \RuntimeException($this->__f('The specified template for the render block doesn\'t exists for the \'%1$s\' module. Block ID: %2$s', array($vars['module'], $blockinfo['bid'])));
+                throw new \RuntimeException($this->__f('The specified template for the render block doesn\'t exists for the \'%1$s\' module. Block ID: %2$s', [$vars['module'], $blockinfo['bid']]));
             }
 
             return;
@@ -170,7 +172,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
 
         // validate the current data
         $valid = false;
-        $warnings = array();
+        $warnings = [];
         if (isset($vars['module']) && $vars['module']) {
             if (ModUtil::available($vars['module'])) {
                 if (isset($vars['template']) && $vars['template']) {

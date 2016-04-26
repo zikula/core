@@ -48,9 +48,9 @@ class Zikula_Tree
      *
      * @param array $config Config array.
      */
-    public function __construct(array $config = array())
+    public function __construct(array $config = [])
     {
-        $this->config = array(
+        $this->config = [
             'objid'         => 'id',
             'customJSClass' => '',
             'nestedSet'     => false,
@@ -78,7 +78,7 @@ class Zikula_Tree
             'minus'         => 'minus.gif',
             'parent'        => 'folder.png',
             'parentOpen'    => 'folder_open.png'
-        );
+        ];
         $this->setOptionArray($config);
     }
 
@@ -216,12 +216,12 @@ class Zikula_Tree
     public function getConfigForScript($encode = true)
     {
         $jsConfig = $this->config;
-        $omitKeys = array('objid', 'nestedSet', 'customJSClass'. 'cssFile');
+        $omitKeys = ['objid', 'nestedSet', 'customJSClass'. 'cssFile'];
         foreach ($omitKeys as $key) {
             unset($jsConfig[$key]);
         }
-        $imgsKeys = array('plus', 'minus', 'parent', 'parentOpen', 'item');
-        $jsConfig['images'] = array();
+        $imgsKeys = ['plus', 'minus', 'parent', 'parentOpen', 'item'];
+        $jsConfig['images'] = [];
         foreach ($imgsKeys as $img) {
             $jsConfig['images'][$img] = $this->config[$img];
             unset($jsConfig[$img]);
@@ -240,10 +240,10 @@ class Zikula_Tree
     protected function _parseString($menuString)
     {
         // level|text|href|title|icon|target|expanded
-        $keys = array('level', 'name', 'href', 'title', 'icon', 'target', 'expanded');
+        $keys = ['level', 'name', 'href', 'title', 'icon', 'target', 'expanded'];
         // id parent_id name title icon class active expanded href
         $lines = explode("\n", trim($menuString));
-        $levels = array();
+        $levels = [];
         foreach ($lines as $id => $line) {
             $line = array_combine($keys, explode('|', trim($line)));
             $line['id'] = $id + 1;
@@ -265,10 +265,10 @@ class Zikula_Tree
     {
         $objid = $this->config['objid'];
 
-        $map = array();
-        $parents = array();
+        $map = [];
+        $parents = [];
 
-        $this->tree = array();
+        $this->tree = [];
         foreach ($this->data as $item) {
             if (!isset($item[$objid])) {
                 continue;
@@ -283,20 +283,20 @@ class Zikula_Tree
                 $parents[$item['level']] = $item[$objid];
             }
 
-            $nodes = isset($item['nodes']) ? $item['nodes'] : array();
+            $nodes = isset($item['nodes']) ? $item['nodes'] : [];
             foreach ($nodes as $k => $node) {
                 $node = isset($node['item']) ? $node['item'] : $node;
-                $nodes[$k]['item'] = array(
+                $nodes[$k]['item'] = [
                     'active' => isset($node['active']) ? $node['active'] : true,
                     'icon'   => isset($node['icon']) ? $node['icon'] : null,
                     'class'  => isset($node['class']) ? $node['class'] : null,
                     'title'  => isset($node['title']) ? $node['title'] : null,
                     'name'   => isset($node['name']) ? $node['name'] : null,
                     'href'   => isset($node['href']) ? $node['href'] : '#'
-                );
+                ];
             }
 
-            $item  = array(
+            $item = [
                 'id'        => $item[$objid],
                 'parent_id' => isset($item['parent_id']) ? $item['parent_id'] : $this->config['nullParent'],
                 'expanded'  => isset($item['expanded']) ? $item['expanded'] : null,
@@ -306,8 +306,11 @@ class Zikula_Tree
                 'title'     => isset($item['title']) ? $item['title'] : null,
                 'name'      => isset($item['name']) ? $item['name'] : null,
                 'href'      => isset($item['href']) ? $item['href'] : '#'
-            );
-            $node = array('item' => $item, 'nodes' => $nodes);
+            ];
+            $node = [
+                'item' => $item,
+                'nodes' => $nodes
+            ];
 
             if ((string)$item['parent_id'] == (string)$this->config['nullParent']) {
                 $this->tree[$item['id']] = $node;
@@ -342,7 +345,7 @@ class Zikula_Tree
      */
     protected function _toHTML($tree, $indentLevel = 0, $treeId = null, $root = false)
     {
-        $liHtml = array();
+        $liHtml = [];
         $size = count($tree);
         $i = 1;
         foreach ($tree as $id => $tab) {
@@ -399,7 +402,7 @@ class Zikula_Tree
         $link      = $indent."<a {$linkHref}{$linkClass}{$linkTitle}>{$item['name']}</a>";
 
         $liId    = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
-        $liClass = array();
+        $liClass = [];
         $liClass[] = $size == 1 ? $this->config['nodeSingle'] : '';
         $liClass[] = ($i == 1 && $size > 1) ? $this->config['nodeFirst'] : '';
         $liClass[] = ($i == $size && $size > 1) ? $this->config['nodeLast'] : '';

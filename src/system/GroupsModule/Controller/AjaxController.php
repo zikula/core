@@ -61,7 +61,12 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         if (empty($name)) {
-            return new AjaxResponse(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $this->__('Error! The group name is missing.')));
+            return new AjaxResponse([
+                'result' => false,
+                'error' => true,
+                'gid' => $gid,
+                'message' => $this->__('Error! The group name is missing.')
+            ]);
         }
 
         if (preg_match("/[\n\r\t\x0B]/", $name)) {
@@ -72,19 +77,25 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // Pass to API
-        $res = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'update',
-                        array('gid' => $gid,
-                              'name' => $name,
-                              'gtype' => $gtype,
-                              'state' => $state,
-                              'nbumax' => $nbumax,
-                              'description' => $description));
+        $res = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'update', [
+            'gid' => $gid,
+            'name' => $name,
+            'gtype' => $gtype,
+            'state' => $state,
+            'nbumax' => $nbumax,
+            'description' => $description
+        ]);
 
         if (!$res) {
             // check for sessionvar
             $msgs = LogUtil::getStatusMessagesText();
             if (!empty($msgs)) {
-                return new AjaxResponse(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $msgs));
+                return new AjaxResponse([
+                    'result' => false,
+                    'error' => true,
+                    'gid' => $gid,
+                    'message' => $msgs
+                ]);
             }
         }
 
@@ -94,10 +105,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $statelabel = $groupsCommon->stateLabels();
 
         // get group
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
 
         // get group member count
-        $group['nbuser'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', array('gid' => $gid));
+        $group['nbuser'] = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', ['gid' => $gid]);
 
         $group['statelbl'] = $statelabel[$group['state']];
         $group['gtypelbl'] = $typelabel[$group['gtype']];
@@ -126,13 +137,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $statelabel = $groupsCommon->stateLabels();
 
         // Default values
-        $obj = array(
+        $obj = [
             'name' => '',
             'gtype' => CommonHelper::GTYPE_CORE,
             'state' => CommonHelper::STATE_CLOSED,
             'nbumax' => 0,
             'description' => ''
-        );
+        ];
 
         $group_id = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'create', $obj);
 
@@ -150,7 +161,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $group['statelbl'] = $statelabel[$group['state']];
         $group['gtypelbl'] = $typelabel[$group['gtype']];
-        $group['membersurl'] = $this->get('router')->generate('zikulagroupsmodule_admin_groupmembership', array('gid' => $group_id));
+        $group['membersurl'] = $this->get('router')->generate('zikulagroupsmodule_admin_groupmembership', ['gid' => $group_id]);
 
         return new AjaxResponse($group);
     }
@@ -172,7 +183,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
 
         $gid = $request->request->get('gid');
-        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', ['gid' => $gid]);
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)) {
             return new ForbiddenResponse($this->__('You do not have permission for this action.'));
@@ -185,8 +196,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             return new FatalResponse($this->__('Error! You cannot delete the default user group.'));
         }
 
-        if (ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'delete', array('gid' => $gid)) == true) {
-            return new AjaxResponse(array('gid' => $gid));
+        if (ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'delete', ['gid' => $gid]) == true) {
+            return new AjaxResponse(['gid' => $gid]);
         }
 
         return new FatalResponse($this->__f('Error! Could not delete the \'%s\' group.', $gid));
@@ -216,14 +227,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             return new ForbiddenResponse($this->__('You do not have permission for this action.'));
         }
 
-        if (!ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
+        if (!ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'removeuser', ['gid' => $gid, 'uid' => $uid])) {
             return new FatalResponse($this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
         }
 
-        $result = array(
+        $result = [
             'gid' => $gid,
             'uid' => $uid
-        );
+        ];
 
         return new AjaxResponse($result);
     }

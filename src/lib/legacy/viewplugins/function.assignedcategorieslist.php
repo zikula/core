@@ -37,12 +37,12 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
 {
     if (isset($params['doctrine2']) && (bool)$params['doctrine2'] == true) {
         if (!isset($params['categories'])) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'categories')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['assignedcategorieslist', 'categories']));
 
             return false;
         }
     } elseif (!isset($params['item'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'item')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['assignedcategorieslist', 'item']));
 
         return false;
     }
@@ -78,12 +78,11 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
             $result .= '<li>' . DataUtil::formatForDisplay(__('No assigned categories.')) . '</li>';
         }
     } else {
+        $categories = [];
         if (isset($params['item']['Categories']) && !empty($params['item']['Categories'])) {
             $categories = $params['item']['Categories'];
         } elseif (isset($params['item']['__CATEGORIES__']) && !empty($params['item']['__CATEGORIES__'])) {
             $categories = $params['item']['__CATEGORIES__'];
-        } else {
-            $categories = array();
         }
 
         if (!empty($categories)) {

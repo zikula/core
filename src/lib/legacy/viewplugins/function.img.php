@@ -73,7 +73,7 @@ function smarty_function_img($params, Zikula_View $view)
 
     if (!isset($params['src']) || !$params['src']) {
         if (!$nostoponerror) {
-            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('img', 'src')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['img', 'src']));
 
             return;
         } else {
@@ -93,7 +93,7 @@ function smarty_function_img($params, Zikula_View $view)
     // if the module name is 'core'
     if ($modname == 'core') {
         if (System::isLegacyMode() && (strpos($osset, 'icons/') !== false || strpos($osset, 'global/') !== false) && strpos($params['src'], '.gif')) {
-            LogUtil::log(__f('Core image %s does not exist, please use the png format (called from %s).', array($params['src'], $view->getTemplatePath())), E_USER_DEPRECATED);
+            LogUtil::log(__f('Core image %s does not exist, please use the png format (called from %s).', [$params['src'], $view->getTemplatePath()]), E_USER_DEPRECATED);
             $params['src'] = str_replace('.gif', '.png', $params['src']);
         }
     }
@@ -116,7 +116,7 @@ function smarty_function_img($params, Zikula_View $view)
         $plugpath     = "plugins/$osplugdir/images";
 
         // form the array of paths
-        $paths = array($pluglangpath, $plugpath);
+        $paths = [$pluglangpath, $plugpath];
     } else {
         // module directory
         if ($modname != 'core') {
@@ -133,7 +133,7 @@ function smarty_function_img($params, Zikula_View $view)
             $modplugpathOld     = "$moduleDir/$osmoddir/plugins/$osmodplugdir/images";
 
             // form the array of paths
-            $paths = array($modpluglangpath, $modplugpath, $modpluglangpathOld, $modplugpathOld);
+            $paths = [$modpluglangpath, $modplugpath, $modpluglangpathOld, $modplugpathOld];
         } else {
             // theme directory
             $ostheme       = DataUtil::formatForOS(UserUtil::getTheme());
@@ -143,8 +143,8 @@ function smarty_function_img($params, Zikula_View $view)
             $corethemepath = "themes/$ostheme/images";
 
             if ($modname == 'core') {
-                $modpath = "images";
-                $paths = array($themepath, $corethemepath, $modpath);
+                $modpath = 'images';
+                $paths = [$themepath, $corethemepath, $modpath];
             } else {
                 $osmodname     = DataUtil::formatForOS($modname);
                 $themelangpath = "$themePath/$lang";
@@ -163,9 +163,9 @@ function smarty_function_img($params, Zikula_View $view)
                 // form the array of paths
                 if (preg_match('/^admin.(png|gif|jpg)$/', $params['src'])) {
                     // special processing for modules' admin icon
-                    $paths = array($modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
+                    $paths = [$modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2];
                 } else {
-                    $paths = array($themelangpath, $themepath, $themelangpathOld, $themepathOld, $corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2);
+                    $paths = [$themelangpath, $themepath, $themelangpathOld, $themepathOld, $corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld2, $modpathOld2];
                 }
             }
         }
@@ -193,7 +193,7 @@ function smarty_function_img($params, Zikula_View $view)
     if ($imgsrc == '') {
         if ($optional) {
             if (!$nostoponerror) {
-                $view->trigger_error(__f("%s: Image '%s' not found", array('img', DataUtil::formatForDisplay(($set ? "$set/" : '') . $params['src']))));
+                $view->trigger_error(__f("%s: Image '%s' not found", ['img', DataUtil::formatForDisplay(($set ? "$set/" : '') . $params['src'])]));
 
                 return;
             } else {
@@ -210,7 +210,7 @@ function smarty_function_img($params, Zikula_View $view)
     if (!isset($params['width']) && !isset($params['height'])) {
         if (!($_image_data = @getimagesize($imgsrc))) {
             if (!$nostoponerror) {
-                $view->trigger_error(__f("%s: Image '%s' is not a valid image file", array('img', DataUtil::formatForDisplay(($set ? "$set/" : '') . $params['src']))));
+                $view->trigger_error(__f("%s: Image '%s' is not a valid image file", ['img', DataUtil::formatForDisplay(($set ? "$set/" : '') . $params['src'])]));
 
                 return;
             } else {

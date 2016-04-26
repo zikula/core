@@ -30,7 +30,7 @@ class ModUrl implements UrlInterface
 
     private $fragment;
 
-    public function __construct($application, $controller, $action, $language, array $args = array(), $fragment = null)
+    public function __construct($application, $controller, $action, $language, array $args = [], $fragment = null)
     {
         $this->application = $application;
         $this->controller = $controller;
@@ -82,12 +82,13 @@ class ModUrl implements UrlInterface
 
     public function toArray()
     {
-        return array(
+        return [
             'application' => $this->application,
             'controller' => $this->controller,
             'action' => $this->action,
             'args' => $this->args,
             'language' => $this->language,
-            'fragment' => $this->fragment);
+            'fragment' => $this->fragment
+        ];
     }
 }

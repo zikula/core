@@ -31,6 +31,6 @@ class AlreadyInstalledStage implements StageInterface
 
     public function getTemplateParams()
     {
-        return array();
+        return [];
     }
 }

@@ -72,7 +72,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
      * @param array $parameters Array of parameters to pass into method.
      * @return mixed Method return.
      */
-    private function invokeMethod($api, $methodName, array $parameters = array())
+    private function invokeMethod($api, $methodName, array $parameters = [])
     {
         $reflection = new \ReflectionClass(get_class($api));
         $method = $reflection->getMethod($methodName);

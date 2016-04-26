@@ -145,33 +145,33 @@ class Zikula_Form_Plugin_DropdownRelationList extends Zikula_Form_Plugin_Dropdow
 
             if (count($idColumns) > 1) {
                 $view->trigger_error(__f('Error! in %1$s: an invalid %2$s parameter was received.',
-                                     array('formdropdownrelationlist', 'recordClass')));
+                                     ['formdropdownrelationlist', 'recordClass']));
             }
 
             $this->idField = $idColumns[0];
         } else {
             if (!$hasModule) {
                 $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
-                                         array('formdropdownrelationlist', 'module')));
+                                         ['formdropdownrelationlist', 'module']));
             }
             $this->module = $params['module'];
             unset($params['module']);
 
             if (!ModUtil::available($this->module)) {
                 $view->trigger_error(__f('Error! in %1$s: an invalid %2$s parameter was received.',
-                                         array('formdropdownrelationlist', 'module')));
+                                         ['formdropdownrelationlist', 'module']));
             }
 
             if (!$hasObjecttype) {
                 $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
-                                         array('formdropdownrelationlist', 'objecttype')));
+                                         ['formdropdownrelationlist', 'objecttype']));
             }
             $this->objecttype = $params['objecttype'];
             unset($params['objecttype']);
 
             if (!$hasIdField) {
                 $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
-                                         array('formdropdownrelationlist', 'idField')));
+                                         ['formdropdownrelationlist', 'idField']));
             }
             $this->idField = $params['idField'];
             unset($params['idField']);
@@ -184,7 +184,7 @@ class Zikula_Form_Plugin_DropdownRelationList extends Zikula_Form_Plugin_Dropdow
 
         if (!isset($params['displayField']) || empty($params['displayField'])) {
             $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
-                                     array('formdropdownrelationlist', 'displayField')));
+                                     ['formdropdownrelationlist', 'displayField']));
         }
         $this->displayField = $params['displayField'];
         unset($params['displayField']);

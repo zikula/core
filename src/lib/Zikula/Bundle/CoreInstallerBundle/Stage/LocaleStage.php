@@ -76,17 +76,17 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     public function isNecessary()
     {
         if (count($this->installedLanguages) == 1) {
-            $this->writeParams(array('locale' => $this->matchedLocale));
+            $this->writeParams(['locale' => $this->matchedLocale]);
 
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     public function getTemplateParams()
     {
-        return array();
+        return [];
     }
 
     public function handleFormResult(FormInterface $form)
@@ -95,7 +95,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         $this->writeParams($data);
     }
 
-    private function writeParams($data = array())
+    private function writeParams($data = [])
     {
         $params = array_merge($this->yamlManager->getParameters(), $data);
         try {

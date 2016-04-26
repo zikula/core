@@ -31,9 +31,9 @@ class CategoryRegistryUtil
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $params = array('modname' => $modname);
+        $params = ['modname' => $modname];
         if ($entryID) {
-            $params = array('id' => $entryID);
+            $params = ['id' => $entryID];
         }
 
         $entity = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findOneBy($params);
@@ -106,12 +106,13 @@ class CategoryRegistryUtil
             throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'categoryID'));
         }
 
-        $data = array();
-        $data['modname'] = $modname;
-        $data['entityname'] = $entityname;
-        $data['property'] = $property;
-        $data['category_id'] = $categoryID;
-        $data['id'] = $entryID ? $entryID : null;
+        $data = [
+            'modname' => $modname,
+            'entityname' => $entityname,
+            'property' => $property,
+            'category_id' => $categoryID,
+            'id' => $entryID ? $entryID : null
+        ];
 
         return self::registerModuleCategory($data);
     }
@@ -186,10 +187,10 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategories($modname, $entityname, $arraykey = 'property')
     {
         if (!$modname || !$entityname) {
-            throw new \InvalidArgumentException(__f('Error! Received invalid specifications %1$s, %2$s.', array($modname, $entityname)));
+            throw new \InvalidArgumentException(__f('Error! Received invalid specifications %1$s, %2$s.', [$modname, $entityname]));
         }
 
-        static $cache = array();
+        static $cache = [];
         if (isset($cache[$modname][$entityname])) {
             return $cache[$modname][$entityname];
         }
@@ -197,9 +198,9 @@ class CategoryRegistryUtil
         /** @var $em Doctrine\ORM\EntityManager */
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $rCategories = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(array('modname' => $modname, 'entityname' => $entityname), array('id' => 'ASC'));
+        $rCategories = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(['modname' => $modname, 'entityname' => $entityname], ['id' => 'ASC']);
 
-        $fArr = array();
+        $fArr = [];
 
         /** @var $rCategory CategoryRegistryEntity */
         foreach ($rCategories as $rCategory) {
@@ -256,14 +257,14 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategoriesIds($modname, $entityname)
     {
         if (!$modname || !$entityname) {
-            throw new \InvalidArgumentException(__f('Error! Received invalid specifications %1$s, %2$s.', array($modname, $entityname)));
+            throw new \InvalidArgumentException(__f('Error! Received invalid specifications %1$s, %2$s.', [$modname, $entityname]));
         }
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $rCategories = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(array('modname' => $modname, 'entityname' => $entityname));
+        $rCategories = $em->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')->findBy(['modname' => $modname, 'entityname' => $entityname]);
 
-        $fArr = array();
+        $fArr = [];
 
         foreach ($rCategories as $rCategory) {
             $fArr[$rCategory['property']] = $rCategory['id'];

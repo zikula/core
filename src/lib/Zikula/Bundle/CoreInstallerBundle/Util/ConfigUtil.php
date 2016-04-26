@@ -70,8 +70,8 @@ class ConfigUtil
      */
     private function replaceKeys($searchKey, $replaceWith, $string)
     {
-        $search = array("#\['$searchKey'\]\s*=\s*('|\")(.*)('|\")\s*;#", "#\['$searchKey'\]\s*=\s*(\d)\s*;#");
-        $replace = array("['$searchKey'] = '$replaceWith';", "['$searchKey'] = $replaceWith;");
+        $search = ["#\['$searchKey'\]\s*=\s*('|\")(.*)('|\")\s*;#", "#\['$searchKey'\]\s*=\s*(\d)\s*;#"];
+        $replace = ["['$searchKey'] = '$replaceWith';", "['$searchKey'] = $replaceWith;"];
 
         return preg_replace($search, $replace, $string);
     }

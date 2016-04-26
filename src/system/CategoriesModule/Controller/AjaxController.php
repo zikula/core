@@ -71,9 +71,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $this->entityManager->flush();
 
-        $result = array(
+        $result = [
             'response' => true
-        );
+        ];
 
         return new AjaxResponse($result);
     }
@@ -125,7 +125,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $editCat['parent_id'] = $parent;
         }
 
-        $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
+        $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : [];
 
         $this->setView();
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
@@ -135,11 +135,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                    ->assign('attributes', $attributes)
                    ->assign('languages', $languages);
 
-        $result = array(
+        $result = [
             'action' => $mode == 'new' ? 'add' : 'edit',
             'result' => $this->view->fetch('Ajax/edit.tpl'),
             'validationErrors' => $validationErrors
-        );
+        ];
 
         if ($validationErrors) {
             return new BadDataResponse($validationErrors, $result);
@@ -188,10 +188,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // create jsTree node
         $node = CategoryUtil::getJsTreeNodeFromCategory($category);
 
-        $leafStatus = array(
-            'leaf' => array(),
-            'noleaf' => array()
-        );
+        $leafStatus = [
+            'leaf' => [],
+            'noleaf' => []
+        ];
         foreach ($categories as $c) {
             if ($c['is_leaf']) {
                 $leafStatus['leaf'][] = $c['id'];
@@ -199,7 +199,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 $leafStatus['noleaf'][] = $c['id'];
             }
         }
-        $result = array(
+        $result = [
             'action' => 'copy',
             'cid' => $cid,
             'copycid' => $copyParent['id'],
@@ -207,7 +207,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'node' => $node,
             'leafstatus' => $leafStatus,
             'result' => true
-        );
+        ];
 
         return new AjaxResponse($result);
     }
@@ -234,11 +234,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         CategoryUtil::deleteCategoriesByPath($cat['ipath']);
 
-        $result = array(
+        $result = [
             'action' => 'delete',
             'cid' => $cid,
             'result' => true
-        );
+        ];
 
         return new AjaxResponse($result);
     }
@@ -273,10 +273,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $categories = CategoryUtil::getSubCategories($newParent['id'], true, true, true, true, true);
 
-        $leafStatus = array(
-            'leaf' => array(),
-            'noleaf' => array()
-        );
+        $leafStatus = [
+            'leaf' => [],
+            'noleaf' => []
+        ];
         foreach ($categories as $c) {
             if ($c['is_leaf']) {
                 $leafStatus['leaf'][] = $c['id'];
@@ -285,13 +285,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             }
         }
 
-        $result = array(
+        $result = [
             'action' => 'deleteandmovesubs',
             'cid' => $cid,
             'parent' => $newParent['id'],
             'leafstatus' => $leafStatus,
             'result' => true
-        );
+        ];
 
         return new AjaxResponse($result);
     }
@@ -322,9 +322,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('categorySelector', $selector);
-        $result = array(
+        $result = [
             'result' => $this->view->fetch('Ajax/delete.tpl'),
-        );
+        ];
 
         return new AjaxResponse($result);
     }
@@ -351,11 +351,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $cat['status'] = 'A';
         $this->entityManager->flush();
 
-        $result = array(
+        $result = [
             'action' => 'activate',
             'cid' => $cid,
             'result' => true
-        );
+        ];
 
         return new AjaxResponse($result);
     }
@@ -382,11 +382,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $cat['status'] = 'I';
         $this->entityManager->flush();
 
-        $result = array(
+        $result = [
             'action' => 'deactivate',
             'cid' => $cid,
             'result' => true
-        );
+        ];
 
         return new AjaxResponse($result);
     }
@@ -426,11 +426,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $valid = GenericUtil::validateCategoryData($data);
         if (!$valid) {
-            $args = array(
+            $args = [
                 'cid' => (isset($data['cid']) ? $data['cid'] : 0),
                 'parent' => $data['parent_id'],
                 'mode' => $mode
-            );
+            ];
 
             return $this->editAction($args);
         }
@@ -461,8 +461,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
 
         // process category attributes
-        $attrib_names = $request->request->get('attribute_name', array());
-        $attrib_values = $request->request->get('attribute_value', array());
+        $attrib_names = $request->request->get('attribute_name', []);
+        $attrib_values = $request->request->get('attribute_value', []);
         GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $this->entityManager->flush();
@@ -473,12 +473,12 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         $categories = CategoryUtil::getSubCategories($category['id'], true, true, true, true, true);
-        $node = CategoryUtil::getJsTreeNodeFromCategoryArray(array(0 => $category));
+        $node = CategoryUtil::getJsTreeNodeFromCategoryArray([0 => $category]);
 
-        $leafStatus = array(
-            'leaf' => array(),
-            'noleaf' => array()
-        );
+        $leafStatus = [
+            'leaf' => [],
+            'noleaf' => []
+        ];
         foreach ($categories as $c) {
             if ($c['is_leaf']) {
                 $leafStatus['leaf'][] = $c['id'];
@@ -487,14 +487,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             }
         }
 
-        $result = array(
+        $result = [
             'action' => $mode == 'edit' ? 'edit' : 'add',
             'cid' => $category['id'],
             'parent' => $category['parent']->getId(),
             'node' => $node,
             'leafstatus' => $leafStatus,
             'result' => true
-        );
+        ];
 
         return new AjaxResponse($result);
     }

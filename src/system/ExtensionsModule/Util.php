@@ -37,7 +37,7 @@ class Util
      */
     public static function getVersionMeta($moduleName, $rootdir = 'modules', $module = null)
     {
-        $modversion = array();
+        $modversion = [];
         if (null === $module) {
             $module = ModUtil::getModule($moduleName);
         }
@@ -47,8 +47,8 @@ class Util
             try {
                 $modversion = new $class($module);
             } catch (\Exception $e) {
-                LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), \Monolog\Logger::CRITICAL);
-                throw new \InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), 0, $e);
+                LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', [$class, $e->getMessage()]), \Monolog\Logger::CRITICAL);
+                throw new \InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', [$class, $e->getMessage()]), 0, $e);
             }
             if (!$modversion instanceof Zikula_AbstractVersion) {
                 throw new \InvalidArgumentException(__f('%s is not an instance of Zikula_AbstractVersion', get_class($modversion)));
@@ -57,13 +57,13 @@ class Util
             // Core-2.0 spec
             $modversion = $module->getMetaData();
         } elseif (!is_dir("$rootdir/$moduleName")) {
-            $modversion = array(
-                    'name' => $moduleName,
-                    'description' => '',
-                    'version' => 0
-                );
+            $modversion = [
+                'name' => $moduleName,
+                'description' => '',
+                'version' => 0
+            ];
         } elseif (is_dir("$rootdir/$moduleName/lib")) {
-            throw new \InvalidArgumentException(__f('Could not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));
+            throw new \InvalidArgumentException(__f('Could not find %1$s for module %2$s', ["{$moduleName}_Version", $moduleName]));
         } else {
             // pre 1.3 modules
             $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
@@ -72,15 +72,15 @@ class Util
 //                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), \Monolog\Logger::CRITICAL);
 //                    throw new \InvalidArgumentException(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
 //                }
-//                $modversion = array(
+//                $modversion = [
 //                    'name' => $moduleName,
 //                    'description' => '',
 //                    'version' => 0
-//                );
-                return array();
-            } else {
-                include $legacyVersionPath;
+//                ];
+                return [];
             }
+
+            include $legacyVersionPath;
         }
 
         return $modversion;

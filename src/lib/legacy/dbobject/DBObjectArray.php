@@ -288,7 +288,7 @@ class DBObjectArray
     {
         $item = ObjectUtil::createEmptyObject($this->_objType);
         if ($item) {
-            $data = array();
+            $data = [];
             for ($i = 0; $i < $num; $i++) {
                 $data[] = $item;
             }
@@ -330,11 +330,11 @@ class DBObjectArray
      * issues when accessing filter fields which may not be set + do additional processing as necessary.
      * Default implementation which can be overridden by subclasses.
      *
-     * @param array $filter An array containing the set filter values (optional) (default=array()).
+     * @param array $filter An array containing the set filter values (optional) (default=[]).
      *
      * @return array The processed filter array.
      */
-    public function genFilterPreProcess($filter = array())
+    public function genFilterPreProcess($filter = [])
     {
         return $filter;
     }
@@ -344,11 +344,11 @@ class DBObjectArray
      *
      * Generate a filter for the array view. Default implementation which can be overridden by subclasses.
      *
-     * @param array $filter An array containing the set filter values (optional) (default=array()).
+     * @param array $filter An array containing the set filter values (optional) (default=[]).
      *
      * @return string The generated filter (where-clause) string.
      */
-    public function genFilter($filter = array())
+    public function genFilter($filter = [])
     {
         $filter = $this->genFilterPreProcess($filter);
 
@@ -461,7 +461,7 @@ class DBObjectArray
      *
      * @return array The requested object/value.
      */
-    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter = null, array $args = array())
+    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter = null, array $args = [])
     {
         if (!$key) {
             $key = $this->_objPath;
@@ -1049,7 +1049,7 @@ class DBObjectArray
             $objArray = $this->_objData;
         }
 
-        $arrayHash = array();
+        $arrayHash = [];
         foreach ($objArray as $obj) {
             if (!$includeStandardFields) {
                 ObjectUtil::removeStandardFieldsFromObject($obj);

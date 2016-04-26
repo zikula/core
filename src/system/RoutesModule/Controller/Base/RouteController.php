@@ -74,7 +74,7 @@ class RouteController extends Zikula_AbstractController
         
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
-        $utilArgs = array('controller' => 'route', 'action' => 'main');
+        $utilArgs = ['controller' => 'route', 'action' => 'main'];
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_OVERVIEW;
         if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
@@ -82,7 +82,7 @@ class RouteController extends Zikula_AbstractController
         
         if ($legacyControllerType == 'admin') {
             
-            $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => $legacyControllerType));
+            $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', ['lct' => $legacyControllerType]);
             
             return new RedirectResponse(System::normalizeUrl($redirectUrl));
         }
@@ -119,7 +119,7 @@ class RouteController extends Zikula_AbstractController
         
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
-        $utilArgs = array('controller' => 'route', 'action' => 'view');
+        $utilArgs = ['controller' => 'route', 'action' => 'view'];
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_READ;
         if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
@@ -143,15 +143,15 @@ class RouteController extends Zikula_AbstractController
         $sortdir = strtolower($sortdir);
         
         // convenience vars to make code clearer
-        $currentUrlArgs = array();
+        $currentUrlArgs = [];
         
         $where = '';
         
-        $selectionArgs = array(
+        $selectionArgs = [
             'ot' => $objectType,
             'where' => $where,
             'orderBy' => $sort . ' ' . $sortdir
-        );
+        ];
         
         $showOwnEntries = (int) $request->query->filter('own', $this->getVar('showOnlyOwnEntries', 0), false, FILTER_VALIDATE_INT);
         $showAllEntries = (int) $request->query->filter('all', 0, false, FILTER_VALIDATE_INT);
@@ -221,8 +221,8 @@ class RouteController extends Zikula_AbstractController
             list($entities, $objectCount) = ModUtil::apiFunc($this->name, 'selection', 'getEntitiesPaginated', $selectionArgs);
         
             $this->view->assign('currentPage', $currentPage)
-                       ->assign('pager', array('numitems'     => $objectCount,
-                                               'itemsperpage' => $resultsPerPage));
+                       ->assign('pager', ['numitems'     => $objectCount,
+                                          'itemsperpage' => $resultsPerPage]);
         }
         
         foreach ($entities as $k => $entity) {
@@ -270,7 +270,7 @@ class RouteController extends Zikula_AbstractController
         
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
-        $utilArgs = array('controller' => 'route', 'action' => 'edit');
+        $utilArgs = ['controller' => 'route', 'action' => 'edit'];
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_EDIT;
         if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
@@ -314,7 +314,7 @@ class RouteController extends Zikula_AbstractController
         
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
-        $utilArgs = array('controller' => 'route', 'action' => 'display');
+        $utilArgs = ['controller' => 'route', 'action' => 'display'];
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_READ;
         if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
@@ -385,7 +385,7 @@ class RouteController extends Zikula_AbstractController
         
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
-        $utilArgs = array('controller' => 'route', 'action' => 'delete');
+        $utilArgs = ['controller' => 'route', 'action' => 'delete'];
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_DELETE;
         if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
@@ -400,7 +400,7 @@ class RouteController extends Zikula_AbstractController
         if ($actions === false || !is_array($actions)) {
             $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not determine workflow actions.'));
             $logger = $this->serviceManager->get('logger');
-            $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but failed to determine available workflow actions.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier()));
+            $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but failed to determine available workflow actions.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier()]);
             throw new \RuntimeException($this->__('Error! Could not determine workflow actions.'));
         }
         
@@ -417,7 +417,7 @@ class RouteController extends Zikula_AbstractController
         if (!$deleteAllowed) {
             $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! It is not allowed to delete this route.'));
             $logger = $this->serviceManager->get('logger');
-            $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but this action was not allowed.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier()));
+            $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but this action was not allowed.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier()]);
         }
         
         $confirmation = (bool) $request->request->filter('confirmation', false, false, FILTER_VALIDATE_BOOLEAN);
@@ -435,7 +435,7 @@ class RouteController extends Zikula_AbstractController
                 if ($success) {
                     $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Item deleted.'));
                     $logger = $this->serviceManager->get('logger');
-                    $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier()));
+                    $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $entity->createCompositeIdentifier()]);
                 }
         
                 // Let any hooks know that we have created, updated or deleted the route
@@ -444,11 +444,11 @@ class RouteController extends Zikula_AbstractController
                 $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook);
         
                 // The route was deleted, so we clear all cached pages this item.
-                $cacheArgs = array('ot' => $objectType, 'item' => $entity);
+                $cacheArgs = ['ot' => $objectType, 'item' => $entity];
                 ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
         
                 // redirect to the list of routes
-                $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', array('lct' => $legacyControllerType));
+                $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_view', ['lct' => $legacyControllerType]);
                 return new RedirectResponse(System::normalizeUrl($redirectUrl));
             }
         }
@@ -487,7 +487,7 @@ class RouteController extends Zikula_AbstractController
         
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
-        $utilArgs = array('controller' => 'route', 'action' => 'reload');
+        $utilArgs = ['controller' => 'route', 'action' => 'reload'];
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_OVERVIEW;
         if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
@@ -517,7 +517,7 @@ class RouteController extends Zikula_AbstractController
         
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
-        $utilArgs = array('controller' => 'route', 'action' => 'renew');
+        $utilArgs = ['controller' => 'route', 'action' => 'renew'];
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_OVERVIEW;
         if (!SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel)) {
             throw new AccessDeniedException();
@@ -546,7 +546,7 @@ class RouteController extends Zikula_AbstractController
     {
         $this->checkCsrfToken();
         
-        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_index', array('lct' => 'admin'));
+        $redirectUrl = $this->serviceManager->get('router')->generate('zikularoutesmodule_route_index', ['lct' => 'admin']);
         
         $objectType = 'route';
         
@@ -561,9 +561,11 @@ class RouteController extends Zikula_AbstractController
         // process each item
         foreach ($items as $itemid) {
             // check if item exists, and get record instance
-            $selectionArgs = array('ot' => $objectType,
-                                   'id' => $itemid,
-                                   'useJoins' => false);
+            $selectionArgs = [
+                'ot' => $objectType,
+                'id' => $itemid,
+                'useJoins' => false
+            ];
             $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', $selectionArgs);
         
             $entity->initWorkflow();
@@ -591,9 +593,9 @@ class RouteController extends Zikula_AbstractController
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $action);
             } catch(\Exception $e) {
-                $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
+                $this->request->getSession()->getFlashBag()->add('error', $this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', [$action]));
                 $logger = $this->serviceManager->get('logger');
-                $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'action' => $action, 'entity' => 'route', 'id' => $itemid, 'errorMessage' => $e->getMessage()));
+                $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'action' => $action, 'entity' => 'route', 'id' => $itemid, 'errorMessage' => $e->getMessage()]);
             }
         
             if (!$success) {
@@ -603,11 +605,11 @@ class RouteController extends Zikula_AbstractController
             if ($action == 'delete') {
                 $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Item deleted.'));
                 $logger = $this->serviceManager->get('logger');
-                $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $itemid));
+                $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'entity' => 'route', 'id' => $itemid]);
             } else {
                 $this->request->getSession()->getFlashBag()->add('status', $this->__('Done! Item updated.'));
                 $logger = $this->serviceManager->get('logger');
-                $logger->notice('{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.', array('app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'action' => $action, 'entity' => 'route', 'id' => $itemid));
+                $logger->notice('{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => UserUtil::getVar('uname'), 'action' => $action, 'entity' => 'route', 'id' => $itemid]);
             }
         
             // Let any hooks know that we have updated or deleted an item
@@ -621,7 +623,7 @@ class RouteController extends Zikula_AbstractController
             $this->dispatchHooks($hookAreaPrefix . '.' . $hookType, $hook);
         
             // An item was updated or deleted, so we clear all cached pages for this item.
-            $cacheArgs = array('ot' => $objectType, 'item' => $entity);
+            $cacheArgs = ['ot' => $objectType, 'item' => $entity];
             ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
         }
         

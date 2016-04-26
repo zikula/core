@@ -40,7 +40,7 @@ class ExtensionsManager
             return $this->listeners[$type];
         }
 
-        if (in_array($type, array('blameable', 'loggable'))) {
+        if (in_array($type, ['blameable', 'loggable'])) {
             $this->listeners[$type] = $this->serviceManager->get('stof_doctrine_extensions.listener.' . $type);
 
             return $this->listeners[$type];

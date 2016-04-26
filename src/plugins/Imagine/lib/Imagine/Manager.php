@@ -283,7 +283,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
                     ->createThumbnail($image, $preset);
             } catch (Exception $e) {
                 //! %1$s is source image path, %2$s is error message
-                LogUtil::log($this->__f('An error occurred during thumbnail creation for image [%1$s]. Error details: %2$s', array($imagePath, $e->getMessage())), \Monolog\Logger::INFO);
+                LogUtil::log($this->__f('An error occurred during thumbnail creation for image [%1$s]. Error details: %2$s', [$imagePath, $e->getMessage()]), \Monolog\Logger::INFO);
 
                 return $imagePath;
             }
@@ -406,7 +406,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
      */
     private function createThumbnail(SystemPlugin_Imagine_Image $image, SystemPlugin_Imagine_Preset $preset)
     {
-        $options = array();
+        $options = [];
         if (isset($preset['options']) || !is_array($preset['options'])) {
             $options = $preset['options'];
         }
@@ -454,10 +454,10 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
      */
     private function getFullThumbDir($objectId = null, $imagePath = null)
     {
-        $parts = array(
+        $parts = [
             $this->getThumbDir(),
             $this->getModule()
-        );
+        ];
         if (!is_null($objectId)) {
             $parts[] = $objectId;
         }
@@ -512,7 +512,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
             $directories = Symfony\Component\Finder\Finder::create()
                 ->directories()
                 ->in($source);
-            $dirs = array();
+            $dirs = [];
             foreach ($directories as $dir) {
                 $dirs[] = $dir;
             }

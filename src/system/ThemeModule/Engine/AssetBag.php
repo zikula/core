@@ -39,7 +39,7 @@ class AssetBag implements \IteratorAggregate, \Countable
      * $assets = [value => weight, value => weight, value => weight]
      * @var array
      */
-    private $assets = array();
+    private $assets = [];
 
     public function __construct()
     {
@@ -73,7 +73,7 @@ class AssetBag implements \IteratorAggregate, \Countable
 
     public function clear()
     {
-        $this->assets = array();
+        $this->assets = [];
     }
 
     public function all()

@@ -22,11 +22,11 @@ class StripFrontControllerListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => array(
-                array('onKernelRequest', 1023),
-            )
-        );
+        return [
+            KernelEvents::REQUEST => [
+                ['onKernelRequest', 1023]
+            ]
+        ];
     }
 
     /**

@@ -24,9 +24,12 @@
 function smarty_function_zikularoutesmoduleObjectTypeSelector($params, $view)
 {
     $dom = \ZLanguage::getModuleDomain('ZikulaRoutesModule');
-    $result = array();
+    $result = [];
 
-    $result[] = array('text' => __('Routes', $dom), 'value' => 'route');
+    $result[] = [
+        'text' => __('Routes', $dom),
+        'value' => 'route'
+    ];
 
     if (array_key_exists('assign', $params)) {
         $view->assign($params['assign'], $result);

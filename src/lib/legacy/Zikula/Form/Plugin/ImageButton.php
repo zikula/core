@@ -86,12 +86,12 @@ class Zikula_Form_Plugin_ImageButton extends Zikula_Form_Plugin_Button
         $fullNameY = $this->id . '_' . $this->commandName . '_y';
 
         if (isset($_POST[$fullNameX])) {
-            $args = array(
+            $args = [
                 'commandName' => $this->commandName,
                 'commandArgument' => $this->commandArgument,
                 'posX' => (int)$_POST[$fullNameX],
                 'posY' => (int)$_POST[$fullNameY]
-            );
+            ];
             if (!empty($this->onCommand)) {
                 if ($view->raiseEvent($this->onCommand, $args) === false) {
                     return false;

@@ -46,26 +46,28 @@ class ModUtil
      *
      * @var array
      */
-    protected static $ooModules = array();
+    protected static $ooModules = [];
+
     /**
      * Module info cache.
      *
      * @var array
      */
     protected static $modinfo;
+
     /**
      * Module vars.
      *
      * @var ArrayObject
      */
-    protected static $modvars = array();
+    protected static $modvars = [];
 
     /**
      * Internal module cache.
      *
      * @var array
      */
-    protected static $cache = array();
+    protected static $cache = [];
 
     /**
      * Module variables getter.
@@ -84,7 +86,7 @@ class ModUtil
      */
     public static function flushCache()
     {
-        self::$cache = array();
+        self::$cache = [];
     }
 
     /**
@@ -99,11 +101,11 @@ class ModUtil
     public static function initCoreVars($force = false)
     {
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
-        self::$modvars = new ArrayObject(array(
-            EventUtil::HANDLERS => array(),
-            ServiceUtil::HANDLERS => array(),
-            'ZikulaSettingsModule' => array(),
-        ));
+        self::$modvars = new ArrayObject([
+            EventUtil::HANDLERS => [],
+            ServiceUtil::HANDLERS => [],
+            'ZikulaSettingsModule' => []
+        ]);
 
         // don't init vars during the installer or upgrader
         if (!$force && System::isInstalling()) {
@@ -116,7 +118,7 @@ class ModUtil
         $modvars = $em->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findAll();
         foreach ($modvars as $var) {
             if (!array_key_exists($var->getModname(), self::$modvars)) {
-                self::$modvars[$var->getModname()] = array();
+                self::$modvars[$var->getModname()] = [];
             }
             if (array_key_exists($var->getName(), $GLOBALS['ZConfig']['System'])) {
                 self::$modvars[$var->getModname()][$var->getName()] = $GLOBALS['ZConfig']['System'][$var->getName()];
@@ -134,7 +136,7 @@ class ModUtil
         $knownModules = self::getAllMods();
         foreach ($knownModules as $key => $mod) {
             if (!array_key_exists($mod['name'], self::$modvars)) {
-                self::$modvars[$mod['name']] = array();
+                self::$modvars[$mod['name']] = [];
             }
         }
     }
@@ -152,7 +154,7 @@ class ModUtil
         }
 
         $lang = ZLanguage::getLanguageCode();
-        $items = array('sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription');
+        $items = ['sitename', 'slogan', 'metakeywords', 'defaultpagetitle', 'defaultmetadescription'];
         foreach ($items as $item) {
             self::$modvars['ZConfig'][$item] = isset(self::$modvars['ZConfig'][$item . '_' . $lang]) ? self::$modvars['ZConfig'][$item . '_' . $lang] : self::$modvars['ZConfig'][$item . '_en'];
         }
@@ -233,13 +235,13 @@ class ModUtil
                 self::initCoreVars(true);
             } else {
                 // Prevent a re-query for the same module in the future, where the module does not define any module variables.
-                self::$modvars[$modname] = array();
+                self::$modvars[$modname] = [];
             }
         }
 
         // if they didn't pass a variable name then return every variable
         // for the specified module as an associative array.
-        // array('var1' => value1, 'var2' => value2)
+        // ['var1' => value1, 'var2' => value2]
         if (empty($name) && array_key_exists($modname, self::$modvars)) {
             return self::$modvars[$modname];
         }
@@ -280,7 +282,7 @@ class ModUtil
         }
 
         $em = ServiceUtil::get('doctrine.entitymanager');
-        $entities = $em->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(array('modname' => $modname, 'name' => $name));
+        $entities = $em->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(['modname' => $modname, 'name' => $name]);
         if (count($entities) > 0) {
             foreach ($entities as $entity) {
                 // possible duplicates exist. update all (refs #2385)
@@ -553,11 +555,11 @@ class ModUtil
     public static function getModulesCapableOf($capability = 'user')
     {
         if (!isset(self::$cache['modcache'])) {
-            self::$cache['modcache'] = array();
+            self::$cache['modcache'] = [];
         }
 
         if (!isset(self::$cache['modcache'][$capability]) || !self::$cache['modcache'][$capability]) {
-            self::$cache['modcache'][$capability] = array();
+            self::$cache['modcache'][$capability] = [];
             $mods = self::getAllMods();
             foreach ($mods as $key => $mod) {
                 if (isset($mod['capabilities'][$capability])) {
@@ -632,7 +634,7 @@ class ModUtil
     public static function getAllMods()
     {
         if (!isset(self::$cache['modsarray'])) {
-            self::$cache['modsarray'] = array();
+            self::$cache['modsarray'] = [];
         }
 
         if (empty(self::$cache['modsarray'])) {
@@ -675,7 +677,7 @@ class ModUtil
         $serviceManager = ServiceUtil::getManager();
 
         if (!isset($serviceManager['modutil.dbinfoload.loaded'])) {
-            $serviceManager['modutil.dbinfoload.loaded'] = array();
+            $serviceManager['modutil.dbinfoload.loaded'] = [];
         }
 
         $loaded = $serviceManager['modutil.dbinfoload.loaded'];
@@ -707,7 +709,7 @@ class ModUtil
         }
 
         // Load the database definition if required
-        $files = array();
+        $files = [];
         if ($module = self::getModule($moduleName)) {
             $files[] = $module->getPath() . '/tables.php';
         }
@@ -726,7 +728,7 @@ class ModUtil
             // If not gets here, the module has no tables to load
             $tablefunc = $modname . '_tables';
             $tablefuncOld = $modname . '_pntables';
-            $data = array();
+            $data = [];
             if (function_exists($tablefunc)) {
                 $data = call_user_func($tablefunc);
             } elseif (function_exists($tablefuncOld)) {
@@ -747,7 +749,7 @@ class ModUtil
                 }
 
                 if ($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') {
-                    if (substr($key, -7) == "_column") {
+                    if (substr($key, -7) == '_column') {
                         if (is_array($value) && $value) {
                             foreach ($value as $alias => $fieldname) {
                                 if ($alias != 'user') {
@@ -760,7 +762,7 @@ class ModUtil
             }
 
             if (!isset($serviceManager['dbtables'])) {
-                $serviceManager['dbtables'] = array();
+                $serviceManager['dbtables'] = [];
             }
 
             $dbtables = $serviceManager['dbtables'];
@@ -837,7 +839,7 @@ class ModUtil
         $modtype = strtolower("$modname{$type}{$osapi}");
 
         if (!isset(self::$cache['loaded'])) {
-            self::$cache['loaded'] = array();
+            self::$cache['loaded'] = [];
         }
 
         if (!empty(self::$cache['loaded'][$modtype])) {
@@ -883,7 +885,7 @@ class ModUtil
 
         self::_loadStyleSheets($modname, $api, $type);
 
-        $event = new GenericEvent(null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
+        $event = new GenericEvent(null, ['modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api]);
         EventUtil::dispatch('module_dispatch.postloadgeneric', $event);
 
         return $modname;
@@ -968,7 +970,7 @@ class ModUtil
         }
 
         // allow overriding the OO class (to override existing methods using inheritance).
-        $event = new GenericEvent(null, array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+        $event = new GenericEvent(null, ['modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api], $className);
         EventUtil::dispatch('module_dispatch.custom_classname', $event);
         if ($event->isPropagationStopped()) {
             $className = $event->getData();
@@ -1034,9 +1036,9 @@ class ModUtil
         } else {
             $r = new ReflectionClass($className);
             if ($r->hasMethod('__construct') && $r->isSubclassOf('Zikula_AbstractBase')) {
-                $object = $r->newInstanceArgs(array($sm, self::getModule($modname)));
+                $object = $r->newInstanceArgs([$sm, self::getModule($modname)]);
             } elseif ($r->hasMethod('__construct') && $r->isSubclassOf('Zikula\Core\Controller\AbstractController')) {
-                $object = $r->newInstanceArgs(array(self::getModule($modname)));
+                $object = $r->newInstanceArgs([self::getModule($modname)]);
             } else {
                 $object = $r->newInstance();
             }
@@ -1077,11 +1079,15 @@ class ModUtil
 
         $object = self::getObject($className, $modname);
         $action = $api ? '' : 'Action';
-        if (is_callable(array($object, $func . $action))) {
-            return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func . $action));
+        if (!is_callable([$object, $func . $action])) {
+            return false;
         }
 
-        return false;
+        return [
+            'serviceid' => strtolower('module.' . $className),
+            'classname' => $className,
+            'callable' => [$object, $func . $action]
+        ];
     }
 
     /**
@@ -1099,7 +1105,7 @@ class ModUtil
      *
      * @return mixed.
      */
-    public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false, $instanceof = null)
+    public static function exec($modname, $type = 'user', $func = 'main', $args = [], $api = false, $instanceof = null)
     {
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
@@ -1120,7 +1126,7 @@ class ModUtil
 
         $controller = null;
         $modfunc = null;
-        $loaded = call_user_func_array($api ? 'ModUtil::loadApi' : 'ModUtil::load', array($modname, $type));
+        $loaded = call_user_func_array($api ? 'ModUtil::loadApi' : 'ModUtil::load', [$modname, $type]);
         if (self::isOO($modname)) {
             $result = self::getCallable($modname, $type, $func, $api);
             if ($result) {
@@ -1128,7 +1134,7 @@ class ModUtil
                 $controller = $modfunc[0];
                 if (!is_null($instanceof)) {
                     if (!$controller instanceof $instanceof) {
-                        throw new InvalidArgumentException(__f('%1$s must be an instance of $2$s', array(get_class($controller), $instanceof)));
+                        throw new InvalidArgumentException(__f('%1$s must be an instance of $2$s', [get_class($controller), $instanceof]));
                     }
                 }
             }
@@ -1137,8 +1143,9 @@ class ModUtil
         $eventManager = EventUtil::getManager();
         $sm = ServiceUtil::getManager();
         if ($loaded) {
-            $preExecuteEvent = new \Zikula\Core\Event\GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-            $postExecuteEvent = new \Zikula\Core\Event\GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $eventArgs = ['modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api];
+            $preExecuteEvent = new \Zikula\Core\Event\GenericEvent($controller, $eventArgs);
+            $postExecuteEvent = new \Zikula\Core\Event\GenericEvent($controller, $eventArgs);
 
             if (is_callable($modfunc)) {
                 $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
@@ -1199,7 +1206,7 @@ class ModUtil
                     }
 
                     if ($modfunc[0] instanceof Zikula_AbstractController) {
-                        $reflection = call_user_func(array($modfunc[0], 'getReflection'));
+                        $reflection = call_user_func([$modfunc[0], 'getReflection']);
                         $subclassOfReflection = new ReflectionClass($reflection->getParentClass());
                         if ($subclassOfReflection->hasMethod($modfunc[1])) {
                             // Don't allow front controller to access any public methods inside the controller's parents
@@ -1232,7 +1239,7 @@ class ModUtil
             // 4. $event->setNotify().
             // return void
             // This event means that no $type was found
-            $event = new \Zikula\Core\Event\GenericEvent(null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
+            $event = new \Zikula\Core\Event\GenericEvent(null, ['modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api], false);
             $eventManager->dispatch('module_dispatch.type_not_found', $event);
 
             if ($preExecuteEvent->isPropagationStopped()) {
@@ -1244,7 +1251,7 @@ class ModUtil
 
         // Issue not found exception for controller requests
         if (!System::isLegacyMode() && !$api) {
-            throw new Zikula_Exception_NotFound(__f('The requested controller action %s_Controller_%s::%s() could not be found', array($modname, $type, $func)));
+            throw new Zikula_Exception_NotFound(__f('The requested controller action %s_Controller_%s::%s() could not be found', [$modname, $type, $func]));
         }
     }
 
@@ -1259,7 +1266,7 @@ class ModUtil
      *
      * @return mixed.
      */
-    public static function func($modname, $type = 'user', $func = 'main', $args = array(), $instanceof = null)
+    public static function func($modname, $type = 'user', $func = 'main', $args = [], $instanceof = null)
     {
         return self::exec($modname, $type, $func, $args, false, $instanceof);
     }
@@ -1275,7 +1282,7 @@ class ModUtil
      *
      * @return mixed.
      */
-    public static function apiFunc($modname, $type = 'user', $func = 'main', $args = array(), $instanceof = null)
+    public static function apiFunc($modname, $type = 'user', $func = 'main', $args = [], $instanceof = null)
     {
         if (empty($type)) {
             $type = 'user';
@@ -1299,12 +1306,12 @@ class ModUtil
             $args['_locale'] = $args['lang'];
         }
 
-        $routeNames = array(strtolower($modname) . "_" . strtolower($type) . "_" . strtolower($func));
+        $routeNames = [strtolower($modname) . '_' . strtolower($type) . '_' . strtolower($func)];
         if ($func == 'index' || $func == 'main') {
             if ($func == 'index') {
-                $routeNames[] = strtolower($modname) . "_" . strtolower($type) . "_main";
+                $routeNames[] = strtolower($modname) . '_' . strtolower($type) . '_main';
             } else {
-                $routeNames[] = strtolower($modname) . "_" . strtolower($type) . "_index";
+                $routeNames[] = strtolower($modname) . '_' . strtolower($type) . '_index';
             }
         }
 
@@ -1366,7 +1373,7 @@ class ModUtil
      *
      * @return string Absolute URL for call.
      */
-    public static function url($modname, $type = null, $func = null, $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang = false)
+    public static function url($modname, $type = null, $func = null, $args = [], $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang = false)
     {
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
@@ -1489,7 +1496,7 @@ class ModUtil
                 unset($args['theme']);
             }
             // Module-specific Short URLs
-            $url = self::apiFunc($modinfo['name'], 'user', 'encodeurl', array('modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args));
+            $url = self::apiFunc($modinfo['name'], 'user', 'encodeurl', ['modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args]);
             if (empty($url)) {
                 // depending on the settings, we have generic directory based short URLs:
                 // [language]/[module]/[function]/[param1]/[value1]/[param2]/[value2]
@@ -1541,30 +1548,30 @@ class ModUtil
 
             if (!is_array($args)) {
                 return false;
-            } else {
-                foreach ($args as $key => $value) {
-                    if (is_array($value)) {
-                        foreach ($value as $l => $w) {
-                            if (is_numeric($w) || !empty($w)) {
-                                // we suppress '', but allow 0 as value (see #193)
-                                if (is_array($w)) {
-                                    foreach ($w as $m => $n) {
-                                        if (is_numeric($n) || !empty($n)) {
-                                            $n = strpos($n, '%') !== false ? $n : urlencode($n);
-                                            $url .= "&$key" . "[$l][$m]=$n";
-                                        }
+            }
+
+            foreach ($args as $key => $value) {
+                if (is_array($value)) {
+                    foreach ($value as $l => $w) {
+                        if (is_numeric($w) || !empty($w)) {
+                            // we suppress '', but allow 0 as value (see #193)
+                            if (is_array($w)) {
+                                foreach ($w as $m => $n) {
+                                    if (is_numeric($n) || !empty($n)) {
+                                        $n = strpos($n, '%') !== false ? $n : urlencode($n);
+                                        $url .= "&$key" . "[$l][$m]=$n";
                                     }
-                                } else {
-                                    $w = strpos($w, '%') !== false ? $w : urlencode($w);
-                                    $url .= "&$key" . "[$l]=$w";
                                 }
+                            } else {
+                                $w = strpos($w, '%') !== false ? $w : urlencode($w);
+                                $url .= "&$key" . "[$l]=$w";
                             }
                         }
-                    } elseif (is_numeric($value) || !empty($value)) {
-                        // we suppress '', but allow 0 as value (see #193)
-                        $value = strpos($value, '%') !== false ? $value : urlencode($value);
-                        $url .= "&$key=$value";
                     }
+                } elseif (is_numeric($value) || !empty($value)) {
+                    // we suppress '', but allow 0 as value (see #193)
+                    $value = strpos($value, '%') !== false ? $value : urlencode($value);
+                    $url .= "&$key=$value";
                 }
             }
         }
@@ -1596,7 +1603,7 @@ class ModUtil
         }
 
         if (!isset(self::$cache['modstate'])) {
-            self::$cache['modstate'] = array();
+            self::$cache['modstate'] = [];
         }
 
         if (!isset(self::$cache['modstate'][$modname]) || $force == true) {
@@ -1735,7 +1742,7 @@ class ModUtil
     public static function getModsTable()
     {
         if (!isset(self::$cache['modstable'])) {
-            self::$cache['modstable'] = array();
+            self::$cache['modstable'] = [];
         }
 
         if (!self::$cache['modstable'] || System::isInstalling()) {
@@ -1755,14 +1762,15 @@ class ModUtil
             }
 
             // add Core module (hack).
-            self::$cache['modstable'][0] = array(
+            self::$cache['modstable'][0] = [
                 'id' => 0,
                 'name' => 'zikula',
                 'type' => self::TYPE_CORE,
                 'directory' => '',
                 'displayname' => 'Zikula Core v' . \Zikula_Core::VERSION_NUM,
                 'version' => \Zikula_Core::VERSION_NUM,
-                'state' => self::STATE_ACTIVE);
+                'state' => self::STATE_ACTIVE
+            ];
         }
 
         return self::$cache['modstable'];
@@ -1779,14 +1787,14 @@ class ModUtil
      *
      * @return array The resulting module object array.
      */
-    public static function getModules($where = array(), $sort = 'displayname')
+    public static function getModules($where = [], $sort = 'displayname')
     {
         // get entityManager
         $sm = ServiceUtil::getManager();
         $entityManager = $sm->get('doctrine.entitymanager');
 
         // get all modules
-        $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy($where, array($sort => 'ASC'));
+        $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy($where, [$sort => 'ASC']);
 
         return $modules;
     }
@@ -1806,7 +1814,7 @@ class ModUtil
     {
         $sm = ServiceUtil::getManager();
         $entityManager = $sm->get('doctrine.entitymanager');
-        $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy(array('state' => $state), array($sort => 'ASC'));
+        $modules = $entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionEntity')->findBy(['state' => $state], [$sort => 'ASC']);
 
         return $modules;
     }
@@ -1832,11 +1840,10 @@ class ModUtil
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         if (false === strpos($modinfo['directory'], '/')) {
-            ZLoader::addAutoloader($moduleName, array(
-                    realpath("$modpath"),
-                    realpath("$modpath/$osdir/lib"),
-                )
-            );
+            ZLoader::addAutoloader($moduleName, [
+                realpath("$modpath"),
+                realpath("$modpath/$osdir/lib")
+            ]);
         }
 
         // load optional bootstrap
@@ -1883,7 +1890,7 @@ class ModUtil
     public static function isOO($moduleName)
     {
         if (!isset(self::$ooModules[$moduleName])) {
-            self::$ooModules[$moduleName] = array();
+            self::$ooModules[$moduleName] = [];
             self::$ooModules[$moduleName]['initialized'] = false;
             self::$ooModules[$moduleName]['oo'] = false;
             $modinfo = self::getInfo(self::getIdFromName($moduleName));
@@ -1910,7 +1917,7 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), array('zikulaadminmodule', 'zikulablocksmodule', 'zikulacategoriesmodule', 'zikularoutesmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule'))) {
+        if (in_array(strtolower($moduleName), ['zikulaadminmodule', 'zikulablocksmodule', 'zikulacategoriesmodule', 'zikularoutesmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule'])) {
             $directory = 'system';
         } else {
             $directory = 'modules';
@@ -1941,7 +1948,7 @@ class ModUtil
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         $modulePath = self::getModuleRelativePath($modinfo['name']);
 
-        $paths = array();
+        $paths = [];
         if ($modulePath) {
             $paths[] = $modulePath . '/Resources/public/images/admin.png';
             $paths[] = $modulePath . '/Resources/public/images/admin.jpg';
@@ -1975,11 +1982,11 @@ class ModUtil
      */
     public static function convertModuleName($name)
     {
-        if (in_array($name, array(
+        if (in_array($name, [
             'Blocks', 'Errors', 'Extensions', 'Groups', 'Mailer', 'Permissions',
             'PageLock', 'Search', 'SecurityCenter', 'Settings', 'Theme', 'Users',
             'Categories', 'Admin'
-        ))) {
+        ])) {
             $name = 'Zikula' . $name . 'Module';
         }
 
@@ -2011,7 +2018,7 @@ class ModUtil
             $osDir = DataUtil::formatForOS($modInfo['directory']);
             $modPath = ($modInfo['type'] == self::TYPE_SYSTEM) ? "system" : "modules";
             $scanner = new Scanner();
-            $scanner->scan(array("$modPath/$osDir"), 1);
+            $scanner->scan(["$modPath/$osDir"], 1);
             $modules = $scanner->getModulesMetaData(true);
             /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
             $moduleMetaData = !empty($modules[$modInfo['name']]) ? $modules[$modInfo['name']] : null;

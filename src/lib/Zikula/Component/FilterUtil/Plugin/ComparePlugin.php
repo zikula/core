@@ -25,7 +25,7 @@ class ComparePlugin extends FilterUtil\AbstractBuildPlugin
      */
     public function availableOperators()
     {
-        return array(
+        return [
             'eq',
             'ne',
             'lt',
@@ -38,7 +38,7 @@ class ComparePlugin extends FilterUtil\AbstractBuildPlugin
             'likelast',
             'null',
             'notnull'
-        );
+        ];
     }
 
     /**

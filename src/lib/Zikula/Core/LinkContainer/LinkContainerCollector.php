@@ -21,7 +21,7 @@ class LinkContainerCollector
     public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->eventDispatcher = $dispatcher;
-        $this->linkContainers = array();
+        $this->linkContainers = [];
     }
 
     public function addContainer(LinkContainerInterface $linkContainer)
@@ -31,11 +31,11 @@ class LinkContainerCollector
 
     public function getLinks($containerName, $type = LinkContainerInterface::TYPE_ADMIN)
     {
-        $links = array();
+        $links = [];
         if ($this->hasContainer($containerName)) {
             $links = $this->linkContainers[$containerName]->getLinks($type);
             // fire event here to add more links like hooks, moduleServices, etc
-            $event = new GenericEvent($containerName, array('type' => $type), $links);
+            $event = new GenericEvent($containerName, ['type' => $type], $links);
             $links = $this->eventDispatcher->dispatch(LinkContainerInterface::EVENT_NAME, $event)->getData();
         }
 

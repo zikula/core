@@ -152,7 +152,7 @@ class EventUtil
     {
         if (!is_callable($callable)) {
             if (is_array($callable)) {
-                throw new InvalidArgumentException(sprintf('array(%s, %s) is not a valid PHP callable', $callable[0], $callable[1]));
+                throw new InvalidArgumentException(sprintf('[%s, %s] is not a valid PHP callable', $callable[0], $callable[1]));
             }
 
             throw new InvalidArgumentException(sprintf('%s is not a valid PHP callable', $callable));
@@ -162,16 +162,20 @@ class EventUtil
             throw new InvalidArgumentException('Callable cannot be an instanciated class');
         }
 
-        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
-        $newHandler = array('eventname' => $eventName, 'callable' => $callable, 'weight' => $weight);
+        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, []);
+        $newHandler = [
+            'eventname' => $eventName,
+            'callable' => $callable,
+            'weight' => $weight
+        ];
         foreach ($handlers as $handler) {
             if ($handler == $newHandler) {
                 // The exact same handler exists already. Do nothing but display a warning.
                 if (System::isDevelopmentMode()) {
-                    LogUtil::registerWarning(__f('The eventhandler "%1$s" for "%2$s" could not be registered because it is registered already.', array($eventName, $moduleName)));
+                    LogUtil::registerWarning(__f('The eventhandler "%1$s" for "%2$s" could not be registered because it is registered already.', [$eventName, $moduleName]));
                 } else {
                     $warns = LogUtil::getWarningMessages(false);
-                    $msg = __f('The eventhandlers for "%1$s" could not be registered because they are registered already.', array($moduleName));
+                    $msg = __f('The eventhandlers for "%1$s" could not be registered because they are registered already.', [$moduleName]);
                     if (!in_array(DataUtil::formatForDisplayHTML($msg), $warns)) {
                         LogUtil::registerWarning($msg);
                     }
@@ -201,9 +205,9 @@ class EventUtil
         if (!$handlers) {
             return;
         }
-        $filteredHandlers = array();
+        $filteredHandlers = [];
         foreach ($handlers as $handler) {
-            if ($handler !== array('eventname' => $eventName, 'callable' => $callable, 'weight' => $weight)) {
+            if ($handler !== ['eventname' => $eventName, 'callable' => $callable, 'weight' => $weight]) {
                 $filteredHandlers[] = $handler;
             }
         }
@@ -233,16 +237,16 @@ class EventUtil
             throw new InvalidArgumentException(sprintf('%s is not a subclass of Zikula_AbstractEventHandler', $className));
         }
 
-        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
-        $newHandler = array('classname' => $className);
+        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, []);
+        $newHandler = ['classname' => $className];
         foreach ($handlers as $handler) {
             if ($handler == $newHandler) {
                 // The exact same handler exists already. Do nothing but display a warning.
                 if (System::isDevelopmentMode()) {
-                    LogUtil::registerWarning(__f('The eventhandler class "%1$s" for "%2$s" could not be registered because it is registered already.', array($className, $moduleName)));
+                    LogUtil::registerWarning(__f('The eventhandler class "%1$s" for "%2$s" could not be registered because it is registered already.', [$className, $moduleName]));
                 } else {
                     $warns = LogUtil::getWarningMessages(false);
-                    $msg = __f('The eventhandlers for "%1$s" could not be registered because they are registered already.', array($moduleName));
+                    $msg = __f('The eventhandlers for "%1$s" could not be registered because they are registered already.', [$moduleName]);
                     if (!in_array(DataUtil::formatForDisplayHTML($msg), $warns)) {
                         LogUtil::registerWarning($msg);
                     }
@@ -270,9 +274,9 @@ class EventUtil
         if (!$handlers) {
             return;
         }
-        $filteredHandlers = array();
+        $filteredHandlers = [];
         foreach ($handlers as $handler) {
-            if ($handler !== array('classname' => $className)) {
+            if ($handler !== ['classname' => $className]) {
                 $filteredHandlers[] = $handler;
             }
         }
@@ -349,7 +353,7 @@ class EventUtil
         if ($handler['serviceid']) {
             $callable = new Zikula_ServiceHandler($handler['serviceid'], $handler['method']);
         } else {
-            $callable = array($handler['classname'], $handler['method']);
+            $callable = [$handler['classname'], $handler['method']];
         }
 
         return $callable;

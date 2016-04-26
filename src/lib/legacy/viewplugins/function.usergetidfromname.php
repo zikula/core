@@ -28,7 +28,7 @@ function smarty_function_usergetidfromname($params, Zikula_View $view)
     $uname   = isset($params['uname'])   ? $params['uname']    : null;
 
     if (!$uname) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('usergetidfromname', 'uname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['usergetidfromname', 'uname']));
 
         return false;
     }

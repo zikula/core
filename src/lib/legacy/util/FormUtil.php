@@ -33,10 +33,10 @@ class FormUtil
      *
      * @return mixed The requested input key or the specified default.
      */
-    public static function getPassedValue($key, $default = null, $source = null, $filter = null, array $args = array(), $objectType = null)
+    public static function getPassedValue($key, $default = null, $source = null, $filter = null, array $args = [], $objectType = null)
     {
         if (!$key) {
-            throw new \Exception(__f('Empty %1$s passed to %2$s.', array('key', 'FormUtil::getPassedValue')));
+            throw new \Exception(__f('Empty %1$s passed to %2$s.', ['key', 'FormUtil::getPassedValue']));
         }
 
         $source = strtoupper($source);
@@ -44,7 +44,7 @@ class FormUtil
             $filter = FILTER_DEFAULT;
         }
 
-        $args = array();
+        $args = [];
         $failed = null;
 
         switch (true) {
@@ -101,7 +101,7 @@ class FormUtil
                 break;
             default:
                 if ($source) {
-                    static $valid = array('R', 'REQUEST', 'G', 'GET', 'P', 'POST', 'C', 'COOKIE', 'F', 'FILES', 'GP', 'GETPOST');
+                    static $valid = ['R', 'REQUEST', 'G', 'GET', 'P', 'POST', 'C', 'COOKIE', 'F', 'FILES', 'GP', 'GETPOST'];
                     if (!in_array($source, $valid)) {
                         throw new \Exception(__f('Invalid input source [%s] received.', DataUtil::formatForDisplay($source)));
 
@@ -130,11 +130,11 @@ class FormUtil
     public static function isRequiredField($validationInfo, $field)
     {
         if (!$validationInfo) {
-            throw new \Exception(__f('Empty %1$s passed to %2$s.', array('validationInfo', 'FormUtil::isRequiredField')));
+            throw new \Exception(__f('Empty %1$s passed to %2$s.', ['validationInfo', 'FormUtil::isRequiredField']));
         }
 
         if (!$field) {
-            throw new \Exception(__f('Empty %1$s passed to %2$s.', array('fieldname', 'FormUtil::isRequiredField')));
+            throw new \Exception(__f('Empty %1$s passed to %2$s.', ['fieldname', 'FormUtil::isRequiredField']));
         }
 
         $rec = isset($validationInfo[$field]) ? $validationInfo[$field] : null;
@@ -212,12 +212,12 @@ class FormUtil
     {
         static $ve = null;
 
-        if ($ve === null) {
+        if (null === $ve) {
             if (isset($_SESSION['validationErrors']) && is_array($_SESSION['validationErrors'])) {
                 $ve = $_SESSION['validationErrors'];
                 unset($_SESSION['validationErrors']);
             } else {
-                $ve = array();
+                $ve = [];
             }
         }
 
@@ -233,7 +233,7 @@ class FormUtil
      */
     public static function getFailedValidationObjects($objectType = null)
     {
-        static $objects = array();
+        static $objects = [];
         if (!isset($objects[$objectType])) {
             if (isset($_SESSION['validationFailedObjects']) && is_array($_SESSION['validationFailedObjects'])) {
                 if ($objectType && isset($_SESSION['validationFailedObjects'][$objectType])) {
@@ -264,19 +264,19 @@ class FormUtil
     public static function hasValidationErrors($objectType, $field = null)
     {
         if (!$objectType) {
-            throw new \Exception(__f('Empty %1$s passed to %2$s.', array('objectType', 'FormUtil::hasValidationErrors')));
+            throw new \Exception(__f('Empty %1$s passed to %2$s.', ['objectType', 'FormUtil::hasValidationErrors']));
         }
 
         if (!$field) {
-            throw new \Exception(__f('Empty %1$s passed to %2$s.', array('field', 'FormUtil::hasValidationErrors')));
+            throw new \Exception(__f('Empty %1$s passed to %2$s.', ['field', 'FormUtil::hasValidationErrors']));
         }
 
         $ve = self::getValidationErrors();
         if (isset($ve[$objectType][$field])) {
             return (bool)$ve[$objectType][$field];
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

@@ -72,7 +72,7 @@ abstract class AbstractController extends Controller
      *            An array of parameters to pass to the view
      * @return string The rendered view
      */
-    public function renderView($view, array $parameters = array())
+    public function renderView($view, array $parameters = [])
     {
         $parameters = $this->decorateTranslator($parameters);
 
@@ -90,7 +90,7 @@ abstract class AbstractController extends Controller
      *            A response instance
      * @return Response A Response instance
      */
-    public function render($view, array $parameters = array(), Response $response = null)
+    public function render($view, array $parameters = [], Response $response = null)
     {
         $parameters = $this->decorateTranslator($parameters);
 
@@ -108,7 +108,7 @@ abstract class AbstractController extends Controller
      *            A response instance
      * @return StreamedResponse A StreamedResponse instance
      */
-    public function stream($view, array $parameters = array(), StreamedResponse $response = null)
+    public function stream($view, array $parameters = [], StreamedResponse $response = null)
     {
         $parameters = $this->decorateTranslator($parameters);
 

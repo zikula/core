@@ -41,7 +41,7 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
      * @param Zikula_AbstractPlugin $plugin         Plugin.
      * @param array                 $options        Options.
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, Zikula_AbstractPlugin $plugin, array $options = array())
+    public function __construct(Zikula_ServiceManager $serviceManager, Zikula_AbstractPlugin $plugin, array $options = [])
     {
         $this->plugin = $plugin;
         parent::__construct($serviceManager, null, $options);

@@ -21,14 +21,14 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
      *
      * @var array
      */
-    protected $_ops = array();
+    protected $_ops = [];
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    protected $_fields = array();
+    protected $_fields = [];
 
     /**
      * Constructor.
@@ -50,7 +50,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
         if (isset($config['ops']) && (!isset($this->_ops) || !is_array($this->_ops))) {
             $this->activateOperators($config['ops']);
         } else {
-            $this->activateOperators(array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'search', 'like', 'likefirst', 'null', 'notnull'));
+            $this->activateOperators(['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'search', 'like', 'likefirst', 'null', 'notnull']);
         }
 
         if (isset($config['default']) && $config['default'] == true || count($this->_fields) <= 0) {
@@ -67,19 +67,11 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
      */
     public function activateOperators($op)
     {
-        static $ops = array(
-                            'eq',
-                            'ne',
-                            'lt',
-                            'le',
-                            'gt',
-                            'ge',
-                            'search',
-                            'like',
-                            'likefirst',
-                            'null',
-                            'notnull'
-                           );
+        static $ops = [
+            'eq', 'ne', 'lt', 'le', 'gt', 'ge',
+            'search', 'like', 'likefirst',
+            'null', 'notnull'
+        ];
 
         if (is_array($op)) {
             foreach ($op as $v) {
@@ -130,7 +122,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
             $fields[] = '-';
         }
 
-        $ops = array();
+        $ops = [];
         foreach ($this->_ops as $op) {
             $ops[$op] = $fields;
         }
@@ -202,7 +194,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
                 break;
         }
 
-        return array('where' => $where);
+        return ['where' => $where];
     }
 
     /**
@@ -221,7 +213,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
         }
 
         $where = '';
-        $params = array();
+        $params = [];
         $column = $this->getColumn($field);
 
         switch ($op) {
@@ -279,6 +271,6 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
                 break;
         }
 
-        return array('where' => $where, 'params' => $params);
+        return ['where' => $where, 'params' => $params];
     }
 }

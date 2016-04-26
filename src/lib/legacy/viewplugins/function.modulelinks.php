@@ -84,7 +84,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
         $i = 1;
         $size = count($menuLinks);
         foreach ($menuLinks as $menuitem) {
-            $class = array();
+            $class = [];
             $class[] = $size == 1 ? 'z-ml-single' : '';
             $class[] = ($i == 1 && $size > 1) ? $menuItemFirst : '';
             $class[] = ($i == $size && $size > 1) ? $menuItemLast : '';

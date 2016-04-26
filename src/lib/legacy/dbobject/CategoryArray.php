@@ -22,13 +22,15 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         $this->_objType = 'categories_category';
         $this->_objField = 'id';
         $this->_objPath = 'categories_category_array';
-        $this->_objPermissionFilter[] = array('component_left' => 'ZikulaCategoriesModule',
-                'component_middle' => '',
-                'component_right' => '',
-                'instance_left' => 'id',
-                'instance_middle' => 'ipath',
-                'instance_right' => 'path',
-                'level' => ACCESS_READ);
+        $this->_objPermissionFilter[] = [
+            'component_left' => 'ZikulaCategoriesModule',
+            'component_middle' => '',
+            'component_right' => '',
+            'instance_left' => 'id',
+            'instance_middle' => 'ipath',
+            'instance_right' => 'path',
+            'level' => ACCESS_READ
+        ];
 
         $this->_init($init, $where);
     }

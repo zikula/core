@@ -15,7 +15,7 @@ use Zikula\ThemeModule\Engine\AssetBag;
 
 abstract class AbstractModule extends AbstractBundle
 {
-    private $serviceIds = array();
+    private $serviceIds = [];
 
     public function getNameType()
     {

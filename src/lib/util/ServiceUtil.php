@@ -105,8 +105,11 @@ class ServiceUtil
      */
     public static function registerPersistentService($id, Zikula_ServiceManager_Definition $definition, $shared = true)
     {
-        $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', array());
-        $handlers[$id] = array('definition' => $definition, 'shared' => $shared);
+        $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', []);
+        $handlers[$id] = [
+            'definition' => $definition,
+            'shared' => $shared
+        ];
         ModUtil::setVar(self::HANDLERS, 'definitions', $handlers);
     }
 
@@ -140,7 +143,7 @@ class ServiceUtil
      */
     public static function loadPersistentServices()
     {
-        $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', array());
+        $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', []);
         if (!$handlers) {
             return;
         }

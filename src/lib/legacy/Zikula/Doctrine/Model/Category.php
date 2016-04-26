@@ -24,7 +24,7 @@ class Zikula_Doctrine_Model_Category extends Doctrine_Record
     {
         $this->setTableName('categories_category');
 
-        $this->hasColumn('id as id', 'integer', 4, array('primary' => true, 'autoincrement' => true));
+        $this->hasColumn('id as id', 'integer', 4, ['primary' => true, 'autoincrement' => true]);
         $this->hasColumn('parent_id as parent_id', 'integer', 4);
         $this->hasColumn('is_locked as is_locked', 'boolean');
         $this->hasColumn('is_leaf as is_leaf', 'boolean');

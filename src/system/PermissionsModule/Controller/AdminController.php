@@ -55,7 +55,7 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in view()
-        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -138,7 +138,7 @@ class AdminController extends \Zikula_AbstractController
         $objArray = $query->getResult();
         $numrows = count($objArray);
 
-        $permissions = array();
+        $permissions = [];
 
         if ($numrows > 0) {
             $accesslevels = SecurityUtil::accesslevelnames();
@@ -147,53 +147,52 @@ class AdminController extends \Zikula_AbstractController
 
             foreach ($objArray as $obj) {
                 $id = $obj['gid'];
-                $up = array(
-                    'url' => $this->get('router')->generate('zikulapermissionsmodule_admin_inc',
-                            array('pid' => $obj['pid'],
-                                  'permgrp' => $filterGroup,
-                                  'csrftoken' => $csrftoken
-                            )
-                        ),
+                $up = [
+                    'url' => $this->get('router')->generate('zikulapermissionsmodule_admin_inc', [
+                        'pid' => $obj['pid'],
+                        'permgrp' => $filterGroup,
+                        'csrftoken' => $csrftoken
+                    ]),
                     'title' => $this->__('Up')
-                );
-                $down = array(
-                    'url' => $this->get('router')->generate('zikulapermissionsmodule_admin_dec',
-                            array('pid' => $obj['pid'],
-                                   'permgrp' => $filterGroup,
-                                   'csrftoken' => $csrftoken)
-                        ),
+                ];
+                $down = [
+                    'url' => $this->get('router')->generate('zikulapermissionsmodule_admin_dec', [
+                        'pid' => $obj['pid'],
+                        'permgrp' => $filterGroup,
+                        'csrftoken' => $csrftoken
+                    ]),
                     'title' => $this->__('Down')
-                );
+                ];
                 switch ($rownum) {
                     case 1:
-                        $arrows = array('up' => 0, 'down' => 1);
+                        $arrows = ['up' => 0, 'down' => 1];
                         break;
                     case $numrows:
-                        $arrows = array('up' => 1, 'down' => 0);
+                        $arrows = ['up' => 1, 'down' => 0];
                         break;
                     default:
-                        $arrows = array('up' => 1, 'down' => 1);
+                        $arrows = ['up' => 1, 'down' => 1];
                         break;
                 }
                 $rownum++;
 
-                $options = array();
-                $inserturl = $this->get('router')->generate('zikulapermissionsmodule_admin_listedit',
-                                array('permgrp' => $filterGroup,
-                                      'action' => 'insert',
-                                      'insseq' => $obj['sequence'])
-                );
-                $editurl = $this->get('router')->generate('zikulapermissionsmodule_admin_listedit',
-                                array('chgpid' => $obj['pid'],
-                                      'permgrp' => $filterGroup,
-                                      'action' => 'modify')
-                );
-                $deleteurl = $this->get('router')->generate('zikulapermissionsmodule_admin_delete',
-                                array('pid' => $obj['pid'],
-                                      'permgrp' => $filterGroup)
-                );
+                $options = [];
+                $inserturl = $this->get('router')->generate('zikulapermissionsmodule_admin_listedit', [
+                    'permgrp' => $filterGroup,
+                    'action' => 'insert',
+                    'insseq' => $obj['sequence']
+                ]);
+                $editurl = $this->get('router')->generate('zikulapermissionsmodule_admin_listedit', [
+                    'chgpid' => $obj['pid'],
+                    'permgrp' => $filterGroup,
+                    'action' => 'modify'
+                ]);
+                $deleteurl = $this->get('router')->generate('zikulapermissionsmodule_admin_delete', [
+                    'pid' => $obj['pid'],
+                    'permgrp' => $filterGroup
+                ]);
 
-                $permissions[] = array(
+                $permissions[] = [
                     'sequence' => $obj['sequence'],
                     'arrows' => $arrows,
                     // Realms not currently functional so hide the output - jgm
@@ -210,12 +209,14 @@ class AdminController extends \Zikula_AbstractController
                     'permid' => $obj['pid'],
                     'inserturl' => $inserturl,
                     'editurl' => $editurl,
-                    'deleteurl' => $deleteurl);
+                    'deleteurl' => $deleteurl
+                ];
             }
         }
 
-        $components = array(-1 => $this->__('All components'));        // read all perms to extract components
-        $allperms = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
+        $components = [-1 => $this->__('All components')];
+        // read all perms to extract components
+        $allperms = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy([], ['sequence' => 'ASC']);
         foreach ($allperms as $singlePerm) {
             // extract components, we keep everything up to the first colon
             $compparts = explode(':', $singlePerm['component']);
@@ -265,15 +266,13 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'inc', array('pid' => $pid, 'permgrp' => $permgrp))) {
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'inc', ['pid' => $pid, 'permgrp' => $permgrp])) {
             // Success
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Incremented permission rule.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate(
-            'zikulapermissionsmodule_admin_view',
-            array('filter-group' => $permgrp),
-            RouterInterface::ABSOLUTE_URL)
+        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view',
+            ['filter-group' => $permgrp], RouterInterface::ABSOLUTE_URL)
         );
     }
 
@@ -303,15 +302,13 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'dec', array('pid' => $pid, 'permgrp' => $permgrp))) {
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'dec', ['pid' => $pid, 'permgrp' => $permgrp])) {
             // Success
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Decremented permission rule.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate(
-                'zikulapermissionsmodule_admin_view',
-                array('filter-group' => $permgrp),
-                RouterInterface::ABSOLUTE_URL)
+        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view',
+                ['filter-group' => $permgrp], RouterInterface::ABSOLUTE_URL)
         );
     }
 
@@ -338,12 +335,12 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('permissionlevels', SecurityUtil::accesslevelnames());
 
         // get all permissions
-        $allperms = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
+        $allperms = $this->entityManager->getRepository('ZikulaPermissionsModule:PermissionEntity')->findBy([], ['sequence' => 'ASC']);
         if (!$allperms && $action != 'add') {
             $request->getSession()->getFlashBag()->add('error', $this->__('Error! No permission rules of this kind were found. Please add some first.'));
 
             return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_listedit',
-                array('action' => 'add'), RouterInterface::ABSOLUTE_URL));
+                ['action' => 'add'], RouterInterface::ABSOLUTE_URL));
         }
 
         $viewperms = ($action == 'modify') ? $this->__('Modify permission rule') : $this->__('Create new permission rule');
@@ -378,12 +375,12 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('action', $action);
 
         $accesslevels = SecurityUtil::accesslevelnames();
-        $permissions = array();
+        $permissions = [];
 
         foreach ($allperms as $obj) {
             $id = $obj['gid']; //get's uid or gid accordingly
 
-            $permissions[] = array(
+            $permissions[] = [
                 'pid' => $obj['pid'],
                 'group' => $ids[$id],
                 'component' => $obj['component'],
@@ -391,7 +388,7 @@ class AdminController extends \Zikula_AbstractController
                 'accesslevel' => $accesslevels[$obj['level']],
                 'level' => $obj['level'],
                 'sequence' => $obj['sequence']
-            );
+            ];
             if ($action == 'modify' && $obj['pid'] == $chgpid) {
                 $this->view->assign('selectedid', $id);
             }
@@ -450,15 +447,16 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'update',
-                        array('pid' => $pid,
-                              'seq' => $seq,
-                              'oldseq' => $oldseq,
-                              'realm' => $realm,
-                              'id' => $id,
-                              'component' => $component,
-                              'instance' => $instance,
-                              'level' => $level))) {
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'update', [
+            'pid' => $pid,
+            'seq' => $seq,
+            'oldseq' => $oldseq,
+            'realm' => $realm,
+            'id' => $id,
+            'component' => $component,
+            'instance' => $instance,
+            'level' => $level
+        ])) {
             // Success
             if ($warnmsg == '') {
                 $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved permission rule.'));
@@ -467,7 +465,7 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -516,13 +514,14 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'create',
-                        array('realm' => $realm,
-                              'id' => $id,
-                              'component' => $component,
-                              'instance' => $instance,
-                              'level' => $level,
-                              'insseq' => $insseq))) {
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'create', [
+            'realm' => $realm,
+            'id' => $id,
+            'component' => $component,
+            'instance' => $instance,
+            'level' => $level,
+            'insseq' => $insseq
+        ])) {
             // Success
             if ($warnmsg == '') {
                 $request->getSession()->getFlashBag()->add('status', $this->__('Done! Created permission rule.'));
@@ -531,7 +530,7 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view', [], RouterInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -566,16 +565,13 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Pass to API
-        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete',
-                        array('pid' => $pid))) {
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete', ['pid' => $pid])) {
             // Success
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Deleted permission rule.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate(
-                'zikulapermissionsmodule_admin_view',
-                array('filter-group' => $permgrp),
-                RouterInterface::ABSOLUTE_URL
+        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view',
+                ['filter-group' => $permgrp], RouterInterface::ABSOLUTE_URL
         ));
     }
 
@@ -588,7 +584,7 @@ class AdminController extends \Zikula_AbstractController
      */
     private function getGroupsInfo()
     {
-        $groups = array();
+        $groups = [];
         $groups[SecurityUtil::PERMS_ALL] = $this->__('All groups');
         $groups[SecurityUtil::PERMS_UNREGISTERED] = $this->__('Unregistered');
 
@@ -698,6 +694,6 @@ class AdminController extends \Zikula_AbstractController
             $request->getSession()->getFlashBag()->add('status', $this->__('Done! Saved module configuration.'));
         }
 
-        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view', array(), RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->get('router')->generate('zikulapermissionsmodule_admin_view', [], RouterInterface::ABSOLUTE_URL));
     }
 }

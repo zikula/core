@@ -21,14 +21,14 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
      *
      * @var array
      */
-    protected $ops = array();
+    protected $ops = [];
 
     /**
      * Fields to use the plugin for.
      *
      * @var array
      */
-    protected $fields = array();
+    protected $fields = [];
 
     /**
      * Category property.
@@ -76,11 +76,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
      */
     public function availableOperators()
     {
-        return array(
-                     'eq',
-                     'ne',
-                     'sub'
-                    );
+        return ['eq', 'ne', 'sub'];
     }
 
     /**
@@ -142,7 +138,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
             $fields[] = '-';
         }
 
-        $ops = array();
+        $ops = [];
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }
@@ -178,7 +174,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
             return '';
         }
 
-        $items = array($value);
+        $items = [$value];
         if ($op == 'sub') {
             $cats = CategoryUtil::getSubCategories($value);
             foreach ($cats as $item) {
@@ -186,7 +182,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
             }
         }
 
-        $filter = array('__META__' => array('module' => $this->module));
+        $filter = ['__META__' => ['module' => $this->module]];
         foreach ($this->property as $prop) {
             $filter[$prop] = $items;
         }
@@ -196,6 +192,6 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
             $where = str_replace(' IN ', ' NOT IN ', $where);
         }
 
-        return array('where' => $where);
+        return ['where' => $where];
     }
 }

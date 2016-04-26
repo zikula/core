@@ -30,7 +30,9 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Zikula\SecurityCenterModule\Entity\IntrusionEntity'));
+            DoctrineHelper::createSchema($this->entityManager, [
+                'Zikula\SecurityCenterModule\Entity\IntrusionEntity'
+            ]);
         } catch (\Exception $e) {
             return false;
         }
@@ -77,7 +79,7 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
         }
 
         // HTML Purifier default settings
-        $purifierDefaultConfig = SecurityCenterUtil::getpurifierconfig(array('forcedefault' => true));
+        $purifierDefaultConfig = SecurityCenterUtil::getpurifierconfig(['forcedefault' => true]);
         $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
 
         // create vars for phpids usage
@@ -91,20 +93,22 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('idsimpactthresholdthree', 25);    // block request
         System::setVar('idsimpactthresholdfour', 75);     // kick user, destroy session
         System::setVar('idsimpactmode', 1);               // per request per default
-        System::setVar('idshtmlfields', array('POST.__wysiwyg'));
-        System::setVar('idsjsonfields', array('POST.__jsondata'));
-        System::setVar('idsexceptions', array('GET.__utmz',
-                        'GET.__utmc',
-                        'REQUEST.linksorder', 'POST.linksorder',
-                        'REQUEST.fullcontent', 'POST.fullcontent',
-                        'REQUEST.summarycontent', 'POST.summarycontent',
-                        'REQUEST.filter.page', 'POST.filter.page',
-                        'REQUEST.filter.value', 'POST.filter.value'));
+        System::setVar('idshtmlfields', ['POST.__wysiwyg']);
+        System::setVar('idsjsonfields', ['POST.__jsondata']);
+        System::setVar('idsexceptions', [
+            'GET.__utmz',
+            'GET.__utmc',
+            'REQUEST.linksorder', 'POST.linksorder',
+            'REQUEST.fullcontent', 'POST.fullcontent',
+            'REQUEST.summarycontent', 'POST.summarycontent',
+            'REQUEST.filter.page', 'POST.filter.page',
+            'REQUEST.filter.value', 'POST.filter.value'
+        ]);
 
         System::setVar('htmlentities', '1');
 
         // default values for AllowableHTML
-        $defhtml = array(
+        $defhtml = [
             '!--' => 2,
             'a' => 2,
             'abbr' => 1,
@@ -215,7 +219,7 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
             'var' => 0,
             'video' => 0,
             'wbr' => 0
-        );
+        ];
         System::setVar('AllowableHTML', $defhtml);
 
         // Initialisation successful

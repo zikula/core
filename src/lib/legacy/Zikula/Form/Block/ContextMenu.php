@@ -164,7 +164,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
      */
     public function firstTime($doSet = false)
     {
-        static $createdMenus = array();
+        static $createdMenus = [];
         if (isset($createdMenus[$this->id])) {
             return false;
         }

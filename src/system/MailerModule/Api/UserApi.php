@@ -43,8 +43,8 @@ class UserApi extends \Zikula_AbstractApi
      *                                    to be HTML, and the altbody is assumed to be plain text
      *       @type array        $attachments array of either absolute filenames to attach
      *                                    to the mail or array of arrays in format
-     *                                    array($path,$filename,$encoding,$type)
-     *       @type array        $stringattachments array of arrays to treat as attachments, format array($string,$filename,$encoding,$type)
+     *                                    [$path, $filename, $encoding, $type]
+     *       @type array        $stringattachments array of arrays to treat as attachments, format [$string, $filename, $encoding, $type]
      *       @type array        $embeddedimages array of absolute filenames to image files to embed in the mail
      *                       }
      *

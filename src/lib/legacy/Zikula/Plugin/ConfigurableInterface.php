@@ -20,7 +20,7 @@ interface Zikula_Plugin_ConfigurableInterface
      *
      * Example:
      * <samp>
-     *     return new SystemPlugin_Example_Controller($this->serviceManager, array('plugin' => $this));
+     *     return new SystemPlugin_Example_Controller($this->serviceManager, ['plugin' => $this]);
      * </samp>
      *
      * @return Zikula_Controller_AbstractPlugin

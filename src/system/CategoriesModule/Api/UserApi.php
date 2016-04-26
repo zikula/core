@@ -46,7 +46,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \RuntimeException($this->__("Error! The root directory cannot be modified in 'user' mode"));
         }
 
-        $userCatName = $this->getusercategoryname(array());
+        $userCatName = $this->getusercategoryname([]);
         $thisUserRootCatPath = $userRoot . '/' . $userCatName;
         $thisUserRootCat = CategoryUtil::getCategoryByPath($thisUserRootCatPath);
 

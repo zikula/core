@@ -292,7 +292,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
                 $data[$this->dataField] = $this->checked;
             } else {
                 if (!array_key_exists($this->group, $data)) {
-                    $data[$this->group] = array();
+                    $data[$this->group] = [];
                 }
                 $data[$this->group][$this->dataField] = $this->checked;
             }

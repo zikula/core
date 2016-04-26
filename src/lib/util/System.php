@@ -27,7 +27,7 @@ class System
      *
      * @var array
      */
-    protected static $cache = array();
+    protected static $cache = [];
 
     /**
      * Flush this static class' cache.
@@ -36,7 +36,7 @@ class System
      */
     public static function flushCache()
     {
-        self::$cache = array();
+        self::$cache = [];
     }
 
     /**
@@ -186,29 +186,31 @@ class System
         $var = (string)$var;
         $type = (string)$type;
 
-        static $maxlength = array(
-        'modvar' => 64,
-        'func' => 512,
-        'api' => 187,
-        'theme' => 200,
-        'uname' => 25,
-        'config' => 64);
+        static $maxlength = [
+            'modvar' => 64,
+            'func' => 512,
+            'api' => 187,
+            'theme' => 200,
+            'uname' => 25,
+            'config' => 64
+        ];
 
-        static $minlength = array(
-        'mod' => 1,
-        'modvar' => 1,
-        'uname' => 1,
-        'config' => 1);
+        static $minlength = [
+            'mod' => 1,
+            'modvar' => 1,
+            'uname' => 1,
+            'config' => 1
+        ];
 
         // commented out some regexps until some useful and working ones are found
-        static $regexp = array(
+        static $regexp = [
             //'mod' => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
             //'func' => '/[^0-9a-zA-Z_]/',
             //'api' => '/[^0-9a-zA-Z_]/',
             //'theme' => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
             //'email' => '/^(?:[^\s\000-\037\177\(\)<>@,;:\\"\[\]]\.?)+@(?:[^\s\000-\037\177\(\)<>@,;:\\\"\[\]]\.?)+\.[a-z]{2,6}$/Ui',
             //'url' => '/^([!#\$\046-\073=\077-\132_\141-\172~]|(?:%[a-f0-9]{2}))+$/i'
-        );
+        ];
 
         // special cases
         if ($type == 'mod' && $var == ModUtil::CONFIG_MODULE) {
@@ -230,11 +232,7 @@ class System
 
         if ($type == 'email' || $type == 'url') {
             // CSRF protection for email and url
-            $var = str_replace(array(
-                            '\r',
-                            '\n',
-                            '%0d',
-                            '%0a'), '', $var);
+            $var = str_replace(['\r', '\n', '%0d', '%0a'], '', $var);
 
             if (self::getVar('idnnames')) {
                 // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
@@ -399,14 +397,10 @@ class System
      *
      * @throws \Exception
      */
-    public static function redirect($redirecturl, $additionalheaders = array(), $type = 302, $response = false)
+    public static function redirect($redirecturl, $additionalheaders = [], $type = 302, $response = false)
     {
         // very basic input validation against HTTP response splitting
-        $redirecturl = str_replace(array(
-                        '\r',
-                        '\n',
-                        '%0d',
-                        '%0a'), '', $redirecturl);
+        $redirecturl = str_replace(['\r', '\n', '%0d', '%0a'], '', $redirecturl);
 
         // check if the headers have already been sent
         if (headers_sent()) {
@@ -495,16 +489,16 @@ class System
 
         $mailer = ServiceUtil::getManager()->get('mailer.simple');
         $altBodyContentType = ($html && $altbody) ? 'text/html' : 'plain/text';
-        $failedRecipients = array();
+        $failedRecipients = [];
         if ($headers) {
             $lines = explode("\n", $headers);
-            $headers = array();
+            $headers = [];
             foreach ($lines as $line) {
                 $pairs = explode(':', $line);
                 $headers[$pairs[0]] = $pairs[1];
             }
         } else {
-            $headers = array(); // change to empty array
+            $headers = []; // change to empty array
         }
         $from = self::getVar('adminmail');
 
@@ -572,7 +566,7 @@ class System
      *
      * @return string Current URI.
      */
-    public static function getCurrentUri($args = array())
+    public static function getCurrentUri($args = [])
     {
         // get current URI
         $request = self::serverGetVar('REQUEST_URI');
@@ -665,7 +659,7 @@ class System
      *
      * @return string Current URL.
      */
-    public static function getCurrentUrl($args = array())
+    public static function getCurrentUrl($args = [])
     {
         $server = self::getHost();
         $protocol = self::serverGetProtocol();
@@ -825,7 +819,7 @@ class System
         }
 
         if (!$expectEntrypoint && self::getCurrentUrl() == self::getBaseUrl() . $root) {
-            self::redirect(self::getHomepageUrl(), array(), 302, true);
+            self::redirect(self::getHomepageUrl(), [], 302, true);
             self::shutDown();
         }
 
@@ -840,7 +834,7 @@ class System
         $parsedURL = parse_url(self::getCurrentUri());
 
         // strip any unwanted content from the provided URL
-        $tobestripped = array(self::getBaseUri(), "$root");
+        $tobestripped = [self::getBaseUri(), "$root"];
         $path = str_replace($tobestripped, '', $parsedURL['path']);
         $path = trim($path, '/');
 
@@ -860,7 +854,7 @@ class System
             // we are in the homepage, checks if language code is forced
             if (ZLanguage::getLangUrlRule() && $lang) {
                 // and redirect then
-                self::redirect(self::getCurrentUrl()."/$lang", array(), 302, true);
+                self::redirect(self::getCurrentUrl()."/$lang", [], 302, true);
                 self::shutDown();
             }
         } else {
@@ -874,7 +868,7 @@ class System
                     foreach ($args as $k => $v) {
                         $args[$k] = urlencode($v);
                     }
-                    self::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''), array(), 302, true);
+                    self::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''), [], 302, true);
                     self::shutDown();
                 }
                 self::queryStringSetVar('lang', $args[0], $request);
@@ -885,7 +879,7 @@ class System
                     $args[$k] = urlencode($v);
                 }
                 $langTheme = isset($_GET['theme']) ? "$lang/$_GET[theme]" : $lang;
-                self::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args), array(), 302, true);
+                self::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args), [], 302, true);
                 self::shutDown();
             }
 
@@ -940,7 +934,7 @@ class System
             } else {
                 self::queryStringSetVar('func', 'main', $request);
             }
-            if (!ModUtil::apiFunc($modinfo['name'], 'user', 'decodeurl', array('vars' => $args))) {
+            if (!ModUtil::apiFunc($modinfo['name'], 'user', 'decodeurl', ['vars' => $args])) {
                 // any remaining arguments are specific to the module
                 $argscount = count($args);
                 for ($i = 3; $i < $argscount; $i = $i + 2) {

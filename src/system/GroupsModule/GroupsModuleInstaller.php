@@ -26,10 +26,10 @@ class GroupsModuleInstaller extends \Zikula_AbstractInstaller
     public function install()
     {
         // create tables
-        $classes = array(
+        $classes = [
             'Zikula\GroupsModule\Entity\GroupEntity',
             'Zikula\GroupsModule\Entity\GroupApplicationEntity'
-        );
+        ];
 
         try {
             DoctrineHelper::createSchema($this->entityManager, $classes);

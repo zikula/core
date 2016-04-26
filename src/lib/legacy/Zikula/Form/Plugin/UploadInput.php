@@ -258,7 +258,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
                 $data[$this->dataField] = $this->result;
             } else {
                 if (!array_key_exists($this->group, $data)) {
-                    $data[$this->group] = array();
+                    $data[$this->group] = [];
                 }
                 $data[$this->group][$this->dataField] = $this->result;
             }
